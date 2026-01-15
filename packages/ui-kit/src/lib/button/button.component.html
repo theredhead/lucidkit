@@ -1,0 +1,37 @@
+@switch (variant()) {
+@case ('basic') {
+<button mat-button [color]="color()" [disabled]="isDisabled() || isLoading()"
+    [class.ui-button--size-small]="size() === 'small'" [class.ui-button--size-large]="size() === 'large'"
+    (click)="onClick.emit()">
+    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+}
+@case ('stroked') {
+<button mat-stroked-button [color]="color()" [disabled]="isDisabled() || isLoading()"
+    [class.ui-button--size-small]="size() === 'small'" [class.ui-button--size-large]="size() === 'large'"
+    (click)="onClick.emit()">
+    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+}
+@case ('flat') {
+<button mat-flat-button [color]="color()" [disabled]="isDisabled() || isLoading()"
+    [class.ui-button--size-small]="size() === 'small'" [class.ui-button--size-large]="size() === 'large'"
+    (click)="onClick.emit()">
+    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+}
+@default {
+<button mat-raised-button [color]="color()" [disabled]="isDisabled() || isLoading()"
+    [class.ui-button--size-small]="size() === 'small'" [class.ui-button--size-large]="size() === 'large'"
+    (click)="onClick.emit()">
+    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+}
+}
+
+<ng-template #buttonContent>
+    @if (isLoading()) {
+    <mat-spinner [diameter]="20" class="ui-button__spinner"></mat-spinner>
+    }
+    <span class="ui-button__label">{{ label() }}</span>
+</ng-template>

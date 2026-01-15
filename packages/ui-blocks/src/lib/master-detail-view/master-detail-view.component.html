@@ -1,0 +1,33 @@
+<div class="ui-master-detail-view">
+    <aside class="ui-master-detail-view__master">
+        <div class="ui-master-detail-view__master-header">
+            <h2>{{ masterTitle() }}</h2>
+        </div>
+        <mat-nav-list class="ui-master-detail-view__master-list">
+            @for (item of items(); track item.id) {
+            <mat-list-item [activated]="isItemSelected(item.id)" (click)="onSelectItem.emit(item)"
+                class="ui-master-detail-view__master-item">
+                <span matListItemTitle>{{ item.label }}</span>
+            </mat-list-item>
+            } @empty {
+            <p class="ui-master-detail-view__empty-state">No items available</p>
+            }
+        </mat-nav-list>
+    </aside>
+
+    <main class="ui-master-detail-view__detail">
+        @if (selectedItem(); as item) {
+        <div class="ui-master-detail-view__detail-header">
+            <h2>{{ item.label }}</h2>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="ui-master-detail-view__detail-content">
+            <ng-content></ng-content>
+        </div>
+        } @else {
+        <div class="ui-master-detail-view__detail-placeholder">
+            <p>{{ detailPlaceholderText() }}</p>
+        </div>
+        }
+    </main>
+</div>

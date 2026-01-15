@@ -1,0 +1,22 @@
+{
+  "name": "@theredhead/ui-blocks",
+  "version": "0.0.1",
+  "description": "theredhead UI Blocks - Advanced Layout Components",
+  "private": false,
+  "peerDependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/material": "^21.0.0"
+  },
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "build:watch": "ng-packagr -p ng-package.json -w"
+  },
+  "ngPackage": {
+    "$schema": "node_modules/ng-packagr/ng-package.schema.json",
+    "dest": "../../dist/ui-blocks",
+    "lib": {
+      "entryFile": "src/public-api/index.ts"
+    }
+  }
+}
