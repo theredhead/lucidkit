@@ -1,0 +1,23 @@
+// Angular Material theming for SigmaX
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Define a custom theme
+$sigmax-primary: mat.define-palette(mat.$blue-palette, 500);
+$sigmax-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+$sigmax-warn: mat.define-palette(mat.$red-palette);
+
+$sigmax-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $sigmax-primary,
+      accent: $sigmax-accent,
+      warn: $sigmax-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component
+@include mat.all-component-colors($sigmax-theme);
