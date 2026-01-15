@@ -2,7 +2,9 @@ import {
     ComponentFixture,
     TestBed,
 } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+import { vi } from 'vitest';
 
 import {
     ButtonColor,
@@ -17,7 +19,8 @@ describe('UiButtonComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [UiButtonComponent, NoopAnimationsModule],
+            imports: [UiButtonComponent],
+            providers: [provideNoopAnimations()],
         }).compileComponents();
 
         fixture = TestBed.createComponent(UiButtonComponent);
@@ -139,7 +142,7 @@ describe('UiButtonComponent', () => {
 
     describe('click output', () => {
         it('should emit onClick when button is clicked', () => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             component.onClick.subscribe(spy);
 
             const button = fixture.nativeElement.querySelector('button');
@@ -149,7 +152,7 @@ describe('UiButtonComponent', () => {
         });
 
         it('should not emit onClick when button is disabled', () => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             component.onClick.subscribe(spy);
 
             fixture.componentRef.setInput('isDisabled', true);
