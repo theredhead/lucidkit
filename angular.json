@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "packages",
+  "projects": {
+    "ui-kit": {
+      "projectType": "library",
+      "root": "packages/ui-kit",
+      "sourceRoot": "packages/ui-kit/src",
+      "architect": {}
+    },
+    "ui-blocks": {
+      "projectType": "library",
+      "root": "packages/ui-blocks",
+      "sourceRoot": "packages/ui-blocks/src",
+      "architect": {}
+    }
+  }
+}

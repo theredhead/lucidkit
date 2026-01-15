@@ -2,7 +2,9 @@ import {
     ComponentFixture,
     TestBed,
 } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+import { vi } from 'vitest';
 
 import {
     MasterItem,
@@ -21,7 +23,8 @@ describe('UiMasterDetailViewComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [UiMasterDetailViewComponent, NoopAnimationsModule],
+            imports: [UiMasterDetailViewComponent],
+            providers: [provideNoopAnimations()],
         }).compileComponents();
 
         fixture = TestBed.createComponent(UiMasterDetailViewComponent);
@@ -90,7 +93,7 @@ describe('UiMasterDetailViewComponent', () => {
 
     describe('item selection', () => {
         it('should emit onSelectItem when item is clicked', () => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             component.onSelectItem.subscribe(spy);
 
             fixture.componentRef.setInput('items', mockItems);

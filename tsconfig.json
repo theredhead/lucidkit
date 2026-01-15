@@ -14,6 +14,8 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"],
     "paths": {
       "@sigmax/ui-kit": ["./dist/ui-kit"],
       "@sigmax/ui-blocks": ["./dist/ui-blocks"]
