@@ -1,0 +1,13 @@
+// Sigmax UI Theme - Typography
+// Material 3 typography configuration
+
+@use '@angular/material' as mat;
+
+/// Creates the typography configuration for the theme
+/// Uses Material 3 typography scale with customizable font family
+@function create-typography($font-family: 'Roboto, sans-serif') {
+  @return mat.define-typography((
+    plain-family: $font-family,
+    brand-family: $font-family,
+  ));
+}

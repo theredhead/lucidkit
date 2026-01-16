@@ -1,0 +1,9 @@
+/*
+ * Public API Surface of @sigmax/ui-theme
+ */
+
+// Services
+export * from './lib/services/theme.service';
+
+// Tokens
+export * from './lib/tokens/theme.tokens';
