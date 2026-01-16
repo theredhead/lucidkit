@@ -1,32 +1,48 @@
-<div class="container">
-    <aside class="master">
-        <header class="header">
-            <h2>{{ masterTitle() }}</h2>
-        </header>
-        <mat-nav-list class="list">
-            @for (item of items(); track item.id) {
-            <mat-list-item [activated]="isItemSelected(item.id)" (click)="onSelectItem.emit(item)">
-                <span matListItemTitle>{{ item.label }}</span>
-            </mat-list-item>
-            } @empty {
-            <p class="empty">No items available</p>
+<aside>
+    <header>
+        <h2>{{ masterTitle() }}</h2>
+    </header>
+    @if (filterTemplate(); as tpl) {
+    <div class="filter">
+        <ng-container *ngTemplateOutlet="tpl; context: filterContext()"></ng-container>
+    </div>
+    }
+    <mat-nav-list>
+        @for (item of items(); track item.id) {
+        <mat-list-item [activated]="isItemSelected(item.id)" (click)="onSelectItem.emit(item)">
+            @if (itemTemplate()) {
+            <ng-container *ngTemplateOutlet="itemTemplate()!; context: getItemContext(item)"></ng-container>
+            } @else {
+            <span matListItemTitle>{{ item.label }}</span>
             }
-        </mat-nav-list>
-    </aside>
-
-    <main class="detail">
-        @if (selectedItem(); as item) {
-        <header class="header">
-            <h2>{{ item.label }}</h2>
-        </header>
-        <mat-divider></mat-divider>
-        <div class="content">
-            <ng-content></ng-content>
-        </div>
-        } @else {
-        <div class="placeholder">
-            <p>{{ detailPlaceholderText() }}</p>
-        </div>
+        </mat-list-item>
+        } @empty {
+        <p class="empty">No items available</p>
         }
-    </main>
-</div>
+    </mat-nav-list>
+    @if (actionsTemplate(); as tpl) {
+    <footer>
+        <ng-container *ngTemplateOutlet="tpl; context: actionsContext()"></ng-container>
+    </footer>
+    }
+</aside>
+
+<main>
+    @if (selectedItem(); as item) {
+    <header>
+        <h2>{{ item.label }}</h2>
+    </header>
+    <mat-divider></mat-divider>
+    <section>
+        @if (detailTemplate(); as tpl) {
+        <ng-container *ngTemplateOutlet="tpl; context: detailContext()"></ng-container>
+        } @else {
+        <ng-content></ng-content>
+        }
+    </section>
+    } @else {
+    <div class="placeholder">
+        <p>{{ detailPlaceholderText() }}</p>
+    </div>
+    }
+</main>
