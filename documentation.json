@@ -1,0 +1,1314 @@
+{
+    "pipes": [],
+    "interfaces": [],
+    "injectables": [],
+    "guards": [],
+    "interceptors": [],
+    "classes": [],
+    "directives": [],
+    "components": [],
+    "modules": [],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "Accent",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Accent Button',\r\n        variant: 'raised',\r\n        color: 'accent',\r\n        size: 'medium',\r\n    },\r\n}",
+                "rawdescription": "Accent colored button for secondary emphasis.",
+                "description": "<p>Accent colored button for secondary emphasis.</p>\n"
+            },
+            {
+                "name": "AllColors",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    render: () => ({\r\n        template: `\r\n      <div style=\"display: flex; gap: 16px; flex-wrap: wrap; align-items: center;\">\r\n        <ui-button label=\"Primary\" variant=\"raised\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Accent\" variant=\"raised\" color=\"accent\"></ui-button>\r\n        <ui-button label=\"Warn\" variant=\"raised\" color=\"warn\"></ui-button>\r\n      </div>\r\n    `,\r\n    }),\r\n}",
+                "rawdescription": "All button colors displayed together.",
+                "description": "<p>All button colors displayed together.</p>\n"
+            },
+            {
+                "name": "AllSizes",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    render: () => ({\r\n        template: `\r\n      <div style=\"display: flex; gap: 16px; flex-wrap: wrap; align-items: center;\">\r\n        <ui-button label=\"Small\" variant=\"raised\" color=\"primary\" size=\"small\"></ui-button>\r\n        <ui-button label=\"Medium\" variant=\"raised\" color=\"primary\" size=\"medium\"></ui-button>\r\n        <ui-button label=\"Large\" variant=\"raised\" color=\"primary\" size=\"large\"></ui-button>\r\n      </div>\r\n    `,\r\n    }),\r\n}",
+                "rawdescription": "All button sizes displayed together.",
+                "description": "<p>All button sizes displayed together.</p>\n"
+            },
+            {
+                "name": "AllVariants",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    render: () => ({\r\n        template: `\r\n      <div style=\"display: flex; gap: 16px; flex-wrap: wrap; align-items: center;\">\r\n        <ui-button label=\"Basic\" variant=\"basic\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Raised\" variant=\"raised\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Stroked\" variant=\"stroked\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Flat\" variant=\"flat\" color=\"primary\"></ui-button>\r\n      </div>\r\n    `,\r\n    }),\r\n}",
+                "rawdescription": "All button variants displayed together.",
+                "description": "<p>All button variants displayed together.</p>\n"
+            },
+            {
+                "name": "Basic",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Basic Button',\r\n        variant: 'basic',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                "rawdescription": "Basic button without elevation.",
+                "description": "<p>Basic button without elevation.</p>\n"
+            },
+            {
+                "name": "CustomTitles",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  args: {\r\n    items: [\r\n      { id: 'user-1', label: 'John Doe', email: 'john@example.com', role: 'Admin' },\r\n      { id: 'user-2', label: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },\r\n      { id: 'user-3', label: 'Bob Wilson', email: 'bob@example.com', role: 'Viewer' },\r\n    ],\r\n    selectedItemId: null,\r\n    masterTitle: 'Team Members',\r\n    detailPlaceholderText: 'Click on a team member to see their profile',\r\n  },\r\n}",
+                "rawdescription": "Custom titles and placeholder text.",
+                "description": "<p>Custom titles and placeholder text.</p>\n"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Click me',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'medium',\r\n        isDisabled: false,\r\n    },\r\n}",
+                "rawdescription": "The default button with raised style and primary color.",
+                "description": "<p>The default button with raised style and primary color.</p>\n"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  args: {\r\n    items: sampleItems,\r\n    selectedItemId: null,\r\n    masterTitle: 'Documents',\r\n    detailPlaceholderText: 'Select a document to view details',\r\n  },\r\n}",
+                "rawdescription": "Default master-detail view with no selection.",
+                "description": "<p>Default master-detail view with no selection.</p>\n"
+            },
+            {
+                "name": "Disabled",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Disabled',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'medium',\r\n        isDisabled: true,\r\n    },\r\n}",
+                "rawdescription": "Disabled button state.",
+                "description": "<p>Disabled button state.</p>\n"
+            },
+            {
+                "name": "Empty",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  args: {\r\n    items: [],\r\n    selectedItemId: null,\r\n    masterTitle: 'Documents',\r\n    detailPlaceholderText: 'No documents available',\r\n  },\r\n}",
+                "rawdescription": "Empty state with no items.",
+                "description": "<p>Empty state with no items.</p>\n"
+            },
+            {
+                "name": "Flat",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Flat Button',\r\n        variant: 'flat',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                "rawdescription": "Flat button without elevation.",
+                "description": "<p>Flat button without elevation.</p>\n"
+            },
+            {
+                "name": "Interactive",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <ui-master-detail-view\r\n        [items]=\"items\"\r\n        [selectedItemId]=\"selectedId\"\r\n        masterTitle=\"Projects\"\r\n        detailPlaceholderText=\"Select a project to view details\"\r\n        (onSelectItem)=\"onSelect($event)\"\r\n      >\r\n      </ui-master-detail-view>\r\n      <p style=\"margin-top: 16px; padding: 8px; background: #f5f5f5; border-radius: 4px;\">\r\n        Selected: {{ selectedId || 'None' }}\r\n      </p>\r\n    `,\r\n    props: {\r\n      items: sampleItems,\r\n      selectedId: null as string | number | null,\r\n      onSelect(item: MasterItem) {\r\n        this['selectedId'] = item.id;\r\n      },\r\n    },\r\n  }),\r\n}",
+                "rawdescription": "Interactive example showing selection behavior.",
+                "description": "<p>Interactive example showing selection behavior.</p>\n"
+            },
+            {
+                "name": "Large",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    size: 'large',\n    label: 'Button',\n  },\n}"
+            },
+            {
+                "name": "Large",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Large Button',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'large',\r\n    },\r\n}",
+                "rawdescription": "Large sized button.",
+                "description": "<p>Large sized button.</p>\n"
+            },
+            {
+                "name": "LoggedIn",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    user: {\n      name: 'Jane Doe',\n    },\n  },\n}"
+            },
+            {
+                "name": "LoggedIn",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  play: async ({ canvasElement }) => {\n    const canvas = within(canvasElement);\n    const loginButton = canvas.getByRole('button', { name: /Log in/i });\n    await expect(loginButton).toBeInTheDocument();\n    await userEvent.click(loginButton);\n    await expect(loginButton).not.toBeInTheDocument();\n\n    const logoutButton = canvas.getByRole('button', { name: /Log out/i });\n    await expect(logoutButton).toBeInTheDocument();\n  },\n}"
+            },
+            {
+                "name": "LoggedOut",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "LoggedOut",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "LongList",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  args: {\r\n    items: Array.from({ length: 20 }, (_, i) => ({\r\n      id: i + 1,\r\n      label: `Item ${i + 1}`,\r\n      description: `Description for item ${i + 1}`,\r\n    })),\r\n    selectedItemId: null,\r\n    masterTitle: 'All Items',\r\n    detailPlaceholderText: 'Select an item',\r\n  },\r\n}",
+                "rawdescription": "Long list of items to demonstrate scrolling.",
+                "description": "<p>Long list of items to demonstrate scrolling.</p>\n"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<ButtonComponent>",
+                "defaultValue": "{\n  title: 'Example/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    backgroundColor: {\n      control: 'color',\n    },\n  },\n  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#story-args\n  args: { onClick: fn() },\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<HeaderComponent>",
+                "defaultValue": "{\n  title: 'Example/Header',\n  component: HeaderComponent,\n  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs\n  tags: ['autodocs'],\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\n    layout: 'fullscreen',\n  },\n  args: {\n    onLogin: fn(),\n    onLogout: fn(),\n    onCreateAccount: fn(),\n  },\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PageComponent>",
+                "defaultValue": "{\n  title: 'Example/Page',\n  component: PageComponent,\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\n    layout: 'fullscreen',\n  },\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiButtonComponent>",
+                "defaultValue": "{\r\n    title: 'UI Kit/Button',\r\n    component: UiButtonComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        label: {\r\n            control: 'text',\r\n            description: 'Text displayed on the button',\r\n        },\r\n        variant: {\r\n            control: 'select',\r\n            options: ['basic', 'raised', 'stroked', 'flat'] satisfies ButtonVariant[],\r\n            description: 'Visual style variant of the button',\r\n        },\r\n        color: {\r\n            control: 'select',\r\n            options: ['primary', 'accent', 'warn'] satisfies ButtonColor[],\r\n            description: 'Color theme of the button',\r\n        },\r\n        size: {\r\n            control: 'select',\r\n            options: ['small', 'medium', 'large'] satisfies ButtonSize[],\r\n            description: 'Size of the button',\r\n        },\r\n        isDisabled: {\r\n            control: 'boolean',\r\n            description: 'Whether the button is disabled',\r\n        },\r\n    },\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiMasterDetailViewComponent>",
+                "defaultValue": "{\r\n  title: 'UI Blocks/Master Detail View',\r\n  component: UiMasterDetailViewComponent,\r\n  tags: ['autodocs'],\r\n  argTypes: {\r\n    items: {\r\n      control: 'object',\r\n      description: 'Array of items to display in the master list',\r\n    },\r\n    selectedItemId: {\r\n      control: 'text',\r\n      description: 'ID of the currently selected item',\r\n    },\r\n    masterTitle: {\r\n      control: 'text',\r\n      description: 'Title displayed above the master list',\r\n    },\r\n    detailPlaceholderText: {\r\n      control: 'text',\r\n      description: 'Text shown when no item is selected',\r\n    },\r\n  },\r\n  decorators: [\r\n    (story) => ({\r\n      ...story(),\r\n      styles: [`\r\n        :host {\r\n          display: block;\r\n          height: 400px;\r\n          border: 1px solid #ccc;\r\n          border-radius: 8px;\r\n          overflow: hidden;\r\n        }\r\n      `],\r\n    }),\r\n  ],\r\n}"
+            },
+            {
+                "name": "preview",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": ".storybook/preview.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Preview",
+                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [provideAnimationsAsync()],\n    }),\n  ],\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n  },\n}"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Primary Action',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                "rawdescription": "Primary action button for main call-to-actions.",
+                "description": "<p>Primary action button for main call-to-actions.</p>\n"
+            },
+            {
+                "name": "sampleItems",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "MasterItem[]",
+                "defaultValue": "[\r\n  { id: 1, label: 'Document A', description: 'First document description', status: 'active' },\r\n  { id: 2, label: 'Document B', description: 'Second document with more details', status: 'pending' },\r\n  { id: 3, label: 'Document C', description: 'Third document info', status: 'completed' },\r\n  { id: 4, label: 'Document D', description: 'Fourth item in the list', status: 'active' },\r\n  { id: 5, label: 'Document E', description: 'Fifth and final document', status: 'archived' },\r\n]"
+            },
+            {
+                "name": "Secondary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    label: 'Button',\n  },\n}"
+            },
+            {
+                "name": "Small",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
+            },
+            {
+                "name": "Small",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Small',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'small',\r\n    },\r\n}",
+                "rawdescription": "Small sized button.",
+                "description": "<p>Small sized button.</p>\n"
+            },
+            {
+                "name": "Stroked",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Stroked Button',\r\n        variant: 'stroked',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                "rawdescription": "Stroked/outlined button variant.",
+                "description": "<p>Stroked/outlined button variant.</p>\n"
+            },
+            {
+                "name": "Warning",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        label: 'Delete',\r\n        variant: 'raised',\r\n        color: 'warn',\r\n        size: 'medium',\r\n    },\r\n}",
+                "rawdescription": "Warning button for destructive or cautionary actions.",
+                "description": "<p>Warning button for destructive or cautionary actions.</p>\n"
+            },
+            {
+                "name": "WithSelection",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  args: {\r\n    items: sampleItems,\r\n    selectedItemId: 2,\r\n    masterTitle: 'Documents',\r\n    detailPlaceholderText: 'Select a document to view details',\r\n  },\r\n}",
+                "rawdescription": "Master-detail view with a pre-selected item.",
+                "description": "<p>Master-detail view with a pre-selected item.</p>\n"
+            }
+        ],
+        "functions": [],
+        "typealiases": [
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<ButtonComponent>",
+                "file": "packages/ui-kit/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<HeaderComponent>",
+                "file": "packages/ui-kit/src/stories/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<PageComponent>",
+                "file": "packages/ui-kit/src/stories/page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<UiButtonComponent>",
+                "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<UiMasterDetailViewComponent>",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            }
+        ],
+        "enumerations": [],
+        "groupedVariables": {
+            "packages/ui-kit/src/lib/button/button.stories.ts": [
+                {
+                    "name": "Accent",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Accent Button',\r\n        variant: 'raised',\r\n        color: 'accent',\r\n        size: 'medium',\r\n    },\r\n}",
+                    "rawdescription": "Accent colored button for secondary emphasis.",
+                    "description": "<p>Accent colored button for secondary emphasis.</p>\n"
+                },
+                {
+                    "name": "AllColors",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    render: () => ({\r\n        template: `\r\n      <div style=\"display: flex; gap: 16px; flex-wrap: wrap; align-items: center;\">\r\n        <ui-button label=\"Primary\" variant=\"raised\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Accent\" variant=\"raised\" color=\"accent\"></ui-button>\r\n        <ui-button label=\"Warn\" variant=\"raised\" color=\"warn\"></ui-button>\r\n      </div>\r\n    `,\r\n    }),\r\n}",
+                    "rawdescription": "All button colors displayed together.",
+                    "description": "<p>All button colors displayed together.</p>\n"
+                },
+                {
+                    "name": "AllSizes",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    render: () => ({\r\n        template: `\r\n      <div style=\"display: flex; gap: 16px; flex-wrap: wrap; align-items: center;\">\r\n        <ui-button label=\"Small\" variant=\"raised\" color=\"primary\" size=\"small\"></ui-button>\r\n        <ui-button label=\"Medium\" variant=\"raised\" color=\"primary\" size=\"medium\"></ui-button>\r\n        <ui-button label=\"Large\" variant=\"raised\" color=\"primary\" size=\"large\"></ui-button>\r\n      </div>\r\n    `,\r\n    }),\r\n}",
+                    "rawdescription": "All button sizes displayed together.",
+                    "description": "<p>All button sizes displayed together.</p>\n"
+                },
+                {
+                    "name": "AllVariants",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    render: () => ({\r\n        template: `\r\n      <div style=\"display: flex; gap: 16px; flex-wrap: wrap; align-items: center;\">\r\n        <ui-button label=\"Basic\" variant=\"basic\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Raised\" variant=\"raised\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Stroked\" variant=\"stroked\" color=\"primary\"></ui-button>\r\n        <ui-button label=\"Flat\" variant=\"flat\" color=\"primary\"></ui-button>\r\n      </div>\r\n    `,\r\n    }),\r\n}",
+                    "rawdescription": "All button variants displayed together.",
+                    "description": "<p>All button variants displayed together.</p>\n"
+                },
+                {
+                    "name": "Basic",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Basic Button',\r\n        variant: 'basic',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                    "rawdescription": "Basic button without elevation.",
+                    "description": "<p>Basic button without elevation.</p>\n"
+                },
+                {
+                    "name": "Default",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Click me',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'medium',\r\n        isDisabled: false,\r\n    },\r\n}",
+                    "rawdescription": "The default button with raised style and primary color.",
+                    "description": "<p>The default button with raised style and primary color.</p>\n"
+                },
+                {
+                    "name": "Disabled",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Disabled',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'medium',\r\n        isDisabled: true,\r\n    },\r\n}",
+                    "rawdescription": "Disabled button state.",
+                    "description": "<p>Disabled button state.</p>\n"
+                },
+                {
+                    "name": "Flat",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Flat Button',\r\n        variant: 'flat',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                    "rawdescription": "Flat button without elevation.",
+                    "description": "<p>Flat button without elevation.</p>\n"
+                },
+                {
+                    "name": "Large",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Large Button',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'large',\r\n    },\r\n}",
+                    "rawdescription": "Large sized button.",
+                    "description": "<p>Large sized button.</p>\n"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<UiButtonComponent>",
+                    "defaultValue": "{\r\n    title: 'UI Kit/Button',\r\n    component: UiButtonComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        label: {\r\n            control: 'text',\r\n            description: 'Text displayed on the button',\r\n        },\r\n        variant: {\r\n            control: 'select',\r\n            options: ['basic', 'raised', 'stroked', 'flat'] satisfies ButtonVariant[],\r\n            description: 'Visual style variant of the button',\r\n        },\r\n        color: {\r\n            control: 'select',\r\n            options: ['primary', 'accent', 'warn'] satisfies ButtonColor[],\r\n            description: 'Color theme of the button',\r\n        },\r\n        size: {\r\n            control: 'select',\r\n            options: ['small', 'medium', 'large'] satisfies ButtonSize[],\r\n            description: 'Size of the button',\r\n        },\r\n        isDisabled: {\r\n            control: 'boolean',\r\n            description: 'Whether the button is disabled',\r\n        },\r\n    },\r\n}"
+                },
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Primary Action',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                    "rawdescription": "Primary action button for main call-to-actions.",
+                    "description": "<p>Primary action button for main call-to-actions.</p>\n"
+                },
+                {
+                    "name": "Small",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Small',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'small',\r\n    },\r\n}",
+                    "rawdescription": "Small sized button.",
+                    "description": "<p>Small sized button.</p>\n"
+                },
+                {
+                    "name": "Stroked",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Stroked Button',\r\n        variant: 'stroked',\r\n        color: 'primary',\r\n        size: 'medium',\r\n    },\r\n}",
+                    "rawdescription": "Stroked/outlined button variant.",
+                    "description": "<p>Stroked/outlined button variant.</p>\n"
+                },
+                {
+                    "name": "Warning",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        label: 'Delete',\r\n        variant: 'raised',\r\n        color: 'warn',\r\n        size: 'medium',\r\n    },\r\n}",
+                    "rawdescription": "Warning button for destructive or cautionary actions.",
+                    "description": "<p>Warning button for destructive or cautionary actions.</p>\n"
+                }
+            ],
+            "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
+                {
+                    "name": "CustomTitles",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  args: {\r\n    items: [\r\n      { id: 'user-1', label: 'John Doe', email: 'john@example.com', role: 'Admin' },\r\n      { id: 'user-2', label: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },\r\n      { id: 'user-3', label: 'Bob Wilson', email: 'bob@example.com', role: 'Viewer' },\r\n    ],\r\n    selectedItemId: null,\r\n    masterTitle: 'Team Members',\r\n    detailPlaceholderText: 'Click on a team member to see their profile',\r\n  },\r\n}",
+                    "rawdescription": "Custom titles and placeholder text.",
+                    "description": "<p>Custom titles and placeholder text.</p>\n"
+                },
+                {
+                    "name": "Default",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  args: {\r\n    items: sampleItems,\r\n    selectedItemId: null,\r\n    masterTitle: 'Documents',\r\n    detailPlaceholderText: 'Select a document to view details',\r\n  },\r\n}",
+                    "rawdescription": "Default master-detail view with no selection.",
+                    "description": "<p>Default master-detail view with no selection.</p>\n"
+                },
+                {
+                    "name": "Empty",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  args: {\r\n    items: [],\r\n    selectedItemId: null,\r\n    masterTitle: 'Documents',\r\n    detailPlaceholderText: 'No documents available',\r\n  },\r\n}",
+                    "rawdescription": "Empty state with no items.",
+                    "description": "<p>Empty state with no items.</p>\n"
+                },
+                {
+                    "name": "Interactive",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <ui-master-detail-view\r\n        [items]=\"items\"\r\n        [selectedItemId]=\"selectedId\"\r\n        masterTitle=\"Projects\"\r\n        detailPlaceholderText=\"Select a project to view details\"\r\n        (onSelectItem)=\"onSelect($event)\"\r\n      >\r\n      </ui-master-detail-view>\r\n      <p style=\"margin-top: 16px; padding: 8px; background: #f5f5f5; border-radius: 4px;\">\r\n        Selected: {{ selectedId || 'None' }}\r\n      </p>\r\n    `,\r\n    props: {\r\n      items: sampleItems,\r\n      selectedId: null as string | number | null,\r\n      onSelect(item: MasterItem) {\r\n        this['selectedId'] = item.id;\r\n      },\r\n    },\r\n  }),\r\n}",
+                    "rawdescription": "Interactive example showing selection behavior.",
+                    "description": "<p>Interactive example showing selection behavior.</p>\n"
+                },
+                {
+                    "name": "LongList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  args: {\r\n    items: Array.from({ length: 20 }, (_, i) => ({\r\n      id: i + 1,\r\n      label: `Item ${i + 1}`,\r\n      description: `Description for item ${i + 1}`,\r\n    })),\r\n    selectedItemId: null,\r\n    masterTitle: 'All Items',\r\n    detailPlaceholderText: 'Select an item',\r\n  },\r\n}",
+                    "rawdescription": "Long list of items to demonstrate scrolling.",
+                    "description": "<p>Long list of items to demonstrate scrolling.</p>\n"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<UiMasterDetailViewComponent>",
+                    "defaultValue": "{\r\n  title: 'UI Blocks/Master Detail View',\r\n  component: UiMasterDetailViewComponent,\r\n  tags: ['autodocs'],\r\n  argTypes: {\r\n    items: {\r\n      control: 'object',\r\n      description: 'Array of items to display in the master list',\r\n    },\r\n    selectedItemId: {\r\n      control: 'text',\r\n      description: 'ID of the currently selected item',\r\n    },\r\n    masterTitle: {\r\n      control: 'text',\r\n      description: 'Title displayed above the master list',\r\n    },\r\n    detailPlaceholderText: {\r\n      control: 'text',\r\n      description: 'Text shown when no item is selected',\r\n    },\r\n  },\r\n  decorators: [\r\n    (story) => ({\r\n      ...story(),\r\n      styles: [`\r\n        :host {\r\n          display: block;\r\n          height: 400px;\r\n          border: 1px solid #ccc;\r\n          border-radius: 8px;\r\n          overflow: hidden;\r\n        }\r\n      `],\r\n    }),\r\n  ],\r\n}"
+                },
+                {
+                    "name": "sampleItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem[]",
+                    "defaultValue": "[\r\n  { id: 1, label: 'Document A', description: 'First document description', status: 'active' },\r\n  { id: 2, label: 'Document B', description: 'Second document with more details', status: 'pending' },\r\n  { id: 3, label: 'Document C', description: 'Third document info', status: 'completed' },\r\n  { id: 4, label: 'Document D', description: 'Fourth item in the list', status: 'active' },\r\n  { id: 5, label: 'Document E', description: 'Fifth and final document', status: 'archived' },\r\n]"
+                },
+                {
+                    "name": "WithSelection",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  args: {\r\n    items: sampleItems,\r\n    selectedItemId: 2,\r\n    masterTitle: 'Documents',\r\n    detailPlaceholderText: 'Select a document to view details',\r\n  },\r\n}",
+                    "rawdescription": "Master-detail view with a pre-selected item.",
+                    "description": "<p>Master-detail view with a pre-selected item.</p>\n"
+                }
+            ],
+            "packages/ui-kit/src/stories/button.stories.ts": [
+                {
+                    "name": "Large",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    size: 'large',\n    label: 'Button',\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<ButtonComponent>",
+                    "defaultValue": "{\n  title: 'Example/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    backgroundColor: {\n      control: 'color',\n    },\n  },\n  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#story-args\n  args: { onClick: fn() },\n}"
+                },
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
+                },
+                {
+                    "name": "Secondary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    label: 'Button',\n  },\n}"
+                },
+                {
+                    "name": "Small",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
+                }
+            ],
+            "packages/ui-kit/src/stories/header.stories.ts": [
+                {
+                    "name": "LoggedIn",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    user: {\n      name: 'Jane Doe',\n    },\n  },\n}"
+                },
+                {
+                    "name": "LoggedOut",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<HeaderComponent>",
+                    "defaultValue": "{\n  title: 'Example/Header',\n  component: HeaderComponent,\n  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs\n  tags: ['autodocs'],\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\n    layout: 'fullscreen',\n  },\n  args: {\n    onLogin: fn(),\n    onLogout: fn(),\n    onCreateAccount: fn(),\n  },\n}"
+                }
+            ],
+            "packages/ui-kit/src/stories/page.stories.ts": [
+                {
+                    "name": "LoggedIn",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  play: async ({ canvasElement }) => {\n    const canvas = within(canvasElement);\n    const loginButton = canvas.getByRole('button', { name: /Log in/i });\n    await expect(loginButton).toBeInTheDocument();\n    await userEvent.click(loginButton);\n    await expect(loginButton).not.toBeInTheDocument();\n\n    const logoutButton = canvas.getByRole('button', { name: /Log out/i });\n    await expect(logoutButton).toBeInTheDocument();\n  },\n}"
+                },
+                {
+                    "name": "LoggedOut",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/stories/page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PageComponent>",
+                    "defaultValue": "{\n  title: 'Example/Page',\n  component: PageComponent,\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\n    layout: 'fullscreen',\n  },\n}"
+                }
+            ],
+            ".storybook/preview.ts": [
+                {
+                    "name": "preview",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": ".storybook/preview.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Preview",
+                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [provideAnimationsAsync()],\n    }),\n  ],\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n  },\n}"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {
+            "packages/ui-kit/src/stories/button.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<ButtonComponent>",
+                    "file": "packages/ui-kit/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "packages/ui-kit/src/stories/header.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<HeaderComponent>",
+                    "file": "packages/ui-kit/src/stories/header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "packages/ui-kit/src/stories/page.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<PageComponent>",
+                    "file": "packages/ui-kit/src/stories/page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "packages/ui-kit/src/lib/button/button.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiButtonComponent>",
+                    "file": "packages/ui-kit/src/lib/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiMasterDetailViewComponent>",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ]
+        }
+    },
+    "routes": {
+        "name": "<root>",
+        "kind": "module",
+        "children": []
+    },
+    "coverage": {
+        "count": 48,
+        "status": "medium",
+        "files": [
+            {
+                "filePath": ".storybook/preview.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "preview",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CustomTitles",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Default",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Empty",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Interactive",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LongList",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "sampleItems",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithSelection",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Accent",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "AllColors",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "AllSizes",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "AllVariants",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Basic",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Default",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Disabled",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Flat",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Large",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Small",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Stroked",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Warning",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Large",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Secondary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Small",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/button.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedIn",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedOut",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/header.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/page.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedIn",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/page.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoggedOut",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/page.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/page.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            }
+        ]
+    }
+}

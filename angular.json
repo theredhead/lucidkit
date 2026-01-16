@@ -14,6 +14,45 @@
       "root": "packages/ui-blocks",
       "sourceRoot": "packages/ui-blocks/src",
       "architect": {}
+    },
+    "ui-theme": {
+      "projectType": "library",
+      "root": "packages/ui-theme",
+      "sourceRoot": "packages/ui-theme/src",
+      "architect": {}
+    },
+    "storybook-host": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "packages",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/storybook-host",
+            "index": "",
+            "browser": "",
+            "tsConfig": ".storybook/tsconfig.json",
+            "styles": ["styles.scss"]
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "storybook-host:build",
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "storybook-host:build",
+            "outputDir": "dist/storybook"
+          }
+        }
+      }
     }
   }
 }
