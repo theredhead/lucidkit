@@ -17,7 +17,7 @@ const sampleItems: MasterItem[] = [
 ];
 
 const meta: Meta<UiMasterDetailViewComponent> = {
-    title: 'UI Blocks/Master Detail View',
+    title: '@theredhead/UI Blocks/Master Detail View',
     component: UiMasterDetailViewComponent,
     tags: ['autodocs'],
     argTypes: {

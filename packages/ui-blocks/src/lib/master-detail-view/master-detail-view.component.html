@@ -1,31 +1,30 @@
-<div class="ui-master-detail-view">
-    <aside class="ui-master-detail-view__master">
-        <div class="ui-master-detail-view__master-header">
+<div class="container">
+    <aside class="master">
+        <header class="header">
             <h2>{{ masterTitle() }}</h2>
-        </div>
-        <mat-nav-list class="ui-master-detail-view__master-list">
+        </header>
+        <mat-nav-list class="list">
             @for (item of items(); track item.id) {
-            <mat-list-item [activated]="isItemSelected(item.id)" (click)="onSelectItem.emit(item)"
-                class="ui-master-detail-view__master-item">
+            <mat-list-item [activated]="isItemSelected(item.id)" (click)="onSelectItem.emit(item)">
                 <span matListItemTitle>{{ item.label }}</span>
             </mat-list-item>
             } @empty {
-            <p class="ui-master-detail-view__empty-state">No items available</p>
+            <p class="empty">No items available</p>
             }
         </mat-nav-list>
     </aside>
 
-    <main class="ui-master-detail-view__detail">
+    <main class="detail">
         @if (selectedItem(); as item) {
-        <div class="ui-master-detail-view__detail-header">
+        <header class="header">
             <h2>{{ item.label }}</h2>
-        </div>
+        </header>
         <mat-divider></mat-divider>
-        <div class="ui-master-detail-view__detail-content">
+        <div class="content">
             <ng-content></ng-content>
         </div>
         } @else {
-        <div class="ui-master-detail-view__detail-placeholder">
+        <div class="placeholder">
             <p>{{ detailPlaceholderText() }}</p>
         </div>
         }
