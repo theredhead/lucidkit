@@ -3,7 +3,6 @@
 
 @use 'sass:map';
 @use '@angular/material' as mat;
-@use 'typography' as typography;
 
 // ============================================================================
 // Theme Definition
@@ -19,7 +18,10 @@
       primary: mat.$azure-palette,
       tertiary: mat.$violet-palette,
     ),
-    typography: typography.create-typography($font-family),
+    typography: (
+      plain-family: $font-family,
+      brand-family: $font-family,
+    ),
     density: (
       scale: 0,
     ),
@@ -32,7 +34,10 @@
       primary: mat.$azure-palette,
       tertiary: mat.$violet-palette,
     ),
-    typography: typography.create-typography($font-family),
+    typography: (
+      plain-family: $font-family,
+      brand-family: $font-family,
+    ),
     density: (
       scale: 0,
     ),
