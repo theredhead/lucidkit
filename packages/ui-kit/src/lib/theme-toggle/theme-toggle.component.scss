@@ -1,0 +1,13 @@
+:host {
+    display: inline-block;
+}
+
+button {
+    mat-icon {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    &:hover mat-icon {
+        transform: rotate(15deg);
+    }
+}

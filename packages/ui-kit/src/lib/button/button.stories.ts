@@ -11,7 +11,7 @@ import {
 } from './button.component';
 
 const meta: Meta<UiButtonComponent> = {
-    title: 'UI Kit/Button',
+    title: '@theredhead/UI Kit/Button',
     component: UiButtonComponent,
     tags: ['autodocs'],
     argTypes: {

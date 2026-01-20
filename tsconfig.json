@@ -18,7 +18,8 @@
     "types": ["vitest/globals"],
     "paths": {
       "@theredhead/ui-kit": ["./dist/ui-kit"],
-      "@theredhead/ui-blocks": ["./dist/ui-blocks"]
+      "@theredhead/ui-blocks": ["./dist/ui-blocks"],
+      "@theredhead/ui-theme": ["./dist/ui-theme"]
     }
   },
   "angularCompilerOptions": {

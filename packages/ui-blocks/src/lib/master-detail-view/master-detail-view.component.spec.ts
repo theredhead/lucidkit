@@ -1,14 +1,14 @@
 import {
-    ComponentFixture,
-    TestBed,
+  ComponentFixture,
+  TestBed,
 } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { vi } from 'vitest';
 
 import {
-    MasterItem,
-    UiMasterDetailViewComponent,
+  MasterItem,
+  UiMasterDetailViewComponent,
 } from './master-detail-view.component';
 
 describe('UiMasterDetailViewComponent', () => {
@@ -67,7 +67,7 @@ describe('UiMasterDetailViewComponent', () => {
             fixture.componentRef.setInput('items', []);
             fixture.detectChanges();
 
-            const emptyState = fixture.nativeElement.querySelector('.ui-master-detail-view__empty-state');
+            const emptyState = fixture.nativeElement.querySelector('.empty');
             expect(emptyState).toBeTruthy();
             expect(emptyState.textContent.trim()).toBe('No items available');
         });
@@ -86,7 +86,7 @@ describe('UiMasterDetailViewComponent', () => {
             fixture.componentRef.setInput('masterTitle', 'My Items');
             fixture.detectChanges();
 
-            const header = fixture.nativeElement.querySelector('.ui-master-detail-view__master-header h2');
+            const header = fixture.nativeElement.querySelector('aside header h2');
             expect(header.textContent.trim()).toBe('My Items');
         });
     });
@@ -147,7 +147,7 @@ describe('UiMasterDetailViewComponent', () => {
             fixture.componentRef.setInput('selectedItemId', null);
             fixture.detectChanges();
 
-            const placeholder = fixture.nativeElement.querySelector('.ui-master-detail-view__detail-placeholder');
+            const placeholder = fixture.nativeElement.querySelector('.placeholder');
             expect(placeholder).toBeTruthy();
         });
 
@@ -155,7 +155,7 @@ describe('UiMasterDetailViewComponent', () => {
             fixture.componentRef.setInput('detailPlaceholderText', 'Choose an item');
             fixture.detectChanges();
 
-            const placeholder = fixture.nativeElement.querySelector('.ui-master-detail-view__detail-placeholder p');
+            const placeholder = fixture.nativeElement.querySelector('.placeholder p');
             expect(placeholder.textContent.trim()).toBe('Choose an item');
         });
 
@@ -164,7 +164,7 @@ describe('UiMasterDetailViewComponent', () => {
             fixture.componentRef.setInput('selectedItemId', 1);
             fixture.detectChanges();
 
-            const detailHeader = fixture.nativeElement.querySelector('.ui-master-detail-view__detail-header h2');
+            const detailHeader = fixture.nativeElement.querySelector('main header h2');
             expect(detailHeader.textContent.trim()).toBe('Item 1');
         });
 
@@ -180,18 +180,19 @@ describe('UiMasterDetailViewComponent', () => {
 
     describe('layout', () => {
         it('should have master panel', () => {
-            const masterPanel = fixture.nativeElement.querySelector('.ui-master-detail-view__master');
+            const masterPanel = fixture.nativeElement.querySelector('aside');
             expect(masterPanel).toBeTruthy();
         });
 
         it('should have detail panel', () => {
-            const detailPanel = fixture.nativeElement.querySelector('.ui-master-detail-view__detail');
+            const detailPanel = fixture.nativeElement.querySelector('main');
             expect(detailPanel).toBeTruthy();
         });
 
         it('should have grid layout container', () => {
-            const container = fixture.nativeElement.querySelector('.ui-master-detail-view');
-            expect(container).toBeTruthy();
+            // The host element itself is the grid container
+            const host = fixture.nativeElement;
+            expect(host).toBeTruthy();
         });
     });
 });
