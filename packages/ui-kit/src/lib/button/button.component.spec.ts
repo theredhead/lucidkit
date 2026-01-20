@@ -1,16 +1,16 @@
 import {
-    ComponentFixture,
-    TestBed,
+  ComponentFixture,
+  TestBed,
 } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { vi } from 'vitest';
 
 import {
-    ButtonColor,
-    ButtonSize,
-    ButtonVariant,
-    UiButtonComponent,
+  ButtonColor,
+  ButtonSize,
+  ButtonVariant,
+  UiButtonComponent,
 } from './button.component';
 
 describe('UiButtonComponent', () => {
@@ -96,9 +96,9 @@ describe('UiButtonComponent', () => {
 
                 const button = fixture.nativeElement.querySelector('button');
                 if (size === 'small') {
-                    expect(button.classList.contains('ui-button--size-small')).toBe(true);
+                    expect(button.classList.contains('small')).toBe(true);
                 } else if (size === 'large') {
-                    expect(button.classList.contains('ui-button--size-large')).toBe(true);
+                    expect(button.classList.contains('large')).toBe(true);
                 }
             });
         });
@@ -170,7 +170,7 @@ describe('UiButtonComponent', () => {
             fixture.componentRef.setInput('label', 'Submit');
             fixture.detectChanges();
 
-            const label = fixture.nativeElement.querySelector('.ui-button__label');
+            const label = fixture.nativeElement.querySelector('.label');
             expect(label.textContent.trim()).toBe('Submit');
         });
     });

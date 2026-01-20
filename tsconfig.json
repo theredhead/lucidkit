@@ -18,7 +18,8 @@
     "types": ["vitest/globals"],
     "paths": {
       "@sigmax/ui-kit": ["./dist/ui-kit"],
-      "@sigmax/ui-blocks": ["./dist/ui-blocks"]
+      "@sigmax/ui-blocks": ["./dist/ui-blocks"],
+      "@sigmax/ui-theme": ["./dist/ui-theme"]
     }
   },
   "angularCompilerOptions": {

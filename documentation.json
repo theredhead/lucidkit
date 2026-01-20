@@ -1,12 +1,1577 @@
 {
     "pipes": [],
-    "interfaces": [],
-    "injectables": [],
+    "interfaces": [
+        {
+            "name": "ActionsTemplateContext",
+            "id": "interface-ActionsTemplateContext-748849cd5d91fcff42f296b81620e5ee9a152227942c92f1b25dddc39f7e2fd9c8d8e2755387c945d56fc1a424fba67f3e929be13be822fafd3a879ec8c45f24",
+            "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChild,\r\n  input,\r\n  output,\r\n  TemplateRef,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatDividerModule } from '@angular/material/divider';\r\nimport { MatListModule } from '@angular/material/list';\r\n\r\nexport interface MasterItem {\r\n    id: string | number;\r\n    label: string;\r\n    [key: string]: any;\r\n}\r\n\r\n/** Context provided to the itemTemplate */\r\nexport interface ItemTemplateContext {\r\n    $implicit: MasterItem;\r\n    item: MasterItem;\r\n    selected: boolean;\r\n}\r\n\r\n/** Context provided to the detailTemplate */\r\nexport interface DetailTemplateContext<T = unknown> {\r\n    $implicit: T;\r\n    data: T;\r\n    item: MasterItem;\r\n}\r\n\r\n/** Context provided to the filterTemplate */\r\nexport interface FilterTemplateContext {\r\n    $implicit: MasterItem[];\r\n    items: MasterItem[];\r\n}\r\n\r\n/** Context provided to the actionsTemplate */\r\nexport interface ActionsTemplateContext {\r\n    $implicit: MasterItem | null;\r\n    selectedItem: MasterItem | null;\r\n}\r\n\r\n@Component({\r\n    selector: 'ui-master-detail-view',\r\n    standalone: true,\r\n    imports: [CommonModule, MatListModule, MatDividerModule, MatButtonModule],\r\n    templateUrl: './master-detail-view.component.html',\r\n    styleUrls: ['./master-detail-view.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiMasterDetailViewComponent<T = unknown> {\r\n    readonly items = input<MasterItem[]>([]);\r\n    readonly selectedItemId = input<string | number | null>(null);\r\n    readonly masterTitle = input<string>('Items');\r\n    readonly detailPlaceholderText = input<string>('Select an item to view details');\r\n\r\n    /** Optional detail data - can be a computed signal result, service data, etc. */\r\n    readonly detailData = input<T | null>(null);\r\n\r\n    readonly onSelectItem = output<MasterItem>();\r\n\r\n    /** Optional template for rendering list items */\r\n    readonly itemTemplate = contentChild<TemplateRef<ItemTemplateContext>>('itemTemplate');\r\n\r\n    /** Optional template for rendering the detail view */\r\n    readonly detailTemplate = contentChild<TemplateRef<DetailTemplateContext<T>>>('detailTemplate');\r\n\r\n    /** Optional template for filter controls displayed above the list */\r\n    readonly filterTemplate = contentChild<TemplateRef<FilterTemplateContext>>('filterTemplate');\r\n\r\n    /** Optional template for action buttons displayed below the list */\r\n    readonly actionsTemplate = contentChild<TemplateRef<ActionsTemplateContext>>('actionsTemplate');\r\n\r\n    readonly selectedItem = computed(() => {\r\n        const selectedId = this.selectedItemId();\r\n        if (!selectedId) return null;\r\n        return this.items().find((item) => item.id === selectedId) || null;\r\n    });\r\n\r\n    readonly isItemSelected = (itemId: string | number) => {\r\n        return this.selectedItemId() === itemId;\r\n    };\r\n\r\n    /** Context for item template */\r\n    getItemContext(item: MasterItem): ItemTemplateContext {\r\n        return {\r\n            $implicit: item,\r\n            item,\r\n            selected: this.isItemSelected(item.id),\r\n        };\r\n    }\r\n\r\n    /** Context for detail template */\r\n    readonly detailContext = computed((): DetailTemplateContext<T> | null => {\r\n        const item = this.selectedItem();\r\n        const data = this.detailData();\r\n        if (!item) return null;\r\n        return {\r\n            $implicit: data as T,\r\n            data: data as T,\r\n            item,\r\n        };\r\n    });\r\n\r\n    /** Context for filter template */\r\n    readonly filterContext = computed((): FilterTemplateContext => ({\r\n        $implicit: this.items(),\r\n        items: this.items(),\r\n    }));\r\n\r\n    /** Context for actions template */\r\n    readonly actionsContext = computed((): ActionsTemplateContext => ({\r\n        $implicit: this.selectedItem(),\r\n        selectedItem: this.selectedItem(),\r\n    }));\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "$implicit",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 43
+                },
+                {
+                    "name": "selectedItem",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 44
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Context provided to the actionsTemplate</p>\n",
+            "rawdescription": "\nContext provided to the actionsTemplate",
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "DetailTemplateContext",
+            "id": "interface-DetailTemplateContext-748849cd5d91fcff42f296b81620e5ee9a152227942c92f1b25dddc39f7e2fd9c8d8e2755387c945d56fc1a424fba67f3e929be13be822fafd3a879ec8c45f24",
+            "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChild,\r\n  input,\r\n  output,\r\n  TemplateRef,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatDividerModule } from '@angular/material/divider';\r\nimport { MatListModule } from '@angular/material/list';\r\n\r\nexport interface MasterItem {\r\n    id: string | number;\r\n    label: string;\r\n    [key: string]: any;\r\n}\r\n\r\n/** Context provided to the itemTemplate */\r\nexport interface ItemTemplateContext {\r\n    $implicit: MasterItem;\r\n    item: MasterItem;\r\n    selected: boolean;\r\n}\r\n\r\n/** Context provided to the detailTemplate */\r\nexport interface DetailTemplateContext<T = unknown> {\r\n    $implicit: T;\r\n    data: T;\r\n    item: MasterItem;\r\n}\r\n\r\n/** Context provided to the filterTemplate */\r\nexport interface FilterTemplateContext {\r\n    $implicit: MasterItem[];\r\n    items: MasterItem[];\r\n}\r\n\r\n/** Context provided to the actionsTemplate */\r\nexport interface ActionsTemplateContext {\r\n    $implicit: MasterItem | null;\r\n    selectedItem: MasterItem | null;\r\n}\r\n\r\n@Component({\r\n    selector: 'ui-master-detail-view',\r\n    standalone: true,\r\n    imports: [CommonModule, MatListModule, MatDividerModule, MatButtonModule],\r\n    templateUrl: './master-detail-view.component.html',\r\n    styleUrls: ['./master-detail-view.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiMasterDetailViewComponent<T = unknown> {\r\n    readonly items = input<MasterItem[]>([]);\r\n    readonly selectedItemId = input<string | number | null>(null);\r\n    readonly masterTitle = input<string>('Items');\r\n    readonly detailPlaceholderText = input<string>('Select an item to view details');\r\n\r\n    /** Optional detail data - can be a computed signal result, service data, etc. */\r\n    readonly detailData = input<T | null>(null);\r\n\r\n    readonly onSelectItem = output<MasterItem>();\r\n\r\n    /** Optional template for rendering list items */\r\n    readonly itemTemplate = contentChild<TemplateRef<ItemTemplateContext>>('itemTemplate');\r\n\r\n    /** Optional template for rendering the detail view */\r\n    readonly detailTemplate = contentChild<TemplateRef<DetailTemplateContext<T>>>('detailTemplate');\r\n\r\n    /** Optional template for filter controls displayed above the list */\r\n    readonly filterTemplate = contentChild<TemplateRef<FilterTemplateContext>>('filterTemplate');\r\n\r\n    /** Optional template for action buttons displayed below the list */\r\n    readonly actionsTemplate = contentChild<TemplateRef<ActionsTemplateContext>>('actionsTemplate');\r\n\r\n    readonly selectedItem = computed(() => {\r\n        const selectedId = this.selectedItemId();\r\n        if (!selectedId) return null;\r\n        return this.items().find((item) => item.id === selectedId) || null;\r\n    });\r\n\r\n    readonly isItemSelected = (itemId: string | number) => {\r\n        return this.selectedItemId() === itemId;\r\n    };\r\n\r\n    /** Context for item template */\r\n    getItemContext(item: MasterItem): ItemTemplateContext {\r\n        return {\r\n            $implicit: item,\r\n            item,\r\n            selected: this.isItemSelected(item.id),\r\n        };\r\n    }\r\n\r\n    /** Context for detail template */\r\n    readonly detailContext = computed((): DetailTemplateContext<T> | null => {\r\n        const item = this.selectedItem();\r\n        const data = this.detailData();\r\n        if (!item) return null;\r\n        return {\r\n            $implicit: data as T,\r\n            data: data as T,\r\n            item,\r\n        };\r\n    });\r\n\r\n    /** Context for filter template */\r\n    readonly filterContext = computed((): FilterTemplateContext => ({\r\n        $implicit: this.items(),\r\n        items: this.items(),\r\n    }));\r\n\r\n    /** Context for actions template */\r\n    readonly actionsContext = computed((): ActionsTemplateContext => ({\r\n        $implicit: this.selectedItem(),\r\n        selectedItem: this.selectedItem(),\r\n    }));\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "$implicit",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "T",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30
+                },
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "T",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 31
+                },
+                {
+                    "name": "item",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 32
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Context provided to the detailTemplate</p>\n",
+            "rawdescription": "\nContext provided to the detailTemplate",
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "FilterTemplateContext",
+            "id": "interface-FilterTemplateContext-748849cd5d91fcff42f296b81620e5ee9a152227942c92f1b25dddc39f7e2fd9c8d8e2755387c945d56fc1a424fba67f3e929be13be822fafd3a879ec8c45f24",
+            "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChild,\r\n  input,\r\n  output,\r\n  TemplateRef,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatDividerModule } from '@angular/material/divider';\r\nimport { MatListModule } from '@angular/material/list';\r\n\r\nexport interface MasterItem {\r\n    id: string | number;\r\n    label: string;\r\n    [key: string]: any;\r\n}\r\n\r\n/** Context provided to the itemTemplate */\r\nexport interface ItemTemplateContext {\r\n    $implicit: MasterItem;\r\n    item: MasterItem;\r\n    selected: boolean;\r\n}\r\n\r\n/** Context provided to the detailTemplate */\r\nexport interface DetailTemplateContext<T = unknown> {\r\n    $implicit: T;\r\n    data: T;\r\n    item: MasterItem;\r\n}\r\n\r\n/** Context provided to the filterTemplate */\r\nexport interface FilterTemplateContext {\r\n    $implicit: MasterItem[];\r\n    items: MasterItem[];\r\n}\r\n\r\n/** Context provided to the actionsTemplate */\r\nexport interface ActionsTemplateContext {\r\n    $implicit: MasterItem | null;\r\n    selectedItem: MasterItem | null;\r\n}\r\n\r\n@Component({\r\n    selector: 'ui-master-detail-view',\r\n    standalone: true,\r\n    imports: [CommonModule, MatListModule, MatDividerModule, MatButtonModule],\r\n    templateUrl: './master-detail-view.component.html',\r\n    styleUrls: ['./master-detail-view.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiMasterDetailViewComponent<T = unknown> {\r\n    readonly items = input<MasterItem[]>([]);\r\n    readonly selectedItemId = input<string | number | null>(null);\r\n    readonly masterTitle = input<string>('Items');\r\n    readonly detailPlaceholderText = input<string>('Select an item to view details');\r\n\r\n    /** Optional detail data - can be a computed signal result, service data, etc. */\r\n    readonly detailData = input<T | null>(null);\r\n\r\n    readonly onSelectItem = output<MasterItem>();\r\n\r\n    /** Optional template for rendering list items */\r\n    readonly itemTemplate = contentChild<TemplateRef<ItemTemplateContext>>('itemTemplate');\r\n\r\n    /** Optional template for rendering the detail view */\r\n    readonly detailTemplate = contentChild<TemplateRef<DetailTemplateContext<T>>>('detailTemplate');\r\n\r\n    /** Optional template for filter controls displayed above the list */\r\n    readonly filterTemplate = contentChild<TemplateRef<FilterTemplateContext>>('filterTemplate');\r\n\r\n    /** Optional template for action buttons displayed below the list */\r\n    readonly actionsTemplate = contentChild<TemplateRef<ActionsTemplateContext>>('actionsTemplate');\r\n\r\n    readonly selectedItem = computed(() => {\r\n        const selectedId = this.selectedItemId();\r\n        if (!selectedId) return null;\r\n        return this.items().find((item) => item.id === selectedId) || null;\r\n    });\r\n\r\n    readonly isItemSelected = (itemId: string | number) => {\r\n        return this.selectedItemId() === itemId;\r\n    };\r\n\r\n    /** Context for item template */\r\n    getItemContext(item: MasterItem): ItemTemplateContext {\r\n        return {\r\n            $implicit: item,\r\n            item,\r\n            selected: this.isItemSelected(item.id),\r\n        };\r\n    }\r\n\r\n    /** Context for detail template */\r\n    readonly detailContext = computed((): DetailTemplateContext<T> | null => {\r\n        const item = this.selectedItem();\r\n        const data = this.detailData();\r\n        if (!item) return null;\r\n        return {\r\n            $implicit: data as T,\r\n            data: data as T,\r\n            item,\r\n        };\r\n    });\r\n\r\n    /** Context for filter template */\r\n    readonly filterContext = computed((): FilterTemplateContext => ({\r\n        $implicit: this.items(),\r\n        items: this.items(),\r\n    }));\r\n\r\n    /** Context for actions template */\r\n    readonly actionsContext = computed((): ActionsTemplateContext => ({\r\n        $implicit: this.selectedItem(),\r\n        selectedItem: this.selectedItem(),\r\n    }));\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "$implicit",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 37
+                },
+                {
+                    "name": "items",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 38
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Context provided to the filterTemplate</p>\n",
+            "rawdescription": "\nContext provided to the filterTemplate",
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ItemTemplateContext",
+            "id": "interface-ItemTemplateContext-748849cd5d91fcff42f296b81620e5ee9a152227942c92f1b25dddc39f7e2fd9c8d8e2755387c945d56fc1a424fba67f3e929be13be822fafd3a879ec8c45f24",
+            "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChild,\r\n  input,\r\n  output,\r\n  TemplateRef,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatDividerModule } from '@angular/material/divider';\r\nimport { MatListModule } from '@angular/material/list';\r\n\r\nexport interface MasterItem {\r\n    id: string | number;\r\n    label: string;\r\n    [key: string]: any;\r\n}\r\n\r\n/** Context provided to the itemTemplate */\r\nexport interface ItemTemplateContext {\r\n    $implicit: MasterItem;\r\n    item: MasterItem;\r\n    selected: boolean;\r\n}\r\n\r\n/** Context provided to the detailTemplate */\r\nexport interface DetailTemplateContext<T = unknown> {\r\n    $implicit: T;\r\n    data: T;\r\n    item: MasterItem;\r\n}\r\n\r\n/** Context provided to the filterTemplate */\r\nexport interface FilterTemplateContext {\r\n    $implicit: MasterItem[];\r\n    items: MasterItem[];\r\n}\r\n\r\n/** Context provided to the actionsTemplate */\r\nexport interface ActionsTemplateContext {\r\n    $implicit: MasterItem | null;\r\n    selectedItem: MasterItem | null;\r\n}\r\n\r\n@Component({\r\n    selector: 'ui-master-detail-view',\r\n    standalone: true,\r\n    imports: [CommonModule, MatListModule, MatDividerModule, MatButtonModule],\r\n    templateUrl: './master-detail-view.component.html',\r\n    styleUrls: ['./master-detail-view.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiMasterDetailViewComponent<T = unknown> {\r\n    readonly items = input<MasterItem[]>([]);\r\n    readonly selectedItemId = input<string | number | null>(null);\r\n    readonly masterTitle = input<string>('Items');\r\n    readonly detailPlaceholderText = input<string>('Select an item to view details');\r\n\r\n    /** Optional detail data - can be a computed signal result, service data, etc. */\r\n    readonly detailData = input<T | null>(null);\r\n\r\n    readonly onSelectItem = output<MasterItem>();\r\n\r\n    /** Optional template for rendering list items */\r\n    readonly itemTemplate = contentChild<TemplateRef<ItemTemplateContext>>('itemTemplate');\r\n\r\n    /** Optional template for rendering the detail view */\r\n    readonly detailTemplate = contentChild<TemplateRef<DetailTemplateContext<T>>>('detailTemplate');\r\n\r\n    /** Optional template for filter controls displayed above the list */\r\n    readonly filterTemplate = contentChild<TemplateRef<FilterTemplateContext>>('filterTemplate');\r\n\r\n    /** Optional template for action buttons displayed below the list */\r\n    readonly actionsTemplate = contentChild<TemplateRef<ActionsTemplateContext>>('actionsTemplate');\r\n\r\n    readonly selectedItem = computed(() => {\r\n        const selectedId = this.selectedItemId();\r\n        if (!selectedId) return null;\r\n        return this.items().find((item) => item.id === selectedId) || null;\r\n    });\r\n\r\n    readonly isItemSelected = (itemId: string | number) => {\r\n        return this.selectedItemId() === itemId;\r\n    };\r\n\r\n    /** Context for item template */\r\n    getItemContext(item: MasterItem): ItemTemplateContext {\r\n        return {\r\n            $implicit: item,\r\n            item,\r\n            selected: this.isItemSelected(item.id),\r\n        };\r\n    }\r\n\r\n    /** Context for detail template */\r\n    readonly detailContext = computed((): DetailTemplateContext<T> | null => {\r\n        const item = this.selectedItem();\r\n        const data = this.detailData();\r\n        if (!item) return null;\r\n        return {\r\n            $implicit: data as T,\r\n            data: data as T,\r\n            item,\r\n        };\r\n    });\r\n\r\n    /** Context for filter template */\r\n    readonly filterContext = computed((): FilterTemplateContext => ({\r\n        $implicit: this.items(),\r\n        items: this.items(),\r\n    }));\r\n\r\n    /** Context for actions template */\r\n    readonly actionsContext = computed((): ActionsTemplateContext => ({\r\n        $implicit: this.selectedItem(),\r\n        selectedItem: this.selectedItem(),\r\n    }));\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "$implicit",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23
+                },
+                {
+                    "name": "item",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24
+                },
+                {
+                    "name": "selected",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Context provided to the itemTemplate</p>\n",
+            "rawdescription": "\nContext provided to the itemTemplate",
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "MasterItem",
+            "id": "interface-MasterItem-748849cd5d91fcff42f296b81620e5ee9a152227942c92f1b25dddc39f7e2fd9c8d8e2755387c945d56fc1a424fba67f3e929be13be822fafd3a879ec8c45f24",
+            "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChild,\r\n  input,\r\n  output,\r\n  TemplateRef,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatDividerModule } from '@angular/material/divider';\r\nimport { MatListModule } from '@angular/material/list';\r\n\r\nexport interface MasterItem {\r\n    id: string | number;\r\n    label: string;\r\n    [key: string]: any;\r\n}\r\n\r\n/** Context provided to the itemTemplate */\r\nexport interface ItemTemplateContext {\r\n    $implicit: MasterItem;\r\n    item: MasterItem;\r\n    selected: boolean;\r\n}\r\n\r\n/** Context provided to the detailTemplate */\r\nexport interface DetailTemplateContext<T = unknown> {\r\n    $implicit: T;\r\n    data: T;\r\n    item: MasterItem;\r\n}\r\n\r\n/** Context provided to the filterTemplate */\r\nexport interface FilterTemplateContext {\r\n    $implicit: MasterItem[];\r\n    items: MasterItem[];\r\n}\r\n\r\n/** Context provided to the actionsTemplate */\r\nexport interface ActionsTemplateContext {\r\n    $implicit: MasterItem | null;\r\n    selectedItem: MasterItem | null;\r\n}\r\n\r\n@Component({\r\n    selector: 'ui-master-detail-view',\r\n    standalone: true,\r\n    imports: [CommonModule, MatListModule, MatDividerModule, MatButtonModule],\r\n    templateUrl: './master-detail-view.component.html',\r\n    styleUrls: ['./master-detail-view.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiMasterDetailViewComponent<T = unknown> {\r\n    readonly items = input<MasterItem[]>([]);\r\n    readonly selectedItemId = input<string | number | null>(null);\r\n    readonly masterTitle = input<string>('Items');\r\n    readonly detailPlaceholderText = input<string>('Select an item to view details');\r\n\r\n    /** Optional detail data - can be a computed signal result, service data, etc. */\r\n    readonly detailData = input<T | null>(null);\r\n\r\n    readonly onSelectItem = output<MasterItem>();\r\n\r\n    /** Optional template for rendering list items */\r\n    readonly itemTemplate = contentChild<TemplateRef<ItemTemplateContext>>('itemTemplate');\r\n\r\n    /** Optional template for rendering the detail view */\r\n    readonly detailTemplate = contentChild<TemplateRef<DetailTemplateContext<T>>>('detailTemplate');\r\n\r\n    /** Optional template for filter controls displayed above the list */\r\n    readonly filterTemplate = contentChild<TemplateRef<FilterTemplateContext>>('filterTemplate');\r\n\r\n    /** Optional template for action buttons displayed below the list */\r\n    readonly actionsTemplate = contentChild<TemplateRef<ActionsTemplateContext>>('actionsTemplate');\r\n\r\n    readonly selectedItem = computed(() => {\r\n        const selectedId = this.selectedItemId();\r\n        if (!selectedId) return null;\r\n        return this.items().find((item) => item.id === selectedId) || null;\r\n    });\r\n\r\n    readonly isItemSelected = (itemId: string | number) => {\r\n        return this.selectedItemId() === itemId;\r\n    };\r\n\r\n    /** Context for item template */\r\n    getItemContext(item: MasterItem): ItemTemplateContext {\r\n        return {\r\n            $implicit: item,\r\n            item,\r\n            selected: this.isItemSelected(item.id),\r\n        };\r\n    }\r\n\r\n    /** Context for detail template */\r\n    readonly detailContext = computed((): DetailTemplateContext<T> | null => {\r\n        const item = this.selectedItem();\r\n        const data = this.detailData();\r\n        if (!item) return null;\r\n        return {\r\n            $implicit: data as T,\r\n            data: data as T,\r\n            item,\r\n        };\r\n    });\r\n\r\n    /** Context for filter template */\r\n    readonly filterContext = computed((): FilterTemplateContext => ({\r\n        $implicit: this.items(),\r\n        items: this.items(),\r\n    }));\r\n\r\n    /** Context for actions template */\r\n    readonly actionsContext = computed((): ActionsTemplateContext => ({\r\n        $implicit: this.selectedItem(),\r\n        selectedItem: this.selectedItem(),\r\n    }));\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                },
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17
+                }
+            ],
+            "indexSignatures": [
+                {
+                    "id": "index-declaration-748849cd5d91fcff42f296b81620e5ee9a152227942c92f1b25dddc39f7e2fd9c8d8e2755387c945d56fc1a424fba67f3e929be13be822fafd3a879ec8c45f24",
+                    "args": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "any",
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "kind": 182,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ThemeConfig",
+            "id": "interface-ThemeConfig-7316c7497ec55e321f8979298253354ecda82dfc5a46357abd8ec4ddeb1a1737f0789e6df952c4e7037d3192f5a9b429f48131b22f1f0820a58cf91693bb2e83",
+            "file": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { InjectionToken } from '@angular/core';\r\n\r\n/**\r\n * Theme mode type - light, dark, or system (auto-detect current system setting)\r\n */\r\nexport type ThemeMode = 'light' | 'dark' | 'system';\r\n\r\n/**\r\n * Theme configuration options\r\n */\r\nexport interface ThemeConfig {\r\n    /** Default theme mode */\r\n    defaultMode: ThemeMode;\r\n    /** Storage key for persisting theme preference */\r\n    storageKey: string;\r\n    /** CSS class applied to the document for dark mode */\r\n    darkModeClass: string;\r\n    /** CSS class applied to the document for light mode */\r\n    lightModeClass: string;\r\n}\r\n\r\n/**\r\n * Default theme configuration\r\n */\r\nexport const DEFAULT_THEME_CONFIG: ThemeConfig = {\r\n    defaultMode: 'system',\r\n    storageKey: 'sigmax-theme-mode',\r\n    darkModeClass: 'dark-theme',\r\n    lightModeClass: 'light-theme',\r\n};\r\n\r\n/**\r\n * Injection token for theme configuration\r\n */\r\nexport const THEME_CONFIG = new InjectionToken<ThemeConfig>('THEME_CONFIG', {\r\n    providedIn: 'root',\r\n    factory: () => DEFAULT_THEME_CONFIG,\r\n});\r\n",
+            "properties": [
+                {
+                    "name": "darkModeClass",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>CSS class applied to the document for dark mode</p>\n",
+                    "line": 17,
+                    "rawdescription": "\nCSS class applied to the document for dark mode"
+                },
+                {
+                    "name": "defaultMode",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ThemeMode",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Default theme mode</p>\n",
+                    "line": 13,
+                    "rawdescription": "\nDefault theme mode"
+                },
+                {
+                    "name": "lightModeClass",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>CSS class applied to the document for light mode</p>\n",
+                    "line": 19,
+                    "rawdescription": "\nCSS class applied to the document for light mode"
+                },
+                {
+                    "name": "storageKey",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Storage key for persisting theme preference</p>\n",
+                    "line": 15,
+                    "rawdescription": "\nStorage key for persisting theme preference"
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Theme configuration options</p>\n",
+            "rawdescription": "\n\nTheme configuration options\n",
+            "methods": [],
+            "extends": []
+        }
+    ],
+    "injectables": [
+        {
+            "name": "ThemeService",
+            "id": "injectable-ThemeService-4e7e45b70e5329263370ec5bf06437a6aee58e04d8d72d9cdc0bf09aaa91b453a770b7f49dd3e61fe14bbcb04a7a81181f52f6b3e0ee229515e5fb2f56393554",
+            "file": "packages/ui-theme/src/lib/services/theme.service.ts",
+            "properties": [
+                {
+                    "name": "_systemPrefersDark",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "WritableSignal<boolean>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Whether the system prefers dark mode</p>\n",
+                    "line": 62,
+                    "rawdescription": "\nWhether the system prefers dark mode",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "_themeMode",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "WritableSignal<ThemeMode>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Current theme mode setting (light, dark, or system)</p>\n",
+                    "line": 56,
+                    "rawdescription": "\nCurrent theme mode setting (light, dark, or system)",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "config",
+                    "defaultValue": "inject(THEME_CONFIG, { optional: true }) ?? DEFAULT_THEME_CONFIG",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ThemeConfig",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 53,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "darkModeMediaQuery",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MediaQueryList",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Media query for detecting system dark mode preference</p>\n",
+                    "line": 59,
+                    "rawdescription": "\nMedia query for detecting system dark mode preference",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "document",
+                    "defaultValue": "inject(DOCUMENT)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 52,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "isDarkMode",
+                    "defaultValue": "computed(() => {\r\n        const mode = this._themeMode();\r\n        if (mode === 'system') {\r\n            return this._systemPrefersDark();\r\n        }\r\n        return mode === 'dark';\r\n    })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Signal<boolean>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Whether dark mode is currently active (resolved from mode + system preference)</p>\n",
+                    "line": 101,
+                    "rawdescription": "\n\nWhether dark mode is currently active (resolved from mode + system preference)\n",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "isLightMode",
+                    "defaultValue": "computed(() => !this.isDarkMode())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Signal<boolean>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Whether light mode is currently active</p>\n",
+                    "line": 112,
+                    "rawdescription": "\n\nWhether light mode is currently active\n",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "systemPrefersDark",
+                    "defaultValue": "computed(() => this._systemPrefersDark())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Signal<boolean>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Whether the system prefers dark mode</p>\n",
+                    "line": 96,
+                    "rawdescription": "\n\nWhether the system prefers dark mode\n",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "themeMode",
+                    "defaultValue": "computed(() => this._themeMode())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Signal<ThemeMode>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Current theme mode setting</p>\n",
+                    "line": 91,
+                    "rawdescription": "\n\nCurrent theme mode setting\n",
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "applyTheme",
+                    "args": [
+                        {
+                            "name": "isDark",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 142,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nApply theme classes to the document\n",
+                    "description": "<p>Apply theme classes to the document</p>\n",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "isDark",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getStoredThemeMode",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "ThemeMode | null",
+                    "typeParameters": [],
+                    "line": 157,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nGet stored theme mode from localStorage\n",
+                    "description": "<p>Get stored theme mode from localStorage</p>\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "persistThemeMode",
+                    "args": [
+                        {
+                            "name": "mode",
+                            "type": "ThemeMode",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 172,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nPersist theme mode to localStorage\n",
+                    "description": "<p>Persist theme mode to localStorage</p>\n",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "mode",
+                            "type": "ThemeMode",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "resetToSystem",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 135,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nReset to system preference\n",
+                    "description": "<p>Reset to system preference</p>\n"
+                },
+                {
+                    "name": "setTheme",
+                    "args": [
+                        {
+                            "name": "mode",
+                            "type": "ThemeMode",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 118,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nSet the theme mode\n",
+                    "description": "<p>Set the theme mode</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 3753,
+                                "end": 3757,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "mode"
+                            },
+                            "type": "ThemeMode",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 3747,
+                                "end": 3752,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<ul>\n<li>The theme mode to set (&#39;light&#39;, &#39;dark&#39;, or &#39;system&#39;)</li>\n</ul>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleTheme",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 127,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nToggle between light and dark mode\nIf currently in system mode, will switch to the opposite of current resolved theme\n",
+                    "description": "<p>Toggle between light and dark mode\nIf currently in system mode, will switch to the opposite of current resolved theme</p>\n"
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "<p>Service for managing application theme (light/dark mode).</p>\n<p><strong>Note:</strong> This service is optional. If you only include the SCSS theme without\ninjecting this service, the theme will still work correctly:</p>\n<ul>\n<li>Light theme applies by default</li>\n<li>Dark theme applies automatically via <code>@media (prefers-color-scheme: dark)</code></li>\n<li>All Material components are properly themed</li>\n</ul>\n<p>Use this service when you need:</p>\n<ul>\n<li><strong>User preference persistence</strong> - Saves theme choice to localStorage across sessions</li>\n<li><strong>Explicit theme override</strong> - Let users choose a theme different from system preference</li>\n<li><strong>Reactive state</strong> - Access <code>isDarkMode()</code> signal for conditional UI logic</li>\n<li><strong>Theme toggle</strong> - Programmatic control via <code>toggleTheme()</code> or <code>setTheme()</code></li>\n</ul>\n<b>Example :</b><div><pre class=\"line-numbers\"><code class=\"language-typescript\">import { ThemeService } from &#39;&#64;sigmax/ui-theme&#39;;\n___COMPODOC_EMPTY_LINE___\n&#64;Component({...})\nexport class AppComponent {\n  private themeService = inject(ThemeService);\n___COMPODOC_EMPTY_LINE___\n  toggleTheme() {\n    this.themeService.toggleTheme();\n  }\n}</code></pre></div>",
+            "rawdescription": "\n\nService for managing application theme (light/dark mode).\n\n**Note:** This service is optional. If you only include the SCSS theme without\ninjecting this service, the theme will still work correctly:\n- Light theme applies by default\n- Dark theme applies automatically via `@media (prefers-color-scheme: dark)`\n- All Material components are properly themed\n\nUse this service when you need:\n- **User preference persistence** - Saves theme choice to localStorage across sessions\n- **Explicit theme override** - Let users choose a theme different from system preference\n- **Reactive state** - Access `isDarkMode()` signal for conditional UI logic\n- **Theme toggle** - Programmatic control via `toggleTheme()` or `setTheme()`\n\n```typescript\nimport { ThemeService } from '@sigmax/ui-theme';\n___COMPODOC_EMPTY_LINE___\n@Component({...})\nexport class AppComponent {\n  private themeService = inject(ThemeService);\n___COMPODOC_EMPTY_LINE___\n  toggleTheme() {\n    this.themeService.toggleTheme();\n  }\n}\n```",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\r\nimport {\r\n  computed,\r\n  effect,\r\n  inject,\r\n  Injectable,\r\n  signal,\r\n  type Signal,\r\n  type WritableSignal,\r\n} from '@angular/core';\r\n\r\nimport {\r\n  DEFAULT_THEME_CONFIG,\r\n  THEME_CONFIG,\r\n  type ThemeConfig,\r\n  type ThemeMode,\r\n} from '../tokens/theme.tokens';\r\n\r\n/**\r\n * Service for managing application theme (light/dark mode).\r\n *\r\n * **Note:** This service is optional. If you only include the SCSS theme without\r\n * injecting this service, the theme will still work correctly:\r\n * - Light theme applies by default\r\n * - Dark theme applies automatically via `@media (prefers-color-scheme: dark)`\r\n * - All Material components are properly themed\r\n *\r\n * Use this service when you need:\r\n * - **User preference persistence** - Saves theme choice to localStorage across sessions\r\n * - **Explicit theme override** - Let users choose a theme different from system preference\r\n * - **Reactive state** - Access `isDarkMode()` signal for conditional UI logic\r\n * - **Theme toggle** - Programmatic control via `toggleTheme()` or `setTheme()`\r\n *\r\n * @example\r\n * ```typescript\r\n * import { ThemeService } from '@sigmax/ui-theme';\r\n *\r\n * @Component({...})\r\n * export class AppComponent {\r\n *   private themeService = inject(ThemeService);\r\n *\r\n *   toggleTheme() {\r\n *     this.themeService.toggleTheme();\r\n *   }\r\n * }\r\n * ```\r\n */\r\n@Injectable({\r\n    providedIn: 'root',\r\n})\r\nexport class ThemeService {\r\n    private readonly document = inject(DOCUMENT);\r\n    private readonly config: ThemeConfig = inject(THEME_CONFIG, { optional: true }) ?? DEFAULT_THEME_CONFIG;\r\n\r\n    /** Current theme mode setting (light, dark, or system) */\r\n    private readonly _themeMode: WritableSignal<ThemeMode>;\r\n\r\n    /** Media query for detecting system dark mode preference */\r\n    private readonly darkModeMediaQuery: MediaQueryList;\r\n\r\n    /** Whether the system prefers dark mode */\r\n    private readonly _systemPrefersDark: WritableSignal<boolean>;\r\n\r\n    constructor() {\r\n        // Initialize media query for system preference\r\n        this.darkModeMediaQuery = this.document.defaultView?.matchMedia('(prefers-color-scheme: dark)')\r\n            ?? { matches: false } as MediaQueryList;\r\n\r\n        this._systemPrefersDark = signal(this.darkModeMediaQuery.matches);\r\n\r\n        // Listen for system preference changes\r\n        if (this.darkModeMediaQuery.addEventListener) {\r\n            this.darkModeMediaQuery.addEventListener('change', (e) => {\r\n                this._systemPrefersDark.set(e.matches);\r\n            });\r\n        }\r\n\r\n        // Initialize theme mode from storage or default\r\n        const storedMode = this.getStoredThemeMode();\r\n        this._themeMode = signal(storedMode ?? this.config.defaultMode);\r\n\r\n        // Apply theme whenever mode or system preference changes\r\n        effect(() => {\r\n            this.applyTheme(this.isDarkMode());\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Current theme mode setting\r\n     */\r\n    readonly themeMode: Signal<ThemeMode> = computed(() => this._themeMode());\r\n\r\n    /**\r\n     * Whether the system prefers dark mode\r\n     */\r\n    readonly systemPrefersDark: Signal<boolean> = computed(() => this._systemPrefersDark());\r\n\r\n    /**\r\n     * Whether dark mode is currently active (resolved from mode + system preference)\r\n     */\r\n    readonly isDarkMode: Signal<boolean> = computed(() => {\r\n        const mode = this._themeMode();\r\n        if (mode === 'system') {\r\n            return this._systemPrefersDark();\r\n        }\r\n        return mode === 'dark';\r\n    });\r\n\r\n    /**\r\n     * Whether light mode is currently active\r\n     */\r\n    readonly isLightMode: Signal<boolean> = computed(() => !this.isDarkMode());\r\n\r\n    /**\r\n     * Set the theme mode\r\n     * @param mode - The theme mode to set ('light', 'dark', or 'system')\r\n     */\r\n    setTheme(mode: ThemeMode): void {\r\n        this._themeMode.set(mode);\r\n        this.persistThemeMode(mode);\r\n    }\r\n\r\n    /**\r\n     * Toggle between light and dark mode\r\n     * If currently in system mode, will switch to the opposite of current resolved theme\r\n     */\r\n    toggleTheme(): void {\r\n        const newMode = this.isDarkMode() ? 'light' : 'dark';\r\n        this.setTheme(newMode);\r\n    }\r\n\r\n    /**\r\n     * Reset to system preference\r\n     */\r\n    resetToSystem(): void {\r\n        this.setTheme('system');\r\n    }\r\n\r\n    /**\r\n     * Apply theme classes to the document\r\n     */\r\n    private applyTheme(isDark: boolean): void {\r\n        const { documentElement } = this.document;\r\n\r\n        if (isDark) {\r\n            documentElement.classList.remove(this.config.lightModeClass);\r\n            documentElement.classList.add(this.config.darkModeClass);\r\n        } else {\r\n            documentElement.classList.remove(this.config.darkModeClass);\r\n            documentElement.classList.add(this.config.lightModeClass);\r\n        }\r\n    }\r\n\r\n    /**\r\n     * Get stored theme mode from localStorage\r\n     */\r\n    private getStoredThemeMode(): ThemeMode | null {\r\n        try {\r\n            const stored = this.document.defaultView?.localStorage.getItem(this.config.storageKey);\r\n            if (stored && ['light', 'dark', 'system'].includes(stored)) {\r\n                return stored as ThemeMode;\r\n            }\r\n        } catch {\r\n            // localStorage not available\r\n        }\r\n        return null;\r\n    }\r\n\r\n    /**\r\n     * Persist theme mode to localStorage\r\n     */\r\n    private persistThemeMode(mode: ThemeMode): void {\r\n        try {\r\n            this.document.defaultView?.localStorage.setItem(this.config.storageKey, mode);\r\n        } catch {\r\n            // localStorage not available\r\n        }\r\n    }\r\n}\r\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 62
+            },
+            "extends": [],
+            "type": "injectable"
+        }
+    ],
     "guards": [],
     "interceptors": [],
     "classes": [],
     "directives": [],
-    "components": [],
+    "components": [
+        {
+            "name": "ButtonComponent",
+            "id": "component-ButtonComponent-d7bf0323e6da130e2609e2af0117b4a8d7cd874132206af50bf43dfc37044485fe50f2867ea76525730dd195b9b95a43802a12dadc6ad5cd7bf2faa07f19f0da",
+            "file": "packages/ui-kit/src/stories/button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "storybook-button",
+            "styleUrls": [
+                "./button.css"
+            ],
+            "styles": [],
+            "template": " <button  type=\"button\"\n  (click)=\"onClick.emit($event)\"\n  [ngClass]=\"classes\"\n  [ngStyle]=\"{ 'background-color': backgroundColor }\"\n>\n  {{ label }}\n</button>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "backgroundColor",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nWhat background color to use",
+                    "description": "<p>What background color to use</p>\n",
+                    "line": 25,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "'Button'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "pos": 760,
+                            "end": 773,
+                            "kind": 328,
+                            "id": 0,
+                            "flags": 16842752,
+                            "modifierFlagsCache": 0,
+                            "transformFlags": 0,
+                            "tagName": {
+                                "pos": 761,
+                                "end": 769,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "required"
+                            },
+                            "comment": ""
+                        }
+                    ],
+                    "rawdescription": "\n\nButton contents\n\n",
+                    "description": "<p>Button contents</p>\n",
+                    "line": 37,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "primary",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nIs this the principal call to action on the page?",
+                    "description": "<p>Is this the principal call to action on the page?</p>\n",
+                    "line": 21,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'medium'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nHow large should the button be?",
+                    "description": "<p>How large should the button be?</p>\n",
+                    "line": 29,
+                    "type": "\"small\" | \"medium\" | \"large\"",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onClick",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nOptional click handler",
+                    "description": "<p>Optional click handler</p>\n",
+                    "line": 41,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component, Input, Output, EventEmitter } from '@angular/core';\n\n@Component({\n  selector: 'storybook-button',\n  standalone: true,\n  imports: [CommonModule],\n  template: ` <button\n  type=\"button\"\n  (click)=\"onClick.emit($event)\"\n  [ngClass]=\"classes\"\n  [ngStyle]=\"{ 'background-color': backgroundColor }\"\n>\n  {{ label }}\n</button>`,\n  styleUrls: ['./button.css'],\n})\nexport class ButtonComponent {\n  /** Is this the principal call to action on the page? */\n  @Input()\n  primary = false;\n\n  /** What background color to use */\n  @Input()\n  backgroundColor?: string;\n\n  /** How large should the button be? */\n  @Input()\n  size: 'small' | 'medium' | 'large' = 'medium';\n\n  /**\n   * Button contents\n   *\n   * @required\n   */\n  @Input()\n  label = 'Button';\n\n  /** Optional click handler */\n  @Output()\n  onClick = new EventEmitter<Event>();\n\n  public get classes(): string[] {\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\n\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".storybook-button {\n  display: inline-block;\n  cursor: pointer;\n  border: 0;\n  border-radius: 3em;\n  font-weight: 700;\n  line-height: 1;\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n.storybook-button--primary {\n  background-color: #555ab9;\n  color: white;\n}\n.storybook-button--secondary {\n  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\n  background-color: transparent;\n  color: #333;\n}\n.storybook-button--small {\n  padding: 10px 16px;\n  font-size: 12px;\n}\n.storybook-button--medium {\n  padding: 11px 20px;\n  font-size: 14px;\n}\n.storybook-button--large {\n  padding: 12px 24px;\n  font-size: 16px;\n}\n",
+                    "styleUrl": "./button.css"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "accessors": {
+                "classes": {
+                    "name": "classes",
+                    "getSignature": {
+                        "name": "classes",
+                        "type": "[]",
+                        "returnType": "string[]",
+                        "line": 43
+                    }
+                }
+            }
+        },
+        {
+            "name": "HeaderComponent",
+            "id": "component-HeaderComponent-48b9abe37706bc42f20cfa97ed9f943678344ea7d254c0c82183c657750c2191b43486fe730c778627b2ea6aa0e2f33a7abcf3ce08b68ad18b062ad99ea97acb",
+            "file": "packages/ui-kit/src/stories/header.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "storybook-header",
+            "styleUrls": [
+                "./header.css"
+            ],
+            "styles": [],
+            "template": "<header>  <div class=\"storybook-header\">\n    <div>\n      <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n        <g fill=\"none\" fillRule=\"evenodd\">\n          <path\n            d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n            fill=\"#FFF\"\n          />\n          <path\n            d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n            fill=\"#555AB9\"\n          />\n          <path d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\" fill=\"#91BAF8\" />\n        </g>\n      </svg>\n      <h1>Acme</h1>\n    </div>\n    <div>\n      <div *ngIf=\"user\">\n        <span class=\"welcome\">\n          Welcome, <b>{{ user.name }}</b\n          >!\n        </span>\n        <storybook-button\n          *ngIf=\"user\"\n          size=\"small\"\n          (onClick)=\"onLogout.emit($event)\"\n          label=\"Log out\"\n        ></storybook-button>\n      </div>\n      <div *ngIf=\"!user\">\n        <storybook-button\n          *ngIf=\"!user\"\n          size=\"small\"\n          class=\"margin-left\"\n          (onClick)=\"onLogin.emit($event)\"\n          label=\"Log in\"\n        ></storybook-button>\n        <storybook-button\n          *ngIf=\"!user\"\n          size=\"small\"\n          [primary]=\"true\"\n          class=\"margin-left\"\n          (onClick)=\"onCreateAccount.emit($event)\"\n          label=\"Sign up\"\n        ></storybook-button>\n      </div>\n    </div>\n  </div>\n</header>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "user",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 66,
+                    "type": "User | null",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onCreateAccount",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 75,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "onLogin",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 69,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "onLogout",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 72,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ButtonComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nimport { ButtonComponent } from './button.component';\nimport type { User } from './user';\n\n@Component({\n  selector: 'storybook-header',\n  standalone: true,\n  imports: [CommonModule, ButtonComponent],\n  template: `<header>\n  <div class=\"storybook-header\">\n    <div>\n      <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n        <g fill=\"none\" fillRule=\"evenodd\">\n          <path\n            d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n            fill=\"#FFF\"\n          />\n          <path\n            d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n            fill=\"#555AB9\"\n          />\n          <path d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\" fill=\"#91BAF8\" />\n        </g>\n      </svg>\n      <h1>Acme</h1>\n    </div>\n    <div>\n      <div *ngIf=\"user\">\n        <span class=\"welcome\">\n          Welcome, <b>{{ user.name }}</b\n          >!\n        </span>\n        <storybook-button\n          *ngIf=\"user\"\n          size=\"small\"\n          (onClick)=\"onLogout.emit($event)\"\n          label=\"Log out\"\n        ></storybook-button>\n      </div>\n      <div *ngIf=\"!user\">\n        <storybook-button\n          *ngIf=\"!user\"\n          size=\"small\"\n          class=\"margin-left\"\n          (onClick)=\"onLogin.emit($event)\"\n          label=\"Log in\"\n        ></storybook-button>\n        <storybook-button\n          *ngIf=\"!user\"\n          size=\"small\"\n          [primary]=\"true\"\n          class=\"margin-left\"\n          (onClick)=\"onCreateAccount.emit($event)\"\n          label=\"Sign up\"\n        ></storybook-button>\n      </div>\n    </div>\n  </div>\n</header>`,\n  styleUrls: ['./header.css'],\n})\nexport class HeaderComponent {\n  @Input()\n  user: User | null = null;\n\n  @Output()\n  onLogin = new EventEmitter<Event>();\n\n  @Output()\n  onLogout = new EventEmitter<Event>();\n\n  @Output()\n  onCreateAccount = new EventEmitter<Event>();\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".storybook-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  padding: 15px 20px;\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n\n.storybook-header svg {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.storybook-header h1 {\n  display: inline-block;\n  vertical-align: top;\n  margin: 6px 0 6px 10px;\n  font-weight: 700;\n  font-size: 20px;\n  line-height: 1;\n}\n\n.storybook-header button + button {\n  margin-left: 10px;\n}\n\n.storybook-header .welcome {\n  margin-right: 10px;\n  color: #333;\n  font-size: 14px;\n}\n",
+                    "styleUrl": "./header.css"
+                }
+            ],
+            "stylesData": "",
+            "extends": []
+        },
+        {
+            "name": "PageComponent",
+            "id": "component-PageComponent-21dd6eb370b4983b5c21c84d40e6f54d266a9d9af9889e6e76b35c43058bd53b3e451bad089d5adf4bea46647ba10265a2fa8cb15630398e75636307d4817fc6",
+            "file": "packages/ui-kit/src/stories/page.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "storybook-page",
+            "styleUrls": [
+                "./page.css"
+            ],
+            "styles": [],
+            "template": "<article>  <storybook-header\n    [user]=\"user\"\n    (onLogout)=\"doLogout()\"\n    (onLogin)=\"doLogin()\"\n    (onCreateAccount)=\"doCreateAccount()\"\n  ></storybook-header>\n  <section class=\"storybook-page\">\n    <h2>Pages in Storybook</h2>\n    <p>\n      We recommend building UIs with a\n      <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n        <strong>component-driven</strong>\n      </a>\n      process starting with atomic components and ending with pages.\n    </p>\n    <p>\n      Render pages with mock data. This makes it easy to build and review page states without\n      needing to navigate to them in your app. Here are some handy patterns for managing page data\n      in Storybook:\n    </p>\n    <ul>\n      <li>\n        Use a higher-level connected component. Storybook helps you compose such data from the\n        \"args\" of child component stories\n      </li>\n      <li>\n        Assemble data in the page component from your services. You can mock these services out\n        using Storybook.\n      </li>\n    </ul>\n    <p>\n      Get a guided tutorial on component-driven development at\n      <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n        Storybook tutorials\n      </a>\n      . Read more in the\n      <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n      .\n    </p>\n    <div class=\"tip-wrapper\">\n      <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n      <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n        <g fill=\"none\" fillRule=\"evenodd\">\n          <path\n            d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n            id=\"a\"\n            fill=\"#999\"\n          />\n        </g>\n      </svg>\n      Viewports addon in the toolbar\n    </div>\n  </section>\n</article>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "user",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "User | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 69
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "doCreateAccount",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 79,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "doLogin",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 75,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "doLogout",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 71,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "HeaderComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nimport { HeaderComponent } from './header.component';\nimport type { User } from './user';\n\n@Component({\n  selector: 'storybook-page',\n  standalone: true,\n  imports: [CommonModule, HeaderComponent],\n  template: `<article>\n  <storybook-header\n    [user]=\"user\"\n    (onLogout)=\"doLogout()\"\n    (onLogin)=\"doLogin()\"\n    (onCreateAccount)=\"doCreateAccount()\"\n  ></storybook-header>\n  <section class=\"storybook-page\">\n    <h2>Pages in Storybook</h2>\n    <p>\n      We recommend building UIs with a\n      <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n        <strong>component-driven</strong>\n      </a>\n      process starting with atomic components and ending with pages.\n    </p>\n    <p>\n      Render pages with mock data. This makes it easy to build and review page states without\n      needing to navigate to them in your app. Here are some handy patterns for managing page data\n      in Storybook:\n    </p>\n    <ul>\n      <li>\n        Use a higher-level connected component. Storybook helps you compose such data from the\n        \"args\" of child component stories\n      </li>\n      <li>\n        Assemble data in the page component from your services. You can mock these services out\n        using Storybook.\n      </li>\n    </ul>\n    <p>\n      Get a guided tutorial on component-driven development at\n      <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n        Storybook tutorials\n      </a>\n      . Read more in the\n      <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n      .\n    </p>\n    <div class=\"tip-wrapper\">\n      <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n      <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n        <g fill=\"none\" fillRule=\"evenodd\">\n          <path\n            d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n            id=\"a\"\n            fill=\"#999\"\n          />\n        </g>\n      </svg>\n      Viewports addon in the toolbar\n    </div>\n  </section>\n</article>`,\n  styleUrls: ['./page.css'],\n})\nexport class PageComponent {\n  user: User | null = null;\n\n  doLogout() {\n    this.user = null;\n  }\n\n  doLogin() {\n    this.user = { name: 'Jane Doe' };\n  }\n\n  doCreateAccount() {\n    this.user = { name: 'Jane Doe' };\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".storybook-page {\n  margin: 0 auto;\n  padding: 48px 20px;\n  max-width: 600px;\n  color: #333;\n  font-size: 14px;\n  line-height: 24px;\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n\n.storybook-page h2 {\n  display: inline-block;\n  vertical-align: top;\n  margin: 0 0 4px;\n  font-weight: 700;\n  font-size: 32px;\n  line-height: 1;\n}\n\n.storybook-page p {\n  margin: 1em 0;\n}\n\n.storybook-page a {\n  color: inherit;\n}\n\n.storybook-page ul {\n  margin: 1em 0;\n  padding-left: 30px;\n}\n\n.storybook-page li {\n  margin-bottom: 8px;\n}\n\n.storybook-page .tip {\n  display: inline-block;\n  vertical-align: top;\n  margin-right: 10px;\n  border-radius: 1em;\n  background: #e7fdd8;\n  padding: 4px 12px;\n  color: #357a14;\n  font-weight: 700;\n  font-size: 11px;\n  line-height: 12px;\n}\n\n.storybook-page .tip-wrapper {\n  margin-top: 40px;\n  margin-bottom: 40px;\n  font-size: 13px;\n  line-height: 20px;\n}\n\n.storybook-page .tip-wrapper svg {\n  display: inline-block;\n  vertical-align: top;\n  margin-top: 3px;\n  margin-right: 4px;\n  width: 12px;\n  height: 12px;\n}\n\n.storybook-page .tip-wrapper svg path {\n  fill: #1ea7fd;\n}\n",
+                    "styleUrl": "./page.css"
+                }
+            ],
+            "stylesData": "",
+            "extends": []
+        },
+        {
+            "name": "UiButtonComponent",
+            "id": "component-UiButtonComponent-4144fddc38f9c84fab5c1d225c46fd186025b93d8b1a4b4a33539fb7b983275d078a7a78e2cec3fbf1eda056671e0fc7b8885ac9f3bc2921ba925aaa53e3692b",
+            "file": "packages/ui-kit/src/lib/button/button.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-button",
+            "styleUrls": [
+                "./button.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./button.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "color",
+                    "defaultValue": "'primary'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonColor",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 27,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "isDisabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "'Click me'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'medium'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonSize",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "variant",
+                    "defaultValue": "'raised'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonVariant",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onClick",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "void",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 32,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "isLoading",
+                    "defaultValue": "signal<boolean>(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "MatButtonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "MatProgressSpinnerModule",
+                    "type": "module"
+                },
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    input,\r\n    output,\r\n    signal,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatProgressSpinnerModule } from '@angular/material/progress-spinner';\r\n\r\nexport type ButtonVariant = 'basic' | 'raised' | 'stroked' | 'flat';\r\nexport type ButtonSize = 'small' | 'medium' | 'large';\r\nexport type ButtonColor = 'primary' | 'accent' | 'warn';\r\n\r\n@Component({\r\n    selector: 'ui-button',\r\n    standalone: true,\r\n    imports: [MatButtonModule, MatProgressSpinnerModule, CommonModule],\r\n    templateUrl: './button.component.html',\r\n    styleUrls: ['./button.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiButtonComponent {\r\n    readonly label = input<string>('Click me');\r\n    readonly variant = input<ButtonVariant>('raised');\r\n    readonly color = input<ButtonColor>('primary');\r\n    readonly size = input<ButtonSize>('medium');\r\n    readonly isDisabled = input<boolean>(false);\r\n    readonly isLoading = signal<boolean>(false);\r\n\r\n    readonly onClick = output<void>();\r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\r\n  display: inline-block;\r\n}\r\n\r\nbutton {\r\n  font-family: var(--mat-sys-body-large-font);\r\n  transition: all 200ms ease-in-out;\r\n}\r\n\r\n.small {\r\n  padding: 0.375rem 0.75rem;\r\n  font-size: var(--mat-sys-label-medium-size, 0.875rem);\r\n  height: auto;\r\n}\r\n\r\n.large {\r\n  padding: 0.75rem 1.5rem;\r\n  font-size: var(--mat-sys-title-medium-size, 1.125rem);\r\n  height: auto;\r\n}\r\n\r\n.spinner {\r\n  display: inline-block;\r\n  margin-right: var(--mat-sys-spacing-2, 0.5rem);\r\n  vertical-align: middle;\r\n}\r\n\r\n.label {\r\n  display: inline-block;\r\n}\r\n",
+                    "styleUrl": "./button.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "templateData": "@switch (variant()) {\r\n@case ('basic') {\r\n<button mat-button [color]=\"color()\" [disabled]=\"isDisabled() || isLoading()\" [class.small]=\"size() === 'small'\"\r\n    [class.large]=\"size() === 'large'\" (click)=\"onClick.emit()\">\r\n    <ng-container *ngTemplateOutlet=\"buttonContent\"></ng-container>\r\n</button>\r\n}\r\n@case ('stroked') {\r\n<button mat-stroked-button [color]=\"color()\" [disabled]=\"isDisabled() || isLoading()\" [class.small]=\"size() === 'small'\"\r\n    [class.large]=\"size() === 'large'\" (click)=\"onClick.emit()\">\r\n    <ng-container *ngTemplateOutlet=\"buttonContent\"></ng-container>\r\n</button>\r\n}\r\n@case ('flat') {\r\n<button mat-flat-button [color]=\"color()\" [disabled]=\"isDisabled() || isLoading()\" [class.small]=\"size() === 'small'\"\r\n    [class.large]=\"size() === 'large'\" (click)=\"onClick.emit()\">\r\n    <ng-container *ngTemplateOutlet=\"buttonContent\"></ng-container>\r\n</button>\r\n}\r\n@default {\r\n<button mat-raised-button [color]=\"color()\" [disabled]=\"isDisabled() || isLoading()\" [class.small]=\"size() === 'small'\"\r\n    [class.large]=\"size() === 'large'\" (click)=\"onClick.emit()\">\r\n    <ng-container *ngTemplateOutlet=\"buttonContent\"></ng-container>\r\n</button>\r\n}\r\n}\r\n\r\n<ng-template #buttonContent>\r\n    @if (isLoading()) {\r\n    <mat-spinner [diameter]=\"20\" class=\"spinner\"></mat-spinner>\r\n    }\r\n    <span class=\"label\">{{ label() }}</span>\r\n</ng-template>"
+        },
+        {
+            "name": "UiMasterDetailViewComponent",
+            "id": "component-UiMasterDetailViewComponent-748849cd5d91fcff42f296b81620e5ee9a152227942c92f1b25dddc39f7e2fd9c8d8e2755387c945d56fc1a424fba67f3e929be13be822fafd3a879ec8c45f24",
+            "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-master-detail-view",
+            "styleUrls": [
+                "./master-detail-view.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./master-detail-view.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "detailData",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "T | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Optional detail data - can be a computed signal result, service data, etc.</p>\n",
+                    "line": 62,
+                    "rawdescription": "\nOptional detail data - can be a computed signal result, service data, etc.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "detailPlaceholderText",
+                    "defaultValue": "'Select an item to view details'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 59,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "items",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 56,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "masterTitle",
+                    "defaultValue": "'Items'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 58,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "selectedItemId",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | number | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 57,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onSelectItem",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MasterItem",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 64,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "actionsContext",
+                    "defaultValue": "computed((): ActionsTemplateContext => ({\r\n        $implicit: this.selectedItem(),\r\n        selectedItem: this.selectedItem(),\r\n    }))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Context for actions template</p>\n",
+                    "line": 116,
+                    "rawdescription": "\nContext for actions template",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "actionsTemplate",
+                    "defaultValue": "contentChild<TemplateRef<ActionsTemplateContext>>('actionsTemplate')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Optional template for action buttons displayed below the list</p>\n",
+                    "line": 76,
+                    "rawdescription": "\nOptional template for action buttons displayed below the list",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "detailContext",
+                    "defaultValue": "computed((): DetailTemplateContext<T> | null => {\r\n        const item = this.selectedItem();\r\n        const data = this.detailData();\r\n        if (!item) return null;\r\n        return {\r\n            $implicit: data as T,\r\n            data: data as T,\r\n            item,\r\n        };\r\n    })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Context for detail template</p>\n",
+                    "line": 98,
+                    "rawdescription": "\nContext for detail template",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "detailTemplate",
+                    "defaultValue": "contentChild<TemplateRef<DetailTemplateContext<T>>>('detailTemplate')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Optional template for rendering the detail view</p>\n",
+                    "line": 70,
+                    "rawdescription": "\nOptional template for rendering the detail view",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "filterContext",
+                    "defaultValue": "computed((): FilterTemplateContext => ({\r\n        $implicit: this.items(),\r\n        items: this.items(),\r\n    }))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Context for filter template</p>\n",
+                    "line": 110,
+                    "rawdescription": "\nContext for filter template",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "filterTemplate",
+                    "defaultValue": "contentChild<TemplateRef<FilterTemplateContext>>('filterTemplate')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Optional template for filter controls displayed above the list</p>\n",
+                    "line": 73,
+                    "rawdescription": "\nOptional template for filter controls displayed above the list",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "isItemSelected",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 84,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "itemTemplate",
+                    "defaultValue": "contentChild<TemplateRef<ItemTemplateContext>>('itemTemplate')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Optional template for rendering list items</p>\n",
+                    "line": 67,
+                    "rawdescription": "\nOptional template for rendering list items",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "selectedItem",
+                    "defaultValue": "computed(() => {\r\n        const selectedId = this.selectedItemId();\r\n        if (!selectedId) return null;\r\n        return this.items().find((item) => item.id === selectedId) || null;\r\n    })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 78,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "getItemContext",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "MasterItem",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "ItemTemplateContext",
+                    "typeParameters": [],
+                    "line": 89,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nContext for item template",
+                    "description": "<p>Context for item template</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "MasterItem",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "MatListModule",
+                    "type": "module"
+                },
+                {
+                    "name": "MatDividerModule",
+                    "type": "module"
+                },
+                {
+                    "name": "MatButtonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\r\nimport {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChild,\r\n  input,\r\n  output,\r\n  TemplateRef,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatDividerModule } from '@angular/material/divider';\r\nimport { MatListModule } from '@angular/material/list';\r\n\r\nexport interface MasterItem {\r\n    id: string | number;\r\n    label: string;\r\n    [key: string]: any;\r\n}\r\n\r\n/** Context provided to the itemTemplate */\r\nexport interface ItemTemplateContext {\r\n    $implicit: MasterItem;\r\n    item: MasterItem;\r\n    selected: boolean;\r\n}\r\n\r\n/** Context provided to the detailTemplate */\r\nexport interface DetailTemplateContext<T = unknown> {\r\n    $implicit: T;\r\n    data: T;\r\n    item: MasterItem;\r\n}\r\n\r\n/** Context provided to the filterTemplate */\r\nexport interface FilterTemplateContext {\r\n    $implicit: MasterItem[];\r\n    items: MasterItem[];\r\n}\r\n\r\n/** Context provided to the actionsTemplate */\r\nexport interface ActionsTemplateContext {\r\n    $implicit: MasterItem | null;\r\n    selectedItem: MasterItem | null;\r\n}\r\n\r\n@Component({\r\n    selector: 'ui-master-detail-view',\r\n    standalone: true,\r\n    imports: [CommonModule, MatListModule, MatDividerModule, MatButtonModule],\r\n    templateUrl: './master-detail-view.component.html',\r\n    styleUrls: ['./master-detail-view.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiMasterDetailViewComponent<T = unknown> {\r\n    readonly items = input<MasterItem[]>([]);\r\n    readonly selectedItemId = input<string | number | null>(null);\r\n    readonly masterTitle = input<string>('Items');\r\n    readonly detailPlaceholderText = input<string>('Select an item to view details');\r\n\r\n    /** Optional detail data - can be a computed signal result, service data, etc. */\r\n    readonly detailData = input<T | null>(null);\r\n\r\n    readonly onSelectItem = output<MasterItem>();\r\n\r\n    /** Optional template for rendering list items */\r\n    readonly itemTemplate = contentChild<TemplateRef<ItemTemplateContext>>('itemTemplate');\r\n\r\n    /** Optional template for rendering the detail view */\r\n    readonly detailTemplate = contentChild<TemplateRef<DetailTemplateContext<T>>>('detailTemplate');\r\n\r\n    /** Optional template for filter controls displayed above the list */\r\n    readonly filterTemplate = contentChild<TemplateRef<FilterTemplateContext>>('filterTemplate');\r\n\r\n    /** Optional template for action buttons displayed below the list */\r\n    readonly actionsTemplate = contentChild<TemplateRef<ActionsTemplateContext>>('actionsTemplate');\r\n\r\n    readonly selectedItem = computed(() => {\r\n        const selectedId = this.selectedItemId();\r\n        if (!selectedId) return null;\r\n        return this.items().find((item) => item.id === selectedId) || null;\r\n    });\r\n\r\n    readonly isItemSelected = (itemId: string | number) => {\r\n        return this.selectedItemId() === itemId;\r\n    };\r\n\r\n    /** Context for item template */\r\n    getItemContext(item: MasterItem): ItemTemplateContext {\r\n        return {\r\n            $implicit: item,\r\n            item,\r\n            selected: this.isItemSelected(item.id),\r\n        };\r\n    }\r\n\r\n    /** Context for detail template */\r\n    readonly detailContext = computed((): DetailTemplateContext<T> | null => {\r\n        const item = this.selectedItem();\r\n        const data = this.detailData();\r\n        if (!item) return null;\r\n        return {\r\n            $implicit: data as T,\r\n            data: data as T,\r\n            item,\r\n        };\r\n    });\r\n\r\n    /** Context for filter template */\r\n    readonly filterContext = computed((): FilterTemplateContext => ({\r\n        $implicit: this.items(),\r\n        items: this.items(),\r\n    }));\r\n\r\n    /** Context for actions template */\r\n    readonly actionsContext = computed((): ActionsTemplateContext => ({\r\n        $implicit: this.selectedItem(),\r\n        selectedItem: this.selectedItem(),\r\n    }));\r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\r\n  display: grid;\r\n  grid-template-columns: 300px 1fr;\r\n  height: 100%;\r\n  background-color: var(--mat-sys-surface);\r\n\r\n  @media (max-width: 768px) {\r\n    grid-template-columns: 1fr;\r\n    grid-template-rows: auto 1fr;\r\n  }\r\n}\r\n\r\naside {\r\n  display: flex;\r\n  flex-direction: column;\r\n  background-color: var(--mat-sys-surface-container);\r\n  border-right: 1px solid var(--mat-sys-outline-variant);\r\n  overflow: hidden;\r\n\r\n  @media (max-width: 768px) {\r\n    border-right: none;\r\n    border-bottom: 1px solid var(--mat-sys-outline-variant);\r\n  }\r\n}\r\n\r\nheader {\r\n  padding: 1.5rem;\r\n\r\n  h2 {\r\n    margin: 0;\r\n    font: var(--mat-sys-title-medium);\r\n    color: var(--mat-sys-on-surface);\r\n  }\r\n}\r\n\r\n.filter {\r\n  padding: 0 1rem 1rem;\r\n  flex-shrink: 0;\r\n}\r\n\r\nmat-nav-list {\r\n  flex: 1;\r\n  overflow-y: auto;\r\n  padding: 0;\r\n  margin: 0;\r\n}\r\n\r\n.empty {\r\n  padding: 2rem 1rem;\r\n  text-align: center;\r\n  color: var(--mat-sys-on-surface-variant);\r\n  font: var(--mat-sys-body-medium);\r\n  margin: 0;\r\n}\r\n\r\nfooter {\r\n  padding: 1rem;\r\n  border-top: 1px solid var(--mat-sys-outline-variant);\r\n  flex-shrink: 0;\r\n  display: flex;\r\n  gap: 0.5rem;\r\n  justify-content: flex-end;\r\n}\r\n\r\nmain {\r\n  display: flex;\r\n  flex-direction: column;\r\n  background-color: var(--mat-sys-surface);\r\n  overflow: hidden;\r\n\r\n  header h2 {\r\n    font: var(--mat-sys-title-large);\r\n  }\r\n}\r\n\r\nsection {\r\n  flex: 1;\r\n  overflow-y: auto;\r\n  padding: 1.5rem;\r\n}\r\n\r\n.placeholder {\r\n  flex: 1;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  color: var(--mat-sys-on-surface-variant);\r\n\r\n  p {\r\n    margin: 0;\r\n    font: var(--mat-sys-body-large);\r\n  }\r\n}\r\n",
+                    "styleUrl": "./master-detail-view.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<aside>\r\n    <header>\r\n        <h2>{{ masterTitle() }}</h2>\r\n    </header>\r\n    @if (filterTemplate(); as tpl) {\r\n    <div class=\"filter\">\r\n        <ng-container *ngTemplateOutlet=\"tpl; context: filterContext()\"></ng-container>\r\n    </div>\r\n    }\r\n    <mat-nav-list>\r\n        @for (item of items(); track item.id) {\r\n        <mat-list-item [activated]=\"isItemSelected(item.id)\" (click)=\"onSelectItem.emit(item)\">\r\n            @if (itemTemplate()) {\r\n            <ng-container *ngTemplateOutlet=\"itemTemplate()!; context: getItemContext(item)\"></ng-container>\r\n            } @else {\r\n            <span matListItemTitle>{{ item.label }}</span>\r\n            }\r\n        </mat-list-item>\r\n        } @empty {\r\n        <p class=\"empty\">No items available</p>\r\n        }\r\n    </mat-nav-list>\r\n    @if (actionsTemplate(); as tpl) {\r\n    <footer>\r\n        <ng-container *ngTemplateOutlet=\"tpl; context: actionsContext()\"></ng-container>\r\n    </footer>\r\n    }\r\n</aside>\r\n\r\n<main>\r\n    @if (selectedItem(); as item) {\r\n    <header>\r\n        <h2>{{ item.label }}</h2>\r\n    </header>\r\n    <mat-divider></mat-divider>\r\n    <section>\r\n        @if (detailTemplate(); as tpl) {\r\n        <ng-container *ngTemplateOutlet=\"tpl; context: detailContext()\"></ng-container>\r\n        } @else {\r\n        <ng-content></ng-content>\r\n        }\r\n    </section>\r\n    } @else {\r\n    <div class=\"placeholder\">\r\n        <p>{{ detailPlaceholderText() }}</p>\r\n    </div>\r\n    }\r\n</main>"
+        },
+        {
+            "name": "UiThemeToggleComponent",
+            "id": "component-UiThemeToggleComponent-9e86be7c71d394416fbc0c3701fb9700b8d522383317073439ab0b87f28755e89087a5c67e448cba43cd75679ffc2770d32b39f5d73ac0fa978e6177235a1259",
+            "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-theme-toggle",
+            "styleUrls": [
+                "./theme-toggle.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./theme-toggle.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "ariaLabel",
+                    "defaultValue": "'Toggle theme'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Accessible label for the button</p>\n",
+                    "line": 52,
+                    "rawdescription": "\nAccessible label for the button",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "showTooltip",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Whether to show a tooltip on hover</p>\n",
+                    "line": 49,
+                    "rawdescription": "\nWhether to show a tooltip on hover",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "variant",
+                    "defaultValue": "'icon'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ThemeToggleVariant",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Visual style of the toggle</p>\n",
+                    "line": 46,
+                    "rawdescription": "\nVisual style of the toggle",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "themeService",
+                    "defaultValue": "inject(ThemeService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 43,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "toggle",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 66,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "MatButtonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "MatIconModule",
+                    "type": "module"
+                },
+                {
+                    "name": "MatTooltipModule",
+                    "type": "module"
+                }
+            ],
+            "description": "<p>A toggle button for switching between light and dark mode.</p>\n<p>Uses the ThemeService from @sigmax/ui-theme to manage theme state.\nThe button displays a sun icon in dark mode and a moon icon in light mode,\nindicating what theme will be applied when clicked.</p>\n<b>Example :</b><div><pre class=\"line-numbers\"><code class=\"language-html\">&lt;!-- Icon button (default) --&gt;\n&lt;ui-theme-toggle /&gt;\n___COMPODOC_EMPTY_LINE___\n&lt;!-- With tooltip --&gt;\n&lt;ui-theme-toggle showTooltip /&gt;\n___COMPODOC_EMPTY_LINE___\n&lt;!-- Raised button variant --&gt;\n&lt;ui-theme-toggle variant=&quot;button&quot; /&gt;</code></pre></div>",
+            "rawdescription": "\n\nA toggle button for switching between light and dark mode.\n\nUses the ThemeService from @sigmax/ui-theme to manage theme state.\nThe button displays a sun icon in dark mode and a moon icon in light mode,\nindicating what theme will be applied when clicked.\n\n```html\n<!-- Icon button (default) -->\n<ui-theme-toggle />\n___COMPODOC_EMPTY_LINE___\n<!-- With tooltip -->\n<ui-theme-toggle showTooltip />\n___COMPODOC_EMPTY_LINE___\n<!-- Raised button variant -->\n<ui-theme-toggle variant=\"button\" />\n```",
+            "type": "component",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  inject,\r\n  input,\r\n} from '@angular/core';\r\nimport { MatButtonModule } from '@angular/material/button';\r\nimport { MatIconModule } from '@angular/material/icon';\r\nimport { MatTooltipModule } from '@angular/material/tooltip';\r\n\r\nimport { ThemeService } from '@sigmax/ui-theme';\r\n\r\nexport type ThemeToggleVariant = 'icon' | 'button';\r\n\r\n/**\r\n * A toggle button for switching between light and dark mode.\r\n *\r\n * Uses the ThemeService from @sigmax/ui-theme to manage theme state.\r\n * The button displays a sun icon in dark mode and a moon icon in light mode,\r\n * indicating what theme will be applied when clicked.\r\n *\r\n * @example\r\n * ```html\r\n * <!-- Icon button (default) -->\r\n * <ui-theme-toggle />\r\n *\r\n * <!-- With tooltip -->\r\n * <ui-theme-toggle showTooltip />\r\n *\r\n * <!-- Raised button variant -->\r\n * <ui-theme-toggle variant=\"button\" />\r\n * ```\r\n */\r\n@Component({\r\n    selector: 'ui-theme-toggle',\r\n    standalone: true,\r\n    imports: [MatButtonModule, MatIconModule, MatTooltipModule],\r\n    templateUrl: './theme-toggle.component.html',\r\n    styleUrls: ['./theme-toggle.component.scss'],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class UiThemeToggleComponent {\r\n    protected readonly themeService = inject(ThemeService);\r\n\r\n    /** Visual style of the toggle */\r\n    readonly variant = input<ThemeToggleVariant>('icon');\r\n\r\n    /** Whether to show a tooltip on hover */\r\n    readonly showTooltip = input<boolean>(false);\r\n\r\n    /** Accessible label for the button */\r\n    readonly ariaLabel = input<string>('Toggle theme');\r\n\r\n    /** Computed tooltip text based on current theme */\r\n    protected get tooltipText(): string {\r\n        return this.themeService.isDarkMode()\r\n            ? 'Switch to light mode'\r\n            : 'Switch to dark mode';\r\n    }\r\n\r\n    /** Icon to display based on current theme (shows what will be applied) */\r\n    protected get icon(): string {\r\n        return this.themeService.isDarkMode() ? 'light_mode' : 'dark_mode';\r\n    }\r\n\r\n    toggle(): void {\r\n        this.themeService.toggleTheme();\r\n    }\r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\r\n    display: inline-block;\r\n}\r\n\r\nbutton {\r\n    mat-icon {\r\n        transition: transform 0.2s ease-in-out;\r\n    }\r\n\r\n    &:hover mat-icon {\r\n        transform: rotate(15deg);\r\n    }\r\n}\r\n",
+                    "styleUrl": "./theme-toggle.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "accessors": {
+                "tooltipText": {
+                    "name": "tooltipText",
+                    "getSignature": {
+                        "name": "tooltipText",
+                        "type": "string",
+                        "returnType": "string",
+                        "line": 55,
+                        "rawdescription": "\nComputed tooltip text based on current theme",
+                        "description": "<p>Computed tooltip text based on current theme</p>\n"
+                    }
+                },
+                "icon": {
+                    "name": "icon",
+                    "getSignature": {
+                        "name": "icon",
+                        "type": "string",
+                        "returnType": "string",
+                        "line": 62,
+                        "rawdescription": "\nIcon to display based on current theme (shows what will be applied)",
+                        "description": "<p>Icon to display based on current theme (shows what will be applied)</p>\n"
+                    }
+                }
+            },
+            "templateData": "@if (variant() === 'icon') {\r\n<button mat-icon-button (click)=\"toggle()\" [attr.aria-label]=\"ariaLabel()\"\r\n    [matTooltip]=\"showTooltip() ? tooltipText : ''\">\r\n    <mat-icon>{{ icon }}</mat-icon>\r\n</button>\r\n} @else {\r\n<button mat-button (click)=\"toggle()\" [attr.aria-label]=\"ariaLabel()\" [matTooltip]=\"showTooltip() ? tooltipText : ''\">\r\n    <mat-icon>{{ icon }}</mat-icon>\r\n    <span>{{ themeService.isDarkMode() ? 'Light' : 'Dark' }}</span>\r\n</button>\r\n}"
+        }
+    ],
     "modules": [],
     "miscellaneous": {
         "variables": [
@@ -71,6 +1636,30 @@
                 "description": "<p>Basic button without elevation.</p>\n"
             },
             {
+                "name": "ButtonVariant",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        variant: 'button',\r\n        showTooltip: false,\r\n    },\r\n}",
+                "rawdescription": "Button variant with icon and text label.",
+                "description": "<p>Button variant with icon and text label.</p>\n"
+            },
+            {
+                "name": "ButtonWithTooltip",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        variant: 'button',\r\n        showTooltip: true,\r\n    },\r\n}",
+                "rawdescription": "Button variant with tooltip.",
+                "description": "<p>Button variant with tooltip.</p>\n"
+            },
+            {
                 "name": "CustomDetailTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -122,6 +1711,18 @@
                 "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        variant: 'icon',\r\n        showTooltip: false,\r\n    },\r\n}",
+                "rawdescription": "Default icon button variant.",
+                "description": "<p>Default icon button variant.</p>\n"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -129,6 +1730,18 @@
                 "defaultValue": "{\r\n    args: {\r\n        items: sampleItems,\r\n        selectedItemId: null,\r\n        masterTitle: 'Documents',\r\n        detailPlaceholderText: 'Select a document to view details',\r\n    },\r\n}",
                 "rawdescription": "Default master-detail view with no selection.",
                 "description": "<p>Default master-detail view with no selection.</p>\n"
+            },
+            {
+                "name": "DEFAULT_THEME_CONFIG",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "ThemeConfig",
+                "defaultValue": "{\r\n    defaultMode: 'system',\r\n    storageKey: 'sigmax-theme-mode',\r\n    darkModeClass: 'dark-theme',\r\n    lightModeClass: 'light-theme',\r\n}",
+                "rawdescription": "Default theme configuration",
+                "description": "<p>Default theme configuration</p>\n"
             },
             {
                 "name": "Disabled",
@@ -308,6 +1921,16 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiThemeToggleComponent>",
+                "defaultValue": "{\r\n    title: '@Sigmax/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -411,6 +2034,18 @@
                 "description": "<p>Stroked/outlined button variant.</p>\n"
             },
             {
+                "name": "THEME_CONFIG",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "unknown",
+                "defaultValue": "new InjectionToken<ThemeConfig>('THEME_CONFIG', {\r\n    providedIn: 'root',\r\n    factory: () => DEFAULT_THEME_CONFIG,\r\n})",
+                "rawdescription": "Injection token for theme configuration",
+                "description": "<p>Injection token for theme configuration</p>\n"
+            },
+            {
                 "name": "Warning",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -445,10 +2080,55 @@
                 "defaultValue": "{\r\n    args: {\r\n        items: sampleItems,\r\n        selectedItemId: 2,\r\n        masterTitle: 'Documents',\r\n        detailPlaceholderText: 'Select a document to view details',\r\n    },\r\n}",
                 "rawdescription": "Master-detail view with a pre-selected item.",
                 "description": "<p>Master-detail view with a pre-selected item.</p>\n"
+            },
+            {
+                "name": "WithTooltip",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        variant: 'icon',\r\n        showTooltip: true,\r\n    },\r\n}",
+                "rawdescription": "Icon button with tooltip showing the action.",
+                "description": "<p>Icon button with tooltip showing the action.</p>\n"
             }
         ],
         "functions": [],
         "typealiases": [
+            {
+                "name": "ButtonColor",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"primary\" | \"accent\" | \"warn\"",
+                "file": "packages/ui-kit/src/lib/button/button.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "ButtonSize",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"small\" | \"medium\" | \"large\"",
+                "file": "packages/ui-kit/src/lib/button/button.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "ButtonVariant",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"basic\" | \"raised\" | \"stroked\" | \"flat\"",
+                "file": "packages/ui-kit/src/lib/button/button.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
             {
                 "name": "Story",
                 "ctype": "miscellaneous",
@@ -497,12 +2177,45 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
+                "rawtype": "StoryObj<UiThemeToggleComponent>",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
                 "rawtype": "StoryObj<UiMasterDetailViewComponent>",
                 "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
                 "kind": 184
+            },
+            {
+                "name": "ThemeMode",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"light\" | \"dark\" | \"system\"",
+                "file": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Theme mode type - light, dark, or system (auto-detect current system setting)</p>\n",
+                "kind": 193
+            },
+            {
+                "name": "ThemeToggleVariant",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"icon\" | \"button\"",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
             }
         ],
         "enumerations": [],
@@ -675,6 +2388,66 @@
                     "description": "<p>Warning button for destructive or cautionary actions.</p>\n"
                 }
             ],
+            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
+                {
+                    "name": "ButtonVariant",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        variant: 'button',\r\n        showTooltip: false,\r\n    },\r\n}",
+                    "rawdescription": "Button variant with icon and text label.",
+                    "description": "<p>Button variant with icon and text label.</p>\n"
+                },
+                {
+                    "name": "ButtonWithTooltip",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        variant: 'button',\r\n        showTooltip: true,\r\n    },\r\n}",
+                    "rawdescription": "Button variant with tooltip.",
+                    "description": "<p>Button variant with tooltip.</p>\n"
+                },
+                {
+                    "name": "Default",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        variant: 'icon',\r\n        showTooltip: false,\r\n    },\r\n}",
+                    "rawdescription": "Default icon button variant.",
+                    "description": "<p>Default icon button variant.</p>\n"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<UiThemeToggleComponent>",
+                    "defaultValue": "{\r\n    title: '@Sigmax/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
+                },
+                {
+                    "name": "WithTooltip",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        variant: 'icon',\r\n        showTooltip: true,\r\n    },\r\n}",
+                    "rawdescription": "Icon button with tooltip showing the action.",
+                    "description": "<p>Icon button with tooltip showing the action.</p>\n"
+                }
+            ],
             "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
                 {
                     "name": "CustomDetailTemplate",
@@ -827,6 +2600,32 @@
                     "description": "<p>Master-detail view with a pre-selected item.</p>\n"
                 }
             ],
+            "packages/ui-theme/src/lib/tokens/theme.tokens.ts": [
+                {
+                    "name": "DEFAULT_THEME_CONFIG",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ThemeConfig",
+                    "defaultValue": "{\r\n    defaultMode: 'system',\r\n    storageKey: 'sigmax-theme-mode',\r\n    darkModeClass: 'dark-theme',\r\n    lightModeClass: 'light-theme',\r\n}",
+                    "rawdescription": "Default theme configuration",
+                    "description": "<p>Default theme configuration</p>\n"
+                },
+                {
+                    "name": "THEME_CONFIG",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "new InjectionToken<ThemeConfig>('THEME_CONFIG', {\r\n    providedIn: 'root',\r\n    factory: () => DEFAULT_THEME_CONFIG,\r\n})",
+                    "rawdescription": "Injection token for theme configuration",
+                    "description": "<p>Injection token for theme configuration</p>\n"
+                }
+            ],
             "packages/ui-kit/src/stories/button.stories.ts": [
                 {
                     "name": "Large",
@@ -959,6 +2758,41 @@
         "groupedFunctions": {},
         "groupedEnumerations": {},
         "groupedTypeAliases": {
+            "packages/ui-kit/src/lib/button/button.component.ts": [
+                {
+                    "name": "ButtonColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"primary\" | \"accent\" | \"warn\"",
+                    "file": "packages/ui-kit/src/lib/button/button.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "ButtonSize",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"small\" | \"medium\" | \"large\"",
+                    "file": "packages/ui-kit/src/lib/button/button.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "ButtonVariant",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"basic\" | \"raised\" | \"stroked\" | \"flat\"",
+                    "file": "packages/ui-kit/src/lib/button/button.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
             "packages/ui-kit/src/stories/button.stories.ts": [
                 {
                     "name": "Story",
@@ -1011,6 +2845,19 @@
                     "kind": 184
                 }
             ],
+            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiThemeToggleComponent>",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
                 {
                     "name": "Story",
@@ -1023,6 +2870,32 @@
                     "description": "",
                     "kind": 184
                 }
+            ],
+            "packages/ui-theme/src/lib/tokens/theme.tokens.ts": [
+                {
+                    "name": "ThemeMode",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"light\" | \"dark\" | \"system\"",
+                    "file": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Theme mode type - light, dark, or system (auto-detect current system setting)</p>\n",
+                    "kind": 193
+                }
+            ],
+            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.component.ts": [
+                {
+                    "name": "ThemeToggleVariant",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"icon\" | \"button\"",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
             ]
         }
     },
@@ -1032,8 +2905,8 @@
         "children": []
     },
     "coverage": {
-        "count": 52,
-        "status": "good",
+        "count": 49,
+        "status": "medium",
         "files": [
             {
                 "filePath": ".storybook/preview.ts",
@@ -1043,6 +2916,60 @@
                 "name": "preview",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UiMasterDetailViewComponent",
+                "coveragePercent": 52,
+                "coverageCount": "9/17",
+                "status": "good"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ActionsTemplateContext",
+                "coveragePercent": 33,
+                "coverageCount": "1/3",
+                "status": "medium"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "DetailTemplateContext",
+                "coveragePercent": 25,
+                "coverageCount": "1/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "FilterTemplateContext",
+                "coveragePercent": 33,
+                "coverageCount": "1/3",
+                "status": "medium"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ItemTemplateContext",
+                "coveragePercent": 25,
+                "coverageCount": "1/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "MasterItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -1181,6 +3108,45 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
                 "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UiButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ButtonColor",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ButtonSize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/button/button.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ButtonVariant",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -1336,6 +3302,94 @@
                 "status": "low"
             },
             {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UiThemeToggleComponent",
+                "coveragePercent": 66,
+                "coverageCount": "4/6",
+                "status": "good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ThemeToggleVariant",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ButtonVariant",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ButtonWithTooltip",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Default",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithTooltip",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/stories/button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ButtonComponent",
+                "coveragePercent": 83,
+                "coverageCount": "5/6",
+                "status": "very-good"
+            },
+            {
                 "filePath": "packages/ui-kit/src/stories/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -1396,6 +3450,15 @@
                 "status": "low"
             },
             {
+                "filePath": "packages/ui-kit/src/stories/header.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "HeaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
                 "filePath": "packages/ui-kit/src/stories/header.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -1436,6 +3499,15 @@
                 "status": "low"
             },
             {
+                "filePath": "packages/ui-kit/src/stories/page.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PageComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
                 "filePath": "packages/ui-kit/src/stories/page.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -1474,6 +3546,54 @@
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "packages/ui-theme/src/lib/services/theme.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ThemeService",
+                "coveragePercent": 82,
+                "coverageCount": "14/17",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ThemeConfig",
+                "coveragePercent": 100,
+                "coverageCount": "5/5",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DEFAULT_THEME_CONFIG",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "THEME_CONFIG",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-theme/src/lib/tokens/theme.tokens.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ThemeMode",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
             }
         ]
     }

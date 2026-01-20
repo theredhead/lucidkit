@@ -1,0 +1,11 @@
+@if (variant() === 'icon') {
+<button mat-icon-button (click)="toggle()" [attr.aria-label]="ariaLabel()"
+    [matTooltip]="showTooltip() ? tooltipText : ''">
+    <mat-icon>{{ icon }}</mat-icon>
+</button>
+} @else {
+<button mat-button (click)="toggle()" [attr.aria-label]="ariaLabel()" [matTooltip]="showTooltip() ? tooltipText : ''">
+    <mat-icon>{{ icon }}</mat-icon>
+    <span>{{ themeService.isDarkMode() ? 'Light' : 'Dark' }}</span>
+</button>
+}

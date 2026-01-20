@@ -8,7 +8,10 @@
   "exclude": ["../**/*.spec.ts"],
   "include": [
     "../packages/ui-kit/src/**/*.stories.*",
+    "../packages/ui-kit/src/**/*.component.ts",
     "../packages/ui-blocks/src/**/*.stories.*",
+    "../packages/ui-blocks/src/**/*.component.ts",
+    "../packages/ui-theme/src/**/*.ts",
     "./preview.ts"
   ],
   "files": ["./typings.d.ts"]
