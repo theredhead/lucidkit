@@ -4,6 +4,8 @@ import {
     WritableSignal,
 } from '@angular/core';
 
+import { DEFAULT_PAGE_SIZE } from '../table-view.constants';
+
 import {
     IDatasource,
     RangeDefinition,
@@ -24,7 +26,7 @@ export class DatasourceAdapter<T> {
 
     constructor(
         private datasource: IDatasource<T>,
-        initialPageSize: number = 100,
+        initialPageSize: number = DEFAULT_PAGE_SIZE,
     ) {
         if (!Number.isFinite(initialPageSize) || initialPageSize <= 0) {
             throw new RangeError('initialPageSize must be a positive number');

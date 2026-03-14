@@ -20,7 +20,7 @@
       <div
         class="table-cell"
         [style.width.px]="getColWidth(col.key())"
-        [style.min-width.px]="getColWidth(col.key()) ? 40 : null"
+        [style.min-width.px]="getColWidth(col.key()) ? minColumnWidth : null"
         [style.flex]="getColWidth(col.key()) ? '0 0 auto' : '1'"
       >
         @if (row !== null) {
