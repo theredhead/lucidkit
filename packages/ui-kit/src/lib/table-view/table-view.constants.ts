@@ -18,4 +18,4 @@ export const ROW_INDEX_COLUMN_WIDTH = 68;
 export const DEFAULT_ROW_HEIGHT = 36;
 
 /** Default page size used by datasource adapters. */
-export const DEFAULT_PAGE_SIZE = 100;
+export const INITIAL_PAGE_SIZE = 100;

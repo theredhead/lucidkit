@@ -91,7 +91,9 @@ export class UITableView implements OnInit, AfterViewInit {
   protected readonly totalRowWidth = computed(() => {
     const cols = this.columns();
     const widths = this.columnWidths();
-    const rowIndexWidth = this.showRowIndexIndicator() ? ROW_INDEX_COLUMN_WIDTH : 0;
+    const rowIndexWidth = this.showRowIndexIndicator()
+      ? ROW_INDEX_COLUMN_WIDTH
+      : 0;
 
     let total = rowIndexWidth;
     let hasExplicit = false;

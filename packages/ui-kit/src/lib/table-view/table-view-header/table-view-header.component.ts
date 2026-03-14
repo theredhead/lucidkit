@@ -82,7 +82,10 @@ export class UITableHeader {
 
     const onMove = (e: PointerEvent) => {
       const delta = e.clientX - startX;
-      const newWidth = Math.max(MIN_COLUMN_WIDTH, Math.round(startWidth + delta));
+      const newWidth = Math.max(
+        MIN_COLUMN_WIDTH,
+        Math.round(startWidth + delta),
+      );
       cell.style.width = `${newWidth}px`;
       cell.style.flex = "0 0 auto";
     };
