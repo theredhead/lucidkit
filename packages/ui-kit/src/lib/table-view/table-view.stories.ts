@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
 import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
@@ -15,6 +15,7 @@ import {
   JsonPlaceholderPostsDatasource,
 } from "./datasources/jsonplaceholder-datasource";
 import { UITableView } from "./table-view.component";
+import { TableSelectionModel } from "./table-view-selection.model";
 
 @Component({
   selector: "ui-table-view-story-demo",
@@ -186,6 +187,158 @@ class UITableViewPhotosStoryDemo {
   readonly adapter = new DatasourceAdapter(
     new JsonPlaceholderPhotosDatasource(25),
   );
+}
+
+@Component({
+  selector: "ui-table-view-single-select-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    UITableView,
+    UINumberColumn,
+    UITextColumn,
+    UIBadgeColumn,
+    UIDensityDirective,
+    UiThemeToggleComponent,
+  ],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle table theme"
+      />
+    </div>
+    <ui-table-view
+      uiDensity="comfortable"
+      caption="Single Selection"
+      tableId="story-single-select"
+      selectionMode="single"
+      [rowClickSelect]="true"
+      [showRowIndexIndicator]="true"
+      [showBuiltInPaginator]="true"
+      [datasource]="adapter"
+      [selectionModel]="selectionModel"
+      (selectionChange)="onSelectionChange($event)"
+    >
+      <ui-number-column
+        key="id"
+        headerText="ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-number-column
+        key="userId"
+        headerText="User ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-text-column
+        key="title"
+        headerText="Title"
+        [truncate]="true"
+        [sortable]="true"
+      />
+      <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
+    </ui-table-view>
+    <pre style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;">Selected: {{ selectedJson() }}</pre>
+  `,
+})
+class UITableViewSingleSelectDemo {
+  readonly adapter = new DatasourceAdapter(
+    new JsonPlaceholderPostsDatasource(25),
+  );
+  readonly selectionModel = new TableSelectionModel<any>(
+    "single",
+    (row) => row.id,
+  );
+  readonly selectedJson = signal("(none)");
+
+  onSelectionChange(rows: readonly unknown[]): void {
+    this.selectedJson.set(
+      rows.length > 0 ? JSON.stringify(rows[0], null, 2) : "(none)",
+    );
+  }
+}
+
+@Component({
+  selector: "ui-table-view-multi-select-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    UITableView,
+    UINumberColumn,
+    UITextColumn,
+    UIBadgeColumn,
+    UIDensityDirective,
+    UiThemeToggleComponent,
+  ],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle table theme"
+      />
+    </div>
+    <ui-table-view
+      uiDensity="comfortable"
+      caption="Multiple Selection"
+      tableId="story-multi-select"
+      selectionMode="multiple"
+      [rowClickSelect]="true"
+      [showRowIndexIndicator]="true"
+      [showBuiltInPaginator]="true"
+      [datasource]="adapter"
+      [selectionModel]="selectionModel"
+      (selectionChange)="onSelectionChange($event)"
+    >
+      <ui-number-column
+        key="id"
+        headerText="ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-number-column
+        key="userId"
+        headerText="User ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-text-column
+        key="title"
+        headerText="Title"
+        [truncate]="true"
+        [sortable]="true"
+      />
+      <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
+    </ui-table-view>
+    <pre style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;">Selected ({{ selectedCount() }}): {{ selectedJson() }}</pre>
+  `,
+})
+class UITableViewMultiSelectDemo {
+  readonly adapter = new DatasourceAdapter(
+    new JsonPlaceholderPostsDatasource(25),
+  );
+  readonly selectionModel = new TableSelectionModel<any>(
+    "multiple",
+    (row) => row.id,
+  );
+  readonly selectedJson = signal("(none)");
+  readonly selectedCount = signal(0);
+
+  onSelectionChange(rows: readonly unknown[]): void {
+    this.selectedCount.set(rows.length);
+    this.selectedJson.set(
+      rows.length > 0
+        ? JSON.stringify(
+            rows.map((r: any) => ({ id: r.id, title: r.title })),
+            null,
+            2,
+          )
+        : "(none)",
+    );
+  }
 }
 
 const meta: Meta<object> = {
@@ -387,5 +540,29 @@ export const WithoutBuiltInPaginator: Story = {
                 />
             </ui-table-view>
         `,
+  }),
+};
+
+export const SingleSelection: Story = {
+  decorators: [
+    moduleMetadata({
+      imports: [UITableViewSingleSelectDemo],
+    }),
+  ],
+  render: () => ({
+    template: "<ui-table-view-single-select-demo />",
+    props: {},
+  }),
+};
+
+export const MultipleSelection: Story = {
+  decorators: [
+    moduleMetadata({
+      imports: [UITableViewMultiSelectDemo],
+    }),
+  ],
+  render: () => ({
+    template: "<ui-table-view-multi-select-demo />",
+    props: {},
   }),
 };

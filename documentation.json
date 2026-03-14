@@ -37,12 +37,12 @@
         },
         {
             "name": "ColumnResizeEvent",
-            "id": "interface-ColumnResizeEvent-8d4ed0f03962a30d6361c336dba5b5dd92e131f361b198ce410d1c568addd7c6e899cbd61ac6649ad9ad5f1045315b1d7208f0528c01dcc831b7f00cc88f4969",
+            "id": "interface-ColumnResizeEvent-eba95867fb5c5ba0d71d30ff98f108996c0664476546072c419e990a20b60d34fedaad22049c92486ac777407e6dbdd869223c5b82035de968c370fc45555f75",
             "file": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\nimport { MIN_COLUMN_WIDTH } from \"../table-view.constants\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  protected readonly minColumnWidth = MIN_COLUMN_WIDTH;\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(MIN_COLUMN_WIDTH, Math.round(startWidth + delta));\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\nimport { MIN_COLUMN_WIDTH } from \"../table-view.constants\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  protected readonly minColumnWidth = MIN_COLUMN_WIDTH;\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(startWidth + delta),\n      );\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
             "properties": [
                 {
                     "name": "key",
@@ -237,12 +237,12 @@
         },
         {
             "name": "SortState",
-            "id": "interface-SortState-8d4ed0f03962a30d6361c336dba5b5dd92e131f361b198ce410d1c568addd7c6e899cbd61ac6649ad9ad5f1045315b1d7208f0528c01dcc831b7f00cc88f4969",
+            "id": "interface-SortState-eba95867fb5c5ba0d71d30ff98f108996c0664476546072c419e990a20b60d34fedaad22049c92486ac777407e6dbdd869223c5b82035de968c370fc45555f75",
             "file": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\nimport { MIN_COLUMN_WIDTH } from \"../table-view.constants\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  protected readonly minColumnWidth = MIN_COLUMN_WIDTH;\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(MIN_COLUMN_WIDTH, Math.round(startWidth + delta));\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\nimport { MIN_COLUMN_WIDTH } from \"../table-view.constants\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  protected readonly minColumnWidth = MIN_COLUMN_WIDTH;\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(startWidth + delta),\n      );\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
             "properties": [
                 {
                     "name": "direction",
@@ -2065,7 +2065,7 @@
         },
         {
             "name": "UITableHeader",
-            "id": "component-UITableHeader-8d4ed0f03962a30d6361c336dba5b5dd92e131f361b198ce410d1c568addd7c6e899cbd61ac6649ad9ad5f1045315b1d7208f0528c01dcc831b7f00cc88f4969",
+            "id": "component-UITableHeader-eba95867fb5c5ba0d71d30ff98f108996c0664476546072c419e990a20b60d34fedaad22049c92486ac777407e6dbdd869223c5b82035de968c370fc45555f75",
             "file": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -2289,7 +2289,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\nimport { MIN_COLUMN_WIDTH } from \"../table-view.constants\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  protected readonly minColumnWidth = MIN_COLUMN_WIDTH;\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(MIN_COLUMN_WIDTH, Math.round(startWidth + delta));\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\nimport { MIN_COLUMN_WIDTH } from \"../table-view.constants\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  protected readonly minColumnWidth = MIN_COLUMN_WIDTH;\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(startWidth + delta),\n      );\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        MIN_COLUMN_WIDTH,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
             "styleUrl": "./table-view-header.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -2339,7 +2339,7 @@
         },
         {
             "name": "UITableView",
-            "id": "component-UITableView-4a9854abc6e21c99ea82a5527aa4bb862532e8637cd98c3d2e9572d3fe59d39164cd681e8dc90f14f588c1c3d920c35c01fc4fc695d08fbd18aab297c0ca695a",
+            "id": "component-UITableView-d213b4564f473873bd23782042ea8f6d5054f3ef439c04fb8fa3b988f103442e3d5e6a4e563f04adb1413b02c838c680ca3973a04e6fcbb269040deebce6550c",
             "file": "packages/ui-kit/src/lib/table-view/table-view.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -2534,7 +2534,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "<p>Generation counter to discard stale promise resolutions after page changes.</p>\n",
-                    "line": 111,
+                    "line": 113,
                     "rawdescription": "\nGeneration counter to discard stale promise resolutions after page changes.",
                     "modifierKind": [
                         121
@@ -2592,7 +2592,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 113,
+                    "line": 115,
                     "modifierKind": [
                         122,
                         144
@@ -2625,7 +2625,7 @@
                 },
                 {
                     "name": "totalRowWidth",
-                    "defaultValue": "computed(() => {\r\n    const cols = this.columns();\r\n    const widths = this.columnWidths();\r\n    const rowIndexWidth = this.showRowIndexIndicator() ? ROW_INDEX_COLUMN_WIDTH : 0;\r\n\r\n    let total = rowIndexWidth;\r\n    let hasExplicit = false;\r\n    for (const col of cols) {\r\n      const w = widths[col.key()];\r\n      if (w !== undefined) {\r\n        total += w;\r\n        hasExplicit = true;\r\n      } else {\r\n        total += FLEX_COLUMN_MIN_WIDTH;\r\n      }\r\n    }\r\n    return hasExplicit ? total : 0;\r\n  })",
+                    "defaultValue": "computed(() => {\r\n    const cols = this.columns();\r\n    const widths = this.columnWidths();\r\n    const rowIndexWidth = this.showRowIndexIndicator()\r\n      ? ROW_INDEX_COLUMN_WIDTH\r\n      : 0;\r\n\r\n    let total = rowIndexWidth;\r\n    let hasExplicit = false;\r\n    for (const col of cols) {\r\n      const w = widths[col.key()];\r\n      if (w !== undefined) {\r\n        total += w;\r\n        hasExplicit = true;\r\n      } else {\r\n        total += FLEX_COLUMN_MIN_WIDTH;\r\n      }\r\n    }\r\n    return hasExplicit ? total : 0;\r\n  })",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -2646,7 +2646,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 189,
+                    "line": 191,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nMeasures the platform scrollbar width using an off-screen probe element.\nUnlike measuring the live viewport (which may not have a scrollbar yet\nbecause data loads asynchronously), this technique gives the correct\nwidth immediately regardless of content or timing.\n",
@@ -2661,7 +2661,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 178,
+                    "line": 180,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2671,7 +2671,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 164,
+                    "line": 166,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2688,7 +2688,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 265,
+                    "line": 267,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2719,7 +2719,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 261,
+                    "line": 263,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2750,7 +2750,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 257,
+                    "line": 259,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2774,7 +2774,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 212,
+                    "line": 214,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nKeeps the header in horizontal-scroll sync with the CDK viewport.\n\nUses a ResizeObserver on the viewport's content wrapper to detect\nwhenever the body's scrollable width changes (column resize, data load,\nnatural content overflow, etc.). When the body overflows, we set\n--tv-header-scroll-width on the header element so its inner row\nexpands to match and scrollLeft works correctly.\n",
@@ -2791,7 +2791,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChildren,\r\n  DestroyRef,\r\n  effect,\r\n  ElementRef,\r\n  inject,\r\n  input,\r\n  OnInit,\r\n  signal,\r\n} from \"@angular/core\";\r\n\r\nimport { ColumnResizeService } from \"./column-resize.service\";\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\nimport { DatasourceAdapter } from \"./datasources/datasource-adapter\";\r\nimport {\r\n  FLEX_COLUMN_MIN_WIDTH,\r\n  ROW_INDEX_COLUMN_WIDTH,\r\n} from \"./table-view.constants\";\r\nimport { UITableBody } from \"./table-view-body/table-view-body.component\";\r\nimport { UITableFooter } from \"./table-view-footer/table-view-footer.component\";\r\nimport {\r\n  ColumnResizeEvent,\r\n  SortState,\r\n  UITableHeader,\r\n} from \"./table-view-header/table-view-header.component\";\r\n\r\n@Component({\r\n  selector: \"ui-table-view\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  imports: [UITableHeader, UITableBody, UITableFooter],\r\n  templateUrl: \"./table-view.component.html\",\r\n  styleUrl: \"./table-view.component.scss\",\r\n})\r\nexport class UITableView implements OnInit, AfterViewInit {\r\n  private static nextCaptionId = 0;\r\n  private readonly resizeService = inject(ColumnResizeService);\r\n  private readonly elRef = inject(ElementRef<HTMLElement>);\r\n  private readonly destroyRef = inject(DestroyRef);\r\n\r\n  datasource = input.required<DatasourceAdapter<any>>();\r\n  showBuiltInPaginator = input<boolean>(true);\r\n  caption = input<string>(\"\");\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexHeaderText = input<string>(\"#\");\r\n\r\n  /**\r\n   * Unique identifier for this table instance.\r\n   * Used as key for persisting column widths in localStorage.\r\n   * When set, column resizing is enabled and widths are persisted.\r\n   */\r\n  tableId = input<string>(\"\");\r\n\r\n  /**\r\n   * Whether columns can be resized by dragging header borders.\r\n   * Defaults to true when a tableId is provided.\r\n   */\r\n  resizable = input<boolean | undefined>(undefined);\r\n\r\n  columns = contentChildren(UITableViewColumn);\r\n  protected readonly captionId = `ui-table-caption-${UITableView.nextCaptionId++}`;\r\n\r\n  protected readonly resolvedRows = signal<unknown[]>([]);\r\n  protected readonly sortState = signal<SortState | null>(null);\r\n  protected readonly captionAriaLabelledBy = computed(() =>\r\n    this.caption().trim() ? this.captionId : null,\r\n  );\r\n  protected readonly rowIndexOffset = computed(\r\n    () => this.datasource().pageIndex() * this.datasource().pageSize(),\r\n  );\r\n\r\n  /** Column widths as a record (key → px). Used by both header and body. */\r\n  protected readonly columnWidths = signal<Record<string, number>>({});\r\n\r\n  /** Whether resizing is actually enabled (explicit input or inferred from tableId). */\r\n  protected readonly isResizable = computed(() => {\r\n    const explicit = this.resizable();\r\n    if (explicit !== undefined) return explicit;\r\n    return this.tableId().length > 0;\r\n  });\r\n\r\n  /**\r\n   * Computed total row width (px) when at least one column has been\r\n   * explicitly resized. Flex columns get a 120px minimum.\r\n   * Returns 0 when no columns have explicit widths (natural sizing).\r\n   */\r\n  protected readonly totalRowWidth = computed(() => {\r\n    const cols = this.columns();\r\n    const widths = this.columnWidths();\r\n    const rowIndexWidth = this.showRowIndexIndicator() ? ROW_INDEX_COLUMN_WIDTH : 0;\r\n\r\n    let total = rowIndexWidth;\r\n    let hasExplicit = false;\r\n    for (const col of cols) {\r\n      const w = widths[col.key()];\r\n      if (w !== undefined) {\r\n        total += w;\r\n        hasExplicit = true;\r\n      } else {\r\n        total += FLEX_COLUMN_MIN_WIDTH;\r\n      }\r\n    }\r\n    return hasExplicit ? total : 0;\r\n  });\r\n\r\n  /** Generation counter to discard stale promise resolutions after page changes. */\r\n  private resolveGeneration = 0;\r\n\r\n  protected readonly sortedRows = computed(() => {\r\n    const rows = this.resolvedRows();\r\n    const sort = this.sortState();\r\n    if (!sort) return rows;\r\n    return [...rows].sort((a, b) => {\r\n      // Keep loading placeholders (null) in place – don't try to sort them\r\n      if (a === null || b === null) return 0;\r\n      const va = String((a as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const vb = String((b as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const cmp = va.localeCompare(vb);\r\n      return sort.direction === \"asc\" ? cmp : -cmp;\r\n    });\r\n  });\r\n\r\n  constructor() {\r\n    effect(() => {\r\n      const items = this.datasource().visibleWindow();\r\n      const gen = ++this.resolveGeneration;\r\n      const rows: (unknown | null)[] = new Array(items.length).fill(null);\r\n\r\n      items.forEach((item, index) => {\r\n        if (item instanceof Promise) {\r\n          item.then((resolved) => {\r\n            if (this.resolveGeneration !== gen) return; // stale page\r\n            const current = [...this.resolvedRows()];\r\n            current[index] = resolved;\r\n            this.resolvedRows.set(current);\r\n          });\r\n        } else {\r\n          rows[index] = item;\r\n        }\r\n      });\r\n\r\n      this.resolvedRows.set(rows);\r\n    });\r\n\r\n    // Keep --tv-total-row-width in sync so header + body + rows\r\n    // all expand to the same width inside the scroll container.\r\n    effect(() => {\r\n      const width = this.totalRowWidth();\r\n      if (width > 0) {\r\n        this.elRef.nativeElement.style.setProperty(\r\n          \"--tv-total-row-width\",\r\n          `${width}px`,\r\n        );\r\n      } else {\r\n        this.elRef.nativeElement.style.removeProperty(\"--tv-total-row-width\");\r\n      }\r\n    });\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const saved = this.resizeService.load(id);\r\n      if (saved.size > 0) {\r\n        const record: Record<string, number> = {};\r\n        for (const [key, px] of saved) {\r\n          record[key] = px;\r\n        }\r\n        this.columnWidths.set(record);\r\n      }\r\n    }\r\n  }\r\n\r\n  ngAfterViewInit(): void {\r\n    this.measureScrollbarWidth();\r\n    this.setupHorizontalScrollSync();\r\n  }\r\n\r\n  /**\r\n   * Measures the platform scrollbar width using an off-screen probe element.\r\n   * Unlike measuring the live viewport (which may not have a scrollbar yet\r\n   * because data loads asynchronously), this technique gives the correct\r\n   * width immediately regardless of content or timing.\r\n   */\r\n  private measureScrollbarWidth(): void {\r\n    const probe = document.createElement(\"div\");\r\n    probe.style.cssText =\r\n      \"position:absolute;top:-9999px;left:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden;\";\r\n    document.body.appendChild(probe);\r\n    const scrollbarW = probe.offsetWidth - probe.clientWidth;\r\n    document.body.removeChild(probe);\r\n\r\n    this.elRef.nativeElement.style.setProperty(\r\n      \"--tv-scrollbar-width\",\r\n      `${scrollbarW}px`,\r\n    );\r\n  }\r\n\r\n  /**\r\n   * Keeps the header in horizontal-scroll sync with the CDK viewport.\r\n   *\r\n   * Uses a ResizeObserver on the viewport's content wrapper to detect\r\n   * whenever the body's scrollable width changes (column resize, data load,\r\n   * natural content overflow, etc.). When the body overflows, we set\r\n   * --tv-header-scroll-width on the header element so its inner row\r\n   * expands to match and scrollLeft works correctly.\r\n   */\r\n  private setupHorizontalScrollSync(): void {\r\n    const root = this.elRef.nativeElement;\r\n    const viewport = root.querySelector(\r\n      \"cdk-virtual-scroll-viewport\",\r\n    ) as HTMLElement | null;\r\n    const header = root.querySelector(\"ui-table-header\") as HTMLElement | null;\r\n    if (!viewport || !header) return;\r\n\r\n    const syncHeaderWidth = () => {\r\n      const sw = viewport.scrollWidth;\r\n      const cw = viewport.clientWidth;\r\n      if (sw > cw) {\r\n        // Body overflows – widen the header row to match.\r\n        // Add the vertical-scrollbar width so header cells stay aligned.\r\n        const sbW = viewport.offsetWidth - cw;\r\n        header.style.setProperty(\"--tv-header-scroll-width\", `${sw + sbW}px`);\r\n      } else {\r\n        header.style.removeProperty(\"--tv-header-scroll-width\");\r\n      }\r\n    };\r\n\r\n    const onScroll = () => {\r\n      syncHeaderWidth();\r\n      header.scrollLeft = viewport.scrollLeft;\r\n    };\r\n\r\n    viewport.addEventListener(\"scroll\", onScroll, { passive: true });\r\n\r\n    // Observe size changes in the content wrapper so we catch data loads,\r\n    // column resizes, and window resizes without polling.\r\n    const contentWrapper = viewport.querySelector(\r\n      \".cdk-virtual-scroll-content-wrapper\",\r\n    );\r\n    let ro: ResizeObserver | undefined;\r\n    if (contentWrapper) {\r\n      ro = new ResizeObserver(() => syncHeaderWidth());\r\n      ro.observe(contentWrapper);\r\n    }\r\n\r\n    this.destroyRef.onDestroy(() => {\r\n      viewport.removeEventListener(\"scroll\", onScroll);\r\n      ro?.disconnect();\r\n    });\r\n  }\r\n\r\n  protected onSortChange(state: SortState | null): void {\r\n    this.sortState.set(state);\r\n  }\r\n\r\n  protected onPageChange(page: number): void {\r\n    this.datasource().pageIndex.set(page);\r\n  }\r\n\r\n  protected onColumnResize(event: ColumnResizeEvent): void {\r\n    const current = { ...this.columnWidths() };\r\n    current[event.key] = event.widthPx;\r\n    this.columnWidths.set(current);\r\n\r\n    // Persist to localStorage if we have a tableId\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const map = new Map<string, number>(Object.entries(current));\r\n      this.resizeService.save(id, map);\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChildren,\r\n  DestroyRef,\r\n  effect,\r\n  ElementRef,\r\n  inject,\r\n  input,\r\n  OnInit,\r\n  signal,\r\n} from \"@angular/core\";\r\n\r\nimport { ColumnResizeService } from \"./column-resize.service\";\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\nimport { DatasourceAdapter } from \"./datasources/datasource-adapter\";\r\nimport {\r\n  FLEX_COLUMN_MIN_WIDTH,\r\n  ROW_INDEX_COLUMN_WIDTH,\r\n} from \"./table-view.constants\";\r\nimport { UITableBody } from \"./table-view-body/table-view-body.component\";\r\nimport { UITableFooter } from \"./table-view-footer/table-view-footer.component\";\r\nimport {\r\n  ColumnResizeEvent,\r\n  SortState,\r\n  UITableHeader,\r\n} from \"./table-view-header/table-view-header.component\";\r\n\r\n@Component({\r\n  selector: \"ui-table-view\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  imports: [UITableHeader, UITableBody, UITableFooter],\r\n  templateUrl: \"./table-view.component.html\",\r\n  styleUrl: \"./table-view.component.scss\",\r\n})\r\nexport class UITableView implements OnInit, AfterViewInit {\r\n  private static nextCaptionId = 0;\r\n  private readonly resizeService = inject(ColumnResizeService);\r\n  private readonly elRef = inject(ElementRef<HTMLElement>);\r\n  private readonly destroyRef = inject(DestroyRef);\r\n\r\n  datasource = input.required<DatasourceAdapter<any>>();\r\n  showBuiltInPaginator = input<boolean>(true);\r\n  caption = input<string>(\"\");\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexHeaderText = input<string>(\"#\");\r\n\r\n  /**\r\n   * Unique identifier for this table instance.\r\n   * Used as key for persisting column widths in localStorage.\r\n   * When set, column resizing is enabled and widths are persisted.\r\n   */\r\n  tableId = input<string>(\"\");\r\n\r\n  /**\r\n   * Whether columns can be resized by dragging header borders.\r\n   * Defaults to true when a tableId is provided.\r\n   */\r\n  resizable = input<boolean | undefined>(undefined);\r\n\r\n  columns = contentChildren(UITableViewColumn);\r\n  protected readonly captionId = `ui-table-caption-${UITableView.nextCaptionId++}`;\r\n\r\n  protected readonly resolvedRows = signal<unknown[]>([]);\r\n  protected readonly sortState = signal<SortState | null>(null);\r\n  protected readonly captionAriaLabelledBy = computed(() =>\r\n    this.caption().trim() ? this.captionId : null,\r\n  );\r\n  protected readonly rowIndexOffset = computed(\r\n    () => this.datasource().pageIndex() * this.datasource().pageSize(),\r\n  );\r\n\r\n  /** Column widths as a record (key → px). Used by both header and body. */\r\n  protected readonly columnWidths = signal<Record<string, number>>({});\r\n\r\n  /** Whether resizing is actually enabled (explicit input or inferred from tableId). */\r\n  protected readonly isResizable = computed(() => {\r\n    const explicit = this.resizable();\r\n    if (explicit !== undefined) return explicit;\r\n    return this.tableId().length > 0;\r\n  });\r\n\r\n  /**\r\n   * Computed total row width (px) when at least one column has been\r\n   * explicitly resized. Flex columns get a 120px minimum.\r\n   * Returns 0 when no columns have explicit widths (natural sizing).\r\n   */\r\n  protected readonly totalRowWidth = computed(() => {\r\n    const cols = this.columns();\r\n    const widths = this.columnWidths();\r\n    const rowIndexWidth = this.showRowIndexIndicator()\r\n      ? ROW_INDEX_COLUMN_WIDTH\r\n      : 0;\r\n\r\n    let total = rowIndexWidth;\r\n    let hasExplicit = false;\r\n    for (const col of cols) {\r\n      const w = widths[col.key()];\r\n      if (w !== undefined) {\r\n        total += w;\r\n        hasExplicit = true;\r\n      } else {\r\n        total += FLEX_COLUMN_MIN_WIDTH;\r\n      }\r\n    }\r\n    return hasExplicit ? total : 0;\r\n  });\r\n\r\n  /** Generation counter to discard stale promise resolutions after page changes. */\r\n  private resolveGeneration = 0;\r\n\r\n  protected readonly sortedRows = computed(() => {\r\n    const rows = this.resolvedRows();\r\n    const sort = this.sortState();\r\n    if (!sort) return rows;\r\n    return [...rows].sort((a, b) => {\r\n      // Keep loading placeholders (null) in place – don't try to sort them\r\n      if (a === null || b === null) return 0;\r\n      const va = String((a as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const vb = String((b as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const cmp = va.localeCompare(vb);\r\n      return sort.direction === \"asc\" ? cmp : -cmp;\r\n    });\r\n  });\r\n\r\n  constructor() {\r\n    effect(() => {\r\n      const items = this.datasource().visibleWindow();\r\n      const gen = ++this.resolveGeneration;\r\n      const rows: (unknown | null)[] = new Array(items.length).fill(null);\r\n\r\n      items.forEach((item, index) => {\r\n        if (item instanceof Promise) {\r\n          item.then((resolved) => {\r\n            if (this.resolveGeneration !== gen) return; // stale page\r\n            const current = [...this.resolvedRows()];\r\n            current[index] = resolved;\r\n            this.resolvedRows.set(current);\r\n          });\r\n        } else {\r\n          rows[index] = item;\r\n        }\r\n      });\r\n\r\n      this.resolvedRows.set(rows);\r\n    });\r\n\r\n    // Keep --tv-total-row-width in sync so header + body + rows\r\n    // all expand to the same width inside the scroll container.\r\n    effect(() => {\r\n      const width = this.totalRowWidth();\r\n      if (width > 0) {\r\n        this.elRef.nativeElement.style.setProperty(\r\n          \"--tv-total-row-width\",\r\n          `${width}px`,\r\n        );\r\n      } else {\r\n        this.elRef.nativeElement.style.removeProperty(\"--tv-total-row-width\");\r\n      }\r\n    });\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const saved = this.resizeService.load(id);\r\n      if (saved.size > 0) {\r\n        const record: Record<string, number> = {};\r\n        for (const [key, px] of saved) {\r\n          record[key] = px;\r\n        }\r\n        this.columnWidths.set(record);\r\n      }\r\n    }\r\n  }\r\n\r\n  ngAfterViewInit(): void {\r\n    this.measureScrollbarWidth();\r\n    this.setupHorizontalScrollSync();\r\n  }\r\n\r\n  /**\r\n   * Measures the platform scrollbar width using an off-screen probe element.\r\n   * Unlike measuring the live viewport (which may not have a scrollbar yet\r\n   * because data loads asynchronously), this technique gives the correct\r\n   * width immediately regardless of content or timing.\r\n   */\r\n  private measureScrollbarWidth(): void {\r\n    const probe = document.createElement(\"div\");\r\n    probe.style.cssText =\r\n      \"position:absolute;top:-9999px;left:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden;\";\r\n    document.body.appendChild(probe);\r\n    const scrollbarW = probe.offsetWidth - probe.clientWidth;\r\n    document.body.removeChild(probe);\r\n\r\n    this.elRef.nativeElement.style.setProperty(\r\n      \"--tv-scrollbar-width\",\r\n      `${scrollbarW}px`,\r\n    );\r\n  }\r\n\r\n  /**\r\n   * Keeps the header in horizontal-scroll sync with the CDK viewport.\r\n   *\r\n   * Uses a ResizeObserver on the viewport's content wrapper to detect\r\n   * whenever the body's scrollable width changes (column resize, data load,\r\n   * natural content overflow, etc.). When the body overflows, we set\r\n   * --tv-header-scroll-width on the header element so its inner row\r\n   * expands to match and scrollLeft works correctly.\r\n   */\r\n  private setupHorizontalScrollSync(): void {\r\n    const root = this.elRef.nativeElement;\r\n    const viewport = root.querySelector(\r\n      \"cdk-virtual-scroll-viewport\",\r\n    ) as HTMLElement | null;\r\n    const header = root.querySelector(\"ui-table-header\") as HTMLElement | null;\r\n    if (!viewport || !header) return;\r\n\r\n    const syncHeaderWidth = () => {\r\n      const sw = viewport.scrollWidth;\r\n      const cw = viewport.clientWidth;\r\n      if (sw > cw) {\r\n        // Body overflows – widen the header row to match.\r\n        // Add the vertical-scrollbar width so header cells stay aligned.\r\n        const sbW = viewport.offsetWidth - cw;\r\n        header.style.setProperty(\"--tv-header-scroll-width\", `${sw + sbW}px`);\r\n      } else {\r\n        header.style.removeProperty(\"--tv-header-scroll-width\");\r\n      }\r\n    };\r\n\r\n    const onScroll = () => {\r\n      syncHeaderWidth();\r\n      header.scrollLeft = viewport.scrollLeft;\r\n    };\r\n\r\n    viewport.addEventListener(\"scroll\", onScroll, { passive: true });\r\n\r\n    // Observe size changes in the content wrapper so we catch data loads,\r\n    // column resizes, and window resizes without polling.\r\n    const contentWrapper = viewport.querySelector(\r\n      \".cdk-virtual-scroll-content-wrapper\",\r\n    );\r\n    let ro: ResizeObserver | undefined;\r\n    if (contentWrapper) {\r\n      ro = new ResizeObserver(() => syncHeaderWidth());\r\n      ro.observe(contentWrapper);\r\n    }\r\n\r\n    this.destroyRef.onDestroy(() => {\r\n      viewport.removeEventListener(\"scroll\", onScroll);\r\n      ro?.disconnect();\r\n    });\r\n  }\r\n\r\n  protected onSortChange(state: SortState | null): void {\r\n    this.sortState.set(state);\r\n  }\r\n\r\n  protected onPageChange(page: number): void {\r\n    this.datasource().pageIndex.set(page);\r\n  }\r\n\r\n  protected onColumnResize(event: ColumnResizeEvent): void {\r\n    const current = { ...this.columnWidths() };\r\n    current[event.key] = event.widthPx;\r\n    this.columnWidths.set(current);\r\n\r\n    // Persist to localStorage if we have a tableId\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const map = new Map<string, number>(Object.entries(current));\r\n      this.resizeService.save(id, map);\r\n    }\r\n  }\r\n}\r\n",
             "styleUrl": "./table-view.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -2802,7 +2802,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 125
+                "line": 127
             },
             "implements": [
                 "OnInit",
@@ -3344,18 +3344,6 @@
                 "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        items: sampleItems,\r\n        selectedItemId: null,\r\n        masterTitle: 'Documents',\r\n        detailPlaceholderText: 'Select a document to view details',\r\n    },\r\n}",
-                "rawdescription": "Default master-detail view with no selection.",
-                "description": "<p>Default master-detail view with no selection.</p>\n"
-            },
-            {
-                "name": "Default",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -3363,6 +3351,18 @@
                 "defaultValue": "{\r\n    args: {\r\n        label: 'Click me',\r\n        variant: 'raised',\r\n        color: 'primary',\r\n        size: 'medium',\r\n        isDisabled: false,\r\n    },\r\n}",
                 "rawdescription": "The default button with raised style and primary color.",
                 "description": "<p>The default button with raised style and primary color.</p>\n"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        items: sampleItems,\r\n        selectedItemId: null,\r\n        masterTitle: 'Documents',\r\n        detailPlaceholderText: 'Select a document to view details',\r\n    },\r\n}",
+                "rawdescription": "Default master-detail view with no selection.",
+                "description": "<p>Default master-detail view with no selection.</p>\n"
             },
             {
                 "name": "Default",
@@ -3596,16 +3596,6 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<UiMasterDetailViewComponent>",
-                "defaultValue": "{\r\n    title: '@Sigmax/UI Blocks/Master Detail View',\r\n    component: UiMasterDetailViewComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        items: {\r\n            control: 'object',\r\n            description: 'Array of items to display in the master list',\r\n        },\r\n        selectedItemId: {\r\n            control: 'text',\r\n            description: 'ID of the currently selected item',\r\n        },\r\n        masterTitle: {\r\n            control: 'text',\r\n            description: 'Title displayed above the master list',\r\n        },\r\n        detailPlaceholderText: {\r\n            control: 'text',\r\n            description: 'Text shown when no item is selected',\r\n        },\r\n        detailData: {\r\n            control: 'object',\r\n            description: 'Optional detail data passed to the detail template',\r\n        },\r\n    },\r\n    decorators: [\r\n        (story) => ({\r\n            ...story(),\r\n            styles: [`\r\n        :host {\r\n          display: block;\r\n          height: 400px;\r\n          border: 1px solid var(--mat-sys-outline-variant, #ccc);\r\n          border-radius: 8px;\r\n          overflow: hidden;\r\n        }\r\n      `],\r\n        }),\r\n    ],\r\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -3616,21 +3606,31 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<UiThemeToggleComponent>",
-                "defaultValue": "{\r\n    title: '@Sigmax/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<object>",
                 "defaultValue": "{\r\n  title: \"@Sigmax/UI Kit/Table View\",\r\n  component: UITableViewStoryDemo,\r\n  tags: [\"autodocs\"],\r\n  parameters: {\r\n    layout: \"fullscreen\",\r\n    docs: {\r\n      description: {\r\n        component:\r\n          \"Table View demo backed by JSONPlaceholder posts using the Storybook-only JSONPlaceholder datasource adapters.\",\r\n      },\r\n    },\r\n  },\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiMasterDetailViewComponent>",
+                "defaultValue": "{\r\n    title: '@Sigmax/UI Blocks/Master Detail View',\r\n    component: UiMasterDetailViewComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        items: {\r\n            control: 'object',\r\n            description: 'Array of items to display in the master list',\r\n        },\r\n        selectedItemId: {\r\n            control: 'text',\r\n            description: 'ID of the currently selected item',\r\n        },\r\n        masterTitle: {\r\n            control: 'text',\r\n            description: 'Title displayed above the master list',\r\n        },\r\n        detailPlaceholderText: {\r\n            control: 'text',\r\n            description: 'Text shown when no item is selected',\r\n        },\r\n        detailData: {\r\n            control: 'object',\r\n            description: 'Optional detail data passed to the detail template',\r\n        },\r\n    },\r\n    decorators: [\r\n        (story) => ({\r\n            ...story(),\r\n            styles: [`\r\n        :host {\r\n          display: block;\r\n          height: 400px;\r\n          border: 1px solid var(--mat-sys-outline-variant, #ccc);\r\n          border-radius: 8px;\r\n          overflow: hidden;\r\n        }\r\n      `],\r\n        }),\r\n    ],\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiThemeToggleComponent>",
+                "defaultValue": "{\r\n    title: '@Sigmax/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
             },
             {
                 "name": "mockDetailData",
@@ -3882,17 +3882,6 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<UiMasterDetailViewComponent>",
-                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "kind": 177
-            },
-            {
-                "name": "Story",
-                "ctype": "miscellaneous",
-                "subtype": "typealias",
                 "rawtype": "StoryObj<UiButtonComponent>",
                 "file": "packages/ui-kit/src/lib/button/button.stories.ts",
                 "deprecated": false,
@@ -3904,8 +3893,8 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<UiThemeToggleComponent>",
-                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "rawtype": "StoryObj<object>",
+                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -3915,8 +3904,19 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<object>",
-                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                "rawtype": "StoryObj<UiMasterDetailViewComponent>",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 177
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<UiThemeToggleComponent>",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -4634,19 +4634,6 @@
                     "kind": 177
                 }
             ],
-            "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<UiMasterDetailViewComponent>",
-                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 177
-                }
-            ],
             "packages/ui-kit/src/lib/button/button.stories.ts": [
                 {
                     "name": "Story",
@@ -4660,19 +4647,6 @@
                     "kind": 177
                 }
             ],
-            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<UiThemeToggleComponent>",
-                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 177
-                }
-            ],
             "packages/ui-kit/src/lib/table-view/table-view.stories.ts": [
                 {
                     "name": "Story",
@@ -4680,6 +4654,32 @@
                     "subtype": "typealias",
                     "rawtype": "StoryObj<object>",
                     "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 177
+                }
+            ],
+            "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiMasterDetailViewComponent>",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 177
+                }
+            ],
+            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiThemeToggleComponent>",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",

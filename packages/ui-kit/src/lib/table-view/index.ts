@@ -1,5 +1,6 @@
 export * from "./table-view.component";
 export * from "./table-view.constants";
+export * from "./table-view-selection.model";
 export * from "./table-view-header/table-view-header.component";
 export * from "./table-view-body/table-view-body.component";
 export * from "./table-view-footer/table-view-footer.component";

@@ -4,6 +4,22 @@
       {{ rowIndexHeaderText() }}
     </div>
   }
+  @if (selectionMode() === 'single') {
+    <div class="table-header-cell table-header-cell--selection" aria-label="Selection">
+    </div>
+  }
+  @if (selectionMode() === 'multiple') {
+    <div class="table-header-cell table-header-cell--selection">
+      <input
+        type="checkbox"
+        class="tv-select-all-checkbox"
+        [checked]="allSelected()"
+        [indeterminate]="indeterminate()"
+        (change)="onSelectAllToggle($event)"
+        aria-label="Select all rows"
+      />
+    </div>
+  }
   @for (col of columns(); track col.key(); let i = $index) {
     <div
       class="table-header-cell"

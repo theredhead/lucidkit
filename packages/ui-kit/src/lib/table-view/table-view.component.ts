@@ -10,6 +10,7 @@ import {
   inject,
   input,
   OnInit,
+  output,
   signal,
 } from "@angular/core";
 
@@ -19,6 +20,7 @@ import { DatasourceAdapter } from "./datasources/datasource-adapter";
 import {
   FLEX_COLUMN_MIN_WIDTH,
   ROW_INDEX_COLUMN_WIDTH,
+  SELECTION_COLUMN_WIDTH,
 } from "./table-view.constants";
 import { UITableBody } from "./table-view-body/table-view-body.component";
 import { UITableFooter } from "./table-view-footer/table-view-footer.component";
@@ -27,6 +29,10 @@ import {
   SortState,
   UITableHeader,
 } from "./table-view-header/table-view-header.component";
+import {
+  SelectionMode,
+  TableSelectionModel,
+} from "./table-view-selection.model";
 
 @Component({
   selector: "ui-table-view",
@@ -61,8 +67,52 @@ export class UITableView implements OnInit, AfterViewInit {
    */
   resizable = input<boolean | undefined>(undefined);
 
+  /**
+   * Selection mode for the table.
+   * - `'none'` (default): no selection UI.
+   * - `'single'`: radio-button column for one-at-a-time selection.
+   * - `'multiple'`: checkbox column for multi-row selection.
+   */
+  selectionMode = input<SelectionMode>("none");
+
+  /**
+   * Whether clicking / tapping a row toggles its selection
+   * (in addition to clicking the radio / checkbox itself).
+   */
+  rowClickSelect = input<boolean>(false);
+
+  /**
+   * Optional external selection model. When provided the table will use
+   * this instance instead of creating its own, giving the consumer full
+   * programmatic control.
+   */
+  selectionModel = input<TableSelectionModel<any> | undefined>(undefined);
+
+  /**
+   * Emitted whenever the selection changes. Carries the full list of
+   * currently selected row objects.
+   */
+  selectionChange = output<readonly unknown[]>();
+
   columns = contentChildren(UITableViewColumn);
   protected readonly captionId = `ui-table-caption-${UITableView.nextCaptionId++}`;
+
+  /**
+   * The resolved selection model. Uses the externally-provided model
+   * if given, otherwise creates an internal one that syncs its mode
+   * with the `selectionMode` input.
+   */
+  protected readonly selection = computed(() => {
+    const external = this.selectionModel();
+    if (external) {
+      // Keep the external model's mode in sync with the input.
+      external.mode.set(this.selectionMode());
+      return external;
+    }
+    return this._internalSelection;
+  });
+
+  private readonly _internalSelection = new TableSelectionModel<any>("none");
 
   protected readonly resolvedRows = signal<unknown[]>([]);
   protected readonly sortState = signal<SortState | null>(null);
@@ -94,8 +144,10 @@ export class UITableView implements OnInit, AfterViewInit {
     const rowIndexWidth = this.showRowIndexIndicator()
       ? ROW_INDEX_COLUMN_WIDTH
       : 0;
+    const selectionWidth =
+      this.selectionMode() !== "none" ? SELECTION_COLUMN_WIDTH : 0;
 
-    let total = rowIndexWidth;
+    let total = rowIndexWidth + selectionWidth;
     let hasExplicit = false;
     for (const col of cols) {
       const w = widths[col.key()];
@@ -160,6 +212,18 @@ export class UITableView implements OnInit, AfterViewInit {
       } else {
         this.elRef.nativeElement.style.removeProperty("--tv-total-row-width");
       }
+    });
+
+    // Sync internal selection model mode with selectionMode input
+    effect(() => {
+      const mode = this.selectionMode();
+      this._internalSelection.mode.set(mode);
+    });
+
+    // Emit selectionChange whenever the selection changes
+    effect(() => {
+      const rows = this.selection().selected();
+      this.selectionChange.emit(rows);
     });
   }
 
@@ -274,6 +338,23 @@ export class UITableView implements OnInit, AfterViewInit {
     if (id) {
       const map = new Map<string, number>(Object.entries(current));
       this.resizeService.save(id, map);
+    }
+  }
+
+  protected onRowClick(row: unknown): void {
+    if (this.selectionMode() === "none" || !this.rowClickSelect()) return;
+    if (row === null) return; // still loading
+    this.selection().toggle(row);
+  }
+
+  protected onSelectAllChange(checked: boolean): void {
+    const model = this.selection();
+    if (checked) {
+      // Only select non-null (loaded) rows
+      const rows = this.sortedRows().filter((r) => r !== null);
+      model.selectAll(rows);
+    } else {
+      model.clear();
     }
   }
 }

@@ -10,6 +10,7 @@ import {
 
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { MIN_COLUMN_WIDTH } from "../table-view.constants";
+import type { SelectionMode } from "../table-view-selection.model";
 
 export interface SortState {
   key: string;
@@ -34,8 +35,12 @@ export class UITableHeader {
   rowIndexHeaderText = input<string>("#");
   resizable = input<boolean>(false);
   columnWidths = input<Record<string, number>>({});
+  selectionMode = input<SelectionMode>("none");
+  allSelected = input<boolean>(false);
+  indeterminate = input<boolean>(false);
   sortChange = output<SortState | null>();
   columnResize = output<ColumnResizeEvent>();
+  selectAllChange = output<boolean>();
   sortState = signal<SortState | null>(null);
 
   protected readonly minColumnWidth = MIN_COLUMN_WIDTH;
@@ -107,5 +112,10 @@ export class UITableHeader {
 
     handle.addEventListener("pointermove", onMove);
     handle.addEventListener("pointerup", onUp);
+  }
+
+  onSelectAllToggle(event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.selectAllChange.emit(checked);
   }
 }

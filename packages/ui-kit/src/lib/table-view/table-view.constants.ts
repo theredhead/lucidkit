@@ -17,5 +17,8 @@ export const ROW_INDEX_COLUMN_WIDTH = 68;
 /** Default virtual-scroll row height (px). */
 export const DEFAULT_ROW_HEIGHT = 36;
 
+/** Width (px) of the selection column (radio / checkbox). Must match `--tv-selection-col-width`. */
+export const SELECTION_COLUMN_WIDTH = 48;
+
 /** Default page size used by datasource adapters. */
 export const INITIAL_PAGE_SIZE = 100;
