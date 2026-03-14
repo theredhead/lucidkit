@@ -1,10 +1,18 @@
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { NgTemplateOutlet } from "@angular/common";
-import { ChangeDetectionStrategy, Component, input, output } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from "@angular/core";
 
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { DEFAULT_ROW_HEIGHT, MIN_COLUMN_WIDTH } from "../table-view.constants";
-import type { SelectionMode, TableSelectionModel } from "../table-view-selection.model";
+import type {
+  SelectionMode,
+  TableSelectionModel,
+} from "../table-view-selection.model";
 
 @Component({
   selector: "ui-table-body",

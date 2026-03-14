@@ -1,4 +1,9 @@
-import { computed, signal, type Signal, type WritableSignal } from "@angular/core";
+import {
+  computed,
+  signal,
+  type Signal,
+  type WritableSignal,
+} from "@angular/core";
 
 /**
  * Selection mode for the table view.
@@ -45,10 +50,7 @@ export class TableSelectionModel<T = unknown> {
   /** Whether nothing is selected. */
   readonly isEmpty: Signal<boolean>;
 
-  constructor(
-    mode: SelectionMode = "none",
-    trackBy?: (row: T) => unknown,
-  ) {
+  constructor(mode: SelectionMode = "none", trackBy?: (row: T) => unknown) {
     this.mode = signal(mode);
     this.trackBy = trackBy;
     this._selected = signal(new Set<unknown>());
@@ -83,8 +85,8 @@ export class TableSelectionModel<T = unknown> {
     next.delete(key);
     this._selected.set(next);
     this._selectedRows.set(
-      this._selectedRows().filter((r) =>
-        (this.trackBy ? this.trackBy(r) : r) !== key,
+      this._selectedRows().filter(
+        (r) => (this.trackBy ? this.trackBy(r) : r) !== key,
       ),
     );
   }

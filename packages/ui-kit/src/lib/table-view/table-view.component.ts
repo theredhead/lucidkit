@@ -99,17 +99,10 @@ export class UITableView implements OnInit, AfterViewInit {
 
   /**
    * The resolved selection model. Uses the externally-provided model
-   * if given, otherwise creates an internal one that syncs its mode
-   * with the `selectionMode` input.
+   * if given, otherwise falls back to the internal one.
    */
   protected readonly selection = computed(() => {
-    const external = this.selectionModel();
-    if (external) {
-      // Keep the external model's mode in sync with the input.
-      external.mode.set(this.selectionMode());
-      return external;
-    }
-    return this._internalSelection;
+    return this.selectionModel() ?? this._internalSelection;
   });
 
   private readonly _internalSelection = new TableSelectionModel<any>("none");
@@ -214,10 +207,10 @@ export class UITableView implements OnInit, AfterViewInit {
       }
     });
 
-    // Sync internal selection model mode with selectionMode input
+    // Sync selection mode into whichever model is active
     effect(() => {
       const mode = this.selectionMode();
-      this._internalSelection.mode.set(mode);
+      this.selection().mode.set(mode);
     });
 
     // Emit selectionChange whenever the selection changes

@@ -241,7 +241,11 @@ class UITableViewPhotosStoryDemo {
       />
       <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
     </ui-table-view>
-    <pre style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;">Selected: {{ selectedJson() }}</pre>
+    <pre
+      style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;"
+    >
+Selected: {{ selectedJson() }}</pre
+    >
   `,
 })
 class UITableViewSingleSelectDemo {
@@ -313,7 +317,11 @@ class UITableViewSingleSelectDemo {
       />
       <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
     </ui-table-view>
-    <pre style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;">Selected ({{ selectedCount() }}): {{ selectedJson() }}</pre>
+    <pre
+      style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;"
+    >
+Selected ({{ selectedCount() }}): {{ selectedJson() }}</pre
+    >
   `,
 })
 class UITableViewMultiSelectDemo {
