@@ -1,0 +1,460 @@
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+
+import type { Meta, StoryObj } from "@storybook/angular";
+import { moduleMetadata } from "@storybook/angular";
+
+import { UiThemeToggleComponent } from "../theme-toggle/theme-toggle.component";
+import { UIDensityDirective } from "../ui-density";
+import { UIMapView } from "./map-view.component";
+import type {
+  MapLatLng,
+  MapMarker,
+  MapPolygon,
+  MapPolyline,
+} from "./map-view.model";
+
+// ── Demo data ─────────────────────────────────────────────────────────
+
+const AMSTERDAM: MapLatLng = { lat: 52.3676, lng: 4.9041 };
+const BRUSSELS: MapLatLng = { lat: 50.8503, lng: 4.3517 };
+const PARIS: MapLatLng = { lat: 48.8566, lng: 2.3522 };
+const LONDON: MapLatLng = { lat: 51.5074, lng: -0.1278 };
+const BERLIN: MapLatLng = { lat: 52.52, lng: 13.405 };
+const PRAGUE: MapLatLng = { lat: 50.0755, lng: 14.4378 };
+const ROME: MapLatLng = { lat: 41.9028, lng: 12.4964 };
+const VIENNA: MapLatLng = { lat: 48.2082, lng: 16.3738 };
+
+const EUROPE_CENTER: MapLatLng = { lat: 50.0, lng: 8.0 };
+
+const CITY_MARKERS: MapMarker[] = [
+  { position: AMSTERDAM, label: "Amsterdam" },
+  { position: BRUSSELS, label: "Brussels" },
+  { position: PARIS, label: "Paris", color: "#e04040" },
+  { position: LONDON, label: "London", color: "#2d8a56" },
+  { position: BERLIN, label: "Berlin", color: "#e5a00d" },
+  { position: PRAGUE, label: "Prague" },
+  { position: ROME, label: "Rome", color: "#e04040" },
+  { position: VIENNA, label: "Vienna" },
+];
+
+const ROUTE_AMS_PAR: MapPolyline = {
+  points: [AMSTERDAM, BRUSSELS, PARIS],
+  color: "#e04040",
+  width: 3,
+  dashArray: "8 4",
+};
+
+const ROUTE_AMS_PAR_HIGHLIGHTED: MapPolyline = {
+  ...ROUTE_AMS_PAR,
+  highlighted: true,
+  highlightColor: "#ffd700",
+  highlightWidth: 5,
+};
+
+const BENELUX_POLYGON: MapPolygon = {
+  points: [
+    { lat: 53.5, lng: 3.4 },
+    { lat: 53.5, lng: 7.2 },
+    { lat: 49.5, lng: 6.4 },
+    { lat: 49.5, lng: 2.5 },
+  ],
+  fillColor: "#3584e4",
+  fillOpacity: 0.15,
+  strokeColor: "#3584e4",
+  strokeWidth: 2,
+};
+
+const BENELUX_HIGHLIGHTED: MapPolygon = {
+  ...BENELUX_POLYGON,
+  highlighted: true,
+  highlightFillColor: "#e5a00d",
+  highlightFillOpacity: 0.3,
+  highlightStrokeColor: "#e5a00d",
+  highlightStrokeWidth: 3,
+};
+
+const STAR_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="#e5a00d" stroke="#b87f00" stroke-width="0.5"/>
+</svg>`;
+
+const FLAG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28" viewBox="0 0 20 28">
+  <line x1="3" y1="2" x2="3" y2="26" stroke="#444" stroke-width="1.5"/>
+  <path d="M3 2h14l-4 5 4 5H3z" fill="#e04040" stroke="#b03030" stroke-width="0.5"/>
+</svg>`;
+
+// ── Story components ──────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-map-view-basic-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <ui-map-view [center]="center" [zoom]="13" height="500px" />
+  `,
+})
+class MapViewBasicDemo {
+  readonly center = AMSTERDAM;
+}
+
+@Component({
+  selector: "ui-map-view-markers-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <ui-map-view
+      [center]="center"
+      [zoom]="5"
+      [markers]="markers"
+      height="500px"
+      ariaLabel="European cities"
+    />
+  `,
+})
+class MapViewMarkersDemo {
+  readonly center = EUROPE_CENTER;
+  readonly markers = CITY_MARKERS;
+}
+
+@Component({
+  selector: "ui-map-view-route-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <ui-map-view
+      [center]="center"
+      [zoom]="6"
+      [markers]="markers"
+      [polylines]="polylines"
+      height="500px"
+      ariaLabel="Amsterdam to Paris route"
+    />
+  `,
+})
+class MapViewRouteDemo {
+  readonly center: MapLatLng = { lat: 50.5, lng: 3.7 };
+  readonly markers: MapMarker[] = [
+    { position: AMSTERDAM, label: "Amsterdam" },
+    { position: BRUSSELS, label: "Brussels" },
+    { position: PARIS, label: "Paris", color: "#e04040" },
+  ];
+  readonly polylines = [ROUTE_AMS_PAR];
+}
+
+@Component({
+  selector: "ui-map-view-polygon-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <ui-map-view
+      [center]="center"
+      [zoom]="6"
+      [markers]="markers"
+      [polygons]="polygons"
+      height="500px"
+      ariaLabel="Benelux region"
+    />
+  `,
+})
+class MapViewPolygonDemo {
+  readonly center: MapLatLng = { lat: 51.5, lng: 5.0 };
+  readonly markers: MapMarker[] = [
+    { position: AMSTERDAM, label: "Amsterdam" },
+    { position: BRUSSELS, label: "Brussels" },
+    { position: { lat: 49.6117, lng: 6.1319 }, label: "Luxembourg" },
+  ];
+  readonly polygons = [BENELUX_POLYGON];
+}
+
+@Component({
+  selector: "ui-map-view-highlight-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div>
+        <p style="margin:0 0 0.5rem;font-size:0.85rem;color:#888;">Normal</p>
+        <ui-map-view
+          [center]="center"
+          [zoom]="6"
+          [polylines]="[route]"
+          [polygons]="[polygon]"
+          [markers]="markers"
+          height="360px"
+        />
+      </div>
+      <div>
+        <p style="margin:0 0 0.5rem;font-size:0.85rem;color:#888;">
+          Highlighted
+        </p>
+        <ui-map-view
+          [center]="center"
+          [zoom]="6"
+          [polylines]="[routeHighlighted]"
+          [polygons]="[polygonHighlighted]"
+          [markers]="markers"
+          height="360px"
+        />
+      </div>
+    </div>
+  `,
+})
+class MapViewHighlightDemo {
+  readonly center: MapLatLng = { lat: 51.0, lng: 4.5 };
+  readonly markers: MapMarker[] = [
+    { position: AMSTERDAM, label: "Amsterdam" },
+    { position: BRUSSELS, label: "Brussels" },
+    { position: PARIS, label: "Paris" },
+  ];
+  readonly route = ROUTE_AMS_PAR;
+  readonly routeHighlighted = ROUTE_AMS_PAR_HIGHLIGHTED;
+  readonly polygon = BENELUX_POLYGON;
+  readonly polygonHighlighted = BENELUX_HIGHLIGHTED;
+}
+
+@Component({
+  selector: "ui-map-view-custom-icons-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <ui-map-view
+      [center]="center"
+      [zoom]="5"
+      [markers]="markers"
+      height="500px"
+      ariaLabel="Cities with custom icons"
+    />
+  `,
+})
+class MapViewCustomIconsDemo {
+  readonly center = EUROPE_CENTER;
+  readonly markers: MapMarker[] = [
+    {
+      position: PARIS,
+      label: "Paris",
+      icon: STAR_ICON,
+      size: [24, 24],
+      anchor: [12, 12],
+    },
+    {
+      position: LONDON,
+      label: "London",
+      icon: FLAG_ICON,
+      size: [20, 28],
+      anchor: [3, 26],
+    },
+    {
+      position: BERLIN,
+      label: "Berlin",
+      icon: STAR_ICON,
+      size: [24, 24],
+      anchor: [12, 12],
+    },
+    { position: AMSTERDAM, label: "Amsterdam" },
+    { position: ROME, label: "Rome", color: "#e04040" },
+  ];
+}
+
+@Component({
+  selector: "ui-map-view-combined-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent, UIDensityDirective],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <ui-map-view
+      uiDensity="comfortable"
+      [center]="center"
+      [zoom]="5"
+      [markers]="markers"
+      [polylines]="polylines"
+      [polygons]="polygons"
+      height="560px"
+      ariaLabel="European overview"
+    />
+  `,
+})
+class MapViewCombinedDemo {
+  readonly center = EUROPE_CENTER;
+  readonly markers = CITY_MARKERS;
+  readonly polylines: MapPolyline[] = [
+    {
+      points: [
+        LONDON,
+        PARIS,
+        BRUSSELS,
+        AMSTERDAM,
+        BERLIN,
+        PRAGUE,
+        VIENNA,
+        ROME,
+      ],
+      color: "#e04040",
+      width: 2,
+      dashArray: "6 3",
+    },
+  ];
+  readonly polygons: MapPolygon[] = [BENELUX_POLYGON];
+}
+
+@Component({
+  selector: "ui-map-view-toggle-highlight-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIMapView, UiThemeToggleComponent],
+  template: `
+    <div
+      style="display:flex;justify-content:flex-end;gap:0.5rem;margin:0 0 0.75rem;"
+    >
+      <button (click)="toggle()">
+        {{ highlighted() ? "Remove highlight" : "Highlight route" }}
+      </button>
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle theme"
+      />
+    </div>
+    <ui-map-view
+      [center]="center"
+      [zoom]="6"
+      [markers]="markers"
+      [polylines]="polylines()"
+      [polygons]="polygons()"
+      height="500px"
+      ariaLabel="Toggle highlight demo"
+    />
+  `,
+})
+class MapViewToggleHighlightDemo {
+  readonly center: MapLatLng = { lat: 51.0, lng: 4.5 };
+  readonly markers: MapMarker[] = [
+    { position: AMSTERDAM, label: "Amsterdam" },
+    { position: BRUSSELS, label: "Brussels" },
+    { position: PARIS, label: "Paris" },
+  ];
+
+  readonly highlighted = signal(false);
+
+  readonly polylines = signal<MapPolyline[]>([ROUTE_AMS_PAR]);
+  readonly polygons = signal<MapPolygon[]>([BENELUX_POLYGON]);
+
+  toggle(): void {
+    const next = !this.highlighted();
+    this.highlighted.set(next);
+    this.polylines.set([next ? ROUTE_AMS_PAR_HIGHLIGHTED : ROUTE_AMS_PAR]);
+    this.polygons.set([next ? BENELUX_HIGHLIGHTED : BENELUX_POLYGON]);
+  }
+}
+
+// ── Storybook meta ────────────────────────────────────────────────────
+
+const meta: Meta<object> = {
+  title: "@Sigmax/UI Kit/Map View",
+  component: MapViewBasicDemo,
+  tags: ["autodocs"],
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component:
+          "Static map snapshot component. Renders tiles centred on a location " +
+          "with optional SVG polylines, polygons, and markers. " +
+          "No external dependencies — pure tile math + native browser APIs.",
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<object>;
+
+export const Basic: Story = {};
+
+export const WithMarkers: Story = {
+  decorators: [moduleMetadata({ imports: [MapViewMarkersDemo] })],
+  render: () => ({ template: "<ui-map-view-markers-demo />" }),
+};
+
+export const RoutePolyline: Story = {
+  decorators: [moduleMetadata({ imports: [MapViewRouteDemo] })],
+  render: () => ({ template: "<ui-map-view-route-demo />" }),
+};
+
+export const PolygonRegion: Story = {
+  decorators: [moduleMetadata({ imports: [MapViewPolygonDemo] })],
+  render: () => ({ template: "<ui-map-view-polygon-demo />" }),
+};
+
+export const HighlightComparison: Story = {
+  decorators: [moduleMetadata({ imports: [MapViewHighlightDemo] })],
+  render: () => ({ template: "<ui-map-view-highlight-demo />" }),
+};
+
+export const CustomMarkerIcons: Story = {
+  decorators: [moduleMetadata({ imports: [MapViewCustomIconsDemo] })],
+  render: () => ({ template: "<ui-map-view-custom-icons-demo />" }),
+};
+
+export const CombinedOverview: Story = {
+  decorators: [moduleMetadata({ imports: [MapViewCombinedDemo] })],
+  render: () => ({ template: "<ui-map-view-combined-demo />" }),
+};
+
+export const ToggleHighlight: Story = {
+  decorators: [moduleMetadata({ imports: [MapViewToggleHighlightDemo] })],
+  render: () => ({ template: "<ui-map-view-toggle-highlight-demo />" }),
+};

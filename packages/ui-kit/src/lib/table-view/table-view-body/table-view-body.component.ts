@@ -22,6 +22,7 @@ import type {
   templateUrl: "./table-view-body.component.html",
   styleUrl: "./table-view-body.component.scss",
 })
+/** @internal */
 export class UITableBody {
   columns = input.required<readonly UITableViewColumn[]>();
   rows = input.required<readonly unknown[]>();
