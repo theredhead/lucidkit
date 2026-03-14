@@ -16,6 +16,10 @@ import {
 import { ColumnResizeService } from "./column-resize.service";
 import { UITableViewColumn } from "./columns/table-column.directive";
 import { DatasourceAdapter } from "./datasources/datasource-adapter";
+import {
+  FLEX_COLUMN_MIN_WIDTH,
+  ROW_INDEX_COLUMN_WIDTH,
+} from "./table-view.constants";
 import { UITableBody } from "./table-view-body/table-view-body.component";
 import { UITableFooter } from "./table-view-footer/table-view-footer.component";
 import {
@@ -87,8 +91,7 @@ export class UITableView implements OnInit, AfterViewInit {
   protected readonly totalRowWidth = computed(() => {
     const cols = this.columns();
     const widths = this.columnWidths();
-    const flexColMinWidth = 120;
-    const rowIndexWidth = this.showRowIndexIndicator() ? 68 : 0;
+    const rowIndexWidth = this.showRowIndexIndicator() ? ROW_INDEX_COLUMN_WIDTH : 0;
 
     let total = rowIndexWidth;
     let hasExplicit = false;
@@ -98,7 +101,7 @@ export class UITableView implements OnInit, AfterViewInit {
         total += w;
         hasExplicit = true;
       } else {
-        total += flexColMinWidth;
+        total += FLEX_COLUMN_MIN_WIDTH;
       }
     }
     return hasExplicit ? total : 0;

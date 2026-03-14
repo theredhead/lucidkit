@@ -3,6 +3,8 @@ import {
     RowResult,
 } from './datasource';
 
+import { DEFAULT_PAGE_SIZE } from '../table-view.constants';
+
 type RestPayload<T> =
     {
         rows: T[];
@@ -25,7 +27,7 @@ export class RestDatasource<T> implements IDatasource<T> {
 
     constructor(
         private readonly baseUrl: string,
-        private readonly pageSize: number = 100,
+        private readonly pageSize: number = DEFAULT_PAGE_SIZE,
         private readonly fetchFn: typeof fetch = defaultFetch,
     ) {
         if (pageSize <= 0) {

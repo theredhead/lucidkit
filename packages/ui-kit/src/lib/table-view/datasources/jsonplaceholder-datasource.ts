@@ -3,6 +3,8 @@ import {
     RowResult,
 } from './datasource';
 
+import { DEFAULT_PAGE_SIZE } from '../table-view.constants';
+
 const JSONPLACEHOLDER_BASE_URL = 'https://jsonplaceholder.typicode.com';
 const defaultFetch: typeof fetch = (input, init) => globalThis.fetch(input, init);
 
@@ -42,7 +44,7 @@ export class JsonPlaceholderDatasource<T> implements IDatasource<T> {
 
     constructor(
         private readonly resource: 'posts' | 'comments' | 'photos',
-        private readonly pageSize: number = 100,
+        private readonly pageSize: number = DEFAULT_PAGE_SIZE,
         private readonly fetchFn: typeof fetch = defaultFetch,
     ) {
         if (pageSize <= 0) {
@@ -143,19 +145,19 @@ export class JsonPlaceholderDatasource<T> implements IDatasource<T> {
 }
 
 export class JsonPlaceholderPostsDatasource extends JsonPlaceholderDatasource<JsonPlaceholderPost> {
-    constructor(pageSize: number = 100, fetchFn: typeof fetch = defaultFetch) {
+    constructor(pageSize: number = DEFAULT_PAGE_SIZE, fetchFn: typeof fetch = defaultFetch) {
         super('posts', pageSize, fetchFn);
     }
 }
 
 export class JsonPlaceholderCommentsDatasource extends JsonPlaceholderDatasource<JsonPlaceholderComment> {
-    constructor(pageSize: number = 100, fetchFn: typeof fetch = defaultFetch) {
+    constructor(pageSize: number = DEFAULT_PAGE_SIZE, fetchFn: typeof fetch = defaultFetch) {
         super('comments', pageSize, fetchFn);
     }
 }
 
 export class JsonPlaceholderPhotosDatasource extends JsonPlaceholderDatasource<JsonPlaceholderPhoto> {
-    constructor(pageSize: number = 100, fetchFn: typeof fetch = defaultFetch) {
+    constructor(pageSize: number = DEFAULT_PAGE_SIZE, fetchFn: typeof fetch = defaultFetch) {
         super('photos', pageSize, fetchFn);
     }
 }

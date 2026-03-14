@@ -9,6 +9,7 @@ import {
 } from "@angular/core";
 
 import { UITableViewColumn } from "../columns/table-column.directive";
+import { MIN_COLUMN_WIDTH } from "../table-view.constants";
 
 export interface SortState {
   key: string;
@@ -36,6 +37,8 @@ export class UITableHeader {
   sortChange = output<SortState | null>();
   columnResize = output<ColumnResizeEvent>();
   sortState = signal<SortState | null>(null);
+
+  protected readonly minColumnWidth = MIN_COLUMN_WIDTH;
 
   constructor(
     private readonly elRef: ElementRef<HTMLElement>,
@@ -70,7 +73,6 @@ export class UITableHeader {
     const cell = handle.parentElement!;
     const startX = event.clientX;
     const startWidth = cell.getBoundingClientRect().width;
-    const minWidth = 40;
     const root =
       this.elRef.nativeElement.closest(".table-view-root") ??
       this.elRef.nativeElement;
@@ -80,7 +82,7 @@ export class UITableHeader {
 
     const onMove = (e: PointerEvent) => {
       const delta = e.clientX - startX;
-      const newWidth = Math.max(minWidth, Math.round(startWidth + delta));
+      const newWidth = Math.max(MIN_COLUMN_WIDTH, Math.round(startWidth + delta));
       cell.style.width = `${newWidth}px`;
       cell.style.flex = "0 0 auto";
     };
@@ -92,7 +94,7 @@ export class UITableHeader {
       root.classList.remove("tv-resizing");
 
       const finalWidth = Math.max(
-        minWidth,
+        MIN_COLUMN_WIDTH,
         Math.round(cell.getBoundingClientRect().width),
       );
       this.zone.run(() => {
