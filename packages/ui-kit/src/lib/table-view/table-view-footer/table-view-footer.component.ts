@@ -13,6 +13,7 @@ import {
   templateUrl: "./table-view-footer.component.html",
   styleUrl: "./table-view-footer.component.scss",
 })
+/** @internal */
 export class UITableFooter {
   pageIndex = input.required<number>();
   pageSize = input.required<number>();

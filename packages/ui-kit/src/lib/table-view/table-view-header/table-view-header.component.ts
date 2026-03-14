@@ -29,6 +29,7 @@ export interface ColumnResizeEvent {
   templateUrl: "./table-view-header.component.html",
   styleUrl: "./table-view-header.component.scss",
 })
+/** @internal */
 export class UITableHeader {
   columns = input.required<readonly UITableViewColumn[]>();
   showRowIndexIndicator = input<boolean>(false);

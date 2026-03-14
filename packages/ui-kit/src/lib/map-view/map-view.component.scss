@@ -1,0 +1,131 @@
+/* ================================================================
+ *  UIMapView – static map snapshot
+ * ================================================================ */
+
+:host {
+  --mv-font: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
+  --mv-accent: #3584e4;
+  --mv-highlight: #e5a00d;
+  --mv-text: #1d232b;
+  --mv-muted: #5a6470;
+  --mv-border: #d7dce2;
+  --mv-surface: #f6f7f8;
+  --mv-attr-bg: rgba(255, 255, 255, 0.85);
+  --mv-attr-text: #5a6470;
+  --mv-shadow: 0 2px 8px rgba(18, 24, 33, 0.12);
+
+  display: block;
+  position: relative;
+  font-family: var(--mv-font);
+  color: var(--mv-text);
+  border: 1px solid var(--mv-border);
+  border-radius: var(--ui-radius, 0.55rem);
+  overflow: hidden;
+  box-shadow: var(--mv-shadow);
+}
+
+/* ── Dark theme ───────────────────────────────────────────────── */
+
+:host-context(html.dark-theme) {
+  --mv-accent: #7ab0ff;
+  --mv-highlight: #ffd08a;
+  --mv-text: #f2f6fb;
+  --mv-muted: #d0d8e3;
+  --mv-border: #505d6d;
+  --mv-surface: #242b33;
+  --mv-attr-bg: rgba(36, 43, 51, 0.85);
+  --mv-attr-text: #d0d8e3;
+  --mv-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --mv-accent: #7ab0ff;
+    --mv-highlight: #ffd08a;
+    --mv-text: #f2f6fb;
+    --mv-muted: #d0d8e3;
+    --mv-border: #505d6d;
+    --mv-surface: #242b33;
+    --mv-attr-bg: rgba(36, 43, 51, 0.85);
+    --mv-attr-text: #d0d8e3;
+    --mv-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
+  }
+}
+
+/* ── Viewport ─────────────────────────────────────────────────── */
+
+.mv-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--mv-surface);
+}
+
+/* ── Tiles ────────────────────────────────────────────────────── */
+
+.mv-tile {
+  position: absolute;
+  display: block;
+}
+
+/* Dark-mode tile inversion (only when .mv-dark-tiles is set) */
+
+:host-context(html.dark-theme) .mv-dark-tiles .mv-tile {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme))
+    .mv-dark-tiles
+    .mv-tile {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  }
+}
+
+/* ── SVG vector overlay ───────────────────────────────────────── */
+
+.mv-vectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── Markers ──────────────────────────────────────────────────── */
+
+.mv-marker {
+  position: absolute;
+  pointer-events: none;
+  line-height: 0;
+
+  img {
+    display: block;
+  }
+}
+
+/* Default pin fill — the inline [style.fill] override wins when set */
+.mv-pin-body {
+  fill: var(--mv-accent);
+}
+
+/* ── Attribution ──────────────────────────────────────────────── */
+
+.mv-attribution {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 2px 6px;
+  font-size: 0.65rem;
+  line-height: 1.4;
+  background: var(--mv-attr-bg);
+  color: var(--mv-attr-text);
+  border-top-left-radius: 3px;
+  user-select: none;
+
+  a {
+    color: var(--mv-attr-text);
+    text-decoration: underline;
+  }
+}

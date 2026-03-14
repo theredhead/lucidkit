@@ -1,0 +1,89 @@
+<div
+  class="mv-viewport"
+  [class.mv-dark-tiles]="darkModeTiles()"
+  role="img"
+  [attr.aria-label]="ariaLabel()"
+>
+  <!-- Tile images -->
+  @for (tile of tiles(); track tile.key) {
+    <img
+      class="mv-tile"
+      [src]="tile.url"
+      [style.left.px]="tile.left"
+      [style.top.px]="tile.top"
+      width="256"
+      height="256"
+      alt=""
+      draggable="false"
+    />
+  }
+
+  <!-- SVG overlay for polylines and polygons -->
+  @if (hasVectorOverlays()) {
+    <svg class="mv-vectors" [attr.viewBox]="svgViewBox()">
+      <!-- Polygons (behind polylines) -->
+      @for (polygon of renderedPolygons(); track $index) {
+        <path
+          [attr.d]="polygon.path"
+          [attr.fill]="polygon.fill"
+          [attr.fill-opacity]="polygon.fillOpacity"
+          [attr.stroke]="polygon.stroke"
+          [attr.stroke-width]="polygon.strokeWidth"
+        />
+      }
+
+      <!-- Polylines -->
+      @for (polyline of renderedPolylines(); track $index) {
+        <path
+          [attr.d]="polyline.path"
+          fill="none"
+          [attr.stroke]="polyline.stroke"
+          [attr.stroke-width]="polyline.strokeWidth"
+          [attr.stroke-dasharray]="polyline.dashArray"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      }
+    </svg>
+  }
+
+  <!-- Markers -->
+  @for (marker of renderedMarkers(); track $index) {
+    <div
+      class="mv-marker"
+      [style.left.px]="marker.left"
+      [style.top.px]="marker.top"
+      [attr.aria-label]="marker.label"
+      [attr.role]="marker.label ? 'img' : null"
+    >
+      @if (marker.isCustom) {
+        <img
+          [src]="marker.dataUri"
+          [width]="marker.width"
+          [height]="marker.height"
+          alt=""
+          draggable="false"
+        />
+      } @else {
+        <svg
+          [attr.width]="marker.width"
+          [attr.height]="marker.height"
+          viewBox="0 0 24 36"
+          aria-hidden="true"
+        >
+          <path
+            class="mv-pin-body"
+            d="M12 0C5.373 0 0 5.373 0 12c0 9 12 24 12 24s12-15 12-24C24 5.373 18.627 0 12 0z"
+            [style.fill]="marker.color || null"
+          />
+          <circle cx="12" cy="12" r="5" fill="white" opacity="0.9" />
+        </svg>
+      }
+    </div>
+  }
+
+  <!-- Attribution -->
+  @if (attribution()) {
+    <div class="mv-attribution" [innerHTML]="attribution()"></div>
+  }
+</div>
