@@ -1,5 +1,5 @@
 /*
- * Public API Surface of @sigmax/ui-theme
+ * Public API Surface of @theredhead/ui-theme
  */
 
 // Services

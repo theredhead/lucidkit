@@ -1,7 +1,7 @@
 {
-  "name": "sigmax-fe-workspace",
+  "name": "theredhead-fe-workspace",
   "version": "0.0.0",
-  "description": "Sigmax Frontend Component Libraries Workspace",
+  "description": "Theredhead Frontend Component Libraries Workspace",
   "private": true,
   "workspaces": [
     "packages/*"

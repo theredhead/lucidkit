@@ -403,7 +403,7 @@ class MapViewToggleHighlightDemo {
 // ── Storybook meta ────────────────────────────────────────────────────
 
 const meta: Meta<object> = {
-  title: "@Sigmax/UI Kit/Map View",
+  title: "@Theredhead/UI Kit/Map View",
   component: MapViewBasicDemo,
   tags: ["autodocs"],
   parameters: {

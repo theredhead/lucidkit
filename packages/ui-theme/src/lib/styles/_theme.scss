@@ -1,4 +1,4 @@
-// Sigmax UI Theme - Main Theme Configuration
+// Theredhead UI Theme - Main Theme Configuration
 // Material 3 theme with light and dark mode support
 
 @use 'sass:map';
@@ -8,9 +8,9 @@
 // Theme Definition
 // ============================================================================
 
-/// Main mixin to apply the Sigmax theme
+/// Main mixin to apply the Theredhead theme
 /// This sets up Material 3 theming with automatic light/dark mode support
-@mixin sigmax-theme($font-family: 'Roboto, sans-serif') {
+@mixin theredhead-theme($font-family: 'Roboto, sans-serif') {
   // Define the light theme
   $light-theme: mat.define-theme((
     color: (
@@ -52,18 +52,18 @@
     @include mat.all-component-themes($light-theme);
 
     // Custom CSS variables for light mode
-    --sigmax-background: #{mat.get-theme-color($light-theme, surface)};
-    --sigmax-on-background: #{mat.get-theme-color($light-theme, on-surface)};
-    --sigmax-surface: #{mat.get-theme-color($light-theme, surface-container)};
-    --sigmax-on-surface: #{mat.get-theme-color($light-theme, on-surface)};
-    --sigmax-primary: #{mat.get-theme-color($light-theme, primary)};
-    --sigmax-on-primary: #{mat.get-theme-color($light-theme, on-primary)};
-    --sigmax-secondary: #{mat.get-theme-color($light-theme, secondary)};
-    --sigmax-on-secondary: #{mat.get-theme-color($light-theme, on-secondary)};
-    --sigmax-error: #{mat.get-theme-color($light-theme, error)};
-    --sigmax-on-error: #{mat.get-theme-color($light-theme, on-error)};
-    --sigmax-outline: #{mat.get-theme-color($light-theme, outline)};
-    --sigmax-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --theredhead-background: #{mat.get-theme-color($light-theme, surface)};
+    --theredhead-on-background: #{mat.get-theme-color($light-theme, on-surface)};
+    --theredhead-surface: #{mat.get-theme-color($light-theme, surface-container)};
+    --theredhead-on-surface: #{mat.get-theme-color($light-theme, on-surface)};
+    --theredhead-primary: #{mat.get-theme-color($light-theme, primary)};
+    --theredhead-on-primary: #{mat.get-theme-color($light-theme, on-primary)};
+    --theredhead-secondary: #{mat.get-theme-color($light-theme, secondary)};
+    --theredhead-on-secondary: #{mat.get-theme-color($light-theme, on-secondary)};
+    --theredhead-error: #{mat.get-theme-color($light-theme, error)};
+    --theredhead-on-error: #{mat.get-theme-color($light-theme, on-error)};
+    --theredhead-outline: #{mat.get-theme-color($light-theme, outline)};
+    --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   }
 
   // Dark theme
@@ -72,18 +72,18 @@
     @include mat.all-component-colors($dark-theme);
 
     // Custom CSS variables for dark mode
-    --sigmax-background: #{mat.get-theme-color($dark-theme, surface)};
-    --sigmax-on-background: #{mat.get-theme-color($dark-theme, on-surface)};
-    --sigmax-surface: #{mat.get-theme-color($dark-theme, surface-container)};
-    --sigmax-on-surface: #{mat.get-theme-color($dark-theme, on-surface)};
-    --sigmax-primary: #{mat.get-theme-color($dark-theme, primary)};
-    --sigmax-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
-    --sigmax-secondary: #{mat.get-theme-color($dark-theme, secondary)};
-    --sigmax-on-secondary: #{mat.get-theme-color($dark-theme, on-secondary)};
-    --sigmax-error: #{mat.get-theme-color($dark-theme, error)};
-    --sigmax-on-error: #{mat.get-theme-color($dark-theme, on-error)};
-    --sigmax-outline: #{mat.get-theme-color($dark-theme, outline)};
-    --sigmax-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
+    --theredhead-background: #{mat.get-theme-color($dark-theme, surface)};
+    --theredhead-on-background: #{mat.get-theme-color($dark-theme, on-surface)};
+    --theredhead-surface: #{mat.get-theme-color($dark-theme, surface-container)};
+    --theredhead-on-surface: #{mat.get-theme-color($dark-theme, on-surface)};
+    --theredhead-primary: #{mat.get-theme-color($dark-theme, primary)};
+    --theredhead-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
+    --theredhead-secondary: #{mat.get-theme-color($dark-theme, secondary)};
+    --theredhead-on-secondary: #{mat.get-theme-color($dark-theme, on-secondary)};
+    --theredhead-error: #{mat.get-theme-color($dark-theme, error)};
+    --theredhead-on-error: #{mat.get-theme-color($dark-theme, on-error)};
+    --theredhead-outline: #{mat.get-theme-color($dark-theme, outline)};
+    --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
   }
 
   // System preference support (when no explicit class is set)
@@ -91,18 +91,18 @@
     html:not(.light-theme):not(.dark-theme) {
       @include mat.all-component-colors($dark-theme);
 
-      --sigmax-background: #{mat.get-theme-color($dark-theme, surface)};
-      --sigmax-on-background: #{mat.get-theme-color($dark-theme, on-surface)};
-      --sigmax-surface: #{mat.get-theme-color($dark-theme, surface-container)};
-      --sigmax-on-surface: #{mat.get-theme-color($dark-theme, on-surface)};
-      --sigmax-primary: #{mat.get-theme-color($dark-theme, primary)};
-      --sigmax-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
-      --sigmax-secondary: #{mat.get-theme-color($dark-theme, secondary)};
-      --sigmax-on-secondary: #{mat.get-theme-color($dark-theme, on-secondary)};
-      --sigmax-error: #{mat.get-theme-color($dark-theme, error)};
-      --sigmax-on-error: #{mat.get-theme-color($dark-theme, on-error)};
-      --sigmax-outline: #{mat.get-theme-color($dark-theme, outline)};
-      --sigmax-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
+      --theredhead-background: #{mat.get-theme-color($dark-theme, surface)};
+      --theredhead-on-background: #{mat.get-theme-color($dark-theme, on-surface)};
+      --theredhead-surface: #{mat.get-theme-color($dark-theme, surface-container)};
+      --theredhead-on-surface: #{mat.get-theme-color($dark-theme, on-surface)};
+      --theredhead-primary: #{mat.get-theme-color($dark-theme, primary)};
+      --theredhead-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
+      --theredhead-secondary: #{mat.get-theme-color($dark-theme, secondary)};
+      --theredhead-on-secondary: #{mat.get-theme-color($dark-theme, on-secondary)};
+      --theredhead-error: #{mat.get-theme-color($dark-theme, error)};
+      --theredhead-on-error: #{mat.get-theme-color($dark-theme, on-error)};
+      --theredhead-outline: #{mat.get-theme-color($dark-theme, outline)};
+      --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
     }
   }
 
@@ -110,8 +110,8 @@
   body {
     margin: 0;
     padding: 0;
-    background-color: var(--sigmax-background);
-    color: var(--sigmax-on-background);
+    background-color: var(--theredhead-background);
+    color: var(--theredhead-on-background);
     font-family: $font-family;
     transition: background-color 0.2s ease, color 0.2s ease;
   }

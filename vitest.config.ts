@@ -20,8 +20,8 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@sigmax/ui-kit': './packages/ui-kit/src/public-api.ts',
-            '@sigmax/ui-blocks': './packages/ui-blocks/src/public-api.ts',
+            '@theredhead/ui-kit': './packages/ui-kit/src/public-api.ts',
+            '@theredhead/ui-blocks': './packages/ui-blocks/src/public-api.ts',
         },
     },
 });

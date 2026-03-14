@@ -1,7 +1,7 @@
 {
-  "name": "@sigmax/ui-theme",
+  "name": "@theredhead/ui-theme",
   "version": "0.0.1",
-  "description": "Sigmax UI Theme - Material 3 Theme with Light/Dark Mode",
+  "description": "Theredhead UI Theme - Material 3 Theme with Light/Dark Mode",
   "private": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",

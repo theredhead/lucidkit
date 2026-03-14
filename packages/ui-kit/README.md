@@ -1,6 +1,6 @@
-# @sigmax/ui-kit
+# @theredhead/ui-kit
 
-Core reusable UI components library for Sigmax projects.
+Core reusable UI components library for Theredhead projects.
 
 ## Components
 
@@ -9,7 +9,7 @@ Core reusable UI components library for Sigmax projects.
 Native `<button>` wrapper with variant and size presets. Content is projected via `<ng-content>`.
 
 ```typescript
-import { UIButton } from "@sigmax/ui-kit";
+import { UIButton } from "@theredhead/ui-kit";
 
 @Component({
   selector: "app-example",

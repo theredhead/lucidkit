@@ -33,7 +33,7 @@ const mockDetailData: Record<number, { content: string; metadata: { created: str
 };
 
 const meta: Meta<UiMasterDetailViewComponent> = {
-    title: '@Sigmax/UI Blocks/Master Detail View',
+    title: '@Theredhead/UI Blocks/Master Detail View',
     component: UiMasterDetailViewComponent,
     tags: ['autodocs'],
     argTypes: {

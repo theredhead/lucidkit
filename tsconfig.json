@@ -17,9 +17,9 @@
     "moduleResolution": "bundler",
     "types": ["vitest/globals"],
     "paths": {
-      "@sigmax/ui-kit": ["./packages/ui-kit/src/public-api.ts", "./dist/ui-kit"],
-      "@sigmax/ui-blocks": ["./packages/ui-blocks/src/public-api.ts", "./dist/ui-blocks"],
-      "@sigmax/ui-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"]
+      "@theredhead/ui-kit": ["./packages/ui-kit/src/public-api.ts", "./dist/ui-kit"],
+      "@theredhead/ui-blocks": ["./packages/ui-blocks/src/public-api.ts", "./dist/ui-blocks"],
+      "@theredhead/ui-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"]
     }
   },
   "angularCompilerOptions": {

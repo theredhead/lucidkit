@@ -24,7 +24,7 @@ export interface ThemeConfig {
  */
 export const DEFAULT_THEME_CONFIG: ThemeConfig = {
     defaultMode: 'system',
-    storageKey: 'sigmax-theme-mode',
+    storageKey: 'theredhead-theme-mode',
     darkModeClass: 'dark-theme',
     lightModeClass: 'light-theme',
 };

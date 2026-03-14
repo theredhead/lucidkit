@@ -1,8 +1,8 @@
-# Sigmax Frontend Library
+# Theredhead Frontend Library
 
 ## Mission
 
-Provide a consistent, accessible, and themeable set of Angular UI building blocks for all Sigmax frontend applications. Every package in this workspace follows Angular Material 3 conventions so that products can share a unified look-and-feel while remaining easy to adopt incrementally.
+Provide a consistent, accessible, and themeable set of Angular UI building blocks for all Theredhead frontend applications. Every package in this workspace follows Angular Material 3 conventions so that products can share a unified look-and-feel while remaining easy to adopt incrementally.
 
 ---
 
@@ -12,9 +12,9 @@ This is an **npm workspace** (`packages/*`) that publishes three independent Ang
 
 | Package              | npm name            | Purpose                                                               |
 | -------------------- | ------------------- | --------------------------------------------------------------------- |
-| `packages/ui-theme`  | `@sigmax/ui-theme`  | Material 3 SCSS theme with light / dark mode and a `ThemeService`     |
-| `packages/ui-kit`    | `@sigmax/ui-kit`    | Core reusable components (e.g. `UIButton`, `UITableView`, `UIFilter`) |
-| `packages/ui-blocks` | `@sigmax/ui-blocks` | Advanced layout components (e.g. `UiMasterDetailViewComponent`)       |
+| `packages/ui-theme`  | `@theredhead/ui-theme`  | Material 3 SCSS theme with light / dark mode and a `ThemeService`     |
+| `packages/ui-kit`    | `@theredhead/ui-kit`    | Core reusable components (e.g. `UIButton`, `UITableView`, `UIFilter`) |
+| `packages/ui-blocks` | `@theredhead/ui-blocks` | Advanced layout components (e.g. `UiMasterDetailViewComponent`)       |
 
 A shared **Storybook** host (`storybook-host`) is wired up at the workspace root for interactive component development and documentation.
 

@@ -33,7 +33,7 @@ import {
  *
  * @example
  * ```typescript
- * import { ThemeService } from '@sigmax/ui-theme';
+ * import { ThemeService } from '@theredhead/ui-theme';
  *
  * @Component({...})
  * export class AppComponent {

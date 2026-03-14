@@ -1,8 +1,8 @@
-// Sigmax UI Theme - Material 3 theming with light/dark mode
+// Theredhead UI Theme - Material 3 theming with light/dark mode
 @use './packages/ui-theme/src/lib/styles' as theme;
 
 // Apply the full theme (includes Material 3 theming and light/dark mode)
-@include theme.sigmax-theme();
+@include theme.theredhead-theme();
 
 // Google Material Icons and Roboto fonts (must come after @use rules)
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');

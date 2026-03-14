@@ -8,14 +8,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { ThemeService } from '@sigmax/ui-theme';
+import { ThemeService } from '@theredhead/ui-theme';
 
 export type ThemeToggleVariant = 'icon' | 'button';
 
 /**
  * A toggle button for switching between light and dark mode.
  *
- * Uses the ThemeService from @sigmax/ui-theme to manage theme state.
+ * Uses the ThemeService from @theredhead/ui-theme to manage theme state.
  * The button displays a sun icon in dark mode and a moon icon in light mode,
  * indicating what theme will be applied when clicked.
  *

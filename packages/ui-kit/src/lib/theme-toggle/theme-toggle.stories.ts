@@ -6,7 +6,7 @@ import type {
 import { UiThemeToggleComponent } from './theme-toggle.component';
 
 const meta: Meta<UiThemeToggleComponent> = {
-    title: '@Sigmax/UI Kit/Theme Toggle',
+    title: '@Theredhead/UI Kit/Theme Toggle',
     component: UiThemeToggleComponent,
     tags: ['autodocs'],
     argTypes: {

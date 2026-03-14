@@ -358,7 +358,7 @@ class UITableViewMultiSelectDemo {
 }
 
 const meta: Meta<object> = {
-  title: "@Sigmax/UI Kit/Table View",
+  title: "@Theredhead/UI Kit/Table View",
   component: UITableViewStoryDemo,
   tags: ["autodocs"],
   parameters: {

@@ -1,6 +1,6 @@
-# @sigmax/ui-blocks
+# @theredhead/ui-blocks
 
-Advanced layout and block components library for Sigmax projects using Angular Material.
+Advanced layout and block components library for Theredhead projects using Angular Material.
 
 ## Components
 
@@ -9,7 +9,7 @@ Advanced layout and block components library for Sigmax projects using Angular M
 A responsive master-detail layout component using Material design principles.
 
 ```typescript
-import { UiMasterDetailViewComponent, MasterItem } from '@sigmax/ui-blocks';
+import { UiMasterDetailViewComponent, MasterItem } from '@theredhead/ui-blocks';
 import { signal } from '@angular/core';
 
 @Component({

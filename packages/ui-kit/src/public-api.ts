@@ -1,5 +1,5 @@
 /*
- * Public API Surface of @sigmax/ui-kit
+ * Public API Surface of @theredhead/ui-kit
  */
 
 export * from "./lib/button/button.component";

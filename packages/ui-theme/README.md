@@ -1,11 +1,11 @@
-# @sigmax/ui-theme
+# @theredhead/ui-theme
 
-Material 3 theme library for Sigmax applications with light and dark mode support.
+Material 3 theme library for Theredhead applications with light and dark mode support.
 
 ## Installation
 
 ```bash
-npm install @sigmax/ui-theme
+npm install @theredhead/ui-theme
 ```
 
 ## Usage
@@ -15,17 +15,17 @@ npm install @sigmax/ui-theme
 In your application's main styles file (e.g., `styles.scss`):
 
 ```scss
-@use '@sigmax/ui-theme' as theme;
+@use '@theredhead/ui-theme' as theme;
 
 // Apply the full theme (includes Material 3 theming and light/dark mode)
-@include theme.sigmax-theme();
+@include theme.theredhead-theme();
 ```
 
 ### 2. Use the theme service
 
 ```typescript
 import { Component, inject } from '@angular/core';
-import { ThemeService } from '@sigmax/ui-theme';
+import { ThemeService } from '@theredhead/ui-theme';
 
 @Component({
   selector: 'app-root',
@@ -68,12 +68,12 @@ const isDark = themeService.isDarkMode();
 You can customize the theme colors by overriding the default palette:
 
 ```scss
-@use '@sigmax/ui-theme' as theme with (
+@use '@theredhead/ui-theme' as theme with (
   $primary-hue: 250,      // Custom primary color hue
   $secondary-hue: 330,    // Custom secondary color hue
   $tertiary-hue: 60,      // Custom tertiary color hue
   $error-hue: 0           // Custom error color hue
 );
 
-@include theme.sigmax-theme();
+@include theme.theredhead-theme();
 ```

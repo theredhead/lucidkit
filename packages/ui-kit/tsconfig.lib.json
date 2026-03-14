@@ -5,7 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "@sigmax/ui-theme": ["../../dist/ui-theme"]
+      "@theredhead/ui-theme": ["../../dist/ui-theme"]
     }
   },
   "include": ["src/**/*.ts"],

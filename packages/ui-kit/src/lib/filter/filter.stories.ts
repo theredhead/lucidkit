@@ -58,7 +58,7 @@ class UIFilterStoryDemo {
 // ---------------------------------------------------------------------------
 
 const meta: Meta<UIFilterStoryDemo> = {
-  title: "@Sigmax/UI Kit/Filter",
+  title: "@Theredhead/UI Kit/Filter",
   component: UIFilterStoryDemo,
   tags: ["autodocs"],
   decorators: [

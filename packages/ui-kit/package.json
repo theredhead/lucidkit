@@ -1,10 +1,10 @@
 {
-  "name": "@sigmax/ui-kit",
+  "name": "@theredhead/ui-kit",
   "version": "0.0.1",
-  "description": "Sigmax UI Kit - Core Components Library",
+  "description": "Theredhead UI Kit - Core Components Library",
   "private": false,
   "dependencies": {
-    "@sigmax/ui-theme": "^0.0.1"
+    "@theredhead/ui-theme": "^0.0.1"
   },
   "peerDependencies": {
     "@angular/common": "^21.0.0",

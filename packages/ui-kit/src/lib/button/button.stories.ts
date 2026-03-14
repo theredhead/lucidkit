@@ -7,7 +7,7 @@ import {
 } from "./button.component";
 
 const meta: Meta<UIButton> = {
-  title: "@Sigmax/UI Kit/Button",
+  title: "@Theredhead/UI Kit/Button",
   component: UIButton,
   tags: ["autodocs"],
   argTypes: {

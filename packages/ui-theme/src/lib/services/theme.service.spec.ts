@@ -136,7 +136,7 @@ describe('ThemeService', () => {
         TestBed.flushEffects();
 
         expect(mockDocument.defaultView?.localStorage.setItem).toHaveBeenCalledWith(
-            'sigmax-theme-mode',
+            'theredhead-theme-mode',
             'dark'
         );
     });

@@ -1,7 +1,7 @@
 {
-  "name": "@sigmax/ui-blocks",
+  "name": "@theredhead/ui-blocks",
   "version": "0.0.1",
-  "description": "Sigmax UI Blocks - Advanced Layout Components",
+  "description": "Theredhead UI Blocks - Advanced Layout Components",
   "private": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",
