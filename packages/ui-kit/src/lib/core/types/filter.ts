@@ -1,4 +1,4 @@
-import { Predicate } from "@angular/core";
+import type { Predicate } from "@angular/core";
 
 /**
  * Describes one or more filter criteria for a datasource.
@@ -12,7 +12,7 @@ import { Predicate } from "@angular/core";
  * @typeParam T - The row object type.
  * @typeParam K - The specific property key (inferred when `property` is provided).
  */
-export type FilterExpression<T, K extends keyof T = keyof T> =
+export type FilterExpression<T, K extends keyof T = keyof T> = (
   | {
       /** The property of `T` to filter on. */
       property: K;
@@ -22,4 +22,5 @@ export type FilterExpression<T, K extends keyof T = keyof T> =
   | {
       /** Predicate that receives the full row object and returns `true` to keep it. */
       predicate: Predicate<T>;
-    }[];
+    }
+)[];

@@ -1,0 +1,35 @@
+:host {
+  display: inline-flex;
+}
+
+input {
+  font-family: var(--tv-font, inherit);
+  font-size: var(--tv-font-body, 0.875rem);
+  color: var(--tv-text, #1d232b);
+  background: var(--tv-surface, #ffffff);
+  border: 1px solid var(--tv-border, #d7dce2);
+  border-radius: 0.25rem;
+  padding: 0.3rem 0.5rem;
+  min-width: 0;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--tv-border-strong, #c2c8cf);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--tv-accent, #3584e4);
+    outline-offset: -1px;
+  }
+
+  &::placeholder {
+    color: var(--tv-muted, #5a6470);
+  }
+}

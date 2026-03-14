@@ -1,30 +1,17 @@
-import { InjectionToken } from "@angular/core";
-
-import type { FilterExpression } from "../core/types/filter";
+import type { FilterExpression } from "../../core/types/filter";
 import type {
   RowChangedNotification,
   RowRangeChangedNotification,
-} from "../core/types/notifications";
-import type { RangeDefinition } from "../core/types/range";
-import type { SortExpression } from "../core/types/sort";
-import { Emitter } from "../core/types/emitter";
+} from "../../core/types/notifications";
+import type { RangeDefinition } from "../../core/types/range";
+import type { SortExpression } from "../../core/types/sort";
+import { Emitter } from "../../core/types/emitter";
 
 // Re-export so existing consumers that import from './datasource' keep working.
 export type { FilterExpression, RangeDefinition, SortExpression };
 export type { RowChangedNotification, RowRangeChangedNotification };
 export { Emitter };
-export { SortDirection } from "../core/types/sort";
-
-/**
- * PageSize for tables where it is not customized
- */
-export const DEFAULT_PAGE_SIZE = new InjectionToken<number>(
-  "DEFAULT_PAGE_SIZE",
-  {
-    providedIn: "root",
-    factory: () => 20,
-  },
-);
+export { SortDirection } from "../../core/types/sort";
 
 /**
  * Represents a single row that may or may not be immediately available.

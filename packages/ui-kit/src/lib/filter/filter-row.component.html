@@ -1,0 +1,63 @@
+<div class="ui-filter-row__controls" role="group" [attr.aria-label]="'Filter rule ' + rule().id">
+  <!-- Field selector -->
+  <ui-select
+    ariaLabel="Filter field"
+    [options]="fieldOptions()"
+    [value]="rule().field"
+    (valueChange)="onFieldChange($event)"
+  />
+
+  <!-- Operator selector -->
+  <ui-select
+    ariaLabel="Operator"
+    [options]="operatorOptions()"
+    [value]="rule().operator"
+    (valueChange)="onOperatorChange($event)"
+  />
+
+  <!-- Value input(s) — shape depends on operator -->
+  @if (!hideValue()) {
+    @if (isInTheLast()) {
+      <!-- Relative date: amount + unit -->
+      <ui-input
+        type="number"
+        ariaLabel="Amount"
+        [value]="rule().value"
+        (valueChange)="onValueChange($event)"
+        placeholder="Amount"
+      />
+      <ui-select
+        ariaLabel="Time unit"
+        [options]="dateUnitOptions"
+        [value]="rule().unit ?? 'days'"
+        (valueChange)="onUnitChange($event)"
+      />
+    } @else if (isBetween()) {
+      <!-- Range: from … to -->
+      <ui-input
+        ariaLabel="From value"
+        [type]="inputType()"
+        [value]="rule().value"
+        (valueChange)="onValueChange($event)"
+      />
+      <span class="ui-filter-row__separator" aria-hidden="true">and</span>
+      <ui-input
+        ariaLabel="To value"
+        [type]="inputType()"
+        [value]="rule().valueTo ?? ''"
+        (valueChange)="onValueToChange($event)"
+      />
+    } @else {
+      <!-- Standard single value -->
+      <ui-input
+        ariaLabel="Filter value"
+        [type]="inputType()"
+        [value]="rule().value"
+        (valueChange)="onValueChange($event)"
+      />
+    }
+  }
+
+  <!-- Remove rule -->
+  <ui-button variant="ghost" size="sm" ariaLabel="Remove filter rule" (click)="remove.emit()">✕</ui-button>
+</div>

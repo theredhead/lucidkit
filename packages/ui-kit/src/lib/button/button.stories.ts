@@ -1,213 +1,96 @@
-import type {
-  Meta,
-  StoryObj,
-} from '@storybook/angular';
+import type { Meta, StoryObj } from "@storybook/angular";
 
 import {
-  type ButtonColor,
   type ButtonSize,
   type ButtonVariant,
-  UiButtonComponent,
-} from './button.component';
+  UIButton,
+} from "./button.component";
 
-const meta: Meta<UiButtonComponent> = {
-    title: '@theredhead/UI Kit/Button',
-    component: UiButtonComponent,
-    tags: ['autodocs'],
-    argTypes: {
-        label: {
-            control: 'text',
-            description: 'Text displayed on the button',
-        },
-        variant: {
-            control: 'select',
-            options: ['basic', 'raised', 'stroked', 'flat'] satisfies ButtonVariant[],
-            description: 'Visual style variant of the button',
-        },
-        color: {
-            control: 'select',
-            options: ['primary', 'accent', 'warn'] satisfies ButtonColor[],
-            description: 'Color theme of the button',
-        },
-        size: {
-            control: 'select',
-            options: ['small', 'medium', 'large'] satisfies ButtonSize[],
-            description: 'Size of the button',
-        },
-        isDisabled: {
-            control: 'boolean',
-            description: 'Whether the button is disabled',
-        },
+const meta: Meta<UIButton> = {
+  title: "@theredhead/UI Kit/Button",
+  component: UIButton,
+  tags: ["autodocs"],
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["filled", "outlined", "ghost"] satisfies ButtonVariant[],
+      description: "Visual style variant of the button",
     },
+    size: {
+      control: "select",
+      options: ["sm", "md", "lg"] satisfies ButtonSize[],
+      description: "Size preset",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Whether the button is disabled",
+    },
+  },
 };
 
 export default meta;
-type Story = StoryObj<UiButtonComponent>;
+type Story = StoryObj<UIButton>;
 
-/**
- * The default button with raised style and primary color.
- */
+/** Default filled button. */
 export const Default: Story = {
-    args: {
-        label: 'Click me',
-        variant: 'raised',
-        color: 'primary',
-        size: 'medium',
-        isDisabled: false,
-    },
+  render: (args) => ({
+    props: args,
+    template: `<ui-button [variant]="variant" [size]="size" [disabled]="disabled">Click me</ui-button>`,
+  }),
+  args: {
+    variant: "filled",
+    size: "md",
+    disabled: false,
+  },
 };
 
-/**
- * Primary action button for main call-to-actions.
- */
-export const Primary: Story = {
-    args: {
-        label: 'Primary Action',
-        variant: 'raised',
-        color: 'primary',
-        size: 'medium',
-    },
+/** Outlined button variant. */
+export const Outlined: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-button variant="outlined" [size]="size">Outlined</ui-button>`,
+  }),
+  args: { size: "md" },
 };
 
-/**
- * Accent colored button for secondary emphasis.
- */
-export const Accent: Story = {
-    args: {
-        label: 'Accent Button',
-        variant: 'raised',
-        color: 'accent',
-        size: 'medium',
-    },
+/** Ghost button variant (no background). */
+export const Ghost: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-button variant="ghost" [size]="size">Ghost</ui-button>`,
+  }),
+  args: { size: "md" },
 };
 
-/**
- * Warning button for destructive or cautionary actions.
- */
-export const Warning: Story = {
-    args: {
-        label: 'Delete',
-        variant: 'raised',
-        color: 'warn',
-        size: 'medium',
-    },
-};
-
-/**
- * Basic button without elevation.
- */
-export const Basic: Story = {
-    args: {
-        label: 'Basic Button',
-        variant: 'basic',
-        color: 'primary',
-        size: 'medium',
-    },
-};
-
-/**
- * Stroked/outlined button variant.
- */
-export const Stroked: Story = {
-    args: {
-        label: 'Stroked Button',
-        variant: 'stroked',
-        color: 'primary',
-        size: 'medium',
-    },
-};
-
-/**
- * Flat button without elevation.
- */
-export const Flat: Story = {
-    args: {
-        label: 'Flat Button',
-        variant: 'flat',
-        color: 'primary',
-        size: 'medium',
-    },
-};
-
-/**
- * Small sized button.
- */
-export const Small: Story = {
-    args: {
-        label: 'Small',
-        variant: 'raised',
-        color: 'primary',
-        size: 'small',
-    },
-};
-
-/**
- * Large sized button.
- */
-export const Large: Story = {
-    args: {
-        label: 'Large Button',
-        variant: 'raised',
-        color: 'primary',
-        size: 'large',
-    },
-};
-
-/**
- * Disabled button state.
- */
+/** Disabled button state. */
 export const Disabled: Story = {
-    args: {
-        label: 'Disabled',
-        variant: 'raised',
-        color: 'primary',
-        size: 'medium',
-        isDisabled: true,
-    },
+  render: () => ({
+    template: `<ui-button variant="filled" [disabled]="true">Disabled</ui-button>`,
+  }),
 };
 
-/**
- * All button variants displayed together.
- */
+/** All variants side by side. */
 export const AllVariants: Story = {
-    render: () => ({
-        template: `
+  render: () => ({
+    template: `
       <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
-        <ui-button label="Basic" variant="basic" color="primary"></ui-button>
-        <ui-button label="Raised" variant="raised" color="primary"></ui-button>
-        <ui-button label="Stroked" variant="stroked" color="primary"></ui-button>
-        <ui-button label="Flat" variant="flat" color="primary"></ui-button>
+        <ui-button variant="filled">Filled</ui-button>
+        <ui-button variant="outlined">Outlined</ui-button>
+        <ui-button variant="ghost">Ghost</ui-button>
       </div>
     `,
-    }),
+  }),
 };
 
-/**
- * All button colors displayed together.
- */
-export const AllColors: Story = {
-    render: () => ({
-        template: `
-      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
-        <ui-button label="Primary" variant="raised" color="primary"></ui-button>
-        <ui-button label="Accent" variant="raised" color="accent"></ui-button>
-        <ui-button label="Warn" variant="raised" color="warn"></ui-button>
-      </div>
-    `,
-    }),
-};
-
-/**
- * All button sizes displayed together.
- */
+/** All sizes side by side. */
 export const AllSizes: Story = {
-    render: () => ({
-        template: `
+  render: () => ({
+    template: `
       <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
-        <ui-button label="Small" variant="raised" color="primary" size="small"></ui-button>
-        <ui-button label="Medium" variant="raised" color="primary" size="medium"></ui-button>
-        <ui-button label="Large" variant="raised" color="primary" size="large"></ui-button>
+        <ui-button variant="filled" size="sm">Small</ui-button>
+        <ui-button variant="filled" size="md">Medium</ui-button>
+        <ui-button variant="filled" size="lg">Large</ui-button>
       </div>
     `,
-    }),
+  }),
 };

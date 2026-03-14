@@ -1,9 +1,15 @@
-import { computed, signal, WritableSignal } from "@angular/core";
+import { computed, signal, type WritableSignal } from "@angular/core";
 
 import { INITIAL_PAGE_SIZE } from "../table-view.constants";
 
-import { IDatasource, RangeDefinition, RowResult } from "./datasource";
+import type { IDatasource, RangeDefinition, RowResult } from "./datasource";
 
+/**
+ * Wraps any {@link IDatasource} and exposes paginated, signal-based
+ * access to its rows.
+ *
+ * @typeParam T - The row object type.
+ */
 export class DatasourceAdapter<T> {
   readonly pageIndex: WritableSignal<number> = signal<number>(0);
   readonly pageSize: WritableSignal<number>;
@@ -27,18 +33,26 @@ export class DatasourceAdapter<T> {
     }
 
     this.pageSize = signal<number>(initialPageSize);
-    Promise.resolve(datasource.getNumberOfItems()).then((n) =>
-      this.totalItems.set(n),
-    );
+
+    const count = datasource.getNumberOfItems();
+    if (typeof count === "number") {
+      // Synchronous datasource — set immediately so the first
+      // visibleWindow computed can clamp correctly.
+      this.totalItems.set(count);
+    } else {
+      count.then((n) => this.totalItems.set(n));
+    }
   }
 
   private getItemsInRange(range: RangeDefinition): RowResult<T>[] {
+    const total = this.totalItems();
+    const end =
+      total != null
+        ? Math.min(range.start + range.length, total)
+        : range.start + range.length;
+
     const result: RowResult<T>[] = [];
-    for (
-      let rowIndex = range.start;
-      rowIndex < range.start + range.length;
-      rowIndex++
-    ) {
+    for (let rowIndex = range.start; rowIndex < end; rowIndex++) {
       result.push(this.datasource.getObjectAtRowIndex(rowIndex));
     }
     return result;

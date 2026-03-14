@@ -1,72 +1,69 @@
 # @theredhead/ui-kit
 
-Core reusable UI components library for theredhead projects using Angular Material.
+Core reusable UI components library for theredhead projects.
 
 ## Components
 
-### UiButtonComponent
+### UIButton
 
-Angular Material-based button component with multiple variants and sizes.
+Native `<button>` wrapper with variant and size presets. Content is projected via `<ng-content>`.
 
 ```typescript
-import { UiButtonComponent } from '@theredhead/ui-kit';
+import { UIButton } from "@theredhead/ui-kit";
 
 @Component({
-  selector: 'app-example',
+  selector: "app-example",
   standalone: true,
-  imports: [UiButtonComponent],
+  imports: [UIButton],
   template: `
-    <ui-button 
-      label="Primary Button"
-      variant="raised"
-      color="primary"
-      size="medium"
-      (onClick)="handleClick()"
-    />
-    
-    <ui-button 
-      label="Accent Stroked"
-      variant="stroked"
-      color="accent"
-      [isDisabled]="isDisabled()"
-    />
-    
-    <ui-button 
-      label="Loading"
-      size="large"
-      [isLoading]="isLoading()"
-    />
-  `
+    <ui-button variant="filled" size="md" (click)="handleClick()">
+      Primary Button
+    </ui-button>
+
+    <ui-button variant="outlined" size="sm" [disabled]="true">
+      Disabled
+    </ui-button>
+
+    <ui-button variant="ghost" size="lg"> Ghost Large </ui-button>
+  `,
 })
 export class ExampleComponent {
   handleClick() {
-    console.log('Button clicked');
+    console.log("Button clicked");
   }
 }
 ```
 
 #### Inputs
 
-- `label: string` - Button text (default: 'Click me')
-- `variant: 'basic' | 'raised' | 'stroked' | 'flat'` - Button style (default: 'raised')
-- `color: 'primary' | 'accent' | 'warn'` - Material color (default: 'primary')
-- `size: 'small' | 'medium' | 'large'` - Button size (default: 'medium')
-- `isDisabled: boolean` - Disable button (default: false)
-- `isLoading: signal<boolean>` - Show loading spinner
+- `variant: 'filled' | 'outlined' | 'ghost'` – Visual style (default: `'filled'`)
+- `size: 'sm' | 'md' | 'lg'` – Size preset (default: `'md'`)
+- `type: 'button' | 'submit' | 'reset'` – Native button type (default: `'button'`)
+- `disabled: boolean` – Disable button (default: `false`)
 
-#### Outputs
+### UISelect
 
-- `onClick: EventEmitter<void>` - Emitted on button click
+Native `<select>` wrapper with two-way `[(value)]` binding.
+
+### UIInput
+
+Native `<input>` wrapper supporting text, number, and date types with two-way `[(value)]` binding.
+
+### UIFilter
+
+macOS Finder-style predicate builder. Emits a `Predicate<T>` for use with `FilterableArrayDatasource`.
+
+### UITableView
+
+Virtual-scrolling table with column resize, selection, sorting, and filtering support.
 
 ## Features
 
-✅ Built on Angular Material buttons  
-✅ Fully typed with TypeScript  
-✅ Signal-based reactive state  
-✅ Modern control flow in templates  
-✅ OnPush change detection  
-✅ Material ripple effects  
-✅ Keyboard accessible  
-✅ Responsive design  
-✅ Material color theming support
-
+✅ No Material dependency — native browser controls
+✅ Fully typed with TypeScript
+✅ Signal-based reactive state
+✅ Modern control flow in templates
+✅ OnPush change detection
+✅ Keyboard accessible
+✅ CSS custom-property theming (`--tv-*` tokens)
+✅ Light & dark mode support
