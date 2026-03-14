@@ -17,9 +17,9 @@
     "moduleResolution": "bundler",
     "types": ["vitest/globals"],
     "paths": {
-      "@theredhead/ui-kit": ["./dist/ui-kit"],
-      "@theredhead/ui-blocks": ["./dist/ui-blocks"],
-      "@theredhead/ui-theme": ["./dist/ui-theme"]
+      "@theredhead/ui-kit": ["./packages/ui-kit/src/public-api.ts", "./dist/ui-kit"],
+      "@theredhead/ui-blocks": ["./packages/ui-blocks/src/public-api.ts", "./dist/ui-blocks"],
+      "@theredhead/ui-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"]
     }
   },
   "angularCompilerOptions": {

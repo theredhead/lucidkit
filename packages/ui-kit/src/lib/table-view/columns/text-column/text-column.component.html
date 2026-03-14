@@ -1,0 +1,9 @@
+<ng-template #cell let-row>
+    @if (truncate()) {
+    <span class="text-cell-truncate" [title]="stringValue(row)">
+        {{ stringValue(row) }}
+    </span>
+    } @else {
+    {{ getCellValue(row) }}
+    }
+</ng-template>

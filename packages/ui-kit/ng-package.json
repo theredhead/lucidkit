@@ -2,10 +2,7 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/ui-kit",
   "lib": {
-    "entryFile": "src/public-api.ts",
-    "umdModuleIds": {
-      "@theredhead/ui-theme": "@theredhead/ui-theme"
-    }
+    "entryFile": "src/public-api.ts"
   },
   "allowedNonPeerDependencies": ["@theredhead/ui-theme"]
 }
