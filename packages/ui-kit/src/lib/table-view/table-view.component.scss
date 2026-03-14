@@ -24,6 +24,23 @@
   --tv-caption-bg: #f2f4f7;
   --tv-caption-text: #414b58;
 
+  /* ── Dimensions ── */
+  --tv-viewport-height: 420px;
+  --tv-resize-handle-width: 6px;
+  --tv-resize-indicator-width: 2px;
+
+  /* ── Type scale ── */
+  --tv-font-header: 0.74rem;
+  --tv-font-caption: 0.8rem;
+  --tv-font-body: 0.9rem;
+  --tv-font-footer: 0.83rem;
+  --tv-font-badge: 0.73rem;
+  --tv-font-sort-icon: 0.82rem;
+
+  /* ── Letter spacing ── */
+  --tv-ls-caption: 0.02em;
+  --tv-ls-header: 0.06em;
+
   display: block;
   font-family: var(--tv-font);
   color: var(--tv-text);
@@ -103,9 +120,9 @@
   border-bottom: 1px solid var(--tv-border);
   background: var(--tv-caption-bg);
   color: var(--tv-caption-text);
-  font-size: calc(0.8rem * var(--ui-density-scale, 1));
+  font-size: calc(var(--tv-font-caption) * var(--ui-density-scale, 1));
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tv-ls-caption);
 }
 
 .columns-slot {

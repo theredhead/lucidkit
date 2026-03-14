@@ -4,13 +4,13 @@
     justify-content: center;
     margin-right: auto;
     max-width: 100%;
-    padding: 0.15rem 0.55rem;
+    padding: var(--tv-badge-padding, 0.15rem 0.55rem);
     border-radius: 999px;
     border: 1px solid transparent;
-    font-size: 0.73rem;
+    font-size: var(--tv-font-badge);
     font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: 0.01em;
+    line-height: var(--tv-badge-line-height, 1.2);
+    letter-spacing: var(--tv-badge-letter-spacing, 0.01em);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

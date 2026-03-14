@@ -3,7 +3,7 @@
 }
 
 .table-body-viewport {
-  height: 420px;
+  height: var(--tv-viewport-height, 420px);
   width: 100%;
   background: var(--tv-surface);
   overflow: auto;
@@ -30,7 +30,7 @@
   box-sizing: border-box;
   border-right: 1px solid var(--tv-border);
   color: var(--tv-text);
-  font-size: calc(0.9rem * var(--ui-density-scale, 1));
+  font-size: calc(var(--tv-font-body) * var(--ui-density-scale, 1));
 }
 
 .table-cell:last-child {

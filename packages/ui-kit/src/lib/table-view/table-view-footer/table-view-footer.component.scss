@@ -13,7 +13,7 @@
 }
 
 .page-info {
-  font-size: calc(0.83rem * var(--ui-density-scale, 1));
+  font-size: calc(var(--tv-font-footer) * var(--ui-density-scale, 1));
   color: var(--tv-muted);
   margin-right: 0.25rem;
 }
