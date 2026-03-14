@@ -1,0 +1,37 @@
+<cdk-virtual-scroll-viewport
+  [itemSize]="rowHeight()"
+  class="table-body-viewport"
+>
+  <div
+    *cdkVirtualFor="let row of rows(); let rowIndex = index"
+    class="table-row"
+    [class.table-row--loading]="row === null"
+    [style.height.px]="rowHeight()"
+    [style.min-height.px]="rowHeight()"
+  >
+    @if (showRowIndexIndicator()) {
+      <div class="table-cell table-cell--row-index">
+        @if (row !== null) {
+          {{ rowIndexOffset() + rowIndex + 1 }}
+        }
+      </div>
+    }
+    @for (col of columns(); track col.key()) {
+      <div
+        class="table-cell"
+        [style.width.px]="getColWidth(col.key())"
+        [style.min-width.px]="getColWidth(col.key()) ? 40 : null"
+        [style.flex]="getColWidth(col.key()) ? '0 0 auto' : '1'"
+      >
+        @if (row !== null) {
+          <ng-container
+            [ngTemplateOutlet]="col.cellTemplate"
+            [ngTemplateOutletContext]="{ $implicit: row, column: col }"
+          />
+        } @else {
+          <span class="table-cell-skeleton"></span>
+        }
+      </div>
+    }
+  </div>
+</cdk-virtual-scroll-viewport>

@@ -16,13 +16,13 @@ import {
 import { ColumnResizeService } from "./column-resize.service";
 import { UITableViewColumn } from "./columns/table-column.directive";
 import { DatasourceAdapter } from "./datasources/datasource-adapter";
-import { UITableBody } from "./table-view-body.component";
-import { UITableFooter } from "./table-view-footer.component";
+import { UITableBody } from "./table-view-body/table-view-body.component";
+import { UITableFooter } from "./table-view-footer/table-view-footer.component";
 import {
   ColumnResizeEvent,
   SortState,
   UITableHeader,
-} from "./table-view-header.component";
+} from "./table-view-header/table-view-header.component";
 
 @Component({
   selector: "ui-table-view",
