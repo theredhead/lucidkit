@@ -1,0 +1,18 @@
+<div class="columns-slot">
+    <ng-content />
+</div>
+
+<section class="table-view-root" role="table" [attr.aria-labelledby]="captionAriaLabelledBy()">
+    @if (caption()) {
+    <div class="table-caption" [id]="captionId">{{ caption() }}</div>
+    }
+    <ui-table-header [columns]="columns()" [showRowIndexIndicator]="showRowIndexIndicator()"
+        [rowIndexHeaderText]="rowIndexHeaderText()" [resizable]="isResizable()" [columnWidths]="columnWidths()"
+        (sortChange)="onSortChange($event)" (columnResize)="onColumnResize($event)" />
+    <ui-table-body [columns]="columns()" [rows]="sortedRows()" [showRowIndexIndicator]="showRowIndexIndicator()"
+        [rowIndexOffset]="rowIndexOffset()" [columnWidths]="columnWidths()" />
+    @if (showBuiltInPaginator()) {
+    <ui-table-footer [pageIndex]="datasource().pageIndex()" [pageSize]="datasource().pageSize()"
+        [totalItems]="datasource().totalItems()" (pageIndexChange)="onPageChange($event)" />
+    }
+</section>
