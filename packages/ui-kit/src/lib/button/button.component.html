@@ -1,33 +1,3 @@
-@switch (variant()) {
-@case ('basic') {
-<button mat-button [color]="color()" [disabled]="isDisabled() || isLoading()" [class.small]="size() === 'small'"
-    [class.large]="size() === 'large'" (click)="onClick.emit()">
-    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+<button [type]="type()" [disabled]="disabled()" [attr.aria-label]="ariaLabel()">
+  <ng-content />
 </button>
-}
-@case ('stroked') {
-<button mat-stroked-button [color]="color()" [disabled]="isDisabled() || isLoading()" [class.small]="size() === 'small'"
-    [class.large]="size() === 'large'" (click)="onClick.emit()">
-    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
-</button>
-}
-@case ('flat') {
-<button mat-flat-button [color]="color()" [disabled]="isDisabled() || isLoading()" [class.small]="size() === 'small'"
-    [class.large]="size() === 'large'" (click)="onClick.emit()">
-    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
-</button>
-}
-@default {
-<button mat-raised-button [color]="color()" [disabled]="isDisabled() || isLoading()" [class.small]="size() === 'small'"
-    [class.large]="size() === 'large'" (click)="onClick.emit()">
-    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
-</button>
-}
-}
-
-<ng-template #buttonContent>
-    @if (isLoading()) {
-    <mat-spinner [diameter]="20" class="spinner"></mat-spinner>
-    }
-    <span class="label">{{ label() }}</span>
-</ng-template>

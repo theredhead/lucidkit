@@ -1,0 +1,30 @@
+<div class="ui-filter__header" role="group" aria-label="Filter junction">
+  @if (allowJunction()) {
+    <span id="filter-junction-label">Match</span>
+    <ui-select
+      ariaLabel="Filter junction"
+      [options]="junctionOptions"
+      [value]="currentJunction()"
+      (valueChange)="setJunction($event)"
+    />
+    <span>of the following rules:</span>
+  } @else {
+    <span>Match <strong>all</strong> of the following rules:</span>
+  }
+</div>
+
+<div class="ui-filter__rules" role="list" aria-label="Filter rules" aria-live="polite">
+  @for (rule of rules(); track rule.id; let idx = $index) {
+    <ui-filter-row
+      role="listitem"
+      [fields]="fields()"
+      [rule]="rule"
+      (ruleChange)="updateRule(idx, $event)"
+      (remove)="removeRule(idx)"
+    />
+  }
+</div>
+
+<div class="ui-filter__actions">
+  <ui-button variant="ghost" size="sm" ariaLabel="Add filter rule" (click)="addRule()">+ Add Rule</ui-button>
+</div>

@@ -10,11 +10,11 @@ Provide a consistent, accessible, and themeable set of Angular UI building block
 
 This is an **npm workspace** (`packages/*`) that publishes three independent Angular libraries:
 
-| Package | npm name | Purpose |
-|---|---|---|
-| `packages/ui-theme` | `@sigmax/ui-theme` | Material 3 SCSS theme with light / dark mode and a `ThemeService` |
-| `packages/ui-kit` | `@sigmax/ui-kit` | Core reusable components (e.g. `UiButtonComponent`, `ThemeToggleComponent`) |
-| `packages/ui-blocks` | `@sigmax/ui-blocks` | Advanced layout components (e.g. `UiMasterDetailViewComponent`) |
+| Package              | npm name            | Purpose                                                               |
+| -------------------- | ------------------- | --------------------------------------------------------------------- |
+| `packages/ui-theme`  | `@sigmax/ui-theme`  | Material 3 SCSS theme with light / dark mode and a `ThemeService`     |
+| `packages/ui-kit`    | `@sigmax/ui-kit`    | Core reusable components (e.g. `UIButton`, `UITableView`, `UIFilter`) |
+| `packages/ui-blocks` | `@sigmax/ui-blocks` | Advanced layout components (e.g. `UiMasterDetailViewComponent`)       |
 
 A shared **Storybook** host (`storybook-host`) is wired up at the workspace root for interactive component development and documentation.
 

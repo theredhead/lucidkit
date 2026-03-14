@@ -1,177 +1,114 @@
-import {
-  ComponentFixture,
-  TestBed,
-} from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
-
-import { vi } from 'vitest';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import {
-  ButtonColor,
-  ButtonSize,
-  ButtonVariant,
-  UiButtonComponent,
-} from './button.component';
+  type ButtonSize,
+  type ButtonVariant,
+  UIButton,
+} from "./button.component";
 
-describe('UiButtonComponent', () => {
-    let component: UiButtonComponent;
-    let fixture: ComponentFixture<UiButtonComponent>;
+describe("UIButton", () => {
+  let component: UIButton;
+  let fixture: ComponentFixture<UIButton>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [UiButtonComponent],
-            providers: [provideNoopAnimations()],
-        }).compileComponents();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [UIButton],
+    }).compileComponents();
 
-        fixture = TestBed.createComponent(UiButtonComponent);
-        component = fixture.componentInstance;
+    fixture = TestBed.createComponent(UIButton);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it("should create", () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe("defaults", () => {
+    it('should default type to "button"', () => {
+      expect(component.type()).toBe("button");
+    });
+
+    it('should default variant to "filled"', () => {
+      expect(component.variant()).toBe("filled");
+    });
+
+    it('should default size to "md"', () => {
+      expect(component.size()).toBe("md");
+    });
+
+    it("should default disabled to false", () => {
+      expect(component.disabled()).toBe(false);
+    });
+  });
+
+  describe("variants", () => {
+    const variants: ButtonVariant[] = ["filled", "outlined", "ghost"];
+
+    variants.forEach((variant) => {
+      it(`should apply ${variant} host class`, () => {
+        fixture.componentRef.setInput("variant", variant);
         fixture.detectChanges();
+
+        const host: HTMLElement = fixture.nativeElement;
+        expect(host.classList.contains(`ui-button--${variant}`)).toBe(true);
+      });
+    });
+  });
+
+  describe("sizes", () => {
+    const sizes: ButtonSize[] = ["sm", "md", "lg"];
+
+    sizes.forEach((size) => {
+      it(`should apply ${size} host class`, () => {
+        fixture.componentRef.setInput("size", size);
+        fixture.detectChanges();
+
+        const host: HTMLElement = fixture.nativeElement;
+        expect(host.classList.contains(`ui-button--${size}`)).toBe(true);
+      });
+    });
+  });
+
+  describe("disabled state", () => {
+    it("should disable the native button", () => {
+      fixture.componentRef.setInput("disabled", true);
+      fixture.detectChanges();
+
+      const button: HTMLButtonElement =
+        fixture.nativeElement.querySelector("button");
+      expect(button.disabled).toBe(true);
+    });
+  });
+
+  describe("content projection", () => {
+    it("should render projected content", () => {
+      const button: HTMLButtonElement =
+        fixture.nativeElement.querySelector("button");
+      expect(button).toBeTruthy();
+    });
+  });
+
+  describe("accessibility", () => {
+    it("should not set aria-label by default", () => {
+      const button: HTMLButtonElement =
+        fixture.nativeElement.querySelector("button");
+      expect(button.getAttribute("aria-label")).toBeNull();
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
+    it("should forward ariaLabel to the native button", () => {
+      fixture.componentRef.setInput("ariaLabel", "Close dialog");
+      fixture.detectChanges();
+
+      const button: HTMLButtonElement =
+        fixture.nativeElement.querySelector("button");
+      expect(button.getAttribute("aria-label")).toBe("Close dialog");
     });
 
-    describe('inputs', () => {
-        it('should have default label "Click me"', () => {
-            expect(component.label()).toBe('Click me');
-        });
-
-        it('should have default variant "raised"', () => {
-            expect(component.variant()).toBe('raised');
-        });
-
-        it('should have default color "primary"', () => {
-            expect(component.color()).toBe('primary');
-        });
-
-        it('should have default size "medium"', () => {
-            expect(component.size()).toBe('medium');
-        });
-
-        it('should have default isDisabled false', () => {
-            expect(component.isDisabled()).toBe(false);
-        });
-
-        it('should have default isLoading false', () => {
-            expect(component.isLoading()).toBe(false);
-        });
+    it("should set type=button by default to prevent implicit submit", () => {
+      const button: HTMLButtonElement =
+        fixture.nativeElement.querySelector("button");
+      expect(button.type).toBe("button");
     });
-
-    describe('button variants', () => {
-        const variants: ButtonVariant[] = ['basic', 'raised', 'stroked', 'flat'];
-
-        variants.forEach((variant) => {
-            it(`should render ${variant} button variant`, () => {
-                fixture.componentRef.setInput('variant', variant);
-                fixture.detectChanges();
-
-                const button = fixture.nativeElement.querySelector('button');
-                expect(button).toBeTruthy();
-            });
-        });
-    });
-
-    describe('button colors', () => {
-        const colors: ButtonColor[] = ['primary', 'accent', 'warn'];
-
-        colors.forEach((color) => {
-            it(`should apply ${color} color`, () => {
-                fixture.componentRef.setInput('color', color);
-                fixture.detectChanges();
-
-                const button = fixture.nativeElement.querySelector('button');
-                expect(button).toBeTruthy();
-            });
-        });
-    });
-
-    describe('button sizes', () => {
-        const sizes: ButtonSize[] = ['small', 'medium', 'large'];
-
-        sizes.forEach((size) => {
-            it(`should apply ${size} size class`, () => {
-                fixture.componentRef.setInput('size', size);
-                fixture.detectChanges();
-
-                const button = fixture.nativeElement.querySelector('button');
-                if (size === 'small') {
-                    expect(button.classList.contains('small')).toBe(true);
-                } else if (size === 'large') {
-                    expect(button.classList.contains('large')).toBe(true);
-                }
-            });
-        });
-    });
-
-    describe('disabled state', () => {
-        it('should disable button when isDisabled is true', () => {
-            fixture.componentRef.setInput('isDisabled', true);
-            fixture.detectChanges();
-
-            const button = fixture.nativeElement.querySelector('button');
-            expect(button.disabled).toBe(true);
-        });
-
-        it('should disable button when isLoading is true', () => {
-            component.isLoading.set(true);
-            fixture.detectChanges();
-
-            const button = fixture.nativeElement.querySelector('button');
-            expect(button.disabled).toBe(true);
-        });
-    });
-
-    describe('loading state', () => {
-        it('should show spinner when loading', () => {
-            component.isLoading.set(true);
-            fixture.detectChanges();
-
-            const spinner = fixture.nativeElement.querySelector('mat-spinner');
-            expect(spinner).toBeTruthy();
-        });
-
-        it('should not show spinner when not loading', () => {
-            component.isLoading.set(false);
-            fixture.detectChanges();
-
-            const spinner = fixture.nativeElement.querySelector('mat-spinner');
-            expect(spinner).toBeFalsy();
-        });
-    });
-
-    describe('click output', () => {
-        it('should emit onClick when button is clicked', () => {
-            const spy = vi.fn();
-            component.onClick.subscribe(spy);
-
-            const button = fixture.nativeElement.querySelector('button');
-            button.click();
-
-            expect(spy).toHaveBeenCalled();
-        });
-
-        it('should not emit onClick when button is disabled', () => {
-            const spy = vi.fn();
-            component.onClick.subscribe(spy);
-
-            fixture.componentRef.setInput('isDisabled', true);
-            fixture.detectChanges();
-
-            const button = fixture.nativeElement.querySelector('button');
-            button.click();
-
-            expect(spy).not.toHaveBeenCalled();
-        });
-    });
-
-    describe('label', () => {
-        it('should display custom label', () => {
-            fixture.componentRef.setInput('label', 'Submit');
-            fixture.detectChanges();
-
-            const label = fixture.nativeElement.querySelector('.label');
-            expect(label.textContent.trim()).toBe('Submit');
-        });
-    });
+  });
 });
