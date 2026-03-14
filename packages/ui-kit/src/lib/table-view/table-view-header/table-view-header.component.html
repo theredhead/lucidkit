@@ -1,0 +1,35 @@
+<div class="table-header-row">
+  @if (showRowIndexIndicator()) {
+    <div class="table-header-cell table-header-cell--row-index">
+      {{ rowIndexHeaderText() }}
+    </div>
+  }
+  @for (col of columns(); track col.key(); let i = $index) {
+    <div
+      class="table-header-cell"
+      [class.sortable]="col.sortable()"
+      [style.width.px]="getColWidth(col.key())"
+      [style.min-width.px]="getColWidth(col.key()) ? 40 : null"
+      [style.flex]="getColWidth(col.key()) ? '0 0 auto' : '1'"
+      (click)="onCellClick(col)"
+    >
+      <span class="header-label">{{ col.headerText() || col.key() }}</span>
+      @if (col.sortable()) {
+        <span class="sort-icon">
+          @if (sortState()?.key === col.key()) {
+            {{ sortState()!.direction === "asc" ? "↑" : "↓" }}
+          } @else {
+            <span class="sort-icon--inactive">⇅</span>
+          }
+        </span>
+      }
+      @if (resizable()) {
+        <span
+          class="resize-handle"
+          (pointerdown)="onResizeStart($event, col.key())"
+        ></span>
+      }
+    </div>
+  }
+  <div class="header-scrollbar-spacer" aria-hidden="true"></div>
+</div>

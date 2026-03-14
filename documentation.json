@@ -37,12 +37,12 @@
         },
         {
             "name": "ColumnResizeEvent",
-            "id": "interface-ColumnResizeEvent-68e64d1c19e1c4881bb6f07a4f3210f4117643749d442592b21f4d3b25825914cd99d7357ee2087ff1b233f885b0dbb89d1379b2ec089070771cdc53bc40ed2d",
-            "file": "packages/ui-kit/src/lib/table-view/table-view-header.component.ts",
+            "id": "interface-ColumnResizeEvent-d2a5add8e2e990eeaaa001eae856027b2d4322b6ee663b04b11c03139a8403689153697d8057c021da1c9be396adb274a4be1e7d9ae66b92b7cfaf89b64bfe0f",
+            "file": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  ElementRef,\r\n  input,\r\n  NgZone,\r\n  output,\r\n  signal,\r\n} from \"@angular/core\";\r\n\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\n\r\nexport interface SortState {\r\n  key: string;\r\n  direction: \"asc\" | \"desc\";\r\n}\r\n\r\nexport interface ColumnResizeEvent {\r\n  key: string;\r\n  widthPx: number;\r\n}\r\n\r\n@Component({\r\n  selector: \"ui-table-header\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  template: `\r\n    <div class=\"table-header-row\">\r\n      @if (showRowIndexIndicator()) {\r\n        <div class=\"table-header-cell table-header-cell--row-index\">\r\n          {{ rowIndexHeaderText() }}\r\n        </div>\r\n      }\r\n      @for (col of columns(); track col.key(); let i = $index) {\r\n        <div\r\n          class=\"table-header-cell\"\r\n          [class.sortable]=\"col.sortable()\"\r\n          [style.width.px]=\"getColWidth(col.key())\"\r\n          [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\r\n          [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\r\n          (click)=\"onCellClick(col)\"\r\n        >\r\n          <span class=\"header-label\">{{ col.headerText() || col.key() }}</span>\r\n          @if (col.sortable()) {\r\n            <span class=\"sort-icon\">\r\n              @if (sortState()?.key === col.key()) {\r\n                {{ sortState()!.direction === \"asc\" ? \"↑\" : \"↓\" }}\r\n              } @else {\r\n                <span class=\"sort-icon--inactive\">⇅</span>\r\n              }\r\n            </span>\r\n          }\r\n          @if (resizable()) {\r\n            <span\r\n              class=\"resize-handle\"\r\n              (pointerdown)=\"onResizeStart($event, col.key())\"\r\n            ></span>\r\n          }\r\n        </div>\r\n      }\r\n    </div>\r\n  `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        overflow: hidden;\r\n      }\r\n      .table-header-row {\r\n        display: flex;\r\n        min-width: var(--tv-header-scroll-width, var(--tv-total-row-width, 100%));\r\n        background: var(--tv-surface-2);\r\n        border-bottom: 1px solid var(--tv-border);\r\n        /* Reserve space for the body's vertical scrollbar so header cells align with body cells */\r\n        padding-right: var(--tv-scrollbar-width, 0px);\r\n      }\r\n      .table-header-cell {\r\n        flex: 1;\r\n        min-width: 0;\r\n        box-sizing: border-box;\r\n        padding: var(--ui-block-padding, 0.65rem)\r\n          var(--ui-inline-padding, 0.85rem);\r\n        font-weight: 600;\r\n        font-size: calc(0.74rem * var(--ui-density-scale, 1));\r\n        color: var(--tv-muted);\r\n        text-transform: uppercase;\r\n        letter-spacing: 0.06em;\r\n        display: flex;\r\n        align-items: center;\r\n        gap: calc(var(--ui-gap, 0.75rem) * 0.6);\r\n        border-right: 1px solid var(--tv-border);\r\n        transition:\r\n          background-color 120ms ease,\r\n          color 120ms ease;\r\n        position: relative;\r\n      }\r\n      .table-header-cell:last-child {\r\n        border-right: none;\r\n      }\r\n      .table-header-cell--row-index {\r\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\r\n        width: var(--tv-row-index-width, 4.25rem);\r\n        min-width: var(--tv-row-index-width, 4.25rem);\r\n        max-width: var(--tv-row-index-width, 4.25rem);\r\n        justify-content: flex-end;\r\n        color: var(--tv-text);\r\n      }\r\n      .header-label {\r\n        overflow: hidden;\r\n        text-overflow: ellipsis;\r\n        white-space: nowrap;\r\n      }\r\n      .table-header-cell.sortable {\r\n        cursor: pointer;\r\n        user-select: none;\r\n      }\r\n      .table-header-cell.sortable:hover {\r\n        background: color-mix(in srgb, var(--tv-accent) 9%, transparent);\r\n        color: var(--tv-text);\r\n      }\r\n      .sort-icon {\r\n        margin-left: auto;\r\n        font-size: 0.82rem;\r\n        line-height: 1;\r\n      }\r\n      .sort-icon--inactive {\r\n        opacity: 0.35;\r\n      }\r\n\r\n      /* ── Resize handle ── */\r\n      .resize-handle {\r\n        position: absolute;\r\n        top: 0;\r\n        right: -3px;\r\n        width: 6px;\r\n        height: 100%;\r\n        cursor: col-resize;\r\n        z-index: 2;\r\n        user-select: none;\r\n        touch-action: none;\r\n      }\r\n      .resize-handle::after {\r\n        content: \"\";\r\n        position: absolute;\r\n        top: 25%;\r\n        right: 2px;\r\n        width: 2px;\r\n        height: 50%;\r\n        border-radius: 1px;\r\n        background: var(--tv-border-strong);\r\n        opacity: 0;\r\n        transition: opacity 150ms ease;\r\n      }\r\n      .table-header-cell:hover .resize-handle::after,\r\n      .resize-handle:hover::after {\r\n        opacity: 1;\r\n      }\r\n      :host-context(.tv-resizing) .resize-handle::after {\r\n        opacity: 1;\r\n        background: var(--tv-accent);\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class UITableHeader {\r\n  columns = input.required<readonly UITableViewColumn[]>();\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexHeaderText = input<string>(\"#\");\r\n  resizable = input<boolean>(false);\r\n  columnWidths = input<Record<string, number>>({});\r\n  sortChange = output<SortState | null>();\r\n  columnResize = output<ColumnResizeEvent>();\r\n  sortState = signal<SortState | null>(null);\r\n\r\n  constructor(\r\n    private readonly elRef: ElementRef<HTMLElement>,\r\n    private readonly zone: NgZone,\r\n  ) {}\r\n\r\n  protected getColWidth(key: string): number | null {\r\n    return this.columnWidths()[key] ?? null;\r\n  }\r\n\r\n  onCellClick(col: UITableViewColumn): void {\r\n    if (!col.sortable()) return;\r\n    const current = this.sortState();\r\n    let next: SortState | null;\r\n    if (current?.key === col.key()) {\r\n      next =\r\n        current.direction === \"asc\"\r\n          ? { key: col.key(), direction: \"desc\" }\r\n          : null;\r\n    } else {\r\n      next = { key: col.key(), direction: \"asc\" };\r\n    }\r\n    this.sortState.set(next);\r\n    this.sortChange.emit(next);\r\n  }\r\n\r\n  onResizeStart(event: PointerEvent, colKey: string): void {\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n\r\n    const handle = event.target as HTMLElement;\r\n    const cell = handle.parentElement!;\r\n    const startX = event.clientX;\r\n    const startWidth = cell.getBoundingClientRect().width;\r\n    const minWidth = 40;\r\n    const root =\r\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\r\n      this.elRef.nativeElement;\r\n\r\n    root.classList.add(\"tv-resizing\");\r\n    handle.setPointerCapture(event.pointerId);\r\n\r\n    const onMove = (e: PointerEvent) => {\r\n      const delta = e.clientX - startX;\r\n      const newWidth = Math.max(minWidth, Math.round(startWidth + delta));\r\n      cell.style.width = `${newWidth}px`;\r\n      cell.style.flex = \"0 0 auto\";\r\n    };\r\n\r\n    const onUp = (e: PointerEvent) => {\r\n      handle.releasePointerCapture(e.pointerId);\r\n      handle.removeEventListener(\"pointermove\", onMove);\r\n      handle.removeEventListener(\"pointerup\", onUp);\r\n      root.classList.remove(\"tv-resizing\");\r\n\r\n      const finalWidth = Math.max(\r\n        minWidth,\r\n        Math.round(cell.getBoundingClientRect().width),\r\n      );\r\n      this.zone.run(() => {\r\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\r\n      });\r\n    };\r\n\r\n    handle.addEventListener(\"pointermove\", onMove);\r\n    handle.addEventListener(\"pointerup\", onUp);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const minWidth = 40;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(minWidth, Math.round(startWidth + delta));\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        minWidth,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
             "properties": [
                 {
                     "name": "key",
@@ -237,12 +237,12 @@
         },
         {
             "name": "SortState",
-            "id": "interface-SortState-68e64d1c19e1c4881bb6f07a4f3210f4117643749d442592b21f4d3b25825914cd99d7357ee2087ff1b233f885b0dbb89d1379b2ec089070771cdc53bc40ed2d",
-            "file": "packages/ui-kit/src/lib/table-view/table-view-header.component.ts",
+            "id": "interface-SortState-d2a5add8e2e990eeaaa001eae856027b2d4322b6ee663b04b11c03139a8403689153697d8057c021da1c9be396adb274a4be1e7d9ae66b92b7cfaf89b64bfe0f",
+            "file": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  ElementRef,\r\n  input,\r\n  NgZone,\r\n  output,\r\n  signal,\r\n} from \"@angular/core\";\r\n\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\n\r\nexport interface SortState {\r\n  key: string;\r\n  direction: \"asc\" | \"desc\";\r\n}\r\n\r\nexport interface ColumnResizeEvent {\r\n  key: string;\r\n  widthPx: number;\r\n}\r\n\r\n@Component({\r\n  selector: \"ui-table-header\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  template: `\r\n    <div class=\"table-header-row\">\r\n      @if (showRowIndexIndicator()) {\r\n        <div class=\"table-header-cell table-header-cell--row-index\">\r\n          {{ rowIndexHeaderText() }}\r\n        </div>\r\n      }\r\n      @for (col of columns(); track col.key(); let i = $index) {\r\n        <div\r\n          class=\"table-header-cell\"\r\n          [class.sortable]=\"col.sortable()\"\r\n          [style.width.px]=\"getColWidth(col.key())\"\r\n          [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\r\n          [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\r\n          (click)=\"onCellClick(col)\"\r\n        >\r\n          <span class=\"header-label\">{{ col.headerText() || col.key() }}</span>\r\n          @if (col.sortable()) {\r\n            <span class=\"sort-icon\">\r\n              @if (sortState()?.key === col.key()) {\r\n                {{ sortState()!.direction === \"asc\" ? \"↑\" : \"↓\" }}\r\n              } @else {\r\n                <span class=\"sort-icon--inactive\">⇅</span>\r\n              }\r\n            </span>\r\n          }\r\n          @if (resizable()) {\r\n            <span\r\n              class=\"resize-handle\"\r\n              (pointerdown)=\"onResizeStart($event, col.key())\"\r\n            ></span>\r\n          }\r\n        </div>\r\n      }\r\n    </div>\r\n  `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        overflow: hidden;\r\n      }\r\n      .table-header-row {\r\n        display: flex;\r\n        min-width: var(--tv-header-scroll-width, var(--tv-total-row-width, 100%));\r\n        background: var(--tv-surface-2);\r\n        border-bottom: 1px solid var(--tv-border);\r\n        /* Reserve space for the body's vertical scrollbar so header cells align with body cells */\r\n        padding-right: var(--tv-scrollbar-width, 0px);\r\n      }\r\n      .table-header-cell {\r\n        flex: 1;\r\n        min-width: 0;\r\n        box-sizing: border-box;\r\n        padding: var(--ui-block-padding, 0.65rem)\r\n          var(--ui-inline-padding, 0.85rem);\r\n        font-weight: 600;\r\n        font-size: calc(0.74rem * var(--ui-density-scale, 1));\r\n        color: var(--tv-muted);\r\n        text-transform: uppercase;\r\n        letter-spacing: 0.06em;\r\n        display: flex;\r\n        align-items: center;\r\n        gap: calc(var(--ui-gap, 0.75rem) * 0.6);\r\n        border-right: 1px solid var(--tv-border);\r\n        transition:\r\n          background-color 120ms ease,\r\n          color 120ms ease;\r\n        position: relative;\r\n      }\r\n      .table-header-cell:last-child {\r\n        border-right: none;\r\n      }\r\n      .table-header-cell--row-index {\r\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\r\n        width: var(--tv-row-index-width, 4.25rem);\r\n        min-width: var(--tv-row-index-width, 4.25rem);\r\n        max-width: var(--tv-row-index-width, 4.25rem);\r\n        justify-content: flex-end;\r\n        color: var(--tv-text);\r\n      }\r\n      .header-label {\r\n        overflow: hidden;\r\n        text-overflow: ellipsis;\r\n        white-space: nowrap;\r\n      }\r\n      .table-header-cell.sortable {\r\n        cursor: pointer;\r\n        user-select: none;\r\n      }\r\n      .table-header-cell.sortable:hover {\r\n        background: color-mix(in srgb, var(--tv-accent) 9%, transparent);\r\n        color: var(--tv-text);\r\n      }\r\n      .sort-icon {\r\n        margin-left: auto;\r\n        font-size: 0.82rem;\r\n        line-height: 1;\r\n      }\r\n      .sort-icon--inactive {\r\n        opacity: 0.35;\r\n      }\r\n\r\n      /* ── Resize handle ── */\r\n      .resize-handle {\r\n        position: absolute;\r\n        top: 0;\r\n        right: -3px;\r\n        width: 6px;\r\n        height: 100%;\r\n        cursor: col-resize;\r\n        z-index: 2;\r\n        user-select: none;\r\n        touch-action: none;\r\n      }\r\n      .resize-handle::after {\r\n        content: \"\";\r\n        position: absolute;\r\n        top: 25%;\r\n        right: 2px;\r\n        width: 2px;\r\n        height: 50%;\r\n        border-radius: 1px;\r\n        background: var(--tv-border-strong);\r\n        opacity: 0;\r\n        transition: opacity 150ms ease;\r\n      }\r\n      .table-header-cell:hover .resize-handle::after,\r\n      .resize-handle:hover::after {\r\n        opacity: 1;\r\n      }\r\n      :host-context(.tv-resizing) .resize-handle::after {\r\n        opacity: 1;\r\n        background: var(--tv-accent);\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class UITableHeader {\r\n  columns = input.required<readonly UITableViewColumn[]>();\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexHeaderText = input<string>(\"#\");\r\n  resizable = input<boolean>(false);\r\n  columnWidths = input<Record<string, number>>({});\r\n  sortChange = output<SortState | null>();\r\n  columnResize = output<ColumnResizeEvent>();\r\n  sortState = signal<SortState | null>(null);\r\n\r\n  constructor(\r\n    private readonly elRef: ElementRef<HTMLElement>,\r\n    private readonly zone: NgZone,\r\n  ) {}\r\n\r\n  protected getColWidth(key: string): number | null {\r\n    return this.columnWidths()[key] ?? null;\r\n  }\r\n\r\n  onCellClick(col: UITableViewColumn): void {\r\n    if (!col.sortable()) return;\r\n    const current = this.sortState();\r\n    let next: SortState | null;\r\n    if (current?.key === col.key()) {\r\n      next =\r\n        current.direction === \"asc\"\r\n          ? { key: col.key(), direction: \"desc\" }\r\n          : null;\r\n    } else {\r\n      next = { key: col.key(), direction: \"asc\" };\r\n    }\r\n    this.sortState.set(next);\r\n    this.sortChange.emit(next);\r\n  }\r\n\r\n  onResizeStart(event: PointerEvent, colKey: string): void {\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n\r\n    const handle = event.target as HTMLElement;\r\n    const cell = handle.parentElement!;\r\n    const startX = event.clientX;\r\n    const startWidth = cell.getBoundingClientRect().width;\r\n    const minWidth = 40;\r\n    const root =\r\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\r\n      this.elRef.nativeElement;\r\n\r\n    root.classList.add(\"tv-resizing\");\r\n    handle.setPointerCapture(event.pointerId);\r\n\r\n    const onMove = (e: PointerEvent) => {\r\n      const delta = e.clientX - startX;\r\n      const newWidth = Math.max(minWidth, Math.round(startWidth + delta));\r\n      cell.style.width = `${newWidth}px`;\r\n      cell.style.flex = \"0 0 auto\";\r\n    };\r\n\r\n    const onUp = (e: PointerEvent) => {\r\n      handle.releasePointerCapture(e.pointerId);\r\n      handle.removeEventListener(\"pointermove\", onMove);\r\n      handle.removeEventListener(\"pointerup\", onUp);\r\n      root.classList.remove(\"tv-resizing\");\r\n\r\n      const finalWidth = Math.max(\r\n        minWidth,\r\n        Math.round(cell.getBoundingClientRect().width),\r\n      );\r\n      this.zone.run(() => {\r\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\r\n      });\r\n    };\r\n\r\n    handle.addEventListener(\"pointermove\", onMove);\r\n    handle.addEventListener(\"pointerup\", onUp);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const minWidth = 40;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(minWidth, Math.round(startWidth + delta));\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        minWidth,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
             "properties": [
                 {
                     "name": "direction",
@@ -1796,8 +1796,8 @@
         },
         {
             "name": "UITableBody",
-            "id": "component-UITableBody-8dd3a67d7d7658bfe13c7b2b37c3e9aa7137eceb644e843195ff6501649e1d525249ec78428476056b9d94359a669902a4c676e5f24fdef935f46151d3217133",
-            "file": "packages/ui-kit/src/lib/table-view/table-view-body.component.ts",
+            "id": "component-UITableBody-054e9235cd4d50d4dfb7f2687cf1242601fd24003a2dcc0c343c9efa23cfdb95cba0834a25cd60ab41efa4c90da3c5d53edc366d21e1cc83558ff8e2a397c4f9",
+            "file": "packages/ui-kit/src/lib/table-view/table-view-body/table-view-body.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
@@ -1806,11 +1806,10 @@
             "providers": [],
             "selector": "ui-table-body",
             "styleUrls": [],
-            "styles": [
-                "\n      :host {\n        display: block;\n      }\n      .table-body-viewport {\n        height: 420px;\n        width: 100%;\n        background: var(--tv-surface);\n        overflow: auto;\n      }\n      .table-row {\n        display: flex;\n        min-width: var(--tv-total-row-width, 100%);\n        border-bottom: 1px solid var(--tv-border);\n        transition: background-color 120ms ease;\n      }\n      .table-row:hover {\n        background: color-mix(in srgb, var(--tv-accent) 7%, transparent);\n      }\n      .table-cell {\n        flex: 1;\n        min-width: 0;\n        padding: 0 var(--ui-inline-padding, 0.85rem);\n        overflow: hidden;\n        display: flex;\n        align-items: center;\n        box-sizing: border-box;\n        border-right: 1px solid var(--tv-border);\n        color: var(--tv-text);\n        font-size: calc(0.9rem * var(--ui-density-scale, 1));\n      }\n      .table-cell:last-child {\n        border-right: none;\n      }\n      .table-cell--row-index {\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\n        width: var(--tv-row-index-width, 4.25rem);\n        min-width: var(--tv-row-index-width, 4.25rem);\n        max-width: var(--tv-row-index-width, 4.25rem);\n        justify-content: flex-end;\n        color: var(--tv-muted);\n        font-variant-numeric: tabular-nums;\n      }\n\n      /* ── Skeleton / loading rows ── */\n      .table-row--loading {\n        pointer-events: none;\n      }\n      .table-row--loading:hover {\n        background: transparent;\n      }\n      .table-cell-skeleton {\n        display: block;\n        width: var(--tv-skeleton-width, 60%);\n        height: var(--tv-skeleton-height, 0.75rem);\n        border-radius: var(--tv-skeleton-radius, 4px);\n        background: var(\n          --tv-skeleton-bg,\n          linear-gradient(\n            90deg,\n            var(--tv-border) 25%,\n            color-mix(in srgb, var(--tv-border) 40%, transparent) 50%,\n            var(--tv-border) 75%\n          )\n        );\n        background-size: 200% 100%;\n        animation: tv-skeleton-shimmer var(--tv-skeleton-duration, 1.5s)\n          ease-in-out infinite;\n      }\n      /* Vary skeleton bar widths per column for a natural look */\n      .table-row--loading .table-cell:nth-child(odd) .table-cell-skeleton {\n        width: var(--tv-skeleton-width-odd, 45%);\n      }\n      .table-row--loading .table-cell:nth-child(even) .table-cell-skeleton {\n        width: var(--tv-skeleton-width-even, 70%);\n      }\n      @keyframes tv-skeleton-shimmer {\n        0% {\n          background-position: 200% 0;\n        }\n        100% {\n          background-position: -200% 0;\n        }\n      }\n    "
+            "styles": [],
+            "templateUrl": [
+                "./table-view-body.component.html"
             ],
-            "template": "<cdk-virtual-scroll-viewport\n  [itemSize]=\"rowHeight()\"\n  class=\"table-body-viewport\"\n>\n  <div\n    *cdkVirtualFor=\"let row of rows(); let rowIndex = index\"\n    class=\"table-row\"\n    [class.table-row--loading]=\"row === null\"\n    [style.height.px]=\"rowHeight()\"\n    [style.min-height.px]=\"rowHeight()\"\n  >\n    @if (showRowIndexIndicator()) {\n      <div class=\"table-cell table-cell--row-index\">\n        @if (row !== null) {\n          {{ rowIndexOffset() + rowIndex + 1 }}\n        }\n      </div>\n    }\n    @for (col of columns(); track col.key()) {\n      <div\n        class=\"table-cell\"\n        [style.width.px]=\"getColWidth(col.key())\"\n        [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\n        [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\n      >\n        @if (row !== null) {\n          <ng-container\n            [ngTemplateOutlet]=\"col.cellTemplate\"\n            [ngTemplateOutletContext]=\"{ $implicit: row, column: col }\"\n          />\n        } @else {\n          <span class=\"table-cell-skeleton\"></span>\n        }\n      </div>\n    }\n  </div>\n</cdk-virtual-scroll-viewport>\n",
-            "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
@@ -1823,7 +1822,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 140
+                    "line": 16
                 },
                 {
                     "name": "columnWidths",
@@ -1833,7 +1832,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 145
+                    "line": 21
                 },
                 {
                     "name": "rowHeight",
@@ -1843,7 +1842,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 144
+                    "line": 20
                 },
                 {
                     "name": "rowIndexOffset",
@@ -1853,7 +1852,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 143
+                    "line": 19
                 },
                 {
                     "name": "rows",
@@ -1863,7 +1862,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 141
+                    "line": 17
                 },
                 {
                     "name": "showRowIndexIndicator",
@@ -1873,7 +1872,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 142
+                    "line": 18
                 }
             ],
             "methodsClass": [
@@ -1890,7 +1889,7 @@
                     "optional": false,
                     "returnType": "number | null",
                     "typeParameters": [],
-                    "line": 147,
+                    "line": 23,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1916,15 +1915,17 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ScrollingModule } from \"@angular/cdk/scrolling\";\r\nimport { NgTemplateOutlet } from \"@angular/common\";\r\nimport { ChangeDetectionStrategy, Component, input } from \"@angular/core\";\r\n\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\n\r\n@Component({\r\n  selector: \"ui-table-body\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  imports: [ScrollingModule, NgTemplateOutlet],\r\n  template: `\r\n    <cdk-virtual-scroll-viewport\r\n      [itemSize]=\"rowHeight()\"\r\n      class=\"table-body-viewport\"\r\n    >\r\n      <div\r\n        *cdkVirtualFor=\"let row of rows(); let rowIndex = index\"\r\n        class=\"table-row\"\r\n        [class.table-row--loading]=\"row === null\"\r\n        [style.height.px]=\"rowHeight()\"\r\n        [style.min-height.px]=\"rowHeight()\"\r\n      >\r\n        @if (showRowIndexIndicator()) {\r\n          <div class=\"table-cell table-cell--row-index\">\r\n            @if (row !== null) {\r\n              {{ rowIndexOffset() + rowIndex + 1 }}\r\n            }\r\n          </div>\r\n        }\r\n        @for (col of columns(); track col.key()) {\r\n          <div\r\n            class=\"table-cell\"\r\n            [style.width.px]=\"getColWidth(col.key())\"\r\n            [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\r\n            [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\r\n          >\r\n            @if (row !== null) {\r\n              <ng-container\r\n                [ngTemplateOutlet]=\"col.cellTemplate\"\r\n                [ngTemplateOutletContext]=\"{ $implicit: row, column: col }\"\r\n              />\r\n            } @else {\r\n              <span class=\"table-cell-skeleton\"></span>\r\n            }\r\n          </div>\r\n        }\r\n      </div>\r\n    </cdk-virtual-scroll-viewport>\r\n  `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n      }\r\n      .table-body-viewport {\r\n        height: 420px;\r\n        width: 100%;\r\n        background: var(--tv-surface);\r\n        overflow: auto;\r\n      }\r\n      .table-row {\r\n        display: flex;\r\n        min-width: var(--tv-total-row-width, 100%);\r\n        border-bottom: 1px solid var(--tv-border);\r\n        transition: background-color 120ms ease;\r\n      }\r\n      .table-row:hover {\r\n        background: color-mix(in srgb, var(--tv-accent) 7%, transparent);\r\n      }\r\n      .table-cell {\r\n        flex: 1;\r\n        min-width: 0;\r\n        padding: 0 var(--ui-inline-padding, 0.85rem);\r\n        overflow: hidden;\r\n        display: flex;\r\n        align-items: center;\r\n        box-sizing: border-box;\r\n        border-right: 1px solid var(--tv-border);\r\n        color: var(--tv-text);\r\n        font-size: calc(0.9rem * var(--ui-density-scale, 1));\r\n      }\r\n      .table-cell:last-child {\r\n        border-right: none;\r\n      }\r\n      .table-cell--row-index {\r\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\r\n        width: var(--tv-row-index-width, 4.25rem);\r\n        min-width: var(--tv-row-index-width, 4.25rem);\r\n        max-width: var(--tv-row-index-width, 4.25rem);\r\n        justify-content: flex-end;\r\n        color: var(--tv-muted);\r\n        font-variant-numeric: tabular-nums;\r\n      }\r\n\r\n      /* ── Skeleton / loading rows ── */\r\n      .table-row--loading {\r\n        pointer-events: none;\r\n      }\r\n      .table-row--loading:hover {\r\n        background: transparent;\r\n      }\r\n      .table-cell-skeleton {\r\n        display: block;\r\n        width: var(--tv-skeleton-width, 60%);\r\n        height: var(--tv-skeleton-height, 0.75rem);\r\n        border-radius: var(--tv-skeleton-radius, 4px);\r\n        background: var(\r\n          --tv-skeleton-bg,\r\n          linear-gradient(\r\n            90deg,\r\n            var(--tv-border) 25%,\r\n            color-mix(in srgb, var(--tv-border) 40%, transparent) 50%,\r\n            var(--tv-border) 75%\r\n          )\r\n        );\r\n        background-size: 200% 100%;\r\n        animation: tv-skeleton-shimmer var(--tv-skeleton-duration, 1.5s)\r\n          ease-in-out infinite;\r\n      }\r\n      /* Vary skeleton bar widths per column for a natural look */\r\n      .table-row--loading .table-cell:nth-child(odd) .table-cell-skeleton {\r\n        width: var(--tv-skeleton-width-odd, 45%);\r\n      }\r\n      .table-row--loading .table-cell:nth-child(even) .table-cell-skeleton {\r\n        width: var(--tv-skeleton-width-even, 70%);\r\n      }\r\n      @keyframes tv-skeleton-shimmer {\r\n        0% {\r\n          background-position: 200% 0;\r\n        }\r\n        100% {\r\n          background-position: -200% 0;\r\n        }\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class UITableBody {\r\n  columns = input.required<readonly UITableViewColumn[]>();\r\n  rows = input.required<readonly unknown[]>();\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexOffset = input<number>(0);\r\n  rowHeight = input<number>(36);\r\n  columnWidths = input<Record<string, number>>({});\r\n\r\n  protected getColWidth(key: string): number | null {\r\n    return this.columnWidths()[key] ?? null;\r\n  }\r\n}\r\n",
+            "sourceCode": "import { ScrollingModule } from \"@angular/cdk/scrolling\";\nimport { NgTemplateOutlet } from \"@angular/common\";\nimport { ChangeDetectionStrategy, Component, input } from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\n\n@Component({\n  selector: \"ui-table-body\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [ScrollingModule, NgTemplateOutlet],\n  templateUrl: \"./table-view-body.component.html\",\n  styleUrl: \"./table-view-body.component.scss\",\n})\nexport class UITableBody {\n  columns = input.required<readonly UITableViewColumn[]>();\n  rows = input.required<readonly unknown[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexOffset = input<number>(0);\n  rowHeight = input<number>(36);\n  columnWidths = input<Record<string, number>>({});\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n}\n",
+            "styleUrl": "./table-view-body.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n      :host {\n        display: block;\n      }\n      .table-body-viewport {\n        height: 420px;\n        width: 100%;\n        background: var(--tv-surface);\n        overflow: auto;\n      }\n      .table-row {\n        display: flex;\n        min-width: var(--tv-total-row-width, 100%);\n        border-bottom: 1px solid var(--tv-border);\n        transition: background-color 120ms ease;\n      }\n      .table-row:hover {\n        background: color-mix(in srgb, var(--tv-accent) 7%, transparent);\n      }\n      .table-cell {\n        flex: 1;\n        min-width: 0;\n        padding: 0 var(--ui-inline-padding, 0.85rem);\n        overflow: hidden;\n        display: flex;\n        align-items: center;\n        box-sizing: border-box;\n        border-right: 1px solid var(--tv-border);\n        color: var(--tv-text);\n        font-size: calc(0.9rem * var(--ui-density-scale, 1));\n      }\n      .table-cell:last-child {\n        border-right: none;\n      }\n      .table-cell--row-index {\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\n        width: var(--tv-row-index-width, 4.25rem);\n        min-width: var(--tv-row-index-width, 4.25rem);\n        max-width: var(--tv-row-index-width, 4.25rem);\n        justify-content: flex-end;\n        color: var(--tv-muted);\n        font-variant-numeric: tabular-nums;\n      }\n\n      /* ── Skeleton / loading rows ── */\n      .table-row--loading {\n        pointer-events: none;\n      }\n      .table-row--loading:hover {\n        background: transparent;\n      }\n      .table-cell-skeleton {\n        display: block;\n        width: var(--tv-skeleton-width, 60%);\n        height: var(--tv-skeleton-height, 0.75rem);\n        border-radius: var(--tv-skeleton-radius, 4px);\n        background: var(\n          --tv-skeleton-bg,\n          linear-gradient(\n            90deg,\n            var(--tv-border) 25%,\n            color-mix(in srgb, var(--tv-border) 40%, transparent) 50%,\n            var(--tv-border) 75%\n          )\n        );\n        background-size: 200% 100%;\n        animation: tv-skeleton-shimmer var(--tv-skeleton-duration, 1.5s)\n          ease-in-out infinite;\n      }\n      /* Vary skeleton bar widths per column for a natural look */\n      .table-row--loading .table-cell:nth-child(odd) .table-cell-skeleton {\n        width: var(--tv-skeleton-width-odd, 45%);\n      }\n      .table-row--loading .table-cell:nth-child(even) .table-cell-skeleton {\n        width: var(--tv-skeleton-width-even, 70%);\n      }\n      @keyframes tv-skeleton-shimmer {\n        0% {\n          background-position: 200% 0;\n        }\n        100% {\n          background-position: -200% 0;\n        }\n      }\n    \n"
+            "stylesData": "",
+            "templateData": "<cdk-virtual-scroll-viewport\n  [itemSize]=\"rowHeight()\"\n  class=\"table-body-viewport\"\n>\n  <div\n    *cdkVirtualFor=\"let row of rows(); let rowIndex = index\"\n    class=\"table-row\"\n    [class.table-row--loading]=\"row === null\"\n    [style.height.px]=\"rowHeight()\"\n    [style.min-height.px]=\"rowHeight()\"\n  >\n    @if (showRowIndexIndicator()) {\n      <div class=\"table-cell table-cell--row-index\">\n        @if (row !== null) {\n          {{ rowIndexOffset() + rowIndex + 1 }}\n        }\n      </div>\n    }\n    @for (col of columns(); track col.key()) {\n      <div\n        class=\"table-cell\"\n        [style.width.px]=\"getColWidth(col.key())\"\n        [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\n        [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\n      >\n        @if (row !== null) {\n          <ng-container\n            [ngTemplateOutlet]=\"col.cellTemplate\"\n            [ngTemplateOutletContext]=\"{ $implicit: row, column: col }\"\n          />\n        } @else {\n          <span class=\"table-cell-skeleton\"></span>\n        }\n      </div>\n    }\n  </div>\n</cdk-virtual-scroll-viewport>\n"
         },
         {
             "name": "UITableFooter",
-            "id": "component-UITableFooter-2a1b4fc156388a3b36f56c97a2a2a4102ef7d9bc9b5bfaf8d3778206f500d36fef416be17607c0a720eeedeffa20d4ee226c889d1a607fa0edadc9fa8f24e6a9",
-            "file": "packages/ui-kit/src/lib/table-view/table-view-footer.component.ts",
+            "id": "component-UITableFooter-9abb8203081eb540e1a9f595f29bd478200a67a91a823542d725e7cfb768430f9e1d67104d7cc81b7ab8be250456535fdb24be14cd23fb85156da198ee561e5d",
+            "file": "packages/ui-kit/src/lib/table-view/table-view-footer/table-view-footer.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
@@ -1933,24 +1934,23 @@
             "providers": [],
             "selector": "ui-table-footer",
             "styleUrls": [],
-            "styles": [
-                "\n        :host { display: block; }\n        .table-footer {\n            display: flex;\n            align-items: center;\n            justify-content: flex-end;\n            gap: var(--ui-gap, 0.75rem);\n            padding: var(--ui-block-padding, 0.65rem) var(--ui-inline-padding, 0.85rem);\n            border-top: 1px solid var(--tv-border);\n            background: var(--tv-surface-2);\n        }\n        .page-info {\n            font-size: calc(0.83rem * var(--ui-density-scale, 1));\n            color: var(--tv-muted);\n            margin-right: 0.25rem;\n        }\n        .page-controls { display: flex; gap: calc(var(--ui-gap, 0.75rem) * 0.45); }\n        .page-btn {\n            min-width: var(--ui-control-height, 2.05rem);\n            height: var(--ui-control-height, 2.05rem);\n            border-radius: var(--ui-radius, 0.55rem);\n            border: 1px solid var(--tv-border-strong);\n            background: var(--tv-surface);\n            color: var(--tv-text);\n            cursor: pointer;\n            transition: background-color 120ms ease, border-color 120ms ease;\n        }\n        .page-btn:hover:not(:disabled) {\n            background: color-mix(in srgb, var(--tv-accent) 18%, var(--tv-surface));\n            border-color: var(--tv-accent);\n        }\n        .page-btn:disabled {\n            opacity: 0.45;\n            cursor: default;\n        }\n    "
+            "styles": [],
+            "templateUrl": [
+                "./table-view-footer.component.html"
             ],
-            "template": "<div class=\"table-footer\">\n    <span class=\"page-info\">\n        @if (totalItems() !== null) {\n            {{ rangeStart() }}–{{ rangeEnd() }} of {{ totalItems() }}\n        } @else {\n            Page {{ pageIndex() + 1 }}\n        }\n    </span>\n    <div class=\"page-controls\">\n        <button\n            class=\"page-btn\"\n            (click)=\"prevPage()\"\n            [disabled]=\"pageIndex() === 0\"\n            aria-label=\"Previous page\"\n        >‹</button>\n        <button\n            class=\"page-btn\"\n            (click)=\"nextPage()\"\n            [disabled]=\"!hasNextPage()\"\n            aria-label=\"Next page\"\n        >›</button>\n    </div>\n</div>\n",
-            "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [
                 {
                     "name": "hasNextPage",
-                    "defaultValue": "computed(() => {\r\n        const total = this.totalItems();\r\n        if (total === null) return true;\r\n        return (this.pageIndex() + 1) * this.pageSize() < total;\r\n    })",
+                    "defaultValue": "computed(() => {\n    const total = this.totalItems();\n    if (total === null) return true;\n    return (this.pageIndex() + 1) * this.pageSize() < total;\n  })",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 87
+                    "line": 28
                 },
                 {
                     "name": "pageIndex",
@@ -1960,7 +1960,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 76
+                    "line": 17
                 },
                 {
                     "name": "pageIndexChange",
@@ -1970,7 +1970,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 79
+                    "line": 20
                 },
                 {
                     "name": "pageSize",
@@ -1980,17 +1980,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 77
+                    "line": 18
                 },
                 {
                     "name": "rangeEnd",
-                    "defaultValue": "computed(() => {\r\n        const end = (this.pageIndex() + 1) * this.pageSize();\r\n        const total = this.totalItems();\r\n        return total !== null ? Math.min(end, total) : end;\r\n    })",
+                    "defaultValue": "computed(() => {\n    const end = (this.pageIndex() + 1) * this.pageSize();\n    const total = this.totalItems();\n    return total !== null ? Math.min(end, total) : end;\n  })",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 82
+                    "line": 23
                 },
                 {
                     "name": "rangeStart",
@@ -2000,7 +2000,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 81
+                    "line": 22
                 },
                 {
                     "name": "totalItems",
@@ -2010,7 +2010,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 78
+                    "line": 19
                 }
             ],
             "methodsClass": [
@@ -2020,7 +2020,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 99,
+                    "line": 40,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2030,7 +2030,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 93,
+                    "line": 34,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -2042,15 +2042,17 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    computed,\r\n    input,\r\n    output,\r\n} from '@angular/core';\r\n\r\n@Component({\r\n    selector: 'ui-table-footer',\r\n    standalone: true,\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n    template: `\r\n        <div class=\"table-footer\">\r\n            <span class=\"page-info\">\r\n                @if (totalItems() !== null) {\r\n                    {{ rangeStart() }}–{{ rangeEnd() }} of {{ totalItems() }}\r\n                } @else {\r\n                    Page {{ pageIndex() + 1 }}\r\n                }\r\n            </span>\r\n            <div class=\"page-controls\">\r\n                <button\r\n                    class=\"page-btn\"\r\n                    (click)=\"prevPage()\"\r\n                    [disabled]=\"pageIndex() === 0\"\r\n                    aria-label=\"Previous page\"\r\n                >‹</button>\r\n                <button\r\n                    class=\"page-btn\"\r\n                    (click)=\"nextPage()\"\r\n                    [disabled]=\"!hasNextPage()\"\r\n                    aria-label=\"Next page\"\r\n                >›</button>\r\n            </div>\r\n        </div>\r\n    `,\r\n    styles: [`\r\n        :host { display: block; }\r\n        .table-footer {\r\n            display: flex;\r\n            align-items: center;\r\n            justify-content: flex-end;\r\n            gap: var(--ui-gap, 0.75rem);\r\n            padding: var(--ui-block-padding, 0.65rem) var(--ui-inline-padding, 0.85rem);\r\n            border-top: 1px solid var(--tv-border);\r\n            background: var(--tv-surface-2);\r\n        }\r\n        .page-info {\r\n            font-size: calc(0.83rem * var(--ui-density-scale, 1));\r\n            color: var(--tv-muted);\r\n            margin-right: 0.25rem;\r\n        }\r\n        .page-controls { display: flex; gap: calc(var(--ui-gap, 0.75rem) * 0.45); }\r\n        .page-btn {\r\n            min-width: var(--ui-control-height, 2.05rem);\r\n            height: var(--ui-control-height, 2.05rem);\r\n            border-radius: var(--ui-radius, 0.55rem);\r\n            border: 1px solid var(--tv-border-strong);\r\n            background: var(--tv-surface);\r\n            color: var(--tv-text);\r\n            cursor: pointer;\r\n            transition: background-color 120ms ease, border-color 120ms ease;\r\n        }\r\n        .page-btn:hover:not(:disabled) {\r\n            background: color-mix(in srgb, var(--tv-accent) 18%, var(--tv-surface));\r\n            border-color: var(--tv-accent);\r\n        }\r\n        .page-btn:disabled {\r\n            opacity: 0.45;\r\n            cursor: default;\r\n        }\r\n    `],\r\n})\r\nexport class UITableFooter {\r\n    pageIndex = input.required<number>();\r\n    pageSize = input.required<number>();\r\n    totalItems = input<number | null>(null);\r\n    pageIndexChange = output<number>();\r\n\r\n    rangeStart = computed(() => this.pageIndex() * this.pageSize() + 1);\r\n    rangeEnd = computed(() => {\r\n        const end = (this.pageIndex() + 1) * this.pageSize();\r\n        const total = this.totalItems();\r\n        return total !== null ? Math.min(end, total) : end;\r\n    });\r\n    hasNextPage = computed(() => {\r\n        const total = this.totalItems();\r\n        if (total === null) return true;\r\n        return (this.pageIndex() + 1) * this.pageSize() < total;\r\n    });\r\n\r\n    prevPage(): void {\r\n        if (this.pageIndex() > 0) {\r\n            this.pageIndexChange.emit(this.pageIndex() - 1);\r\n        }\r\n    }\r\n\r\n    nextPage(): void {\r\n        if (this.hasNextPage()) {\r\n            this.pageIndexChange.emit(this.pageIndex() + 1);\r\n        }\r\n    }\r\n}\r\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  output,\n} from \"@angular/core\";\n\n@Component({\n  selector: \"ui-table-footer\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-footer.component.html\",\n  styleUrl: \"./table-view-footer.component.scss\",\n})\nexport class UITableFooter {\n  pageIndex = input.required<number>();\n  pageSize = input.required<number>();\n  totalItems = input<number | null>(null);\n  pageIndexChange = output<number>();\n\n  rangeStart = computed(() => this.pageIndex() * this.pageSize() + 1);\n  rangeEnd = computed(() => {\n    const end = (this.pageIndex() + 1) * this.pageSize();\n    const total = this.totalItems();\n    return total !== null ? Math.min(end, total) : end;\n  });\n  hasNextPage = computed(() => {\n    const total = this.totalItems();\n    if (total === null) return true;\n    return (this.pageIndex() + 1) * this.pageSize() < total;\n  });\n\n  prevPage(): void {\n    if (this.pageIndex() > 0) {\n      this.pageIndexChange.emit(this.pageIndex() - 1);\n    }\n  }\n\n  nextPage(): void {\n    if (this.hasNextPage()) {\n      this.pageIndexChange.emit(this.pageIndex() + 1);\n    }\n  }\n}\n",
+            "styleUrl": "./table-view-footer.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n        :host { display: block; }\n        .table-footer {\n            display: flex;\n            align-items: center;\n            justify-content: flex-end;\n            gap: var(--ui-gap, 0.75rem);\n            padding: var(--ui-block-padding, 0.65rem) var(--ui-inline-padding, 0.85rem);\n            border-top: 1px solid var(--tv-border);\n            background: var(--tv-surface-2);\n        }\n        .page-info {\n            font-size: calc(0.83rem * var(--ui-density-scale, 1));\n            color: var(--tv-muted);\n            margin-right: 0.25rem;\n        }\n        .page-controls { display: flex; gap: calc(var(--ui-gap, 0.75rem) * 0.45); }\n        .page-btn {\n            min-width: var(--ui-control-height, 2.05rem);\n            height: var(--ui-control-height, 2.05rem);\n            border-radius: var(--ui-radius, 0.55rem);\n            border: 1px solid var(--tv-border-strong);\n            background: var(--tv-surface);\n            color: var(--tv-text);\n            cursor: pointer;\n            transition: background-color 120ms ease, border-color 120ms ease;\n        }\n        .page-btn:hover:not(:disabled) {\n            background: color-mix(in srgb, var(--tv-accent) 18%, var(--tv-surface));\n            border-color: var(--tv-accent);\n        }\n        .page-btn:disabled {\n            opacity: 0.45;\n            cursor: default;\n        }\n    \n"
+            "stylesData": "",
+            "templateData": "<div class=\"table-footer\">\n  <span class=\"page-info\">\n    @if (totalItems() !== null) {\n      {{ rangeStart() }}–{{ rangeEnd() }} of {{ totalItems() }}\n    } @else {\n      Page {{ pageIndex() + 1 }}\n    }\n  </span>\n  <div class=\"page-controls\">\n    <button\n      class=\"page-btn\"\n      (click)=\"prevPage()\"\n      [disabled]=\"pageIndex() === 0\"\n      aria-label=\"Previous page\"\n    >\n      ‹\n    </button>\n    <button\n      class=\"page-btn\"\n      (click)=\"nextPage()\"\n      [disabled]=\"!hasNextPage()\"\n      aria-label=\"Next page\"\n    >\n      ›\n    </button>\n  </div>\n</div>\n"
         },
         {
             "name": "UITableHeader",
-            "id": "component-UITableHeader-68e64d1c19e1c4881bb6f07a4f3210f4117643749d442592b21f4d3b25825914cd99d7357ee2087ff1b233f885b0dbb89d1379b2ec089070771cdc53bc40ed2d",
-            "file": "packages/ui-kit/src/lib/table-view/table-view-header.component.ts",
+            "id": "component-UITableHeader-d2a5add8e2e990eeaaa001eae856027b2d4322b6ee663b04b11c03139a8403689153697d8057c021da1c9be396adb274a4be1e7d9ae66b92b7cfaf89b64bfe0f",
+            "file": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
@@ -2059,11 +2061,10 @@
             "providers": [],
             "selector": "ui-table-header",
             "styleUrls": [],
-            "styles": [
-                "\n      :host {\n        display: block;\n        overflow: hidden;\n      }\n      .table-header-row {\n        display: flex;\n        min-width: var(--tv-header-scroll-width, var(--tv-total-row-width, 100%));\n        background: var(--tv-surface-2);\n        border-bottom: 1px solid var(--tv-border);\n        /* Reserve space for the body's vertical scrollbar so header cells align with body cells */\n        padding-right: var(--tv-scrollbar-width, 0px);\n      }\n      .table-header-cell {\n        flex: 1;\n        min-width: 0;\n        box-sizing: border-box;\n        padding: var(--ui-block-padding, 0.65rem)\n          var(--ui-inline-padding, 0.85rem);\n        font-weight: 600;\n        font-size: calc(0.74rem * var(--ui-density-scale, 1));\n        color: var(--tv-muted);\n        text-transform: uppercase;\n        letter-spacing: 0.06em;\n        display: flex;\n        align-items: center;\n        gap: calc(var(--ui-gap, 0.75rem) * 0.6);\n        border-right: 1px solid var(--tv-border);\n        transition:\n          background-color 120ms ease,\n          color 120ms ease;\n        position: relative;\n      }\n      .table-header-cell:last-child {\n        border-right: none;\n      }\n      .table-header-cell--row-index {\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\n        width: var(--tv-row-index-width, 4.25rem);\n        min-width: var(--tv-row-index-width, 4.25rem);\n        max-width: var(--tv-row-index-width, 4.25rem);\n        justify-content: flex-end;\n        color: var(--tv-text);\n      }\n      .header-label {\n        overflow: hidden;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n      }\n      .table-header-cell.sortable {\n        cursor: pointer;\n        user-select: none;\n      }\n      .table-header-cell.sortable:hover {\n        background: color-mix(in srgb, var(--tv-accent) 9%, transparent);\n        color: var(--tv-text);\n      }\n      .sort-icon {\n        margin-left: auto;\n        font-size: 0.82rem;\n        line-height: 1;\n      }\n      .sort-icon--inactive {\n        opacity: 0.35;\n      }\n\n      /* ── Resize handle ── */\n      .resize-handle {\n        position: absolute;\n        top: 0;\n        right: -3px;\n        width: 6px;\n        height: 100%;\n        cursor: col-resize;\n        z-index: 2;\n        user-select: none;\n        touch-action: none;\n      }\n      .resize-handle::after {\n        content: \"\";\n        position: absolute;\n        top: 25%;\n        right: 2px;\n        width: 2px;\n        height: 50%;\n        border-radius: 1px;\n        background: var(--tv-border-strong);\n        opacity: 0;\n        transition: opacity 150ms ease;\n      }\n      .table-header-cell:hover .resize-handle::after,\n      .resize-handle:hover::after {\n        opacity: 1;\n      }\n      :host-context(.tv-resizing) .resize-handle::after {\n        opacity: 1;\n        background: var(--tv-accent);\n      }\n    "
+            "styles": [],
+            "templateUrl": [
+                "./table-view-header.component.html"
             ],
-            "template": "<div class=\"table-header-row\">\n  @if (showRowIndexIndicator()) {\n    <div class=\"table-header-cell table-header-cell--row-index\">\n      {{ rowIndexHeaderText() }}\n    </div>\n  }\n  @for (col of columns(); track col.key(); let i = $index) {\n    <div\n      class=\"table-header-cell\"\n      [class.sortable]=\"col.sortable()\"\n      [style.width.px]=\"getColWidth(col.key())\"\n      [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\n      [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\n      (click)=\"onCellClick(col)\"\n    >\n      <span class=\"header-label\">{{ col.headerText() || col.key() }}</span>\n      @if (col.sortable()) {\n        <span class=\"sort-icon\">\n          @if (sortState()?.key === col.key()) {\n            {{ sortState()!.direction === \"asc\" ? \"↑\" : \"↓\" }}\n          } @else {\n            <span class=\"sort-icon--inactive\">⇅</span>\n          }\n        </span>\n      }\n      @if (resizable()) {\n        <span\n          class=\"resize-handle\"\n          (pointerdown)=\"onResizeStart($event, col.key())\"\n        ></span>\n      }\n    </div>\n  }\n</div>\n",
-            "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
@@ -2076,7 +2077,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 172
+                    "line": 37
                 },
                 {
                     "name": "columns",
@@ -2086,7 +2087,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 166
+                    "line": 31
                 },
                 {
                     "name": "columnWidths",
@@ -2096,7 +2097,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 170
+                    "line": 35
                 },
                 {
                     "name": "resizable",
@@ -2106,7 +2107,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 169
+                    "line": 34
                 },
                 {
                     "name": "rowIndexHeaderText",
@@ -2116,7 +2117,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 168
+                    "line": 33
                 },
                 {
                     "name": "showRowIndexIndicator",
@@ -2126,7 +2127,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 167
+                    "line": 32
                 },
                 {
                     "name": "sortChange",
@@ -2136,7 +2137,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 171
+                    "line": 36
                 },
                 {
                     "name": "sortState",
@@ -2146,7 +2147,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 173
+                    "line": 38
                 }
             ],
             "methodsClass": [
@@ -2163,7 +2164,7 @@
                     "optional": false,
                     "returnType": "number | null",
                     "typeParameters": [],
-                    "line": 180,
+                    "line": 45,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2194,7 +2195,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 184,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2228,7 +2229,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 200,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2260,10 +2261,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  ElementRef,\r\n  input,\r\n  NgZone,\r\n  output,\r\n  signal,\r\n} from \"@angular/core\";\r\n\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\n\r\nexport interface SortState {\r\n  key: string;\r\n  direction: \"asc\" | \"desc\";\r\n}\r\n\r\nexport interface ColumnResizeEvent {\r\n  key: string;\r\n  widthPx: number;\r\n}\r\n\r\n@Component({\r\n  selector: \"ui-table-header\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  template: `\r\n    <div class=\"table-header-row\">\r\n      @if (showRowIndexIndicator()) {\r\n        <div class=\"table-header-cell table-header-cell--row-index\">\r\n          {{ rowIndexHeaderText() }}\r\n        </div>\r\n      }\r\n      @for (col of columns(); track col.key(); let i = $index) {\r\n        <div\r\n          class=\"table-header-cell\"\r\n          [class.sortable]=\"col.sortable()\"\r\n          [style.width.px]=\"getColWidth(col.key())\"\r\n          [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\r\n          [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\r\n          (click)=\"onCellClick(col)\"\r\n        >\r\n          <span class=\"header-label\">{{ col.headerText() || col.key() }}</span>\r\n          @if (col.sortable()) {\r\n            <span class=\"sort-icon\">\r\n              @if (sortState()?.key === col.key()) {\r\n                {{ sortState()!.direction === \"asc\" ? \"↑\" : \"↓\" }}\r\n              } @else {\r\n                <span class=\"sort-icon--inactive\">⇅</span>\r\n              }\r\n            </span>\r\n          }\r\n          @if (resizable()) {\r\n            <span\r\n              class=\"resize-handle\"\r\n              (pointerdown)=\"onResizeStart($event, col.key())\"\r\n            ></span>\r\n          }\r\n        </div>\r\n      }\r\n    </div>\r\n  `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        overflow: hidden;\r\n      }\r\n      .table-header-row {\r\n        display: flex;\r\n        min-width: var(--tv-header-scroll-width, var(--tv-total-row-width, 100%));\r\n        background: var(--tv-surface-2);\r\n        border-bottom: 1px solid var(--tv-border);\r\n        /* Reserve space for the body's vertical scrollbar so header cells align with body cells */\r\n        padding-right: var(--tv-scrollbar-width, 0px);\r\n      }\r\n      .table-header-cell {\r\n        flex: 1;\r\n        min-width: 0;\r\n        box-sizing: border-box;\r\n        padding: var(--ui-block-padding, 0.65rem)\r\n          var(--ui-inline-padding, 0.85rem);\r\n        font-weight: 600;\r\n        font-size: calc(0.74rem * var(--ui-density-scale, 1));\r\n        color: var(--tv-muted);\r\n        text-transform: uppercase;\r\n        letter-spacing: 0.06em;\r\n        display: flex;\r\n        align-items: center;\r\n        gap: calc(var(--ui-gap, 0.75rem) * 0.6);\r\n        border-right: 1px solid var(--tv-border);\r\n        transition:\r\n          background-color 120ms ease,\r\n          color 120ms ease;\r\n        position: relative;\r\n      }\r\n      .table-header-cell:last-child {\r\n        border-right: none;\r\n      }\r\n      .table-header-cell--row-index {\r\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\r\n        width: var(--tv-row-index-width, 4.25rem);\r\n        min-width: var(--tv-row-index-width, 4.25rem);\r\n        max-width: var(--tv-row-index-width, 4.25rem);\r\n        justify-content: flex-end;\r\n        color: var(--tv-text);\r\n      }\r\n      .header-label {\r\n        overflow: hidden;\r\n        text-overflow: ellipsis;\r\n        white-space: nowrap;\r\n      }\r\n      .table-header-cell.sortable {\r\n        cursor: pointer;\r\n        user-select: none;\r\n      }\r\n      .table-header-cell.sortable:hover {\r\n        background: color-mix(in srgb, var(--tv-accent) 9%, transparent);\r\n        color: var(--tv-text);\r\n      }\r\n      .sort-icon {\r\n        margin-left: auto;\r\n        font-size: 0.82rem;\r\n        line-height: 1;\r\n      }\r\n      .sort-icon--inactive {\r\n        opacity: 0.35;\r\n      }\r\n\r\n      /* ── Resize handle ── */\r\n      .resize-handle {\r\n        position: absolute;\r\n        top: 0;\r\n        right: -3px;\r\n        width: 6px;\r\n        height: 100%;\r\n        cursor: col-resize;\r\n        z-index: 2;\r\n        user-select: none;\r\n        touch-action: none;\r\n      }\r\n      .resize-handle::after {\r\n        content: \"\";\r\n        position: absolute;\r\n        top: 25%;\r\n        right: 2px;\r\n        width: 2px;\r\n        height: 50%;\r\n        border-radius: 1px;\r\n        background: var(--tv-border-strong);\r\n        opacity: 0;\r\n        transition: opacity 150ms ease;\r\n      }\r\n      .table-header-cell:hover .resize-handle::after,\r\n      .resize-handle:hover::after {\r\n        opacity: 1;\r\n      }\r\n      :host-context(.tv-resizing) .resize-handle::after {\r\n        opacity: 1;\r\n        background: var(--tv-accent);\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class UITableHeader {\r\n  columns = input.required<readonly UITableViewColumn[]>();\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexHeaderText = input<string>(\"#\");\r\n  resizable = input<boolean>(false);\r\n  columnWidths = input<Record<string, number>>({});\r\n  sortChange = output<SortState | null>();\r\n  columnResize = output<ColumnResizeEvent>();\r\n  sortState = signal<SortState | null>(null);\r\n\r\n  constructor(\r\n    private readonly elRef: ElementRef<HTMLElement>,\r\n    private readonly zone: NgZone,\r\n  ) {}\r\n\r\n  protected getColWidth(key: string): number | null {\r\n    return this.columnWidths()[key] ?? null;\r\n  }\r\n\r\n  onCellClick(col: UITableViewColumn): void {\r\n    if (!col.sortable()) return;\r\n    const current = this.sortState();\r\n    let next: SortState | null;\r\n    if (current?.key === col.key()) {\r\n      next =\r\n        current.direction === \"asc\"\r\n          ? { key: col.key(), direction: \"desc\" }\r\n          : null;\r\n    } else {\r\n      next = { key: col.key(), direction: \"asc\" };\r\n    }\r\n    this.sortState.set(next);\r\n    this.sortChange.emit(next);\r\n  }\r\n\r\n  onResizeStart(event: PointerEvent, colKey: string): void {\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n\r\n    const handle = event.target as HTMLElement;\r\n    const cell = handle.parentElement!;\r\n    const startX = event.clientX;\r\n    const startWidth = cell.getBoundingClientRect().width;\r\n    const minWidth = 40;\r\n    const root =\r\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\r\n      this.elRef.nativeElement;\r\n\r\n    root.classList.add(\"tv-resizing\");\r\n    handle.setPointerCapture(event.pointerId);\r\n\r\n    const onMove = (e: PointerEvent) => {\r\n      const delta = e.clientX - startX;\r\n      const newWidth = Math.max(minWidth, Math.round(startWidth + delta));\r\n      cell.style.width = `${newWidth}px`;\r\n      cell.style.flex = \"0 0 auto\";\r\n    };\r\n\r\n    const onUp = (e: PointerEvent) => {\r\n      handle.releasePointerCapture(e.pointerId);\r\n      handle.removeEventListener(\"pointermove\", onMove);\r\n      handle.removeEventListener(\"pointerup\", onUp);\r\n      root.classList.remove(\"tv-resizing\");\r\n\r\n      const finalWidth = Math.max(\r\n        minWidth,\r\n        Math.round(cell.getBoundingClientRect().width),\r\n      );\r\n      this.zone.run(() => {\r\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\r\n      });\r\n    };\r\n\r\n    handle.addEventListener(\"pointermove\", onMove);\r\n    handle.addEventListener(\"pointerup\", onUp);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  input,\n  NgZone,\n  output,\n  signal,\n} from \"@angular/core\";\n\nimport { UITableViewColumn } from \"../columns/table-column.directive\";\n\nexport interface SortState {\n  key: string;\n  direction: \"asc\" | \"desc\";\n}\n\nexport interface ColumnResizeEvent {\n  key: string;\n  widthPx: number;\n}\n\n@Component({\n  selector: \"ui-table-header\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./table-view-header.component.html\",\n  styleUrl: \"./table-view-header.component.scss\",\n})\nexport class UITableHeader {\n  columns = input.required<readonly UITableViewColumn[]>();\n  showRowIndexIndicator = input<boolean>(false);\n  rowIndexHeaderText = input<string>(\"#\");\n  resizable = input<boolean>(false);\n  columnWidths = input<Record<string, number>>({});\n  sortChange = output<SortState | null>();\n  columnResize = output<ColumnResizeEvent>();\n  sortState = signal<SortState | null>(null);\n\n  constructor(\n    private readonly elRef: ElementRef<HTMLElement>,\n    private readonly zone: NgZone,\n  ) {}\n\n  protected getColWidth(key: string): number | null {\n    return this.columnWidths()[key] ?? null;\n  }\n\n  onCellClick(col: UITableViewColumn): void {\n    if (!col.sortable()) return;\n    const current = this.sortState();\n    let next: SortState | null;\n    if (current?.key === col.key()) {\n      next =\n        current.direction === \"asc\"\n          ? { key: col.key(), direction: \"desc\" }\n          : null;\n    } else {\n      next = { key: col.key(), direction: \"asc\" };\n    }\n    this.sortState.set(next);\n    this.sortChange.emit(next);\n  }\n\n  onResizeStart(event: PointerEvent, colKey: string): void {\n    event.preventDefault();\n    event.stopPropagation();\n\n    const handle = event.target as HTMLElement;\n    const cell = handle.parentElement!;\n    const startX = event.clientX;\n    const startWidth = cell.getBoundingClientRect().width;\n    const minWidth = 40;\n    const root =\n      this.elRef.nativeElement.closest(\".table-view-root\") ??\n      this.elRef.nativeElement;\n\n    root.classList.add(\"tv-resizing\");\n    handle.setPointerCapture(event.pointerId);\n\n    const onMove = (e: PointerEvent) => {\n      const delta = e.clientX - startX;\n      const newWidth = Math.max(minWidth, Math.round(startWidth + delta));\n      cell.style.width = `${newWidth}px`;\n      cell.style.flex = \"0 0 auto\";\n    };\n\n    const onUp = (e: PointerEvent) => {\n      handle.releasePointerCapture(e.pointerId);\n      handle.removeEventListener(\"pointermove\", onMove);\n      handle.removeEventListener(\"pointerup\", onUp);\n      root.classList.remove(\"tv-resizing\");\n\n      const finalWidth = Math.max(\n        minWidth,\n        Math.round(cell.getBoundingClientRect().width),\n      );\n      this.zone.run(() => {\n        this.columnResize.emit({ key: colKey, widthPx: finalWidth });\n      });\n    };\n\n    handle.addEventListener(\"pointermove\", onMove);\n    handle.addEventListener(\"pointerup\", onUp);\n  }\n}\n",
+            "styleUrl": "./table-view-header.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n      :host {\n        display: block;\n        overflow: hidden;\n      }\n      .table-header-row {\n        display: flex;\n        min-width: var(--tv-header-scroll-width, var(--tv-total-row-width, 100%));\n        background: var(--tv-surface-2);\n        border-bottom: 1px solid var(--tv-border);\n        /* Reserve space for the body's vertical scrollbar so header cells align with body cells */\n        padding-right: var(--tv-scrollbar-width, 0px);\n      }\n      .table-header-cell {\n        flex: 1;\n        min-width: 0;\n        box-sizing: border-box;\n        padding: var(--ui-block-padding, 0.65rem)\n          var(--ui-inline-padding, 0.85rem);\n        font-weight: 600;\n        font-size: calc(0.74rem * var(--ui-density-scale, 1));\n        color: var(--tv-muted);\n        text-transform: uppercase;\n        letter-spacing: 0.06em;\n        display: flex;\n        align-items: center;\n        gap: calc(var(--ui-gap, 0.75rem) * 0.6);\n        border-right: 1px solid var(--tv-border);\n        transition:\n          background-color 120ms ease,\n          color 120ms ease;\n        position: relative;\n      }\n      .table-header-cell:last-child {\n        border-right: none;\n      }\n      .table-header-cell--row-index {\n        flex: 0 0 var(--tv-row-index-width, 4.25rem);\n        width: var(--tv-row-index-width, 4.25rem);\n        min-width: var(--tv-row-index-width, 4.25rem);\n        max-width: var(--tv-row-index-width, 4.25rem);\n        justify-content: flex-end;\n        color: var(--tv-text);\n      }\n      .header-label {\n        overflow: hidden;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n      }\n      .table-header-cell.sortable {\n        cursor: pointer;\n        user-select: none;\n      }\n      .table-header-cell.sortable:hover {\n        background: color-mix(in srgb, var(--tv-accent) 9%, transparent);\n        color: var(--tv-text);\n      }\n      .sort-icon {\n        margin-left: auto;\n        font-size: 0.82rem;\n        line-height: 1;\n      }\n      .sort-icon--inactive {\n        opacity: 0.35;\n      }\n\n      /* ── Resize handle ── */\n      .resize-handle {\n        position: absolute;\n        top: 0;\n        right: -3px;\n        width: 6px;\n        height: 100%;\n        cursor: col-resize;\n        z-index: 2;\n        user-select: none;\n        touch-action: none;\n      }\n      .resize-handle::after {\n        content: \"\";\n        position: absolute;\n        top: 25%;\n        right: 2px;\n        width: 2px;\n        height: 50%;\n        border-radius: 1px;\n        background: var(--tv-border-strong);\n        opacity: 0;\n        transition: opacity 150ms ease;\n      }\n      .table-header-cell:hover .resize-handle::after,\n      .resize-handle:hover::after {\n        opacity: 1;\n      }\n      :host-context(.tv-resizing) .resize-handle::after {\n        opacity: 1;\n        background: var(--tv-accent);\n      }\n    \n",
+            "stylesData": "",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -2283,7 +2285,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 173,
+                "line": 38,
                 "jsdoctags": [
                     {
                         "name": "elRef",
@@ -2304,11 +2306,12 @@
                         }
                     }
                 ]
-            }
+            },
+            "templateData": "<div class=\"table-header-row\">\n  @if (showRowIndexIndicator()) {\n    <div class=\"table-header-cell table-header-cell--row-index\">\n      {{ rowIndexHeaderText() }}\n    </div>\n  }\n  @for (col of columns(); track col.key(); let i = $index) {\n    <div\n      class=\"table-header-cell\"\n      [class.sortable]=\"col.sortable()\"\n      [style.width.px]=\"getColWidth(col.key())\"\n      [style.min-width.px]=\"getColWidth(col.key()) ? 40 : null\"\n      [style.flex]=\"getColWidth(col.key()) ? '0 0 auto' : '1'\"\n      (click)=\"onCellClick(col)\"\n    >\n      <span class=\"header-label\">{{ col.headerText() || col.key() }}</span>\n      @if (col.sortable()) {\n        <span class=\"sort-icon\">\n          @if (sortState()?.key === col.key()) {\n            {{ sortState()!.direction === \"asc\" ? \"↑\" : \"↓\" }}\n          } @else {\n            <span class=\"sort-icon--inactive\">⇅</span>\n          }\n        </span>\n      }\n      @if (resizable()) {\n        <span\n          class=\"resize-handle\"\n          (pointerdown)=\"onResizeStart($event, col.key())\"\n        ></span>\n      }\n    </div>\n  }\n  <div class=\"header-scrollbar-spacer\" aria-hidden=\"true\"></div>\n</div>\n"
         },
         {
             "name": "UITableView",
-            "id": "component-UITableView-64463ea3c8dc8c1f72e893690be9ed3f71bf58e5bf906ffba21614470da9b4908c976dbbd0c990ecb827a031070dc56e5433989468cf0c958c30f41adbfe4bfd",
+            "id": "component-UITableView-1dcbf529f60d5e97d002c71cf22c7944dc27024b83896e1cea5b03fece550f4bc938a6b82888c4528b8130cb7ed6e36d267cfb856038c573c0b4e5499b23c865",
             "file": "packages/ui-kit/src/lib/table-view/table-view.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -2657,7 +2660,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 267,
+                    "line": 262,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2688,7 +2691,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 263,
+                    "line": 258,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2719,7 +2722,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 259,
+                    "line": 254,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2760,7 +2763,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChildren,\r\n  DestroyRef,\r\n  effect,\r\n  ElementRef,\r\n  inject,\r\n  input,\r\n  OnInit,\r\n  signal,\r\n} from \"@angular/core\";\r\n\r\nimport { ColumnResizeService } from \"./column-resize.service\";\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\nimport { DatasourceAdapter } from \"./datasources/datasource-adapter\";\r\nimport { UITableBody } from \"./table-view-body.component\";\r\nimport { UITableFooter } from \"./table-view-footer.component\";\r\nimport {\r\n  ColumnResizeEvent,\r\n  SortState,\r\n  UITableHeader,\r\n} from \"./table-view-header.component\";\r\n\r\n@Component({\r\n  selector: \"ui-table-view\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  imports: [UITableHeader, UITableBody, UITableFooter],\r\n  templateUrl: \"./table-view.component.html\",\r\n  styleUrl: \"./table-view.component.scss\",\r\n})\r\nexport class UITableView implements OnInit, AfterViewInit {\r\n  private static nextCaptionId = 0;\r\n  private readonly resizeService = inject(ColumnResizeService);\r\n  private readonly elRef = inject(ElementRef<HTMLElement>);\r\n  private readonly destroyRef = inject(DestroyRef);\r\n\r\n  datasource = input.required<DatasourceAdapter<any>>();\r\n  showBuiltInPaginator = input<boolean>(true);\r\n  caption = input<string>(\"\");\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexHeaderText = input<string>(\"#\");\r\n\r\n  /**\r\n   * Unique identifier for this table instance.\r\n   * Used as key for persisting column widths in localStorage.\r\n   * When set, column resizing is enabled and widths are persisted.\r\n   */\r\n  tableId = input<string>(\"\");\r\n\r\n  /**\r\n   * Whether columns can be resized by dragging header borders.\r\n   * Defaults to true when a tableId is provided.\r\n   */\r\n  resizable = input<boolean | undefined>(undefined);\r\n\r\n  columns = contentChildren(UITableViewColumn);\r\n  protected readonly captionId = `ui-table-caption-${UITableView.nextCaptionId++}`;\r\n\r\n  protected readonly resolvedRows = signal<unknown[]>([]);\r\n  protected readonly sortState = signal<SortState | null>(null);\r\n  protected readonly captionAriaLabelledBy = computed(() =>\r\n    this.caption().trim() ? this.captionId : null,\r\n  );\r\n  protected readonly rowIndexOffset = computed(\r\n    () => this.datasource().pageIndex() * this.datasource().pageSize(),\r\n  );\r\n\r\n  /** Column widths as a record (key → px). Used by both header and body. */\r\n  protected readonly columnWidths = signal<Record<string, number>>({});\r\n\r\n  /** Whether resizing is actually enabled (explicit input or inferred from tableId). */\r\n  protected readonly isResizable = computed(() => {\r\n    const explicit = this.resizable();\r\n    if (explicit !== undefined) return explicit;\r\n    return this.tableId().length > 0;\r\n  });\r\n\r\n  /**\r\n   * Computed total row width (px) when at least one column has been\r\n   * explicitly resized. Flex columns get a 120px minimum.\r\n   * Returns 0 when no columns have explicit widths (natural sizing).\r\n   */\r\n  protected readonly totalRowWidth = computed(() => {\r\n    const cols = this.columns();\r\n    const widths = this.columnWidths();\r\n    const flexColMinWidth = 120;\r\n    const rowIndexWidth = this.showRowIndexIndicator() ? 68 : 0;\r\n\r\n    let total = rowIndexWidth;\r\n    let hasExplicit = false;\r\n    for (const col of cols) {\r\n      const w = widths[col.key()];\r\n      if (w !== undefined) {\r\n        total += w;\r\n        hasExplicit = true;\r\n      } else {\r\n        total += flexColMinWidth;\r\n      }\r\n    }\r\n    return hasExplicit ? total : 0;\r\n  });\r\n\r\n  /** Generation counter to discard stale promise resolutions after page changes. */\r\n  private resolveGeneration = 0;\r\n\r\n  protected readonly sortedRows = computed(() => {\r\n    const rows = this.resolvedRows();\r\n    const sort = this.sortState();\r\n    if (!sort) return rows;\r\n    return [...rows].sort((a, b) => {\r\n      // Keep loading placeholders (null) in place – don't try to sort them\r\n      if (a === null || b === null) return 0;\r\n      const va = String((a as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const vb = String((b as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const cmp = va.localeCompare(vb);\r\n      return sort.direction === \"asc\" ? cmp : -cmp;\r\n    });\r\n  });\r\n\r\n  constructor() {\r\n    effect(() => {\r\n      const items = this.datasource().visibleWindow();\r\n      const gen = ++this.resolveGeneration;\r\n      const rows: (unknown | null)[] = new Array(items.length).fill(null);\r\n\r\n      items.forEach((item, index) => {\r\n        if (item instanceof Promise) {\r\n          item.then((resolved) => {\r\n            if (this.resolveGeneration !== gen) return; // stale page\r\n            const current = [...this.resolvedRows()];\r\n            current[index] = resolved;\r\n            this.resolvedRows.set(current);\r\n          });\r\n        } else {\r\n          rows[index] = item;\r\n        }\r\n      });\r\n\r\n      this.resolvedRows.set(rows);\r\n    });\r\n\r\n    // Keep --tv-total-row-width in sync so header + body + rows\r\n    // all expand to the same width inside the scroll container.\r\n    effect(() => {\r\n      const width = this.totalRowWidth();\r\n      if (width > 0) {\r\n        this.elRef.nativeElement.style.setProperty(\r\n          \"--tv-total-row-width\",\r\n          `${width}px`,\r\n        );\r\n      } else {\r\n        this.elRef.nativeElement.style.removeProperty(\"--tv-total-row-width\");\r\n      }\r\n    });\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const saved = this.resizeService.load(id);\r\n      if (saved.size > 0) {\r\n        const record: Record<string, number> = {};\r\n        for (const [key, px] of saved) {\r\n          record[key] = px;\r\n        }\r\n        this.columnWidths.set(record);\r\n      }\r\n    }\r\n  }\r\n\r\n  ngAfterViewInit(): void {\r\n    this.measureScrollbarWidth();\r\n    this.setupHorizontalScrollSync();\r\n  }\r\n\r\n  /**\r\n   * Measures the platform scrollbar width using an off-screen probe element.\r\n   * Unlike measuring the live viewport (which may not have a scrollbar yet\r\n   * because data loads asynchronously), this technique gives the correct\r\n   * width immediately regardless of content or timing.\r\n   */\r\n  private measureScrollbarWidth(): void {\r\n    const probe = document.createElement(\"div\");\r\n    probe.style.cssText =\r\n      \"position:absolute;top:-9999px;left:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden;\";\r\n    document.body.appendChild(probe);\r\n    const scrollbarW = probe.offsetWidth - probe.clientWidth;\r\n    document.body.removeChild(probe);\r\n\r\n    this.elRef.nativeElement.style.setProperty(\r\n      \"--tv-scrollbar-width\",\r\n      `${scrollbarW}px`,\r\n    );\r\n  }\r\n\r\n  /**\r\n   * Keeps the header in horizontal-scroll sync with the CDK viewport.\r\n   *\r\n   * Uses a ResizeObserver on the viewport's content wrapper to detect\r\n   * whenever the body's scrollable width changes (column resize, data load,\r\n   * natural content overflow, etc.). When the body overflows, we set\r\n   * --tv-header-scroll-width on the header element so its inner row\r\n   * expands to match and scrollLeft works correctly.\r\n   */\r\n  private setupHorizontalScrollSync(): void {\r\n    const root = this.elRef.nativeElement;\r\n    const viewport = root.querySelector(\r\n      \"cdk-virtual-scroll-viewport\",\r\n    ) as HTMLElement | null;\r\n    const header = root.querySelector(\r\n      \"ui-table-header\",\r\n    ) as HTMLElement | null;\r\n    if (!viewport || !header) return;\r\n\r\n    const syncHeaderWidth = () => {\r\n      const sw = viewport.scrollWidth;\r\n      const cw = viewport.clientWidth;\r\n      if (sw > cw) {\r\n        // Body overflows – widen the header row to match.\r\n        // Add the vertical-scrollbar width so header cells stay aligned.\r\n        const sbW = viewport.offsetWidth - cw;\r\n        header.style.setProperty(\r\n          \"--tv-header-scroll-width\",\r\n          `${sw + sbW}px`,\r\n        );\r\n      } else {\r\n        header.style.removeProperty(\"--tv-header-scroll-width\");\r\n      }\r\n    };\r\n\r\n    const onScroll = () => {\r\n      syncHeaderWidth();\r\n      header.scrollLeft = viewport.scrollLeft;\r\n    };\r\n\r\n    viewport.addEventListener(\"scroll\", onScroll, { passive: true });\r\n\r\n    // Observe size changes in the content wrapper so we catch data loads,\r\n    // column resizes, and window resizes without polling.\r\n    const contentWrapper = viewport.querySelector(\r\n      \".cdk-virtual-scroll-content-wrapper\",\r\n    );\r\n    let ro: ResizeObserver | undefined;\r\n    if (contentWrapper) {\r\n      ro = new ResizeObserver(() => syncHeaderWidth());\r\n      ro.observe(contentWrapper);\r\n    }\r\n\r\n    this.destroyRef.onDestroy(() => {\r\n      viewport.removeEventListener(\"scroll\", onScroll);\r\n      ro?.disconnect();\r\n    });\r\n  }\r\n\r\n  protected onSortChange(state: SortState | null): void {\r\n    this.sortState.set(state);\r\n  }\r\n\r\n  protected onPageChange(page: number): void {\r\n    this.datasource().pageIndex.set(page);\r\n  }\r\n\r\n  protected onColumnResize(event: ColumnResizeEvent): void {\r\n    const current = { ...this.columnWidths() };\r\n    current[event.key] = event.widthPx;\r\n    this.columnWidths.set(current);\r\n\r\n    // Persist to localStorage if we have a tableId\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const map = new Map<string, number>(Object.entries(current));\r\n      this.resizeService.save(id, map);\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  computed,\r\n  contentChildren,\r\n  DestroyRef,\r\n  effect,\r\n  ElementRef,\r\n  inject,\r\n  input,\r\n  OnInit,\r\n  signal,\r\n} from \"@angular/core\";\r\n\r\nimport { ColumnResizeService } from \"./column-resize.service\";\r\nimport { UITableViewColumn } from \"./columns/table-column.directive\";\r\nimport { DatasourceAdapter } from \"./datasources/datasource-adapter\";\r\nimport { UITableBody } from \"./table-view-body/table-view-body.component\";\r\nimport { UITableFooter } from \"./table-view-footer/table-view-footer.component\";\r\nimport {\r\n  ColumnResizeEvent,\r\n  SortState,\r\n  UITableHeader,\r\n} from \"./table-view-header/table-view-header.component\";\r\n\r\n@Component({\r\n  selector: \"ui-table-view\",\r\n  standalone: true,\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  imports: [UITableHeader, UITableBody, UITableFooter],\r\n  templateUrl: \"./table-view.component.html\",\r\n  styleUrl: \"./table-view.component.scss\",\r\n})\r\nexport class UITableView implements OnInit, AfterViewInit {\r\n  private static nextCaptionId = 0;\r\n  private readonly resizeService = inject(ColumnResizeService);\r\n  private readonly elRef = inject(ElementRef<HTMLElement>);\r\n  private readonly destroyRef = inject(DestroyRef);\r\n\r\n  datasource = input.required<DatasourceAdapter<any>>();\r\n  showBuiltInPaginator = input<boolean>(true);\r\n  caption = input<string>(\"\");\r\n  showRowIndexIndicator = input<boolean>(false);\r\n  rowIndexHeaderText = input<string>(\"#\");\r\n\r\n  /**\r\n   * Unique identifier for this table instance.\r\n   * Used as key for persisting column widths in localStorage.\r\n   * When set, column resizing is enabled and widths are persisted.\r\n   */\r\n  tableId = input<string>(\"\");\r\n\r\n  /**\r\n   * Whether columns can be resized by dragging header borders.\r\n   * Defaults to true when a tableId is provided.\r\n   */\r\n  resizable = input<boolean | undefined>(undefined);\r\n\r\n  columns = contentChildren(UITableViewColumn);\r\n  protected readonly captionId = `ui-table-caption-${UITableView.nextCaptionId++}`;\r\n\r\n  protected readonly resolvedRows = signal<unknown[]>([]);\r\n  protected readonly sortState = signal<SortState | null>(null);\r\n  protected readonly captionAriaLabelledBy = computed(() =>\r\n    this.caption().trim() ? this.captionId : null,\r\n  );\r\n  protected readonly rowIndexOffset = computed(\r\n    () => this.datasource().pageIndex() * this.datasource().pageSize(),\r\n  );\r\n\r\n  /** Column widths as a record (key → px). Used by both header and body. */\r\n  protected readonly columnWidths = signal<Record<string, number>>({});\r\n\r\n  /** Whether resizing is actually enabled (explicit input or inferred from tableId). */\r\n  protected readonly isResizable = computed(() => {\r\n    const explicit = this.resizable();\r\n    if (explicit !== undefined) return explicit;\r\n    return this.tableId().length > 0;\r\n  });\r\n\r\n  /**\r\n   * Computed total row width (px) when at least one column has been\r\n   * explicitly resized. Flex columns get a 120px minimum.\r\n   * Returns 0 when no columns have explicit widths (natural sizing).\r\n   */\r\n  protected readonly totalRowWidth = computed(() => {\r\n    const cols = this.columns();\r\n    const widths = this.columnWidths();\r\n    const flexColMinWidth = 120;\r\n    const rowIndexWidth = this.showRowIndexIndicator() ? 68 : 0;\r\n\r\n    let total = rowIndexWidth;\r\n    let hasExplicit = false;\r\n    for (const col of cols) {\r\n      const w = widths[col.key()];\r\n      if (w !== undefined) {\r\n        total += w;\r\n        hasExplicit = true;\r\n      } else {\r\n        total += flexColMinWidth;\r\n      }\r\n    }\r\n    return hasExplicit ? total : 0;\r\n  });\r\n\r\n  /** Generation counter to discard stale promise resolutions after page changes. */\r\n  private resolveGeneration = 0;\r\n\r\n  protected readonly sortedRows = computed(() => {\r\n    const rows = this.resolvedRows();\r\n    const sort = this.sortState();\r\n    if (!sort) return rows;\r\n    return [...rows].sort((a, b) => {\r\n      // Keep loading placeholders (null) in place – don't try to sort them\r\n      if (a === null || b === null) return 0;\r\n      const va = String((a as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const vb = String((b as Record<string, unknown>)[sort.key] ?? \"\");\r\n      const cmp = va.localeCompare(vb);\r\n      return sort.direction === \"asc\" ? cmp : -cmp;\r\n    });\r\n  });\r\n\r\n  constructor() {\r\n    effect(() => {\r\n      const items = this.datasource().visibleWindow();\r\n      const gen = ++this.resolveGeneration;\r\n      const rows: (unknown | null)[] = new Array(items.length).fill(null);\r\n\r\n      items.forEach((item, index) => {\r\n        if (item instanceof Promise) {\r\n          item.then((resolved) => {\r\n            if (this.resolveGeneration !== gen) return; // stale page\r\n            const current = [...this.resolvedRows()];\r\n            current[index] = resolved;\r\n            this.resolvedRows.set(current);\r\n          });\r\n        } else {\r\n          rows[index] = item;\r\n        }\r\n      });\r\n\r\n      this.resolvedRows.set(rows);\r\n    });\r\n\r\n    // Keep --tv-total-row-width in sync so header + body + rows\r\n    // all expand to the same width inside the scroll container.\r\n    effect(() => {\r\n      const width = this.totalRowWidth();\r\n      if (width > 0) {\r\n        this.elRef.nativeElement.style.setProperty(\r\n          \"--tv-total-row-width\",\r\n          `${width}px`,\r\n        );\r\n      } else {\r\n        this.elRef.nativeElement.style.removeProperty(\"--tv-total-row-width\");\r\n      }\r\n    });\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const saved = this.resizeService.load(id);\r\n      if (saved.size > 0) {\r\n        const record: Record<string, number> = {};\r\n        for (const [key, px] of saved) {\r\n          record[key] = px;\r\n        }\r\n        this.columnWidths.set(record);\r\n      }\r\n    }\r\n  }\r\n\r\n  ngAfterViewInit(): void {\r\n    this.measureScrollbarWidth();\r\n    this.setupHorizontalScrollSync();\r\n  }\r\n\r\n  /**\r\n   * Measures the platform scrollbar width using an off-screen probe element.\r\n   * Unlike measuring the live viewport (which may not have a scrollbar yet\r\n   * because data loads asynchronously), this technique gives the correct\r\n   * width immediately regardless of content or timing.\r\n   */\r\n  private measureScrollbarWidth(): void {\r\n    const probe = document.createElement(\"div\");\r\n    probe.style.cssText =\r\n      \"position:absolute;top:-9999px;left:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden;\";\r\n    document.body.appendChild(probe);\r\n    const scrollbarW = probe.offsetWidth - probe.clientWidth;\r\n    document.body.removeChild(probe);\r\n\r\n    this.elRef.nativeElement.style.setProperty(\r\n      \"--tv-scrollbar-width\",\r\n      `${scrollbarW}px`,\r\n    );\r\n  }\r\n\r\n  /**\r\n   * Keeps the header in horizontal-scroll sync with the CDK viewport.\r\n   *\r\n   * Uses a ResizeObserver on the viewport's content wrapper to detect\r\n   * whenever the body's scrollable width changes (column resize, data load,\r\n   * natural content overflow, etc.). When the body overflows, we set\r\n   * --tv-header-scroll-width on the header element so its inner row\r\n   * expands to match and scrollLeft works correctly.\r\n   */\r\n  private setupHorizontalScrollSync(): void {\r\n    const root = this.elRef.nativeElement;\r\n    const viewport = root.querySelector(\r\n      \"cdk-virtual-scroll-viewport\",\r\n    ) as HTMLElement | null;\r\n    const header = root.querySelector(\"ui-table-header\") as HTMLElement | null;\r\n    if (!viewport || !header) return;\r\n\r\n    const syncHeaderWidth = () => {\r\n      const sw = viewport.scrollWidth;\r\n      const cw = viewport.clientWidth;\r\n      if (sw > cw) {\r\n        // Body overflows – widen the header row to match.\r\n        // Add the vertical-scrollbar width so header cells stay aligned.\r\n        const sbW = viewport.offsetWidth - cw;\r\n        header.style.setProperty(\"--tv-header-scroll-width\", `${sw + sbW}px`);\r\n      } else {\r\n        header.style.removeProperty(\"--tv-header-scroll-width\");\r\n      }\r\n    };\r\n\r\n    const onScroll = () => {\r\n      syncHeaderWidth();\r\n      header.scrollLeft = viewport.scrollLeft;\r\n    };\r\n\r\n    viewport.addEventListener(\"scroll\", onScroll, { passive: true });\r\n\r\n    // Observe size changes in the content wrapper so we catch data loads,\r\n    // column resizes, and window resizes without polling.\r\n    const contentWrapper = viewport.querySelector(\r\n      \".cdk-virtual-scroll-content-wrapper\",\r\n    );\r\n    let ro: ResizeObserver | undefined;\r\n    if (contentWrapper) {\r\n      ro = new ResizeObserver(() => syncHeaderWidth());\r\n      ro.observe(contentWrapper);\r\n    }\r\n\r\n    this.destroyRef.onDestroy(() => {\r\n      viewport.removeEventListener(\"scroll\", onScroll);\r\n      ro?.disconnect();\r\n    });\r\n  }\r\n\r\n  protected onSortChange(state: SortState | null): void {\r\n    this.sortState.set(state);\r\n  }\r\n\r\n  protected onPageChange(page: number): void {\r\n    this.datasource().pageIndex.set(page);\r\n  }\r\n\r\n  protected onColumnResize(event: ColumnResizeEvent): void {\r\n    const current = { ...this.columnWidths() };\r\n    current[event.key] = event.widthPx;\r\n    this.columnWidths.set(current);\r\n\r\n    // Persist to localStorage if we have a tableId\r\n    const id = this.tableId();\r\n    if (id) {\r\n      const map = new Map<string, number>(Object.entries(current));\r\n      this.resizeService.save(id, map);\r\n    }\r\n  }\r\n}\r\n",
             "styleUrl": "./table-view.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -3585,21 +3588,21 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<UiThemeToggleComponent>",
-                "defaultValue": "{\r\n    title: '@Sigmax/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<object>",
                 "defaultValue": "{\r\n  title: \"@Sigmax/UI Kit/Table View\",\r\n  component: UITableViewStoryDemo,\r\n  tags: [\"autodocs\"],\r\n  parameters: {\r\n    layout: \"fullscreen\",\r\n    docs: {\r\n      description: {\r\n        component:\r\n          \"Table View demo backed by JSONPlaceholder posts using the Storybook-only JSONPlaceholder datasource adapters.\",\r\n      },\r\n    },\r\n  },\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiThemeToggleComponent>",
+                "defaultValue": "{\r\n    title: '@Sigmax/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
             },
             {
                 "name": "mockDetailData",
@@ -3873,8 +3876,8 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<UiThemeToggleComponent>",
-                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "rawtype": "StoryObj<object>",
+                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -3884,8 +3887,8 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<object>",
-                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                "rawtype": "StoryObj<UiThemeToggleComponent>",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -4629,19 +4632,6 @@
                     "kind": 177
                 }
             ],
-            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<UiThemeToggleComponent>",
-                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 177
-                }
-            ],
             "packages/ui-kit/src/lib/table-view/table-view.stories.ts": [
                 {
                     "name": "Story",
@@ -4649,6 +4639,19 @@
                     "subtype": "typealias",
                     "rawtype": "StoryObj<object>",
                     "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 177
+                }
+            ],
+            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiThemeToggleComponent>",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -5059,7 +5062,7 @@
                 "status": "low"
             },
             {
-                "filePath": "packages/ui-kit/src/lib/table-view/table-view-body.component.ts",
+                "filePath": "packages/ui-kit/src/lib/table-view/table-view-body/table-view-body.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "UITableBody",
@@ -5068,7 +5071,7 @@
                 "status": "low"
             },
             {
-                "filePath": "packages/ui-kit/src/lib/table-view/table-view-footer.component.ts",
+                "filePath": "packages/ui-kit/src/lib/table-view/table-view-footer/table-view-footer.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "UITableFooter",
@@ -5077,7 +5080,7 @@
                 "status": "low"
             },
             {
-                "filePath": "packages/ui-kit/src/lib/table-view/table-view-header.component.ts",
+                "filePath": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "UITableHeader",
@@ -5086,7 +5089,7 @@
                 "status": "low"
             },
             {
-                "filePath": "packages/ui-kit/src/lib/table-view/table-view-header.component.ts",
+                "filePath": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "ColumnResizeEvent",
@@ -5095,7 +5098,7 @@
                 "status": "low"
             },
             {
-                "filePath": "packages/ui-kit/src/lib/table-view/table-view-header.component.ts",
+                "filePath": "packages/ui-kit/src/lib/table-view/table-view-header/table-view-header.component.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "SortState",

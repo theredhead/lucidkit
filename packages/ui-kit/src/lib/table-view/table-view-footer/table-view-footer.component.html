@@ -1,0 +1,27 @@
+<div class="table-footer">
+  <span class="page-info">
+    @if (totalItems() !== null) {
+      {{ rangeStart() }}–{{ rangeEnd() }} of {{ totalItems() }}
+    } @else {
+      Page {{ pageIndex() + 1 }}
+    }
+  </span>
+  <div class="page-controls">
+    <button
+      class="page-btn"
+      (click)="prevPage()"
+      [disabled]="pageIndex() === 0"
+      aria-label="Previous page"
+    >
+      ‹
+    </button>
+    <button
+      class="page-btn"
+      (click)="nextPage()"
+      [disabled]="!hasNextPage()"
+      aria-label="Next page"
+    >
+      ›
+    </button>
+  </div>
+</div>
