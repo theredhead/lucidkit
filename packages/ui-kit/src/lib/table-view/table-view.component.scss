@@ -41,6 +41,13 @@
   --tv-ls-caption: 0.02em;
   --tv-ls-header: 0.06em;
 
+  /* ── Selection ── */
+  --tv-selection-col-width: 3rem;
+  --tv-selected-bg: color-mix(in srgb, var(--tv-accent) 12%, transparent);
+  --tv-selected-hover-bg: color-mix(in srgb, var(--tv-accent) 18%, transparent);
+  --tv-checkbox-size: 0.95rem;
+  --tv-radio-size: 0.95rem;
+
   display: block;
   font-family: var(--tv-font);
   color: var(--tv-text);

@@ -47,6 +47,46 @@
   font-variant-numeric: tabular-nums;
 }
 
+.table-cell--selection {
+  flex: 0 0 var(--tv-selection-col-width, 3rem);
+  width: var(--tv-selection-col-width, 3rem);
+  min-width: var(--tv-selection-col-width, 3rem);
+  max-width: var(--tv-selection-col-width, 3rem);
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.tv-row-checkbox {
+  width: var(--tv-checkbox-size, 0.95rem);
+  height: var(--tv-checkbox-size, 0.95rem);
+  cursor: pointer;
+  accent-color: var(--tv-accent);
+  margin: 0;
+}
+
+.tv-row-radio {
+  width: var(--tv-radio-size, 0.95rem);
+  height: var(--tv-radio-size, 0.95rem);
+  cursor: pointer;
+  accent-color: var(--tv-accent);
+  margin: 0;
+}
+
+/* ── Selected row ── */
+
+.table-row--selected {
+  background: var(--tv-selected-bg);
+}
+
+.table-row--selected:hover {
+  background: var(--tv-selected-hover-bg);
+}
+
+.table-row--selectable {
+  cursor: pointer;
+}
+
 /* ── Skeleton / loading rows ── */
 
 .table-row--loading {

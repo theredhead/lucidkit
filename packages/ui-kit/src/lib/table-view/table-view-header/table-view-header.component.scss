@@ -47,6 +47,24 @@
   color: var(--tv-text);
 }
 
+.table-header-cell--selection {
+  flex: 0 0 var(--tv-selection-col-width, 3rem);
+  width: var(--tv-selection-col-width, 3rem);
+  min-width: var(--tv-selection-col-width, 3rem);
+  max-width: var(--tv-selection-col-width, 3rem);
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.tv-select-all-checkbox {
+  width: var(--tv-checkbox-size, 0.95rem);
+  height: var(--tv-checkbox-size, 0.95rem);
+  cursor: pointer;
+  accent-color: var(--tv-accent);
+  margin: 0;
+}
+
 .header-label {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -91,7 +109,9 @@
   content: "";
   position: absolute;
   top: 25%;
-  right: calc(var(--tv-resize-handle-width) / 2 - var(--tv-resize-indicator-width) / 2);
+  right: calc(
+    var(--tv-resize-handle-width) / 2 - var(--tv-resize-indicator-width) / 2
+  );
   width: var(--tv-resize-indicator-width);
   height: 50%;
   border-radius: 1px;
