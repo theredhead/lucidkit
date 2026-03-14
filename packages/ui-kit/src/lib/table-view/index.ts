@@ -9,6 +9,7 @@ export * from "./columns/table-column.directive";
 export * from "./columns/text-column/text-column.component";
 export * from "./columns/badge-column/badge-column.component";
 export * from "./columns/number-column/number-column.component";
+export * from "./core/types";
 export * from "./datasources/datasource";
 export * from "./datasources/array-datasource";
 export * from "./datasources/datasource-adapter";
