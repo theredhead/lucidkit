@@ -1,0 +1,46 @@
+<div class="ld-field">
+  <label class="ld-label" for="ld-url">URL</label>
+  <input
+    id="ld-url"
+    class="ld-input"
+    type="url"
+    placeholder="https://example.com"
+    [ngModel]="url()"
+    (ngModelChange)="url.set($event)"
+    (keydown.enter)="apply()"
+  />
+</div>
+<div class="ld-field">
+  <label class="ld-label" for="ld-text">Display text</label>
+  <input
+    id="ld-text"
+    class="ld-input"
+    type="text"
+    placeholder="Link text"
+    [ngModel]="text()"
+    (ngModelChange)="text.set($event)"
+    (keydown.enter)="apply()"
+  />
+</div>
+<div class="ld-actions">
+  <button
+    type="button"
+    class="ld-btn ld-btn--cancel"
+    (click)="cancel()"
+  >
+    Cancel
+  </button>
+  <button
+    type="button"
+    class="ld-btn ld-btn--apply"
+    [disabled]="!url().trim()"
+    (click)="apply()"
+  >
+    <ui-icon [svg]="linkIcon" [size]="14" />
+    @if (editMode()) {
+      Edit hyperlink
+    } @else {
+      Add hyperlink
+    }
+  </button>
+</div>

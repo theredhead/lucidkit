@@ -402,4 +402,279 @@ describe("UIAutocomplete", () => {
       );
     });
   });
+
+  describe("keyboard navigation (extended)", () => {
+    it("should highlight previous item on ArrowUp", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "A";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      // Move down twice
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+      fixture.detectChanges();
+
+      // Move up once
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+      fixture.detectChanges();
+
+      const actives =
+        fixture.nativeElement.querySelectorAll(".ac-option--active");
+      expect(actives.length).toBe(1);
+    });
+
+    it("should not go above the first item on ArrowUp", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "A";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+      fixture.detectChanges();
+
+      // Try going up twice — should stay at index 0
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+      fixture.detectChanges();
+
+      const actives =
+        fixture.nativeElement.querySelectorAll(".ac-option--active");
+      expect(actives.length).toBe(1);
+    });
+
+    it("should pick the active item on Enter", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "Bob";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+      fixture.detectChanges();
+
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+      fixture.detectChanges();
+
+      expect(component.value()).toEqual([{ id: 2, name: "Bob" }]);
+    });
+
+    it("should not pick on Enter when no item is highlighted", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "Al";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      // No ArrowDown — activeIndex is -1
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+      fixture.detectChanges();
+
+      expect(component.value()).toEqual([]);
+    });
+
+    it("should close popup on Tab", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "Al";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+    });
+
+    it("should ignore keyboard when no suggestions exist", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "zzz";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      // No suggestions, ArrowDown should be harmless
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+      fixture.detectChanges();
+
+      expect(component.value()).toEqual([]);
+    });
+
+    it("should open popup on ArrowDown when closed", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "A";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      // Close first
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+
+      // ArrowDown should reopen
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+    });
+  });
+
+  describe("document click", () => {
+    it("should close popup when clicking outside", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "Al";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+
+      // Click outside the component
+      document.body.click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+    });
+
+    it("should not close popup when clicking inside", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+
+      input.value = "Al";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+
+      // Click inside the component
+      fixture.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+    });
+  });
+
+  describe("popup management", () => {
+    it("should not open popup when disabled", () => {
+      fixture.componentRef.setInput("disabled", true);
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+      input.dispatchEvent(new Event("focus"));
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+    });
+
+    it("should not open popup when query is too short", () => {
+      fixture.componentRef.setInput("minChars", 5);
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+      input.value = "Al";
+      input.dispatchEvent(new Event("input"));
+      input.dispatchEvent(new Event("focus"));
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+    });
+  });
+
+  describe("multiple mode (extended)", () => {
+    beforeEach(() => {
+      fixture.componentRef.setInput("multiple", true);
+      fixture.detectChanges();
+    });
+
+    it("should not add duplicate items when using trackBy", () => {
+      fixture.componentRef.setInput("trackBy", (item: TestItem) => item.id);
+      component.value.set([{ id: 1, name: "Alice" }]);
+      fixture.detectChanges();
+
+      // Try to pick the same item via pickItem
+      (component as any).pickItem({ id: 1, name: "Alice" });
+      fixture.detectChanges();
+
+      expect(component.value().length).toBe(1);
+    });
+
+    it("should emit itemRemoved when chip is removed", () => {
+      const spy = vi.fn();
+      component.itemRemoved.subscribe(spy);
+      component.value.set([{ id: 1, name: "Alice" }]);
+      fixture.detectChanges();
+
+      const removeBtn = fixture.nativeElement.querySelector(".ac-chip-remove");
+      removeBtn.click();
+      fixture.detectChanges();
+
+      expect(spy).toHaveBeenCalledWith({ id: 1, name: "Alice" });
+    });
+
+    it("should emit itemSelected when suggestion is picked", () => {
+      const spy = vi.fn();
+      component.itemSelected.subscribe(spy);
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+      input.value = "Bob";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.detectChanges();
+
+      expect(spy).toHaveBeenCalledWith({ id: 2, name: "Bob" });
+    });
+
+    it("should remove items using trackBy identity", () => {
+      fixture.componentRef.setInput("trackBy", (item: TestItem) => item.id);
+      component.value.set([
+        { id: 1, name: "Alice" },
+        { id: 2, name: "Bob" },
+      ]);
+      fixture.detectChanges();
+
+      const removeBtns =
+        fixture.nativeElement.querySelectorAll(".ac-chip-remove");
+      removeBtns[0].click();
+      fixture.detectChanges();
+
+      expect(component.value().length).toBe(1);
+      expect(component.value()[0].id).toBe(2);
+    });
+  });
+
+  describe("single mode input value", () => {
+    it("should set input value to displayWith when item is picked", () => {
+      fixture.componentRef.setInput(
+        "displayWith",
+        (item: TestItem) => item.name,
+      );
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".ac-input");
+      input.value = "Bob";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.detectChanges();
+
+      // In single mode, query is set to displayWith(item)
+      expect((component as any).query()).toBe("Bob");
+    });
+  });
 });

@@ -4,18 +4,60 @@
     @if (!$first) {
       <span class="rte-toolbar-separator" aria-hidden="true"></span>
     }
-    @for (btn of group.buttons; track btn.action) {
-      <button
-        type="button"
-        class="rte-toolbar-btn"
-        [attr.aria-label]="btn.label"
-        [attr.title]="btn.label"
-        [disabled]="disabled() || readonly()"
-        (mousedown)="$event.preventDefault()"
-        (click)="execAction(btn.action)"
-      >
-        {{ btn.icon }}
-      </button>
+    @if (group.flat) {
+      @for (btn of group.buttons; track btn.action) {
+        <button
+          #btnEl
+          type="button"
+          class="rte-toolbar-btn"
+          [class.rte-toolbar-btn--active]="isActionActive(btn.action)"
+          [attr.aria-label]="btn.label"
+          [attr.title]="btn.label"
+          [attr.aria-pressed]="isActionActive(btn.action)"
+          [disabled]="disabled() || readonly()"
+          (mousedown)="$event.preventDefault()"
+          (click)="execAction(btn.action, btnEl)"
+        >
+          <ui-icon [svg]="btn.icon" [size]="16" />
+        </button>
+      }
+    } @else if (group.meta) {
+      <div class="rte-dropdown-group">
+        <button
+          type="button"
+          class="rte-toolbar-btn rte-dropdown-trigger"
+          [attr.aria-label]="group.meta.label"
+          [attr.title]="group.meta.label"
+          [attr.aria-expanded]="openDropdownGroup() === group.group"
+          [disabled]="disabled() || readonly()"
+          (mousedown)="$event.preventDefault()"
+          (click)="toggleDropdownGroup(group.group)"
+        >
+          <ui-icon [svg]="group.meta.icon" [size]="16" />
+          <span class="rte-dropdown-caret" aria-hidden="true">▾</span>
+        </button>
+        @if (openDropdownGroup() === group.group) {
+          <div
+            class="rte-dropdown-panel"
+            role="group"
+            [attr.aria-label]="group.meta.label"
+          >
+            @for (btn of group.buttons; track btn.action) {
+              <button
+                type="button"
+                class="rte-dropdown-action"
+                [class.rte-dropdown-action--active]="isActionActive(btn.action)"
+                [attr.aria-label]="btn.label"
+                (mousedown)="$event.preventDefault()"
+                (click)="execAction(btn.action)"
+              >
+                <span class="rte-dropdown-action-icon"><ui-icon [svg]="btn.icon" [size]="16" /></span>
+                {{ btn.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
     }
   }
 
@@ -62,17 +104,50 @@
       }
     </div>
   }
+  <!-- Source toggle -->
+  <span class="rte-toolbar-separator" aria-hidden="true"></span>
+  <button
+    type="button"
+    class="rte-toolbar-btn rte-toolbar-btn--source"
+    [class.rte-toolbar-btn--active]="isSourceMode()"
+    aria-label="Edit HTML source"
+    title="Edit HTML source"
+    [attr.aria-pressed]="isSourceMode()"
+    [disabled]="disabled() || readonly()"
+    (mousedown)="$event.preventDefault()"
+    (click)="toggleSourceMode()"
+  >
+    <ui-icon [svg]="sourceIcon" [size]="16" />
+  </button>
 </div>
 
 <!-- ── Editor area ────────────────────────────────────────── -->
-<div class="rte-editor-wrapper" [class.rte-editor-wrapper--focused]="isFocused()">
+@if (isSourceMode()) {
+  <textarea
+    class="rte-source-editor"
+    [attr.aria-label]="ariaLabel() + ' (HTML source)'"
+    [value]="value()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    (input)="onSourceInput($event)"
+    (focus)="onEditorFocus()"
+    (blur)="onEditorBlur()"
+    spellcheck="false"
+  ></textarea>
+  <div class="rte-preview-label" aria-hidden="true">Preview</div>
+}
+<div
+  class="rte-editor-wrapper"
+  [class.rte-editor-wrapper--focused]="isFocused() && !isSourceMode()"
+  [class.rte-editor-wrapper--preview]="isSourceMode()"
+>
   <div
     #editorEl
     class="rte-editor"
     role="textbox"
     aria-multiline="true"
     [attr.aria-label]="ariaLabel()"
-    [attr.contenteditable]="!disabled() && !readonly()"
+    [attr.contenteditable]="!disabled() && !readonly() && !isSourceMode()"
     [attr.data-placeholder]="placeholder()"
     (input)="onEditorInput()"
     (focus)="onEditorFocus()"

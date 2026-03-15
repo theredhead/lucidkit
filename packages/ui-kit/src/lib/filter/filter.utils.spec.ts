@@ -350,5 +350,243 @@ describe("filter.utils", () => {
         throw new Error("Expected row-level entry");
       }
     });
+
+    it("should return empty array when rules reference unknown fields", () => {
+      const descriptor: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [{ id: 1, field: "unknown", operator: "equals", value: "x" }],
+      };
+      expect(toFilterExpression(descriptor, fields)).toEqual([]);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Date operators — inTheLast
+  // ---------------------------------------------------------------------------
+  describe("date operator: inTheLast", () => {
+    const now = new Date();
+
+    function buildDatePred(value: string, unit: string) {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          {
+            id: 1,
+            field: "joined",
+            operator: "inTheLast",
+            value,
+            unit: unit as any,
+          },
+        ],
+      };
+      return toPredicate(d, fields)!;
+    }
+
+    it("inTheLast days — recent date passes", () => {
+      const recent = new Date();
+      recent.setDate(recent.getDate() - 3);
+      const row: TestRow = {
+        name: "X",
+        age: 1,
+        joined: recent.toISOString(),
+      };
+      expect(buildDatePred("7", "days")(row)).toBe(true);
+    });
+
+    it("inTheLast days — old date fails", () => {
+      const old = new Date();
+      old.setDate(old.getDate() - 30);
+      const row: TestRow = {
+        name: "X",
+        age: 1,
+        joined: old.toISOString(),
+      };
+      expect(buildDatePred("7", "days")(row)).toBe(false);
+    });
+
+    it("inTheLast weeks", () => {
+      const recent = new Date();
+      recent.setDate(recent.getDate() - 10);
+      const row: TestRow = {
+        name: "X",
+        age: 1,
+        joined: recent.toISOString(),
+      };
+      expect(buildDatePred("2", "weeks")(row)).toBe(true);
+    });
+
+    it("inTheLast months", () => {
+      const recent = new Date();
+      recent.setMonth(recent.getMonth() - 1);
+      const row: TestRow = {
+        name: "X",
+        age: 1,
+        joined: recent.toISOString(),
+      };
+      expect(buildDatePred("2", "months")(row)).toBe(true);
+    });
+
+    it("inTheLast years", () => {
+      const recent = new Date();
+      recent.setFullYear(recent.getFullYear() - 1);
+      recent.setDate(recent.getDate() + 10); // just within 2 years
+      const row: TestRow = {
+        name: "X",
+        age: 1,
+        joined: recent.toISOString(),
+      };
+      expect(buildDatePred("2", "years")(row)).toBe(true);
+    });
+
+    it("inTheLast defaults to days when unit is not specified", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          {
+            id: 1,
+            field: "joined",
+            operator: "inTheLast",
+            value: "7",
+            // no unit specified
+          },
+        ],
+      };
+      const pred = toPredicate(d, fields)!;
+      const recent = new Date();
+      recent.setDate(recent.getDate() - 3);
+      const row: TestRow = {
+        name: "X",
+        age: 1,
+        joined: recent.toISOString(),
+      };
+      expect(pred(row)).toBe(true);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Default / unknown operator fallback
+  // ---------------------------------------------------------------------------
+  describe("unknown operator fallback", () => {
+    it("should return true for unknown string operator", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          { id: 1, field: "name", operator: "nonexistent" as any, value: "x" },
+        ],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: "anything", age: 0, joined: "" })).toBe(true);
+    });
+
+    it("should return true for unknown number operator", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          { id: 1, field: "age", operator: "nonexistent" as any, value: "5" },
+        ],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: "x", age: 99, joined: "" })).toBe(true);
+    });
+
+    it("should return true for unknown date operator", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          {
+            id: 1,
+            field: "joined",
+            operator: "nonexistent" as any,
+            value: "2024-01-01",
+          },
+        ],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: "x", age: 0, joined: "2024-01-01" })).toBe(true);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Edge cases: null / undefined values
+  // ---------------------------------------------------------------------------
+  describe("edge cases", () => {
+    it("string contains with null value in row should not throw", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [{ id: 1, field: "name", operator: "contains", value: "x" }],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: null as any, age: 0, joined: "" })).toBe(false);
+    });
+
+    it("number isEmpty with empty string value", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [{ id: 1, field: "age", operator: "isEmpty", value: "" }],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: "x", age: "" as any, joined: "" })).toBe(true);
+    });
+
+    it("number isNotEmpty with empty string value", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [{ id: 1, field: "age", operator: "isNotEmpty", value: "" }],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: "x", age: "" as any, joined: "" })).toBe(false);
+    });
+
+    it("date equals with invalid date string should not match", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          { id: 1, field: "joined", operator: "equals", value: "2024-01-01" },
+        ],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: "x", age: 0, joined: "not-a-date" })).toBe(false);
+    });
+
+    it("date before with null date should not match", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          { id: 1, field: "joined", operator: "before", value: "2030-01-01" },
+        ],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: "x", age: 0, joined: null as any })).toBe(false);
+    });
+
+    it("date after with numeric timestamp should parse", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          { id: 1, field: "joined", operator: "after", value: "2020-01-01" },
+        ],
+      };
+      const pred = toPredicate(d, fields)!;
+      // numeric timestamp (ms since epoch for 2024-06-15)
+      expect(pred({ name: "x", age: 0, joined: Date.now() as any })).toBe(true);
+    });
+
+    it("string isEmpty with null row value", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [{ id: 1, field: "name", operator: "isEmpty", value: "" }],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: null as any, age: 0, joined: "" })).toBe(true);
+    });
+
+    it("string isNotEmpty with null row value", () => {
+      const d: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [{ id: 1, field: "name", operator: "isNotEmpty", value: "" }],
+      };
+      const pred = toPredicate(d, fields)!;
+      expect(pred({ name: null as any, age: 0, joined: "" })).toBe(false);
+    });
   });
 });
