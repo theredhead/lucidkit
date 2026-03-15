@@ -16,13 +16,8 @@ const DIALOG_STYLES = /* css */ `
 /* ── ui-dialog service base ─────────────────────────────── */
 
 dialog.ui-dialog-service {
-  --ui-surface: var(--theredhead-surface, #ffffff);
-  --ui-text: var(--theredhead-on-surface, #1d232b);
-  --ui-border: var(--theredhead-outline, #d7dce2);
-  --ui-accent: var(--theredhead-primary, #3584e4);
-
   border: none;
-  border-radius: 0.75rem;
+  border-radius: var(--ui-radius, 0.75rem);
   padding: 0;
   max-width: min(90vw, 40rem);
   max-height: 85vh;
@@ -31,7 +26,7 @@ dialog.ui-dialog-service {
   flex-direction: column;
   background: var(--ui-surface);
   color: var(--ui-text);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--ui-shadow);
   animation: ui-dialog-svc-enter 180ms ease-out;
 }
 
@@ -43,9 +38,6 @@ dialog.ui-dialog-service::backdrop {
 /* ── dark mode (explicit class) ─────────────────────────── */
 
 html.dark-theme dialog.ui-dialog-service {
-  --ui-surface: var(--theredhead-surface, #2a2f38);
-  --ui-text: var(--theredhead-on-surface, #f2f6fb);
-  --ui-border: var(--theredhead-outline, #3a3f47);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
@@ -57,9 +49,6 @@ html.dark-theme dialog.ui-dialog-service::backdrop {
 
 @media (prefers-color-scheme: dark) {
   html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service {
-    --ui-surface: var(--theredhead-surface, #2a2f38);
-    --ui-text: var(--theredhead-on-surface, #f2f6fb);
-    --ui-border: var(--theredhead-outline, #3a3f47);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 
