@@ -4985,6 +4985,916 @@
             "templateData": "<ng-template #cell let-row>\r\n    <span class=\"number-cell\">{{ formattedValue(row) }}</span>\r\n</ng-template>"
         },
         {
+            "name": "UIRichTextEditor",
+            "id": "component-UIRichTextEditor-204ac79efb61f54195b168e7271a3a724a8c39ae1b43db5ab7ff28dfcb61e59333bc20a7f5508085ea8d14fcd6ac72d58895990292959028726b05a0e7978a55",
+            "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "host": {},
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-rich-text-editor",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./rich-text-editor.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "ariaLabel",
+                    "defaultValue": "input<string>(\"Rich text editor\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Accessible label forwarded to the editable region via\n<code>aria-label</code>.</p>\n",
+                    "line": 95,
+                    "rawdescription": "\n\nAccessible label forwarded to the editable region via\n`aria-label`.\n",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "input<boolean>(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Whether the editor is disabled (non-interactive).</p>\n",
+                    "line": 86,
+                    "rawdescription": "\nWhether the editor is disabled (non-interactive).",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "editorRef",
+                    "defaultValue": "viewChild.required<ElementRef<HTMLDivElement>>(\"editorEl\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 80,
+                    "rawdescription": "",
+                    "modifierKind": [
+                        144
+                    ],
+                    "jsdoctags": [
+                        {
+                            "pos": 2022,
+                            "end": 2032,
+                            "flags": 4227072,
+                            "modifierFlagsCache": 0,
+                            "transformFlags": 0,
+                            "kind": 325,
+                            "tagName": {
+                                "pos": 2023,
+                                "end": 2031,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "internal"
+                            },
+                            "comment": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "elRef",
+                    "defaultValue": "inject(ElementRef<HTMLElement>)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 75,
+                    "modifierKind": [
+                        121,
+                        144
+                    ]
+                },
+                {
+                    "name": "groupedToolbarButtons",
+                    "defaultValue": "computed(() => {\n    const buttons = this.toolbarButtons();\n    const groups: { group: string; buttons: ToolbarButtonMeta[] }[] = [];\n    let currentGroup = \"\";\n    for (const btn of buttons) {\n      const g = btn.group ?? \"\";\n      if (g !== currentGroup) {\n        currentGroup = g;\n        groups.push({ group: g, buttons: [] });\n      }\n      groups[groups.length - 1].buttons.push(btn);\n    }\n    return groups;\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Grouped toolbar buttons for rendering separators between\ngroups.</p>\n",
+                    "line": 152,
+                    "rawdescription": "\n\nGrouped toolbar buttons for rendering separators between\ngroups.\n\n",
+                    "modifierKind": [
+                        122,
+                        144
+                    ],
+                    "jsdoctags": [
+                        {
+                            "pos": 4175,
+                            "end": 4188,
+                            "flags": 4227072,
+                            "modifierFlagsCache": 0,
+                            "transformFlags": 0,
+                            "kind": 325,
+                            "tagName": {
+                                "pos": 4176,
+                                "end": 4184,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "internal"
+                            },
+                            "comment": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "initialised",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Tracks whether init has happened to avoid premature reads.</p>\n",
+                    "line": 188,
+                    "rawdescription": "\nTracks whether init has happened to avoid premature reads.",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "isFocused",
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Whether the editor area is currently focused.</p>\n",
+                    "line": 137,
+                    "rawdescription": "\nWhether the editor area is currently focused.",
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                },
+                {
+                    "name": "isPlaceholderPickerOpen",
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Whether the placeholder picker dropdown is open.</p>\n",
+                    "line": 134,
+                    "rawdescription": "\nWhether the placeholder picker dropdown is open.",
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                },
+                {
+                    "name": "placeholder",
+                    "defaultValue": "input<string>(\"Type here…\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Placeholder text shown when the editor is empty.</p>\n",
+                    "line": 100,
+                    "rawdescription": "\n\nPlaceholder text shown when the editor is empty.\n",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "placeholderInserted",
+                    "defaultValue": "output<RichTextPlaceholder>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Fired when a placeholder chip is inserted.</p>\n",
+                    "line": 129,
+                    "rawdescription": "\nFired when a placeholder chip is inserted.",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "placeholders",
+                    "defaultValue": "input<readonly RichTextPlaceholder[]>([])",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Available placeholder definitions.\nWhen non-empty a placeholder picker appears in the toolbar.</p>\n",
+                    "line": 114,
+                    "rawdescription": "\n\nAvailable placeholder definitions.\nWhen non-empty a placeholder picker appears in the toolbar.\n",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "placeholdersByCategory",
+                    "defaultValue": "computed(() => {\n    const ph = this.placeholders();\n    if (!ph.length) return [];\n    const catMap = new Map<string, RichTextPlaceholder[]>();\n    for (const p of ph) {\n      const cat = p.category ?? \"\";\n      if (!catMap.has(cat)) catMap.set(cat, []);\n      catMap.get(cat)!.push(p);\n    }\n    return Array.from(catMap.entries()).map(([category, items]) => ({\n      category,\n      items,\n    }));\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Placeholder categories for the picker dropdown.</p>\n",
+                    "line": 172,
+                    "rawdescription": "\n\nPlaceholder categories for the picker dropdown.\n\n",
+                    "modifierKind": [
+                        122,
+                        144
+                    ],
+                    "jsdoctags": [
+                        {
+                            "pos": 4729,
+                            "end": 4742,
+                            "flags": 4227072,
+                            "modifierFlagsCache": 0,
+                            "transformFlags": 0,
+                            "kind": 325,
+                            "tagName": {
+                                "pos": 4730,
+                                "end": 4738,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "internal"
+                            },
+                            "comment": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "readonly",
+                    "defaultValue": "input<boolean>(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Whether the editor is read-only (content visible but not editable).</p>\n",
+                    "line": 89,
+                    "rawdescription": "\nWhether the editor is read-only (content visible but not editable).",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "toolbarActions",
+                    "defaultValue": "input<readonly RichTextFormatAction[]>(\n    DEFAULT_TOOLBAR_ACTIONS,\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Which formatting actions to show in the toolbar.\nDefaults to {@link DEFAULT_TOOLBAR_ACTIONS}.</p>\n",
+                    "line": 106,
+                    "rawdescription": "\n\nWhich formatting actions to show in the toolbar.\nDefaults to {@link DEFAULT_TOOLBAR_ACTIONS}.\n",
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "toolbarButtons",
+                    "defaultValue": "computed<ToolbarButtonMeta[]>(() =>\n    this.toolbarActions()\n      .map((a) => TOOLBAR_BUTTON_REGISTRY[a])\n      .filter(Boolean),\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>Resolved toolbar button metadata from the actions list.</p>\n",
+                    "line": 140,
+                    "rawdescription": "\nResolved toolbar button metadata from the actions list.",
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "model<string>(\"\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "<p>HTML content of the editor.  Two-way bindable via <code>[(value)]</code>.</p>\n<p>Placeholder chips are serialised as <code>{{key}}</code> tokens in the\nemitted string.</p>\n",
+                    "line": 124,
+                    "rawdescription": "\n\nHTML content of the editor.  Two-way bindable via `[(value)]`.\n\nPlaceholder chips are serialised as `{{key}}` tokens in the\nemitted string.\n",
+                    "modifierKind": [
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "closePlaceholderPicker",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 294,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": []
+                },
+                {
+                    "name": "createPlaceholderChip",
+                    "args": [
+                        {
+                            "name": "placeholder",
+                            "type": "RichTextPlaceholder",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "HTMLElement",
+                    "typeParameters": [],
+                    "line": 430,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nCreates a placeholder chip DOM element.\n",
+                    "description": "<p>Creates a placeholder chip DOM element.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "placeholder",
+                            "type": "RichTextPlaceholder",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "deserialiseContent",
+                    "args": [
+                        {
+                            "name": "html",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 413,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nExpands `{{key}}` tokens in the HTML into placeholder chip\nmarkup that the editor can display.\n",
+                    "description": "<p>Expands <code>{{key}}</code> tokens in the HTML into placeholder chip\nmarkup that the editor can display.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "html",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "escapeAttr",
+                    "args": [
+                        {
+                            "name": "str",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 528,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nEscape a string for safe use in an HTML attribute value.",
+                    "description": "<p>Escape a string for safe use in an HTML attribute value.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "str",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "escapeHtml",
+                    "args": [
+                        {
+                            "name": "str",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 519,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nHTML-escape a string for safe insertion into markup.",
+                    "description": "<p>HTML-escape a string for safe insertion into markup.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "str",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "execAction",
+                    "args": [
+                        {
+                            "name": "action",
+                            "type": "RichTextFormatAction",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 204,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nExecutes a formatting action.\n\n",
+                    "description": "<p>Executes a formatting action.</p>\n",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "action",
+                            "type": "RichTextFormatAction",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "insertPlaceholder",
+                    "args": [
+                        {
+                            "name": "placeholder",
+                            "type": "RichTextPlaceholder",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 260,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nInserts a placeholder chip at the current caret position.\n\n",
+                    "description": "<p>Inserts a placeholder chip at the current caret position.</p>\n",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "placeholder",
+                            "type": "RichTextPlaceholder",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "nextNode",
+                    "args": [
+                        {
+                            "name": "container",
+                            "type": "Node",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Node | null",
+                    "typeParameters": [],
+                    "line": 507,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nReturns the DOM node immediately after the given\ncontainer/offset position.\n",
+                    "description": "<p>Returns the DOM node immediately after the given\ncontainer/offset position.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "container",
+                            "type": "Node",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 192,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onEditorBlur",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 311,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": []
+                },
+                {
+                    "name": "onEditorFocus",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 306,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": []
+                },
+                {
+                    "name": "onEditorInput",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 301,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": []
+                },
+                {
+                    "name": "onEditorKeydown",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "KeyboardEvent",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 344,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nPrevents deletion of the placeholder chip's interior —\ninstead deletes the whole chip.\n\n",
+                    "description": "<p>Prevents deletion of the placeholder chip&#39;s interior —\ninstead deletes the whole chip.</p>\n",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "KeyboardEvent",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onEditorPaste",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "ClipboardEvent",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 322,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nHandles paste events by stripping everything except basic\ninline formatting to prevent pasting styled content from\nexternal sources.\n\n",
+                    "description": "<p>Handles paste events by stripping everything except basic\ninline formatting to prevent pasting styled content from\nexternal sources.</p>\n",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "ClipboardEvent",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "previousNode",
+                    "args": [
+                        {
+                            "name": "container",
+                            "type": "Node",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Node | null",
+                    "typeParameters": [],
+                    "line": 496,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nReturns the DOM node immediately before the given\ncontainer/offset position.\n",
+                    "description": "<p>Returns the DOM node immediately before the given\ncontainer/offset position.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "container",
+                            "type": "Node",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "renderHtmlToEditor",
+                    "args": [
+                        {
+                            "name": "html",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 389,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nRenders the given HTML string into the editor element,\nexpanding `{{key}}` tokens into placeholder chips.\n\n",
+                    "description": "<p>Renders the given HTML string into the editor element,\nexpanding <code>{{key}}</code> tokens into placeholder chips.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "html",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "restoreFocus",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 485,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nRestores focus to the editor element.",
+                    "description": "<p>Restores focus to the editor element.</p>\n",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "sanitiseHtml",
+                    "args": [
+                        {
+                            "name": "html",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 444,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nVery basic HTML sanitisation — keeps only inline formatting\ntags.  This is intentionally simple; the component is not a\nsecurity boundary.\n",
+                    "description": "<p>Very basic HTML sanitisation — keeps only inline formatting\ntags.  This is intentionally simple; the component is not a\nsecurity boundary.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "html",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "serialiseContent",
+                    "args": [
+                        {
+                            "name": "editor",
+                            "type": "HTMLDivElement",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 398,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nClones the editor DOM, replaces placeholder chip elements\nwith their `{{key}}` token, and returns the resulting HTML.\n",
+                    "description": "<p>Clones the editor DOM, replaces placeholder chip elements\nwith their <code>{{key}}</code> token, and returns the resulting HTML.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "editor",
+                            "type": "HTMLDivElement",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "syncValueFromEditor",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 377,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nReads the editor's inner HTML, serialises placeholder chips\nback to `{{key}}` tokens, and pushes the result to\n`this.value`.\n\n",
+                    "description": "<p>Reads the editor&#39;s inner HTML, serialises placeholder chips\nback to <code>{{key}}</code> tokens, and pushes the result to\n<code>this.value</code>.</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": []
+                },
+                {
+                    "name": "togglePlaceholderPicker",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 288,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "modifierKind": [
+                        122
+                    ],
+                    "jsdoctags": []
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "<p>Rich-text editor supporting basic formatting and placeholder\ninsertion.</p>\n<p>Uses a native <code>contenteditable</code> div for editing and\n<code>document.execCommand</code> for inline / block formatting (bold,\nitalic, underline, strike-through, headings, lists, alignment).</p>\n<p><strong>Placeholders</strong> are template variables (e.g. <code>{{firstName}}</code>)\nrendered as non-editable inline chips.  In the serialised HTML\noutput they appear as <code>{{key}}</code> tokens that a downstream template\nengine can resolve.</p>\n<p>The editor exposes its HTML content as a two-way <code>[(value)]</code>\nbinding.</p>\n<div><pre class=\"line-numbers\"><code class=\"language-html\">&lt;ui-rich-text-editor\n  [(value)]=&quot;emailBody&quot;\n  [placeholders]=&quot;availablePlaceholders&quot;\n  ariaLabel=&quot;Email body&quot;\n/&gt;</code></pre></div>",
+            "rawdescription": "\n\nRich-text editor supporting basic formatting and placeholder\ninsertion.\n\nUses a native `contenteditable` div for editing and\n`document.execCommand` for inline / block formatting (bold,\nitalic, underline, strike-through, headings, lists, alignment).\n\n**Placeholders** are template variables (e.g. `{{firstName}}`)\nrendered as non-editable inline chips.  In the serialised HTML\noutput they appear as `{{key}}` tokens that a downstream template\nengine can resolve.\n\nThe editor exposes its HTML content as a two-way `[(value)]`\nbinding.\n\n```html\n<ui-rich-text-editor\n  [(value)]=\"emailBody\"\n  [placeholders]=\"availablePlaceholders\"\n  ariaLabel=\"Email body\"\n/>\n```\n",
+            "type": "component",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  ElementRef,\n  inject,\n  input,\n  model,\n  output,\n  signal,\n  viewChild,\n} from \"@angular/core\";\n\nimport {\n  DEFAULT_TOOLBAR_ACTIONS,\n  TOOLBAR_BUTTON_REGISTRY,\n  type RichTextFormatAction,\n  type RichTextPlaceholder,\n  type ToolbarButtonMeta,\n} from \"./rich-text-editor.types\";\n\n/**\n * The CSS class applied to placeholder chips inside the editable area.\n * @internal\n */\nconst PLACEHOLDER_CLASS = \"rte-placeholder\";\n\n/**\n * Regex matching serialised placeholder tokens: `{{key}}`.\n * @internal\n */\nconst PLACEHOLDER_TOKEN_RE = /\\{\\{(\\w+)\\}\\}/g;\n\n// ── Component ──────────────────────────────────────────────────────\n\n/**\n * Rich-text editor supporting basic formatting and placeholder\n * insertion.\n *\n * Uses a native `contenteditable` div for editing and\n * `document.execCommand` for inline / block formatting (bold,\n * italic, underline, strike-through, headings, lists, alignment).\n *\n * **Placeholders** are template variables (e.g. `{{firstName}}`)\n * rendered as non-editable inline chips.  In the serialised HTML\n * output they appear as `{{key}}` tokens that a downstream template\n * engine can resolve.\n *\n * The editor exposes its HTML content as a two-way `[(value)]`\n * binding.\n *\n * @example\n * ```html\n * <ui-rich-text-editor\n *   [(value)]=\"emailBody\"\n *   [placeholders]=\"availablePlaceholders\"\n *   ariaLabel=\"Email body\"\n * />\n * ```\n */\n@Component({\n  selector: \"ui-rich-text-editor\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: \"./rich-text-editor.component.html\",\n  styleUrl: \"./rich-text-editor.component.scss\",\n  host: {\n    class: \"ui-rich-text-editor\",\n    \"[class.ui-rich-text-editor--disabled]\": \"disabled()\",\n    \"[class.ui-rich-text-editor--readonly]\": \"readonly()\",\n  },\n})\nexport class UIRichTextEditor implements AfterViewInit {\n  private readonly elRef = inject(ElementRef<HTMLElement>);\n\n  // ── View queries ───────────────────────────────────────────\n\n  /** @internal */\n  readonly editorRef =\n    viewChild.required<ElementRef<HTMLDivElement>>(\"editorEl\");\n\n  // ── Inputs ─────────────────────────────────────────────────\n\n  /** Whether the editor is disabled (non-interactive). */\n  readonly disabled = input<boolean>(false);\n\n  /** Whether the editor is read-only (content visible but not editable). */\n  readonly readonly = input<boolean>(false);\n\n  /**\n   * Accessible label forwarded to the editable region via\n   * `aria-label`.\n   */\n  readonly ariaLabel = input<string>(\"Rich text editor\");\n\n  /**\n   * Placeholder text shown when the editor is empty.\n   */\n  readonly placeholder = input<string>(\"Type here…\");\n\n  /**\n   * Which formatting actions to show in the toolbar.\n   * Defaults to {@link DEFAULT_TOOLBAR_ACTIONS}.\n   */\n  readonly toolbarActions = input<readonly RichTextFormatAction[]>(\n    DEFAULT_TOOLBAR_ACTIONS,\n  );\n\n  /**\n   * Available placeholder definitions.\n   * When non-empty a placeholder picker appears in the toolbar.\n   */\n  readonly placeholders = input<readonly RichTextPlaceholder[]>([]);\n\n  // ── Two-way value ──────────────────────────────────────────\n\n  /**\n   * HTML content of the editor.  Two-way bindable via `[(value)]`.\n   *\n   * Placeholder chips are serialised as `{{key}}` tokens in the\n   * emitted string.\n   */\n  readonly value = model<string>(\"\");\n\n  // ── Outputs ────────────────────────────────────────────────\n\n  /** Fired when a placeholder chip is inserted. */\n  readonly placeholderInserted = output<RichTextPlaceholder>();\n\n  // ── Internal state ─────────────────────────────────────────\n\n  /** Whether the placeholder picker dropdown is open. */\n  protected readonly isPlaceholderPickerOpen = signal(false);\n\n  /** Whether the editor area is currently focused. */\n  protected readonly isFocused = signal(false);\n\n  /** Resolved toolbar button metadata from the actions list. */\n  protected readonly toolbarButtons = computed<ToolbarButtonMeta[]>(() =>\n    this.toolbarActions()\n      .map((a) => TOOLBAR_BUTTON_REGISTRY[a])\n      .filter(Boolean),\n  );\n\n  /**\n   * Grouped toolbar buttons for rendering separators between\n   * groups.\n   *\n   * @internal\n   */\n  protected readonly groupedToolbarButtons = computed(() => {\n    const buttons = this.toolbarButtons();\n    const groups: { group: string; buttons: ToolbarButtonMeta[] }[] = [];\n    let currentGroup = \"\";\n    for (const btn of buttons) {\n      const g = btn.group ?? \"\";\n      if (g !== currentGroup) {\n        currentGroup = g;\n        groups.push({ group: g, buttons: [] });\n      }\n      groups[groups.length - 1].buttons.push(btn);\n    }\n    return groups;\n  });\n\n  /**\n   * Placeholder categories for the picker dropdown.\n   *\n   * @internal\n   */\n  protected readonly placeholdersByCategory = computed(() => {\n    const ph = this.placeholders();\n    if (!ph.length) return [];\n    const catMap = new Map<string, RichTextPlaceholder[]>();\n    for (const p of ph) {\n      const cat = p.category ?? \"\";\n      if (!catMap.has(cat)) catMap.set(cat, []);\n      catMap.get(cat)!.push(p);\n    }\n    return Array.from(catMap.entries()).map(([category, items]) => ({\n      category,\n      items,\n    }));\n  });\n\n  /** Tracks whether init has happened to avoid premature reads. */\n  private initialised = false;\n\n  // ── Lifecycle ──────────────────────────────────────────────\n\n  ngAfterViewInit(): void {\n    this.renderHtmlToEditor(this.value());\n    this.initialised = true;\n  }\n\n  // ── Formatting commands ────────────────────────────────────\n\n  /**\n   * Executes a formatting action.\n   *\n   * @internal\n   */\n  protected execAction(action: RichTextFormatAction): void {\n    if (this.disabled() || this.readonly()) return;\n    this.restoreFocus();\n\n    switch (action) {\n      case \"bold\":\n        document.execCommand(\"bold\");\n        break;\n      case \"italic\":\n        document.execCommand(\"italic\");\n        break;\n      case \"underline\":\n        document.execCommand(\"underline\");\n        break;\n      case \"strikethrough\":\n        document.execCommand(\"strikeThrough\");\n        break;\n      case \"heading1\":\n        document.execCommand(\"formatBlock\", false, \"h1\");\n        break;\n      case \"heading2\":\n        document.execCommand(\"formatBlock\", false, \"h2\");\n        break;\n      case \"heading3\":\n        document.execCommand(\"formatBlock\", false, \"h3\");\n        break;\n      case \"unorderedList\":\n        document.execCommand(\"insertUnorderedList\");\n        break;\n      case \"orderedList\":\n        document.execCommand(\"insertOrderedList\");\n        break;\n      case \"alignLeft\":\n        document.execCommand(\"justifyLeft\");\n        break;\n      case \"alignCenter\":\n        document.execCommand(\"justifyCenter\");\n        break;\n      case \"alignRight\":\n        document.execCommand(\"justifyRight\");\n        break;\n      case \"removeFormat\":\n        document.execCommand(\"removeFormat\");\n        break;\n    }\n\n    this.syncValueFromEditor();\n  }\n\n  // ── Placeholder insertion ──────────────────────────────────\n\n  /**\n   * Inserts a placeholder chip at the current caret position.\n   *\n   * @internal\n   */\n  protected insertPlaceholder(placeholder: RichTextPlaceholder): void {\n    if (this.disabled() || this.readonly()) return;\n    this.restoreFocus();\n\n    const chip = this.createPlaceholderChip(placeholder);\n    // Insert the chip at the current selection\n    const sel = window.getSelection();\n    if (sel && sel.rangeCount > 0) {\n      const range = sel.getRangeAt(0);\n      range.deleteContents();\n      range.insertNode(chip);\n\n      // Move caret after the chip\n      range.setStartAfter(chip);\n      range.collapse(true);\n      sel.removeAllRanges();\n      sel.addRange(range);\n    } else {\n      // Fallback: append to editor\n      this.editorRef().nativeElement.appendChild(chip);\n    }\n\n    this.isPlaceholderPickerOpen.set(false);\n    this.placeholderInserted.emit(placeholder);\n    this.syncValueFromEditor();\n  }\n\n  /** @internal */\n  protected togglePlaceholderPicker(): void {\n    if (this.disabled() || this.readonly()) return;\n    this.isPlaceholderPickerOpen.update((v) => !v);\n  }\n\n  /** @internal */\n  protected closePlaceholderPicker(): void {\n    this.isPlaceholderPickerOpen.set(false);\n  }\n\n  // ── Editor event handlers ──────────────────────────────────\n\n  /** @internal */\n  protected onEditorInput(): void {\n    this.syncValueFromEditor();\n  }\n\n  /** @internal */\n  protected onEditorFocus(): void {\n    this.isFocused.set(true);\n  }\n\n  /** @internal */\n  protected onEditorBlur(): void {\n    this.isFocused.set(false);\n  }\n\n  /**\n   * Handles paste events by stripping everything except basic\n   * inline formatting to prevent pasting styled content from\n   * external sources.\n   *\n   * @internal\n   */\n  protected onEditorPaste(event: ClipboardEvent): void {\n    event.preventDefault();\n    const html = event.clipboardData?.getData(\"text/html\");\n    const text = event.clipboardData?.getData(\"text/plain\") ?? \"\";\n\n    if (html) {\n      // Strip to basic formatting only\n      const cleaned = this.sanitiseHtml(html);\n      document.execCommand(\"insertHTML\", false, cleaned);\n    } else {\n      document.execCommand(\"insertText\", false, text);\n    }\n\n    this.syncValueFromEditor();\n  }\n\n  /**\n   * Prevents deletion of the placeholder chip's interior —\n   * instead deletes the whole chip.\n   *\n   * @internal\n   */\n  protected onEditorKeydown(event: KeyboardEvent): void {\n    if (event.key === \"Backspace\" || event.key === \"Delete\") {\n      const sel = window.getSelection();\n      if (!sel || sel.rangeCount === 0) return;\n\n      const range = sel.getRangeAt(0);\n      if (!range.collapsed) return;\n\n      const node =\n        event.key === \"Backspace\"\n          ? this.previousNode(range.startContainer, range.startOffset)\n          : this.nextNode(range.startContainer, range.startOffset);\n\n      if (\n        node instanceof HTMLElement &&\n        node.classList.contains(PLACEHOLDER_CLASS)\n      ) {\n        event.preventDefault();\n        node.remove();\n        this.syncValueFromEditor();\n      }\n    }\n  }\n\n  // ── Internal helpers ───────────────────────────────────────\n\n  /**\n   * Reads the editor's inner HTML, serialises placeholder chips\n   * back to `{{key}}` tokens, and pushes the result to\n   * `this.value`.\n   *\n   * @internal\n   */\n  private syncValueFromEditor(): void {\n    const editor = this.editorRef().nativeElement;\n    const html = this.serialiseContent(editor);\n    this.value.set(html);\n  }\n\n  /**\n   * Renders the given HTML string into the editor element,\n   * expanding `{{key}}` tokens into placeholder chips.\n   *\n   * @internal\n   */\n  private renderHtmlToEditor(html: string): void {\n    const editor = this.editorRef().nativeElement;\n    editor.innerHTML = this.deserialiseContent(html);\n  }\n\n  /**\n   * Clones the editor DOM, replaces placeholder chip elements\n   * with their `{{key}}` token, and returns the resulting HTML.\n   */\n  private serialiseContent(editor: HTMLDivElement): string {\n    const clone = editor.cloneNode(true) as HTMLDivElement;\n    const chips = clone.querySelectorAll(`.${PLACEHOLDER_CLASS}`);\n    chips.forEach((chip) => {\n      const key = chip.getAttribute(\"data-placeholder-key\") ?? \"\";\n      const token = document.createTextNode(`{{${key}}}`);\n      chip.replaceWith(token);\n    });\n    return clone.innerHTML;\n  }\n\n  /**\n   * Expands `{{key}}` tokens in the HTML into placeholder chip\n   * markup that the editor can display.\n   */\n  private deserialiseContent(html: string): string {\n    const placeholders = this.placeholders();\n    return html.replace(PLACEHOLDER_TOKEN_RE, (_match, key: string) => {\n      const ph = placeholders.find((p) => p.key === key);\n      const label = ph?.label ?? key;\n      return (\n        `<span class=\"${PLACEHOLDER_CLASS}\" ` +\n        `contenteditable=\"false\" ` +\n        `data-placeholder-key=\"${this.escapeAttr(key)}\">` +\n        `${this.escapeHtml(label)}</span>`\n      );\n    });\n  }\n\n  /**\n   * Creates a placeholder chip DOM element.\n   */\n  private createPlaceholderChip(placeholder: RichTextPlaceholder): HTMLElement {\n    const chip = document.createElement(\"span\");\n    chip.className = PLACEHOLDER_CLASS;\n    chip.contentEditable = \"false\";\n    chip.dataset[\"placeholderKey\"] = placeholder.key;\n    chip.textContent = placeholder.label;\n    return chip;\n  }\n\n  /**\n   * Very basic HTML sanitisation — keeps only inline formatting\n   * tags.  This is intentionally simple; the component is not a\n   * security boundary.\n   */\n  private sanitiseHtml(html: string): string {\n    const temp = document.createElement(\"div\");\n    temp.innerHTML = html;\n\n    // Walk and strip disallowed elements but keep their text\n    const allowed = new Set([\n      \"B\",\n      \"STRONG\",\n      \"I\",\n      \"EM\",\n      \"U\",\n      \"S\",\n      \"STRIKE\",\n      \"BR\",\n      \"P\",\n      \"H1\",\n      \"H2\",\n      \"H3\",\n      \"UL\",\n      \"OL\",\n      \"LI\",\n      \"SPAN\",\n    ]);\n    const walk = (el: Element) => {\n      for (const child of Array.from(el.children)) {\n        if (!allowed.has(child.tagName)) {\n          child.replaceWith(...Array.from(child.childNodes));\n        } else {\n          // Remove all attributes except class on spans\n          for (const attr of Array.from(child.attributes)) {\n            if (attr.name !== \"class\") child.removeAttribute(attr.name);\n          }\n          walk(child);\n        }\n      }\n    };\n    walk(temp);\n    return temp.innerHTML;\n  }\n\n  /** Restores focus to the editor element. */\n  private restoreFocus(): void {\n    const editor = this.editorRef().nativeElement;\n    if (document.activeElement !== editor) {\n      editor.focus();\n    }\n  }\n\n  /**\n   * Returns the DOM node immediately before the given\n   * container/offset position.\n   */\n  private previousNode(container: Node, offset: number): Node | null {\n    if (container.nodeType === Node.TEXT_NODE) {\n      return offset === 0 ? container.previousSibling : null;\n    }\n    return offset > 0 ? container.childNodes[offset - 1] : null;\n  }\n\n  /**\n   * Returns the DOM node immediately after the given\n   * container/offset position.\n   */\n  private nextNode(container: Node, offset: number): Node | null {\n    if (container.nodeType === Node.TEXT_NODE) {\n      return offset === (container as Text).length\n        ? container.nextSibling\n        : null;\n    }\n    return offset < container.childNodes.length\n      ? container.childNodes[offset]\n      : null;\n  }\n\n  /** HTML-escape a string for safe insertion into markup. */\n  private escapeHtml(str: string): string {\n    return str\n      .replace(/&/g, \"&amp;\")\n      .replace(/</g, \"&lt;\")\n      .replace(/>/g, \"&gt;\")\n      .replace(/\"/g, \"&quot;\");\n  }\n\n  /** Escape a string for safe use in an HTML attribute value. */\n  private escapeAttr(str: string): string {\n    return this.escapeHtml(str);\n  }\n}\n",
+            "styleUrl": "./rich-text-editor.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "implements": [
+                "AfterViewInit"
+            ],
+            "templateData": "<!-- ── Toolbar ─────────────────────────────────────────────── -->\n<div class=\"rte-toolbar\" role=\"toolbar\" aria-label=\"Formatting\">\n  @for (group of groupedToolbarButtons(); track group.group) {\n    @if (!$first) {\n      <span class=\"rte-toolbar-separator\" aria-hidden=\"true\"></span>\n    }\n    @for (btn of group.buttons; track btn.action) {\n      <button\n        type=\"button\"\n        class=\"rte-toolbar-btn\"\n        [attr.aria-label]=\"btn.label\"\n        [attr.title]=\"btn.label\"\n        [disabled]=\"disabled() || readonly()\"\n        (mousedown)=\"$event.preventDefault()\"\n        (click)=\"execAction(btn.action)\"\n      >\n        {{ btn.icon }}\n      </button>\n    }\n  }\n\n  <!-- Placeholder picker -->\n  @if (placeholders().length > 0) {\n    <span class=\"rte-toolbar-separator\" aria-hidden=\"true\"></span>\n    <div class=\"rte-placeholder-picker\">\n      <button\n        type=\"button\"\n        class=\"rte-toolbar-btn rte-toolbar-btn--placeholder\"\n        aria-label=\"Insert placeholder\"\n        title=\"Insert placeholder\"\n        [disabled]=\"disabled() || readonly()\"\n        [attr.aria-expanded]=\"isPlaceholderPickerOpen()\"\n        (mousedown)=\"$event.preventDefault()\"\n        (click)=\"togglePlaceholderPicker()\"\n      >\n        {{ '{' }}{{ '{' }}…{{ '}' }}{{ '}' }}\n      </button>\n\n      @if (isPlaceholderPickerOpen()) {\n        <div\n          class=\"rte-placeholder-dropdown\"\n          role=\"listbox\"\n          aria-label=\"Available placeholders\"\n        >\n          @for (group of placeholdersByCategory(); track group.category) {\n            @if (group.category) {\n              <div class=\"rte-placeholder-category\">{{ group.category }}</div>\n            }\n            @for (ph of group.items; track ph.key) {\n              <button\n                type=\"button\"\n                class=\"rte-placeholder-option\"\n                role=\"option\"\n                (mousedown)=\"$event.preventDefault()\"\n                (click)=\"insertPlaceholder(ph)\"\n              >\n                {{ ph.label }}\n              </button>\n            }\n          }\n        </div>\n      }\n    </div>\n  }\n</div>\n\n<!-- ── Editor area ────────────────────────────────────────── -->\n<div class=\"rte-editor-wrapper\" [class.rte-editor-wrapper--focused]=\"isFocused()\">\n  <div\n    #editorEl\n    class=\"rte-editor\"\n    role=\"textbox\"\n    aria-multiline=\"true\"\n    [attr.aria-label]=\"ariaLabel()\"\n    [attr.contenteditable]=\"!disabled() && !readonly()\"\n    [attr.data-placeholder]=\"placeholder()\"\n    (input)=\"onEditorInput()\"\n    (focus)=\"onEditorFocus()\"\n    (blur)=\"onEditorBlur()\"\n    (paste)=\"onEditorPaste($event)\"\n    (keydown)=\"onEditorKeydown($event)\"\n  ></div>\n</div>\n"
+        },
+        {
             "name": "UISelect",
             "id": "component-UISelect-86e19641d28cbc2c60f6794ef64961269b81dd2b9b3f919ceecfc5a3ddafd2d4f7f3048c079ebac2c623943b5433e9f2709cb6e2631a9b92375f934e50b5e46a",
             "file": "packages/ui-kit/src/lib/select/select.component.ts",
@@ -7393,16 +8303,6 @@
                 "name": "Basic",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/map-view/map-view.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{}"
-            },
-            {
-                "name": "Basic",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7410,6 +8310,16 @@
                 "defaultValue": "{\n  render: () => ({\n    template: `<ui-ac-basic-demo />`,\n  }),\n}",
                 "rawdescription": "Basic single-select autocomplete with a fruit list.",
                 "description": "<p>Basic single-select autocomplete with a fruit list.</p>\n"
+            },
+            {
+                "name": "Basic",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/map-view/map-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
             },
             {
                 "name": "BENELUX_HIGHLIGHTED",
@@ -7591,6 +8501,16 @@
                 "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: (args) => ({\n    props: args,\n    template: `\n      <ui-rich-text-editor\n        [disabled]=\"disabled\"\n        [readonly]=\"readonly\"\n        [placeholder]=\"placeholder\"\n        [ariaLabel]=\"ariaLabel\"\n      />\n    `,\n  }),\n  args: {\n    disabled: false,\n    readonly: false,\n    placeholder: \"Type here…\",\n    ariaLabel: \"Rich text editor\",\n  },\n}"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7647,6 +8567,18 @@
                 "name": "Disabled",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `<ui-ac-disabled-demo />`,\n  }),\n}",
+                "rawdescription": "Disabled state — the input cannot be focused or typed into.",
+                "description": "<p>Disabled state — the input cannot be focused or typed into.</p>\n"
+            },
+            {
+                "name": "Disabled",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7659,13 +8591,11 @@
                 "name": "Disabled",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    template: `<ui-ac-disabled-demo />`,\n  }),\n}",
-                "rawdescription": "Disabled state — the input cannot be focused or typed into.",
-                "description": "<p>Disabled state — the input cannot be focused or typed into.</p>\n"
+                "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      value: \"<p>This editor is <b>disabled</b>.</p>\",\n    },\n    template: `\n      <ui-rich-text-editor\n        [(value)]=\"value\"\n        [disabled]=\"true\"\n      />\n    `,\n  }),\n}"
             },
             {
                 "name": "EMPLOYEE_FIELDS",
@@ -7921,6 +8851,16 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta",
+                "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Autocomplete\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        UIAutocomplete,\n        BasicDemo,\n        MultiDemo,\n        TemplateDemo,\n        DisabledDemo,\n      ],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7951,21 +8891,11 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta",
-                "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Autocomplete\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        UIAutocomplete,\n        BasicDemo,\n        MultiDemo,\n        TemplateDemo,\n        DisabledDemo,\n      ],\n    }),\n  ],\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<UiThemeToggleComponent>",
-                "defaultValue": "{\r\n    title: '@Theredhead/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
+                "type": "Meta<UIRichTextEditor>",
+                "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Rich Text Editor\",\n  component: UIRichTextEditor,\n  tags: [\"autodocs\"],\n  argTypes: {\n    disabled: { control: \"boolean\" },\n    readonly: { control: \"boolean\" },\n    placeholder: { control: \"text\" },\n    ariaLabel: { control: \"text\" },\n  },\n}"
             },
             {
                 "name": "meta",
@@ -7981,11 +8911,31 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiThemeToggleComponent>",
+                "defaultValue": "{\r\n    title: '@Theredhead/UI Kit/Theme Toggle',\r\n    component: UiThemeToggleComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        variant: {\r\n            control: 'radio',\r\n            options: ['icon', 'button'],\r\n            description: 'Visual style of the toggle',\r\n        },\r\n        showTooltip: {\r\n            control: 'boolean',\r\n            description: 'Whether to show a tooltip on hover',\r\n        },\r\n        ariaLabel: {\r\n            control: 'text',\r\n            description: 'Accessible label for the button',\r\n        },\r\n    },\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<UiMasterDetailViewComponent>",
                 "defaultValue": "{\r\n    title: '@Theredhead/UI Blocks/Master Detail View',\r\n    component: UiMasterDetailViewComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        items: {\r\n            control: 'object',\r\n            description: 'Array of items to display in the master list',\r\n        },\r\n        selectedItemId: {\r\n            control: 'text',\r\n            description: 'ID of the currently selected item',\r\n        },\r\n        masterTitle: {\r\n            control: 'text',\r\n            description: 'Title displayed above the master list',\r\n        },\r\n        detailPlaceholderText: {\r\n            control: 'text',\r\n            description: 'Text shown when no item is selected',\r\n        },\r\n        detailData: {\r\n            control: 'object',\r\n            description: 'Optional detail data passed to the detail template',\r\n        },\r\n    },\r\n    decorators: [\r\n        (story) => ({\r\n            ...story(),\r\n            styles: [`\r\n        :host {\r\n          display: block;\r\n          height: 400px;\r\n          border: 1px solid var(--mat-sys-outline-variant, #ccc);\r\n          border-radius: 8px;\r\n          overflow: hidden;\r\n        }\r\n      `],\r\n        }),\r\n    ],\r\n}"
+            },
+            {
+                "name": "MinimalToolbar",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      toolbarActions: [\"bold\", \"italic\", \"underline\"],\n    },\n    template: `\n      <ui-rich-text-editor\n        [toolbarActions]=\"toolbarActions\"\n        placeholder=\"Basic formatting only…\"\n      />\n    `,\n  }),\n}"
             },
             {
                 "name": "mockDetailData",
@@ -8042,6 +8992,30 @@
                 "defaultValue": "{ lat: 48.8566, lng: 2.3522 }"
             },
             {
+                "name": "PLACEHOLDER_CLASS",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "string",
+                "defaultValue": "\"rte-placeholder\"",
+                "rawdescription": "The CSS class applied to placeholder chips inside the editable area.",
+                "description": "<p>The CSS class applied to placeholder chips inside the editable area.</p>\n"
+            },
+            {
+                "name": "PLACEHOLDER_TOKEN_RE",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "/\\{\\{(\\w+)\\}\\}/g",
+                "rawdescription": "Regex matching serialised placeholder tokens: `{{key}}`.",
+                "description": "<p>Regex matching serialised placeholder tokens: <code>{{key}}</code>.</p>\n"
+            },
+            {
                 "name": "PolygonRegion",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -8094,6 +9068,16 @@
                 "defaultValue": "{\r\n  args: {\r\n    primary: true,\r\n    label: 'Button',\r\n  },\r\n}"
             },
             {
+                "name": "ReadOnly",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      value:\n        \"<p>This editor is <i>read-only</i>. You can see the content but cannot edit it.</p>\",\n    },\n    template: `\n      <ui-rich-text-editor\n        [(value)]=\"value\"\n        [readonly]=\"true\"\n      />\n    `,\n  }),\n}"
+            },
+            {
                 "name": "ROME",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -8142,6 +9126,16 @@
                 "deprecationMessage": "",
                 "type": "MasterItem[]",
                 "defaultValue": "[\r\n    { id: 1, label: 'Document A', description: 'First document description', status: 'active' },\r\n    { id: 2, label: 'Document B', description: 'Second document with more details', status: 'pending' },\r\n    { id: 3, label: 'Document C', description: 'Third document info', status: 'completed' },\r\n    { id: 4, label: 'Document D', description: 'Fourth item in the list', status: 'active' },\r\n    { id: 5, label: 'Document E', description: 'Fifth and final document', status: 'archived' },\r\n]"
+            },
+            {
+                "name": "samplePlaceholders",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "RichTextPlaceholder[]",
+                "defaultValue": "[\n  { key: \"firstName\", label: \"First Name\", category: \"Contact\" },\n  { key: \"lastName\", label: \"Last Name\", category: \"Contact\" },\n  { key: \"email\", label: \"Email Address\", category: \"Contact\" },\n  { key: \"company\", label: \"Company Name\", category: \"Account\" },\n  { key: \"accountId\", label: \"Account ID\", category: \"Account\" },\n  { key: \"todayDate\", label: \"Today's Date\", category: \"System\" },\n]"
             },
             {
                 "name": "Secondary",
@@ -8238,6 +9232,16 @@
                 "description": "<p>Filter and actions templates for list management.</p>\n"
             },
             {
+                "name": "WithInitialContent",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      placeholders: samplePlaceholders,\n      value:\n        \"<p>Dear {{firstName}},</p><p>Thank you for contacting <b>{{company}}</b>. We will get back to you shortly.</p><p>Best regards</p>\",\n    },\n    template: `\n      <ui-rich-text-editor\n        [(value)]=\"value\"\n        [placeholders]=\"placeholders\"\n      />\n    `,\n  }),\n}"
+            },
+            {
                 "name": "WithJunction",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -8268,6 +9272,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\r\n  decorators: [\r\n    moduleMetadata({\r\n      imports: [\r\n        UITableView,\r\n        UINumberColumn,\r\n        UITextColumn,\r\n        UIBadgeColumn,\r\n        UIDensityDirective,\r\n        UiThemeToggleComponent,\r\n      ],\r\n    }),\r\n  ],\r\n  render: () => ({\r\n    props: {\r\n      adapter: new DatasourceAdapter(\r\n        new JsonPlaceholderPostsDatasource(25),\r\n        25,\r\n      ),\r\n    },\r\n    template: `\r\n            <div style=\"display:flex;justify-content:flex-end;margin:0 0 0.75rem;\">\r\n                <ui-theme-toggle variant=\"button\" [showTooltip]=\"true\" ariaLabel=\"Toggle table theme\" />\r\n            </div>\r\n            <ui-table-view\r\n                uiDensity=\"comfortable\"\r\n                caption=\"Without Built-in Paginator\"\r\n                tableId=\"story-no-paginator\"\r\n                [showRowIndexIndicator]=\"true\"\r\n                [showBuiltInPaginator]=\"false\"\r\n                [datasource]=\"adapter\"\r\n            >\r\n                <ui-number-column\r\n                    key=\"id\"\r\n                    headerText=\"ID\"\r\n                    [sortable]=\"true\"\r\n                    [format]=\"{ maximumFractionDigits: 0 }\"\r\n                />\r\n                <ui-number-column\r\n                    key=\"userId\"\r\n                    headerText=\"User ID\"\r\n                    [sortable]=\"true\"\r\n                    [format]=\"{ maximumFractionDigits: 0 }\"\r\n                />\r\n                <ui-text-column\r\n                    key=\"title\"\r\n                    headerText=\"Title\"\r\n                    [truncate]=\"true\"\r\n                    [sortable]=\"true\"\r\n                />\r\n                <ui-badge-column\r\n                    key=\"userId\"\r\n                    headerText=\"Owner\"\r\n                    variant=\"neutral\"\r\n                />\r\n            </ui-table-view>\r\n        `,\r\n  }),\r\n}"
+            },
+            {
+                "name": "WithPlaceholders",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: (args) => ({\n    props: { ...args, placeholders: samplePlaceholders },\n    template: `\n      <ui-rich-text-editor\n        [placeholders]=\"placeholders\"\n        [placeholder]=\"placeholder\"\n      />\n    `,\n  }),\n  args: {\n    placeholder: \"Compose your email template…\",\n  },\n}"
             },
             {
                 "name": "WithSelection",
@@ -8366,6 +9380,17 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
+                "rawtype": "StoryObj",
+                "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 177
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
                 "rawtype": "StoryObj<UIButton>",
                 "file": "packages/ui-kit/src/lib/button/button.stories.ts",
                 "deprecated": false,
@@ -8399,19 +9424,8 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj",
-                "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "kind": 177
-            },
-            {
-                "name": "Story",
-                "ctype": "miscellaneous",
-                "subtype": "typealias",
-                "rawtype": "StoryObj<UiThemeToggleComponent>",
-                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                "rawtype": "StoryObj<UIRichTextEditor>",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -8423,6 +9437,17 @@
                 "subtype": "typealias",
                 "rawtype": "StoryObj<object>",
                 "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 177
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<UiThemeToggleComponent>",
+                "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -9140,6 +10165,88 @@
                     "description": "<p>With junction toggle (AND / OR).</p>\n"
                 }
             ],
+            "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts": [
+                {
+                    "name": "Default",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: (args) => ({\n    props: args,\n    template: `\n      <ui-rich-text-editor\n        [disabled]=\"disabled\"\n        [readonly]=\"readonly\"\n        [placeholder]=\"placeholder\"\n        [ariaLabel]=\"ariaLabel\"\n      />\n    `,\n  }),\n  args: {\n    disabled: false,\n    readonly: false,\n    placeholder: \"Type here…\",\n    ariaLabel: \"Rich text editor\",\n  },\n}"
+                },
+                {
+                    "name": "Disabled",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      value: \"<p>This editor is <b>disabled</b>.</p>\",\n    },\n    template: `\n      <ui-rich-text-editor\n        [(value)]=\"value\"\n        [disabled]=\"true\"\n      />\n    `,\n  }),\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<UIRichTextEditor>",
+                    "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Rich Text Editor\",\n  component: UIRichTextEditor,\n  tags: [\"autodocs\"],\n  argTypes: {\n    disabled: { control: \"boolean\" },\n    readonly: { control: \"boolean\" },\n    placeholder: { control: \"text\" },\n    ariaLabel: { control: \"text\" },\n  },\n}"
+                },
+                {
+                    "name": "MinimalToolbar",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      toolbarActions: [\"bold\", \"italic\", \"underline\"],\n    },\n    template: `\n      <ui-rich-text-editor\n        [toolbarActions]=\"toolbarActions\"\n        placeholder=\"Basic formatting only…\"\n      />\n    `,\n  }),\n}"
+                },
+                {
+                    "name": "ReadOnly",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      value:\n        \"<p>This editor is <i>read-only</i>. You can see the content but cannot edit it.</p>\",\n    },\n    template: `\n      <ui-rich-text-editor\n        [(value)]=\"value\"\n        [readonly]=\"true\"\n      />\n    `,\n  }),\n}"
+                },
+                {
+                    "name": "samplePlaceholders",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "RichTextPlaceholder[]",
+                    "defaultValue": "[\n  { key: \"firstName\", label: \"First Name\", category: \"Contact\" },\n  { key: \"lastName\", label: \"Last Name\", category: \"Contact\" },\n  { key: \"email\", label: \"Email Address\", category: \"Contact\" },\n  { key: \"company\", label: \"Company Name\", category: \"Account\" },\n  { key: \"accountId\", label: \"Account ID\", category: \"Account\" },\n  { key: \"todayDate\", label: \"Today's Date\", category: \"System\" },\n]"
+                },
+                {
+                    "name": "WithInitialContent",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: (args) => ({\n    props: {\n      ...args,\n      placeholders: samplePlaceholders,\n      value:\n        \"<p>Dear {{firstName}},</p><p>Thank you for contacting <b>{{company}}</b>. We will get back to you shortly.</p><p>Best regards</p>\",\n    },\n    template: `\n      <ui-rich-text-editor\n        [(value)]=\"value\"\n        [placeholders]=\"placeholders\"\n      />\n    `,\n  }),\n}"
+                },
+                {
+                    "name": "WithPlaceholders",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: (args) => ({\n    props: { ...args, placeholders: samplePlaceholders },\n    template: `\n      <ui-rich-text-editor\n        [placeholders]=\"placeholders\"\n        [placeholder]=\"placeholder\"\n      />\n    `,\n  }),\n  args: {\n    placeholder: \"Compose your email template…\",\n  },\n}"
+                }
+            ],
             "packages/ui-theme/src/lib/tokens/theme.tokens.ts": [
                 {
                     "name": "DEFAULT_THEME_CONFIG",
@@ -9416,6 +10523,32 @@
                     "defaultValue": "{\r\n  title: 'Example/Page',\r\n  component: PageComponent,\r\n  parameters: {\r\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\r\n    layout: 'fullscreen',\r\n  },\r\n}"
                 }
             ],
+            "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts": [
+                {
+                    "name": "PLACEHOLDER_CLASS",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "defaultValue": "\"rte-placeholder\"",
+                    "rawdescription": "The CSS class applied to placeholder chips inside the editable area.",
+                    "description": "<p>The CSS class applied to placeholder chips inside the editable area.</p>\n"
+                },
+                {
+                    "name": "PLACEHOLDER_TOKEN_RE",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "/\\{\\{(\\w+)\\}\\}/g",
+                    "rawdescription": "Regex matching serialised placeholder tokens: `{{key}}`.",
+                    "description": "<p>Regex matching serialised placeholder tokens: <code>{{key}}</code>.</p>\n"
+                }
+            ],
             ".storybook/preview.ts": [
                 {
                     "name": "preview",
@@ -9508,6 +10641,19 @@
                     "kind": 177
                 }
             ],
+            "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj",
+                    "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 177
+                }
+            ],
             "packages/ui-kit/src/lib/button/button.stories.ts": [
                 {
                     "name": "Story",
@@ -9547,26 +10693,13 @@
                     "kind": 177
                 }
             ],
-            "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts": [
+            "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "StoryObj",
-                    "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 177
-                }
-            ],
-            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<UiThemeToggleComponent>",
-                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+                    "rawtype": "StoryObj<UIRichTextEditor>",
+                    "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -9580,6 +10713,19 @@
                     "subtype": "typealias",
                     "rawtype": "StoryObj<object>",
                     "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 177
+                }
+            ],
+            "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiThemeToggleComponent>",
+                    "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -9629,7 +10775,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 29,
+        "count": 28,
         "status": "medium",
         "files": [
             {
@@ -10505,6 +11651,115 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "WithMarkers",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UIRichTextEditor",
+                "coveragePercent": 78,
+                "coverageCount": "30/38",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PLACEHOLDER_CLASS",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PLACEHOLDER_TOKEN_RE",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Default",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Disabled",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "MinimalToolbar",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ReadOnly",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "samplePlaceholders",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithInitialContent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithPlaceholders",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

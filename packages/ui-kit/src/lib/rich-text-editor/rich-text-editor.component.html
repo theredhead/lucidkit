@@ -1,0 +1,83 @@
+<!-- ── Toolbar ─────────────────────────────────────────────── -->
+<div class="rte-toolbar" role="toolbar" aria-label="Formatting">
+  @for (group of groupedToolbarButtons(); track group.group) {
+    @if (!$first) {
+      <span class="rte-toolbar-separator" aria-hidden="true"></span>
+    }
+    @for (btn of group.buttons; track btn.action) {
+      <button
+        type="button"
+        class="rte-toolbar-btn"
+        [attr.aria-label]="btn.label"
+        [attr.title]="btn.label"
+        [disabled]="disabled() || readonly()"
+        (mousedown)="$event.preventDefault()"
+        (click)="execAction(btn.action)"
+      >
+        {{ btn.icon }}
+      </button>
+    }
+  }
+
+  <!-- Placeholder picker -->
+  @if (placeholders().length > 0) {
+    <span class="rte-toolbar-separator" aria-hidden="true"></span>
+    <div class="rte-placeholder-picker">
+      <button
+        type="button"
+        class="rte-toolbar-btn rte-toolbar-btn--placeholder"
+        aria-label="Insert placeholder"
+        title="Insert placeholder"
+        [disabled]="disabled() || readonly()"
+        [attr.aria-expanded]="isPlaceholderPickerOpen()"
+        (mousedown)="$event.preventDefault()"
+        (click)="togglePlaceholderPicker()"
+      >
+        {{ '{' }}{{ '{' }}…{{ '}' }}{{ '}' }}
+      </button>
+
+      @if (isPlaceholderPickerOpen()) {
+        <div
+          class="rte-placeholder-dropdown"
+          role="listbox"
+          aria-label="Available placeholders"
+        >
+          @for (group of placeholdersByCategory(); track group.category) {
+            @if (group.category) {
+              <div class="rte-placeholder-category">{{ group.category }}</div>
+            }
+            @for (ph of group.items; track ph.key) {
+              <button
+                type="button"
+                class="rte-placeholder-option"
+                role="option"
+                (mousedown)="$event.preventDefault()"
+                (click)="insertPlaceholder(ph)"
+              >
+                {{ ph.label }}
+              </button>
+            }
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<!-- ── Editor area ────────────────────────────────────────── -->
+<div class="rte-editor-wrapper" [class.rte-editor-wrapper--focused]="isFocused()">
+  <div
+    #editorEl
+    class="rte-editor"
+    role="textbox"
+    aria-multiline="true"
+    [attr.aria-label]="ariaLabel()"
+    [attr.contenteditable]="!disabled() && !readonly()"
+    [attr.data-placeholder]="placeholder()"
+    (input)="onEditorInput()"
+    (focus)="onEditorFocus()"
+    (blur)="onEditorBlur()"
+    (paste)="onEditorPaste($event)"
+    (keydown)="onEditorKeydown($event)"
+  ></div>
+</div>
