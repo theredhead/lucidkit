@@ -10,7 +10,7 @@ import {
 
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { MIN_COLUMN_WIDTH } from "../table-view.constants";
-import type { SelectionMode } from "../table-view-selection.model";
+import type { SelectionMode } from "../../core/selection-model";
 
 export interface SortState {
   key: string;

@@ -23,7 +23,7 @@ import {
   JsonPlaceholderPostsDatasource,
 } from "./datasources/jsonplaceholder-datasource";
 import { UITableView } from "./table-view.component";
-import { TableSelectionModel } from "./table-view-selection.model";
+import { SelectionModel } from "../core/selection-model";
 
 @Component({
   selector: "ui-table-view-story-demo",
@@ -260,10 +260,7 @@ class UITableViewSingleSelectDemo {
   readonly adapter = new DatasourceAdapter(
     new JsonPlaceholderPostsDatasource(25),
   );
-  readonly selectionModel = new TableSelectionModel<any>(
-    "single",
-    (row) => row.id,
-  );
+  readonly selectionModel = new SelectionModel<any>("single", (row) => row.id);
   readonly selectedJson = signal("(none)");
 
   onSelectionChange(rows: readonly unknown[]): void {
@@ -336,7 +333,7 @@ class UITableViewMultiSelectDemo {
   readonly adapter = new DatasourceAdapter(
     new JsonPlaceholderPostsDatasource(25),
   );
-  readonly selectionModel = new TableSelectionModel<any>(
+  readonly selectionModel = new SelectionModel<any>(
     "multiple",
     (row) => row.id,
   );

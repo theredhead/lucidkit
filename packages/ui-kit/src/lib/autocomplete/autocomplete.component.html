@@ -1,0 +1,64 @@
+<!-- Chips (multiple mode) -->
+@if (multiple() && value().length > 0) {
+  <div class="ac-chips" role="list" aria-label="Selected items">
+    @for (chip of value(); track $index) {
+      <span class="ac-chip" role="listitem">
+        <span class="ac-chip-label">{{ itemToString(chip) }}</span>
+        <button
+          class="ac-chip-remove"
+          type="button"
+          [attr.aria-label]="'Remove ' + itemToString(chip)"
+          (click)="removeItem(chip)"
+        >
+          ✕
+        </button>
+      </span>
+    }
+  </div>
+}
+
+<!-- Text input -->
+<input
+  class="ac-input"
+  type="text"
+  role="combobox"
+  autocomplete="off"
+  [value]="query()"
+  [disabled]="disabled()"
+  [placeholder]="placeholder()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="listboxId"
+  [attr.aria-activedescendant]="
+    activeIndex() >= 0 ? listboxId + '-' + activeIndex() : null
+  "
+  (input)="onInput($event)"
+  (focus)="openPopup()"
+  (keydown)="onKeydown($event)"
+/>
+
+<!-- Suggestion popup -->
+@if (isOpen() && suggestions().length > 0) {
+  <ul class="ac-popup" role="listbox" [id]="listboxId">
+    @for (item of suggestions(); track $index) {
+      <li
+        class="ac-option"
+        role="option"
+        [id]="listboxId + '-' + $index"
+        [class.ac-option--active]="$index === activeIndex()"
+        [attr.aria-selected]="$index === activeIndex()"
+        (pointerdown)="$event.preventDefault()"
+        (click)="pickItem(item)"
+      >
+        @if (itemTemplate()) {
+          <ng-container
+            [ngTemplateOutlet]="itemTemplate()!"
+            [ngTemplateOutletContext]="{ $implicit: item }"
+          />
+        } @else {
+          {{ itemToString(item) }}
+        }
+      </li>
+    }
+  </ul>
+}
