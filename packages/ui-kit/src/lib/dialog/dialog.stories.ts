@@ -89,38 +89,25 @@ class PersistentDemo {
   styles: [
     `
       :host {
-        display: block;
-        padding: 1.5rem;
-        min-width: 22rem;
-      }
-      .modal-title {
-        margin: 0 0 0.5rem;
-        font-size: 1.125rem;
-        font-weight: 600;
-      }
-      .modal-body {
-        margin: 0 0 1.5rem;
-        line-height: 1.5;
-        opacity: 0.75;
-      }
-      .modal-actions {
         display: flex;
-        gap: 0.5rem;
-        justify-content: flex-end;
+        flex-direction: column;
+        min-width: 22rem;
       }
     `,
   ],
   template: `
-    <h2 class="modal-title">{{ title() }}</h2>
-    <p class="modal-body">{{ message() }}</p>
-    <div class="modal-actions">
+    <header class="dlg-header">{{ title() }}</header>
+    <div class="dlg-body">
+      <p style="margin: 0; opacity: 0.75; line-height: 1.5;">{{ message() }}</p>
+    </div>
+    <footer class="dlg-footer">
       <ui-button variant="ghost" (click)="modalRef.close(false)"
         >Cancel</ui-button
       >
       <ui-button variant="filled" (click)="modalRef.close(true)"
         >Confirm</ui-button
       >
-    </div>
+    </footer>
   `,
 })
 class StoryConfirmDialog implements UIModalContent<boolean> {
@@ -138,40 +125,27 @@ class StoryConfirmDialog implements UIModalContent<boolean> {
   styles: [
     `
       :host {
-        display: block;
-        padding: 1.5rem;
-        min-width: 24rem;
-      }
-      .modal-title {
-        margin: 0 0 1rem;
-        font-size: 1.125rem;
-        font-weight: 600;
-      }
-      .modal-field {
-        margin: 1rem 0 1.5rem;
-      }
-      .modal-actions {
         display: flex;
-        gap: 0.5rem;
-        justify-content: flex-end;
+        flex-direction: column;
+        min-width: 24rem;
       }
     `,
   ],
   template: `
-    <h2 class="modal-title">{{ title() }}</h2>
-    <div class="modal-field">
+    <header class="dlg-header">{{ title() }}</header>
+    <div class="dlg-body">
       <ui-input
         [placeholder]="fieldPlaceholder()"
         [(value)]="fieldValue"
         ariaLabel="Name input"
       />
     </div>
-    <div class="modal-actions">
+    <footer class="dlg-footer">
       <ui-button variant="ghost" (click)="modalRef.close()">Cancel</ui-button>
       <ui-button variant="filled" (click)="modalRef.close(fieldValue())"
         >Save</ui-button
       >
-    </div>
+    </footer>
   `,
 })
 class StoryFormDialog implements UIModalContent<string> {
@@ -190,29 +164,19 @@ class StoryFormDialog implements UIModalContent<string> {
   styles: [
     `
       :host {
-        display: block;
-        padding: 1.5rem;
-        min-width: 22rem;
-      }
-      .modal-title {
-        margin: 0 0 1rem;
-        font-size: 1.125rem;
-        font-weight: 600;
-      }
-      .modal-actions {
         display: flex;
-        gap: 0.5rem;
-        justify-content: flex-end;
+        flex-direction: column;
+        min-width: 22rem;
       }
     `,
   ],
   template: `
-    <h2 class="modal-title">Choose an option</h2>
-    <div class="modal-actions">
+    <header class="dlg-header">Choose an option</header>
+    <footer class="dlg-footer">
       <ui-button variant="ghost" (click)="pick('A')">Option A</ui-button>
       <ui-button variant="outlined" (click)="pick('B')">Option B</ui-button>
       <ui-button variant="filled" (click)="pick('C')">Option C</ui-button>
-    </div>
+    </footer>
   `,
 })
 class StoryOutputDialog implements UIModalContent {
