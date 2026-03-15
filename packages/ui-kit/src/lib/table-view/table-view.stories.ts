@@ -14,6 +14,7 @@ import { UiThemeToggleComponent } from "../theme-toggle/theme-toggle.component";
 import { UIDensity, UIDensityDirective } from "../ui-density";
 import { UIBadgeColumn } from "./columns/badge-column/badge-column.component";
 import { UINumberColumn } from "./columns/number-column/number-column.component";
+import { UITemplateColumn } from "./columns/template-column/template-column.component";
 import { UITextColumn } from "./columns/text-column/text-column.component";
 import { DatasourceAdapter } from "./datasources/datasource-adapter";
 import { FilterableArrayDatasource } from "./datasources/filterable-array-datasource";
@@ -812,6 +813,118 @@ export const FilteredTable: Story = {
   ],
   render: () => ({
     template: "<ui-table-view-filtered-demo />",
+    props: {},
+  }),
+};
+
+// ---------------------------------------------------------------------------
+// Template column demo
+// ---------------------------------------------------------------------------
+
+@Component({
+  selector: "ui-table-view-template-col-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    UITableView,
+    UINumberColumn,
+    UITextColumn,
+    UITemplateColumn,
+    UIDensityDirective,
+    UiThemeToggleComponent,
+  ],
+  template: `
+    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
+      <ui-theme-toggle
+        variant="button"
+        [showTooltip]="true"
+        ariaLabel="Toggle table theme"
+      />
+    </div>
+    <ui-table-view
+      uiDensity="comfortable"
+      caption="Template Column Demo"
+      tableId="story-template-col"
+      [showRowIndexIndicator]="true"
+      [showBuiltInPaginator]="true"
+      [datasource]="adapter"
+    >
+      <ui-number-column
+        key="id"
+        headerText="ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-text-column
+        key="title"
+        headerText="Title"
+        [truncate]="true"
+        [sortable]="true"
+      />
+      <ui-template-column key="userId" headerText="Author">
+        <ng-template let-row>
+          <span style="display:inline-flex;align-items:center;gap:6px;">
+            <span
+              style="display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--tv-accent,#3b82f6);color:#fff;font-size:0.75rem;line-height:24px;text-align:center;font-weight:600;"
+              >{{ row.userId }}</span
+            >
+            <span>User {{ row.userId }}</span>
+          </span>
+        </ng-template>
+      </ui-template-column>
+      <ui-template-column key="actions" headerText="Actions">
+        <ng-template let-row>
+          <button
+            style="padding:2px 10px;font-size:0.8rem;border:1px solid var(--tv-border,#d7dce2);border-radius:4px;background:var(--tv-surface-2,#f6f7f8);color:var(--tv-text,#1d232b);cursor:pointer;"
+            (click)="onAction('view', row)"
+          >
+            View
+          </button>
+          <button
+            style="padding:2px 10px;font-size:0.8rem;margin-left:4px;border:1px solid var(--tv-border,#d7dce2);border-radius:4px;background:var(--tv-accent,#3b82f6);color:#fff;cursor:pointer;"
+            (click)="onAction('edit', row)"
+          >
+            Edit
+          </button>
+        </ng-template>
+      </ui-template-column>
+    </ui-table-view>
+    <pre class="tpl-output">{{ lastAction() }}</pre>
+  `,
+  styles: [
+    `
+      .tpl-output {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        background: var(--tv-surface-2, #f6f7f8);
+        border: 1px solid var(--tv-border, #d7dce2);
+        border-radius: 4px;
+      }
+    `,
+  ],
+})
+class UITableViewTemplateColDemo {
+  readonly adapter = new DatasourceAdapter(
+    new JsonPlaceholderPostsDatasource(25),
+  );
+  readonly lastAction = signal("Click a button to see the action here…");
+
+  onAction(action: string, row: any): void {
+    this.lastAction.set(
+      `${action.toUpperCase()}: ${JSON.stringify({ id: row.id, title: row.title }, null, 2)}`,
+    );
+  }
+}
+
+export const TemplateColumn: Story = {
+  decorators: [
+    moduleMetadata({
+      imports: [UITableViewTemplateColDemo],
+    }),
+  ],
+  render: () => ({
+    template: "<ui-table-view-template-col-demo />",
     props: {},
   }),
 };
