@@ -483,6 +483,20 @@ export const RichTooltip: Story = {
   render: () => ({
     template: `<ui-popover-tooltip-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `private readonly popover = inject(PopoverService);
+
+this.popover.openPopover({
+  component: TooltipContent,
+  anchor: buttonElement,
+  ariaLabel: 'Keyboard shortcut tooltip',
+});`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /**
@@ -493,6 +507,27 @@ export const ContextMenu: Story = {
   render: () => ({
     template: `<ui-popover-context-menu-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `this.popover
+  .openPopover<ContextMenu, string>({
+    component: ContextMenu,
+    anchor: buttonElement,
+    verticalAxisAlignment: 'bottom',
+    horizontalAxisAlignment: 'center',
+    ariaLabel: 'Context menu',
+    outputs: {
+      chosen: (action: string) => console.log(action),
+    },
+  })
+  .closed.subscribe((action) => {
+    if (action) { /* handle */ }
+  });`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /** Dropdown action menu anchored to a ghost button. */
@@ -500,6 +535,24 @@ export const ActionMenu: Story = {
   render: () => ({
     template: `<ui-popover-action-menu-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `this.popover
+  .openPopover<ActionMenu, string>({
+    component: ActionMenu,
+    anchor: buttonElement,
+    verticalAxisAlignment: 'bottom',
+    horizontalAxisAlignment: 'center',
+    ariaLabel: 'Actions menu',
+  })
+  .closed.subscribe((action) => {
+    if (action) { /* handle */ }
+  });`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /**
@@ -510,6 +563,23 @@ export const Placement: Story = {
   render: () => ({
     template: `<ui-popover-placement-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `this.popover.openPopover({
+  component: TooltipContent,
+  anchor: buttonElement,
+  verticalAxisAlignment: 'top',    // 'top' | 'bottom' | 'center' | 'auto'
+  horizontalAxisAlignment: 'center', // 'start' | 'end' | 'center' | 'auto'
+  inputs: {
+    title: 'Alignment',
+    body: 'vertical: top, horizontal: center',
+  },
+});`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /**
@@ -520,4 +590,24 @@ export const ManualDismiss: Story = {
   render: () => ({
     template: `<ui-popover-manual-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `const ref = this.popover.openPopover({
+  component: TooltipContent,
+  anchor: buttonElement,
+  closeOnOutsideClick: false,
+  inputs: {
+    title: 'Persistent Popover',
+    body: 'Will not close on outside click.',
+  },
+  ariaLabel: 'Persistent popover',
+});
+
+// Dismiss programmatically:
+ref.close();`,
+        language: "typescript",
+      },
+    },
+  },
 };

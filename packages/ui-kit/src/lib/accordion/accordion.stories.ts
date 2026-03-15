@@ -95,6 +95,27 @@ export const SingleMode: Story = {
   render: () => ({
     template: `<ui-accordion-single-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-accordion mode="single">
+  <ui-accordion-item label="Getting Started">
+    Follow the installation guide to add the library to your project.
+  </ui-accordion-item>
+  <ui-accordion-item label="Configuration">
+    Configure your theme by importing the SCSS mixin.
+  </ui-accordion-item>
+  <ui-accordion-item label="Components">
+    Browse the full list of available components.
+  </ui-accordion-item>
+  <ui-accordion-item label="Disabled Section" [disabled]="true">
+    This section is not available yet.
+  </ui-accordion-item>
+</ui-accordion>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** Single mode with requireOpen=false — all panels can be collapsed. */
@@ -102,6 +123,18 @@ export const SingleCollapsible: Story = {
   render: () => ({
     template: `<ui-accordion-collapsible-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-accordion mode="single" [requireOpen]="false">
+  <ui-accordion-item label="Section 1">Content here.</ui-accordion-item>
+  <ui-accordion-item label="Section 2">More content.</ui-accordion-item>
+  <ui-accordion-item label="Section 3">Even more content.</ui-accordion-item>
+</ui-accordion>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** Multi-expand mode — any number of panels can be open. */
@@ -109,4 +142,22 @@ export const MultiMode: Story = {
   render: () => ({
     template: `<ui-accordion-multi-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-accordion mode="multi">
+  <ui-accordion-item label="Personal Information" [expanded]="true">
+    Name, email, phone number, and other contact details.
+  </ui-accordion-item>
+  <ui-accordion-item label="Billing Address">
+    Street address, city, state, zip code, and country.
+  </ui-accordion-item>
+  <ui-accordion-item label="Payment Method">
+    Credit card, debit card, or bank transfer details.
+  </ui-accordion-item>
+</ui-accordion>`,
+        language: "html",
+      },
+    },
+  },
 };

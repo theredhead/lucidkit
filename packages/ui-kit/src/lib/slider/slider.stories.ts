@@ -100,6 +100,22 @@ export const Single: Story = {
   render: () => ({
     template: `<ui-slider-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-slider [(value)]="volume" [showValue]="true" ariaLabel="Volume" />
+
+<ui-slider [(value)]="stepped" [step]="10" [showValue]="true" ariaLabel="Stepped" />
+
+<ui-slider [value]="40" [disabled]="true" [showValue]="true" ariaLabel="Disabled" />
+
+<!-- Component class:
+readonly volume = signal(50);
+readonly stepped = signal(30); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** Dual-thumb range slider. */
@@ -107,4 +123,21 @@ export const Range: Story = {
   render: () => ({
     template: `<ui-slider-range-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-slider
+  mode="range"
+  [(value)]="priceRange"
+  [min]="0" [max]="1000" [step]="10"
+  [showValue]="true"
+  ariaLabel="Price"
+/>
+
+<!-- Component class:
+readonly priceRange = signal<readonly [number, number]>([200, 800]); -->`,
+        language: "html",
+      },
+    },
+  },
 };

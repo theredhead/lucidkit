@@ -46,6 +46,21 @@ export const Default: Story = {
   render: () => ({
     template: `<ui-pagination-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-pagination
+  [totalItems]="250"
+  [pageSize]="10"
+  [(pageIndex)]="currentPage"
+/>
+
+<!-- Component class:
+readonly currentPage = signal(0); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** Small dataset. */

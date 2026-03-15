@@ -72,7 +72,29 @@ export default meta;
 type Story = StoryObj<UIFilterStoryDemo>;
 
 /** Basic AND-only filter builder. */
-export const Default: Story = {};
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-filter
+  [fields]="fields"
+  [(value)]="descriptor"
+/>
+
+// Component class:
+readonly fields: FilterFieldDefinition<Row>[] = [
+  { key: 'name',  label: 'Name',  type: 'string' },
+  { key: 'age',   label: 'Age',   type: 'number' },
+  { key: 'email', label: 'Email', type: 'string' },
+];
+readonly descriptor = signal<FilterDescriptor<Row>>({
+  junction: 'and', rules: [],
+});`,
+        language: "typescript",
+      },
+    },
+  },
+};
 
 /** With junction toggle (AND / OR). */
 export const WithJunction: Story = {

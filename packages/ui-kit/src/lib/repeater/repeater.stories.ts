@@ -320,6 +320,24 @@ export const Grid: Story = {
   render: () => ({
     template: `<ui-repeater-grid-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-repeater [datasource]="ds">
+  <ng-template let-kitten let-i="index">
+    <figure class="card">
+      <img [src]="kitten.url" [alt]="kitten.name" />
+      <figcaption>#{{ i + 1 }} {{ kitten.name }}</figcaption>
+    </figure>
+  </ng-template>
+</ui-repeater>
+
+<!-- Component class:
+readonly ds = new ArrayDatasource(kittens); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -331,6 +349,21 @@ export const FlexRowWrap: Story = {
   render: () => ({
     template: `<ui-repeater-flex-row-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-repeater [datasource]="ds">
+  <ng-template let-kitten let-even="even">
+    <div class="tile" [class.even]="even">
+      <img [src]="kitten.url" [alt]="kitten.name" />
+      <span>{{ kitten.name }}</span>
+    </div>
+  </ng-template>
+</ui-repeater>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -341,6 +374,24 @@ export const FlexColumn: Story = {
   render: () => ({
     template: `<ui-repeater-flex-column-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-repeater [datasource]="ds" [limit]="6">
+  <ng-template let-kitten let-first="first" let-last="last">
+    <div class="row" [class.first]="first" [class.last]="last">
+      <img [src]="kitten.url" [alt]="kitten.name" />
+      <div class="info">
+        <strong>{{ kitten.name }}</strong>
+        <span>{{ kitten.width }}×{{ kitten.height }}</span>
+      </div>
+    </div>
+  </ng-template>
+</ui-repeater>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -351,4 +402,19 @@ export const Masonry: Story = {
   render: () => ({
     template: `<ui-repeater-masonry-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-repeater [datasource]="ds">
+  <ng-template let-kitten let-i="index" let-odd="odd">
+    <div class="brick" [style.height.px]="180 + (i % 3) * 60">
+      <img [src]="kitten.url" [alt]="kitten.name" />
+      <span class="overlay">{{ kitten.name }}</span>
+    </div>
+  </ng-template>
+</ui-repeater>`,
+        language: "html",
+      },
+    },
+  },
 };

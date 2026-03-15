@@ -383,14 +383,14 @@ describe("ModalService", () => {
     expect(dialogs.length).toBe(2);
 
     ref1.close();
-    expect(
-      document.querySelectorAll("dialog.ui-dialog-service").length,
-    ).toBe(1);
+    expect(document.querySelectorAll("dialog.ui-dialog-service").length).toBe(
+      1,
+    );
 
     ref2.close();
-    expect(
-      document.querySelectorAll("dialog.ui-dialog-service").length,
-    ).toBe(0);
+    expect(document.querySelectorAll("dialog.ui-dialog-service").length).toBe(
+      0,
+    );
   });
 
   it("should destroy the component on close", () => {

@@ -257,4 +257,16 @@ export const Gallery: Story = {
   render: () => ({
     template: `<ui-icon-gallery />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<!-- Single icon -->
+<ui-icon [svg]="UIIcons.Lucide.Text.Bold" [size]="24" ariaLabel="Bold" />
+
+<!-- Available categories: Text, Navigation, Media, Development, ... -->
+<!-- Browse all icons in this interactive gallery -->`,
+        language: "html",
+      },
+    },
+  },
 };

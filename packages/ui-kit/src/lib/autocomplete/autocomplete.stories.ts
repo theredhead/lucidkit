@@ -305,6 +305,23 @@ export const Basic: Story = {
   render: () => ({
     template: `<ui-ac-basic-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-autocomplete
+  [datasource]="ds"
+  [(value)]="selected"
+  placeholder="Search fruits…"
+  ariaLabel="Fruit search"
+/>
+
+<!-- Component class:
+readonly ds = new FruitDatasource();
+readonly selected = signal<readonly string[]>([]); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -315,6 +332,20 @@ export const MultipleSelection: Story = {
   render: () => ({
     template: `<ui-ac-multi-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-autocomplete
+  [datasource]="ds"
+  [(value)]="selected"
+  [multiple]="true"
+  placeholder="Pick fruits…"
+  ariaLabel="Multi-fruit search"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -325,6 +356,32 @@ export const CustomTemplate: Story = {
   render: () => ({
     template: `<ui-ac-template-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-autocomplete
+  [datasource]="ds"
+  [(value)]="selected"
+  [multiple]="true"
+  [displayWith]="displayContact"
+  [trackBy]="trackByEmail"
+  placeholder="Search contacts…"
+  ariaLabel="Contact search">
+  <ng-template let-item>
+    <div class="contact-item">
+      <strong>{{ item.name }}</strong>
+      <small>{{ item.email }} · {{ item.department }}</small>
+    </div>
+  </ng-template>
+</ui-autocomplete>
+
+<!-- Component class:
+readonly displayContact = (c: Contact) => c.name;
+readonly trackByEmail = (c: Contact) => c.email; -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** Disabled state — the input cannot be focused or typed into. */
@@ -332,4 +389,17 @@ export const Disabled: Story = {
   render: () => ({
     template: `<ui-ac-disabled-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-autocomplete
+  [datasource]="ds"
+  [disabled]="true"
+  placeholder="Disabled autocomplete"
+  ariaLabel="Disabled"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };

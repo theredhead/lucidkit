@@ -248,24 +248,98 @@ type Story = StoryObj;
 
 export const TwentyFourHour: Story = {
   render: () => ({ template: `<ui-tp-24h-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-time-picker
+  [(value)]="selected"
+  [mode]="24"
+  ariaLabel="24-hour time"
+/>
+
+<!-- readonly selected = signal<string | null>('14:30'); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const TwelveHour: Story = {
   render: () => ({ template: `<ui-tp-12h-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-time-picker
+  [(value)]="selected"
+  [mode]="12"
+  ariaLabel="12-hour time"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const FifteenMinuteStep: Story = {
   render: () => ({ template: `<ui-tp-step-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-time-picker
+  [(value)]="selected"
+  [mode]="24"
+  [minuteStep]="15"
+  ariaLabel="Stepped time"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const MinMaxConstrained: Story = {
   render: () => ({ template: `<ui-tp-minmax-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-time-picker
+  [(value)]="selected"
+  [mode]="24"
+  min="09:00"
+  max="17:00"
+  ariaLabel="Business hours"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const Disabled: Story = {
   render: () => ({ template: `<ui-tp-disabled-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-time-picker [disabled]="true" [mode]="24" ariaLabel="Disabled time" />`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const ReadOnly: Story = {
   render: () => ({ template: `<ui-tp-readonly-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-time-picker
+  [(value)]="selected"
+  [readonly]="true"
+  [mode]="24"
+  ariaLabel="Read-only time"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };

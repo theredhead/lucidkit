@@ -350,32 +350,138 @@ type Story = StoryObj;
 
 export const ISO: Story = {
   render: () => ({ template: `<ui-dp-iso-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [(value)]="selected"
+  format="yyyy-MM-dd"
+  ariaLabel="ISO date"
+/>
+
+<!-- readonly selected = signal<Date | null>(null); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const European: Story = {
   render: () => ({ template: `<ui-dp-european-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [(value)]="selected"
+  format="dd/MM/yyyy"
+  ariaLabel="European date"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const US: Story = {
   render: () => ({ template: `<ui-dp-us-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [(value)]="selected"
+  format="MM/dd/yyyy"
+  ariaLabel="US date"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const German: Story = {
   render: () => ({ template: `<ui-dp-german-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [(value)]="selected"
+  format="dd.MM.yyyy"
+  ariaLabel="German date"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const MinMaxConstrained: Story = {
   render: () => ({ template: `<ui-dp-minmax-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [(value)]="selected"
+  format="yyyy-MM-dd"
+  [min]="minDate"
+  [max]="maxDate"
+  ariaLabel="Constrained date"
+/>
+
+<!-- readonly minDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+     readonly maxDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const SundayStart: Story = {
   render: () => ({ template: `<ui-dp-sunday-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [(value)]="selected"
+  format="MM/dd/yyyy"
+  [firstDayOfWeek]="0"
+  ariaLabel="US date (Sunday start)"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const Disabled: Story = {
   render: () => ({ template: `<ui-dp-disabled-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [disabled]="true"
+  format="yyyy-MM-dd"
+  placeholder="Disabled"
+  ariaLabel="Disabled date"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const ReadOnly: Story = {
   render: () => ({ template: `<ui-dp-readonly-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-picker
+  [(value)]="selected"
+  [readonly]="true"
+  format="yyyy-MM-dd"
+  ariaLabel="Read-only date"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };

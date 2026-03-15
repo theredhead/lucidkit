@@ -12,7 +12,11 @@ const ITEMS: BreadcrumbItem[] = [
 @Component({
   standalone: true,
   imports: [UIBreadcrumb],
-  template: `<ui-breadcrumb [items]="items()" [separator]="separator()" [variant]="variant()" />`,
+  template: `<ui-breadcrumb
+    [items]="items()"
+    [separator]="separator()"
+    [variant]="variant()"
+  />`,
 })
 class TestHost {
   public readonly items = signal<BreadcrumbItem[]>([...ITEMS]);
