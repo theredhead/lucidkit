@@ -35,14 +35,18 @@ export type RichTextFormatAction =
   | "italic"
   | "underline"
   | "strikethrough"
+  | "paragraph"
   | "heading1"
   | "heading2"
   | "heading3"
+  | "blockquote"
+  | "codeBlock"
   | "unorderedList"
   | "orderedList"
   | "alignLeft"
   | "alignCenter"
   | "alignRight"
+  | "link"
   | "removeFormat";
 
 /**
@@ -54,14 +58,18 @@ export const DEFAULT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] = [
   "italic",
   "underline",
   "strikethrough",
+  "paragraph",
   "heading1",
   "heading2",
   "heading3",
+  "blockquote",
+  "codeBlock",
   "unorderedList",
   "orderedList",
   "alignLeft",
   "alignCenter",
   "alignRight",
+  "link",
   "removeFormat",
 ];
 
@@ -76,7 +84,7 @@ export interface ToolbarButtonMeta {
   readonly action: RichTextFormatAction;
   /** Accessible label / tooltip text. */
   readonly label: string;
-  /** Unicode symbol or short text rendered inside the button. */
+  /** SVG inner content rendered inside a `<ui-icon>` component. */
   readonly icon: string;
   /** Optional grouping separator rendered before this button. */
   readonly group?: string;
@@ -88,76 +96,156 @@ export interface ToolbarButtonMeta {
  *
  * @internal
  */
+import { UIIcons } from "../icon/lucide-icons.generated";
+
+/**
+ * Complete registry mapping every {@link RichTextFormatAction} to its
+ * toolbar button metadata.
+ *
+ * Icons are SVG inner-content strings from the Lucide icon set.
+ *
+ * @internal
+ */
 export const TOOLBAR_BUTTON_REGISTRY: Record<
   RichTextFormatAction,
   ToolbarButtonMeta
 > = {
-  bold: { action: "bold", label: "Bold", icon: "B", group: "inline" },
-  italic: { action: "italic", label: "Italic", icon: "I", group: "inline" },
+  bold: {
+    action: "bold",
+    label: "Bold",
+    icon: UIIcons.Lucide.Text.Bold,
+    group: "inline",
+  },
+  italic: {
+    action: "italic",
+    label: "Italic",
+    icon: UIIcons.Lucide.Text.Italic,
+    group: "inline",
+  },
   underline: {
     action: "underline",
     label: "Underline",
-    icon: "U",
+    icon: UIIcons.Lucide.Text.Underline,
     group: "inline",
   },
   strikethrough: {
     action: "strikethrough",
     label: "Strikethrough",
-    icon: "S",
+    icon: UIIcons.Lucide.Text.Strikethrough,
     group: "inline",
+  },
+  paragraph: {
+    action: "paragraph",
+    label: "Normal text",
+    icon: UIIcons.Lucide.Text.Pilcrow,
+    group: "block",
   },
   heading1: {
     action: "heading1",
     label: "Heading 1",
-    icon: "H1",
+    icon: UIIcons.Lucide.Text.Heading1,
     group: "block",
   },
   heading2: {
     action: "heading2",
     label: "Heading 2",
-    icon: "H2",
+    icon: UIIcons.Lucide.Text.Heading2,
     group: "block",
   },
   heading3: {
     action: "heading3",
     label: "Heading 3",
-    icon: "H3",
+    icon: UIIcons.Lucide.Text.Heading3,
+    group: "block",
+  },
+  blockquote: {
+    action: "blockquote",
+    label: "Quote",
+    icon: UIIcons.Lucide.Text.TextQuote,
+    group: "block",
+  },
+  codeBlock: {
+    action: "codeBlock",
+    label: "Code block",
+    icon: UIIcons.Lucide.Text.Code,
     group: "block",
   },
   unorderedList: {
     action: "unorderedList",
     label: "Bullet list",
-    icon: "•≡",
+    icon: UIIcons.Lucide.Text.List,
     group: "list",
   },
   orderedList: {
     action: "orderedList",
     label: "Numbered list",
-    icon: "1.",
+    icon: UIIcons.Lucide.Text.ListOrdered,
     group: "list",
   },
   alignLeft: {
     action: "alignLeft",
     label: "Align left",
-    icon: "≡←",
+    icon: UIIcons.Lucide.Text.TextAlignStart,
     group: "align",
   },
   alignCenter: {
     action: "alignCenter",
-    label: "Align center",
-    icon: "≡↔",
+    label: "Align centre",
+    icon: UIIcons.Lucide.Text.TextAlignCenter,
     group: "align",
   },
   alignRight: {
     action: "alignRight",
     label: "Align right",
-    icon: "≡→",
+    icon: UIIcons.Lucide.Text.TextAlignEnd,
     group: "align",
+  },
+  link: {
+    action: "link",
+    label: "Hyperlink",
+    icon: UIIcons.Lucide.Text.Link,
+    group: "link-action",
   },
   removeFormat: {
     action: "removeFormat",
     label: "Clear formatting",
-    icon: "⌧",
+    icon: UIIcons.Lucide.Text.RemoveFormatting,
     group: "misc",
   },
+};
+
+/**
+ * Display metadata for a toolbar button group rendered as a
+ * dropdown rather than flat buttons.
+ *
+ * @internal
+ */
+export interface ToolbarGroupMeta {
+  /** Accessible label for the dropdown trigger. */
+  readonly label: string;
+  /** SVG inner content rendered on the dropdown trigger button. */
+  readonly icon: string;
+}
+
+/**
+ * Group names whose buttons render directly in the toolbar.
+ * All other groups render as a single dropdown trigger.
+ *
+ * @internal
+ */
+export const FLAT_TOOLBAR_GROUPS: ReadonlySet<string> = new Set([
+  "inline",
+  "link-action",
+  "misc",
+]);
+
+/**
+ * Display metadata for dropdown-style toolbar groups.
+ *
+ * @internal
+ */
+export const TOOLBAR_GROUP_META: Readonly<Record<string, ToolbarGroupMeta>> = {
+  block: { label: "Styles", icon: UIIcons.Lucide.Text.Pilcrow },
+  list: { label: "Lists", icon: UIIcons.Lucide.Text.List },
+  align: { label: "Alignment", icon: UIIcons.Lucide.Text.TextAlignStart },
 };

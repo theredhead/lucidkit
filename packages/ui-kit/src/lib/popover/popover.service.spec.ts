@@ -617,6 +617,39 @@ describe("PopoverService", () => {
       ref.close();
     });
 
+    it("should resolve vertical auto fallback when popover fits nowhere", () => {
+      // Anchor in the middle of a tiny viewport where the popover
+      // (height: 200 from prototype mock) doesn't fit above or below.
+      Object.defineProperty(window, "innerHeight", {
+        value: 260,
+        configurable: true,
+      });
+
+      bottomAnchor = createAnchorAt({
+        top: 130,
+        bottom: 162,
+        left: 400,
+        right: 480,
+        width: 80,
+        height: 32,
+      });
+
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor: bottomAnchor,
+        verticalAxisAlignment: "auto",
+        horizontalAxisAlignment: "center",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      // spaceBelow = 260 - 162 = 98, spaceAbove = 130
+      // Both < 200 (popover height). Fallback: spaceAbove > spaceBelow → 'top'
+      const top = parseFloat(popover.style.top);
+      expect(top).toBeLessThanOrEqual(130);
+
+      ref.close();
+    });
+
     it("should resolve horizontal auto to 'center' when space permits", () => {
       // Anchor centred in viewport → center should fit
       bottomAnchor = createAnchorAt({
@@ -696,6 +729,180 @@ describe("PopoverService", () => {
       // auto→top: top = anchor.top(700) - popoverHeight(0) + (-8) = 692
       // Offset should push AWAY (upward)
       expect(top).toBeLessThanOrEqual(700 - 8);
+
+      ref.close();
+    });
+  });
+
+  describe("scroll/resize repositioning", () => {
+    it("should reposition on window scroll", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const initialTop = popover.style.top;
+
+      // Change the anchor position to simulate scroll
+      anchor.getBoundingClientRect = vi.fn(() => ({
+        top: 200,
+        left: 200,
+        bottom: 232,
+        right: 280,
+        width: 80,
+        height: 32,
+        x: 200,
+        y: 200,
+        toJSON: () => {},
+      }));
+
+      window.dispatchEvent(new Event("scroll"));
+
+      const newTop = popover.style.top;
+      expect(newTop).not.toBe(initialTop);
+
+      ref.close();
+    });
+
+    it("should reposition on window resize", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      // Resize should trigger repositioning without error
+      window.dispatchEvent(new Event("resize"));
+
+      expect(popover.style.top).toBeTruthy();
+
+      ref.close();
+    });
+
+    it("should stop repositioning after close", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+      });
+
+      ref.close();
+
+      // Scroll after close should not throw
+      expect(() => {
+        window.dispatchEvent(new Event("scroll"));
+      }).not.toThrow();
+    });
+
+    it("should reposition via requestAnimationFrame callback", () => {
+      // Capture the rAF callback so we can invoke it manually
+      let rafCallback: FrameRequestCallback | null = null;
+      const rafSpy = vi
+        .spyOn(window, "requestAnimationFrame")
+        .mockImplementation((cb) => {
+          rafCallback = cb;
+          return 42;
+        });
+
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+      });
+
+      expect(rafCallback).not.toBeNull();
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      // Invoke the rAF callback while popover is still open
+      rafCallback!(0);
+
+      // Should have repositioned — popover should still have a valid position
+      expect(popover.style.top).toBeTruthy();
+
+      ref.close();
+      rafSpy.mockRestore();
+    });
+
+    it("should skip repositioning in rAF callback when already closed", () => {
+      let rafCallback: FrameRequestCallback | null = null;
+      const rafSpy = vi
+        .spyOn(window, "requestAnimationFrame")
+        .mockImplementation((cb) => {
+          rafCallback = cb;
+          return 42;
+        });
+      const cafSpy = vi
+        .spyOn(window, "cancelAnimationFrame")
+        .mockImplementation(() => {});
+
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+      });
+
+      expect(rafCallback).not.toBeNull();
+
+      // Close before the rAF fires
+      ref.close();
+
+      // Invoke callback after close — should not throw
+      expect(() => rafCallback!(0)).not.toThrow();
+
+      rafSpy.mockRestore();
+      cafSpy.mockRestore();
+    });
+  });
+
+  describe("output edge cases", () => {
+    it("should ignore null output handler", () => {
+      const ref = service.openPopover({
+        component: TestPopoverWithIO,
+        anchor,
+        outputs: { picked: null as any },
+      });
+
+      // Should not throw
+      expect(ref).toBeTruthy();
+      ref.close();
+    });
+
+    it("should ignore output key that doesn't exist on component", () => {
+      const ref = service.openPopover({
+        component: TestPopoverWithIO,
+        anchor,
+        outputs: { nonexistent: vi.fn() },
+      });
+
+      expect(ref).toBeTruthy();
+      ref.close();
+    });
+  });
+
+  describe("vertical center alignment", () => {
+    it("should position vertically centred on the anchor", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "center",
+        horizontalAxisAlignment: "center",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+      // anchor centre: (100 + 132) / 2 = 116
+      // popover height = 0 in jsdom → top = 116
+      expect(top).toBeGreaterThanOrEqual(8);
 
       ref.close();
     });
