@@ -16,6 +16,7 @@ export const ACCORDION_CONTROLLER = new InjectionToken<AccordionController>(
 /** @internal — interface implemented by UIAccordion to coordinate single-mode expansion. */
 export interface AccordionController {
   notifyExpanded(item: UIAccordionItem): void;
+  canCollapse(item: UIAccordionItem): boolean;
 }
 
 /**
@@ -66,11 +67,13 @@ export class UIAccordionItem {
     if (this.disabled()) {
       return;
     }
-    const next = !this.expanded();
-    this.expanded.set(next);
-    this.expandedChange.emit(next);
-    if (next) {
-      this.accordion?.notifyExpanded(this);
+    if (this.expanded()) {
+      if (this.accordion?.canCollapse(this) === false) {
+        return;
+      }
+      this.collapse();
+    } else {
+      this.expand();
     }
   }
 
