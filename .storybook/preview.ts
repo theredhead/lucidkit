@@ -1,13 +1,8 @@
-import {
-  provideAnimationsAsync,
-} from '@angular/platform-browser/animations/async';
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 
-import { themes } from 'storybook/theming';
+import { themes } from "storybook/theming";
 
-import {
-  applicationConfig,
-  type Preview,
-} from '@storybook/angular';
+import { applicationConfig, type Preview } from "@storybook/angular";
 
 const preview: Preview = {
   decorators: [
@@ -16,14 +11,19 @@ const preview: Preview = {
     }),
   ],
   parameters: {
+    options: {
+      storySort: {
+        method: "alphabetical",
+      },
+    },
     docs: {
       theme: themes.dark,
     },
     backgrounds: {
-      default: 'dark',
+      default: "dark",
       values: [
-        { name: 'dark', value: '#1c1c1e' },
-        { name: 'light', value: '#ffffff' },
+        { name: "dark", value: "#1c1c1e" },
+        { name: "light", value: "#ffffff" },
       ],
     },
     controls: {
