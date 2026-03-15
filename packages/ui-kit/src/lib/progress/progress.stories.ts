@@ -62,4 +62,22 @@ export const Default: Story = {
   render: () => ({
     template: `<ui-progress-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<!-- Linear determinate -->
+<ui-progress [value]="65" />
+
+<!-- Linear indeterminate -->
+<ui-progress mode="indeterminate" />
+
+<!-- Circular determinate -->
+<ui-progress variant="circular" [value]="65" />
+
+<!-- Circular indeterminate -->
+<ui-progress variant="circular" mode="indeterminate" />`,
+        language: "html",
+      },
+    },
+  },
 };

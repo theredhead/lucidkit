@@ -24,7 +24,9 @@ import { ModalRef, type UIModalContent } from "./dialog.types";
   imports: [UIDialog, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ui-button (click)="showDialog.set(true)">Open Declarative Dialog</ui-button>
+    <ui-button (click)="showDialog.set(true)"
+      >Open Declarative Dialog</ui-button
+    >
 
     <ui-dialog [(open)]="showDialog" ariaLabel="Example dialog">
       <span ui-dialog-title>Hello Dialog</span>
@@ -373,6 +375,19 @@ class ServiceForcedDemo {
 const meta: Meta = {
   title: "@Theredhead/UI Kit/Dialog",
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Both declarative (template-driven) and imperative (service-based) dialog patterns.\n\n" +
+          "**CSS custom properties** — override on `ui-dialog` or any ancestor:\n" +
+          "- `--tv-surface` — dialog background (`#ffffff` / `#2a2f38`)\n" +
+          "- `--tv-text` — text color (`#1d232b` / `#f2f6fb`)\n" +
+          "- `--tv-border` — header & footer borders (`#d7dce2` / `#3a3f47`)\n" +
+          "- `--tv-accent` — accent color (`#3584e4` / `#7ab0ff`)",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -397,6 +412,25 @@ export const Declarative: Story = {
   render: () => ({
     template: `<ui-dialog-declarative-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-button (click)="showDialog.set(true)">Open Dialog</ui-button>
+
+<ui-dialog [(open)]="showDialog" ariaLabel="Example dialog">
+  <span ui-dialog-title>Hello Dialog</span>
+  <p>Dialog body content goes here.</p>
+  <div ui-dialog-footer>
+    <ui-button variant="outlined" (click)="showDialog.set(false)">Cancel</ui-button>
+    <ui-button (click)="showDialog.set(false)">OK</ui-button>
+  </div>
+</ui-dialog>
+
+<!-- readonly showDialog = signal(false); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** Declarative dialog that cannot be closed by clicking the backdrop. */
@@ -404,6 +438,25 @@ export const DeclarativePersistent: Story = {
   render: () => ({
     template: `<ui-dialog-persistent-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-dialog
+  [(open)]="showDialog"
+  [closeOnBackdropClick]="false"
+  ariaLabel="Persistent dialog">
+  <span ui-dialog-title>Persistent Dialog</span>
+  <p>Clicking the backdrop will not close this dialog.</p>
+  <div ui-dialog-footer>
+    <ui-button (click)="showDialog.set(false)">Got it</ui-button>
+  </div>
+</ui-dialog>
+
+<!-- readonly showDialog = signal(false); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 // ── Service-based (imperative) ─────────────────────────────────────
@@ -413,6 +466,22 @@ export const ServiceConfirm: Story = {
   render: () => ({
     template: `<ui-dialog-svc-basic-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `private readonly modal = inject(ModalService);
+
+this.modal
+  .openModal<ConfirmDialog, boolean>({
+    component: ConfirmDialog,
+  })
+  .closed.subscribe((confirmed) => {
+    if (confirmed) { /* handle confirmation */ }
+  });`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /** Confirm dialog with custom title and message passed as inputs. */
@@ -420,6 +489,25 @@ export const ServiceCustomInputs: Story = {
   render: () => ({
     template: `<ui-dialog-svc-custom-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `this.modal
+  .openModal<ConfirmDialog, boolean>({
+    component: ConfirmDialog,
+    inputs: {
+      title: 'Delete Item?',
+      message: 'This will permanently remove the item. This action cannot be undone.',
+    },
+    ariaLabel: 'Confirm deletion',
+  })
+  .closed.subscribe((confirmed) => {
+    if (confirmed) { /* handle deletion */ }
+  });`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /** Form dialog that returns a string value on save. */
@@ -427,6 +515,25 @@ export const ServiceForm: Story = {
   render: () => ({
     template: `<ui-dialog-svc-form-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `this.modal
+  .openModal<FormDialog, string>({
+    component: FormDialog,
+    inputs: {
+      title: 'Rename Item',
+      fieldPlaceholder: 'Enter new name…',
+    },
+    ariaLabel: 'Rename item',
+  })
+  .closed.subscribe((name) => {
+    if (name) { /* use saved name */ }
+  });`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /** Dialog demonstrating output handler wiring via `outputs` config. */
@@ -434,6 +541,19 @@ export const ServiceOutputs: Story = {
   render: () => ({
     template: `<ui-dialog-svc-outputs-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `this.modal.openModal<OptionDialog, string>({
+  component: OptionDialog,
+  outputs: {
+    chosen: (value: string) => console.log('Chosen:', value),
+  },
+});`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 /**
@@ -444,4 +564,25 @@ export const ServiceForcedChoice: Story = {
   render: () => ({
     template: `<ui-dialog-svc-forced-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `this.modal
+  .openModal<ConfirmDialog, boolean>({
+    component: ConfirmDialog,
+    inputs: {
+      title: 'Unsaved Changes',
+      message: 'You have unsaved changes. Do you want to discard them?',
+    },
+    closeOnEscape: false,
+    closeOnBackdropClick: false,
+    ariaLabel: 'Unsaved changes warning',
+  })
+  .closed.subscribe((result) => {
+    if (result) { /* discard changes */ }
+  });`,
+        language: "typescript",
+      },
+    },
+  },
 };

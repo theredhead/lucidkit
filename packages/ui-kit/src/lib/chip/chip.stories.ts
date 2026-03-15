@@ -76,4 +76,25 @@ export const Default: Story = {
   render: () => ({
     template: `<ui-chip-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<!-- Color variants -->
+<ui-chip color="neutral">Neutral</ui-chip>
+<ui-chip color="primary">Primary</ui-chip>
+<ui-chip color="success">Success</ui-chip>
+<ui-chip color="warning">Warning</ui-chip>
+<ui-chip color="danger">Danger</ui-chip>
+
+<!-- Removable -->
+<ui-chip color="primary" [removable]="true" (removed)="onRemove(tag)">
+  {{ tag }}
+</ui-chip>
+
+<!-- Disabled -->
+<ui-chip [disabled]="true">Disabled</ui-chip>`,
+        language: "html",
+      },
+    },
+  },
 };

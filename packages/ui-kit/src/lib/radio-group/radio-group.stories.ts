@@ -42,6 +42,21 @@ export const Default: Story = {
   render: () => ({
     template: `<ui-radio-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-radio-group [name]="'fruit'" [(value)]="selected">
+  <ui-radio-button [value]="'apple'">Apple</ui-radio-button>
+  <ui-radio-button [value]="'banana'">Banana</ui-radio-button>
+  <ui-radio-button [value]="'cherry'">Cherry</ui-radio-button>
+</ui-radio-group>
+
+<!-- Component class:
+readonly selected = signal<string | undefined>(undefined); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** With pre-selected value. */

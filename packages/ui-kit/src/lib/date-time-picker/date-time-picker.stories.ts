@@ -309,28 +309,126 @@ type Story = StoryObj;
 
 export const ISO24Hour: Story = {
   render: () => ({ template: `<ui-dtp-iso24-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-time-picker
+  [(value)]="selected"
+  format="yyyy-MM-dd"
+  [timeMode]="24"
+  ariaLabel="Appointment"
+/>
+
+<!-- readonly selected = signal<Date | null>(new Date()); -->`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const European12Hour: Story = {
   render: () => ({ template: `<ui-dtp-eu12-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-time-picker
+  [(value)]="selected"
+  format="dd/MM/yyyy"
+  [timeMode]="12"
+  ariaLabel="Meeting"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const US12Hour: Story = {
   render: () => ({ template: `<ui-dtp-us12-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-time-picker
+  [(value)]="selected"
+  format="MM/dd/yyyy"
+  [timeMode]="12"
+  [firstDayOfWeek]="0"
+  ariaLabel="US appointment"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const ConstrainedRange: Story = {
   render: () => ({ template: `<ui-dtp-constrained-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-time-picker
+  [(value)]="selected"
+  format="yyyy-MM-dd"
+  [timeMode]="24"
+  [minDate]="minDate"
+  [maxDate]="maxDate"
+  minTime="09:00"
+  maxTime="17:00"
+  ariaLabel="Office hours booking"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const FifteenMinuteStep: Story = {
   render: () => ({ template: `<ui-dtp-step-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-time-picker
+  [(value)]="selected"
+  format="dd.MM.yyyy"
+  [timeMode]="24"
+  [minuteStep]="15"
+  ariaLabel="Scheduled event"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const Disabled: Story = {
   render: () => ({ template: `<ui-dtp-disabled-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-time-picker
+  [disabled]="true"
+  format="yyyy-MM-dd"
+  ariaLabel="Disabled"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const ReadOnly: Story = {
   render: () => ({ template: `<ui-dtp-readonly-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-date-time-picker
+  [(value)]="selected"
+  [readonly]="true"
+  format="yyyy-MM-dd"
+  ariaLabel="Read-only"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };

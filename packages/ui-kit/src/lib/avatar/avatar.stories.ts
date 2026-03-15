@@ -75,4 +75,22 @@ export const Default: Story = {
   render: () => ({
     template: `<ui-avatar-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<!-- With image -->
+<ui-avatar src="https://example.com/photo.jpg" name="Alice" size="md" />
+
+<!-- Initials fallback (no image) -->
+<ui-avatar name="Kris van Rens" size="md" />
+
+<!-- Size variants: xs, sm, md, lg, xl -->
+<ui-avatar name="Jane Doe" size="xs" />
+<ui-avatar name="Jane Doe" size="sm" />
+<ui-avatar name="Jane Doe" size="lg" />
+<ui-avatar name="Jane Doe" size="xl" />`,
+        language: "html",
+      },
+    },
+  },
 };

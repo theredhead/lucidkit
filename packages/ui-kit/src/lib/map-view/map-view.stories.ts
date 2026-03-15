@@ -422,39 +422,218 @@ const meta: Meta<object> = {
 export default meta;
 type Story = StoryObj<object>;
 
-export const Basic: Story = {};
+export const Basic: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-map-view
+  [center]="{ lat: 52.3676, lng: 4.9041 }"
+  [zoom]="13"
+  height="500px"
+  ariaLabel="Amsterdam map"
+/>`,
+        language: "html",
+      },
+    },
+  },
+};
 
 export const WithMarkers: Story = {
   decorators: [moduleMetadata({ imports: [MapViewMarkersDemo] })],
   render: () => ({ template: "<ui-map-view-markers-demo />" }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-map-view
+  [center]="{ lat: 50.0, lng: 8.0 }"
+  [zoom]="5"
+  [markers]="markers"
+  height="500px"
+  ariaLabel="European cities"
+/>
+
+// Component class:
+readonly markers: MapMarker[] = [
+  { position: { lat: 52.37, lng: 4.90 }, label: 'Amsterdam' },
+  { position: { lat: 48.86, lng: 2.35 }, label: 'Paris', color: '#e04040' },
+  { position: { lat: 51.51, lng: -0.13 }, label: 'London', color: '#2d8a56' },
+];`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 export const RoutePolyline: Story = {
   decorators: [moduleMetadata({ imports: [MapViewRouteDemo] })],
   render: () => ({ template: "<ui-map-view-route-demo />" }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-map-view
+  [center]="center"
+  [zoom]="6"
+  [markers]="markers"
+  [polylines]="polylines"
+  height="500px"
+  ariaLabel="Amsterdam to Paris route"
+/>
+
+// Component class:
+readonly polylines: MapPolyline[] = [{
+  points: [amsterdam, brussels, paris],
+  color: '#e04040',
+  width: 3,
+  dashArray: '8 4',
+}];`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 export const PolygonRegion: Story = {
   decorators: [moduleMetadata({ imports: [MapViewPolygonDemo] })],
   render: () => ({ template: "<ui-map-view-polygon-demo />" }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-map-view
+  [center]="center"
+  [zoom]="6"
+  [markers]="markers"
+  [polygons]="polygons"
+  height="500px"
+  ariaLabel="Benelux region"
+/>
+
+// Component class:
+readonly polygons: MapPolygon[] = [{
+  points: [
+    { lat: 53.5, lng: 3.4 },
+    { lat: 53.5, lng: 7.2 },
+    { lat: 49.5, lng: 6.4 },
+    { lat: 49.5, lng: 2.5 },
+  ],
+  fillColor: 'rgba(59, 130, 246, 0.15)',
+  strokeColor: '#3b82f6',
+}];`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 export const HighlightComparison: Story = {
   decorators: [moduleMetadata({ imports: [MapViewHighlightDemo] })],
   render: () => ({ template: "<ui-map-view-highlight-demo />" }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<!-- Normal -->
+<ui-map-view
+  [center]="center" [zoom]="6"
+  [polylines]="[route]" [polygons]="[polygon]"
+  [markers]="markers" height="360px"
+/>
+
+<!-- Highlighted -->
+<ui-map-view
+  [center]="center" [zoom]="6"
+  [polylines]="[routeHighlighted]" [polygons]="[polygonHighlighted]"
+  [markers]="markers" height="360px"
+/>
+
+// Set highlighted: true on polylines/polygons to enable glow effect
+const routeHighlighted: MapPolyline = {
+  ...route,
+  highlighted: true,
+  highlightColor: '#ffd700',
+  highlightWidth: 5,
+};`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 export const CustomMarkerIcons: Story = {
   decorators: [moduleMetadata({ imports: [MapViewCustomIconsDemo] })],
   render: () => ({ template: "<ui-map-view-custom-icons-demo />" }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-map-view
+  [center]="center"
+  [zoom]="5"
+  [markers]="markers"
+  height="500px"
+  ariaLabel="Cities with custom icons"
+/>
+
+// Markers with custom SVG icons:
+readonly markers: MapMarker[] = [
+  {
+    position: { lat: 52.37, lng: 4.90 },
+    label: 'Amsterdam',
+    iconSvg: '<svg>...</svg>',
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+  },
+];`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 export const CombinedOverview: Story = {
   decorators: [moduleMetadata({ imports: [MapViewCombinedDemo] })],
   render: () => ({ template: "<ui-map-view-combined-demo />" }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-map-view
+  uiDensity="comfortable"
+  [center]="center"
+  [zoom]="5"
+  [markers]="markers"
+  [polylines]="polylines"
+  [polygons]="polygons"
+  height="560px"
+  ariaLabel="European overview"
+/>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const ToggleHighlight: Story = {
   decorators: [moduleMetadata({ imports: [MapViewToggleHighlightDemo] })],
   render: () => ({ template: "<ui-map-view-toggle-highlight-demo />" }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<button (click)="toggle()">
+  {{ highlighted() ? 'Remove highlight' : 'Highlight route' }}
+</button>
+
+<ui-map-view
+  [center]="center"
+  [zoom]="6"
+  [markers]="markers"
+  [polylines]="polylines()"
+  [polygons]="polygons()"
+  height="500px"
+  ariaLabel="Toggle highlight demo"
+/>
+
+// Toggle highlighted state on overlays at runtime
+readonly highlighted = signal(false);
+toggle(): void { this.highlighted.update(v => !v); }`,
+        language: "typescript",
+      },
+    },
+  },
 };

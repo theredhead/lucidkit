@@ -373,7 +373,32 @@ const meta: Meta<object> = {
 export default meta;
 type Story = StoryObj<object>;
 
-export const JsonPlaceholderPosts: Story = {};
+export const JsonPlaceholderPosts: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-table-view
+  uiDensity="comfortable"
+  caption="JSONPlaceholder Posts"
+  tableId="posts-table"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-number-column key="userId" headerText="User ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="title" headerText="Title"
+    [truncate]="true" [sortable]="true" />
+  <ui-badge-column key="userId" headerText="Owner"
+    variant="neutral" />
+</ui-table-view>`,
+        language: "html",
+      },
+    },
+  },
+};
 
 export const JsonPlaceholderComments: Story = {
   decorators: [
@@ -385,6 +410,30 @@ export const JsonPlaceholderComments: Story = {
     template: "<ui-table-view-comments-story-demo />",
     props: {},
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-table-view
+  uiDensity="compact"
+  caption="JSONPlaceholder Comments"
+  tableId="comments-table"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-number-column key="postId" headerText="Post ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="email" headerText="Email"
+    [truncate]="true" [sortable]="true" />
+  <ui-text-column key="body" headerText="Comment"
+    [truncate]="true" />
+</ui-table-view>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const JsonPlaceholderPhotos: Story = {
@@ -397,6 +446,30 @@ export const JsonPlaceholderPhotos: Story = {
     template: "<ui-table-view-photos-story-demo />",
     props: {},
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-table-view
+  uiDensity="generous"
+  caption="JSONPlaceholder Photos"
+  tableId="photos-table"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-number-column key="albumId" headerText="Album ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="title" headerText="Title"
+    [truncate]="true" [sortable]="true" />
+  <ui-text-column key="thumbnailUrl" headerText="Thumbnail URL"
+    [truncate]="true" />
+</ui-table-view>`,
+        language: "html",
+      },
+    },
+  },
 };
 
 export const DensityPlayground: Story = {
@@ -567,6 +640,35 @@ export const SingleSelection: Story = {
     template: "<ui-table-view-single-select-demo />",
     props: {},
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-table-view
+  caption="Single Selection"
+  tableId="single-select"
+  selectionMode="single"
+  [rowClickSelect]="true"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+  [selectionModel]="selectionModel"
+  (selectionChange)="onSelectionChange($event)"
+>
+  <ui-number-column key="id" headerText="ID" [sortable]="true" />
+  <ui-text-column key="title" headerText="Title" [truncate]="true" [sortable]="true" />
+  <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
+</ui-table-view>
+
+// Component class:
+readonly selectionModel = new SelectionModel<Post>('single', row => row.id);
+
+onSelectionChange(rows: readonly Post[]): void {
+  console.log('Selected:', rows);
+}`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 export const MultipleSelection: Story = {
@@ -579,6 +681,35 @@ export const MultipleSelection: Story = {
     template: "<ui-table-view-multi-select-demo />",
     props: {},
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-table-view
+  caption="Multiple Selection"
+  tableId="multi-select"
+  selectionMode="multiple"
+  [rowClickSelect]="true"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+  [selectionModel]="selectionModel"
+  (selectionChange)="onSelectionChange($event)"
+>
+  <ui-number-column key="id" headerText="ID" [sortable]="true" />
+  <ui-text-column key="title" headerText="Title" [truncate]="true" [sortable]="true" />
+  <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
+</ui-table-view>
+
+// Component class:
+readonly selectionModel = new SelectionModel<Post>('multiple', row => row.id);
+
+onSelectionChange(rows: readonly Post[]): void {
+  console.log('Selected:', rows.length, 'items');
+}`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -815,6 +946,42 @@ export const FilteredTable: Story = {
     template: "<ui-table-view-filtered-demo />",
     props: {},
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-filter
+  [fields]="fields"
+  [allowJunction]="true"
+  (predicateChange)="onPredicateChange($event)"
+/>
+
+<ui-table-view
+  caption="Employees"
+  tableId="filtered-table"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID" [sortable]="true" />
+  <ui-text-column key="name" headerText="Name" [sortable]="true" />
+  <ui-badge-column key="department" headerText="Dept" variant="neutral" />
+  <ui-number-column key="age" headerText="Age" [sortable]="true" />
+  <ui-number-column key="salary" headerText="Salary" [sortable]="true"
+    [format]="{ style: 'currency', currency: 'USD' }" />
+</ui-table-view>
+
+// Component class:
+readonly datasource = new FilterableArrayDatasource(employees);
+adapter = new DatasourceAdapter(this.datasource);
+
+onPredicateChange(predicate: Predicate<Employee> | undefined): void {
+  this.datasource.applyPredicate(predicate ?? null);
+  this.adapter = new DatasourceAdapter(this.datasource);
+}`,
+        language: "typescript",
+      },
+    },
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -927,4 +1094,34 @@ export const TemplateColumn: Story = {
     template: "<ui-table-view-template-col-demo />",
     props: {},
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-table-view
+  caption="Template Column Demo"
+  tableId="template-col"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID" [sortable]="true" />
+  <ui-text-column key="title" headerText="Title" [truncate]="true" [sortable]="true" />
+
+  <ui-template-column key="userId" headerText="Author">
+    <ng-template let-row>
+      <span>User {{ row.userId }}</span>
+    </ng-template>
+  </ui-template-column>
+
+  <ui-template-column key="actions" headerText="Actions">
+    <ng-template let-row>
+      <button (click)="onAction('view', row)">View</button>
+      <button (click)="onAction('edit', row)">Edit</button>
+    </ng-template>
+  </ui-template-column>
+</ui-table-view>`,
+        language: "html",
+      },
+    },
+  },
 };
