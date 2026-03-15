@@ -1,0 +1,6 @@
+@for (item of items(); track item; let i = $index) {
+  <ng-container
+    [ngTemplateOutlet]="itemTemplate()"
+    [ngTemplateOutletContext]="buildContext(item, i)"
+  />
+}

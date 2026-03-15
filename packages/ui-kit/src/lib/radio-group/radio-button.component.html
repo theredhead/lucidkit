@@ -1,0 +1,19 @@
+<span
+  class="rb-control"
+  role="radio"
+  [attr.aria-checked]="isChecked()"
+  [attr.aria-disabled]="isDisabled()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.tabindex]="isDisabled() ? -1 : 0"
+  (click)="select()"
+  (keydown)="onKeyDown($event)"
+>
+  <span class="rb-circle">
+    @if (isChecked()) {
+      <span class="rb-dot"></span>
+    }
+  </span>
+</span>
+<span class="rb-label" (click)="select()" (keydown)="onKeyDown($event)" role="presentation">
+  <ng-content />
+</span>

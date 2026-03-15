@@ -1,0 +1,11 @@
+@if (variant() === 'count') {
+  <span class="badge-body" [attr.aria-label]="ariaLabel()">
+    {{ displayCount() }}
+  </span>
+} @else if (variant() === 'dot') {
+  <span class="badge-dot" [attr.aria-label]="ariaLabel()"></span>
+} @else {
+  <span class="badge-body badge-body--label" [attr.aria-label]="ariaLabel()">
+    <ng-content />
+  </span>
+}

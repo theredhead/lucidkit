@@ -1,0 +1,31 @@
+<span
+  class="cb-control"
+  [attr.role]="role()"
+  [attr.aria-checked]="ariaChecked()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-disabled]="disabled()"
+  [attr.tabindex]="disabled() ? -1 : 0"
+  (click)="toggle()"
+  (keydown)="onKeyDown($event)"
+>
+  @if (variant() === 'checkbox') {
+    <span class="cb-box">
+      @if (indeterminate()) {
+        <svg class="cb-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <line x1="4" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      } @else if (checked()) {
+        <svg class="cb-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <polyline points="3.5,8.5 6.5,11.5 12.5,4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      }
+    </span>
+  } @else {
+    <span class="cb-track">
+      <span class="cb-thumb"></span>
+    </span>
+  }
+</span>
+<span class="cb-label" (click)="toggle()" (keydown)="onKeyDown($event)" role="presentation">
+  <ng-content />
+</span>
