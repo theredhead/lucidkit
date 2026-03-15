@@ -32,6 +32,27 @@ import { UIAccordionItem } from "./accordion-item.component";
 class AccordionSingleDemo {}
 
 @Component({
+  selector: "ui-accordion-collapsible-demo",
+  standalone: true,
+  imports: [UIAccordion, UIAccordionItem],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <ui-accordion mode="single" [requireOpen]="false">
+      <ui-accordion-item label="Getting Started">
+        Follow the installation guide to add the library to your project.
+      </ui-accordion-item>
+      <ui-accordion-item label="Configuration">
+        Configure your theme by importing the SCSS mixin.
+      </ui-accordion-item>
+      <ui-accordion-item label="Components">
+        Browse the full list of available components.
+      </ui-accordion-item>
+    </ui-accordion>
+  `,
+})
+class AccordionCollapsibleDemo {}
+
+@Component({
   selector: "ui-accordion-multi-demo",
   standalone: true,
   imports: [UIAccordion, UIAccordionItem],
@@ -58,7 +79,11 @@ const meta: Meta<UIAccordion> = {
   tags: ["autodocs"],
   decorators: [
     moduleMetadata({
-      imports: [AccordionSingleDemo, AccordionMultiDemo],
+      imports: [
+        AccordionSingleDemo,
+        AccordionCollapsibleDemo,
+        AccordionMultiDemo,
+      ],
     }),
   ],
 };
@@ -69,6 +94,13 @@ type Story = StoryObj<UIAccordion>;
 export const SingleMode: Story = {
   render: () => ({
     template: `<ui-accordion-single-demo />`,
+  }),
+};
+
+/** Single mode with requireOpen=false — all panels can be collapsed. */
+export const SingleCollapsible: Story = {
+  render: () => ({
+    template: `<ui-accordion-collapsible-demo />`,
   }),
 };
 

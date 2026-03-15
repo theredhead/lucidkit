@@ -8,7 +8,7 @@ import { UIAccordionItem } from "./accordion-item.component";
   standalone: true,
   imports: [UIAccordion, UIAccordionItem],
   template: `
-    <ui-accordion [mode]="mode()">
+    <ui-accordion [mode]="mode()" [requireOpen]="requireOpen()">
       <ui-accordion-item label="Section 1">Content A</ui-accordion-item>
       <ui-accordion-item label="Section 2">Content B</ui-accordion-item>
       <ui-accordion-item label="Section 3" [disabled]="true"
@@ -19,6 +19,7 @@ import { UIAccordionItem } from "./accordion-item.component";
 })
 class TestHost {
   public readonly mode = signal<"single" | "multi">("single");
+  public readonly requireOpen = signal(true);
 }
 
 describe("UIAccordion", () => {
@@ -88,7 +89,7 @@ describe("UIAccordion", () => {
   });
 
   describe("single mode", () => {
-    it("should not collapse the open panel when its header is clicked", () => {
+    it("should not collapse the open panel when requireOpen is true", () => {
       const headers = fixture.nativeElement.querySelectorAll(".ac-header");
       headers[0].click();
       fixture.detectChanges();
@@ -99,6 +100,22 @@ describe("UIAccordion", () => {
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
         1,
+      );
+    });
+
+    it("should allow collapsing the open panel when requireOpen is false", () => {
+      host.requireOpen.set(false);
+      fixture.detectChanges();
+      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      headers[0].click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+        1,
+      );
+      headers[0].click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+        0,
       );
     });
 

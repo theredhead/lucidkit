@@ -62,15 +62,21 @@ export class UIAccordion implements AccordionController {
   /** Expansion mode: `single` collapses siblings, `multi` allows any combination. */
   public readonly mode = input<AccordionMode>("single");
 
+  /** Whether at least one panel must always remain open in `single` mode. Has no effect in `multi` mode. */
+  public readonly requireOpen = input(true);
+
   /** Accessible label for the accordion. */
   public readonly ariaLabel = input<string | undefined>(undefined);
 
   /** @internal — projected accordion items. */
   public readonly items = contentChildren(UIAccordionItem);
 
-  /** @internal — returns false in single mode to keep one panel always open. */
+  /** @internal — returns false in single mode when `requireOpen` is true. */
   public canCollapse(_item: UIAccordionItem): boolean {
-    return this.mode() !== "single";
+    if (this.mode() !== "single") {
+      return true;
+    }
+    return !this.requireOpen();
   }
 
   /** @internal — called by accordion items when they expand. */
