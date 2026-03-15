@@ -10,6 +10,9 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIButton } from "../button/button.component";
 import { UIInput } from "../input/input.component";
+import { UIDialogBody } from "./dialog-body.component";
+import { UIDialogFooter } from "./dialog-footer.component";
+import { UIDialogHeader } from "./dialog-header.component";
 import { UIDialog } from "./dialog.component";
 import { ModalService } from "./dialog.service";
 import { ModalRef, type UIModalContent } from "./dialog.types";
@@ -21,7 +24,7 @@ import { ModalRef, type UIModalContent } from "./dialog.types";
 @Component({
   selector: "ui-dialog-declarative-demo",
   standalone: true,
-  imports: [UIDialog, UIButton],
+  imports: [UIDialog, UIDialogHeader, UIDialogBody, UIDialogFooter, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-button (click)="showDialog.set(true)"
@@ -29,18 +32,20 @@ import { ModalRef, type UIModalContent } from "./dialog.types";
     >
 
     <ui-dialog [(open)]="showDialog" ariaLabel="Example dialog">
-      <span ui-dialog-title>Hello Dialog</span>
-      <p>
-        This is a declarative dialog component built on the native
-        <code>&lt;dialog&gt;</code> element.
-      </p>
-      <p>It supports projected header, body, and footer slots.</p>
-      <div ui-dialog-footer>
+      <ui-dialog-header>Hello Dialog</ui-dialog-header>
+      <ui-dialog-body>
+        <p>
+          This is a declarative dialog component built on the native
+          <code>&lt;dialog&gt;</code> element.
+        </p>
+        <p>It supports projected header, body, and footer slots.</p>
+      </ui-dialog-body>
+      <ui-dialog-footer>
         <ui-button variant="outlined" (click)="showDialog.set(false)"
           >Cancel</ui-button
         >
         <ui-button (click)="showDialog.set(false)">OK</ui-button>
-      </div>
+      </ui-dialog-footer>
     </ui-dialog>
   `,
 })
@@ -51,7 +56,7 @@ class DeclarativeDemo {
 @Component({
   selector: "ui-dialog-persistent-demo",
   standalone: true,
-  imports: [UIDialog, UIButton],
+  imports: [UIDialog, UIDialogHeader, UIDialogBody, UIDialogFooter, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-button (click)="showDialog.set(true)"
@@ -63,14 +68,16 @@ class DeclarativeDemo {
       [closeOnBackdropClick]="false"
       ariaLabel="Persistent dialog"
     >
-      <span ui-dialog-title>Persistent Dialog</span>
-      <p>
-        Clicking the backdrop won't close this dialog. You must use the button
-        below.
-      </p>
-      <div ui-dialog-footer>
+      <ui-dialog-header>Persistent Dialog</ui-dialog-header>
+      <ui-dialog-body>
+        <p>
+          Clicking the backdrop won't close this dialog. You must use the button
+          below.
+        </p>
+      </ui-dialog-body>
+      <ui-dialog-footer>
         <ui-button (click)="showDialog.set(false)">Got it</ui-button>
-      </div>
+      </ui-dialog-footer>
     </ui-dialog>
   `,
 })
@@ -87,7 +94,7 @@ class PersistentDemo {
   selector: "ui-story-confirm-dialog",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIButton],
+  imports: [UIButton, UIDialogHeader, UIDialogBody, UIDialogFooter],
   styles: [
     `
       :host {
@@ -98,18 +105,18 @@ class PersistentDemo {
     `,
   ],
   template: `
-    <header class="dlg-header">{{ title() }}</header>
-    <div class="dlg-body">
+    <ui-dialog-header>{{ title() }}</ui-dialog-header>
+    <ui-dialog-body>
       <p style="margin: 0; opacity: 0.75; line-height: 1.5;">{{ message() }}</p>
-    </div>
-    <footer class="dlg-footer">
+    </ui-dialog-body>
+    <ui-dialog-footer>
       <ui-button variant="ghost" (click)="modalRef.close(false)"
         >Cancel</ui-button
       >
       <ui-button variant="filled" (click)="modalRef.close(true)"
         >Confirm</ui-button
       >
-    </footer>
+    </ui-dialog-footer>
   `,
 })
 class StoryConfirmDialog implements UIModalContent<boolean> {
@@ -123,7 +130,7 @@ class StoryConfirmDialog implements UIModalContent<boolean> {
   selector: "ui-story-form-dialog",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIButton, UIInput],
+  imports: [UIButton, UIInput, UIDialogHeader, UIDialogBody, UIDialogFooter],
   styles: [
     `
       :host {
@@ -134,20 +141,20 @@ class StoryConfirmDialog implements UIModalContent<boolean> {
     `,
   ],
   template: `
-    <header class="dlg-header">{{ title() }}</header>
-    <div class="dlg-body">
+    <ui-dialog-header>{{ title() }}</ui-dialog-header>
+    <ui-dialog-body>
       <ui-input
         [placeholder]="fieldPlaceholder()"
         [(value)]="fieldValue"
         ariaLabel="Name input"
       />
-    </div>
-    <footer class="dlg-footer">
+    </ui-dialog-body>
+    <ui-dialog-footer>
       <ui-button variant="ghost" (click)="modalRef.close()">Cancel</ui-button>
       <ui-button variant="filled" (click)="modalRef.close(fieldValue())"
         >Save</ui-button
       >
-    </footer>
+    </ui-dialog-footer>
   `,
 })
 class StoryFormDialog implements UIModalContent<string> {
@@ -162,7 +169,7 @@ class StoryFormDialog implements UIModalContent<string> {
   selector: "ui-story-output-dialog",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIButton],
+  imports: [UIButton, UIDialogHeader, UIDialogFooter],
   styles: [
     `
       :host {
@@ -173,12 +180,12 @@ class StoryFormDialog implements UIModalContent<string> {
     `,
   ],
   template: `
-    <header class="dlg-header">Choose an option</header>
-    <footer class="dlg-footer">
+    <ui-dialog-header>Choose an option</ui-dialog-header>
+    <ui-dialog-footer>
       <ui-button variant="ghost" (click)="pick('A')">Option A</ui-button>
       <ui-button variant="outlined" (click)="pick('B')">Option B</ui-button>
       <ui-button variant="filled" (click)="pick('C')">Option C</ui-button>
-    </footer>
+    </ui-dialog-footer>
   `,
 })
 class StoryOutputDialog implements UIModalContent {
@@ -418,12 +425,14 @@ export const Declarative: Story = {
         code: `<ui-button (click)="showDialog.set(true)">Open Dialog</ui-button>
 
 <ui-dialog [(open)]="showDialog" ariaLabel="Example dialog">
-  <span ui-dialog-title>Hello Dialog</span>
-  <p>Dialog body content goes here.</p>
-  <div ui-dialog-footer>
+  <ui-dialog-header>Hello Dialog</ui-dialog-header>
+  <ui-dialog-body>
+    <p>Dialog body content goes here.</p>
+  </ui-dialog-body>
+  <ui-dialog-footer>
     <ui-button variant="outlined" (click)="showDialog.set(false)">Cancel</ui-button>
     <ui-button (click)="showDialog.set(false)">OK</ui-button>
-  </div>
+  </ui-dialog-footer>
 </ui-dialog>
 
 <!-- readonly showDialog = signal(false); -->`,
@@ -445,11 +454,13 @@ export const DeclarativePersistent: Story = {
   [(open)]="showDialog"
   [closeOnBackdropClick]="false"
   ariaLabel="Persistent dialog">
-  <span ui-dialog-title>Persistent Dialog</span>
-  <p>Clicking the backdrop will not close this dialog.</p>
-  <div ui-dialog-footer>
+  <ui-dialog-header>Persistent Dialog</ui-dialog-header>
+  <ui-dialog-body>
+    <p>Clicking the backdrop will not close this dialog.</p>
+  </ui-dialog-body>
+  <ui-dialog-footer>
     <ui-button (click)="showDialog.set(false)">Got it</ui-button>
-  </div>
+  </ui-dialog-footer>
 </ui-dialog>
 
 <!-- readonly showDialog = signal(false); -->`,

@@ -20,12 +20,14 @@ import {
  * @example
  * ```html
  * <ui-dialog [(open)]="showDialog" ariaLabel="Confirm action">
- *   <span ui-dialog-title>Confirm</span>
- *   <p>Are you sure you want to proceed?</p>
- *   <div ui-dialog-footer>
+ *   <ui-dialog-header>Confirm</ui-dialog-header>
+ *   <ui-dialog-body>
+ *     <p>Are you sure you want to proceed?</p>
+ *   </ui-dialog-body>
+ *   <ui-dialog-footer>
  *     <ui-button variant="outlined" (click)="showDialog = false">Cancel</ui-button>
  *     <ui-button (click)="confirm()">OK</ui-button>
- *   </div>
+ *   </ui-dialog-footer>
  * </ui-dialog>
  * ```
  */
