@@ -1,0 +1,50 @@
+<div
+  class="drop-zone"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="ariaLabel()"
+  (click)="onZoneClick()"
+  (keydown)="onZoneKeydown($event)"
+  (dragenter)="onDragEnter($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+>
+  <span class="drop-zone-icon" aria-hidden="true">⇪</span>
+  <span class="drop-zone-label">{{ label() }}</span>
+
+  @if (accept()) {
+    <span class="drop-zone-hint">{{ accept() }}</span>
+  }
+</div>
+
+@if (fileCount() > 0) {
+  <ul class="file-list" role="list">
+    @for (entry of files(); track entry.id) {
+      <li class="file-item">
+        <span class="file-name" [title]="entry.file.name">{{ entry.file.name }}</span>
+        <span class="file-size">{{ formatSize(entry.file.size) }}</span>
+        <button
+          class="file-remove"
+          type="button"
+          aria-label="Remove file"
+          (click)="remove(entry.id); $event.stopPropagation()"
+        >
+          ×
+        </button>
+      </li>
+    }
+  </ul>
+}
+
+<input
+  #fileInputRef
+  type="file"
+  class="visually-hidden"
+  [accept]="accept()"
+  [multiple]="multiple()"
+  [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel()"
+  tabindex="-1"
+  (change)="onInputChange($event)"
+/>
