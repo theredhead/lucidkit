@@ -242,10 +242,32 @@ export class PopoverService {
     host.appendChild(componentRef.location.nativeElement);
     document.body.appendChild(host);
     this.appRef.attachView(componentRef.hostView);
+
+    // Run change detection so the content component renders its
+    // template and the popover element gets real dimensions.
+    componentRef.changeDetectorRef.detectChanges();
+
     host.showPopover();
 
-    // Position after showing so the popover has layout dimensions
+    // Position immediately with the dimensions we have now.
     this.positionPopover(host, config.anchor, vAlign, hAlign, vOffset, hOffset);
+
+    // Re-position after the next frame in case the browser
+    // needed an additional layout pass (e.g. async projections,
+    // font loading, images).
+    const rafId = requestAnimationFrame(() => {
+      if (!popoverRef.isClosed) {
+        this.positionPopover(
+          host,
+          config.anchor,
+          vAlign,
+          hAlign,
+          vOffset,
+          hOffset,
+        );
+      }
+    });
+    popoverRef.onDestroy(() => cancelAnimationFrame(rafId));
 
     // ── Register teardown ───────────────────────────────────
 
