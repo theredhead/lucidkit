@@ -113,13 +113,13 @@ function computePosition(
 
   switch (hAlign) {
     case "start":
-      left = anchorRect.left;
+      left = anchorRect.left - popoverRect.width;
       break;
     case "center":
       left = anchorRect.left + (anchorRect.width - popoverRect.width) / 2;
       break;
     case "end":
-      left = anchorRect.right - popoverRect.width;
+      left = anchorRect.right;
       break;
   }
 
@@ -187,7 +187,7 @@ export class PopoverService {
 
     const popoverRef = new PopoverRef<R>();
     const vAlign = config.verticalAxisAlignment ?? "bottom";
-    const hAlign = config.horizontalAxisAlignment ?? "start";
+    const hAlign = config.horizontalAxisAlignment ?? "center";
     const vOffset = config.verticalOffset ?? 4;
     const hOffset = config.horizontalOffset ?? 0;
     const useAutoPopover = config.closeOnOutsideClick !== false;

@@ -266,7 +266,7 @@ class ContextMenuDemo {
         component: StoryContextMenu,
         anchor: this.anchorRef().nativeElement,
         verticalAxisAlignment: "bottom",
-        horizontalAxisAlignment: "start",
+        horizontalAxisAlignment: "center",
         ariaLabel: "Context menu",
         outputs: {
           chosen: (action: string) => this.lastAction.set(action),
@@ -306,7 +306,7 @@ class ActionMenuDemo {
         component: StoryActionMenu,
         anchor: this.anchorRef().nativeElement,
         verticalAxisAlignment: "bottom",
-        horizontalAxisAlignment: "end",
+        horizontalAxisAlignment: "center",
         ariaLabel: "Actions menu",
       })
       .closed.subscribe((action) => {
@@ -445,7 +445,7 @@ class ManualDismissDemo {
       component: StoryTooltipContent,
       anchor: this.anchorRef().nativeElement,
       verticalAxisAlignment: "bottom",
-      horizontalAxisAlignment: "start",
+      horizontalAxisAlignment: "center",
       closeOnOutsideClick: false,
       inputs: {
         title: "Persistent Popover",

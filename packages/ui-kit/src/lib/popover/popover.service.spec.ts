@@ -312,7 +312,7 @@ describe("PopoverService", () => {
       component: TestPopover,
       anchor,
       verticalAxisAlignment: "bottom",
-      horizontalAxisAlignment: "start",
+      horizontalAxisAlignment: "center",
     });
 
     const popover = document.querySelector(".ui-popover") as HTMLElement;
@@ -402,7 +402,7 @@ describe("PopoverService", () => {
       ref.close();
     });
 
-    it("should right-align with horizontalAxisAlignment 'end'", () => {
+    it("should place popover to the right with horizontalAxisAlignment 'end'", () => {
       const ref = service.openPopover({
         component: TestPopover,
         anchor,
@@ -412,9 +412,25 @@ describe("PopoverService", () => {
 
       const popover = document.querySelector(".ui-popover") as HTMLElement;
       const left = parseFloat(popover.style.left);
-      // Right edge of popover should align with anchor right (280)
-      // left = anchorRight(280) - popoverWidth
-      expect(left).toBeLessThanOrEqual(280);
+      // Popover's left edge at anchor's right edge (280)
+      expect(left).toBeGreaterThanOrEqual(280);
+
+      ref.close();
+    });
+
+    it("should place popover to the left with horizontalAxisAlignment 'start'", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "start",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const left = parseFloat(popover.style.left);
+      // Popover's right edge at anchor's left edge (200)
+      // left = anchorLeft(200) - popoverWidth, clamped to viewport pad(8)
+      expect(left).toBeLessThanOrEqual(200);
 
       ref.close();
     });
@@ -440,7 +456,7 @@ describe("PopoverService", () => {
         component: TestPopover,
         anchor,
         verticalAxisAlignment: "bottom",
-        horizontalAxisAlignment: "start",
+        horizontalAxisAlignment: "center",
         verticalOffset: 12,
       });
 
@@ -457,14 +473,14 @@ describe("PopoverService", () => {
         component: TestPopover,
         anchor,
         verticalAxisAlignment: "bottom",
-        horizontalAxisAlignment: "start",
-        horizontalOffset: 16,
+        horizontalAxisAlignment: "end",
+        horizontalOffset: 8,
       });
 
       const popover = document.querySelector(".ui-popover") as HTMLElement;
       const left = parseFloat(popover.style.left);
-      // anchor.left(200) + horizontalOffset(16) = 216
-      expect(left).toBeGreaterThanOrEqual(216);
+      // anchor.right(280) + horizontalOffset(8) = 288
+      expect(left).toBeGreaterThanOrEqual(288);
 
       ref.close();
     });
