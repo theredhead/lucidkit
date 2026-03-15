@@ -6,10 +6,10 @@ import {
   input,
   output,
 } from "@angular/core";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 
-import { ModalRef, type UIModalContent } from "./modal.types";
-import { ModalService } from "./modal.service";
+import { ModalRef, type UIModalContent } from "./dialog.types";
+import { ModalService } from "./dialog.service";
 
 // ── Test fixture components ────────────────────────────────────────
 
@@ -20,7 +20,7 @@ import { ModalService } from "./modal.service";
   template: `<p>Test modal content</p>`,
 })
 class TestModal implements UIModalContent<string> {
-  readonly modalRef = inject(ModalRef<string>);
+  public readonly modalRef = inject(ModalRef<string>);
 }
 
 @Component({
@@ -31,11 +31,11 @@ class TestModal implements UIModalContent<string> {
     <button (click)="save()">Save</button>`,
 })
 class TestModalWithIO implements UIModalContent {
-  readonly modalRef = inject(ModalRef);
-  readonly title = input<string>("Default title");
-  readonly saved = output<string>();
+  public readonly modalRef = inject(ModalRef);
+  public readonly title = input<string>("Default title");
+  public readonly saved = output<string>();
 
-  save(): void {
+  public save(): void {
     this.saved.emit("saved-value");
   }
 }
@@ -144,9 +144,11 @@ describe("ModalService", () => {
 
   afterEach(() => {
     // Clean up leftover DOM
-    document.querySelectorAll("dialog.ui-modal").forEach((d) => d.remove());
     document
-      .querySelectorAll("style[data-ui-modal]")
+      .querySelectorAll("dialog.ui-dialog-service")
+      .forEach((d) => d.remove());
+    document
+      .querySelectorAll("style[data-ui-dialog-service]")
       .forEach((s) => s.remove());
     (service as any).stylesInjected = false;
   });
@@ -158,7 +160,7 @@ describe("ModalService", () => {
   it("should create a <dialog> element in the body", () => {
     const ref = service.openModal({ component: TestModal });
 
-    const dialog = document.querySelector("dialog.ui-modal");
+    const dialog = document.querySelector("dialog.ui-dialog-service");
     expect(dialog).toBeTruthy();
 
     ref.close();
@@ -175,7 +177,7 @@ describe("ModalService", () => {
   it("should render the component inside the dialog", () => {
     const ref = service.openModal({ component: TestModal });
 
-    const dialog = document.querySelector("dialog.ui-modal");
+    const dialog = document.querySelector("dialog.ui-dialog-service");
     expect(dialog?.querySelector("p")?.textContent).toBe("Test modal content");
 
     ref.close();
@@ -191,10 +193,10 @@ describe("ModalService", () => {
 
   it("should remove the dialog from DOM on close", () => {
     const ref = service.openModal({ component: TestModal });
-    expect(document.querySelector("dialog.ui-modal")).toBeTruthy();
+    expect(document.querySelector("dialog.ui-dialog-service")).toBeTruthy();
 
     ref.close();
-    expect(document.querySelector("dialog.ui-modal")).toBeNull();
+    expect(document.querySelector("dialog.ui-dialog-service")).toBeNull();
   });
 
   it("should emit result through ModalRef.closed", () => {
@@ -217,7 +219,7 @@ describe("ModalService", () => {
 
     TestBed.inject(ApplicationRef).tick();
 
-    const dialog = document.querySelector("dialog.ui-modal");
+    const dialog = document.querySelector("dialog.ui-dialog-service");
     expect(dialog?.querySelector("p")?.textContent).toBe("Custom Title");
 
     ref.close();
@@ -233,7 +235,7 @@ describe("ModalService", () => {
     TestBed.inject(ApplicationRef).tick();
 
     const button = document.querySelector(
-      "dialog.ui-modal button",
+      "dialog.ui-dialog-service button",
     ) as HTMLButtonElement;
     button.click();
 
@@ -260,7 +262,7 @@ describe("ModalService", () => {
     const ref1 = service.openModal({ component: TestModal });
     const ref2 = service.openModal({ component: TestModal });
 
-    const styles = document.querySelectorAll("style[data-ui-modal]");
+    const styles = document.querySelectorAll("style[data-ui-dialog-service]");
     expect(styles.length).toBe(1);
 
     ref1.close();
@@ -273,7 +275,7 @@ describe("ModalService", () => {
       ariaLabel: "Confirm delete",
     });
 
-    const dialog = document.querySelector("dialog.ui-modal");
+    const dialog = document.querySelector("dialog.ui-dialog-service");
     expect(dialog?.getAttribute("aria-label")).toBe("Confirm delete");
 
     ref.close();
@@ -282,7 +284,7 @@ describe("ModalService", () => {
   it("should close on backdrop click by default", () => {
     const ref = service.openModal({ component: TestModal });
     const dialog = document.querySelector(
-      "dialog.ui-modal",
+      "dialog.ui-dialog-service",
     ) as HTMLDialogElement;
 
     const results: unknown[] = [];
@@ -300,7 +302,7 @@ describe("ModalService", () => {
   it("should not close on content click", () => {
     const ref = service.openModal({ component: TestModal });
     const dialog = document.querySelector(
-      "dialog.ui-modal",
+      "dialog.ui-dialog-service",
     ) as HTMLDialogElement;
 
     const p = dialog.querySelector("p") as HTMLParagraphElement;
@@ -317,7 +319,7 @@ describe("ModalService", () => {
       closeOnBackdropClick: false,
     });
     const dialog = document.querySelector(
-      "dialog.ui-modal",
+      "dialog.ui-dialog-service",
     ) as HTMLDialogElement;
 
     const event = new MouseEvent("click", { bubbles: true });
@@ -332,7 +334,7 @@ describe("ModalService", () => {
   it("should close on native dialog close event (Escape)", () => {
     const ref = service.openModal({ component: TestModal });
     const dialog = document.querySelector(
-      "dialog.ui-modal",
+      "dialog.ui-dialog-service",
     ) as HTMLDialogElement;
 
     const results: unknown[] = [];
@@ -350,7 +352,7 @@ describe("ModalService", () => {
       closeOnEscape: false,
     });
     const dialog = document.querySelector(
-      "dialog.ui-modal",
+      "dialog.ui-dialog-service",
     ) as HTMLDialogElement;
 
     const cancelEvent = new Event("cancel", { cancelable: true });
@@ -367,7 +369,7 @@ describe("ModalService", () => {
     // the component would not be created at all.
     const ref = service.openModal({ component: TestModal });
 
-    const dialog = document.querySelector("dialog.ui-modal");
+    const dialog = document.querySelector("dialog.ui-dialog-service");
     expect(dialog?.querySelector("p")).toBeTruthy();
 
     ref.close();
@@ -377,14 +379,18 @@ describe("ModalService", () => {
     const ref1 = service.openModal({ component: TestModal });
     const ref2 = service.openModal({ component: TestModal });
 
-    const dialogs = document.querySelectorAll("dialog.ui-modal");
+    const dialogs = document.querySelectorAll("dialog.ui-dialog-service");
     expect(dialogs.length).toBe(2);
 
     ref1.close();
-    expect(document.querySelectorAll("dialog.ui-modal").length).toBe(1);
+    expect(
+      document.querySelectorAll("dialog.ui-dialog-service").length,
+    ).toBe(1);
 
     ref2.close();
-    expect(document.querySelectorAll("dialog.ui-modal").length).toBe(0);
+    expect(
+      document.querySelectorAll("dialog.ui-dialog-service").length,
+    ).toBe(0);
   });
 
   it("should destroy the component on close", () => {
