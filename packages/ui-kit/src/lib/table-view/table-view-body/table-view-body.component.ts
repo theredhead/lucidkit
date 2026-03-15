@@ -9,10 +9,7 @@ import {
 
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { DEFAULT_ROW_HEIGHT, MIN_COLUMN_WIDTH } from "../table-view.constants";
-import type {
-  SelectionMode,
-  TableSelectionModel,
-} from "../table-view-selection.model";
+import type { SelectionMode, SelectionModel } from "../../core/selection-model";
 
 @Component({
   selector: "ui-table-body",
@@ -31,7 +28,7 @@ export class UITableBody {
   rowHeight = input<number>(DEFAULT_ROW_HEIGHT);
   columnWidths = input<Record<string, number>>({});
   selectionMode = input<SelectionMode>("none");
-  selection = input<TableSelectionModel<any> | undefined>(undefined);
+  selection = input<SelectionModel<any> | undefined>(undefined);
   rowClickSelect = input<boolean>(false);
   rowClick = output<unknown>();
 

@@ -29,10 +29,7 @@ import {
   SortState,
   UITableHeader,
 } from "./table-view-header/table-view-header.component";
-import {
-  SelectionMode,
-  TableSelectionModel,
-} from "./table-view-selection.model";
+import { type SelectionMode, SelectionModel } from "../core/selection-model";
 
 @Component({
   selector: "ui-table-view",
@@ -86,7 +83,7 @@ export class UITableView implements OnInit, AfterViewInit {
    * this instance instead of creating its own, giving the consumer full
    * programmatic control.
    */
-  selectionModel = input<TableSelectionModel<any> | undefined>(undefined);
+  selectionModel = input<SelectionModel<any> | undefined>(undefined);
 
   /**
    * Emitted whenever the selection changes. Carries the full list of
@@ -105,7 +102,7 @@ export class UITableView implements OnInit, AfterViewInit {
     return this.selectionModel() ?? this._internalSelection;
   });
 
-  private readonly _internalSelection = new TableSelectionModel<any>("none");
+  private readonly _internalSelection = new SelectionModel<any>("none");
 
   protected readonly resolvedRows = signal<unknown[]>([]);
   protected readonly sortState = signal<SortState | null>(null);

@@ -6,3 +6,8 @@ export {
   type RowChangedNotification,
   type RowRangeChangedNotification,
 } from "./notifications";
+export {
+  SelectionModel,
+  TableSelectionModel,
+  type SelectionMode,
+} from "../selection-model";
