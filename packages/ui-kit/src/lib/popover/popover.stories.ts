@@ -229,7 +229,8 @@ class TooltipDemo {
     this.popover.openPopover({
       component: StoryTooltipContent,
       anchor: this.anchorRef().nativeElement,
-      placement: "bottom",
+      verticalAxisAlignment: "bottom",
+      horizontalAxisAlignment: "center",
       ariaLabel: "Keyboard shortcut tooltip",
     });
   }
@@ -264,7 +265,8 @@ class ContextMenuDemo {
       .openPopover<StoryContextMenu, string>({
         component: StoryContextMenu,
         anchor: this.anchorRef().nativeElement,
-        placement: "bottom-start",
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "start",
         ariaLabel: "Context menu",
         outputs: {
           chosen: (action: string) => this.lastAction.set(action),
@@ -283,9 +285,7 @@ class ContextMenuDemo {
   imports: [UIButton],
   styles: [DEMO_STYLES],
   template: `
-    <ui-button #anchor variant="ghost" (click)="open()">
-      ⋮ Actions
-    </ui-button>
+    <ui-button #anchor variant="ghost" (click)="open()"> ⋮ Actions </ui-button>
     @if (lastAction()) {
       <div class="story-output">
         <strong>Selected:</strong> {{ lastAction() }}
@@ -305,7 +305,8 @@ class ActionMenuDemo {
       .openPopover<StoryActionMenu, string>({
         component: StoryActionMenu,
         anchor: this.anchorRef().nativeElement,
-        placement: "bottom-end",
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "end",
         ariaLabel: "Actions menu",
       })
       .closed.subscribe((action) => {
@@ -351,41 +352,27 @@ class ActionMenuDemo {
     <div class="grid">
       <!-- Row 1 -->
       <span></span>
-      <ui-button
-        #topBtn
-        variant="outlined"
-        (click)="open(topBtn, 'top')"
-      >
+      <ui-button variant="outlined" (click)="open($event, 'top', 'center')">
         ↑ Top
       </ui-button>
       <span></span>
 
       <!-- Row 2 -->
-      <ui-button
-        #leftBtn
-        variant="outlined"
-        (click)="open(leftBtn, 'left')"
-      >
+      <ui-button variant="outlined" (click)="open($event, 'center', 'start')">
         ← Left
       </ui-button>
-      <span style="padding: 1rem; text-align: center; font-size: 0.75rem; opacity: 0.6;">
-        Click any<br>button
-      </span>
-      <ui-button
-        #rightBtn
-        variant="outlined"
-        (click)="open(rightBtn, 'right')"
+      <span
+        style="padding: 1rem; text-align: center; font-size: 0.75rem; opacity: 0.6;"
       >
+        Click any<br />button
+      </span>
+      <ui-button variant="outlined" (click)="open($event, 'center', 'end')">
         Right →
       </ui-button>
 
       <!-- Row 3 -->
       <span></span>
-      <ui-button
-        #bottomBtn
-        variant="outlined"
-        (click)="open(bottomBtn, 'bottom')"
-      >
+      <ui-button variant="outlined" (click)="open($event, 'bottom', 'center')">
         ↓ Bottom
       </ui-button>
       <span></span>
@@ -393,7 +380,7 @@ class ActionMenuDemo {
 
     @if (lastPlacement()) {
       <div class="story-output">
-        <strong>Placement:</strong> {{ lastPlacement() }}
+        <strong>Alignment:</strong> {{ lastPlacement() }}
       </div>
     }
   `,
@@ -402,17 +389,20 @@ class PlacementDemo {
   private readonly popover = inject(PopoverService);
   protected readonly lastPlacement = signal<string | undefined>(undefined);
 
-  open(anchor: HTMLElement, placement: string): void {
-    this.lastPlacement.set(placement);
+  open(event: Event, vAlign: string, hAlign: string): void {
+    const anchor = event.currentTarget as HTMLElement;
+    const label = `vertical: ${vAlign}, horizontal: ${hAlign}`;
+    this.lastPlacement.set(label);
     this.popover.openPopover({
       component: StoryTooltipContent,
       anchor,
-      placement: placement as any,
+      verticalAxisAlignment: vAlign as any,
+      horizontalAxisAlignment: hAlign as any,
       inputs: {
-        title: `Placement: ${placement}`,
-        body: `This popover is placed on the "${placement}" side of the anchor button.`,
+        title: `Alignment`,
+        body: `vertical: ${vAlign}, horizontal: ${hAlign}`,
       },
-      ariaLabel: `${placement} tooltip`,
+      ariaLabel: `${vAlign} ${hAlign} tooltip`,
     });
   }
 }
@@ -426,12 +416,12 @@ class PlacementDemo {
   template: `
     <div style="display: flex; gap: 0.5rem; align-items: center;">
       <ui-button #anchor variant="filled" (click)="toggle()">
-        {{ isOpen() ? 'Close' : 'Open' }} Persistent Popover
+        {{ isOpen() ? "Close" : "Open" }} Persistent Popover
       </ui-button>
     </div>
     <p style="margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;">
-      This popover uses <code>closeOnOutsideClick: false</code> — it stays
-      open until explicitly closed by the button.
+      This popover uses <code>closeOnOutsideClick: false</code> — it stays open
+      until explicitly closed by the button.
     </p>
   `,
 })
@@ -454,7 +444,8 @@ class ManualDismissDemo {
     this.currentRef = this.popover.openPopover({
       component: StoryTooltipContent,
       anchor: this.anchorRef().nativeElement,
-      placement: "bottom-start",
+      verticalAxisAlignment: "bottom",
+      horizontalAxisAlignment: "start",
       closeOnOutsideClick: false,
       inputs: {
         title: "Persistent Popover",

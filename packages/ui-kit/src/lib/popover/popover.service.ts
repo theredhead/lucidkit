@@ -10,7 +10,8 @@ import {
 import {
   PopoverRef,
   type OpenPopoverConfig,
-  type PopoverPlacement,
+  type PopoverHorizontalAlignment,
+  type PopoverVerticalAlignment,
 } from "./popover.types";
 
 // ── Popover stylesheet (injected into <head> once) ─────────────────
@@ -22,6 +23,7 @@ const POPOVER_STYLES = /* css */ `
 .ui-popover {
   position: fixed;
   margin: 0;
+  inset: unset;
   border: 1px solid var(--theredhead-outline-variant, #d7dce2);
   border-radius: 0.375rem;
   padding: 0;
@@ -85,64 +87,46 @@ interface Position {
 function computePosition(
   anchorRect: DOMRect,
   popoverRect: DOMRect,
-  placement: PopoverPlacement,
-  offset: number,
+  vAlign: PopoverVerticalAlignment,
+  hAlign: PopoverHorizontalAlignment,
+  vOffset: number,
+  hOffset: number,
 ): Position {
   let top = 0;
   let left = 0;
 
-  const side = placement.split("-")[0] as
-    | "top"
-    | "bottom"
-    | "left"
-    | "right";
-  const align = placement.split("-")[1] as
-    | "start"
-    | "end"
-    | undefined;
+  // ── Vertical axis ─────────────────────────────────────────
 
-  // ── Side positioning ────────────────────────────────────
-
-  switch (side) {
-    case "bottom":
-      top = anchorRect.bottom + offset;
-      break;
+  switch (vAlign) {
     case "top":
-      top = anchorRect.top - popoverRect.height - offset;
+      top = anchorRect.top - popoverRect.height;
       break;
-    case "left":
-      left = anchorRect.left - popoverRect.width - offset;
+    case "center":
+      top = anchorRect.top + (anchorRect.height - popoverRect.height) / 2;
       break;
-    case "right":
-      left = anchorRect.right + offset;
+    case "bottom":
+      top = anchorRect.bottom;
       break;
   }
 
-  // ── Alignment along the cross axis ──────────────────────
+  // ── Horizontal axis ───────────────────────────────────────
 
-  if (side === "top" || side === "bottom") {
-    switch (align) {
-      case "start":
-        left = anchorRect.left;
-        break;
-      case "end":
-        left = anchorRect.right - popoverRect.width;
-        break;
-      default: // centre
-        left = anchorRect.left + (anchorRect.width - popoverRect.width) / 2;
-    }
-  } else {
-    switch (align) {
-      case "start":
-        top = anchorRect.top;
-        break;
-      case "end":
-        top = anchorRect.bottom - popoverRect.height;
-        break;
-      default: // centre
-        top = anchorRect.top + (anchorRect.height - popoverRect.height) / 2;
-    }
+  switch (hAlign) {
+    case "start":
+      left = anchorRect.left;
+      break;
+    case "center":
+      left = anchorRect.left + (anchorRect.width - popoverRect.width) / 2;
+      break;
+    case "end":
+      left = anchorRect.right - popoverRect.width;
+      break;
   }
+
+  // ── Apply offsets ─────────────────────────────────────────
+
+  top += vOffset;
+  left += hOffset;
 
   // ── Viewport clamping ───────────────────────────────────
 
@@ -177,7 +161,9 @@ function computePosition(
  * this.popover.openPopover<MyMenu, string>({
  *   component: MyMenu,
  *   anchor: buttonElement,
- *   placement: 'bottom-start',
+ *   verticalAxisAlignment: 'bottom',
+ *   horizontalAxisAlignment: 'start',
+ *   verticalOffset: 4,
  *   inputs: { items: menuItems },
  * }).closed.subscribe((action) => this.handleAction(action));
  * ```
@@ -200,8 +186,10 @@ export class PopoverService {
     this.ensureStyles();
 
     const popoverRef = new PopoverRef<R>();
-    const placement = config.placement ?? "bottom-start";
-    const offset = config.offset ?? 4;
+    const vAlign = config.verticalAxisAlignment ?? "bottom";
+    const hAlign = config.horizontalAxisAlignment ?? "start";
+    const vOffset = config.verticalOffset ?? 4;
+    const hOffset = config.horizontalOffset ?? 0;
     const useAutoPopover = config.closeOnOutsideClick !== false;
 
     // ── Create the popover host element ─────────────────────
@@ -257,7 +245,7 @@ export class PopoverService {
     host.showPopover();
 
     // Position after showing so the popover has layout dimensions
-    this.positionPopover(host, config.anchor, placement, offset);
+    this.positionPopover(host, config.anchor, vAlign, hAlign, vOffset, hOffset);
 
     // ── Register teardown ───────────────────────────────────
 
@@ -285,7 +273,14 @@ export class PopoverService {
 
     const reposition = () => {
       if (popoverRef.isClosed) return;
-      this.positionPopover(host, config.anchor, placement, offset);
+      this.positionPopover(
+        host,
+        config.anchor,
+        vAlign,
+        hAlign,
+        vOffset,
+        hOffset,
+      );
     };
     window.addEventListener("scroll", reposition, { passive: true });
     window.addEventListener("resize", reposition, { passive: true });
@@ -303,12 +298,21 @@ export class PopoverService {
   private positionPopover(
     host: HTMLElement,
     anchor: Element,
-    placement: PopoverPlacement,
-    offset: number,
+    vAlign: PopoverVerticalAlignment,
+    hAlign: PopoverHorizontalAlignment,
+    vOffset: number,
+    hOffset: number,
   ): void {
     const anchorRect = anchor.getBoundingClientRect();
     const popoverRect = host.getBoundingClientRect();
-    const pos = computePosition(anchorRect, popoverRect, placement, offset);
+    const pos = computePosition(
+      anchorRect,
+      popoverRect,
+      vAlign,
+      hAlign,
+      vOffset,
+      hOffset,
+    );
     host.style.top = `${pos.top}px`;
     host.style.left = `${pos.left}px`;
   }

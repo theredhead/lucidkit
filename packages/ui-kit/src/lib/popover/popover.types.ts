@@ -1,27 +1,25 @@
 import { type Type } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 
-// ── Placement ──────────────────────────────────────────────────────
+// ── Alignment ──────────────────────────────────────────────────────
 
 /**
- * Placement of a popover relative to its anchor element.
+ * Vertical alignment of the popover relative to its anchor element.
  *
- * The first word is the side the popover appears on; the optional
- * suffix controls alignment along that side.
+ * - `'top'`    — popover sits above the anchor (bottom edge → anchor top edge)
+ * - `'center'` — popover is vertically centred on the anchor
+ * - `'bottom'` — popover sits below the anchor (top edge → anchor bottom edge)
  */
-export type PopoverPlacement =
-  | "top"
-  | "top-start"
-  | "top-end"
-  | "bottom"
-  | "bottom-start"
-  | "bottom-end"
-  | "left"
-  | "left-start"
-  | "left-end"
-  | "right"
-  | "right-start"
-  | "right-end";
+export type PopoverVerticalAlignment = "top" | "center" | "bottom";
+
+/**
+ * Horizontal alignment of the popover relative to its anchor element.
+ *
+ * - `'start'`  — popover's left edge aligns with anchor's left edge
+ * - `'center'` — popover is horizontally centred on the anchor
+ * - `'end'`    — popover's right edge aligns with anchor's right edge
+ */
+export type PopoverHorizontalAlignment = "start" | "center" | "end";
 
 // ── PopoverRef ─────────────────────────────────────────────────────
 
@@ -113,16 +111,30 @@ export interface OpenPopoverConfig<T> {
   readonly anchor: Element;
 
   /**
-   * Where to place the popover relative to the anchor.
-   * @default 'bottom-start'
+   * Vertical alignment of the popover relative to the anchor.
+   * @default 'bottom'
    */
-  readonly placement?: PopoverPlacement;
+  readonly verticalAxisAlignment?: PopoverVerticalAlignment;
 
   /**
-   * Pixel gap between the anchor and the popover edge.
+   * Horizontal alignment of the popover relative to the anchor.
+   * @default 'start'
+   */
+  readonly horizontalAxisAlignment?: PopoverHorizontalAlignment;
+
+  /**
+   * Pixel offset on the vertical axis (positive = down).
+   * Applied after alignment — e.g. a small gap between anchor
+   * and popover.
    * @default 4
    */
-  readonly offset?: number;
+  readonly verticalOffset?: number;
+
+  /**
+   * Pixel offset on the horizontal axis (positive = right).
+   * @default 0
+   */
+  readonly horizontalOffset?: number;
 
   /**
    * Input values set on the component via

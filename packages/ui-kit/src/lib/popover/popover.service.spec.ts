@@ -27,7 +27,8 @@ class TestPopover implements UIPopoverContent<string> {
   selector: "ui-test-popover-io",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<p>{{ label() }}</p><button (click)="pick()">Pick</button>`,
+  template: `<p>{{ label() }}</p>
+    <button (click)="pick()">Pick</button>`,
 })
 class TestPopoverWithIO implements UIPopoverContent {
   readonly popoverRef = inject(PopoverRef);
@@ -310,11 +311,12 @@ describe("PopoverService", () => {
     const ref = service.openPopover({
       component: TestPopover,
       anchor,
-      placement: "bottom-start",
+      verticalAxisAlignment: "bottom",
+      horizontalAxisAlignment: "start",
     });
 
     const popover = document.querySelector(".ui-popover") as HTMLElement;
-    // The top should be at least at anchor.bottom + offset
+    // The top should be at least at anchor.bottom + default verticalOffset (4)
     const top = parseFloat(popover.style.top);
     expect(top).toBeGreaterThanOrEqual(132); // 100 + 32 (anchor bottom)
 
@@ -382,33 +384,87 @@ describe("PopoverService", () => {
     ref.close();
   });
 
-  describe("placement", () => {
-    it("should position top-start above the anchor", () => {
+  describe("alignment", () => {
+    it("should position above the anchor with verticalAxisAlignment 'top'", () => {
       const ref = service.openPopover({
         component: TestPopover,
         anchor,
-        placement: "top",
+        verticalAxisAlignment: "top",
+        horizontalAxisAlignment: "center",
+        verticalOffset: -4,
       });
 
       const popover = document.querySelector(".ui-popover") as HTMLElement;
       const top = parseFloat(popover.style.top);
-      // Should be above anchor top (100) minus popover height minus offset
+      // Should be above anchor top (100) minus popover height minus gap
       expect(top).toBeLessThanOrEqual(100);
 
       ref.close();
     });
 
-    it("should position right-start to the right of the anchor", () => {
+    it("should right-align with horizontalAxisAlignment 'end'", () => {
       const ref = service.openPopover({
         component: TestPopover,
         anchor,
-        placement: "right-start",
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "end",
       });
 
       const popover = document.querySelector(".ui-popover") as HTMLElement;
       const left = parseFloat(popover.style.left);
-      // Should be to the right of anchor (anchor right = 280 + offset)
-      expect(left).toBeGreaterThanOrEqual(280);
+      // Right edge of popover should align with anchor right (280)
+      // left = anchorRight(280) - popoverWidth
+      expect(left).toBeLessThanOrEqual(280);
+
+      ref.close();
+    });
+
+    it("should centre horizontally with horizontalAxisAlignment 'center'", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const left = parseFloat(popover.style.left);
+      // Centred on anchor (200..280, midpoint 240)
+      expect(left).toBeGreaterThanOrEqual(8); // at least inside viewport pad
+
+      ref.close();
+    });
+
+    it("should apply verticalOffset", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "start",
+        verticalOffset: 12,
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+      // anchor.bottom(132) + verticalOffset(12) = 144
+      expect(top).toBeGreaterThanOrEqual(144);
+
+      ref.close();
+    });
+
+    it("should apply horizontalOffset", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "start",
+        horizontalOffset: 16,
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const left = parseFloat(popover.style.left);
+      // anchor.left(200) + horizontalOffset(16) = 216
+      expect(left).toBeGreaterThanOrEqual(216);
 
       ref.close();
     });

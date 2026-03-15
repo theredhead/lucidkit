@@ -27,7 +27,8 @@ class TestModal implements UIModalContent<string> {
   selector: "ui-test-modal-io",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<p>{{ title() }}</p><button (click)="save()">Save</button>`,
+  template: `<p>{{ title() }}</p>
+    <button (click)="save()">Save</button>`,
 })
 class TestModalWithIO implements UIModalContent {
   readonly modalRef = inject(ModalRef);
@@ -175,9 +176,7 @@ describe("ModalService", () => {
     const ref = service.openModal({ component: TestModal });
 
     const dialog = document.querySelector("dialog.ui-modal");
-    expect(dialog?.querySelector("p")?.textContent).toBe(
-      "Test modal content",
-    );
+    expect(dialog?.querySelector("p")?.textContent).toBe("Test modal content");
 
     ref.close();
   });
