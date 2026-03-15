@@ -68,6 +68,11 @@ export class UIAccordion implements AccordionController {
   /** @internal — projected accordion items. */
   public readonly items = contentChildren(UIAccordionItem);
 
+  /** @internal — returns false in single mode to keep one panel always open. */
+  public canCollapse(_item: UIAccordionItem): boolean {
+    return this.mode() !== "single";
+  }
+
   /** @internal — called by accordion items when they expand. */
   public notifyExpanded(expandedItem: UIAccordionItem): void {
     if (this.mode() !== "single") {

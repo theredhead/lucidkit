@@ -61,7 +61,9 @@ describe("UIAccordion", () => {
       expect(panels[0].textContent.trim()).toBe("Content A");
     });
 
-    it("should collapse an expanded panel when header is clicked again", () => {
+    it("should collapse an expanded panel when header is clicked again in multi mode", () => {
+      host.mode.set("multi");
+      fixture.detectChanges();
       const headers = fixture.nativeElement.querySelectorAll(".ac-header");
       headers[0].click();
       fixture.detectChanges();
@@ -86,6 +88,20 @@ describe("UIAccordion", () => {
   });
 
   describe("single mode", () => {
+    it("should not collapse the open panel when its header is clicked", () => {
+      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      headers[0].click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+        1,
+      );
+      headers[0].click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+        1,
+      );
+    });
+
     it("should collapse other panels when one is expanded", async () => {
       const headers = fixture.nativeElement.querySelectorAll(".ac-header");
       headers[0].click();
