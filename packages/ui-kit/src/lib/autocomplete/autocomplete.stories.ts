@@ -123,11 +123,11 @@ class ContactDatasource implements AutocompleteDatasource<Contact> {
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,
@@ -166,11 +166,11 @@ class BasicDemo {
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,
@@ -231,11 +231,11 @@ class MultiDemo {
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,

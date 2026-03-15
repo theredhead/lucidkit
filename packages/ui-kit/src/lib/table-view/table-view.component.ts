@@ -190,17 +190,17 @@ export class UITableView implements OnInit, AfterViewInit {
       this.resolvedRows.set(rows);
     });
 
-    // Keep --tv-total-row-width in sync so header + body + rows
+    // Keep --ui-total-row-width in sync so header + body + rows
     // all expand to the same width inside the scroll container.
     effect(() => {
       const width = this.totalRowWidth();
       if (width > 0) {
         this.elRef.nativeElement.style.setProperty(
-          "--tv-total-row-width",
+          "--ui-total-row-width",
           `${width}px`,
         );
       } else {
-        this.elRef.nativeElement.style.removeProperty("--tv-total-row-width");
+        this.elRef.nativeElement.style.removeProperty("--ui-total-row-width");
       }
     });
 
@@ -251,7 +251,7 @@ export class UITableView implements OnInit, AfterViewInit {
     document.body.removeChild(probe);
 
     this.elRef.nativeElement.style.setProperty(
-      "--tv-scrollbar-width",
+      "--ui-scrollbar-width",
       `${scrollbarW}px`,
     );
   }
@@ -262,7 +262,7 @@ export class UITableView implements OnInit, AfterViewInit {
    * Uses a ResizeObserver on the viewport's content wrapper to detect
    * whenever the body's scrollable width changes (column resize, data load,
    * natural content overflow, etc.). When the body overflows, we set
-   * --tv-header-scroll-width on the header element so its inner row
+   * --ui-header-scroll-width on the header element so its inner row
    * expands to match and scrollLeft works correctly.
    */
   private setupHorizontalScrollSync(): void {
@@ -280,9 +280,9 @@ export class UITableView implements OnInit, AfterViewInit {
         // Body overflows – widen the header row to match.
         // Add the vertical-scrollbar width so header cells stay aligned.
         const sbW = viewport.offsetWidth - cw;
-        header.style.setProperty("--tv-header-scroll-width", `${sw + sbW}px`);
+        header.style.setProperty("--ui-header-scroll-width", `${sw + sbW}px`);
       } else {
-        header.style.removeProperty("--tv-header-scroll-width");
+        header.style.removeProperty("--ui-header-scroll-width");
       }
     };
 

@@ -2,34 +2,34 @@
   display: flex;
   flex-direction: column;
 
-  --tv-text: #1d232b;
-  --tv-border: #d7dce2;
-  --tv-accent: #3584e4;
-  --tv-surface: #ffffff;
-  --tv-muted: #5a6470;
+  --ui-text: #1d232b;
+  --ui-border: #d7dce2;
+  --ui-accent: #3584e4;
+  --ui-surface: #ffffff;
+  --ui-muted: #5a6470;
 }
 
 :host-context(html.dark-theme) {
-  --tv-text: #f2f6fb;
-  --tv-border: #3a3f47;
-  --tv-accent: #7ab0ff;
-  --tv-surface: #2a2f38;
-  --tv-muted: #d0d8e3;
+  --ui-text: #f2f6fb;
+  --ui-border: #3a3f47;
+  --ui-accent: #7ab0ff;
+  --ui-surface: #2a2f38;
+  --ui-muted: #d0d8e3;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-text: #f2f6fb;
-    --tv-border: #3a3f47;
-    --tv-accent: #7ab0ff;
-    --tv-surface: #2a2f38;
-    --tv-muted: #d0d8e3;
+    --ui-text: #f2f6fb;
+    --ui-border: #3a3f47;
+    --ui-accent: #7ab0ff;
+    --ui-surface: #2a2f38;
+    --ui-muted: #d0d8e3;
   }
 }
 
 .tg-header {
   display: flex;
-  border-bottom: 1px solid var(--tv-border);
+  border-bottom: 1px solid var(--ui-border);
   gap: 0;
 }
 
@@ -38,10 +38,10 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  font-family: var(--tv-font, inherit);
-  font-size: var(--tv-font-body, 0.875rem);
+  font-family: var(--ui-font, inherit);
+  font-size: var(--ui-font-body, 0.875rem);
   font-weight: 500;
-  color: var(--tv-muted);
+  color: var(--ui-muted);
   padding: 0.625rem 1rem;
   border-bottom: 2px solid transparent;
   transition:
@@ -50,19 +50,19 @@
   white-space: nowrap;
 
   &:hover:not(.tg-tab--disabled) {
-    color: var(--tv-text);
+    color: var(--ui-text);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--tv-accent);
+    outline: 2px solid var(--ui-accent);
     outline-offset: -2px;
     border-radius: 0.25rem 0.25rem 0 0;
   }
 }
 
 .tg-tab--active {
-  color: var(--tv-accent);
-  border-bottom-color: var(--tv-accent);
+  color: var(--ui-accent);
+  border-bottom-color: var(--ui-accent);
 }
 
 .tg-tab--disabled {
@@ -72,5 +72,5 @@
 
 .tg-panel {
   padding: 1rem 0;
-  color: var(--tv-text);
+  color: var(--ui-text);
 }

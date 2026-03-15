@@ -171,32 +171,31 @@ export class UIExample {
 
 ### Token namespaces
 
-| Namespace        | Scope                            | Examples                                                                  |
-| ---------------- | -------------------------------- | ------------------------------------------------------------------------- |
-| `--tv-*`         | Component-level design tokens    | `--tv-text`, `--tv-border`, `--tv-accent`, `--tv-surface`, `--tv-font`    |
-| `--theredhead-*` | Global theme tokens (Material 3) | `--theredhead-background`, `--theredhead-primary`, `--theredhead-surface` |
-| `--ui-*`         | Density tokens                   | `--ui-density`, `--ui-control-height`, `--ui-gap`, `--ui-radius`          |
+| Namespace        | Scope                            | Examples                                                                       |
+| ---------------- | -------------------------------- | ------------------------------------------------------------------------------ |
+| `--ui-*`         | Component-level design tokens    | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`, `--ui-density`      |
+| `--theredhead-*` | Global theme tokens (Material 3) | `--theredhead-background`, `--theredhead-primary`, `--theredhead-surface`      |
 
 ### Dark mode (three-tier pattern — use in every component)
 
 ```scss
 // 1. Light defaults
 :host {
-  --tv-text: #1d232b;
-  --tv-border: #d7dce2;
+  --ui-text: #1d232b;
+  --ui-border: #d7dce2;
 }
 
 // 2. Explicit dark class
 :host-context(html.dark-theme) {
-  --tv-text: #f2f6fb;
-  --tv-border: #3a3f47;
+  --ui-text: #f2f6fb;
+  --ui-border: #3a3f47;
 }
 
 // 3. System preference fallback
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-text: #f2f6fb;
-    --tv-border: #3a3f47;
+    --ui-text: #f2f6fb;
+    --ui-border: #3a3f47;
   }
 }
 ```

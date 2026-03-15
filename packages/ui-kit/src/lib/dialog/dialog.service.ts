@@ -16,10 +16,10 @@ const DIALOG_STYLES = /* css */ `
 /* ── ui-dialog service base ─────────────────────────────── */
 
 dialog.ui-dialog-service {
-  --tv-surface: var(--theredhead-surface, #ffffff);
-  --tv-text: var(--theredhead-on-surface, #1d232b);
-  --tv-border: var(--theredhead-outline, #d7dce2);
-  --tv-accent: var(--theredhead-primary, #3584e4);
+  --ui-surface: var(--theredhead-surface, #ffffff);
+  --ui-text: var(--theredhead-on-surface, #1d232b);
+  --ui-border: var(--theredhead-outline, #d7dce2);
+  --ui-accent: var(--theredhead-primary, #3584e4);
 
   border: none;
   border-radius: 0.75rem;
@@ -29,8 +29,8 @@ dialog.ui-dialog-service {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: var(--tv-surface);
-  color: var(--tv-text);
+  background: var(--ui-surface);
+  color: var(--ui-text);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   animation: ui-dialog-svc-enter 180ms ease-out;
 }
@@ -43,9 +43,9 @@ dialog.ui-dialog-service::backdrop {
 /* ── dark mode (explicit class) ─────────────────────────── */
 
 html.dark-theme dialog.ui-dialog-service {
-  --tv-surface: var(--theredhead-surface, #2a2f38);
-  --tv-text: var(--theredhead-on-surface, #f2f6fb);
-  --tv-border: var(--theredhead-outline, #3a3f47);
+  --ui-surface: var(--theredhead-surface, #2a2f38);
+  --ui-text: var(--theredhead-on-surface, #f2f6fb);
+  --ui-border: var(--theredhead-outline, #3a3f47);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
@@ -57,9 +57,9 @@ html.dark-theme dialog.ui-dialog-service::backdrop {
 
 @media (prefers-color-scheme: dark) {
   html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service {
-    --tv-surface: var(--theredhead-surface, #2a2f38);
-    --tv-text: var(--theredhead-on-surface, #f2f6fb);
-    --tv-border: var(--theredhead-outline, #3a3f47);
+    --ui-surface: var(--theredhead-surface, #2a2f38);
+    --ui-text: var(--theredhead-on-surface, #f2f6fb);
+    --ui-border: var(--theredhead-outline, #3a3f47);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 

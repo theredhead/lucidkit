@@ -1,48 +1,48 @@
 /* ── Light defaults ───────────────────────────────────────── */
 
 :host {
-  --tv-text: #1d232b;
-  --tv-text-muted: #5a6470;
-  --tv-surface: #ffffff;
-  --tv-surface-2: #f0f2f5;
-  --tv-border: #d7dce2;
-  --tv-border-strong: #c2c8cf;
-  --tv-accent: #3584e4;
-  --tv-accent-contrast: #ffffff;
-  --tv-font: inherit;
-  --tv-font-body: 0.875rem;
+  --ui-text: #1d232b;
+  --ui-text-muted: #5a6470;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f0f2f5;
+  --ui-border: #d7dce2;
+  --ui-border-strong: #c2c8cf;
+  --ui-accent: #3584e4;
+  --ui-accent-contrast: #ffffff;
+  --ui-font: inherit;
+  --ui-font-body: 0.875rem;
 
   display: inline-block;
   position: relative;
-  font-family: var(--tv-font);
-  font-size: var(--tv-font-body);
+  font-family: var(--ui-font);
+  font-size: var(--ui-font-body);
 }
 
 /* ── Dark mode (explicit class) ──────────────────────────── */
 
 :host-context(html.dark-theme) {
-  --tv-text: #f2f6fb;
-  --tv-text-muted: #9ba4ae;
-  --tv-surface: #1e2128;
-  --tv-surface-2: #2a2e35;
-  --tv-border: #3a3f47;
-  --tv-border-strong: #4a5058;
-  --tv-accent: #62a0ea;
-  --tv-accent-contrast: #1e2128;
+  --ui-text: #f2f6fb;
+  --ui-text-muted: #9ba4ae;
+  --ui-surface: #1e2128;
+  --ui-surface-2: #2a2e35;
+  --ui-border: #3a3f47;
+  --ui-border-strong: #4a5058;
+  --ui-accent: #62a0ea;
+  --ui-accent-contrast: #1e2128;
 }
 
 /* ── Dark mode (system preference fallback) ──────────────── */
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-text: #f2f6fb;
-    --tv-text-muted: #9ba4ae;
-    --tv-surface: #1e2128;
-    --tv-surface-2: #2a2e35;
-    --tv-border: #3a3f47;
-    --tv-border-strong: #4a5058;
-    --tv-accent: #62a0ea;
-    --tv-accent-contrast: #1e2128;
+    --ui-text: #f2f6fb;
+    --ui-text-muted: #9ba4ae;
+    --ui-surface: #1e2128;
+    --ui-surface-2: #2a2e35;
+    --ui-border: #3a3f47;
+    --ui-border-strong: #4a5058;
+    --ui-accent: #62a0ea;
+    --ui-accent-contrast: #1e2128;
   }
 }
 
@@ -51,19 +51,19 @@
 .dp-input-wrapper {
   display: flex;
   align-items: center;
-  border: 1px solid var(--tv-border);
+  border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
-  background: var(--tv-surface);
+  background: var(--ui-surface);
   transition:
     border-color 120ms ease,
     background-color 120ms ease;
 
   &:hover:not(:has(input:disabled)) {
-    border-color: var(--tv-border-strong);
+    border-color: var(--ui-border-strong);
   }
 
   &:focus-within {
-    outline: 2px solid var(--tv-accent);
+    outline: 2px solid var(--ui-accent);
     outline-offset: -1px;
   }
 }
@@ -73,7 +73,7 @@
   min-width: 0;
   border: none;
   background: transparent;
-  color: var(--tv-text);
+  color: var(--ui-text);
   font-family: inherit;
   font-size: inherit;
   padding: 0.4rem 0.5rem;
@@ -85,7 +85,7 @@
   }
 
   &::placeholder {
-    color: var(--tv-text-muted);
+    color: var(--ui-text-muted);
   }
 }
 
@@ -93,7 +93,7 @@
   appearance: none;
   border: none;
   background: none;
-  color: var(--tv-text-muted);
+  color: var(--ui-text-muted);
   cursor: pointer;
   padding: 0.3rem 0.4rem;
   display: flex;
@@ -103,7 +103,7 @@
   transition: color 120ms ease;
 
   &:hover:not(:disabled) {
-    color: var(--tv-text);
+    color: var(--ui-text);
   }
 
   &:disabled {
@@ -119,8 +119,8 @@
   z-index: 100;
   left: 0;
   margin-top: 0.25rem;
-  background: var(--tv-surface);
-  border: 1px solid var(--tv-border);
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
   border-radius: 0.375rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   padding: 0.5rem;
@@ -141,7 +141,7 @@
   appearance: none;
   border: none;
   background: none;
-  color: var(--tv-text-muted);
+  color: var(--ui-text-muted);
   cursor: pointer;
   font-size: 1rem;
   width: 1.75rem;
@@ -153,15 +153,15 @@
   transition: background-color 80ms ease;
 
   &:hover {
-    background: var(--tv-surface-2);
-    color: var(--tv-text);
+    background: var(--ui-surface-2);
+    color: var(--ui-text);
   }
 }
 
 .dp-cal-title {
   font-weight: 600;
   font-size: 0.8125rem;
-  color: var(--tv-text);
+  color: var(--ui-text);
   text-align: center;
   flex: 1;
 }
@@ -178,7 +178,7 @@
   text-align: center;
   font-size: 0.6875rem;
   font-weight: 600;
-  color: var(--tv-text-muted);
+  color: var(--ui-text-muted);
   padding: 0.25rem 0;
   text-transform: uppercase;
 }
@@ -195,7 +195,7 @@
   appearance: none;
   border: none;
   background: none;
-  color: var(--tv-text);
+  color: var(--ui-text);
   font-family: inherit;
   font-size: 0.8125rem;
   width: 2rem;
@@ -211,22 +211,22 @@
   margin: auto;
 
   &:hover:not(:disabled):not(.dp-cal-day--selected) {
-    background: var(--tv-surface-2);
+    background: var(--ui-surface-2);
   }
 
   &.dp-cal-day--outside {
-    color: var(--tv-text-muted);
+    color: var(--ui-text-muted);
     opacity: 0.5;
   }
 
   &.dp-cal-day--today {
     font-weight: 700;
-    box-shadow: inset 0 0 0 1px var(--tv-accent);
+    box-shadow: inset 0 0 0 1px var(--ui-accent);
   }
 
   &.dp-cal-day--selected {
-    background: var(--tv-accent);
-    color: var(--tv-accent-contrast);
+    background: var(--ui-accent);
+    color: var(--ui-accent-contrast);
     font-weight: 600;
   }
 
@@ -243,14 +243,14 @@
   justify-content: center;
   margin-top: 0.375rem;
   padding-top: 0.375rem;
-  border-top: 1px solid var(--tv-border);
+  border-top: 1px solid var(--ui-border);
 }
 
 .dp-cal-today {
   appearance: none;
   border: none;
   background: none;
-  color: var(--tv-accent);
+  color: var(--ui-accent);
   cursor: pointer;
   font-family: inherit;
   font-size: 0.75rem;
@@ -259,6 +259,6 @@
   border-radius: 0.25rem;
 
   &:hover {
-    background: var(--tv-surface-2);
+    background: var(--ui-surface-2);
   }
 }

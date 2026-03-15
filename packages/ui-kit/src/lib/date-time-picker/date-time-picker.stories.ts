@@ -32,11 +32,11 @@ import { UIDateTimePicker } from "./date-time-picker.component";
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,
@@ -70,11 +70,11 @@ class Iso24Demo {
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,
@@ -109,11 +109,11 @@ class Eu12Demo {
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,
@@ -153,17 +153,17 @@ class Us12Demo {
       .story-hint {
         font-size: 0.8125rem;
         margin-bottom: 0.5rem;
-        color: var(--tv-text-muted, #5a6470);
+        color: var(--ui-text-muted, #5a6470);
       }
       .story-output {
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,
@@ -200,17 +200,17 @@ class ConstrainedDemo {
       .story-hint {
         font-size: 0.8125rem;
         margin-bottom: 0.5rem;
-        color: var(--tv-text-muted, #5a6470);
+        color: var(--ui-text-muted, #5a6470);
       }
       .story-output {
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,
@@ -267,11 +267,11 @@ class DisabledDemo {}
         margin-top: 1rem;
         font-size: 0.8125rem;
         padding: 0.75rem;
-        background: var(--tv-surface-2, #fbfbfc);
-        color: var(--tv-text, #1d232b);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #fbfbfc);
+        color: var(--ui-text, #1d232b);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
-        font-family: var(--tv-font, monospace);
+        font-family: var(--ui-font, monospace);
         overflow-x: auto;
       }
     `,

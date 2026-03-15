@@ -3,21 +3,21 @@
 }
 
 .table-body-viewport {
-  height: var(--tv-viewport-height, 420px);
+  height: var(--ui-viewport-height, 420px);
   width: 100%;
-  background: var(--tv-surface);
+  background: var(--ui-surface);
   overflow: auto;
 }
 
 .table-row {
   display: flex;
-  min-width: var(--tv-total-row-width, 100%);
-  border-bottom: 1px solid var(--tv-border);
+  min-width: var(--ui-total-row-width, 100%);
+  border-bottom: 1px solid var(--ui-border);
   transition: background-color 120ms ease;
 }
 
 .table-row:hover {
-  background: color-mix(in srgb, var(--tv-accent) 7%, transparent);
+  background: color-mix(in srgb, var(--ui-accent) 7%, transparent);
 }
 
 .table-cell {
@@ -28,9 +28,9 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border-right: 1px solid var(--tv-border);
-  color: var(--tv-text);
-  font-size: calc(var(--tv-font-body) * var(--ui-density-scale, 1));
+  border-right: 1px solid var(--ui-border);
+  color: var(--ui-text);
+  font-size: calc(var(--ui-font-body) * var(--ui-density-scale, 1));
 }
 
 .table-cell:last-child {
@@ -38,49 +38,49 @@
 }
 
 .table-cell--row-index {
-  flex: 0 0 var(--tv-row-index-width, 4.25rem);
-  width: var(--tv-row-index-width, 4.25rem);
-  min-width: var(--tv-row-index-width, 4.25rem);
-  max-width: var(--tv-row-index-width, 4.25rem);
+  flex: 0 0 var(--ui-row-index-width, 4.25rem);
+  width: var(--ui-row-index-width, 4.25rem);
+  min-width: var(--ui-row-index-width, 4.25rem);
+  max-width: var(--ui-row-index-width, 4.25rem);
   justify-content: flex-end;
-  color: var(--tv-muted);
+  color: var(--ui-muted);
   font-variant-numeric: tabular-nums;
 }
 
 .table-cell--selection {
-  flex: 0 0 var(--tv-selection-col-width, 3rem);
-  width: var(--tv-selection-col-width, 3rem);
-  min-width: var(--tv-selection-col-width, 3rem);
-  max-width: var(--tv-selection-col-width, 3rem);
+  flex: 0 0 var(--ui-selection-col-width, 3rem);
+  width: var(--ui-selection-col-width, 3rem);
+  min-width: var(--ui-selection-col-width, 3rem);
+  max-width: var(--ui-selection-col-width, 3rem);
   justify-content: center;
   padding-left: 0;
   padding-right: 0;
 }
 
 .tv-row-checkbox {
-  width: var(--tv-checkbox-size, 0.95rem);
-  height: var(--tv-checkbox-size, 0.95rem);
+  width: var(--ui-checkbox-size, 0.95rem);
+  height: var(--ui-checkbox-size, 0.95rem);
   cursor: pointer;
-  accent-color: var(--tv-accent);
+  accent-color: var(--ui-accent);
   margin: 0;
 }
 
 .tv-row-radio {
-  width: var(--tv-radio-size, 0.95rem);
-  height: var(--tv-radio-size, 0.95rem);
+  width: var(--ui-radio-size, 0.95rem);
+  height: var(--ui-radio-size, 0.95rem);
   cursor: pointer;
-  accent-color: var(--tv-accent);
+  accent-color: var(--ui-accent);
   margin: 0;
 }
 
 /* ── Selected row ── */
 
 .table-row--selected {
-  background: var(--tv-selected-bg);
+  background: var(--ui-selected-bg);
 }
 
 .table-row--selected:hover {
-  background: var(--tv-selected-hover-bg);
+  background: var(--ui-selected-hover-bg);
 }
 
 .table-row--selectable {
@@ -99,30 +99,30 @@
 
 .table-cell-skeleton {
   display: block;
-  width: var(--tv-skeleton-width, 60%);
-  height: var(--tv-skeleton-height, 0.75rem);
-  border-radius: var(--tv-skeleton-radius, 4px);
+  width: var(--ui-skeleton-width, 60%);
+  height: var(--ui-skeleton-height, 0.75rem);
+  border-radius: var(--ui-skeleton-radius, 4px);
   background: var(
-    --tv-skeleton-bg,
+    --ui-skeleton-bg,
     linear-gradient(
       90deg,
-      var(--tv-border) 25%,
-      color-mix(in srgb, var(--tv-border) 40%, transparent) 50%,
-      var(--tv-border) 75%
+      var(--ui-border) 25%,
+      color-mix(in srgb, var(--ui-border) 40%, transparent) 50%,
+      var(--ui-border) 75%
     )
   );
   background-size: 200% 100%;
-  animation: tv-skeleton-shimmer var(--tv-skeleton-duration, 1.5s) ease-in-out
+  animation: tv-skeleton-shimmer var(--ui-skeleton-duration, 1.5s) ease-in-out
     infinite;
 }
 
 /* Vary skeleton bar widths per column for a natural look */
 .table-row--loading .table-cell:nth-child(odd) .table-cell-skeleton {
-  width: var(--tv-skeleton-width-odd, 45%);
+  width: var(--ui-skeleton-width-odd, 45%);
 }
 
 .table-row--loading .table-cell:nth-child(even) .table-cell-skeleton {
-  width: var(--tv-skeleton-width-even, 70%);
+  width: var(--ui-skeleton-width-even, 70%);
 }
 
 @keyframes tv-skeleton-shimmer {

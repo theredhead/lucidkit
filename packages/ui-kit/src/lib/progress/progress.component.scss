@@ -2,19 +2,19 @@
   display: inline-flex;
   align-items: center;
 
-  --tv-accent: #3584e4;
-  --tv-track: #d7dce2;
+  --ui-accent: #3584e4;
+  --ui-track: #d7dce2;
 }
 
 :host-context(html.dark-theme) {
-  --tv-accent: #7ab0ff;
-  --tv-track: #505d6d;
+  --ui-accent: #7ab0ff;
+  --ui-track: #505d6d;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-accent: #7ab0ff;
-    --tv-track: #505d6d;
+    --ui-accent: #7ab0ff;
+    --ui-track: #505d6d;
   }
 }
 
@@ -28,7 +28,7 @@
   width: 100%;
   height: 4px;
   border-radius: 2px;
-  background: var(--tv-track);
+  background: var(--ui-track);
   overflow: hidden;
   position: relative;
 }
@@ -36,7 +36,7 @@
 .pg-fill {
   height: 100%;
   border-radius: 2px;
-  background: var(--tv-accent);
+  background: var(--ui-accent);
   transition: width 250ms ease;
 }
 
@@ -68,13 +68,13 @@
 
 .pg-ring-track {
   fill: none;
-  stroke: var(--tv-track);
+  stroke: var(--ui-track);
   stroke-width: 4;
 }
 
 .pg-ring-fill {
   fill: none;
-  stroke: var(--tv-accent);
+  stroke: var(--ui-accent);
   stroke-width: 4;
   stroke-linecap: round;
   transform: rotate(-90deg);

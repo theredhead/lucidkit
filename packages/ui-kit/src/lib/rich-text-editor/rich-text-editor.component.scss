@@ -2,47 +2,47 @@
 
 :host {
   display: block;
-  font-family: var(--tv-font, inherit);
-  font-size: var(--tv-font-body, 0.875rem);
+  font-family: var(--ui-font, inherit);
+  font-size: var(--ui-font-body, 0.875rem);
 
-  --tv-text: #1d232b;
-  --tv-surface: #ffffff;
-  --tv-surface-2: #f0f2f5;
-  --tv-border: #d7dce2;
-  --tv-border-strong: #c2c8cf;
-  --tv-muted: #5a6470;
-  --tv-accent: #3584e4;
-  --tv-placeholder-bg: #e8f0fe;
-  --tv-placeholder-text: #1a56db;
+  --ui-text: #1d232b;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f0f2f5;
+  --ui-border: #d7dce2;
+  --ui-border-strong: #c2c8cf;
+  --ui-muted: #5a6470;
+  --ui-accent: #3584e4;
+  --ui-placeholder-bg: #e8f0fe;
+  --ui-placeholder-text: #1a56db;
 }
 
 /* ── Explicit dark class ───────────────────────────────── */
 
 :host-context(html.dark-theme) {
-  --tv-text: #f2f6fb;
-  --tv-surface: #1e2228;
-  --tv-surface-2: #2a2f38;
-  --tv-border: #3a3f47;
-  --tv-border-strong: #505d6d;
-  --tv-muted: #d0d8e3;
-  --tv-accent: #7ab0ff;
-  --tv-placeholder-bg: #1e3a5f;
-  --tv-placeholder-text: #8ec5ff;
+  --ui-text: #f2f6fb;
+  --ui-surface: #1e2228;
+  --ui-surface-2: #2a2f38;
+  --ui-border: #3a3f47;
+  --ui-border-strong: #505d6d;
+  --ui-muted: #d0d8e3;
+  --ui-accent: #7ab0ff;
+  --ui-placeholder-bg: #1e3a5f;
+  --ui-placeholder-text: #8ec5ff;
 }
 
 /* ── System preference fallback ────────────────────────── */
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-text: #f2f6fb;
-    --tv-surface: #1e2228;
-    --tv-surface-2: #2a2f38;
-    --tv-border: #3a3f47;
-    --tv-border-strong: #505d6d;
-    --tv-muted: #d0d8e3;
-    --tv-accent: #7ab0ff;
-    --tv-placeholder-bg: #1e3a5f;
-    --tv-placeholder-text: #8ec5ff;
+    --ui-text: #f2f6fb;
+    --ui-surface: #1e2228;
+    --ui-surface-2: #2a2f38;
+    --ui-border: #3a3f47;
+    --ui-border-strong: #505d6d;
+    --ui-muted: #d0d8e3;
+    --ui-accent: #7ab0ff;
+    --ui-placeholder-bg: #1e3a5f;
+    --ui-placeholder-text: #8ec5ff;
   }
 }
 
@@ -54,8 +54,8 @@
   align-items: center;
   gap: 0.125rem;
   padding: 0.25rem;
-  background: var(--tv-surface-2);
-  border: 1px solid var(--tv-border);
+  background: var(--ui-surface-2);
+  border: 1px solid var(--ui-border);
   border-bottom: none;
   border-radius: 0.25rem 0.25rem 0 0;
 }
@@ -64,7 +64,7 @@
   display: inline-block;
   width: 1px;
   height: 1.25rem;
-  background: var(--tv-border);
+  background: var(--ui-border);
   margin: 0 0.15rem;
 }
 
@@ -72,7 +72,7 @@
   appearance: none;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--tv-text);
+  color: var(--ui-text);
   cursor: pointer;
   font-family: inherit;
   font-size: 0.8125rem;
@@ -90,12 +90,12 @@
     border-color 100ms ease;
 
   &:hover:not(:disabled) {
-    background: var(--tv-surface);
-    border-color: var(--tv-border);
+    background: var(--ui-surface);
+    border-color: var(--ui-border);
   }
 
   &:active:not(:disabled) {
-    background: var(--tv-border);
+    background: var(--ui-border);
   }
 
   &:disabled {
@@ -104,7 +104,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--tv-accent);
+    outline: 2px solid var(--ui-accent);
     outline-offset: -1px;
   }
 }
@@ -141,8 +141,8 @@
   min-width: 8rem;
   margin-top: 0.25rem;
   padding: 0.25rem 0;
-  background: var(--tv-surface);
-  border: 1px solid var(--tv-border);
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
@@ -159,16 +159,16 @@
   padding: 0.35rem 0.6rem;
   font-family: inherit;
   font-size: 0.8125rem;
-  color: var(--tv-text);
+  color: var(--ui-text);
   cursor: pointer;
   transition: background-color 80ms ease;
 
   &:hover {
-    background: var(--tv-surface-2);
+    background: var(--ui-surface-2);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--tv-accent);
+    outline: 2px solid var(--ui-accent);
     outline-offset: -2px;
   }
 }
@@ -181,11 +181,11 @@
 }
 
 .rte-dropdown-action--active {
-  background: var(--tv-surface-2);
+  background: var(--ui-surface-2);
   font-weight: 600;
 
   .rte-dropdown-action-icon {
-    color: var(--tv-accent);
+    color: var(--ui-accent);
   }
 }
 
@@ -206,8 +206,8 @@
   overflow-y: auto;
   margin-top: 0.25rem;
   padding: 0.25rem 0;
-  background: var(--tv-surface);
-  border: 1px solid var(--tv-border);
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
@@ -218,7 +218,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--tv-muted);
+  color: var(--ui-muted);
 }
 
 .rte-placeholder-option {
@@ -231,16 +231,16 @@
   padding: 0.35rem 0.6rem;
   font-family: inherit;
   font-size: 0.8125rem;
-  color: var(--tv-text);
+  color: var(--ui-text);
   cursor: pointer;
   transition: background-color 80ms ease;
 
   &:hover {
-    background: var(--tv-surface-2);
+    background: var(--ui-surface-2);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--tv-accent);
+    outline: 2px solid var(--ui-accent);
     outline-offset: -2px;
   }
 }
@@ -248,25 +248,25 @@
 /* ── Editor wrapper ────────────────────────────────────── */
 
 .rte-editor-wrapper {
-  border: 1px solid var(--tv-border);
+  border: 1px solid var(--ui-border);
   border-radius: 0 0 0.25rem 0.25rem;
-  background: var(--tv-surface);
+  background: var(--ui-surface);
   transition: border-color 120ms ease;
 
   &:hover {
-    border-color: var(--tv-border-strong);
+    border-color: var(--ui-border-strong);
   }
 
   &.rte-editor-wrapper--focused {
-    border-color: var(--tv-accent);
-    box-shadow: 0 0 0 1px var(--tv-accent);
+    border-color: var(--ui-accent);
+    box-shadow: 0 0 0 1px var(--ui-accent);
   }
 }
 
 .rte-editor {
   min-height: 8rem;
   padding: 0.5rem 0.6rem;
-  color: var(--tv-text);
+  color: var(--ui-text);
   line-height: 1.5;
   outline: none;
   overflow-y: auto;
@@ -274,7 +274,7 @@
   // Placeholder via :empty pseudo-element
   &:empty::before {
     content: attr(data-placeholder);
-    color: var(--tv-muted);
+    color: var(--ui-muted);
     pointer-events: none;
   }
 
@@ -312,9 +312,9 @@
   blockquote {
     margin: 0.4em 0;
     padding: 0.3em 0.8em;
-    border-left: 3px solid var(--tv-accent);
-    background: var(--tv-surface-2);
-    color: var(--tv-text);
+    border-left: 3px solid var(--ui-accent);
+    background: var(--ui-surface-2);
+    color: var(--ui-text);
     font-style: italic;
     border-radius: 0 0.2rem 0.2rem 0;
   }
@@ -323,8 +323,8 @@
   pre {
     margin: 0.4em 0;
     padding: 0.5em 0.6em;
-    background: var(--tv-surface-2);
-    border: 1px solid var(--tv-border);
+    background: var(--ui-surface-2);
+    border: 1px solid var(--ui-border);
     border-radius: 0.25rem;
     font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
     font-size: 0.85em;
@@ -336,7 +336,7 @@
 
   // Hyperlink styles
   a {
-    color: var(--tv-accent);
+    color: var(--ui-accent);
     text-decoration: underline;
     text-underline-offset: 0.15em;
     cursor: pointer;
@@ -355,8 +355,8 @@
   padding: 0.05rem 0.4rem;
   margin: 0 0.1rem;
   border-radius: 0.2rem;
-  background: var(--tv-placeholder-bg);
-  color: var(--tv-placeholder-text);
+  background: var(--ui-placeholder-bg);
+  color: var(--ui-placeholder-text);
   font-size: 0.8125em;
   font-weight: 500;
   white-space: nowrap;
@@ -379,13 +379,13 @@
 /* ── Source toggle button ──────────────────────────────── */
 
 .rte-toolbar-btn--active {
-  background: var(--tv-accent);
+  background: var(--ui-accent);
   color: #fff;
-  border-color: var(--tv-accent);
+  border-color: var(--ui-accent);
 
   &:hover:not(:disabled) {
-    background: var(--tv-accent);
-    border-color: var(--tv-accent);
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
     opacity: 0.9;
   }
 }
@@ -397,11 +397,11 @@
   width: 100%;
   min-height: 8rem;
   padding: 0.5rem 0.6rem;
-  border: 1px solid var(--tv-border);
+  border: 1px solid var(--ui-border);
   border-bottom: none;
   border-radius: 0;
-  background: var(--tv-surface);
-  color: var(--tv-text);
+  background: var(--ui-surface);
+  color: var(--ui-text);
   font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
   font-size: 0.8125rem;
   line-height: 1.5;
@@ -414,12 +414,12 @@
   overflow-x: auto;
 
   &:hover {
-    border-color: var(--tv-border-strong);
+    border-color: var(--ui-border-strong);
   }
 
   &:focus {
-    border-color: var(--tv-accent);
-    box-shadow: 0 0 0 1px var(--tv-accent);
+    border-color: var(--ui-accent);
+    box-shadow: 0 0 0 1px var(--ui-accent);
   }
 
   &:disabled {
@@ -434,10 +434,10 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--tv-muted);
-  background: var(--tv-surface-2);
-  border-left: 1px solid var(--tv-border);
-  border-right: 1px solid var(--tv-border);
+  color: var(--ui-muted);
+  background: var(--ui-surface-2);
+  border-left: 1px solid var(--ui-border);
+  border-right: 1px solid var(--ui-border);
 }
 
 .rte-editor-wrapper--preview {

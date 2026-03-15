@@ -204,11 +204,11 @@ const storyOutputStyles = `
   :host { display: block; max-width: 400px; }
   .story-output {
     margin-top: 1rem; font-size: 0.8125rem; padding: 0.75rem;
-    background: var(--tv-surface-2, #fbfbfc);
-    color: var(--tv-text, #1d232b);
-    border: 1px solid var(--tv-border, #d7dce2);
+    background: var(--ui-surface-2, #fbfbfc);
+    color: var(--ui-text, #1d232b);
+    border: 1px solid var(--ui-border, #d7dce2);
     border-radius: 4px;
-    font-family: var(--tv-font, monospace);
+    font-family: var(--ui-font, monospace);
     overflow-x: auto;
   }
 `;
@@ -388,10 +388,10 @@ const meta: Meta = {
         component:
           "Both declarative (template-driven) and imperative (service-based) dialog patterns.\n\n" +
           "**CSS custom properties** — override on `ui-dialog` or any ancestor:\n" +
-          "- `--tv-surface` — dialog background (`#ffffff` / `#2a2f38`)\n" +
-          "- `--tv-text` — text color (`#1d232b` / `#f2f6fb`)\n" +
-          "- `--tv-border` — header & footer borders (`#d7dce2` / `#3a3f47`)\n" +
-          "- `--tv-accent` — accent color (`#3584e4` / `#7ab0ff`)",
+          "- `--ui-surface` — dialog background (`#ffffff` / `#2a2f38`)\n" +
+          "- `--ui-text` — text color (`#1d232b` / `#f2f6fb`)\n" +
+          "- `--ui-border` — header & footer borders (`#d7dce2` / `#3a3f47`)\n" +
+          "- `--ui-accent` — accent color (`#3584e4` / `#7ab0ff`)",
       },
     },
   },

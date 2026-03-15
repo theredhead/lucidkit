@@ -39,7 +39,7 @@ const DEMO_FIELDS: FilterFieldDefinition<DemoRow>[] = [
       [(value)]="descriptor"
     />
     <pre
-      style="margin-top:1rem;font-size:0.8125rem;background:var(--tv-surface-2,#fbfbfc);color:var(--tv-text,#1d232b);border:1px solid var(--tv-border,#d7dce2);padding:0.75rem;border-radius:0;overflow-x:auto;font-family:var(--tv-font,monospace);"
+      style="margin-top:1rem;font-size:0.8125rem;background:var(--ui-surface-2,#fbfbfc);color:var(--ui-text,#1d232b);border:1px solid var(--ui-border,#d7dce2);padding:0.75rem;border-radius:0;overflow-x:auto;font-family:var(--ui-font,monospace);"
       >{{ descriptor() | json }}</pre
     >
   `,
@@ -105,7 +105,7 @@ export const WithJunction: Story = {
         [allowJunction]="true"
         [(value)]="descriptor"
       />
-      <pre style="margin-top:1rem;font-size:0.8125rem;background:var(--tv-surface-2,#fbfbfc);color:var(--tv-text,#1d232b);border:1px solid var(--tv-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--tv-font,monospace);">{{ descriptor | json }}</pre>
+      <pre style="margin-top:1rem;font-size:0.8125rem;background:var(--ui-surface-2,#fbfbfc);color:var(--ui-text,#1d232b);border:1px solid var(--ui-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--ui-font,monospace);">{{ descriptor | json }}</pre>
     `,
     props: {
       fields: DEMO_FIELDS,
@@ -123,7 +123,7 @@ export const Prepopulated: Story = {
         [allowJunction]="true"
         [(value)]="descriptor"
       />
-      <pre style="margin-top:1rem;font-size:0.8125rem;background:var(--tv-surface-2,#fbfbfc);color:var(--tv-text,#1d232b);border:1px solid var(--tv-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--tv-font,monospace);">{{ descriptor | json }}</pre>
+      <pre style="margin-top:1rem;font-size:0.8125rem;background:var(--ui-surface-2,#fbfbfc);color:var(--ui-text,#1d232b);border:1px solid var(--ui-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--ui-font,monospace);">{{ descriptor | json }}</pre>
     `,
     props: {
       fields: DEMO_FIELDS,
