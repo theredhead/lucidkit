@@ -16,6 +16,11 @@ const DIALOG_STYLES = /* css */ `
 /* ── ui-dialog service base ─────────────────────────────── */
 
 dialog.ui-dialog-service {
+  --tv-surface: var(--theredhead-surface, #ffffff);
+  --tv-text: var(--theredhead-on-surface, #1d232b);
+  --tv-border: var(--theredhead-outline, #d7dce2);
+  --tv-accent: var(--theredhead-primary, #3584e4);
+
   border: none;
   border-radius: 0.75rem;
   padding: 0;
@@ -24,38 +29,11 @@ dialog.ui-dialog-service {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: var(--theredhead-surface, #fff);
-  color: var(--theredhead-on-surface, #1d232b);
+  background: var(--tv-surface);
+  color: var(--tv-text);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   animation: ui-dialog-svc-enter 180ms ease-out;
 }
-
-/* ── structural sections (match UIDialog layout) ────────── */
-
-dialog.ui-dialog-service .dlg-header {
-  padding: 1rem 1.25rem 0.75rem;
-  font: 600 1.125rem/1.4 system-ui, sans-serif;
-  border-bottom: 1px solid var(--theredhead-outline, #d7dce2);
-}
-dialog.ui-dialog-service .dlg-header:empty { display: none; }
-
-dialog.ui-dialog-service .dlg-body {
-  padding: 1rem 1.25rem;
-  overflow-y: auto;
-  flex: 1 1 auto;
-  max-height: 80vh;
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-dialog.ui-dialog-service .dlg-footer {
-  padding: 0.75rem 1.25rem 1rem;
-  border-top: 1px solid var(--theredhead-outline, #d7dce2);
-  display: flex;
-  justify-content: flex-end;
-  gap: 2rem;
-}
-dialog.ui-dialog-service .dlg-footer:empty { display: none; }
 
 dialog.ui-dialog-service::backdrop {
   background: rgba(0, 0, 0, 0.45);
@@ -65,14 +43,10 @@ dialog.ui-dialog-service::backdrop {
 /* ── dark mode (explicit class) ─────────────────────────── */
 
 html.dark-theme dialog.ui-dialog-service {
-  background: var(--theredhead-surface, #2a2f38);
-  color: var(--theredhead-on-surface, #f2f6fb);
+  --tv-surface: var(--theredhead-surface, #2a2f38);
+  --tv-text: var(--theredhead-on-surface, #f2f6fb);
+  --tv-border: var(--theredhead-outline, #3a3f47);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-html.dark-theme dialog.ui-dialog-service .dlg-header,
-html.dark-theme dialog.ui-dialog-service .dlg-footer {
-  border-color: var(--theredhead-outline, #3a3f47);
 }
 
 html.dark-theme dialog.ui-dialog-service::backdrop {
@@ -83,18 +57,14 @@ html.dark-theme dialog.ui-dialog-service::backdrop {
 
 @media (prefers-color-scheme: dark) {
   html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service {
-    background: var(--theredhead-surface, #2a2f38);
-    color: var(--theredhead-on-surface, #f2f6fb);
+    --tv-surface: var(--theredhead-surface, #2a2f38);
+    --tv-text: var(--theredhead-on-surface, #f2f6fb);
+    --tv-border: var(--theredhead-outline, #3a3f47);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 
   html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service::backdrop {
     background: rgba(0, 0, 0, 0.65);
-  }
-
-  html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service .dlg-header,
-  html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service .dlg-footer {
-    border-color: var(--theredhead-outline, #3a3f47);
   }
 }
 

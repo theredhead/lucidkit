@@ -46,41 +46,6 @@
   }
 }
 
-/* ── Sections ── */
-
-.dlg-header {
-  padding: 1rem 1.25rem 0.75rem;
-  font:
-    600 1.125rem/1.4 system-ui,
-    sans-serif;
-  border-bottom: 1px solid var(--tv-border);
-
-  &:empty {
-    display: none;
-  }
-}
-
-.dlg-body {
-  padding: 1rem 1.25rem;
-  overflow-y: auto;
-  flex: 1 1 auto;
-  max-height: 80vh;
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-.dlg-footer {
-  padding: 0.75rem 1.25rem 1rem;
-  border-top: 1px solid var(--tv-border);
-  display: flex;
-  justify-content: flex-end;
-  gap: 2rem;
-
-  &:empty {
-    display: none;
-  }
-}
-
 /* ── Animations ── */
 
 @keyframes dlg-enter {

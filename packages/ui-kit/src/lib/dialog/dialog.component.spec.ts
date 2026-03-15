@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component, signal, viewChild } from "@angular/core";
 
 import { UIDialog } from "./dialog.component";
+import { UIDialogBody } from "./dialog-body.component";
+import { UIDialogFooter } from "./dialog-footer.component";
+import { UIDialogHeader } from "./dialog-header.component";
 
 // jsdom does not implement HTMLDialogElement.showModal / .close
 beforeAll(() => {
@@ -15,14 +18,14 @@ beforeAll(() => {
 
 @Component({
   standalone: true,
-  imports: [UIDialog],
+  imports: [UIDialog, UIDialogHeader, UIDialogBody, UIDialogFooter],
   template: `
     <ui-dialog [(open)]="isOpen" [ariaLabel]="'Test dialog'">
-      <span ui-dialog-title>Test Title</span>
-      <p>Body content</p>
-      <div ui-dialog-footer>
+      <ui-dialog-header>Test Title</ui-dialog-header>
+      <ui-dialog-body>Body content</ui-dialog-body>
+      <ui-dialog-footer>
         <button (click)="isOpen.set(false)">Close</button>
-      </div>
+      </ui-dialog-footer>
     </ui-dialog>
   `,
 })
@@ -63,21 +66,21 @@ describe("UIDialog", () => {
   it("should render projected title", () => {
     host.isOpen.set(true);
     fixture.detectChanges();
-    const header = fixture.nativeElement.querySelector(".dlg-header");
+    const header = fixture.nativeElement.querySelector("ui-dialog-header");
     expect(header.textContent.trim()).toBe("Test Title");
   });
 
   it("should render projected body content", () => {
     host.isOpen.set(true);
     fixture.detectChanges();
-    const body = fixture.nativeElement.querySelector(".dlg-body");
+    const body = fixture.nativeElement.querySelector("ui-dialog-body");
     expect(body.textContent.trim()).toBe("Body content");
   });
 
   it("should render projected footer", () => {
     host.isOpen.set(true);
     fixture.detectChanges();
-    const footer = fixture.nativeElement.querySelector(".dlg-footer");
+    const footer = fixture.nativeElement.querySelector("ui-dialog-footer");
     expect(footer.textContent.trim()).toBe("Close");
   });
 
