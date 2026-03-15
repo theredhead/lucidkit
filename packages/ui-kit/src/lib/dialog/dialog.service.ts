@@ -7,17 +7,17 @@ import {
   Injector,
 } from "@angular/core";
 
-import { ModalRef, type OpenModalConfig } from "./modal.types";
+import { ModalRef, type OpenModalConfig } from "./dialog.types";
 
-// ── Modal stylesheet (injected into <head> once) ───────────────────
+// ── Dialog stylesheet (injected into <head> once) ──────────────────
 
 /** @internal */
-const MODAL_STYLES = /* css */ `
-/* ── ui-modal base ──────────────────────────────────────── */
+const DIALOG_STYLES = /* css */ `
+/* ── ui-dialog service base ─────────────────────────────── */
 
-dialog.ui-modal {
+dialog.ui-dialog-service {
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   padding: 0;
   max-width: min(90vw, 40rem);
   max-height: 85vh;
@@ -25,46 +25,46 @@ dialog.ui-modal {
   background: var(--theredhead-surface, #fff);
   color: var(--theredhead-on-surface, #1d232b);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  animation: ui-modal-enter 180ms ease-out;
+  animation: ui-dialog-svc-enter 180ms ease-out;
 }
 
-dialog.ui-modal::backdrop {
+dialog.ui-dialog-service::backdrop {
   background: rgba(0, 0, 0, 0.45);
-  animation: ui-modal-backdrop-enter 180ms ease-out;
+  animation: ui-dialog-svc-backdrop-enter 180ms ease-out;
 }
 
 /* ── dark mode (explicit class) ─────────────────────────── */
 
-html.dark-theme dialog.ui-modal {
-  background: var(--theredhead-surface, #1e2228);
+html.dark-theme dialog.ui-dialog-service {
+  background: var(--theredhead-surface, #2a2f38);
   color: var(--theredhead-on-surface, #f2f6fb);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-html.dark-theme dialog.ui-modal::backdrop {
+html.dark-theme dialog.ui-dialog-service::backdrop {
   background: rgba(0, 0, 0, 0.65);
 }
 
 /* ── dark mode (system preference fallback) ─────────────── */
 
 @media (prefers-color-scheme: dark) {
-  html:not(.light-theme):not(.dark-theme) dialog.ui-modal {
-    background: var(--theredhead-surface, #1e2228);
+  html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service {
+    background: var(--theredhead-surface, #2a2f38);
     color: var(--theredhead-on-surface, #f2f6fb);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 
-  html:not(.light-theme):not(.dark-theme) dialog.ui-modal::backdrop {
+  html:not(.light-theme):not(.dark-theme) dialog.ui-dialog-service::backdrop {
     background: rgba(0, 0, 0, 0.65);
   }
 }
 
 /* ── animations ─────────────────────────────────────────── */
 
-@keyframes ui-modal-enter {
+@keyframes ui-dialog-svc-enter {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(-8px);
+    transform: scale(0.95) translateY(8px);
   }
   to {
     opacity: 1;
@@ -72,7 +72,7 @@ html.dark-theme dialog.ui-modal::backdrop {
   }
 }
 
-@keyframes ui-modal-backdrop-enter {
+@keyframes ui-dialog-svc-backdrop-enter {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
@@ -81,12 +81,13 @@ html.dark-theme dialog.ui-modal::backdrop {
 // ── Service ────────────────────────────────────────────────────────
 
 /**
- * Service for opening modal dialogs using the native HTML5
- * `<dialog>` element.
+ * Service for opening modal dialogs programmatically using the native
+ * HTML5 `<dialog>` element.
  *
- * Content components implement {@link UIModalContent} and receive a
- * {@link ModalRef} via dependency injection to close themselves and
- * return a result.
+ * This is the **imperative** counterpart to the declarative
+ * {@link UIDialog} component. Use this service when you need to
+ * dynamically render a component, pass inputs/outputs, and collect a
+ * typed result via {@link ModalRef.closed}.
  *
  * @example
  * ```ts
@@ -114,7 +115,7 @@ export class ModalService {
    * @returns A {@link ModalRef} to observe the result or close
    *          programmatically.
    */
-  openModal<T, R = unknown>(config: OpenModalConfig<T>): ModalRef<R> {
+  public openModal<T, R = unknown>(config: OpenModalConfig<T>): ModalRef<R> {
     this.ensureStyles();
 
     const modalRef = new ModalRef<R>();
@@ -122,7 +123,7 @@ export class ModalService {
     // ── Create native <dialog> ──────────────────────────────
 
     const dialog = document.createElement("dialog");
-    dialog.classList.add("ui-modal");
+    dialog.classList.add("ui-dialog-service");
 
     if (config.ariaLabel) {
       dialog.setAttribute("aria-label", config.ariaLabel);
@@ -208,13 +209,13 @@ export class ModalService {
     return modalRef;
   }
 
-  /** Injects the modal stylesheet into `<head>` once. */
+  /** Injects the dialog stylesheet into `<head>` once. */
   private ensureStyles(): void {
     if (this.stylesInjected) return;
     this.stylesInjected = true;
     const style = document.createElement("style");
-    style.setAttribute("data-ui-modal", "");
-    style.textContent = MODAL_STYLES;
+    style.setAttribute("data-ui-dialog-service", "");
+    style.textContent = DIALOG_STYLES;
     document.head.appendChild(style);
   }
 }

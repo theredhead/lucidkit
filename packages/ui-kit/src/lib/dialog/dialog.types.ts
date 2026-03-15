@@ -1,7 +1,7 @@
 import { type Type } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 
-// ── ModalRef ───────────────────────────────────────────────────────
+// ── DialogRef ──────────────────────────────────────────────────────
 
 /**
  * Reference to an open modal dialog.
@@ -33,11 +33,11 @@ export class ModalRef<R = unknown> {
    * then completes.  Emits `undefined` when closed without a result
    * (e.g. Escape key or backdrop click).
    */
-  readonly closed: Observable<R | undefined> =
+  public readonly closed: Observable<R | undefined> =
     this.resultSubject.asObservable();
 
   /** Whether the modal has already been closed. */
-  get isClosed(): boolean {
+  public get isClosed(): boolean {
     return this._isClosed;
   }
 
@@ -45,7 +45,7 @@ export class ModalRef<R = unknown> {
    * Close the modal, optionally returning a result value to the
    * opener.
    */
-  close(result?: R): void {
+  public close(result?: R): void {
     if (this._isClosed) return;
     this._isClosed = true;
     this.resultSubject.next(result);
@@ -57,7 +57,7 @@ export class ModalRef<R = unknown> {
    * Register a teardown function called once when the modal closes.
    * @internal
    */
-  onDestroy(fn: () => void): void {
+  public onDestroy(fn: () => void): void {
     this.cleanupFns.push(fn);
   }
 }
