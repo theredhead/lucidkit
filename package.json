@@ -11,9 +11,19 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "npm run lint --workspaces",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "storybook": "ng run storybook-host:storybook",
-    "build-storybook": "ng run storybook-host:build-storybook"
+    "build-storybook": "ng run storybook-host:build-storybook",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix --no-error-on-unmatched-pattern"
+    ],
+    "*.html": [
+      "eslint --fix --no-error-on-unmatched-pattern"
+    ]
   },
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.2.2",
@@ -21,6 +31,9 @@
     "@angular-devkit/architect": "^0.2102.2",
     "@angular-devkit/build-angular": "^21.0.0",
     "@angular-devkit/core": "^21.0.0",
+    "@angular-eslint/eslint-plugin": "^21.3.0",
+    "@angular-eslint/eslint-plugin-template": "^21.3.0",
+    "@angular-eslint/template-parser": "^21.3.0",
     "@angular/animations": "^21.0.0",
     "@angular/build": "^21.1.0",
     "@angular/cdk": "^21.0.0",
@@ -34,15 +47,21 @@
     "@angular/platform-browser": "^21.0.0",
     "@angular/platform-browser-dynamic": "^21.0.0",
     "@compodoc/compodoc": "^1.1.16",
+    "@eslint/js": "^10.0.1",
     "@storybook/addon-a11y": "^10.1.11",
     "@storybook/addon-docs": "^10.1.11",
     "@storybook/angular": "^10.1.11",
     "@types/node": "^22.0.0",
     "@vitest/coverage-v8": "^4.0.17",
+    "angular-eslint": "^21.3.0",
+    "eslint": "^10.0.3",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
+    "lint-staged": "^16.4.0",
     "ng-packagr": "^21.0.0",
     "storybook": "^10.1.11",
     "typescript": "^5.9.0",
+    "typescript-eslint": "^8.57.0",
     "vitest": "^4.0.17",
     "zone.js": "^0.16.0"
   }

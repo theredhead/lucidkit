@@ -8,7 +8,7 @@ export class RgbColor {
         /* between 0 and 255 */
         private blue: number,
         /* between 0 and 1.0 */
-        private alpha: number = 1) {
+        private alpha = 1) {
     }
 
     toString() {
@@ -27,7 +27,7 @@ export class HslColor {
         /* between 0 and 100% */
         private lightness: number,
         /* between 0 and 1.0 */
-        private alpha: number = 1) {
+        private alpha = 1) {
     }
 
     toString() {

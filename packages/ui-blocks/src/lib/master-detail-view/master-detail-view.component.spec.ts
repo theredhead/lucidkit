@@ -93,9 +93,9 @@ describe("UiMasterDetailViewComponent", () => {
   });
 
   describe("item selection", () => {
-    it("should emit onSelectItem when item is clicked", () => {
+    it("should emit selectItem when item is clicked", () => {
       const spy = vi.fn();
-      component.onSelectItem.subscribe(spy);
+      component.selectItem.subscribe(spy);
 
       fixture.componentRef.setInput("items", mockItems);
       fixture.detectChanges();

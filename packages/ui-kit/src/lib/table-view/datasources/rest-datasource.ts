@@ -2,10 +2,10 @@ import { IDatasource, RowResult } from "./datasource";
 
 import { INITIAL_PAGE_SIZE } from "../table-view.constants";
 
-type RestPayload<T> = {
+interface RestPayload<T> {
   rows: T[];
   totalNumberOfRows: number;
-};
+}
 
 const defaultFetch: typeof fetch = (input, init) =>
   globalThis.fetch(input, init);

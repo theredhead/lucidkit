@@ -44,11 +44,13 @@
       <li
         class="ac-option"
         role="option"
+        tabindex="-1"
         [id]="listboxId + '-' + $index"
         [class.ac-option--active]="$index === activeIndex()"
         [attr.aria-selected]="$index === activeIndex()"
         (pointerdown)="$event.preventDefault()"
         (click)="pickItem(item)"
+        (keydown.enter)="pickItem(item)"
       >
         @if (itemTemplate()) {
           <ng-container

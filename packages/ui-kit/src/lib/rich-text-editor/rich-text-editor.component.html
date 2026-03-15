@@ -93,6 +93,7 @@
                 type="button"
                 class="rte-placeholder-option"
                 role="option"
+                [attr.aria-selected]="false"
                 (mousedown)="$event.preventDefault()"
                 (click)="insertPlaceholder(ph)"
               >
@@ -145,6 +146,7 @@
     #editorEl
     class="rte-editor"
     role="textbox"
+    tabindex="0"
     aria-multiline="true"
     [attr.aria-label]="ariaLabel()"
     [attr.contenteditable]="!disabled() && !readonly() && !isSourceMode()"
