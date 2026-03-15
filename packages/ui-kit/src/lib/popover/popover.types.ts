@@ -15,9 +15,9 @@ export type PopoverVerticalAlignment = "top" | "center" | "bottom";
 /**
  * Horizontal alignment of the popover relative to its anchor element.
  *
- * - `'start'`  — popover's left edge aligns with anchor's left edge
+ * - `'start'`  — popover sits to the left of the anchor (right edge → anchor left edge)
  * - `'center'` — popover is horizontally centred on the anchor
- * - `'end'`    — popover's right edge aligns with anchor's right edge
+ * - `'end'`    — popover sits to the right of the anchor (left edge → anchor right edge)
  */
 export type PopoverHorizontalAlignment = "start" | "center" | "end";
 
@@ -118,7 +118,7 @@ export interface OpenPopoverConfig<T> {
 
   /**
    * Horizontal alignment of the popover relative to the anchor.
-   * @default 'start'
+   * @default 'center'
    */
   readonly horizontalAxisAlignment?: PopoverHorizontalAlignment;
 
