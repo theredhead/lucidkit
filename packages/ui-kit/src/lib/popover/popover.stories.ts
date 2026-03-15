@@ -229,8 +229,6 @@ class TooltipDemo {
     this.popover.openPopover({
       component: StoryTooltipContent,
       anchor: this.anchorRef().nativeElement,
-      verticalAxisAlignment: "bottom",
-      horizontalAxisAlignment: "center",
       ariaLabel: "Keyboard shortcut tooltip",
     });
   }
@@ -361,11 +359,9 @@ class ActionMenuDemo {
       <ui-button variant="outlined" (click)="open($event, 'center', 'start')">
         ← Left
       </ui-button>
-      <span
-        style="padding: 1rem; text-align: center; font-size: 0.75rem; opacity: 0.6;"
-      >
-        Click any<br />button
-      </span>
+      <ui-button variant="filled" (click)="open($event, 'auto', 'auto')">
+        ✦ Auto
+      </ui-button>
       <ui-button variant="outlined" (click)="open($event, 'center', 'end')">
         Right →
       </ui-button>
