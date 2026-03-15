@@ -11,7 +11,11 @@ import { UIIcons, type LucideCategory } from "./lucide-icons.generated";
 
 // ── helper: flatten the categorised registry for the gallery ─────────
 
-type IconEntry = { name: string; category: string; svg: string };
+interface IconEntry {
+  name: string;
+  category: string;
+  svg: string;
+}
 
 function buildIconList(): IconEntry[] {
   const entries: IconEntry[] = [];
@@ -36,7 +40,7 @@ const CATEGORIES = Object.keys(UIIcons.Lucide).sort() as LucideCategory[];
 // ── Gallery wrapper component ────────────────────────────────────────
 
 @Component({
-  selector: "story-icon-gallery",
+  selector: "ui-icon-gallery",
   standalone: true,
   imports: [UIIcon, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -251,6 +255,6 @@ export const TextEditing: Story = {
 /** Browseable gallery of all icons. */
 export const Gallery: Story = {
   render: () => ({
-    template: `<story-icon-gallery />`,
+    template: `<ui-icon-gallery />`,
   }),
 };

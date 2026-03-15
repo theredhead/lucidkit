@@ -9,7 +9,7 @@ import { ThemeService } from "./theme.service";
 describe("ThemeService", () => {
   let service: ThemeService;
   let mockDocument: Document;
-  let mockLocalStorage: { [key: string]: string };
+  let mockLocalStorage: Record<string, string>;
   let mockMediaQueryList: MediaQueryList;
   let mediaQueryCallback: ((e: MediaQueryListEvent) => void) | null = null;
 

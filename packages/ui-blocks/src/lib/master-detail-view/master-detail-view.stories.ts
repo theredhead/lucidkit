@@ -156,7 +156,7 @@ export const Interactive: Story = {
         [selectedItemId]="selectedId"
         masterTitle="Projects"
         detailPlaceholderText="Select a project to view details"
-        (onSelectItem)="onSelect($event)"
+        (selectItem)="onSelect($event)"
       >
       </ui-master-detail-view>
       <p style="margin-top: 16px; padding: 8px; background: #f5f5f5; border-radius: 4px;">
@@ -183,7 +183,7 @@ export const CustomItemTemplate: Story = {
         [items]="items"
         [selectedItemId]="selectedId"
         masterTitle="Documents"
-        (onSelectItem)="selectedId = $event.id"
+        (selectItem)="selectedId = $event.id"
       >
         <ng-template #itemTemplate let-item let-selected="selected">
           <span matListItemTitle>{{ item.label }}</span>
@@ -221,7 +221,7 @@ export const CustomDetailTemplate: Story = {
         [selectedItemId]="selectedId"
         [detailData]="getDetailData(selectedId)"
         masterTitle="Documents"
-        (onSelectItem)="selectedId = $event.id"
+        (selectItem)="selectedId = $event.id"
       >
         <ng-template #detailTemplate let-data let-item="item">
           <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -268,7 +268,7 @@ export const FullCustomization: Story = {
         [detailData]="getDetailData(selectedId)"
         masterTitle="Project Files"
         detailPlaceholderText="Select a file to preview"
-        (onSelectItem)="selectedId = $event.id"
+        (selectItem)="selectedId = $event.id"
       >
         <ng-template #itemTemplate let-item let-selected="selected">
           <mat-icon matListItemIcon [style.color]="selected ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface-variant)'">
@@ -317,7 +317,7 @@ export const WithFilterAndActions: Story = {
         [items]="filteredItems"
         [selectedItemId]="selectedId"
         masterTitle="Documents"
-        (onSelectItem)="selectedId = $event.id"
+        (selectItem)="selectedId = $event.id"
       >
         <ng-template #filterTemplate>
           <mat-form-field appearance="outline" style="width: 100%">

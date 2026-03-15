@@ -28,6 +28,8 @@ beyond Angular core and CDK. It ships three npm packages:
 | TypeScript | 5.9+                                | `strict: true`, `noImplicitOverride`, `isolatedModules` |
 | Build      | ng-packagr 21                       | Library builds via `npm run build --workspaces`         |
 | Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zone.js setup              |
+| Lint       | ESLint 10 + angular-eslint 21       | `npm run lint`, flat config (`eslint.config.js`)        |
+| Git hooks  | Husky + lint-staged                 | Pre-commit: lint staged `.ts` and `.html` files         |
 | Storybook  | 10.x                                | `npm run storybook` → `ng run storybook-host:storybook` |
 | Styles     | SCSS                                | Component-scoped, CSS custom property tokens            |
 
@@ -87,6 +89,81 @@ Host bindings use declarative `host: {}` metadata — never `@HostBinding` / `@H
 - All public members get JSDoc comments
 - Internal/protected methods: `/** @internal */`
 - Types exported alongside the component get JSDoc too
+
+---
+
+## Access Modifiers
+
+Every method and field in **every** class **must** have an explicit access
+modifier (`public`, `protected`, or `private`). Never rely on TypeScript's
+implicit `public`. This applies to constructors as well (`public constructor`,
+`protected constructor`, `private constructor`).
+
+---
+
+## Class Member Ordering
+
+These rules apply to **all** TypeScript classes — components, services,
+directives, pipes, and plain classes alike. Lay out members in this fixed order:
+
+1. **Signal inputs / outputs / models** — `input()`, `input.required()`, `model()`, `output()`
+2. **Queries** — `viewChild()`, `viewChildren()`, `contentChild()`, `contentChildren()`
+3. **Computed signals** — `computed()`
+4. **Public fields** — `public readonly …`, `public …`
+5. **Protected fields** — `protected readonly …`, `protected …`
+6. **Private fields** — `private readonly …`, `private …`
+7. **Constructor** — `public constructor(…)`
+8. **Static / factory methods** — `public static create(…)`, etc.
+9. **Lifecycle hooks** — `ngOnInit`, `ngOnDestroy`, etc.
+10. **Public methods**
+11. **Protected methods**
+12. **Private methods**
+
+Items 1–3 only apply to Angular classes that use signals; for plain services or
+utility classes, start at item 4.
+
+```ts
+export class UIExample {
+  // 1. inputs / outputs / models
+  public readonly label = input<string>("");
+  public readonly clicked = output<void>();
+
+  // 2. queries
+  public readonly tpl = contentChild<TemplateRef<unknown>>(TemplateRef);
+
+  // 3. computed
+  protected readonly upper = computed(() => this.label().toUpperCase());
+
+  // 4–6. fields (public → protected → private)
+  public readonly id = crypto.randomUUID();
+  protected readonly state = signal(false);
+  private readonly destroy$ = new Subject<void>();
+
+  // 7. constructor
+  public constructor(private readonly cdr: ChangeDetectorRef) {}
+
+  // 8. static / factory methods
+  public static create(): UIExample {
+    /* … */
+  }
+
+  // 9. lifecycle hooks
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+  }
+
+  // 10–12. methods (public → protected → private)
+  public toggle(): void {
+    this.state.update((s) => !s);
+  }
+  protected reset(): void {
+    this.state.set(false);
+  }
+  private log(msg: string): void {
+    console.log(msg);
+  }
+}
+```
 
 ---
 
@@ -303,5 +380,6 @@ Make sure no running Storybook process holds a lock before clearing `.angular`.
 Before committing, always run:
 
 1. `npx tsc --noEmit` — must be clean (zero errors)
-2. `npx vitest run` — all tests must pass (currently 211)
-3. Check for IDE lint errors in modified files
+2. `npx vitest run` — all tests must pass (currently 755)
+3. `npm run lint` — zero errors (warnings are OK)
+4. Check for IDE lint errors in modified files

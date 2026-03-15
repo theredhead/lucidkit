@@ -9,7 +9,7 @@
     }
     <mat-nav-list>
         @for (item of items(); track item.id) {
-        <mat-list-item [activated]="isItemSelected(item.id)" (click)="onSelectItem.emit(item)">
+        <mat-list-item [activated]="isItemSelected(item.id)" (click)="selectItem.emit(item)">
             @if (itemTemplate()) {
             <ng-container *ngTemplateOutlet="itemTemplate()!; context: getItemContext(item)"></ng-container>
             } @else {
