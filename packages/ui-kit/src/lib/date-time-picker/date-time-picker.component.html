@@ -1,0 +1,34 @@
+<div
+  class="dtp-wrapper"
+  role="group"
+  [attr.aria-label]="ariaLabel()"
+>
+  <ui-date-picker
+    #datePicker
+    class="dtp-date"
+    [(value)]="internalDate"
+    [format]="format()"
+    [placeholder]="effectiveDatePlaceholder()"
+    [disabled]="disabled()"
+    [readonly]="readonly()"
+    [min]="minDate()"
+    [max]="maxDate()"
+    [firstDayOfWeek]="firstDayOfWeek()"
+    [ariaLabel]="dateAriaLabel()"
+    (dateChange)="onDateChanged($event)"
+  />
+
+  <ui-time-picker
+    #timePicker
+    class="dtp-time"
+    [(value)]="internalTime"
+    [mode]="timeMode()"
+    [disabled]="disabled()"
+    [readonly]="readonly()"
+    [min]="minTime()"
+    [max]="maxTime()"
+    [minuteStep]="minuteStep()"
+    [ariaLabel]="timeAriaLabel()"
+    (timeChange)="onTimeChanged($event)"
+  />
+</div>

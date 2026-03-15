@@ -1,0 +1,56 @@
+<div
+  class="tp-wrapper"
+  role="group"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-valuenow]="displayText()"
+>
+  <!-- Hour -->
+  <input
+    class="tp-segment tp-hour"
+    type="text"
+    inputmode="numeric"
+    maxlength="2"
+    autocomplete="off"
+    aria-label="Hour"
+    [value]="hourText()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    [placeholder]="show12Hr() ? 'hh' : 'HH'"
+    (input)="onHourInput($event)"
+    (blur)="onHourBlur()"
+    (keydown)="onHourKeydown($event)"
+  />
+
+  <span class="tp-separator" aria-hidden="true">:</span>
+
+  <!-- Minute -->
+  <input
+    class="tp-segment tp-minute"
+    type="text"
+    inputmode="numeric"
+    maxlength="2"
+    autocomplete="off"
+    aria-label="Minute"
+    [value]="minuteText()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    placeholder="mm"
+    (input)="onMinuteInput($event)"
+    (blur)="onMinuteBlur()"
+    (keydown)="onMinuteKeydown($event)"
+  />
+
+  <!-- AM/PM toggle (12-hour mode only) -->
+  @if (show12Hr()) {
+    <button
+      class="tp-meridiem"
+      type="button"
+      aria-label="Toggle AM/PM"
+      [disabled]="disabled() || readonly()"
+      (click)="toggleMeridiem()"
+      (keydown)="onMeridiemKeydown($event)"
+    >
+      {{ meridiem() }}
+    </button>
+  }
+</div>
