@@ -63,7 +63,8 @@
 .dlg-body {
   padding: 1rem 1.25rem;
   overflow-y: auto;
-  flex: 1;
+  flex: 1 1 auto;
+  max-height: 80vh;
   font-size: 0.875rem;
   line-height: 1.5;
 }

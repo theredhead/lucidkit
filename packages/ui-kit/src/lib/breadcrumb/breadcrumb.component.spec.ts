@@ -12,11 +12,12 @@ const ITEMS: BreadcrumbItem[] = [
 @Component({
   standalone: true,
   imports: [UIBreadcrumb],
-  template: `<ui-breadcrumb [items]="items()" [separator]="separator()" />`,
+  template: `<ui-breadcrumb [items]="items()" [separator]="separator()" [variant]="variant()" />`,
 })
 class TestHost {
   public readonly items = signal<BreadcrumbItem[]>([...ITEMS]);
   public readonly separator = signal("/");
+  public readonly variant = signal<"link" | "button">("link");
 }
 
 describe("UIBreadcrumb", () => {
@@ -92,6 +93,58 @@ describe("UIBreadcrumb", () => {
 
       const links = fixture.nativeElement.querySelectorAll("a.bc-link");
       links[0].click();
+      expect(spy).toHaveBeenCalledWith(ITEMS[0]);
+    });
+  });
+
+  describe("button variant", () => {
+    beforeEach(() => {
+      host.variant.set("button");
+      fixture.detectChanges();
+    });
+
+    it("should render buttons instead of links", () => {
+      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
+      expect(buttons.length).toBe(3);
+      expect(fixture.nativeElement.querySelectorAll("a.bc-link").length).toBe(
+        0,
+      );
+    });
+
+    it("should render chevron SVG separators", () => {
+      const chevrons = fixture.nativeElement.querySelectorAll(".bc-chevron");
+      expect(chevrons.length).toBe(2);
+      expect(
+        fixture.nativeElement.querySelectorAll(".bc-separator").length,
+      ).toBe(0);
+    });
+
+    it("should disable the last button", () => {
+      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
+      expect(buttons[2].disabled).toBe(true);
+      expect(buttons[0].disabled).toBe(false);
+    });
+
+    it("should mark the last button as current", () => {
+      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
+      expect(buttons[2].classList).toContain("bc-button--current");
+      expect(buttons[2].getAttribute("aria-current")).toBe("page");
+    });
+
+    it("should add ui-breadcrumb--button host class", () => {
+      expect(
+        fixture.nativeElement.querySelector("ui-breadcrumb").classList,
+      ).toContain("ui-breadcrumb--button");
+    });
+
+    it("should emit itemClicked on non-last button click", () => {
+      const spy = vi.fn();
+      const bc = fixture.debugElement.children[0]
+        .componentInstance as UIBreadcrumb;
+      bc.itemClicked.subscribe(spy);
+
+      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
+      buttons[0].click();
       expect(spy).toHaveBeenCalledWith(ITEMS[0]);
     });
   });

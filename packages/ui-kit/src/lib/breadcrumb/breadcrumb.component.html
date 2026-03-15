@@ -2,21 +2,40 @@
   <ol class="bc-list">
     @for (item of items(); track item.label; let i = $index; let last = $last) {
       <li class="bc-item" [class.bc-item--active]="last">
-        @if (last || !item.url) {
-          <span class="bc-link bc-link--current" aria-current="page">
-            {{ item.label }}
-          </span>
-        } @else {
-          <a
-            class="bc-link"
-            [href]="item.url"
+        @if (variant() === 'button') {
+          <button
+            class="bc-button"
+            type="button"
+            [class.bc-button--current]="last"
+            [disabled]="last"
+            [attr.aria-current]="last ? 'page' : null"
             (click)="onItemClick($event, item, last)"
           >
             {{ item.label }}
-          </a>
+          </button>
+        } @else {
+          @if (last || !item.url) {
+            <span class="bc-link bc-link--current" aria-current="page">
+              {{ item.label }}
+            </span>
+          } @else {
+            <a
+              class="bc-link"
+              [href]="item.url"
+              (click)="onItemClick($event, item, last)"
+            >
+              {{ item.label }}
+            </a>
+          }
         }
         @if (!last) {
-          <span class="bc-separator" aria-hidden="true">{{ separator() }}</span>
+          @if (variant() === 'button') {
+            <svg class="bc-chevron" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02Z" clip-rule="evenodd" />
+            </svg>
+          } @else {
+            <span class="bc-separator" aria-hidden="true">{{ separator() }}</span>
+          }
         }
       </li>
     }

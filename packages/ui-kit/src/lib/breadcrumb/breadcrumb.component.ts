@@ -15,6 +15,9 @@ export interface BreadcrumbItem {
   readonly icon?: string;
 }
 
+/** Visual style for the breadcrumb trail. */
+export type BreadcrumbVariant = "link" | "button";
+
 /**
  * A navigation breadcrumb trail.
  *
@@ -35,13 +38,17 @@ export interface BreadcrumbItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-breadcrumb",
+    "[class.ui-breadcrumb--button]": "variant() === 'button'",
   },
 })
 export class UIBreadcrumb {
   /** The breadcrumb items to display. */
   public readonly items = input.required<readonly BreadcrumbItem[]>();
 
-  /** Separator character between items. Defaults to `/`. */
+  /** Visual style: `link` (default) renders anchors, `button` renders styled buttons with chevron separators. */
+  public readonly variant = input<BreadcrumbVariant>("link");
+
+  /** Separator character between items. Only used in `link` variant. */
   public readonly separator = input("/");
 
   /** Accessible label for the nav element. */
@@ -56,11 +63,10 @@ export class UIBreadcrumb {
     item: BreadcrumbItem,
     isLast: boolean,
   ): void {
-    if (isLast || !item.url) {
-      event.preventDefault();
+    event.preventDefault();
+    if (isLast) {
       return;
     }
-    event.preventDefault();
     this.itemClicked.emit(item);
   }
 }
