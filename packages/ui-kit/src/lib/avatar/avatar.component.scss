@@ -1,0 +1,94 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  user-select: none;
+
+  --tv-bg: #d7dce2;
+  --tv-text: #3a3f47;
+  --tv-fallback: #5a6470;
+}
+
+:host-context(html.dark-theme) {
+  --tv-bg: #505d6d;
+  --tv-text: #f2f6fb;
+  --tv-fallback: #d0d8e3;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --tv-bg: #505d6d;
+    --tv-text: #f2f6fb;
+    --tv-fallback: #d0d8e3;
+  }
+}
+
+/* ── Sizes ── */
+
+:host(.ui-avatar--xs) {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.625rem;
+}
+
+:host(.ui-avatar--sm) {
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.75rem;
+}
+
+:host(.ui-avatar--md) {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 0.875rem;
+}
+
+:host(.ui-avatar--lg) {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.125rem;
+}
+
+:host(.ui-avatar--xl) {
+  width: 5rem;
+  height: 5rem;
+  font-size: 1.5rem;
+}
+
+/* ── Image ── */
+
+.av-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Initials ── */
+
+.av-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: var(--tv-bg);
+  color: var(--tv-text);
+  font-weight: 600;
+  font-family: system-ui, sans-serif;
+  line-height: 1;
+}
+
+/* ── Fallback icon ── */
+
+.av-fallback {
+  width: 60%;
+  height: 60%;
+  color: var(--tv-fallback);
+  background: var(--tv-bg);
+  border-radius: 50%;
+  padding: 20%;
+}

@@ -1,0 +1,24 @@
+<nav [attr.aria-label]="ariaLabel()">
+  <ol class="bc-list">
+    @for (item of items(); track item.label; let i = $index; let last = $last) {
+      <li class="bc-item" [class.bc-item--active]="last">
+        @if (last || !item.url) {
+          <span class="bc-link bc-link--current" aria-current="page">
+            {{ item.label }}
+          </span>
+        } @else {
+          <a
+            class="bc-link"
+            [href]="item.url"
+            (click)="onItemClick($event, item, last)"
+          >
+            {{ item.label }}
+          </a>
+        }
+        @if (!last) {
+          <span class="bc-separator" aria-hidden="true">{{ separator() }}</span>
+        }
+      </li>
+    }
+  </ol>
+</nav>

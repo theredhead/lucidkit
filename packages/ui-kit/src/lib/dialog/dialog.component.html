@@ -1,0 +1,22 @@
+@if (open()) {
+  <dialog
+    #dialogRef
+    class="dlg-dialog"
+    tabindex="-1"
+    [attr.aria-label]="ariaLabel()"
+    (close)="onNativeClose()"
+    (cancel)="onCancel($event)"
+    (click)="onDialogClick($event)"
+    (keydown.escape)="$event.stopPropagation()"
+  >
+    <header class="dlg-header">
+      <ng-content select="[ui-dialog-title]" />
+    </header>
+    <div class="dlg-body">
+      <ng-content />
+    </div>
+    <footer class="dlg-footer">
+      <ng-content select="[ui-dialog-footer]" />
+    </footer>
+  </dialog>
+}

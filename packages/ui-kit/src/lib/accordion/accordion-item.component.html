@@ -1,0 +1,23 @@
+<div
+  class="ac-header"
+  role="button"
+  [attr.aria-expanded]="expanded()"
+  [attr.aria-label]="ariaLabel() ?? label()"
+  [attr.aria-disabled]="disabled()"
+  [attr.tabindex]="disabled() ? -1 : 0"
+  (click)="toggle()"
+  (keydown)="onHeaderKeyDown($event)"
+>
+  <span class="ac-title">{{ label() }}</span>
+  <svg class="ac-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</div>
+
+@if (expanded()) {
+  <div class="ac-panel" role="region">
+    <div class="ac-content">
+      <ng-content />
+    </div>
+  </div>
+}

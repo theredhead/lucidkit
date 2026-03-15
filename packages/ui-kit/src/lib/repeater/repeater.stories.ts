@@ -63,9 +63,7 @@ const KITTENS = buildKittens();
             width="200"
             height="200"
           />
-          <figcaption>
-            #{{ i + 1 }} {{ kitten.name }}
-          </figcaption>
+          <figcaption>#{{ i + 1 }} {{ kitten.name }}</figcaption>
         </figure>
       </ng-template>
     </ui-repeater>
@@ -92,7 +90,9 @@ const KITTENS = buildKittens();
     }
     .card figcaption {
       padding: 8px 12px;
-      font: 500 0.875rem/1.4 system-ui, sans-serif;
+      font:
+        500 0.875rem/1.4 system-ui,
+        sans-serif;
       color: var(--theredhead-on-surface, #333);
     }
   `,
@@ -153,7 +153,9 @@ class RepeaterGridDemo {
     }
     .label {
       padding: 4px 8px;
-      font: 400 0.75rem/1.4 system-ui, sans-serif;
+      font:
+        400 0.75rem/1.4 system-ui,
+        sans-serif;
       color: var(--theredhead-on-surface, #444);
     }
   `,
@@ -220,11 +222,15 @@ class RepeaterFlexRowDemo {
       gap: 2px;
     }
     .info strong {
-      font: 500 0.875rem/1.3 system-ui, sans-serif;
+      font:
+        500 0.875rem/1.3 system-ui,
+        sans-serif;
       color: var(--theredhead-on-surface, #222);
     }
     .meta {
-      font: 400 0.75rem/1.3 system-ui, sans-serif;
+      font:
+        400 0.75rem/1.3 system-ui,
+        sans-serif;
       color: var(--theredhead-on-surface-variant, #666);
     }
   `,
@@ -242,11 +248,7 @@ class RepeaterFlexColumnDemo {
     <ui-repeater [datasource]="ds">
       <ng-template let-kitten let-i="index" let-odd="odd">
         <div class="brick" [style.height.px]="180 + (i % 3) * 60">
-          <img
-            [src]="kitten.url"
-            [alt]="kitten.name"
-            loading="lazy"
-          />
+          <img [src]="kitten.url" [alt]="kitten.name" loading="lazy" />
           <span class="overlay">{{ kitten.name }}</span>
         </div>
       </ng-template>
@@ -277,9 +279,11 @@ class RepeaterFlexColumnDemo {
       left: 0;
       right: 0;
       padding: 6px 10px;
-      font: 600 0.8rem/1.4 system-ui, sans-serif;
+      font:
+        600 0.8rem/1.4 system-ui,
+        sans-serif;
       color: #fff;
-      background: linear-gradient(transparent, rgba(0,0,0,0.55));
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
     }
   `,
 })

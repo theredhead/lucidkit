@@ -1,0 +1,52 @@
+@if (mode() === 'single') {
+  <div class="sl-track-wrapper">
+    <div class="sl-track">
+      <div class="sl-fill" [style.width.%]="fillPercent()"></div>
+    </div>
+    <input
+      type="range"
+      class="sl-input"
+      [attr.min]="min()"
+      [attr.max]="max()"
+      [attr.step]="step()"
+      [value]="singleValue()"
+      [disabled]="disabled()"
+      [attr.aria-label]="ariaLabel()"
+      (input)="onSingleInput($event)"
+    />
+  </div>
+  @if (showValue()) {
+    <span class="sl-value">{{ singleValue() }}</span>
+  }
+} @else {
+  <div class="sl-track-wrapper sl-track-wrapper--range">
+    <div class="sl-track">
+      <div class="sl-fill" [style.left.%]="fillStart()" [style.width.%]="fillEnd() - fillStart()"></div>
+    </div>
+    <input
+      type="range"
+      class="sl-input sl-input--low"
+      [attr.min]="min()"
+      [attr.max]="max()"
+      [attr.step]="step()"
+      [value]="rangeLow()"
+      [disabled]="disabled()"
+      [attr.aria-label]="ariaLabel() + ' minimum'"
+      (input)="onRangeLowInput($event)"
+    />
+    <input
+      type="range"
+      class="sl-input sl-input--high"
+      [attr.min]="min()"
+      [attr.max]="max()"
+      [attr.step]="step()"
+      [value]="rangeHigh()"
+      [disabled]="disabled()"
+      [attr.aria-label]="ariaLabel() + ' maximum'"
+      (input)="onRangeHighInput($event)"
+    />
+  </div>
+  @if (showValue()) {
+    <span class="sl-value">{{ rangeLow() }} – {{ rangeHigh() }}</span>
+  }
+}

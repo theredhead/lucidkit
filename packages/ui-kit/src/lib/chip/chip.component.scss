@@ -1,0 +1,140 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  font:
+    500 0.8125rem/1.4 system-ui,
+    sans-serif;
+  white-space: nowrap;
+  user-select: none;
+
+  --tv-chip-bg: #e8edf4;
+  --tv-chip-text: #1d232b;
+  --tv-chip-dismiss: #5a6470;
+}
+
+:host-context(html.dark-theme) {
+  --tv-chip-bg: #3a3f47;
+  --tv-chip-text: #f2f6fb;
+  --tv-chip-dismiss: #d0d8e3;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --tv-chip-bg: #3a3f47;
+    --tv-chip-text: #f2f6fb;
+    --tv-chip-dismiss: #d0d8e3;
+  }
+}
+
+:host(.ui-chip--disabled) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Color variants ── */
+
+:host(.ui-chip--neutral) {
+  background: var(--tv-chip-bg);
+  color: var(--tv-chip-text);
+}
+
+:host(.ui-chip--primary) {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+:host(.ui-chip--success) {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+:host(.ui-chip--warning) {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+:host(.ui-chip--danger) {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Dark mode colors */
+
+:host-context(html.dark-theme) {
+  &.ui-chip--primary {
+    background: rgba(122, 176, 255, 0.2);
+    color: #7ab0ff;
+  }
+  &.ui-chip--success {
+    background: rgba(87, 227, 137, 0.2);
+    color: #57e389;
+  }
+  &.ui-chip--warning {
+    background: rgba(248, 228, 92, 0.2);
+    color: #f8e45c;
+  }
+  &.ui-chip--danger {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    &.ui-chip--primary {
+      background: rgba(122, 176, 255, 0.2);
+      color: #7ab0ff;
+    }
+    &.ui-chip--success {
+      background: rgba(87, 227, 137, 0.2);
+      color: #57e389;
+    }
+    &.ui-chip--warning {
+      background: rgba(248, 228, 92, 0.2);
+      color: #f8e45c;
+    }
+    &.ui-chip--danger {
+      background: rgba(255, 107, 107, 0.2);
+      color: #ff6b6b;
+    }
+  }
+}
+
+/* ── Elements ── */
+
+.ch-label {
+  line-height: 1.4;
+}
+
+.ch-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tv-chip-dismiss);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 120ms ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+  }
+
+  svg {
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+}

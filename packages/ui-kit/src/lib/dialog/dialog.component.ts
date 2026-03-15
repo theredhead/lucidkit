@@ -1,0 +1,108 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  ElementRef,
+  input,
+  model,
+  output,
+  viewChild,
+} from "@angular/core";
+
+/**
+ * A declarative dialog component built on the native `<dialog>` element.
+ *
+ * Provides header / body / footer content slots. Open and close it
+ * via the `open` two-way binding or by calling `show()` / `close()`.
+ *
+ * For programmatic service-based modals see {@link ModalService}.
+ *
+ * @example
+ * ```html
+ * <ui-dialog [(open)]="showDialog" ariaLabel="Confirm action">
+ *   <span ui-dialog-title>Confirm</span>
+ *   <p>Are you sure you want to proceed?</p>
+ *   <div ui-dialog-footer>
+ *     <ui-button variant="outlined" (click)="showDialog = false">Cancel</ui-button>
+ *     <ui-button (click)="confirm()">OK</ui-button>
+ *   </div>
+ * </ui-dialog>
+ * ```
+ */
+@Component({
+  selector: "ui-dialog",
+  standalone: true,
+  templateUrl: "./dialog.component.html",
+  styleUrl: "./dialog.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: "ui-dialog",
+  },
+})
+export class UIDialog {
+  /** Whether the dialog is open. Supports two-way binding. */
+  public readonly open = model(false);
+
+  /** Whether clicking the backdrop closes the dialog. */
+  public readonly closeOnBackdropClick = input(true);
+
+  /** Whether pressing Escape closes the dialog. */
+  public readonly closeOnEscape = input(true);
+
+  /** Accessible label for the dialog. */
+  public readonly ariaLabel = input<string>("Dialog");
+
+  /** Emitted when the dialog is closed. */
+  public readonly closed = output<void>();
+
+  /** @internal */
+  protected readonly dialogEl =
+    viewChild<ElementRef<HTMLDialogElement>>("dialogRef");
+
+  public constructor() {
+    // When open changes to true and dialog element exists, call showModal
+    effect(() => {
+      const isOpen = this.open();
+      const el = this.dialogEl()?.nativeElement;
+      if (el && isOpen && !el.open) {
+        el.showModal();
+      }
+    });
+  }
+
+  /** Show the dialog. */
+  public show(): void {
+    this.open.set(true);
+    this.dialogEl()?.nativeElement.showModal();
+  }
+
+  /** Close the dialog. */
+  public close(): void {
+    this.open.set(false);
+    this.dialogEl()?.nativeElement.close();
+    this.closed.emit();
+  }
+
+  /** @internal — native close event (Escape key). */
+  protected onNativeClose(): void {
+    if (this.open()) {
+      this.open.set(false);
+      this.closed.emit();
+    }
+  }
+
+  /** @internal — prevent Escape when configured. */
+  protected onCancel(event: Event): void {
+    if (!this.closeOnEscape()) {
+      event.preventDefault();
+    }
+  }
+
+  /** @internal — backdrop click detection. */
+  protected onDialogClick(event: MouseEvent): void {
+    const el = this.dialogEl()?.nativeElement;
+    if (this.closeOnBackdropClick() && event.target === el) {
+      this.close();
+    }
+  }
+}

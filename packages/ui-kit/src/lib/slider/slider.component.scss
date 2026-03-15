@@ -1,0 +1,145 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 120px;
+
+  --tv-accent: #3584e4;
+  --tv-accent-hover: #2b6fc4;
+  --tv-track: #d7dce2;
+  --tv-text: #1d232b;
+  --tv-thumb: #ffffff;
+}
+
+:host-context(html.dark-theme) {
+  --tv-accent: #7ab0ff;
+  --tv-accent-hover: #5a9aef;
+  --tv-track: #505d6d;
+  --tv-text: #f2f6fb;
+  --tv-thumb: #e8edf4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --tv-accent: #7ab0ff;
+    --tv-accent-hover: #5a9aef;
+    --tv-track: #505d6d;
+    --tv-text: #f2f6fb;
+    --tv-thumb: #e8edf4;
+  }
+}
+
+:host(.ui-slider--disabled) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Track wrapper ── */
+
+.sl-track-wrapper {
+  position: relative;
+  flex: 1;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.sl-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--tv-track);
+}
+
+.sl-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--tv-accent);
+}
+
+/* ── Native range input (overlay) ── */
+
+.sl-input {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 2rem;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: auto;
+}
+
+/* For range mode, both inputs are stacked — let pointer-events through */
+
+.sl-track-wrapper--range .sl-input {
+  pointer-events: none;
+}
+
+.sl-track-wrapper--range .sl-input::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+
+.sl-track-wrapper--range .sl-input::-moz-range-thumb {
+  pointer-events: auto;
+}
+
+/* ── Custom thumb (drawn via pseudo-element of track wrapper) ── */
+
+/* We show thumb via the native input's pseudo to keep accessibility.
+   Style the native thumb to be visible: */
+
+.sl-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--tv-accent);
+  border: 2px solid var(--tv-thumb);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  opacity: 1;
+}
+
+.sl-input::-moz-range-thumb {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--tv-accent);
+  border: 2px solid var(--tv-thumb);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.sl-input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--tv-accent);
+  outline-offset: 2px;
+}
+
+.sl-input:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--tv-accent);
+  outline-offset: 2px;
+}
+
+/* ── Value label ── */
+
+.sl-value {
+  font:
+    500 0.8125rem/1.4 system-ui,
+    sans-serif;
+  color: var(--tv-text);
+  white-space: nowrap;
+  min-width: 2rem;
+  text-align: right;
+}
