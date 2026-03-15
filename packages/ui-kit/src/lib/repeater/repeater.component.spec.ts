@@ -23,8 +23,22 @@ const TEST_DATA: TestItem[] = [
   imports: [UIRepeater],
   template: `
     <ui-repeater [datasource]="ds()" [limit]="limit()">
-      <ng-template let-item let-i="index" let-first="first" let-last="last" let-even="even" let-odd="odd">
-        <div class="test-item" [attr.data-index]="i" [attr.data-first]="first" [attr.data-last]="last" [attr.data-even]="even" [attr.data-odd]="odd">
+      <ng-template
+        let-item
+        let-i="index"
+        let-first="first"
+        let-last="last"
+        let-even="even"
+        let-odd="odd"
+      >
+        <div
+          class="test-item"
+          [attr.data-index]="i"
+          [attr.data-first]="first"
+          [attr.data-last]="last"
+          [attr.data-even]="even"
+          [attr.data-odd]="odd"
+        >
           {{ item.name }}
         </div>
       </ng-template>

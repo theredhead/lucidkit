@@ -63,7 +63,8 @@ export class UIRepeater<T = unknown> {
   public readonly ariaLabel = input<string | undefined>(undefined);
 
   /** @internal — the projected item template. */
-  public readonly itemTemplate = contentChild.required<TemplateRef<RepeaterItemContext<T>>>(TemplateRef);
+  public readonly itemTemplate =
+    contentChild.required<TemplateRef<RepeaterItemContext<T>>>(TemplateRef);
 
   /** @internal — adapter wrapping the datasource for signal-based access. */
   protected readonly adapter = signal<DatasourceAdapter<T> | null>(null);
@@ -72,7 +73,9 @@ export class UIRepeater<T = unknown> {
   protected readonly items = signal<T[]>([]);
 
   /** @internal — total item count from the datasource. */
-  protected readonly totalItems = computed(() => this.adapter()?.totalItems() ?? 0);
+  protected readonly totalItems = computed(
+    () => this.adapter()?.totalItems() ?? 0,
+  );
 
   public constructor() {
     // Rebuild adapter when datasource changes

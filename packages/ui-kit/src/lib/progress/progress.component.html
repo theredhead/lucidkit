@@ -1,0 +1,20 @@
+@if (variant() === 'linear') {
+  <div class="pg-track">
+    @if (mode() === 'determinate') {
+      <div class="pg-fill" [style.width.%]="clampedValue()"></div>
+    } @else {
+      <div class="pg-fill pg-fill--indeterminate"></div>
+    }
+  </div>
+} @else {
+  <svg class="pg-ring" viewBox="0 0 40 40">
+    <circle class="pg-ring-track" cx="20" cy="20" r="18" />
+    <circle
+      class="pg-ring-fill"
+      [class.pg-ring-fill--indeterminate]="mode() === 'indeterminate'"
+      cx="20" cy="20" r="18"
+      [attr.stroke-dasharray]="circumference"
+      [attr.stroke-dashoffset]="mode() === 'determinate' ? strokeDashoffset() : circumference * 0.75"
+    />
+  </svg>
+}
