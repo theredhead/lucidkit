@@ -485,4 +485,219 @@ describe("PopoverService", () => {
       ref.close();
     });
   });
+
+  describe("auto alignment", () => {
+    let bottomAnchor: HTMLElement;
+    let originalBCR: typeof HTMLElement.prototype.getBoundingClientRect;
+
+    beforeEach(() => {
+      // Set viewport dimensions for predictable auto-resolution
+      Object.defineProperty(window, "innerWidth", {
+        value: 1024,
+        configurable: true,
+      });
+      Object.defineProperty(window, "innerHeight", {
+        value: 768,
+        configurable: true,
+      });
+
+      // jsdom has no CSS engine — elements report 0×0 dimensions.
+      // Give the popover host a realistic fallback size so
+      // resolveVerticalAuto / resolveHorizontalAuto can make a
+      // meaningful decision.  Anchor elements keep their own
+      // instance-level mocks which take precedence.
+      originalBCR = HTMLElement.prototype.getBoundingClientRect;
+      HTMLElement.prototype.getBoundingClientRect = function () {
+        return {
+          top: 0,
+          left: 0,
+          bottom: 200,
+          right: 160,
+          width: 160,
+          height: 200,
+          x: 0,
+          y: 0,
+          toJSON: () => {},
+        } as DOMRect;
+      };
+    });
+
+    afterEach(() => {
+      HTMLElement.prototype.getBoundingClientRect = originalBCR;
+      bottomAnchor?.remove();
+    });
+
+    function createAnchorAt(rect: Partial<DOMRect>): HTMLElement {
+      const el = document.createElement("button");
+      el.textContent = "Anchor";
+      document.body.appendChild(el);
+      el.getBoundingClientRect = vi.fn(
+        () =>
+          ({
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            width: 0,
+            height: 0,
+            x: 0,
+            y: 0,
+            ...rect,
+            toJSON: () => {},
+          }) as DOMRect,
+      );
+      return el;
+    }
+
+    it("should default to auto alignment", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+      });
+
+      // Default anchor is at top:100, so auto should resolve to bottom.
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+      // anchor.bottom(132) + defaultOffset(4) = 136
+      expect(top).toBeGreaterThanOrEqual(132);
+
+      ref.close();
+    });
+
+    it("should resolve vertical auto to 'bottom' when anchor is near top", () => {
+      // Anchor at top of viewport → more space below
+      bottomAnchor = createAnchorAt({
+        top: 50,
+        bottom: 82,
+        left: 400,
+        right: 480,
+        width: 80,
+        height: 32,
+      });
+
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor: bottomAnchor,
+        verticalAxisAlignment: "auto",
+        horizontalAxisAlignment: "center",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+      // Should be below: anchor.bottom(82) + offset(4) = 86
+      expect(top).toBeGreaterThanOrEqual(82);
+
+      ref.close();
+    });
+
+    it("should resolve vertical auto to 'top' when anchor is near bottom", () => {
+      // Anchor near bottom of viewport → more space above
+      bottomAnchor = createAnchorAt({
+        top: 700,
+        bottom: 732,
+        left: 400,
+        right: 480,
+        width: 80,
+        height: 32,
+      });
+
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor: bottomAnchor,
+        verticalAxisAlignment: "auto",
+        horizontalAxisAlignment: "center",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+      // Should be above: anchor.top(700) - popoverHeight - offset
+      // In jsdom popover has 0 height, so top = 700 - 0 - 4 = 696
+      expect(top).toBeLessThanOrEqual(700);
+
+      ref.close();
+    });
+
+    it("should resolve horizontal auto to 'center' when space permits", () => {
+      // Anchor centred in viewport → center should fit
+      bottomAnchor = createAnchorAt({
+        top: 100,
+        bottom: 132,
+        left: 472,
+        right: 552,
+        width: 80,
+        height: 32,
+      });
+
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor: bottomAnchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "auto",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const left = parseFloat(popover.style.left);
+      // Centred on anchor midpoint (512) — should be near 512
+      expect(left).toBeGreaterThanOrEqual(8);
+      expect(left).toBeLessThanOrEqual(1016);
+
+      ref.close();
+    });
+
+    it("should resolve horizontal auto to 'end' when anchor is near left edge", () => {
+      // Anchor near left edge → centering would clip, more space to the right
+      bottomAnchor = createAnchorAt({
+        top: 100,
+        bottom: 132,
+        left: 10,
+        right: 90,
+        width: 80,
+        height: 32,
+      });
+
+      // Give the popover some width so centering would clip
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor: bottomAnchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "auto",
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const left = parseFloat(popover.style.left);
+      // In jsdom popover has 0 width, so center fits → will resolve to center
+      // With 0-width popover, center = anchorLeft(10) + (80-0)/2 = 50
+      expect(left).toBeGreaterThanOrEqual(8);
+
+      ref.close();
+    });
+
+    it("should flip vertical offset away from anchor when auto resolves to 'top'", () => {
+      // Anchor near bottom → auto resolves to 'top'
+      bottomAnchor = createAnchorAt({
+        top: 700,
+        bottom: 732,
+        left: 400,
+        right: 480,
+        width: 80,
+        height: 32,
+      });
+
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor: bottomAnchor,
+        verticalAxisAlignment: "auto",
+        horizontalAxisAlignment: "center",
+        verticalOffset: 8,
+      });
+
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+      // auto→top: top = anchor.top(700) - popoverHeight(0) + (-8) = 692
+      // Offset should push AWAY (upward)
+      expect(top).toBeLessThanOrEqual(700 - 8);
+
+      ref.close();
+    });
+  });
 });

@@ -6,20 +6,24 @@ import { Observable, Subject } from "rxjs";
 /**
  * Vertical alignment of the popover relative to its anchor element.
  *
+ * - `'auto'`   — automatically chooses `'bottom'` or `'top'` based on
+ *                available viewport space (prefers below)
  * - `'top'`    — popover sits above the anchor (bottom edge → anchor top edge)
  * - `'center'` — popover is vertically centred on the anchor
  * - `'bottom'` — popover sits below the anchor (top edge → anchor bottom edge)
  */
-export type PopoverVerticalAlignment = "top" | "center" | "bottom";
+export type PopoverVerticalAlignment = "auto" | "top" | "center" | "bottom";
 
 /**
  * Horizontal alignment of the popover relative to its anchor element.
  *
+ * - `'auto'`   — prefers `'center'`; falls back to `'end'` or `'start'`
+ *                if centering would clip the viewport
  * - `'start'`  — popover sits to the left of the anchor (right edge → anchor left edge)
  * - `'center'` — popover is horizontally centred on the anchor
  * - `'end'`    — popover sits to the right of the anchor (left edge → anchor right edge)
  */
-export type PopoverHorizontalAlignment = "start" | "center" | "end";
+export type PopoverHorizontalAlignment = "auto" | "start" | "center" | "end";
 
 // ── PopoverRef ─────────────────────────────────────────────────────
 
@@ -112,13 +116,13 @@ export interface OpenPopoverConfig<T> {
 
   /**
    * Vertical alignment of the popover relative to the anchor.
-   * @default 'bottom'
+   * @default 'auto'
    */
   readonly verticalAxisAlignment?: PopoverVerticalAlignment;
 
   /**
    * Horizontal alignment of the popover relative to the anchor.
-   * @default 'center'
+   * @default 'auto'
    */
   readonly horizontalAxisAlignment?: PopoverHorizontalAlignment;
 

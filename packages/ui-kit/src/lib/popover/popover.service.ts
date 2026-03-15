@@ -79,6 +79,55 @@ interface Position {
 }
 
 /**
+ * Resolves `'auto'` vertical alignment by picking the side of the
+ * anchor with the most available viewport space.
+ *
+ * Prefers `'bottom'` when the popover fits below the anchor, then
+ * falls back to `'top'` if it fits above, and finally picks
+ * whichever side has more room.
+ *
+ * @internal
+ */
+function resolveVerticalAuto(
+  anchorRect: DOMRect,
+  popoverRect: DOMRect,
+  vh: number,
+): "top" | "bottom" {
+  const spaceBelow = vh - anchorRect.bottom;
+  const spaceAbove = anchorRect.top;
+
+  if (spaceBelow >= popoverRect.height) return "bottom";
+  if (spaceAbove >= popoverRect.height) return "top";
+  return spaceBelow >= spaceAbove ? "bottom" : "top";
+}
+
+/**
+ * Resolves `'auto'` horizontal alignment.
+ *
+ * Prefers `'center'` when the popover fits centred on the anchor
+ * within the viewport, otherwise picks the side with more room.
+ *
+ * @internal
+ */
+function resolveHorizontalAuto(
+  anchorRect: DOMRect,
+  popoverRect: DOMRect,
+  vw: number,
+): "start" | "center" | "end" {
+  const pad = 8;
+  const centeredLeft =
+    anchorRect.left + (anchorRect.width - popoverRect.width) / 2;
+
+  if (centeredLeft >= pad && centeredLeft + popoverRect.width <= vw - pad) {
+    return "center";
+  }
+
+  const spaceRight = vw - anchorRect.right;
+  const spaceLeft = anchorRect.left;
+  return spaceRight >= spaceLeft ? "end" : "start";
+}
+
+/**
  * Computes fixed-position coordinates for the popover relative to
  * the anchor rect and viewport.
  *
@@ -92,12 +141,35 @@ function computePosition(
   vOffset: number,
   hOffset: number,
 ): Position {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const pad = 8;
+
+  // ── Resolve auto alignments ───────────────────────────────
+
+  const resolvedV =
+    vAlign === "auto"
+      ? resolveVerticalAuto(anchorRect, popoverRect, vh)
+      : vAlign;
+  const resolvedH =
+    hAlign === "auto"
+      ? resolveHorizontalAuto(anchorRect, popoverRect, vw)
+      : hAlign;
+
+  // When auto-resolved, make offset always push AWAY from the
+  // anchor so the gap is consistent regardless of which side
+  // was chosen.
+  const effectiveVOffset =
+    vAlign === "auto" && resolvedV === "top" ? -Math.abs(vOffset) : vOffset;
+  const effectiveHOffset =
+    hAlign === "auto" && resolvedH === "start" ? -Math.abs(hOffset) : hOffset;
+
   let top = 0;
   let left = 0;
 
   // ── Vertical axis ─────────────────────────────────────────
 
-  switch (vAlign) {
+  switch (resolvedV) {
     case "top":
       top = anchorRect.top - popoverRect.height;
       break;
@@ -111,7 +183,7 @@ function computePosition(
 
   // ── Horizontal axis ───────────────────────────────────────
 
-  switch (hAlign) {
+  switch (resolvedH) {
     case "start":
       left = anchorRect.left - popoverRect.width;
       break;
@@ -125,14 +197,10 @@ function computePosition(
 
   // ── Apply offsets ─────────────────────────────────────────
 
-  top += vOffset;
-  left += hOffset;
+  top += effectiveVOffset;
+  left += effectiveHOffset;
 
-  // ── Viewport clamping ───────────────────────────────────
-
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const pad = 8;
+  // ── Viewport clamping ─────────────────────────────────────
 
   if (left + popoverRect.width > vw - pad) left = vw - popoverRect.width - pad;
   if (left < pad) left = pad;
@@ -186,8 +254,8 @@ export class PopoverService {
     this.ensureStyles();
 
     const popoverRef = new PopoverRef<R>();
-    const vAlign = config.verticalAxisAlignment ?? "bottom";
-    const hAlign = config.horizontalAxisAlignment ?? "center";
+    const vAlign = config.verticalAxisAlignment ?? "auto";
+    const hAlign = config.horizontalAxisAlignment ?? "auto";
     const vOffset = config.verticalOffset ?? 4;
     const hOffset = config.horizontalOffset ?? 0;
     const useAutoPopover = config.closeOnOutsideClick !== false;
