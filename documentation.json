@@ -1510,6 +1510,83 @@
             "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    \n"
         },
         {
+            "name": "BasicDemo",
+            "id": "component-BasicDemo-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf-1",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-modal-basic-demo",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    "
+            ],
+            "template": "<ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n@if (lastResult() !== undefined) {\n  <div class=\"story-output\">\n    <strong>Result:</strong> {{ lastResult() }}\n  </div>\n}\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "lastResult",
+                    "defaultValue": "signal<boolean | undefined>(undefined)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 200,
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                },
+                {
+                    "name": "modal",
+                    "defaultValue": "inject(ModalService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 199,
+                    "modifierKind": [
+                        121,
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "open",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 202,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    \n",
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "BasicDemo-1"
+        },
+        {
             "name": "ButtonComponent",
             "id": "component-ButtonComponent-5747b2121bdc472b32e41e4e47db44dbd7601fe73e9c7b3d0f82e7d1aaf97be0d13d4880fee19b0e4d511178aa52a24a5a9ea3ee0034d204ffd659c0aae43e41",
             "file": "packages/ui-kit/src/stories/button.component.ts",
@@ -1634,6 +1711,80 @@
             }
         },
         {
+            "name": "CustomInputsDemo",
+            "id": "component-CustomInputsDemo-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-modal-custom-inputs-demo",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    "
+            ],
+            "template": "<ui-button (click)=\"open()\">Delete Item</ui-button>\n@if (lastResult() !== undefined) {\n  <div class=\"story-output\">\n    <strong>Confirmed:</strong> {{ lastResult() }}\n  </div>\n}\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "lastResult",
+                    "defaultValue": "signal<boolean | undefined>(undefined)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 246,
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                },
+                {
+                    "name": "modal",
+                    "defaultValue": "inject(ModalService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 245,
+                    "modifierKind": [
+                        121,
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "open",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 248,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    \n"
+        },
+        {
             "name": "DisabledDemo",
             "id": "component-DisabledDemo-7cd70b1145f648fc0d4646713aefed1c35d4c7d1e185b8054878e085eb43d8c37badda76c4c58476a980c6ca71f0b8144de6999a3d692f3a240e960c74704e94",
             "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
@@ -1680,6 +1831,154 @@
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n    \n"
+        },
+        {
+            "name": "ForcedChoiceDemo",
+            "id": "component-ForcedChoiceDemo-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-modal-forced-choice-demo",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    "
+            ],
+            "template": "<ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n<p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n  Escape and backdrop click are disabled — you must choose a button.\n</p>\n@if (lastResult() !== undefined) {\n  <div class=\"story-output\">\n    <strong>Result:</strong> {{ lastResult() }}\n  </div>\n}\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "lastResult",
+                    "defaultValue": "signal<boolean | undefined>(undefined)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 399,
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                },
+                {
+                    "name": "modal",
+                    "defaultValue": "inject(ModalService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 398,
+                    "modifierKind": [
+                        121,
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "open",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 401,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    \n"
+        },
+        {
+            "name": "FormDemo",
+            "id": "component-FormDemo-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-modal-form-demo",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    "
+            ],
+            "template": "<ui-button (click)=\"open()\">Rename Item</ui-button>\n@if (lastResult() !== undefined) {\n  <div class=\"story-output\">\n    <strong>Saved name:</strong> \"{{ lastResult() }}\"\n  </div>\n}\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "lastResult",
+                    "defaultValue": "signal<string | undefined>(undefined)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 298,
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                },
+                {
+                    "name": "modal",
+                    "defaultValue": "inject(ModalService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 297,
+                    "modifierKind": [
+                        121,
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "open",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 300,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    \n"
         },
         {
             "name": "HeaderComponent",
@@ -2429,6 +2728,80 @@
             "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    \n"
         },
         {
+            "name": "OutputsDemo",
+            "id": "component-OutputsDemo-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-modal-outputs-demo",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    "
+            ],
+            "template": "<ui-button (click)=\"open()\">Choose Option</ui-button>\n@if (outputResult()) {\n  <div class=\"story-output\">\n    <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n  </div>\n}\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "modal",
+                    "defaultValue": "inject(ModalService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 348,
+                    "modifierKind": [
+                        121,
+                        144
+                    ]
+                },
+                {
+                    "name": "outputResult",
+                    "defaultValue": "signal<string | undefined>(undefined)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 349,
+                    "modifierKind": [
+                        122,
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "open",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 351,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    \n"
+        },
+        {
             "name": "PageComponent",
             "id": "component-PageComponent-79bfb042a722f49579739dfd01d8f1b67681d0272a72a283c14edeb22f0462775c80ba4f7c1eb0fa4bd5fa1844083da0140980e75b5500cd98cc26421ec6d569",
             "file": "packages/ui-kit/src/stories/page.component.ts",
@@ -2507,6 +2880,266 @@
                 }
             ],
             "stylesData": ""
+        },
+        {
+            "name": "StoryConfirmDialog",
+            "id": "component-StoryConfirmDialog-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-story-confirm-dialog",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    "
+            ],
+            "template": "<h2 class=\"modal-title\">{{ title() }}</h2>\n<p class=\"modal-body\">{{ message() }}</p>\n<div class=\"modal-actions\">\n  <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n    >Cancel</ui-button\n  >\n  <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n    >Confirm</ui-button\n  >\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "message",
+                    "defaultValue": "input(\"Are you sure you want to proceed?\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 64,
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "modalRef",
+                    "defaultValue": "inject(ModalRef<boolean>)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 62,
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "title",
+                    "defaultValue": "input(\"Confirm Action\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 63,
+                    "modifierKind": [
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "<p>Simple confirm dialog returning a boolean result.</p>\n",
+            "rawdescription": "\nSimple confirm dialog returning a boolean result.",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    \n",
+            "implements": [
+                "UIModalContent"
+            ]
+        },
+        {
+            "name": "StoryFormDialog",
+            "id": "component-StoryFormDialog-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-story-form-dialog",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    "
+            ],
+            "template": "<h2 class=\"modal-title\">{{ title() }}</h2>\n<div class=\"modal-field\">\n  <ui-input\n    [placeholder]=\"fieldPlaceholder()\"\n    [(value)]=\"fieldValue\"\n    ariaLabel=\"Name input\"\n  />\n</div>\n<div class=\"modal-actions\">\n  <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n  <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n    >Save</ui-button\n  >\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "fieldPlaceholder",
+                    "defaultValue": "input(\"Type here…\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 115,
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "fieldValue",
+                    "defaultValue": "signal(\"\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 116,
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "modalRef",
+                    "defaultValue": "inject(ModalRef<string>)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 113,
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "title",
+                    "defaultValue": "input(\"Enter Details\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 114,
+                    "modifierKind": [
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "<p>Form dialog returning a string result.</p>\n",
+            "rawdescription": "\nForm dialog returning a string result.",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    \n",
+            "implements": [
+                "UIModalContent"
+            ]
+        },
+        {
+            "name": "StoryOutputDialog",
+            "id": "component-StoryOutputDialog-67f9f8fd78a7fdd6715723b82d3843b2dac5506e5b770b5d1d338a32f59a29c97f711454dc58731c96efae85802c7dfe77e5fff21ce5e21731ec4a81e6822ddf",
+            "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-story-output-dialog",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    "
+            ],
+            "template": "<h2 class=\"modal-title\">Choose an option</h2>\n<div class=\"modal-actions\">\n  <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n  <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n  <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "chosen",
+                    "defaultValue": "output<string>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 155,
+                    "modifierKind": [
+                        144
+                    ]
+                },
+                {
+                    "name": "modalRef",
+                    "defaultValue": "inject(ModalRef)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 154,
+                    "modifierKind": [
+                        144
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "pick",
+                    "args": [
+                        {
+                            "name": "option",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 157,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "option",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "<p>Dialog that emits an output event before closing.</p>\n",
+            "rawdescription": "\nDialog that emits an output event before closing.",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  signal,\n} from \"@angular/core\";\nimport { moduleMetadata, type Meta, type StoryObj } from \"@storybook/angular\";\n\nimport { UIButton } from \"../button/button.component\";\nimport { UIInput } from \"../input/input.component\";\nimport { ModalService } from \"./modal.service\";\nimport { ModalRef, type UIModalContent } from \"./modal.types\";\n\n// ── Dialog content components (used inside the modal) ──────────────\n\n/** Simple confirm dialog returning a boolean result. */\n@Component({\n  selector: \"ui-story-confirm-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 0.5rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-body {\n        margin: 0 0 1.5rem;\n        line-height: 1.5;\n        opacity: 0.75;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <p class=\"modal-body\">{{ message() }}</p>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close(false)\"\n        >Cancel</ui-button\n      >\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(true)\"\n        >Confirm</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryConfirmDialog implements UIModalContent<boolean> {\n  readonly modalRef = inject(ModalRef<boolean>);\n  readonly title = input(\"Confirm Action\");\n  readonly message = input(\"Are you sure you want to proceed?\");\n}\n\n/** Form dialog returning a string result. */\n@Component({\n  selector: \"ui-story-form-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton, UIInput],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 24rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-field {\n        margin: 1rem 0 1.5rem;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">{{ title() }}</h2>\n    <div class=\"modal-field\">\n      <ui-input\n        [placeholder]=\"fieldPlaceholder()\"\n        [(value)]=\"fieldValue\"\n        ariaLabel=\"Name input\"\n      />\n    </div>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"modalRef.close()\">Cancel</ui-button>\n      <ui-button variant=\"filled\" (click)=\"modalRef.close(fieldValue())\"\n        >Save</ui-button\n      >\n    </div>\n  `,\n})\nclass StoryFormDialog implements UIModalContent<string> {\n  readonly modalRef = inject(ModalRef<string>);\n  readonly title = input(\"Enter Details\");\n  readonly fieldPlaceholder = input(\"Type here…\");\n  readonly fieldValue = signal(\"\");\n}\n\n/** Dialog that emits an output event before closing. */\n@Component({\n  selector: \"ui-story-output-dialog\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    `,\n  ],\n  template: `\n    <h2 class=\"modal-title\">Choose an option</h2>\n    <div class=\"modal-actions\">\n      <ui-button variant=\"ghost\" (click)=\"pick('A')\">Option A</ui-button>\n      <ui-button variant=\"outlined\" (click)=\"pick('B')\">Option B</ui-button>\n      <ui-button variant=\"filled\" (click)=\"pick('C')\">Option C</ui-button>\n    </div>\n  `,\n})\nclass StoryOutputDialog implements UIModalContent {\n  readonly modalRef = inject(ModalRef);\n  readonly chosen = output<string>();\n\n  pick(option: string): void {\n    this.chosen.emit(option);\n    this.modalRef.close(option);\n  }\n}\n\n// ── Demo wrapper components (render a button + result) ─────────────\n\n@Component({\n  selector: \"ui-modal-basic-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Confirm Dialog</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass BasicDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-custom-inputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Delete Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Confirmed:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass CustomInputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Delete Item?\",\n          message:\n            \"This will permanently remove the item and all associated data. This action cannot be undone.\",\n        },\n        ariaLabel: \"Confirm deletion\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-form-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Rename Item</ui-button>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Saved name:</strong> \"{{ lastResult() }}\"\n      </div>\n    }\n  `,\n})\nclass FormDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryFormDialog, string>({\n        component: StoryFormDialog,\n        inputs: {\n          title: \"Rename Item\",\n          fieldPlaceholder: \"Enter new name…\",\n        },\n        ariaLabel: \"Rename item\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n@Component({\n  selector: \"ui-modal-outputs-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Choose Option</ui-button>\n    @if (outputResult()) {\n      <div class=\"story-output\">\n        <strong>Output handler received:</strong> \"{{ outputResult() }}\"\n      </div>\n    }\n  `,\n})\nclass OutputsDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly outputResult = signal<string | undefined>(undefined);\n\n  open(): void {\n    this.modal.openModal<StoryOutputDialog, string>({\n      component: StoryOutputDialog,\n      outputs: {\n        chosen: (value: string) => this.outputResult.set(value),\n      },\n    });\n  }\n}\n\n@Component({\n  selector: \"ui-modal-forced-choice-demo\",\n  standalone: true,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [UIButton],\n  styles: [\n    `\n      :host {\n        display: block;\n        max-width: 400px;\n      }\n      .story-output {\n        margin-top: 1rem;\n        font-size: 0.8125rem;\n        padding: 0.75rem;\n        background: var(--tv-surface-2, #fbfbfc);\n        color: var(--tv-text, #1d232b);\n        border: 1px solid var(--tv-border, #d7dce2);\n        border-radius: 4px;\n        font-family: var(--tv-font, monospace);\n        overflow-x: auto;\n      }\n    `,\n  ],\n  template: `\n    <ui-button (click)=\"open()\">Open Forced-Choice Dialog</ui-button>\n    <p style=\"margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;\">\n      Escape and backdrop click are disabled — you must choose a button.\n    </p>\n    @if (lastResult() !== undefined) {\n      <div class=\"story-output\">\n        <strong>Result:</strong> {{ lastResult() }}\n      </div>\n    }\n  `,\n})\nclass ForcedChoiceDemo {\n  private readonly modal = inject(ModalService);\n  protected readonly lastResult = signal<boolean | undefined>(undefined);\n\n  open(): void {\n    this.modal\n      .openModal<StoryConfirmDialog, boolean>({\n        component: StoryConfirmDialog,\n        inputs: {\n          title: \"Unsaved Changes\",\n          message: \"You have unsaved changes. Do you want to discard them?\",\n        },\n        closeOnEscape: false,\n        closeOnBackdropClick: false,\n        ariaLabel: \"Unsaved changes warning\",\n      })\n      .closed.subscribe((r) => this.lastResult.set(r));\n  }\n}\n\n// ── Storybook meta & stories ───────────────────────────────────────\n\nconst meta: Meta = {\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Basic confirm dialog opened via `ModalService.openModal()`. */\nexport const Default: Story = {\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n};\n\n/** Confirm dialog with custom title and message passed as inputs. */\nexport const WithCustomInputs: Story = {\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n};\n\n/** Form dialog that returns a string value on save. */\nexport const FormDialog: Story = {\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n};\n\n/** Dialog demonstrating output handler wiring via `outputs` config. */\nexport const WithOutputs: Story = {\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n};\n\n/**\n * Dialog that cannot be dismissed by Escape or backdrop click —\n * the user must explicitly choose a button.\n */\nexport const ForcedChoice: Story = {\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        padding: 1.5rem;\n        min-width: 22rem;\n      }\n      .modal-title {\n        margin: 0 0 1rem;\n        font-size: 1.125rem;\n        font-weight: 600;\n      }\n      .modal-actions {\n        display: flex;\n        gap: 0.5rem;\n        justify-content: flex-end;\n      }\n    \n",
+            "implements": [
+                "UIModalContent"
+            ]
         },
         {
             "name": "TemplateDemo",
@@ -8477,6 +9110,18 @@
                 "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        items: sampleItems,\r\n        selectedItemId: null,\r\n        masterTitle: 'Documents',\r\n        detailPlaceholderText: 'Select a document to view details',\r\n    },\r\n}",
+                "rawdescription": "Default master-detail view with no selection.",
+                "description": "<p>Default master-detail view with no selection.</p>\n"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8484,6 +9129,28 @@
                 "defaultValue": "{\r\n  render: (args) => ({\r\n    props: args,\r\n    template: `<ui-button [variant]=\"variant\" [size]=\"size\" [disabled]=\"disabled\">Click me</ui-button>`,\r\n  }),\r\n  args: {\r\n    variant: \"filled\",\r\n    size: \"md\",\r\n    disabled: false,\r\n  },\r\n}",
                 "rawdescription": "Default filled button.",
                 "description": "<p>Default filled button.</p>\n"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n}",
+                "rawdescription": "Basic confirm dialog opened via `ModalService.openModal()`.",
+                "description": "<p>Basic confirm dialog opened via <code>ModalService.openModal()</code>.</p>\n"
+            },
+            {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: (args) => ({\n    props: args,\n    template: `\n      <ui-rich-text-editor\n        [disabled]=\"disabled\"\n        [readonly]=\"readonly\"\n        [placeholder]=\"placeholder\"\n        [ariaLabel]=\"ariaLabel\"\n      />\n    `,\n  }),\n  args: {\n    disabled: false,\n    readonly: false,\n    placeholder: \"Type here…\",\n    ariaLabel: \"Rich text editor\",\n  },\n}"
             },
             {
                 "name": "Default",
@@ -8501,16 +9168,6 @@
                 "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  render: (args) => ({\n    props: args,\n    template: `\n      <ui-rich-text-editor\n        [disabled]=\"disabled\"\n        [readonly]=\"readonly\"\n        [placeholder]=\"placeholder\"\n        [ariaLabel]=\"ariaLabel\"\n      />\n    `,\n  }),\n  args: {\n    disabled: false,\n    readonly: false,\n    placeholder: \"Type here…\",\n    ariaLabel: \"Rich text editor\",\n  },\n}"
-            },
-            {
-                "name": "Default",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8518,18 +9175,6 @@
                 "defaultValue": "{\r\n    args: {\r\n        variant: 'icon',\r\n        showTooltip: false,\r\n    },\r\n}",
                 "rawdescription": "Default icon button variant.",
                 "description": "<p>Default icon button variant.</p>\n"
-            },
-            {
-                "name": "Default",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        items: sampleItems,\r\n        selectedItemId: null,\r\n        masterTitle: 'Documents',\r\n        detailPlaceholderText: 'Select a document to view details',\r\n    },\r\n}",
-                "rawdescription": "Default master-detail view with no selection.",
-                "description": "<p>Default master-detail view with no selection.</p>\n"
             },
             {
                 "name": "DEFAULT_THEME_CONFIG",
@@ -8658,6 +9303,30 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "`<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"28\" viewBox=\"0 0 20 28\">\n  <line x1=\"3\" y1=\"2\" x2=\"3\" y2=\"26\" stroke=\"#444\" stroke-width=\"1.5\"/>\n  <path d=\"M3 2h14l-4 5 4 5H3z\" fill=\"#e04040\" stroke=\"#b03030\" stroke-width=\"0.5\"/>\n</svg>`"
+            },
+            {
+                "name": "ForcedChoice",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n}",
+                "rawdescription": "Dialog that cannot be dismissed by Escape or backdrop click —\nthe user must explicitly choose a button.",
+                "description": "<p>Dialog that cannot be dismissed by Escape or backdrop click —\nthe user must explicitly choose a button.</p>\n"
+            },
+            {
+                "name": "FormDialog",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n}",
+                "rawdescription": "Form dialog that returns a string value on save.",
+                "description": "<p>Form dialog that returns a string value on save.</p>\n"
             },
             {
                 "name": "FullCustomization",
@@ -8851,6 +9520,16 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<UiMasterDetailViewComponent>",
+                "defaultValue": "{\r\n    title: '@Theredhead/UI Blocks/Master Detail View',\r\n    component: UiMasterDetailViewComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        items: {\r\n            control: 'object',\r\n            description: 'Array of items to display in the master list',\r\n        },\r\n        selectedItemId: {\r\n            control: 'text',\r\n            description: 'ID of the currently selected item',\r\n        },\r\n        masterTitle: {\r\n            control: 'text',\r\n            description: 'Title displayed above the master list',\r\n        },\r\n        detailPlaceholderText: {\r\n            control: 'text',\r\n            description: 'Text shown when no item is selected',\r\n        },\r\n        detailData: {\r\n            control: 'object',\r\n            description: 'Optional detail data passed to the detail template',\r\n        },\r\n    },\r\n    decorators: [\r\n        (story) => ({\r\n            ...story(),\r\n            styles: [`\r\n        :host {\r\n          display: block;\r\n          height: 400px;\r\n          border: 1px solid var(--mat-sys-outline-variant, #ccc);\r\n          border-radius: 8px;\r\n          overflow: hidden;\r\n        }\r\n      `],\r\n        }),\r\n    ],\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8871,11 +9550,11 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta<UIFilterStoryDemo>",
-                "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Filter\",\n  component: UIFilterStoryDemo,\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [UIFilter],\n    }),\n  ],\n}"
+                "type": "Meta",
+                "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -8901,11 +9580,11 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta<object>",
-                "defaultValue": "{\r\n  title: \"@Theredhead/UI Kit/Table View\",\r\n  component: UITableViewStoryDemo,\r\n  tags: [\"autodocs\"],\r\n  parameters: {\r\n    layout: \"fullscreen\",\r\n    docs: {\r\n      description: {\r\n        component:\r\n          \"Table View demo backed by JSONPlaceholder posts using the Storybook-only JSONPlaceholder datasource adapters.\",\r\n      },\r\n    },\r\n  },\r\n}"
+                "type": "Meta<UIFilterStoryDemo>",
+                "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Filter\",\n  component: UIFilterStoryDemo,\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [UIFilter],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -8921,11 +9600,11 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta<UiMasterDetailViewComponent>",
-                "defaultValue": "{\r\n    title: '@Theredhead/UI Blocks/Master Detail View',\r\n    component: UiMasterDetailViewComponent,\r\n    tags: ['autodocs'],\r\n    argTypes: {\r\n        items: {\r\n            control: 'object',\r\n            description: 'Array of items to display in the master list',\r\n        },\r\n        selectedItemId: {\r\n            control: 'text',\r\n            description: 'ID of the currently selected item',\r\n        },\r\n        masterTitle: {\r\n            control: 'text',\r\n            description: 'Title displayed above the master list',\r\n        },\r\n        detailPlaceholderText: {\r\n            control: 'text',\r\n            description: 'Text shown when no item is selected',\r\n        },\r\n        detailData: {\r\n            control: 'object',\r\n            description: 'Optional detail data passed to the detail template',\r\n        },\r\n    },\r\n    decorators: [\r\n        (story) => ({\r\n            ...story(),\r\n            styles: [`\r\n        :host {\r\n          display: block;\r\n          height: 400px;\r\n          border: 1px solid var(--mat-sys-outline-variant, #ccc);\r\n          border-radius: 8px;\r\n          overflow: hidden;\r\n        }\r\n      `],\r\n        }),\r\n    ],\r\n}"
+                "type": "Meta<object>",
+                "defaultValue": "{\r\n  title: \"@Theredhead/UI Kit/Table View\",\r\n  component: UITableViewStoryDemo,\r\n  tags: [\"autodocs\"],\r\n  parameters: {\r\n    layout: \"fullscreen\",\r\n    docs: {\r\n      description: {\r\n        component:\r\n          \"Table View demo backed by JSONPlaceholder posts using the Storybook-only JSONPlaceholder datasource adapters.\",\r\n      },\r\n    },\r\n  },\r\n}"
             },
             {
                 "name": "MinimalToolbar",
@@ -9220,6 +9899,18 @@
                 "defaultValue": "{ lat: 48.2082, lng: 16.3738 }"
             },
             {
+                "name": "WithCustomInputs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n}",
+                "rawdescription": "Confirm dialog with custom title and message passed as inputs.",
+                "description": "<p>Confirm dialog with custom title and message passed as inputs.</p>\n"
+            },
+            {
                 "name": "WithFilterAndActions",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -9272,6 +9963,18 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\r\n  decorators: [\r\n    moduleMetadata({\r\n      imports: [\r\n        UITableView,\r\n        UINumberColumn,\r\n        UITextColumn,\r\n        UIBadgeColumn,\r\n        UIDensityDirective,\r\n        UiThemeToggleComponent,\r\n      ],\r\n    }),\r\n  ],\r\n  render: () => ({\r\n    props: {\r\n      adapter: new DatasourceAdapter(\r\n        new JsonPlaceholderPostsDatasource(25),\r\n        25,\r\n      ),\r\n    },\r\n    template: `\r\n            <div style=\"display:flex;justify-content:flex-end;margin:0 0 0.75rem;\">\r\n                <ui-theme-toggle variant=\"button\" [showTooltip]=\"true\" ariaLabel=\"Toggle table theme\" />\r\n            </div>\r\n            <ui-table-view\r\n                uiDensity=\"comfortable\"\r\n                caption=\"Without Built-in Paginator\"\r\n                tableId=\"story-no-paginator\"\r\n                [showRowIndexIndicator]=\"true\"\r\n                [showBuiltInPaginator]=\"false\"\r\n                [datasource]=\"adapter\"\r\n            >\r\n                <ui-number-column\r\n                    key=\"id\"\r\n                    headerText=\"ID\"\r\n                    [sortable]=\"true\"\r\n                    [format]=\"{ maximumFractionDigits: 0 }\"\r\n                />\r\n                <ui-number-column\r\n                    key=\"userId\"\r\n                    headerText=\"User ID\"\r\n                    [sortable]=\"true\"\r\n                    [format]=\"{ maximumFractionDigits: 0 }\"\r\n                />\r\n                <ui-text-column\r\n                    key=\"title\"\r\n                    headerText=\"Title\"\r\n                    [truncate]=\"true\"\r\n                    [sortable]=\"true\"\r\n                />\r\n                <ui-badge-column\r\n                    key=\"userId\"\r\n                    headerText=\"Owner\"\r\n                    variant=\"neutral\"\r\n                />\r\n            </ui-table-view>\r\n        `,\r\n  }),\r\n}"
+            },
+            {
+                "name": "WithOutputs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n}",
+                "rawdescription": "Dialog demonstrating output handler wiring via `outputs` config.",
+                "description": "<p>Dialog demonstrating output handler wiring via <code>outputs</code> config.</p>\n"
             },
             {
                 "name": "WithPlaceholders",
@@ -9380,6 +10083,17 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
+                "rawtype": "StoryObj<UiMasterDetailViewComponent>",
+                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 177
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
                 "rawtype": "StoryObj",
                 "file": "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
                 "deprecated": false,
@@ -9402,8 +10116,8 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<UIFilterStoryDemo>",
-                "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                "rawtype": "StoryObj",
+                "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -9435,8 +10149,8 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<object>",
-                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                "rawtype": "StoryObj<UIFilterStoryDemo>",
+                "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -9457,8 +10171,8 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<UiMasterDetailViewComponent>",
-                "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                "rawtype": "StoryObj<object>",
+                "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -10107,62 +10821,76 @@
                     "description": "<p>Master-detail view with a pre-selected item.</p>\n"
                 }
             ],
-            "packages/ui-kit/src/lib/filter/filter.stories.ts": [
+            "packages/ui-kit/src/lib/modal/modal.stories.ts": [
                 {
                     "name": "Default",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{}",
-                    "rawdescription": "Basic AND-only filter builder.",
-                    "description": "<p>Basic AND-only filter builder.</p>\n"
+                    "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-basic-demo />`,\n  }),\n}",
+                    "rawdescription": "Basic confirm dialog opened via `ModalService.openModal()`.",
+                    "description": "<p>Basic confirm dialog opened via <code>ModalService.openModal()</code>.</p>\n"
                 },
                 {
-                    "name": "DEMO_FIELDS",
+                    "name": "ForcedChoice",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "FilterFieldDefinition[]",
-                    "defaultValue": "[\n  { key: \"name\", label: \"Name\", type: \"string\" },\n  { key: \"email\", label: \"Email\", type: \"string\" },\n  { key: \"age\", label: \"Age\", type: \"number\" },\n  { key: \"salary\", label: \"Salary\", type: \"number\" },\n  { key: \"hireDate\", label: \"Hire Date\", type: \"date\" },\n]"
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-forced-choice-demo />`,\n  }),\n}",
+                    "rawdescription": "Dialog that cannot be dismissed by Escape or backdrop click —\nthe user must explicitly choose a button.",
+                    "description": "<p>Dialog that cannot be dismissed by Escape or backdrop click —\nthe user must explicitly choose a button.</p>\n"
+                },
+                {
+                    "name": "FormDialog",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-form-demo />`,\n  }),\n}",
+                    "rawdescription": "Form dialog that returns a string value on save.",
+                    "description": "<p>Form dialog that returns a string value on save.</p>\n"
                 },
                 {
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Meta<UIFilterStoryDemo>",
-                    "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Filter\",\n  component: UIFilterStoryDemo,\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [UIFilter],\n    }),\n  ],\n}"
+                    "type": "Meta",
+                    "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Modal\",\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [\n        BasicDemo,\n        CustomInputsDemo,\n        FormDemo,\n        OutputsDemo,\n        ForcedChoiceDemo,\n      ],\n    }),\n  ],\n}"
                 },
                 {
-                    "name": "Prepopulated",
+                    "name": "WithCustomInputs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <ui-filter\n        [fields]=\"fields\"\n        [allowJunction]=\"true\"\n        [(value)]=\"descriptor\"\n      />\n      <pre style=\"margin-top:1rem;font-size:0.8125rem;background:var(--tv-surface-2,#fbfbfc);color:var(--tv-text,#1d232b);border:1px solid var(--tv-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--tv-font,monospace);\">{{ descriptor | json }}</pre>\n    `,\n    props: {\n      fields: DEMO_FIELDS,\n      descriptor: {\n        junction: \"and\",\n        rules: [\n          { id: 1, field: \"name\", operator: \"contains\", value: \"John\" },\n          { id: 2, field: \"age\", operator: \"greaterThan\", value: \"25\" },\n          {\n            id: 3,\n            field: \"hireDate\",\n            operator: \"inTheLast\",\n            value: \"6\",\n            unit: \"months\",\n          },\n        ],\n      } as FilterDescriptor<DemoRow>,\n    },\n  }),\n}",
-                    "rawdescription": "Pre-populated with a few rules.",
-                    "description": "<p>Pre-populated with a few rules.</p>\n"
+                    "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-custom-inputs-demo />`,\n  }),\n}",
+                    "rawdescription": "Confirm dialog with custom title and message passed as inputs.",
+                    "description": "<p>Confirm dialog with custom title and message passed as inputs.</p>\n"
                 },
                 {
-                    "name": "WithJunction",
+                    "name": "WithOutputs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <ui-filter\n        [fields]=\"fields\"\n        [allowJunction]=\"true\"\n        [(value)]=\"descriptor\"\n      />\n      <pre style=\"margin-top:1rem;font-size:0.8125rem;background:var(--tv-surface-2,#fbfbfc);color:var(--tv-text,#1d232b);border:1px solid var(--tv-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--tv-font,monospace);\">{{ descriptor | json }}</pre>\n    `,\n    props: {\n      fields: DEMO_FIELDS,\n      descriptor: { junction: \"and\", rules: [] } as FilterDescriptor<DemoRow>,\n    },\n  }),\n}",
-                    "rawdescription": "With junction toggle (AND / OR).",
-                    "description": "<p>With junction toggle (AND / OR).</p>\n"
+                    "defaultValue": "{\n  render: () => ({\n    template: `<ui-modal-outputs-demo />`,\n  }),\n}",
+                    "rawdescription": "Dialog demonstrating output handler wiring via `outputs` config.",
+                    "description": "<p>Dialog demonstrating output handler wiring via <code>outputs</code> config.</p>\n"
                 }
             ],
             "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts": [
@@ -10245,6 +10973,64 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n  render: (args) => ({\n    props: { ...args, placeholders: samplePlaceholders },\n    template: `\n      <ui-rich-text-editor\n        [placeholders]=\"placeholders\"\n        [placeholder]=\"placeholder\"\n      />\n    `,\n  }),\n  args: {\n    placeholder: \"Compose your email template…\",\n  },\n}"
+                }
+            ],
+            "packages/ui-kit/src/lib/filter/filter.stories.ts": [
+                {
+                    "name": "Default",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}",
+                    "rawdescription": "Basic AND-only filter builder.",
+                    "description": "<p>Basic AND-only filter builder.</p>\n"
+                },
+                {
+                    "name": "DEMO_FIELDS",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "FilterFieldDefinition[]",
+                    "defaultValue": "[\n  { key: \"name\", label: \"Name\", type: \"string\" },\n  { key: \"email\", label: \"Email\", type: \"string\" },\n  { key: \"age\", label: \"Age\", type: \"number\" },\n  { key: \"salary\", label: \"Salary\", type: \"number\" },\n  { key: \"hireDate\", label: \"Hire Date\", type: \"date\" },\n]"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<UIFilterStoryDemo>",
+                    "defaultValue": "{\n  title: \"@Theredhead/UI Kit/Filter\",\n  component: UIFilterStoryDemo,\n  tags: [\"autodocs\"],\n  decorators: [\n    moduleMetadata({\n      imports: [UIFilter],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "Prepopulated",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <ui-filter\n        [fields]=\"fields\"\n        [allowJunction]=\"true\"\n        [(value)]=\"descriptor\"\n      />\n      <pre style=\"margin-top:1rem;font-size:0.8125rem;background:var(--tv-surface-2,#fbfbfc);color:var(--tv-text,#1d232b);border:1px solid var(--tv-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--tv-font,monospace);\">{{ descriptor | json }}</pre>\n    `,\n    props: {\n      fields: DEMO_FIELDS,\n      descriptor: {\n        junction: \"and\",\n        rules: [\n          { id: 1, field: \"name\", operator: \"contains\", value: \"John\" },\n          { id: 2, field: \"age\", operator: \"greaterThan\", value: \"25\" },\n          {\n            id: 3,\n            field: \"hireDate\",\n            operator: \"inTheLast\",\n            value: \"6\",\n            unit: \"months\",\n          },\n        ],\n      } as FilterDescriptor<DemoRow>,\n    },\n  }),\n}",
+                    "rawdescription": "Pre-populated with a few rules.",
+                    "description": "<p>Pre-populated with a few rules.</p>\n"
+                },
+                {
+                    "name": "WithJunction",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <ui-filter\n        [fields]=\"fields\"\n        [allowJunction]=\"true\"\n        [(value)]=\"descriptor\"\n      />\n      <pre style=\"margin-top:1rem;font-size:0.8125rem;background:var(--tv-surface-2,#fbfbfc);color:var(--tv-text,#1d232b);border:1px solid var(--tv-border,#d7dce2);padding:0.75rem;overflow-x:auto;font-family:var(--tv-font,monospace);\">{{ descriptor | json }}</pre>\n    `,\n    props: {\n      fields: DEMO_FIELDS,\n      descriptor: { junction: \"and\", rules: [] } as FilterDescriptor<DemoRow>,\n    },\n  }),\n}",
+                    "rawdescription": "With junction toggle (AND / OR).",
+                    "description": "<p>With junction toggle (AND / OR).</p>\n"
                 }
             ],
             "packages/ui-theme/src/lib/tokens/theme.tokens.ts": [
@@ -10641,6 +11427,19 @@
                     "kind": 177
                 }
             ],
+            "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<UiMasterDetailViewComponent>",
+                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 177
+                }
+            ],
             "packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts": [
                 {
                     "name": "Story",
@@ -10667,13 +11466,13 @@
                     "kind": 177
                 }
             ],
-            "packages/ui-kit/src/lib/filter/filter.stories.ts": [
+            "packages/ui-kit/src/lib/modal/modal.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "StoryObj<UIFilterStoryDemo>",
-                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
+                    "rawtype": "StoryObj",
+                    "file": "packages/ui-kit/src/lib/modal/modal.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -10706,13 +11505,13 @@
                     "kind": 177
                 }
             ],
-            "packages/ui-kit/src/lib/table-view/table-view.stories.ts": [
+            "packages/ui-kit/src/lib/filter/filter.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "StoryObj<object>",
-                    "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
+                    "rawtype": "StoryObj<UIFilterStoryDemo>",
+                    "file": "packages/ui-kit/src/lib/filter/filter.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -10732,13 +11531,13 @@
                     "kind": 177
                 }
             ],
-            "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts": [
+            "packages/ui-kit/src/lib/table-view/table-view.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "StoryObj<UiMasterDetailViewComponent>",
-                    "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+                    "rawtype": "StoryObj<object>",
+                    "file": "packages/ui-kit/src/lib/table-view/table-view.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -10775,7 +11574,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 28,
+        "count": 29,
         "status": "medium",
         "files": [
             {
@@ -11654,6 +12453,138 @@
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BasicDemo",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CustomInputsDemo",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ForcedChoiceDemo",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "FormDemo",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "OutputsDemo",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "StoryConfirmDialog",
+                "coveragePercent": 25,
+                "coverageCount": "1/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "StoryFormDialog",
+                "coveragePercent": 20,
+                "coverageCount": "1/5",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "StoryOutputDialog",
+                "coveragePercent": 25,
+                "coverageCount": "1/4",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Default",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ForcedChoice",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "FormDialog",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithCustomInputs",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "packages/ui-kit/src/lib/modal/modal.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithOutputs",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
             },
             {
                 "filePath": "packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.component.ts",

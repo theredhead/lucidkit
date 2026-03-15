@@ -404,8 +404,7 @@ class ForcedChoiceDemo {
         component: StoryConfirmDialog,
         inputs: {
           title: "Unsaved Changes",
-          message:
-            "You have unsaved changes. Do you want to discard them?",
+          message: "You have unsaved changes. Do you want to discard them?",
         },
         closeOnEscape: false,
         closeOnBackdropClick: false,

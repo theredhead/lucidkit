@@ -3,5 +3,6 @@ export {
   PopoverRef,
   type UIPopoverContent,
   type OpenPopoverConfig,
-  type PopoverPlacement,
+  type PopoverVerticalAlignment,
+  type PopoverHorizontalAlignment,
 } from "./popover.types";
