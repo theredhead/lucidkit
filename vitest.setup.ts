@@ -1,9 +1,21 @@
-import '@analogjs/vitest-angular/setup-zone';
+import "@analogjs/vitest-angular/setup-zone";
+import { webcrypto } from "node:crypto";
 
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 import {
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from "@angular/platform-browser-dynamic/testing";
 
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+// jsdom does not expose crypto.subtle — polyfill from Node's webcrypto
+if (globalThis.crypto && !globalThis.crypto.subtle) {
+  Object.defineProperty(globalThis.crypto, "subtle", {
+    value: (webcrypto as Crypto).subtle,
+    configurable: true,
+  });
+}
+
+TestBed.initTestEnvironment(
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting(),
+);

@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  signal,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIFileUpload, type UIFileEntry } from "./file-upload.component";
@@ -21,17 +17,23 @@ import { UIFileUpload, type UIFileEntry } from "./file-upload.component";
       (fileRemoved)="onRemoved($event)"
     />
     @if (log().length) {
-      <pre class="story-log">{{ log().join('\\n') }}</pre>
+      <pre class="story-log">{{ log().join("\\n") }}</pre>
     }
   `,
   styles: [
     `
-      :host { display: block; max-width: 480px; }
+      :host {
+        display: block;
+        max-width: 480px;
+      }
       .story-log {
-        margin-top: 0.75rem; padding: 0.5rem 0.75rem; font-size: 0.8rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
         background: var(--ui-surface-2, #f0f2f5);
         border: 1px solid var(--ui-border, #d7dce2);
-        border-radius: 4px; white-space: pre-wrap;
+        border-radius: 4px;
+        white-space: pre-wrap;
         color: var(--ui-text, #1d232b);
       }
     `,
@@ -64,17 +66,23 @@ class DefaultDemo {
       (fileRejected)="onRejected($event)"
     />
     @if (rejections().length) {
-      <pre class="story-log">{{ rejections().join('\\n') }}</pre>
+      <pre class="story-log">{{ rejections().join("\\n") }}</pre>
     }
   `,
   styles: [
     `
-      :host { display: block; max-width: 480px; }
+      :host {
+        display: block;
+        max-width: 480px;
+      }
       .story-log {
-        margin-top: 0.75rem; padding: 0.5rem 0.75rem; font-size: 0.8rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
         background: var(--ui-surface-2, #f0f2f5);
         border: 1px solid var(--ui-border, #d7dce2);
-        border-radius: 4px; white-space: pre-wrap;
+        border-radius: 4px;
+        white-space: pre-wrap;
         color: var(--ui-text, #1d232b);
       }
     `,
@@ -106,17 +114,23 @@ class ImagesDemo {
       (fileRejected)="onRejected($event)"
     />
     @if (rejections().length) {
-      <pre class="story-log">{{ rejections().join('\\n') }}</pre>
+      <pre class="story-log">{{ rejections().join("\\n") }}</pre>
     }
   `,
   styles: [
     `
-      :host { display: block; max-width: 480px; }
+      :host {
+        display: block;
+        max-width: 480px;
+      }
       .story-log {
-        margin-top: 0.75rem; padding: 0.5rem 0.75rem; font-size: 0.8rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
         background: var(--ui-surface-2, #f0f2f5);
         border: 1px solid var(--ui-border, #d7dce2);
-        border-radius: 4px; white-space: pre-wrap;
+        border-radius: 4px;
+        white-space: pre-wrap;
         color: var(--ui-text, #1d232b);
       }
     `,
@@ -140,10 +154,15 @@ class SizeLimitDemo {
   standalone: true,
   imports: [UIFileUpload],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ui-file-upload [disabled]="true" label="Upload is disabled" />
-  `,
-  styles: [`:host { display: block; max-width: 480px; }`],
+  template: ` <ui-file-upload [disabled]="true" label="Upload is disabled" /> `,
+  styles: [
+    `
+      :host {
+        display: block;
+        max-width: 480px;
+      }
+    `,
+  ],
 })
 class DisabledDemo {}
 
@@ -160,7 +179,14 @@ class DisabledDemo {}
       [(files)]="files"
     />
   `,
-  styles: [`:host { display: block; max-width: 480px; }`],
+  styles: [
+    `
+      :host {
+        display: block;
+        max-width: 480px;
+      }
+    `,
+  ],
 })
 class DocumentsDemo {
   protected readonly files = signal<readonly UIFileEntry[]>([]);

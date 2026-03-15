@@ -2,11 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { UIFileUpload } from "./file-upload.component";
 
 /** Helper to create a mock File. */
-function mockFile(
-  name: string,
-  size: number,
-  type = "text/plain",
-): File {
+function mockFile(name: string, size: number, type = "text/plain"): File {
   const blob = new Blob(["x".repeat(size)], { type });
   return new File([blob], name, { type });
 }
@@ -16,9 +12,13 @@ function mockFileList(files: File[]): FileList {
   const list = {
     length: files.length,
     item: (i: number) => files[i] ?? null,
-    [Symbol.iterator]: function* () { yield* files; },
+    [Symbol.iterator]: function* () {
+      yield* files;
+    },
   } as unknown as FileList;
-  files.forEach((f, i) => { (list as Record<number, File>)[i] = f; });
+  files.forEach((f, i) => {
+    (list as Record<number, File>)[i] = f;
+  });
   return list;
 }
 
@@ -33,11 +33,7 @@ function simulateInputChange(input: HTMLInputElement, files: File[]): void {
 }
 
 /** Helper to dispatch a drag event with optional files. */
-function dispatchDrag(
-  el: HTMLElement,
-  type: string,
-  files: File[] = [],
-): void {
+function dispatchDrag(el: HTMLElement, type: string, files: File[] = []): void {
   // jsdom doesn't support DragEvent constructor — use a plain Event
   const event = new Event(type, { bubbles: true, cancelable: true });
   if (files.length) {
@@ -350,7 +346,9 @@ describe("UIFileUpload", () => {
 
     it("should show the label text", () => {
       const label = el.querySelector(".drop-zone-label");
-      expect(label?.textContent).toContain("Drop files here or click to browse");
+      expect(label?.textContent).toContain(
+        "Drop files here or click to browse",
+      );
     });
 
     it("should show accept hint when accept is set", () => {
