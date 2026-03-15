@@ -1,1 +1,5 @@
-export { UIBreadcrumb, type BreadcrumbItem } from "./breadcrumb.component";
+export {
+  UIBreadcrumb,
+  type BreadcrumbItem,
+  type BreadcrumbVariant,
+} from "./breadcrumb.component";

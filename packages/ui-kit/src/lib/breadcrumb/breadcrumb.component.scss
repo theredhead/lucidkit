@@ -75,3 +75,52 @@
   font-size: 0.875rem;
   user-select: none;
 }
+
+/* ── Chevron separator (button variant) ── */
+
+.bc-chevron {
+  width: 1rem;
+  height: 1rem;
+  color: var(--tv-muted);
+  flex-shrink: 0;
+}
+
+/* ── Button variant ── */
+
+.bc-button {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--tv-border, #d7dce2);
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-family: inherit;
+  color: var(--tv-link);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+
+  &:hover:not(:disabled) {
+    background: var(--tv-link);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--tv-link);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.bc-button--current {
+  color: var(--tv-text);
+  border-color: transparent;
+  background: transparent;
+  font-weight: 500;
+}

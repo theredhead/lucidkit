@@ -34,13 +34,36 @@ class BreadcrumbDemo {
   ];
 }
 
+@Component({
+  selector: "ui-breadcrumb-button-demo",
+  standalone: true,
+  imports: [UIBreadcrumb],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <div>
+        <h4 style="margin: 0 0 8px">Button variant with chevron separators</h4>
+        <ui-breadcrumb [items]="items" variant="button" />
+      </div>
+    </div>
+  `,
+})
+class BreadcrumbButtonDemo {
+  public readonly items: BreadcrumbItem[] = [
+    { label: "Home", url: "/" },
+    { label: "Dashboard", url: "/dashboard" },
+    { label: "Analytics", url: "/dashboard/analytics" },
+    { label: "Monthly Report" },
+  ];
+}
+
 const meta: Meta<UIBreadcrumb> = {
   title: "@theredhead/UI Kit/Breadcrumb",
   component: UIBreadcrumb,
   tags: ["autodocs"],
   decorators: [
     moduleMetadata({
-      imports: [BreadcrumbDemo],
+      imports: [BreadcrumbDemo, BreadcrumbButtonDemo],
     }),
   ],
 };
@@ -51,5 +74,12 @@ type Story = StoryObj<UIBreadcrumb>;
 export const Default: Story = {
   render: () => ({
     template: `<ui-breadcrumb-demo />`,
+  }),
+};
+
+/** Button variant — crumbs are styled buttons separated by chevron icons. */
+export const ButtonVariant: Story = {
+  render: () => ({
+    template: `<ui-breadcrumb-button-demo />`,
   }),
 };
