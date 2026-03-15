@@ -1,47 +1,47 @@
 /* ── Light defaults ───────────────────────────────────────── */
 
 :host {
-  --tv-text: #1d232b;
-  --tv-text-muted: #5a6470;
-  --tv-surface: #ffffff;
-  --tv-surface-2: #f0f2f5;
-  --tv-border: #d7dce2;
-  --tv-border-strong: #c2c8cf;
-  --tv-accent: #3584e4;
-  --tv-accent-contrast: #ffffff;
-  --tv-font: inherit;
-  --tv-font-body: 0.875rem;
+  --ui-text: #1d232b;
+  --ui-text-muted: #5a6470;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f0f2f5;
+  --ui-border: #d7dce2;
+  --ui-border-strong: #c2c8cf;
+  --ui-accent: #3584e4;
+  --ui-accent-contrast: #ffffff;
+  --ui-font: inherit;
+  --ui-font-body: 0.875rem;
 
   display: inline-block;
-  font-family: var(--tv-font);
-  font-size: var(--tv-font-body);
+  font-family: var(--ui-font);
+  font-size: var(--ui-font-body);
 }
 
 /* ── Dark mode (explicit class) ──────────────────────────── */
 
 :host-context(html.dark-theme) {
-  --tv-text: #f2f6fb;
-  --tv-text-muted: #9ba4ae;
-  --tv-surface: #1e2128;
-  --tv-surface-2: #2a2e35;
-  --tv-border: #3a3f47;
-  --tv-border-strong: #4a5058;
-  --tv-accent: #62a0ea;
-  --tv-accent-contrast: #1e2128;
+  --ui-text: #f2f6fb;
+  --ui-text-muted: #9ba4ae;
+  --ui-surface: #1e2128;
+  --ui-surface-2: #2a2e35;
+  --ui-border: #3a3f47;
+  --ui-border-strong: #4a5058;
+  --ui-accent: #62a0ea;
+  --ui-accent-contrast: #1e2128;
 }
 
 /* ── Dark mode (system preference fallback) ──────────────── */
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-text: #f2f6fb;
-    --tv-text-muted: #9ba4ae;
-    --tv-surface: #1e2128;
-    --tv-surface-2: #2a2e35;
-    --tv-border: #3a3f47;
-    --tv-border-strong: #4a5058;
-    --tv-accent: #62a0ea;
-    --tv-accent-contrast: #1e2128;
+    --ui-text: #f2f6fb;
+    --ui-text-muted: #9ba4ae;
+    --ui-surface: #1e2128;
+    --ui-surface-2: #2a2e35;
+    --ui-border: #3a3f47;
+    --ui-border-strong: #4a5058;
+    --ui-accent: #62a0ea;
+    --ui-accent-contrast: #1e2128;
   }
 }
 
@@ -50,9 +50,9 @@
 .tp-wrapper {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--tv-border);
+  border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
-  background: var(--tv-surface);
+  background: var(--ui-surface);
   padding: 0 0.25rem;
   gap: 0;
   transition:
@@ -60,11 +60,11 @@
     background-color 120ms ease;
 
   &:hover:not(:has(input:disabled)) {
-    border-color: var(--tv-border-strong);
+    border-color: var(--ui-border-strong);
   }
 
   &:focus-within {
-    outline: 2px solid var(--tv-accent);
+    outline: 2px solid var(--ui-accent);
     outline-offset: -1px;
   }
 }
@@ -75,7 +75,7 @@
   appearance: none;
   border: none;
   background: transparent;
-  color: var(--tv-text);
+  color: var(--ui-text);
   font-family: inherit;
   font-size: inherit;
   text-align: center;
@@ -89,7 +89,7 @@
   }
 
   &::placeholder {
-    color: var(--tv-text-muted);
+    color: var(--ui-text-muted);
   }
 
   /* Remove spinner for number input fallback */
@@ -103,7 +103,7 @@
 /* ── Separator ───────────────────────────────────────────── */
 
 .tp-separator {
-  color: var(--tv-text-muted);
+  color: var(--ui-text-muted);
   font-weight: 600;
   user-select: none;
   padding: 0 1px;
@@ -114,8 +114,8 @@
 .tp-meridiem {
   appearance: none;
   border: none;
-  background: var(--tv-surface-2);
-  color: var(--tv-text);
+  background: var(--ui-surface-2);
+  color: var(--ui-text);
   font-family: inherit;
   font-size: 0.75rem;
   font-weight: 600;
@@ -130,8 +130,8 @@
     color 80ms ease;
 
   &:hover:not(:disabled) {
-    background: var(--tv-accent);
-    color: var(--tv-accent-contrast);
+    background: var(--ui-accent);
+    color: var(--ui-accent-contrast);
   }
 
   &:disabled {

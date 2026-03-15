@@ -7,22 +7,22 @@
   flex-shrink: 0;
   user-select: none;
 
-  --tv-bg: #d7dce2;
-  --tv-text: #3a3f47;
-  --tv-fallback: #5a6470;
+  --ui-bg: #d7dce2;
+  --ui-text: #3a3f47;
+  --ui-fallback: #5a6470;
 }
 
 :host-context(html.dark-theme) {
-  --tv-bg: #505d6d;
-  --tv-text: #f2f6fb;
-  --tv-fallback: #d0d8e3;
+  --ui-bg: #505d6d;
+  --ui-text: #f2f6fb;
+  --ui-fallback: #d0d8e3;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-bg: #505d6d;
-    --tv-text: #f2f6fb;
-    --tv-fallback: #d0d8e3;
+    --ui-bg: #505d6d;
+    --ui-text: #f2f6fb;
+    --ui-fallback: #d0d8e3;
   }
 }
 
@@ -75,8 +75,8 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: var(--tv-bg);
-  color: var(--tv-text);
+  background: var(--ui-bg);
+  color: var(--ui-text);
   font-weight: 600;
   font-family: system-ui, sans-serif;
   line-height: 1;
@@ -87,8 +87,8 @@
 .av-fallback {
   width: 60%;
   height: 60%;
-  color: var(--tv-fallback);
-  background: var(--tv-bg);
+  color: var(--ui-fallback);
+  background: var(--ui-bg);
   border-radius: 50%;
   padding: 20%;
 }

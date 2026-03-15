@@ -41,18 +41,18 @@ export type AccordionMode = "single" | "multi";
     `
       :host {
         display: block;
-        border: 1px solid var(--tv-border, #d7dce2);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 0.5rem;
         overflow: hidden;
       }
 
       :host-context(html.dark-theme) {
-        border-color: var(--tv-border, #3a3f47);
+        border-color: var(--ui-border, #3a3f47);
       }
 
       @media (prefers-color-scheme: dark) {
         :host-context(html:not(.light-theme):not(.dark-theme)) {
-          border-color: var(--tv-border, #3a3f47);
+          border-color: var(--ui-border, #3a3f47);
         }
       }
     `,

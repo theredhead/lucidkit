@@ -251,7 +251,7 @@ class UITableViewPhotosStoryDemo {
       <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
     </ui-table-view>
     <pre
-      style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;"
+      style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--ui-surface-2, #f6f7f8); border: 1px solid var(--ui-border, #d7dce2); border-radius: 4px;"
     >
 Selected: {{ selectedJson() }}</pre
     >
@@ -324,7 +324,7 @@ class UITableViewSingleSelectDemo {
       <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
     </ui-table-view>
     <pre
-      style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--tv-surface-2, #f6f7f8); border: 1px solid var(--tv-border, #d7dce2); border-radius: 4px;"
+      style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--ui-surface-2, #f6f7f8); border: 1px solid var(--ui-border, #d7dce2); border-radius: 4px;"
     >
 Selected ({{ selectedCount() }}): {{ selectedJson() }}</pre
     >
@@ -1032,7 +1032,7 @@ onPredicateChange(predicate: Predicate<Employee> | undefined): void {
         <ng-template let-row>
           <span style="display:inline-flex;align-items:center;gap:6px;">
             <span
-              style="display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--tv-accent,#3b82f6);color:#fff;font-size:0.75rem;line-height:24px;text-align:center;font-weight:600;"
+              style="display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--ui-accent,#3b82f6);color:#fff;font-size:0.75rem;line-height:24px;text-align:center;font-weight:600;"
               >{{ row.userId }}</span
             >
             <span>User {{ row.userId }}</span>
@@ -1042,13 +1042,13 @@ onPredicateChange(predicate: Predicate<Employee> | undefined): void {
       <ui-template-column key="actions" headerText="Actions">
         <ng-template let-row>
           <button
-            style="padding:2px 10px;font-size:0.8rem;border:1px solid var(--tv-border,#d7dce2);border-radius:4px;background:var(--tv-surface-2,#f6f7f8);color:var(--tv-text,#1d232b);cursor:pointer;"
+            style="padding:2px 10px;font-size:0.8rem;border:1px solid var(--ui-border,#d7dce2);border-radius:4px;background:var(--ui-surface-2,#f6f7f8);color:var(--ui-text,#1d232b);cursor:pointer;"
             (click)="onAction('view', row)"
           >
             View
           </button>
           <button
-            style="padding:2px 10px;font-size:0.8rem;margin-left:4px;border:1px solid var(--tv-border,#d7dce2);border-radius:4px;background:var(--tv-accent,#3b82f6);color:#fff;cursor:pointer;"
+            style="padding:2px 10px;font-size:0.8rem;margin-left:4px;border:1px solid var(--ui-border,#d7dce2);border-radius:4px;background:var(--ui-accent,#3b82f6);color:#fff;cursor:pointer;"
             (click)="onAction('edit', row)"
           >
             Edit
@@ -1064,8 +1064,8 @@ onPredicateChange(predicate: Predicate<Employee> | undefined): void {
         margin-top: 1rem;
         padding: 0.75rem;
         font-size: 0.8rem;
-        background: var(--tv-surface-2, #f6f7f8);
-        border: 1px solid var(--tv-border, #d7dce2);
+        background: var(--ui-surface-2, #f6f7f8);
+        border: 1px solid var(--ui-border, #d7dce2);
         border-radius: 4px;
       }
     `,

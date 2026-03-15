@@ -10,22 +10,22 @@
   white-space: nowrap;
   user-select: none;
 
-  --tv-chip-bg: #e8edf4;
-  --tv-chip-text: #1d232b;
-  --tv-chip-dismiss: #5a6470;
+  --ui-chip-bg: #e8edf4;
+  --ui-chip-text: #1d232b;
+  --ui-chip-dismiss: #5a6470;
 }
 
 :host-context(html.dark-theme) {
-  --tv-chip-bg: #3a3f47;
-  --tv-chip-text: #f2f6fb;
-  --tv-chip-dismiss: #d0d8e3;
+  --ui-chip-bg: #3a3f47;
+  --ui-chip-text: #f2f6fb;
+  --ui-chip-dismiss: #d0d8e3;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-chip-bg: #3a3f47;
-    --tv-chip-text: #f2f6fb;
-    --tv-chip-dismiss: #d0d8e3;
+    --ui-chip-bg: #3a3f47;
+    --ui-chip-text: #f2f6fb;
+    --ui-chip-dismiss: #d0d8e3;
   }
 }
 
@@ -37,8 +37,8 @@
 /* ── Color variants ── */
 
 :host(.ui-chip--neutral) {
-  background: var(--tv-chip-bg);
-  color: var(--tv-chip-text);
+  background: var(--ui-chip-bg);
+  color: var(--ui-chip-text);
 }
 
 :host(.ui-chip--primary) {
@@ -119,7 +119,7 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: var(--tv-chip-dismiss);
+  color: var(--ui-chip-dismiss);
   cursor: pointer;
   flex-shrink: 0;
   transition: background-color 120ms ease;

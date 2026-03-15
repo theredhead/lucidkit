@@ -65,5 +65,5 @@ Virtual-scrolling table with column resize, selection, sorting, and filtering su
 ✅ Modern control flow in templates
 ✅ OnPush change detection
 ✅ Keyboard accessible
-✅ CSS custom-property theming (`--tv-*` tokens)
+✅ CSS custom-property theming (`--ui-*` tokens)
 ✅ Light & dark mode support

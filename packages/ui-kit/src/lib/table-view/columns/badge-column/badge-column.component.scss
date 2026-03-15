@@ -4,42 +4,42 @@
   justify-content: center;
   margin-right: auto;
   max-width: 100%;
-  padding: var(--tv-badge-padding, 0.15rem 0.55rem);
+  padding: var(--ui-badge-padding, 0.15rem 0.55rem);
   border-radius: 999px;
   border: 1px solid transparent;
-  font-size: var(--tv-font-badge);
+  font-size: var(--ui-font-badge);
   font-weight: 600;
-  line-height: var(--tv-badge-line-height, 1.2);
-  letter-spacing: var(--tv-badge-letter-spacing, 0.01em);
+  line-height: var(--ui-badge-line-height, 1.2);
+  letter-spacing: var(--ui-badge-letter-spacing, 0.01em);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  color: var(--tv-badge-neutral-fg);
-  background: var(--tv-badge-neutral-bg);
-  border-color: var(--tv-badge-neutral-border);
+  color: var(--ui-badge-neutral-fg);
+  background: var(--ui-badge-neutral-bg);
+  border-color: var(--ui-badge-neutral-border);
 }
 
 .badge-cell[data-variant="neutral"] {
-  color: var(--tv-badge-neutral-fg);
-  background: var(--tv-badge-neutral-bg);
-  border-color: var(--tv-badge-neutral-border);
+  color: var(--ui-badge-neutral-fg);
+  background: var(--ui-badge-neutral-bg);
+  border-color: var(--ui-badge-neutral-border);
 }
 
 .badge-cell[data-variant="success"] {
-  color: var(--tv-badge-success-fg);
-  background: var(--tv-badge-success-bg);
-  border-color: var(--tv-badge-success-border);
+  color: var(--ui-badge-success-fg);
+  background: var(--ui-badge-success-bg);
+  border-color: var(--ui-badge-success-border);
 }
 
 .badge-cell[data-variant="warning"] {
-  color: var(--tv-badge-warning-fg);
-  background: var(--tv-badge-warning-bg);
-  border-color: var(--tv-badge-warning-border);
+  color: var(--ui-badge-warning-fg);
+  background: var(--ui-badge-warning-bg);
+  border-color: var(--ui-badge-warning-border);
 }
 
 .badge-cell[data-variant="danger"] {
-  color: var(--tv-badge-danger-fg);
-  background: var(--tv-badge-danger-bg);
-  border-color: var(--tv-badge-danger-border);
+  color: var(--ui-badge-danger-fg);
+  background: var(--ui-badge-danger-bg);
+  border-color: var(--ui-badge-danger-border);
 }

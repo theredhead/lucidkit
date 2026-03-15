@@ -4,28 +4,28 @@
   gap: 0.75rem;
   min-width: 120px;
 
-  --tv-accent: #3584e4;
-  --tv-accent-hover: #2b6fc4;
-  --tv-track: #d7dce2;
-  --tv-text: #1d232b;
-  --tv-thumb: #ffffff;
+  --ui-accent: #3584e4;
+  --ui-accent-hover: #2b6fc4;
+  --ui-track: #d7dce2;
+  --ui-text: #1d232b;
+  --ui-thumb: #ffffff;
 }
 
 :host-context(html.dark-theme) {
-  --tv-accent: #7ab0ff;
-  --tv-accent-hover: #5a9aef;
-  --tv-track: #505d6d;
-  --tv-text: #f2f6fb;
-  --tv-thumb: #e8edf4;
+  --ui-accent: #7ab0ff;
+  --ui-accent-hover: #5a9aef;
+  --ui-track: #505d6d;
+  --ui-text: #f2f6fb;
+  --ui-thumb: #e8edf4;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --tv-accent: #7ab0ff;
-    --tv-accent-hover: #5a9aef;
-    --tv-track: #505d6d;
-    --tv-text: #f2f6fb;
-    --tv-thumb: #e8edf4;
+    --ui-accent: #7ab0ff;
+    --ui-accent-hover: #5a9aef;
+    --ui-track: #505d6d;
+    --ui-text: #f2f6fb;
+    --ui-thumb: #e8edf4;
   }
 }
 
@@ -50,7 +50,7 @@
   right: 0;
   height: 4px;
   border-radius: 2px;
-  background: var(--tv-track);
+  background: var(--ui-track);
 }
 
 .sl-fill {
@@ -59,7 +59,7 @@
   left: 0;
   height: 100%;
   border-radius: 2px;
-  background: var(--tv-accent);
+  background: var(--ui-accent);
 }
 
 /* ── Native range input (overlay) ── */
@@ -105,8 +105,8 @@
   width: 1.125rem;
   height: 1.125rem;
   border-radius: 50%;
-  background: var(--tv-accent);
-  border: 2px solid var(--tv-thumb);
+  background: var(--ui-accent);
+  border: 2px solid var(--ui-thumb);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   opacity: 1;
@@ -116,19 +116,19 @@
   width: 1.125rem;
   height: 1.125rem;
   border-radius: 50%;
-  background: var(--tv-accent);
-  border: 2px solid var(--tv-thumb);
+  background: var(--ui-accent);
+  border: 2px solid var(--ui-thumb);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
 
 .sl-input:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid var(--tv-accent);
+  outline: 2px solid var(--ui-accent);
   outline-offset: 2px;
 }
 
 .sl-input:focus-visible::-moz-range-thumb {
-  outline: 2px solid var(--tv-accent);
+  outline: 2px solid var(--ui-accent);
   outline-offset: 2px;
 }
 
@@ -138,7 +138,7 @@
   font:
     500 0.8125rem/1.4 system-ui,
     sans-serif;
-  color: var(--tv-text);
+  color: var(--ui-text);
   white-space: nowrap;
   min-width: 2rem;
   text-align: right;

@@ -25,7 +25,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
       :host {
         display: flex;
         padding: 0.75rem 1.25rem 1rem;
-        border-top: 1px solid var(--tv-border, #d7dce2);
+        border-top: 1px solid var(--ui-border, #d7dce2);
         justify-content: flex-end;
         gap: 2rem;
       }

@@ -13,8 +13,8 @@
   }
 
   &__separator {
-    font-size: var(--tv-font-body, 0.875rem);
-    color: var(--tv-muted, #5a6470);
+    font-size: var(--ui-font-body, 0.875rem);
+    color: var(--ui-muted, #5a6470);
     user-select: none;
   }
 }
