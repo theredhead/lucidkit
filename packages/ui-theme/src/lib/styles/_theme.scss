@@ -1,9 +1,9 @@
 // theredhead UI Theme - Main Theme Configuration
 // Material 3 theme with light and dark mode support
 
-@use 'sass:map';
-@use '@angular/material' as mat;
-@use 'tokens' as tokens;
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "tokens" as tokens;
 
 // ============================================================================
 // Theme Definition
@@ -11,38 +11,42 @@
 
 /// Main mixin to apply the theredhead theme
 /// This sets up Material 3 theming with automatic light/dark mode support
-@mixin theredhead-theme($font-family: 'Roboto, sans-serif') {
+@mixin theredhead-theme($font-family: "Roboto, sans-serif") {
   // Define the light theme
-  $light-theme: mat.define-theme((
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$violet-palette,
-    ),
-    typography: (
-      plain-family: $font-family,
-      brand-family: $font-family,
-    ),
-    density: (
-      scale: 0,
-    ),
-  ));
+  $light-theme: mat.define-theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: (
+        plain-family: $font-family,
+        brand-family: $font-family,
+      ),
+      density: (
+        scale: 0,
+      ),
+    )
+  );
 
   // Define the dark theme
-  $dark-theme: mat.define-theme((
-    color: (
-      theme-type: dark,
-      primary: mat.$azure-palette,
-      tertiary: mat.$violet-palette,
-    ),
-    typography: (
-      plain-family: $font-family,
-      brand-family: $font-family,
-    ),
-    density: (
-      scale: 0,
-    ),
-  ));
+  $dark-theme: mat.define-theme(
+    (
+      color: (
+        theme-type: dark,
+        primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: (
+        plain-family: $font-family,
+        brand-family: $font-family,
+      ),
+      density: (
+        scale: 0,
+      ),
+    )
+  );
 
   // Apply base styles
   @include mat.core();
@@ -55,16 +59,23 @@
     // Custom CSS variables for light mode
     --theredhead-background: #{mat.get-theme-color($light-theme, surface)};
     --theredhead-on-background: #{mat.get-theme-color($light-theme, on-surface)};
-    --theredhead-surface: #{mat.get-theme-color($light-theme, surface-container)};
+    --theredhead-surface: #{mat.get-theme-color(
+        $light-theme,
+        surface-container
+      )};
     --theredhead-on-surface: #{mat.get-theme-color($light-theme, on-surface)};
     --theredhead-primary: #{mat.get-theme-color($light-theme, primary)};
     --theredhead-on-primary: #{mat.get-theme-color($light-theme, on-primary)};
     --theredhead-secondary: #{mat.get-theme-color($light-theme, secondary)};
-    --theredhead-on-secondary: #{mat.get-theme-color($light-theme, on-secondary)};
+    --theredhead-on-secondary: #{mat.get-theme-color(
+        $light-theme,
+        on-secondary
+      )};
     --theredhead-error: #{mat.get-theme-color($light-theme, error)};
     --theredhead-on-error: #{mat.get-theme-color($light-theme, on-error)};
     --theredhead-outline: #{mat.get-theme-color($light-theme, outline)};
-    --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --theredhead-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
     // UI component design tokens (light)
     @include tokens.ui-tokens-light;
@@ -87,7 +98,8 @@
     --theredhead-error: #{mat.get-theme-color($dark-theme, error)};
     --theredhead-on-error: #{mat.get-theme-color($dark-theme, on-error)};
     --theredhead-outline: #{mat.get-theme-color($dark-theme, outline)};
-    --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
+    --theredhead-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
 
     // UI component design tokens (dark)
     @include tokens.ui-tokens-dark;
@@ -99,17 +111,27 @@
       @include mat.all-component-colors($dark-theme);
 
       --theredhead-background: #{mat.get-theme-color($dark-theme, surface)};
-      --theredhead-on-background: #{mat.get-theme-color($dark-theme, on-surface)};
-      --theredhead-surface: #{mat.get-theme-color($dark-theme, surface-container)};
+      --theredhead-on-background: #{mat.get-theme-color(
+          $dark-theme,
+          on-surface
+        )};
+      --theredhead-surface: #{mat.get-theme-color(
+          $dark-theme,
+          surface-container
+        )};
       --theredhead-on-surface: #{mat.get-theme-color($dark-theme, on-surface)};
       --theredhead-primary: #{mat.get-theme-color($dark-theme, primary)};
       --theredhead-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
       --theredhead-secondary: #{mat.get-theme-color($dark-theme, secondary)};
-      --theredhead-on-secondary: #{mat.get-theme-color($dark-theme, on-secondary)};
+      --theredhead-on-secondary: #{mat.get-theme-color(
+          $dark-theme,
+          on-secondary
+        )};
       --theredhead-error: #{mat.get-theme-color($dark-theme, error)};
       --theredhead-on-error: #{mat.get-theme-color($dark-theme, on-error)};
       --theredhead-outline: #{mat.get-theme-color($dark-theme, outline)};
-      --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
+      --theredhead-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
 
       // UI component design tokens (dark)
       @include tokens.ui-tokens-dark;
@@ -123,7 +145,9 @@
     background-color: var(--theredhead-background);
     color: var(--theredhead-on-background);
     font-family: $font-family;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
   }
 }
 

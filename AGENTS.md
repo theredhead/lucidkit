@@ -171,10 +171,10 @@ export class UIExample {
 
 ### Token namespaces
 
-| Namespace        | Scope                            | Examples                                                                       |
-| ---------------- | -------------------------------- | ------------------------------------------------------------------------------ |
-| `--ui-*`         | Component-level design tokens    | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`, `--ui-density`      |
-| `--theredhead-*` | Global theme tokens (Material 3) | `--theredhead-background`, `--theredhead-primary`, `--theredhead-surface`      |
+| Namespace        | Scope                            | Examples                                                                  |
+| ---------------- | -------------------------------- | ------------------------------------------------------------------------- |
+| `--ui-*`         | Component-level design tokens    | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`, `--ui-density` |
+| `--theredhead-*` | Global theme tokens (Material 3) | `--theredhead-background`, `--theredhead-primary`, `--theredhead-surface` |
 
 ### Dark mode (three-tier pattern — use in every component)
 
