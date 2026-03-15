@@ -1,0 +1,193 @@
+// Theredhead UI Theme — Design Token Declarations
+// =============================================================================
+//
+// Centralised light / dark values for every `--ui-*` CSS custom property used
+// across @theredhead/ui-kit.  Include this file via the `theredhead-theme()`
+// mixin so that every token is available at the `:root` level and components
+// only need to consume `var(--ui-*)` without re-declaring defaults.
+//
+// Tokens are organised into semantic groups:
+//
+//   1. Core colours      – text, accent, links
+//   2. Surfaces          – backgrounds, cards, hover states
+//   3. Borders           – standard and emphasised
+//   4. Typography        – font families and sizes (mode-invariant)
+//   5. Badge             – standalone badge component colours
+//   6. Badge (table)     – inline badge-column variant colours
+//   7. Table             – captions, shadows, layout dimensions
+//   8. Slider / Progress – track and thumb
+//   9. Chip              – chip component colours
+//  10. Avatar            – fallback icon colour
+//  11. Rich-text editor  – placeholder highlights
+//  12. Density           – spacing scale tokens (mode-invariant)
+// =============================================================================
+
+// ── Light-mode tokens (default) ────────────────────────────────────
+
+@mixin ui-tokens-light {
+  // 1. Core colours
+  --ui-text: #1d232b;
+  --ui-text-muted: #5a6470;
+  --ui-muted: #5a6470;
+  --ui-accent: #3584e4;
+  --ui-accent-hover: #2b6fc4;
+  --ui-accent-contrast: #ffffff;
+  --ui-link: #3584e4;
+  --ui-link-hover: #2b6fc4;
+
+  // 2. Surfaces
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f0f2f5;
+  --ui-bg: #f6f7f8;
+  --ui-hover-bg: #f0f2f5;
+  --ui-shadow: 0 10px 24px rgba(18, 24, 33, 0.08);
+
+  // 3. Borders
+  --ui-border: #d7dce2;
+  --ui-border-strong: #b0b7c0;
+
+  // 4. Typography (mode-invariant — repeated in dark for completeness)
+  --ui-font: inherit;
+  --ui-font-body: 0.875rem;
+  --ui-font-header: 0.74rem;
+  --ui-font-caption: 0.8rem;
+  --ui-font-footer: 0.83rem;
+  --ui-font-badge: 0.73rem;
+  --ui-font-sort-icon: 0.82rem;
+  --ui-ls-header: 0.06em;
+  --ui-ls-caption: 0.02em;
+
+  // 5. Badge (standalone)
+  --ui-badge-bg: #3584e4;
+  --ui-badge-text: #ffffff;
+
+  // 6. Badge (table-view inline)
+  --ui-badge-neutral-fg: #344054;
+  --ui-badge-neutral-bg: #eef2f6;
+  --ui-badge-neutral-border: #d7dde4;
+  --ui-badge-success-fg: #135c38;
+  --ui-badge-success-bg: #e9f7ee;
+  --ui-badge-success-border: #bde6ca;
+  --ui-badge-warning-fg: #7a4200;
+  --ui-badge-warning-bg: #fff4e6;
+  --ui-badge-warning-border: #ffd7a6;
+  --ui-badge-danger-fg: #8a1f29;
+  --ui-badge-danger-bg: #fdecef;
+  --ui-badge-danger-border: #f6c2c9;
+  --ui-badge-padding: 0.15em 0.55em;
+  --ui-badge-line-height: 1.5;
+  --ui-badge-letter-spacing: 0.03em;
+
+  // 7. Table
+  --ui-caption-bg: #f2f4f7;
+  --ui-caption-text: #414b58;
+  --ui-viewport-height: 420px;
+  --ui-resize-handle-width: 6px;
+  --ui-resize-indicator-width: 2px;
+  --ui-selection-col-width: 3rem;
+  --ui-row-index-width: 4.25rem;
+  --ui-selected-bg: color-mix(in srgb, var(--ui-accent) 12%, transparent);
+  --ui-selected-hover-bg: color-mix(in srgb, var(--ui-accent) 18%, transparent);
+  --ui-checkbox-size: 0.95rem;
+  --ui-radio-size: 0.95rem;
+
+  // 8. Slider / Progress
+  --ui-track: #d7dce2;
+  --ui-thumb: #ffffff;
+
+  // 9. Chip
+  --ui-chip-bg: #e8edf4;
+  --ui-chip-text: #1d232b;
+  --ui-chip-dismiss: #5a6470;
+
+  // 10. Avatar
+  --ui-fallback: #5a6470;
+
+  // 11. Rich-text editor
+  --ui-placeholder-bg: #e8f0fe;
+  --ui-placeholder-text: #1a56db;
+
+  // 12. Density (mode-invariant)
+  --ui-density: 0;
+  --ui-density-scale: 1;
+  --ui-control-height: 2.25rem;
+  --ui-cell-height: 2.75rem;
+  --ui-gap: 0.5rem;
+  --ui-inline-padding: 0.75rem;
+  --ui-block-padding: 0.5rem;
+  --ui-radius: 0.375rem;
+}
+
+// ── Dark-mode tokens ───────────────────────────────────────────────
+
+@mixin ui-tokens-dark {
+  // 1. Core colours
+  --ui-text: #f2f6fb;
+  --ui-text-muted: #9ba4ae;
+  --ui-muted: #d0d8e3;
+  --ui-accent: #7ab0ff;
+  --ui-accent-hover: #5a9aef;
+  --ui-accent-contrast: #1e2128;
+  --ui-link: #7ab0ff;
+  --ui-link-hover: #5a9aef;
+
+  // 2. Surfaces
+  --ui-surface: #2a2f38;
+  --ui-surface-2: #353a44;
+  --ui-bg: #1f242a;
+  --ui-hover-bg: #353a44;
+  --ui-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
+
+  // 3. Borders
+  --ui-border: #3a3f47;
+  --ui-border-strong: #505d6d;
+
+  // 4. Typography (same as light)
+  --ui-font: inherit;
+  --ui-font-body: 0.875rem;
+  --ui-font-header: 0.74rem;
+  --ui-font-caption: 0.8rem;
+  --ui-font-footer: 0.83rem;
+  --ui-font-badge: 0.73rem;
+  --ui-font-sort-icon: 0.82rem;
+  --ui-ls-header: 0.06em;
+  --ui-ls-caption: 0.02em;
+
+  // 5. Badge (standalone)
+  --ui-badge-bg: #7ab0ff;
+  --ui-badge-text: #1d232b;
+
+  // 6. Badge (table-view inline)
+  --ui-badge-neutral-fg: #d9e0e8;
+  --ui-badge-neutral-bg: #36424f;
+  --ui-badge-neutral-border: #4a5a6a;
+  --ui-badge-success-fg: #8be1ad;
+  --ui-badge-success-bg: #1e3a2b;
+  --ui-badge-success-border: #2f5a42;
+  --ui-badge-warning-fg: #ffd08a;
+  --ui-badge-warning-bg: #4f3719;
+  --ui-badge-warning-border: #6a4a22;
+  --ui-badge-danger-fg: #ffb4ba;
+  --ui-badge-danger-bg: #4f2329;
+  --ui-badge-danger-border: #6d333b;
+
+  // 7. Table
+  --ui-caption-bg: #26303a;
+  --ui-caption-text: #dbe5f1;
+
+  // 8. Slider / Progress
+  --ui-track: #505d6d;
+  --ui-thumb: #e8edf4;
+
+  // 9. Chip
+  --ui-chip-bg: #3a3f47;
+  --ui-chip-text: #f2f6fb;
+  --ui-chip-dismiss: #d0d8e3;
+
+  // 10. Avatar
+  --ui-fallback: #d0d8e3;
+
+  // 11. Rich-text editor
+  --ui-placeholder-bg: #1e3a5f;
+  --ui-placeholder-text: #8ec5ff;
+}

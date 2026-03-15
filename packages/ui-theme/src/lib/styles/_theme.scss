@@ -3,6 +3,7 @@
 
 @use 'sass:map';
 @use '@angular/material' as mat;
+@use 'tokens' as tokens;
 
 // ============================================================================
 // Theme Definition
@@ -64,6 +65,9 @@
     --theredhead-on-error: #{mat.get-theme-color($light-theme, on-error)};
     --theredhead-outline: #{mat.get-theme-color($light-theme, outline)};
     --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    // UI component design tokens (light)
+    @include tokens.ui-tokens-light;
   }
 
   // Dark theme
@@ -84,6 +88,9 @@
     --theredhead-on-error: #{mat.get-theme-color($dark-theme, on-error)};
     --theredhead-outline: #{mat.get-theme-color($dark-theme, outline)};
     --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
+
+    // UI component design tokens (dark)
+    @include tokens.ui-tokens-dark;
   }
 
   // System preference support (when no explicit class is set)
@@ -103,6 +110,9 @@
       --theredhead-on-error: #{mat.get-theme-color($dark-theme, on-error)};
       --theredhead-outline: #{mat.get-theme-color($dark-theme, outline)};
       --theredhead-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
+
+      // UI component design tokens (dark)
+      @include tokens.ui-tokens-dark;
     }
   }
 

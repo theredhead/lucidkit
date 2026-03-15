@@ -7,3 +7,4 @@ export * from './lib/services/theme.service';
 
 // Tokens
 export * from './lib/tokens/theme.tokens';
+export * from './lib/tokens/ui-tokens';
