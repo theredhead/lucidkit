@@ -1,16 +1,43 @@
 // theredhead UI Theme - Material 3 theming with light/dark mode
-@use './packages/ui-theme/src/lib/styles' as theme;
+@use "./packages/ui-theme/src/lib/styles" as theme;
 
 // Apply the full theme (includes Material 3 theming and light/dark mode)
 @include theme.theredhead-theme();
 
 // Google Material Icons and Roboto fonts (must come after @use rules)
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
 
 // Base body styles
 body {
   font-family: Roboto, sans-serif;
   margin: 0;
+}
+
+// ── Global tooltip styles (appended to document.body) ──
+.ui-tooltip {
+  position: absolute;
+  z-index: 10000;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.25rem;
+  background: #1d232b;
+  color: #f2f6fb;
+  font-size: 0.75rem;
+  font-family: Roboto, sans-serif;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: ui-tooltip-fade-in 120ms ease;
+}
+
+@keyframes ui-tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

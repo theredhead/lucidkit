@@ -1,0 +1,114 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  --tv-badge-bg: #3584e4;
+  --tv-badge-text: #ffffff;
+}
+
+/* ── Color variants ── */
+
+:host(.ui-badge--primary) {
+  --tv-badge-bg: #3584e4;
+}
+
+:host(.ui-badge--success) {
+  --tv-badge-bg: #2ec27e;
+}
+
+:host(.ui-badge--warning) {
+  --tv-badge-bg: #e5a50a;
+  --tv-badge-text: #1d232b;
+}
+
+:host(.ui-badge--danger) {
+  --tv-badge-bg: #e01b24;
+}
+
+:host(.ui-badge--neutral) {
+  --tv-badge-bg: #5a6470;
+}
+
+/* ── Dark mode ── */
+
+:host-context(html.dark-theme) {
+  &.ui-badge--primary {
+    --tv-badge-bg: #7ab0ff;
+    --tv-badge-text: #1d232b;
+  }
+  &.ui-badge--success {
+    --tv-badge-bg: #57e389;
+    --tv-badge-text: #1d232b;
+  }
+  &.ui-badge--warning {
+    --tv-badge-bg: #f8e45c;
+    --tv-badge-text: #1d232b;
+  }
+  &.ui-badge--danger {
+    --tv-badge-bg: #ff6b6b;
+    --tv-badge-text: #1d232b;
+  }
+  &.ui-badge--neutral {
+    --tv-badge-bg: #8a919c;
+    --tv-badge-text: #1d232b;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    &.ui-badge--primary {
+      --tv-badge-bg: #7ab0ff;
+      --tv-badge-text: #1d232b;
+    }
+    &.ui-badge--success {
+      --tv-badge-bg: #57e389;
+      --tv-badge-text: #1d232b;
+    }
+    &.ui-badge--warning {
+      --tv-badge-bg: #f8e45c;
+      --tv-badge-text: #1d232b;
+    }
+    &.ui-badge--danger {
+      --tv-badge-bg: #ff6b6b;
+      --tv-badge-text: #1d232b;
+    }
+    &.ui-badge--neutral {
+      --tv-badge-bg: #8a919c;
+      --tv-badge-text: #1d232b;
+    }
+  }
+}
+
+/* ── Count / Label body ── */
+
+.badge-body {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  border-radius: 0.625rem;
+  background: var(--tv-badge-bg);
+  color: var(--tv-badge-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.badge-body--label {
+  padding: 0.125rem 0.5rem;
+  font-weight: 500;
+}
+
+/* ── Dot variant ── */
+
+.badge-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--tv-badge-bg);
+}

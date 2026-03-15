@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+:host(.ui-radio-group--disabled) {
+  opacity: 0.5;
+  pointer-events: none;
+}

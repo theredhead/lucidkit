@@ -1,0 +1,31 @@
+<div class="tg-header" role="tablist" [attr.aria-label]="ariaLabel()">
+  @for (tab of tabs(); track tab; let i = $index) {
+    <button
+      class="tg-tab"
+      role="tab"
+      type="button"
+      [class.tg-tab--active]="i === activeIndex()"
+      [class.tg-tab--disabled]="tab.disabled()"
+      [attr.aria-selected]="i === activeIndex()"
+      [attr.aria-disabled]="tab.disabled() || undefined"
+      [attr.tabindex]="i === activeIndex() ? 0 : -1"
+      [attr.id]="'tab-' + i"
+      [attr.aria-controls]="'panel-' + i"
+      (click)="selectTab(i)"
+      (keydown)="onTabKeyDown($event, i)"
+    >
+      {{ tab.label() }}
+    </button>
+  }
+</div>
+
+<div
+  class="tg-panel"
+  role="tabpanel"
+  [attr.id]="'panel-' + activeIndex()"
+  [attr.aria-labelledby]="'tab-' + activeIndex()"
+>
+  @if (activeTab(); as tab) {
+    <ng-container [ngTemplateOutlet]="tab.contentTemplate()" />
+  }
+</div>
