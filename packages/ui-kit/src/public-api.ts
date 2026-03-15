@@ -9,6 +9,7 @@ export * from "./lib/filter";
 export * from "./lib/autocomplete";
 export * from "./lib/rich-text-editor";
 export * from "./lib/modal";
+export * from "./lib/popover";
 export * from "./lib/map-view";
 export * from "./lib/core/types";
 export * from "./lib/theme-toggle/theme-toggle.component";
