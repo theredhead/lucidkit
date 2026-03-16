@@ -6,23 +6,52 @@ const meta: Meta<UICheckbox> = {
   title: "@Theredhead/UI Kit/Checkbox",
   component: UICheckbox,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A dual-purpose boolean input that renders as either a traditional " +
+          "checkbox or a toggle switch.\n\n" +
+          "### Features\n" +
+          "- **Two-way binding** via the `checked` model signal — `[(checked)]`\n" +
+          '- **Switch variant** — set `variant="switch"` for iOS / Material-style toggles\n' +
+          '- **Indeterminate state** — visual third state for "select all" patterns\n' +
+          "- **Label projection** — text content is projected as the label\n" +
+          '- **Accessible** — renders a native `<input type="checkbox">` with proper ARIA\n\n' +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-checkbox [(checked)]="agreeToTerms">I accept the terms</ui-checkbox>\n' +
+          '<ui-checkbox variant="switch" [(checked)]="darkMode">Dark mode</ui-checkbox>\n' +
+          "```",
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: "select",
       options: ["checkbox", "switch"] satisfies CheckboxVariant[],
-      description: "Visual appearance: checkbox or toggle switch",
+      description:
+        "Controls the visual appearance. `checkbox` renders a traditional " +
+        "tick box; `switch` renders a sliding toggle.",
     },
     checked: {
       control: "boolean",
-      description: "Whether the control is checked",
+      description:
+        "Two-way bindable model signal (`[(checked)]`). Represents " +
+        "the on/off state of the control.",
     },
     disabled: {
       control: "boolean",
-      description: "Whether the control is disabled",
+      description:
+        "Disables the control, preventing interaction and applying " +
+        "a muted visual style.",
     },
     indeterminate: {
       control: "boolean",
-      description: "Indeterminate state (checkbox variant only)",
+      description:
+        "Shows a horizontal dash instead of a tick mark. Useful for " +
+        '"select all" controls where only some children are selected. ' +
+        "Only applies to the `checkbox` variant.",
     },
   },
 };
@@ -30,7 +59,11 @@ const meta: Meta<UICheckbox> = {
 export default meta;
 type Story = StoryObj<UICheckbox>;
 
-/** Default checkbox. */
+/**
+ * Interactive checkbox with controls for `variant`, `checked`,
+ * `disabled`, and `indeterminate`. Content projection provides
+ * the label text.
+ */
 export const Default: Story = {
   render: (args) => ({
     props: args,
@@ -43,21 +76,30 @@ export const Default: Story = {
   },
 };
 
-/** Checked checkbox. */
+/**
+ * Pre-checked checkbox — demonstrates the initial `checked` state.
+ */
 export const Checked: Story = {
   render: () => ({
     template: `<ui-checkbox [checked]="true">This is checked</ui-checkbox>`,
   }),
 };
 
-/** Indeterminate state. */
+/**
+ * The indeterminate state shows a dash mark instead of a tick.
+ * Commonly used for "select all" checkboxes when only a subset
+ * of child items are checked.
+ */
 export const Indeterminate: Story = {
   render: () => ({
     template: `<ui-checkbox [indeterminate]="true">Select all</ui-checkbox>`,
   }),
 };
 
-/** Toggle switch variant. */
+/**
+ * The `switch` variant renders a sliding toggle — ideal for
+ * boolean settings like "Dark mode", "Notifications", or feature flags.
+ */
 export const Switch: Story = {
   render: (args) => ({
     props: args,
@@ -73,7 +115,11 @@ export const SwitchChecked: Story = {
   }),
 };
 
-/** Disabled states. */
+/**
+ * All disabled combinations: unchecked, checked, switch off, and
+ * switch on. Disabled controls display a muted appearance and
+ * prevent interaction.
+ */
 export const Disabled: Story = {
   render: () => ({
     template: `
@@ -87,7 +133,10 @@ export const Disabled: Story = {
   }),
 };
 
-/** All variants overview. */
+/**
+ * Complete overview of every state and variant combination.
+ * Useful for visual regression testing and design review.
+ */
 export const AllVariants: Story = {
   render: () => ({
     template: `

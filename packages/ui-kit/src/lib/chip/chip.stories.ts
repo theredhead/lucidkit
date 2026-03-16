@@ -62,6 +62,27 @@ const meta: Meta<UIChip> = {
   title: "@Theredhead/UI Kit/Chip",
   component: UIChip,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A compact element for displaying tags, labels, or filter tokens.\n\n" +
+          "### Features\n" +
+          "- **Five colour presets** — `neutral`, `primary`, `success`, `warning`, `danger`\n" +
+          '- **Removable** — set `[removable]="true"` to show a dismiss button; listen to `(removed)`\n' +
+          "- **Disabled** — greys out and blocks interaction\n" +
+          "- **Content projection** — the chip label is projected content\n\n" +
+          "Chips are used inside `UIAutocomplete` for multi-select tokens, but " +
+          "can also be used standalone for tag lists or filter displays.\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-chip color="primary" [removable]="true" (removed)="remove(tag)">\n' +
+          "  {{ tag }}\n" +
+          "</ui-chip>\n" +
+          "```",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [ChipDemo],
@@ -71,7 +92,11 @@ const meta: Meta<UIChip> = {
 export default meta;
 type Story = StoryObj<UIChip>;
 
-/** Chip variants: colors, removable, disabled. */
+/**
+ * Interactive demo showing all chip features: five colour presets,
+ * removable chips with live tag management, and disabled states.
+ * Remove a chip by clicking its × button and watch the list update.
+ */
 export const Default: Story = {
   render: () => ({
     template: `<ui-chip-demo />`,

@@ -108,8 +108,8 @@ describe("UIRichTextEditor", () => {
       const flatButtons = fixture.nativeElement.querySelectorAll(
         ".rte-toolbar-btn:not(.rte-dropdown-trigger):not(.rte-toolbar-btn--source)",
       );
-      // 4 inline (B, I, U, S) + 1 link (🔗) + 1 misc (⌧) = 6
-      expect(flatButtons.length).toBe(6);
+      // 2 history (↩ ↪) + 4 inline (B, I, U, S) + 2 insert (― 🖼) + 1 link (🔗) + 1 misc (⌧) = 10
+      expect(flatButtons.length).toBe(10);
     });
 
     it("should render dropdown triggers for grouped actions", () => {
@@ -279,7 +279,7 @@ describe("UIRichTextEditor", () => {
     it("should render initial value into the editor", () => {
       fixture.componentRef.setInput("value", "<p>Hello world</p>");
       // Trigger ngAfterViewInit re-render
-      (component as any).renderHtmlToEditor("<p>Hello world</p>");
+      (component as any).renderToEditor("<p>Hello world</p>");
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
@@ -526,7 +526,7 @@ describe("UIRichTextEditor", () => {
       ]);
       fixture.detectChanges();
 
-      (component as any).renderHtmlToEditor("Hello {{firstName}}!");
+      (component as any).renderToEditor("Hello {{firstName}}!");
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
@@ -541,7 +541,7 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("placeholders", []);
       fixture.detectChanges();
 
-      (component as any).renderHtmlToEditor("Hello {{unknownKey}}!");
+      (component as any).renderToEditor("Hello {{unknownKey}}!");
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
@@ -559,7 +559,7 @@ describe("UIRichTextEditor", () => {
       ]);
       fixture.detectChanges();
 
-      (component as any).renderHtmlToEditor(
+      (component as any).renderToEditor(
         "{{first-name}} {{contact.email}} {{ns:id}}",
       );
       fixture.detectChanges();
@@ -596,9 +596,9 @@ describe("UIRichTextEditor", () => {
     it("should preserve placeholder attrs through sanitiseHtml", () => {
       const chipHtml =
         '<span class="rte-placeholder" contenteditable="false" data-placeholder-key="firstName">First Name</span>';
-      const sanitised = (component as any).sanitiseHtml(
-        `<p>Hello ${chipHtml}</p>`,
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(`<p>Hello ${chipHtml}</p>`);
 
       expect(sanitised).toContain('data-placeholder-key="firstName"');
       expect(sanitised).toContain('contenteditable="false"');
@@ -608,9 +608,9 @@ describe("UIRichTextEditor", () => {
 
   describe("HTML sanitisation", () => {
     it("should strip <script> elements entirely", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<p>Hello</p><script>alert("xss")</script><p>World</p>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<p>Hello</p><script>alert("xss")</script><p>World</p>');
       expect(sanitised).not.toContain("script");
       expect(sanitised).not.toContain("alert");
       expect(sanitised).toContain("Hello");
@@ -618,26 +618,28 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should strip <style> elements entirely", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        "<style>body{display:none}</style><p>Content</p>",
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml("<style>body{display:none}</style><p>Content</p>");
       expect(sanitised).not.toContain("style");
       expect(sanitised).not.toContain("display");
       expect(sanitised).toContain("Content");
     });
 
     it("should strip <iframe> elements entirely", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<p>Before</p><iframe src="https://evil.com"></iframe><p>After</p>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          '<p>Before</p><iframe src="https://evil.com"></iframe><p>After</p>',
+        );
       expect(sanitised).not.toContain("iframe");
       expect(sanitised).not.toContain("evil.com");
     });
 
     it("should strip on* event handler attributes", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<p onclick="alert(1)" onmouseover="steal()">Text</p>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<p onclick="alert(1)" onmouseover="steal()">Text</p>');
       expect(sanitised).not.toContain("onclick");
       expect(sanitised).not.toContain("onmouseover");
       expect(sanitised).not.toContain("alert");
@@ -645,33 +647,35 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should strip style attributes", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<p style="background:url(evil)">Styled</p>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<p style="background:url(evil)">Styled</p>');
       expect(sanitised).not.toContain("style");
       expect(sanitised).toContain("Styled");
     });
 
     it("should strip javascript: URIs from href", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<a href="javascript:alert(1)">Click</a>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<a href="javascript:alert(1)">Click</a>');
       expect(sanitised).not.toContain("javascript");
       expect(sanitised).toContain("Click");
     });
 
     it("should allow safe href values", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<a href="https://example.com">Link</a>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<a href="https://example.com">Link</a>');
       expect(sanitised).toContain('href="https://example.com"');
       expect(sanitised).toContain("Link");
     });
 
     it("should strip <object>, <embed>, <form> entirely", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        "<object>obj</object><embed>emb</embed><form>frm</form><p>OK</p>",
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          "<object>obj</object><embed>emb</embed><form>frm</form><p>OK</p>",
+        );
       expect(sanitised).not.toContain("object");
       expect(sanitised).not.toContain("embed");
       expect(sanitised).not.toContain("form");
@@ -679,9 +683,9 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should unwrap disallowed but non-dangerous elements", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        "<div><b>Bold</b> in a div</div>",
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml("<div><b>Bold</b> in a div</div>");
       expect(sanitised).not.toContain("<div");
       expect(sanitised).not.toContain("</div>");
       expect(sanitised).toContain("<b>Bold</b>");
@@ -1353,31 +1357,35 @@ describe("UIRichTextEditor", () => {
 
   describe("additional sanitisation", () => {
     it("should strip vbscript: URIs from href", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<a href="vbscript:MsgBox">Click</a>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<a href="vbscript:MsgBox">Click</a>');
       expect(sanitised).not.toContain("vbscript");
       expect(sanitised).toContain("Click");
     });
 
     it("should strip data: URIs from href", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<a href="data:text/html,<script>alert(1)</script>">Click</a>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          '<a href="data:text/html,<script>alert(1)</script>">Click</a>',
+        );
       expect(sanitised).not.toContain("data:");
     });
 
     it("should strip javascript: with leading whitespace", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<a href="  javascript:alert(1)">Click</a>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<a href="  javascript:alert(1)">Click</a>');
       expect(sanitised).not.toContain("javascript");
     });
 
     it("should strip <input>, <textarea>, <select>, <button> entirely", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        "<input><textarea>text</textarea><select><option>o</option></select><button>btn</button><p>OK</p>",
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          "<input><textarea>text</textarea><select><option>o</option></select><button>btn</button><p>OK</p>",
+        );
       expect(sanitised).not.toContain("input");
       expect(sanitised).not.toContain("textarea");
       expect(sanitised).not.toContain("select");
@@ -1386,9 +1394,11 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should strip <link>, <meta>, <base> entirely", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<link rel="stylesheet"><meta charset="utf-8"><base href="/"><p>OK</p>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          '<link rel="stylesheet"><meta charset="utf-8"><base href="/"><p>OK</p>',
+        );
       expect(sanitised).not.toContain("link");
       expect(sanitised).not.toContain("meta");
       expect(sanitised).not.toContain("base");
@@ -1396,26 +1406,28 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should preserve target and rel on anchor elements", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<a href="https://x.com" target="_blank" rel="noopener">Link</a>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          '<a href="https://x.com" target="_blank" rel="noopener">Link</a>',
+        );
       expect(sanitised).toContain('target="_blank"');
       expect(sanitised).toContain('rel="noopener"');
     });
 
     it("should strip unknown attributes from allowed elements", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        '<b data-custom="x" id="b1">Bold</b>',
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<b data-custom="x" id="b1">Bold</b>');
       expect(sanitised).not.toContain("data-custom");
       expect(sanitised).not.toContain("id=");
       expect(sanitised).toContain("<b>Bold</b>");
     });
 
     it("should handle deeply nested dangerous elements", () => {
-      const sanitised = (component as any).sanitiseHtml(
-        "<p>Safe <b>bold <script>evil()</script> text</b></p>",
-      );
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml("<p>Safe <b>bold <script>evil()</script> text</b></p>");
       expect(sanitised).not.toContain("script");
       expect(sanitised).not.toContain("evil");
       expect(sanitised).toContain("Safe");
@@ -1423,19 +1435,21 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should handle empty HTML string", () => {
-      const sanitised = (component as any).sanitiseHtml("");
+      const sanitised = (component as any).strategy().sanitiseHtml("");
       expect(sanitised).toBe("");
     });
 
     it("should handle plain text without tags", () => {
-      const sanitised = (component as any).sanitiseHtml("Just plain text here");
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml("Just plain text here");
       expect(sanitised).toBe("Just plain text here");
     });
 
     it("should keep allowed elements: B, STRONG, I, EM, U, S, BR, P, H1-H3, UL, OL, LI, SPAN, A", () => {
       const input =
         "<b>b</b><strong>s</strong><i>i</i><em>e</em><u>u</u><s>s</s><br><p>p</p><h1>h1</h1><h2>h2</h2><h3>h3</h3><ul><li>li</li></ul><ol><li>li</li></ol><span>span</span><a>a</a>";
-      const sanitised = (component as any).sanitiseHtml(input);
+      const sanitised = (component as any).strategy().sanitiseHtml(input);
       expect(sanitised).toContain("<b>");
       expect(sanitised).toContain("<strong>");
       expect(sanitised).toContain("<i>");
@@ -1845,13 +1859,580 @@ describe("UIRichTextEditor", () => {
 
   describe("internal helpers", () => {
     it("should escape HTML entities", () => {
-      const result = (component as any).escapeHtml("<b>\"test\" & 'more'</b>");
+      const strategy = (component as any).strategy();
+      const result = (strategy as any).escapeHtml("<b>\"test\" & 'more'</b>");
       expect(result).toBe("&lt;b&gt;&quot;test&quot; &amp; 'more'&lt;/b&gt;");
     });
 
     it("should escape attribute values (delegates to escapeHtml)", () => {
-      const result = (component as any).escapeAttr('val"ue');
+      const strategy = (component as any).strategy();
+      const result = (strategy as any).escapeAttr('val"ue');
       expect(result).toBe("val&quot;ue");
+    });
+  });
+
+  // ── New feature tests ────────────────────────────────────────
+
+  describe("keyboard shortcuts", () => {
+    it("should execute bold on Ctrl+B", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "b",
+          ctrlKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).toHaveBeenCalledWith("bold");
+    });
+
+    it("should execute italic on Ctrl+I", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "i",
+          ctrlKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).toHaveBeenCalledWith("italic");
+    });
+
+    it("should execute underline on Ctrl+U", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "u",
+          ctrlKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).toHaveBeenCalledWith("underline");
+    });
+
+    it("should execute strikethrough on Ctrl+Shift+S", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "s",
+          ctrlKey: true,
+          shiftKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).toHaveBeenCalledWith("strikeThrough");
+    });
+
+    it("should execute undo on Ctrl+Z", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "z",
+          ctrlKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).toHaveBeenCalledWith("undo");
+    });
+
+    it("should execute redo on Ctrl+Y", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "y",
+          ctrlKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).toHaveBeenCalledWith("redo");
+    });
+
+    it("should execute redo on Ctrl+Shift+Z", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "z",
+          ctrlKey: true,
+          shiftKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).toHaveBeenCalledWith("redo");
+    });
+
+    it("should not trigger shortcut when disabled", () => {
+      fixture.componentRef.setInput("disabled", true);
+      fixture.detectChanges();
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "b",
+          ctrlKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(execCommandSpy).not.toHaveBeenCalled();
+    });
+
+    it("should not trigger shortcut without modifier key", () => {
+      const editor: HTMLElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "b", bubbles: true }),
+      );
+      expect(execCommandSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("undo/redo toolbar actions", () => {
+    it("should render undo and redo buttons", () => {
+      const undoBtn = fixture.nativeElement.querySelector(
+        '[aria-label="Undo"]',
+      );
+      const redoBtn = fixture.nativeElement.querySelector(
+        '[aria-label="Redo"]',
+      );
+      expect(undoBtn).toBeTruthy();
+      expect(redoBtn).toBeTruthy();
+    });
+
+    it("should call execCommand undo on undo click", () => {
+      const undoBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        '[aria-label="Undo"]',
+      );
+      undoBtn.click();
+      fixture.detectChanges();
+      expect(execCommandSpy).toHaveBeenCalledWith("undo");
+    });
+
+    it("should call execCommand redo on redo click", () => {
+      const redoBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        '[aria-label="Redo"]',
+      );
+      redoBtn.click();
+      fixture.detectChanges();
+      expect(execCommandSpy).toHaveBeenCalledWith("redo");
+    });
+  });
+
+  describe("horizontal rule action", () => {
+    it("should render a horizontal rule button", () => {
+      const hrBtn = fixture.nativeElement.querySelector(
+        '[aria-label="Horizontal rule"]',
+      );
+      expect(hrBtn).toBeTruthy();
+    });
+
+    it("should call execCommand insertHorizontalRule on click", () => {
+      const hrBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        '[aria-label="Horizontal rule"]',
+      );
+      hrBtn.click();
+      fixture.detectChanges();
+      expect(execCommandSpy).toHaveBeenCalledWith("insertHorizontalRule");
+    });
+  });
+
+  describe("indent/outdent actions", () => {
+    it("should render indent and outdent buttons inside the list dropdown", () => {
+      // Open the list dropdown
+      const listTrigger: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Lists"]');
+      expect(listTrigger).toBeTruthy();
+      listTrigger.click();
+      fixture.detectChanges();
+
+      const indentBtn = fixture.nativeElement.querySelector(
+        '[aria-label="Increase indent"]',
+      );
+      const outdentBtn = fixture.nativeElement.querySelector(
+        '[aria-label="Decrease indent"]',
+      );
+      expect(indentBtn).toBeTruthy();
+      expect(outdentBtn).toBeTruthy();
+    });
+
+    it("should call execCommand indent on indent click", () => {
+      const listTrigger: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Lists"]');
+      listTrigger.click();
+      fixture.detectChanges();
+
+      const indentBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        '[aria-label="Increase indent"]',
+      );
+      indentBtn.click();
+      fixture.detectChanges();
+
+      expect(execCommandSpy).toHaveBeenCalledWith("indent");
+    });
+  });
+
+  describe("outside click closes dropdowns", () => {
+    it("should close dropdown group on outside click", () => {
+      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
+        ".rte-dropdown-trigger",
+      );
+      trigger.click();
+      fixture.detectChanges();
+      expect(
+        fixture.nativeElement.querySelector(".rte-dropdown-panel"),
+      ).toBeTruthy();
+
+      // Click outside the component
+      document.body.click();
+      fixture.detectChanges();
+      expect(
+        fixture.nativeElement.querySelector(".rte-dropdown-panel"),
+      ).toBeFalsy();
+    });
+
+    it("should close placeholder picker on outside click", () => {
+      fixture.componentRef.setInput("placeholders", [
+        { key: "name", label: "Name" },
+      ]);
+      fixture.detectChanges();
+
+      const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        ".rte-toolbar-btn--placeholder",
+      );
+      pickerBtn.click();
+      fixture.detectChanges();
+      expect(
+        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+      ).toBeTruthy();
+
+      document.body.click();
+      fixture.detectChanges();
+      expect(
+        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+      ).toBeFalsy();
+    });
+  });
+
+  describe("markdown mode hides alignment", () => {
+    it("should not render align dropdown in Markdown mode", () => {
+      fixture.componentRef.setInput("mode", "markdown");
+      fixture.detectChanges();
+
+      const alignTrigger = fixture.nativeElement.querySelector(
+        '[aria-label="Alignment"]',
+      );
+      expect(alignTrigger).toBeFalsy();
+    });
+
+    it("should render align dropdown in HTML mode", () => {
+      const alignTrigger = fixture.nativeElement.querySelector(
+        '[aria-label="Alignment"]',
+      );
+      expect(alignTrigger).toBeTruthy();
+    });
+  });
+
+  describe("placeholder picker search", () => {
+    const placeholders: RichTextPlaceholder[] = [
+      { key: "firstName", label: "First Name", category: "Contact" },
+      { key: "lastName", label: "Last Name", category: "Contact" },
+      { key: "companyName", label: "Company", category: "Account" },
+    ];
+
+    beforeEach(() => {
+      fixture.componentRef.setInput("placeholders", placeholders);
+      fixture.detectChanges();
+    });
+
+    it("should render a search input in the placeholder dropdown", () => {
+      const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        ".rte-toolbar-btn--placeholder",
+      );
+      pickerBtn.click();
+      fixture.detectChanges();
+
+      const searchInput = fixture.nativeElement.querySelector(
+        ".rte-placeholder-search-input",
+      );
+      expect(searchInput).toBeTruthy();
+    });
+
+    it("should filter placeholders by search term", () => {
+      const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        ".rte-toolbar-btn--placeholder",
+      );
+      pickerBtn.click();
+      fixture.detectChanges();
+
+      // All 3 options visible
+      let options = fixture.nativeElement.querySelectorAll(
+        ".rte-placeholder-option",
+      );
+      expect(options.length).toBe(3);
+
+      // Type search term
+      component["placeholderSearchTerm"].set("first");
+      fixture.detectChanges();
+
+      options = fixture.nativeElement.querySelectorAll(
+        ".rte-placeholder-option",
+      );
+      expect(options.length).toBe(1);
+      expect(options[0].textContent.trim()).toBe("First Name");
+    });
+
+    it("should show no matches message when search yields no results", () => {
+      const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        ".rte-toolbar-btn--placeholder",
+      );
+      pickerBtn.click();
+      fixture.detectChanges();
+
+      component["placeholderSearchTerm"].set("zzzzz");
+      fixture.detectChanges();
+
+      const empty = fixture.nativeElement.querySelector(
+        ".rte-placeholder-empty",
+      );
+      expect(empty).toBeTruthy();
+      expect(empty.textContent.trim()).toBe("No matches");
+    });
+
+    it("should clear search term when picker is closed", () => {
+      const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        ".rte-toolbar-btn--placeholder",
+      );
+      pickerBtn.click();
+      fixture.detectChanges();
+
+      component["placeholderSearchTerm"].set("first");
+      fixture.detectChanges();
+
+      // Close picker
+      pickerBtn.click();
+      fixture.detectChanges();
+
+      expect(component["placeholderSearchTerm"]()).toBe("");
+    });
+  });
+
+  describe("character count / maxLength", () => {
+    it("should not render footer when maxLength is not set", () => {
+      const footer = fixture.nativeElement.querySelector(".rte-footer");
+      expect(footer).toBeFalsy();
+    });
+
+    it("should render footer with character count when maxLength is set", () => {
+      fixture.componentRef.setInput("maxLength", 100);
+      fixture.detectChanges();
+      const footer = fixture.nativeElement.querySelector(".rte-footer");
+      expect(footer).toBeTruthy();
+      const count = footer.querySelector(".rte-char-count");
+      expect(count).toBeTruthy();
+      expect(count.textContent).toContain("/ 100");
+    });
+
+    it("should add over class when character count exceeds maxLength", () => {
+      fixture.componentRef.setInput("maxLength", 5);
+      fixture.componentRef.setInput("value", "Hello, World!");
+      fixture.detectChanges();
+
+      const footer = fixture.nativeElement.querySelector(".rte-footer");
+      expect(footer.classList.contains("rte-footer--over")).toBe(true);
+    });
+
+    it("should not add over class when character count is within maxLength", () => {
+      fixture.componentRef.setInput("maxLength", 100);
+      fixture.componentRef.setInput("value", "Hello");
+      fixture.detectChanges();
+
+      const footer = fixture.nativeElement.querySelector(".rte-footer");
+      expect(footer.classList.contains("rte-footer--over")).toBe(false);
+    });
+  });
+
+  describe("image action", () => {
+    it("should render an image button in the toolbar", () => {
+      const imgBtn = fixture.nativeElement.querySelector(
+        '[aria-label="Insert image"]',
+      );
+      expect(imgBtn).toBeTruthy();
+    });
+  });
+
+  describe("image paste", () => {
+    function createImagePasteEvent(
+      imageType = "image/png",
+    ): ClipboardEvent & { file: File } {
+      const file = new File(["fake-image-data"], "screenshot.png", {
+        type: imageType,
+      });
+      const item = {
+        type: imageType,
+        getAsFile: () => file,
+      };
+      const clipboardData = {
+        items: [item],
+        getData: () => "",
+      } as unknown as DataTransfer;
+
+      const event = new Event("paste", {
+        bubbles: true,
+        cancelable: true,
+      }) as ClipboardEvent;
+      Object.defineProperty(event, "clipboardData", {
+        value: clipboardData,
+      });
+      return Object.assign(event, { file });
+    }
+
+    it("should prevent default when an image is pasted", () => {
+      const event = createImagePasteEvent();
+      const preventSpy = vi.spyOn(event, "preventDefault");
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(event);
+
+      expect(preventSpy).toHaveBeenCalled();
+    });
+
+    it("should embed image as base64 when no imageHandler is set", async () => {
+      const event = createImagePasteEvent();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(event);
+
+      // FileReader is async — wait for it
+      await new Promise((r) => setTimeout(r, 50));
+      fixture.detectChanges();
+
+      const img = editor.querySelector("img");
+      expect(img).toBeTruthy();
+      expect(img!.src).toMatch(/^data:image\/png;base64,/);
+      expect(img!.alt).toBe("screenshot.png");
+    });
+
+    it("should call imageHandler when provided and insert returned URL", async () => {
+      const handler = vi
+        .fn()
+        .mockResolvedValue("https://cdn.example.com/img.png");
+      fixture.componentRef.setInput("imageHandler", handler);
+      fixture.detectChanges();
+
+      const event = createImagePasteEvent();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(event);
+
+      await new Promise((r) => setTimeout(r, 50));
+      fixture.detectChanges();
+
+      expect(handler).toHaveBeenCalledWith(event.file);
+      const img = editor.querySelector("img");
+      expect(img).toBeTruthy();
+      expect(img!.src).toBe("https://cdn.example.com/img.png");
+    });
+
+    it("should not crash when imageHandler rejects", async () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      const handler = vi.fn().mockRejectedValue(new Error("upload failed"));
+      fixture.componentRef.setInput("imageHandler", handler);
+      fixture.detectChanges();
+
+      const event = createImagePasteEvent();
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(event);
+
+      await new Promise((r) => setTimeout(r, 50));
+      fixture.detectChanges();
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Image upload failed:",
+        expect.any(Error),
+      );
+      consoleErrorSpy.mockRestore();
+    });
+
+    it("should not intercept non-image paste events", () => {
+      const clipboardData = {
+        items: [{ type: "text/plain", getAsFile: () => null }],
+        getData: (type: string) => (type === "text/plain" ? "plain text" : ""),
+      } as unknown as DataTransfer;
+
+      const event = new Event("paste", {
+        bubbles: true,
+        cancelable: true,
+      }) as ClipboardEvent;
+      Object.defineProperty(event, "clipboardData", {
+        value: clipboardData,
+      });
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      editor.dispatchEvent(event);
+
+      // Should fall through to the normal paste handler
+      expect(execCommandSpy).toHaveBeenCalledWith(
+        "insertText",
+        false,
+        "plain text",
+      );
+    });
+  });
+
+  describe("sanitiser data:image/ handling", () => {
+    it("should preserve data:image/ URIs on <img> src", () => {
+      const dataUri = "data:image/png;base64,iVBORw0KGgo=";
+      fixture.componentRef.setInput(
+        "value",
+        `<p>Text</p><img src="${dataUri}" alt="test">`,
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      const img = editor.querySelector("img");
+      expect(img).toBeTruthy();
+      expect(img!.getAttribute("src")).toBe(dataUri);
+    });
+
+    it("should strip data: URIs from <a> href", () => {
+      fixture.componentRef.setInput(
+        "value",
+        '<a href="data:text/html,<script>alert(1)</script>">click</a>',
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      const a = editor.querySelector("a");
+      expect(a).toBeTruthy();
+      expect(a!.getAttribute("href")).toBeNull();
+    });
+
+    it("should strip non-image data: URIs from <img> src", () => {
+      fixture.componentRef.setInput(
+        "value",
+        '<img src="data:text/html,<script>alert(1)</script>" alt="x">',
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".rte-editor");
+      const img = editor.querySelector("img");
+      expect(img).toBeTruthy();
+      expect(img!.getAttribute("src")).toBeNull();
     });
   });
 });

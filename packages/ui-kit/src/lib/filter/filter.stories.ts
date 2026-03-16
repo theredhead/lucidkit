@@ -61,6 +61,52 @@ const meta: Meta<UIFilterStoryDemo> = {
   title: "@Theredhead/UI Kit/Filter",
   component: UIFilterStoryDemo,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          "`UIFilter` is a dynamic filter-builder component that lets users construct query predicates by selecting a **field**, an **operator**, and a **value** — similar to the filter UI found in spreadsheets or database query builders.",
+          "",
+          "## Key Features",
+          "",
+          "- **Field definitions** — pass an array of `FilterFieldDefinition` objects that describe available columns with their types (`string`, `number`, `date`)",
+          "- **Smart operators** — operators are derived from the field type (e.g. `contains`, `startsWith` for strings; `greaterThan`, `lessThan` for numbers; `inTheLast` for dates)",
+          "- **Junction toggle** — optionally allow users to switch between AND / OR conjunction via `[allowJunction]`",
+          "- **Two-way binding** — the complete filter state is exposed as a `FilterDescriptor<T>` model for easy serialisation and restoration",
+          "- **Pre-population** — set `value` to restore a previously saved filter",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `fields` | `FilterFieldDefinition<T>[]` | *(required)* | Defines the filterable columns with key, label, and type |",
+          "| `allowJunction` | `boolean` | `false` | Shows an AND / OR toggle above the rule list |",
+          "",
+          "## Model",
+          "",
+          "| Model | Type | Description |",
+          "|-------|------|-------------|",
+          "| `value` | `FilterDescriptor<T>` | Two-way bound descriptor containing junction mode and rule array |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `predicateChange` | `(item: T) => boolean` | Emits a compiled predicate function that can be applied to data arrays |",
+          "",
+          "## FilterFieldDefinition",
+          "",
+          "```ts",
+          "interface FilterFieldDefinition<T> {",
+          "  key: keyof T;",
+          "  label: string;",
+          "  type: 'string' | 'number' | 'date';",
+          "}",
+          "```",
+        ].join("\n"),
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [UIFilter],
@@ -71,7 +117,13 @@ const meta: Meta<UIFilterStoryDemo> = {
 export default meta;
 type Story = StoryObj<UIFilterStoryDemo>;
 
-/** Basic AND-only filter builder. */
+/**
+ * **Default** — A basic filter builder with five typed columns (Name, Email,
+ * Age, Salary, Hire Date). Users can add rules, choose fields and operators,
+ * and enter values. All rules are combined with AND logic. The live JSON
+ * output below shows the `FilterDescriptor` that can be serialised or sent
+ * to an API.
+ */
 export const Default: Story = {
   parameters: {
     docs: {
@@ -96,7 +148,12 @@ readonly descriptor = signal<FilterDescriptor<Row>>({
   },
 };
 
-/** With junction toggle (AND / OR). */
+/**
+ * **Junction toggle** — When `[allowJunction]="true"`, a toggle appears
+ * letting the user switch between AND (all rules must match) and OR (any
+ * rule can match). This is useful for more expressive filtering where users
+ * need to combine criteria with different logical connectives.
+ */
 export const WithJunction: Story = {
   render: () => ({
     template: `
@@ -114,7 +171,13 @@ export const WithJunction: Story = {
   }),
 };
 
-/** Pre-populated with a few rules. */
+/**
+ * **Pre-populated** — Demonstrates restoring a previously saved filter by
+ * passing a `FilterDescriptor` with existing rules. This is useful for
+ * persisting user filters to local storage or a database and restoring
+ * them on page load. The three example rules show string `contains`,
+ * number `greaterThan`, and date `inTheLast` operators.
+ */
 export const Prepopulated: Story = {
   render: () => ({
     template: `

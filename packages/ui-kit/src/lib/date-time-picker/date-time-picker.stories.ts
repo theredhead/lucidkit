@@ -286,6 +286,54 @@ class ReadonlyDemo {
 const meta: Meta = {
   title: "@Theredhead/UI Kit/Date-Time Picker",
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          "`UIDateTimePicker` combines `UIDatePicker` and `UITimePicker` into a single cohesive control for selecting a full date-and-time value. It inherits all configuration options from both sub-components.",
+          "",
+          "## Key Features",
+          "",
+          "- **Unified `Date` model** — a single two-way bound `Date` object carries both date and time",
+          "- **Independent format & mode** — date format (`yyyy-MM-dd`, `dd/MM/yyyy`, etc.) and time mode (12 / 24) are configured separately",
+          "- **Date & time constraints** — `minDate` / `maxDate` restrict the calendar; `minTime` / `maxTime` restrict the clock",
+          '- **Minute step** — inherited from the time picker, e.g. `[minuteStep]="15"` for quarter-hour scheduling',
+          "- **Disabled & read-only** — both halves respect these states simultaneously",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          '| `format` | `string` | `"yyyy-MM-dd"` | Date display format (Angular date-pipe tokens) |',
+          "| `timeMode` | `12 \\| 24` | `24` | 12-hour (AM/PM) or 24-hour time |",
+          '| `datePlaceholder` | `string` | `""` | Placeholder for the date field |',
+          "| `minDate` | `Date` | — | Earliest selectable date |",
+          "| `maxDate` | `Date` | — | Latest selectable date |",
+          '| `minTime` | `string` | — | Earliest selectable time (`"HH:mm"`) |',
+          '| `maxTime` | `string` | — | Latest selectable time (`"HH:mm"`) |',
+          "| `minuteStep` | `number` | `1` | Minute increment for arrow-key stepping |",
+          "| `firstDayOfWeek` | `0 \\| 1` | `1` | Calendar week start day |",
+          "| `disabled` | `boolean` | `false` | Disables both date and time inputs |",
+          "| `readonly` | `boolean` | `false` | Makes the value visible but not editable |",
+          '| `ariaLabel` | `string` | `"Date and time"` | Accessible label |',
+          "",
+          "## Model",
+          "",
+          "| Model | Type | Description |",
+          "|-------|------|-------------|",
+          "| `value` | `Date \\| null` | Two-way bound `Date` combining date and time |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `valueChange` | `Date` | Emitted when either date or time changes |",
+          "| `dateChange` | `Date` | Emitted when only the date portion changes |",
+          "| `timeChange` | `string` | Emitted when only the time portion changes |",
+        ].join("\n"),
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -307,6 +355,11 @@ type Story = StoryObj;
 
 // ── Stories ─────────────────────────────────────────────────────────
 
+/**
+ * **ISO + 24-hour** — The default configuration: ISO date format `yyyy-MM-dd`
+ * with 24-hour time (no AM/PM). Best for applications that communicate with
+ * APIs expecting ISO 8601 date-time strings.
+ */
 export const ISO24Hour: Story = {
   render: () => ({ template: `<ui-dtp-iso24-demo />` }),
   parameters: {
@@ -326,6 +379,10 @@ export const ISO24Hour: Story = {
   },
 };
 
+/**
+ * **European + 12-hour** — Day-first date (`dd/MM/yyyy`) paired with
+ * 12-hour time and AM/PM toggle. Common in UK-style interfaces.
+ */
 export const European12Hour: Story = {
   render: () => ({ template: `<ui-dtp-eu12-demo />` }),
   parameters: {
@@ -343,6 +400,11 @@ export const European12Hour: Story = {
   },
 };
 
+/**
+ * **US + 12-hour** — Month-first date (`MM/dd/yyyy`) with 12-hour time
+ * and Sunday as the first day of the week. Matches the typical US
+ * locale conventions.
+ */
 export const US12Hour: Story = {
   render: () => ({ template: `<ui-dtp-us12-demo />` }),
   parameters: {
@@ -361,6 +423,11 @@ export const US12Hour: Story = {
   },
 };
 
+/**
+ * **Constrained range** — Both date and time are restricted: the calendar
+ * allows ±14 days from today, and the time picker is locked to business
+ * hours (09:00–17:00). Ideal for office-hours booking scenarios.
+ */
 export const ConstrainedRange: Story = {
   render: () => ({ template: `<ui-dtp-constrained-demo />` }),
   parameters: {
@@ -382,6 +449,11 @@ export const ConstrainedRange: Story = {
   },
 };
 
+/**
+ * **15-minute step** — The minute field increments in 15-minute intervals
+ * (0, 15, 30, 45) using the German dot-separator date format. Perfect for
+ * scheduling systems that operate on quarter-hour slots.
+ */
 export const FifteenMinuteStep: Story = {
   render: () => ({ template: `<ui-dtp-step-demo />` }),
   parameters: {
@@ -400,6 +472,10 @@ export const FifteenMinuteStep: Story = {
   },
 };
 
+/**
+ * **Disabled** — Both the date and time sub-components are disabled.
+ * The entire control is visually dimmed and non-interactive.
+ */
 export const Disabled: Story = {
   render: () => ({ template: `<ui-dtp-disabled-demo />` }),
   parameters: {
@@ -416,6 +492,11 @@ export const Disabled: Story = {
   },
 };
 
+/**
+ * **Read-only** — The date-time value is displayed but cannot be changed.
+ * Both sub-components maintain normal styling and the value remains
+ * accessible programmatically.
+ */
 export const ReadOnly: Story = {
   render: () => ({ template: `<ui-dtp-readonly-demo />` }),
   parameters: {

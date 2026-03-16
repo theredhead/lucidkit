@@ -12,11 +12,34 @@ const meta: Meta = {
     }),
   ],
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A directive that displays a floating text tooltip on hover/focus.\n\n" +
+          "`UITooltip` is applied as an attribute directive on any element. It\n" +
+          "creates an overlay anchored to the host element and removes it when\n" +
+          "the pointer leaves.\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `uiTooltip` | `string` | *(required)* | Tooltip text content |\n" +
+          "| `tooltipPosition` | `TooltipPosition` | `'top'` | Placement relative to the anchor |\n" +
+          "| `tooltipDelay` | `number` | `200` | Show delay in milliseconds |\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          '<button uiTooltip="Save changes" tooltipPosition="bottom">Save</button>\n' +
+          "```",
+      },
+    },
+  },
   argTypes: {
     tooltipPosition: {
       control: "select",
       options: ["top", "bottom", "left", "right"] satisfies TooltipPosition[],
-      description: "Position of tooltip relative to anchor",
+      description:
+        "Controls where the tooltip appears relative to the anchor element. " +
+        "The tooltip will reposition if it overflows the viewport.",
     },
   },
 };
@@ -24,7 +47,11 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-/** Default top tooltip. */
+/**
+ * A single button with a top-positioned tooltip. Hover over the
+ * button to see the tooltip appear after the default 200 ms delay.
+ * Use the controls panel to change the position.
+ */
 export const Default: Story = {
   render: (args) => ({
     props: args,
@@ -43,7 +70,10 @@ export const Default: Story = {
   args: { tooltipPosition: "top" },
 };
 
-/** All positions. */
+/**
+ * All four tooltip positions rendered side-by-side. Hover each
+ * button to compare placement: top, bottom, left, and right.
+ */
 export const AllPositions: Story = {
   render: () => ({
     template: `

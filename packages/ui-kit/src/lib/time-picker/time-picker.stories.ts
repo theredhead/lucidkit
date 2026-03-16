@@ -226,6 +226,47 @@ class ReadonlyDemo {
 const meta: Meta = {
   title: "@Theredhead/UI Kit/Time Picker",
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          "`UITimePicker` is a keyboard-driven time input with separate hour and minute fields. It supports 12-hour (AM/PM) and 24-hour modes, minute stepping, and min/max time constraints.",
+          "",
+          "## Key Features",
+          "",
+          '- **12- or 24-hour mode** — set `[mode]="12"` for AM/PM toggle or `[mode]="24"` for military time',
+          "- **Minute step** — constrain minute values to multiples (e.g. 15-minute intervals) via `[minuteStep]`",
+          "- **Min / max time** — restrict the selectable range to business hours or any other window",
+          "- **Keyboard navigation** — arrow keys increment/decrement hours and minutes within bounds",
+          '- **String value** — the model uses `"HH:mm"` format strings (always 24-hour internally)',
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `mode` | `12 \\| 24` | `24` | Display mode — 12-hour with AM/PM or 24-hour |",
+          "| `disabled` | `boolean` | `false` | Disables the entire time picker |",
+          "| `readonly` | `boolean` | `false` | Makes the value visible but not editable |",
+          '| `min` | `string` | — | Earliest selectable time (`"HH:mm"` format) |',
+          '| `max` | `string` | — | Latest selectable time (`"HH:mm"` format) |',
+          "| `minuteStep` | `number` | `1` | Minute increment for arrow-key stepping |",
+          '| `ariaLabel` | `string` | `"Time picker"` | Accessible label for the control |',
+          "",
+          "## Model",
+          "",
+          "| Model | Type | Description |",
+          "|-------|------|-------------|",
+          '| `value` | `string \\| null` | Two-way bound time in `"HH:mm"` format (24-hour) |',
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `timeChange` | `string` | Emitted when the time value changes |",
+        ].join("\n"),
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -246,6 +287,11 @@ type Story = StoryObj;
 
 // ── Stories ─────────────────────────────────────────────────────────
 
+/**
+ * **24-hour mode** — The default mode. Hours range from 00 to 23 with no
+ * AM/PM toggle. Pre-populated with 14:30 to demonstrate afternoon times.
+ * Use arrow keys in each field to increment/decrement.
+ */
 export const TwentyFourHour: Story = {
   render: () => ({ template: `<ui-tp-24h-demo />` }),
   parameters: {
@@ -264,6 +310,12 @@ export const TwentyFourHour: Story = {
   },
 };
 
+/**
+ * **12-hour mode** — Displays hours 1–12 with an AM/PM toggle. The internal
+ * value is always stored in 24-hour `"HH:mm"` format so downstream code
+ * doesn't need to convert. The initial value of `"14:30"` displays as
+ * `2:30 PM`.
+ */
 export const TwelveHour: Story = {
   render: () => ({ template: `<ui-tp-12h-demo />` }),
   parameters: {
@@ -280,6 +332,11 @@ export const TwelveHour: Story = {
   },
 };
 
+/**
+ * **15-minute step** — Setting `[minuteStep]="15"` constrains minutes to
+ * 0, 15, 30, or 45. Arrow keys in the minute field jump by 15-minute
+ * intervals. This is perfect for appointment or meeting schedulers.
+ */
 export const FifteenMinuteStep: Story = {
   render: () => ({ template: `<ui-tp-step-demo />` }),
   parameters: {
@@ -297,6 +354,11 @@ export const FifteenMinuteStep: Story = {
   },
 };
 
+/**
+ * **Min / max constrained** — Limits the selectable range to business hours
+ * (09:00–17:00). Attempting to navigate outside this range with arrow keys
+ * clamps the value to the nearest boundary.
+ */
 export const MinMaxConstrained: Story = {
   render: () => ({ template: `<ui-tp-minmax-demo />` }),
   parameters: {
@@ -315,6 +377,10 @@ export const MinMaxConstrained: Story = {
   },
 };
 
+/**
+ * **Disabled** — The time picker is fully non-interactive. Fields cannot
+ * be focused and the control is visually dimmed.
+ */
 export const Disabled: Story = {
   render: () => ({ template: `<ui-tp-disabled-demo />` }),
   parameters: {
@@ -327,6 +393,11 @@ export const Disabled: Story = {
   },
 };
 
+/**
+ * **Read-only** — The time value is displayed but cannot be modified.
+ * The control maintains normal styling and the value can be read
+ * programmatically.
+ */
 export const ReadOnly: Story = {
   render: () => ({ template: `<ui-tp-readonly-demo />` }),
   parameters: {

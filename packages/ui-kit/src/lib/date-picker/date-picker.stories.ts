@@ -326,6 +326,48 @@ class ReadonlyDemo {
 const meta: Meta = {
   title: "@Theredhead/UI Kit/Date Picker",
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          "`UIDatePicker` is a keyboard-friendly date input with a calendar dropdown panel. It supports multiple display formats, min/max constraints, and configurable first-day-of-week.",
+          "",
+          "## Key Features",
+          "",
+          "- **Format string** — control the display with Angular date-pipe tokens (`yyyy-MM-dd`, `dd/MM/yyyy`, `MM/dd/yyyy`, `dd.MM.yyyy`, etc.)",
+          "- **Min / max dates** — constrain selectable dates to a valid range; out-of-range days are visually disabled",
+          "- **First day of week** — set to `0` (Sunday) or `1` (Monday, default) to match regional conventions",
+          "- **Disabled & read-only** — standard form-control states",
+          "- **Accessible** — full keyboard navigation (arrow keys, Enter, Escape), ARIA date-picker pattern",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          '| `format` | `string` | `"yyyy-MM-dd"` | Date display format using Angular date-pipe tokens |',
+          '| `placeholder` | `string` | `""` | Placeholder shown when no date is selected |',
+          "| `disabled` | `boolean` | `false` | Disables the input and calendar trigger |",
+          "| `readonly` | `boolean` | `false` | Prevents editing while keeping the value visible |",
+          "| `min` | `Date` | — | Earliest selectable date |",
+          "| `max` | `Date` | — | Latest selectable date |",
+          "| `firstDayOfWeek` | `0 \\| 1` | `1` | `0` = Sunday, `1` = Monday |",
+          '| `ariaLabel` | `string` | `"Date picker"` | Accessible label for the input |',
+          "",
+          "## Model",
+          "",
+          "| Model | Type | Description |",
+          "|-------|------|-------------|",
+          "| `value` | `Date \\| null` | Two-way bound selected date |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `dateChange` | `Date` | Emits when the user picks or types a valid date |",
+        ].join("\n"),
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -348,6 +390,11 @@ type Story = StoryObj;
 
 // ── Stories ─────────────────────────────────────────────────────────
 
+/**
+ * **ISO format** — Uses the international `yyyy-MM-dd` format (e.g. 2025-07-14).
+ * This is the default and is ideal for APIs and databases that expect
+ * ISO 8601 date strings.
+ */
 export const ISO: Story = {
   render: () => ({ template: `<ui-dp-iso-demo />` }),
   parameters: {
@@ -366,6 +413,10 @@ export const ISO: Story = {
   },
 };
 
+/**
+ * **European format** — Day-first format `dd/MM/yyyy` (e.g. 14/07/2025)
+ * commonly used across continental Europe, the UK, and many other regions.
+ */
 export const European: Story = {
   render: () => ({ template: `<ui-dp-european-demo />` }),
   parameters: {
@@ -382,6 +433,10 @@ export const European: Story = {
   },
 };
 
+/**
+ * **US format** — Month-first format `MM/dd/yyyy` (e.g. 07/14/2025)
+ * used primarily in the United States.
+ */
 export const US: Story = {
   render: () => ({ template: `<ui-dp-us-demo />` }),
   parameters: {
@@ -398,6 +453,10 @@ export const US: Story = {
   },
 };
 
+/**
+ * **German format** — Dot-separated `dd.MM.yyyy` (e.g. 14.07.2025)
+ * used in Germany, Austria, and Switzerland.
+ */
 export const German: Story = {
   render: () => ({ template: `<ui-dp-german-demo />` }),
   parameters: {
@@ -414,6 +473,11 @@ export const German: Story = {
   },
 };
 
+/**
+ * **Min / max constrained** — Demonstrates date range validation. Only dates
+ * within ±30 days of today can be selected. Days outside the range appear
+ * visually disabled in the calendar panel and cannot be clicked.
+ */
 export const MinMaxConstrained: Story = {
   render: () => ({ template: `<ui-dp-minmax-demo />` }),
   parameters: {
@@ -435,6 +499,10 @@ export const MinMaxConstrained: Story = {
   },
 };
 
+/**
+ * **Sunday start** — Sets `[firstDayOfWeek]="0"` so the calendar grid starts
+ * on Sunday, matching the US convention. The default is `1` (Monday).
+ */
 export const SundayStart: Story = {
   render: () => ({ template: `<ui-dp-sunday-demo />` }),
   parameters: {
@@ -452,6 +520,10 @@ export const SundayStart: Story = {
   },
 };
 
+/**
+ * **Disabled** — The entire date picker is non-interactive. The input is
+ * dimmed and the calendar icon does not respond to clicks.
+ */
 export const Disabled: Story = {
   render: () => ({ template: `<ui-dp-disabled-demo />` }),
   parameters: {
@@ -469,6 +541,11 @@ export const Disabled: Story = {
   },
 };
 
+/**
+ * **Read-only** — The date value is visible and can be copied but cannot be
+ * changed. Unlike disabled, the control retains normal styling and can
+ * participate in form submissions.
+ */
 export const ReadOnly: Story = {
   render: () => ({ template: `<ui-dp-readonly-demo />` }),
   parameters: {

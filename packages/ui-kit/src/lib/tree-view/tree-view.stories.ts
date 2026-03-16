@@ -265,6 +265,53 @@ const meta: Meta<UITreeView> = {
   title: "@Theredhead/UI Kit/Tree View",
   component: UITreeView,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          "`UITreeView` renders hierarchical data as an expandable / collapsible tree. It is datasource-driven, supports single and multi-select, custom node templates, per-node icons, and disabled nodes.",
+          "",
+          "## Key Features",
+          "",
+          "- **Datasource-driven** — supply an `ArrayTreeDatasource<T>` (or any `TreeDatasource`) with nested `TreeNode<T>` objects",
+          '- **Selection modes** — `"none"`, `"single"`, or `"multiple"` with two-way bound `selected` model',
+          "- **Custom templates** — project a `#nodeTemplate` to render rich node content (e.g. org-chart cards)",
+          "- **SVG icons** — each `TreeNode` can carry an `icon` string (raw SVG path data) rendered inline",
+          "- **Disabled nodes** — set `disabled: true` on a node to make it non-interactive",
+          "- **Expand / collapse API** — call `tree.expandAll()` or `tree.collapseAll()` programmatically",
+          "- **Accessible** — ARIA tree / treeitem roles with keyboard navigation (arrow keys, Enter, Space)",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `datasource` | `TreeDatasource<T>` | *(required)* | Provides the tree data |",
+          "| `displayWith` | `(data: T) => string` | `String()` | Formats a node’s data for display text |",
+          '| `selectionMode` | `"none" \\| "single" \\| "multiple"` | `"none"` | How nodes can be selected |',
+          '| `ariaLabel` | `string` | `"Tree view"` | Accessible label for the tree root |',
+          "| `filterPredicate` | `(node: TreeNode<T>) => boolean` | — | Optional filter for visible nodes |",
+          "",
+          "## Model",
+          "",
+          "| Model | Type | Description |",
+          "|-------|------|-------------|",
+          "| `selected` | `readonly TreeNode<T>[]` | Two-way bound array of selected nodes |",
+          "",
+          "## TreeNode Interface",
+          "",
+          "```ts",
+          "interface TreeNode<T> {",
+          "  id: string;",
+          "  data: T;",
+          "  children?: TreeNode<T>[];",
+          "  icon?: string;      // raw SVG path data",
+          "  disabled?: boolean;",
+          "}",
+          "```",
+        ].join("\n"),
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -279,7 +326,11 @@ const meta: Meta<UITreeView> = {
 export default meta;
 type Story = StoryObj<UITreeView>;
 
-/** File explorer – icons, nested folders, and a disabled node_modules folder. */
+/**
+ * **File explorer** — A realistic file-system tree with folder and document
+ * icons, nested directories, and a disabled `node_modules` folder. Click
+ * the chevrons to expand / collapse branches.
+ */
 export const FileExplorer: Story = {
   render: () => ({
     template: `<ui-tree-view-file-demo />`,
@@ -300,7 +351,11 @@ export const FileExplorer: Story = {
   },
 };
 
-/** Interactive selection demo — toggle between single, multiple, and none modes. */
+/**
+ * **Selection** — An interactive demo where you can toggle between `single`,
+ * `multiple`, and `none` selection modes at runtime. The selected node
+ * names are displayed alongside the tree for immediate feedback.
+ */
 export const Selection: Story = {
   render: () => ({
     template: `<ui-tree-view-selection-demo />`,
@@ -319,7 +374,11 @@ export const Selection: Story = {
   },
 };
 
-/** Org chart with a custom template showing name + title. */
+/**
+ * **Org chart** — Uses a custom `#nodeTemplate` to render each node as a
+ * card with a name and job title. Demonstrates how `displayWith` provides
+ * the accessible text while the template controls the visual presentation.
+ */
 export const OrgChart: Story = {
   render: () => ({
     template: `<ui-tree-view-org-demo />`,
@@ -341,7 +400,11 @@ export const OrgChart: Story = {
   },
 };
 
-/** Expand / collapse all via the public API. */
+/**
+ * **Expand / collapse** — Demonstrates the public `expandAll()` and
+ * `collapseAll()` methods on the `UITreeView` instance. Use a template
+ * reference variable (`#tree`) to access these methods from your template.
+ */
 export const ExpandCollapse: Story = {
   render: () => ({
     template: `<ui-tree-view-expand-demo />`,

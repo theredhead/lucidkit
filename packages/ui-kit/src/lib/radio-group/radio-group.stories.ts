@@ -27,6 +27,30 @@ const meta: Meta<UIRadioGroup> = {
   title: "@Theredhead/UI Kit/Radio Group",
   component: UIRadioGroup,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A group of mutually exclusive radio buttons. Only one option " +
+          "can be selected at a time.\n\n" +
+          "### Composition\n" +
+          "`UIRadioGroup` wraps one or more `UIRadioButton` children. The " +
+          "group manages selection state and keyboard navigation (arrow keys).\n\n" +
+          "### Features\n" +
+          "- **Two-way binding** — `[(value)]` model signal on the group\n" +
+          "- **Individual disable** — disable specific options with `[disabled]` on `UIRadioButton`\n" +
+          "- **Group disable** — disable the entire group with `[disabled]` on `UIRadioGroup`\n" +
+          '- **Accessible** — proper `role="radiogroup"` with arrow-key navigation\n\n' +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-radio-group name="plan" [(value)]="selectedPlan">\n' +
+          '  <ui-radio-button value="free">Free</ui-radio-button>\n' +
+          '  <ui-radio-button value="pro">Pro</ui-radio-button>\n' +
+          "</ui-radio-group>\n" +
+          "```",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [UIRadioButton, RadioDemo],
@@ -37,7 +61,11 @@ const meta: Meta<UIRadioGroup> = {
 export default meta;
 type Story = StoryObj<UIRadioGroup>;
 
-/** Default radio group. */
+/**
+ * Interactive radio group with three fruit options. The selected
+ * value is displayed below the group and updates via two-way binding.
+ * Click a radio button or use arrow keys to change the selection.
+ */
 export const Default: Story = {
   render: () => ({
     template: `<ui-radio-demo />`,
@@ -59,7 +87,10 @@ readonly selected = signal<string | undefined>(undefined); -->`,
   },
 };
 
-/** With pre-selected value. */
+/**
+ * A radio group with a pre-selected initial value (`green`). The
+ * component renders the correct radio button as checked on first paint.
+ */
 export const PreSelected: Story = {
   render: () => ({
     template: `
@@ -72,7 +103,10 @@ export const PreSelected: Story = {
   }),
 };
 
-/** With disabled individual items. */
+/**
+ * Individual radio buttons can be disabled while the rest remain
+ * interactive. Here the "Enterprise" option is greyed out.
+ */
 export const DisabledItem: Story = {
   render: () => ({
     template: `
@@ -85,7 +119,11 @@ export const DisabledItem: Story = {
   }),
 };
 
-/** Entire group disabled. */
+/**
+ * The entire group is disabled, preventing any selection changes.
+ * The previously selected value (\"md\") remains visible but
+ * non-interactive.
+ */
 export const DisabledGroup: Story = {
   render: () => ({
     template: `

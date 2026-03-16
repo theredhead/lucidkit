@@ -282,6 +282,57 @@ class DisabledDemo {
 const meta: Meta = {
   title: "@Theredhead/UI Kit/Autocomplete",
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          "`UIAutocomplete` is a type-ahead search input that queries a pluggable **datasource** as the user types and presents matching suggestions in a dropdown panel.",
+          "",
+          "## Key Features",
+          "",
+          "- **Datasource-driven** — supply any object implementing `AutocompleteDatasource<T>` to control suggestions",
+          "- **Single & multi-select** — toggle `[multiple]` to allow chip-based multi-selection",
+          "- **Custom templates** — project an `<ng-template let-item>` to render rich suggestion rows",
+          "- **Identity functions** — `displayWith` controls chip labels; `trackBy` provides stable identity for objects",
+          "- **Accessible** — ARIA combobox + listbox roles, keyboard navigation, screen-reader announcements",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `datasource` | `AutocompleteDatasource<T>` | *(required)* | Provides suggestions for a given query string and current selection |",
+          '| `placeholder` | `string` | `""` | Placeholder text shown when the input is empty |',
+          "| `disabled` | `boolean` | `false` | Disables the input and hides the suggestion panel |",
+          "| `multiple` | `boolean` | `false` | Enables multi-select mode with removable chips |",
+          "| `minChars` | `number` | `1` | Minimum characters before the datasource is queried |",
+          "| `displayWith` | `(item: T) => string` | `String()` | Formats an item for display in chips |",
+          "| `trackBy` | `(item: T) => unknown` | identity | Returns a stable key for item comparison |",
+          '| `ariaLabel` | `string` | `"Autocomplete"` | Accessible label forwarded to the native input |',
+          "",
+          "## Model",
+          "",
+          "| Model | Type | Description |",
+          "|-------|------|-------------|",
+          "| `value` | `readonly T[]` | Two-way bound array of selected items |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `itemSelected` | `T` | Emitted when a suggestion is picked |",
+          "| `itemRemoved` | `T` | Emitted when a chip is removed (multi-select) |",
+          "",
+          "## Datasource Interface",
+          "",
+          "```ts",
+          "interface AutocompleteDatasource<T> {",
+          "  completeFor(query: string, selection: readonly T[]): T[] | Observable<T[]>;",
+          "}",
+          "```",
+        ].join("\n"),
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -300,7 +351,12 @@ type Story = StoryObj;
 
 // ── Stories ─────────────────────────────────────────────────────────
 
-/** Basic single-select autocomplete with a fruit list. */
+/**
+ * **Basic (single-select)** — The simplest usage: a plain-string datasource
+ * with prefix matching. Type a letter to see matching fruits appear in the
+ * dropdown. Selecting an item replaces the input text and adds it to the
+ * `value` array.
+ */
 export const Basic: Story = {
   render: () => ({
     template: `<ui-ac-basic-demo />`,
@@ -325,8 +381,10 @@ readonly selected = signal<readonly string[]>([]); -->`,
 };
 
 /**
- * Multi-select mode — selected items appear as removable chips above the
- * input. Already-selected items are excluded from suggestions.
+ * **Multi-select** — When `[multiple]="true"`, selected items are rendered as
+ * removable chips above the input field. The datasource automatically
+ * excludes already-selected items from future suggestions, preventing
+ * duplicates. Click the × button on a chip or press Backspace to remove it.
  */
 export const MultipleSelection: Story = {
   render: () => ({
@@ -349,8 +407,11 @@ export const MultipleSelection: Story = {
 };
 
 /**
- * Custom item template with rich Contact objects.
- * Uses `displayWith` for chip labels and `trackBy` for identity.
+ * **Custom template** — Project an `<ng-template let-item>` inside
+ * `<ui-autocomplete>` to fully control how each suggestion row is rendered.
+ * This example uses rich `Contact` objects with name, email and department.
+ * The `displayWith` function controls what text appears in chips, while
+ * `trackBy` provides stable identity via the email field.
  */
 export const CustomTemplate: Story = {
   render: () => ({
@@ -384,7 +445,11 @@ readonly trackByEmail = (c: Contact) => c.email; -->`,
   },
 };
 
-/** Disabled state — the input cannot be focused or typed into. */
+/**
+ * **Disabled** — Setting `[disabled]="true"` prevents focus, typing, and
+ * opening the suggestion panel. The input is visually dimmed to indicate
+ * the non-interactive state.
+ */
 export const Disabled: Story = {
   render: () => ({
     template: `<ui-ac-disabled-demo />`,

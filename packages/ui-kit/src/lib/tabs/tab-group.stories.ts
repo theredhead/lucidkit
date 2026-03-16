@@ -8,6 +8,30 @@ const meta: Meta<UITabGroup> = {
   title: "@Theredhead/UI Kit/Tabs",
   component: UITabGroup,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A tabbed content container. Each `<ui-tab>` defines a panel " +
+          "with a label; only the active panel is rendered.\n\n" +
+          "### Composition\n" +
+          "`UITabGroup` wraps `UITab` children. Tabs are activated by " +
+          "clicking their label or pressing arrow keys.\n\n" +
+          "### Features\n" +
+          '- **Declarative** — project `<ui-tab label="...">` children directly\n' +
+          "- **Initial selection** — set `[selectedIndex]` to start on a specific tab\n" +
+          "- **Disabled tabs** — individual tabs can be disabled\n" +
+          "- **Keyboard navigation** — left/right arrow keys cycle through tabs\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          "<ui-tab-group>\n" +
+          '  <ui-tab label="Overview">Content here.</ui-tab>\n' +
+          '  <ui-tab label="Details">More content.</ui-tab>\n' +
+          "</ui-tab-group>\n" +
+          "```",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [UITab],
@@ -18,7 +42,10 @@ const meta: Meta<UITabGroup> = {
 export default meta;
 type Story = StoryObj<UITabGroup>;
 
-/** Default three tabs. */
+/**
+ * A basic three-tab layout. Click a tab label to switch panels.
+ * Arrow keys also cycle through tab labels when a tab is focused.
+ */
 export const Default: Story = {
   render: () => ({
     template: `
@@ -37,7 +64,11 @@ export const Default: Story = {
   }),
 };
 
-/** Start on second tab. */
+/**
+ * The `selectedIndex` input controls which tab is active on initial
+ * render. Here it’s set to `1` so the second tab (\"Second\") is
+ * displayed first.
+ */
 export const SecondTabSelected: Story = {
   render: () => ({
     template: `
@@ -50,7 +81,11 @@ export const SecondTabSelected: Story = {
   }),
 };
 
-/** With a disabled tab. */
+/**
+ * Individual tabs can be disabled with `[disabled]=\"true\"`. A
+ * disabled tab is visible in the tab bar but cannot be selected
+ * by click or keyboard.
+ */
 export const DisabledTab: Story = {
   render: () => ({
     template: `
@@ -63,7 +98,10 @@ export const DisabledTab: Story = {
   }),
 };
 
-/** Many tabs. */
+/**
+ * A tab group with six tabs to demonstrate horizontal scrolling
+ * behaviour in narrow containers.
+ */
 export const ManyTabs: Story = {
   render: () => ({
     template: `

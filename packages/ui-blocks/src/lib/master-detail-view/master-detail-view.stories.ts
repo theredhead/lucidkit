@@ -499,14 +499,37 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "A master-detail layout combining a `<ui-table-view>` or `<ui-tree-view>` " +
-          "list panel with a detail template pane. Content-project table columns and " +
-          "a `#detail` ng-template (selected item available as `$implicit`). " +
-          "Pass a `treeDatasource` to switch to hierarchical tree mode. " +
-          "Optionally add a collapsible `#filter` template above the list.\n\n" +
-          "Both table and tree modes use single selection. " +
-          "Table mode: row-click select, page size 100, no pagination.",
+        component: [
+          "`UIMasterDetailView` is a high-level layout component that pairs a **list panel** (table or tree) with a **detail panel**. Select an item in the list and the detail template renders its full information.",
+          "",
+          "## Key Features",
+          "",
+          "- **Table mode** (default) — content-project `<ui-text-column>`, `<ui-number-column>`, `<ui-template-column>`, etc. as list columns",
+          "- **Tree mode** — pass a `treeDatasource` and optional `#nodeTemplate` for hierarchical navigation",
+          "- **Detail template** — project a `#detail` ng-template; the selected item is available as `$implicit`",
+          '- **Built-in filter** — set `[showFilter]="true"` for auto-inferred filtering, or project a custom `#filter` template',
+          "- **Single selection** — row-click-to-select with automatic detail pane update",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `data` | `T[]` | — | Array of items for the built-in table datasource |",
+          "| `datasource` | `DatasourceAdapter<T>` | — | External datasource (alternative to `data`) |",
+          "| `treeDatasource` | `TreeDatasource<T>` | — | Switches to tree-view mode |",
+          "| `treeDisplayWith` | `(data: T) => string` | — | Display function for tree nodes |",
+          "| `title` | `string` | — | Heading above the list panel |",
+          "| `showFilter` | `boolean` | `false` | Show the collapsible filter bar |",
+          "",
+          "## Content Projection",
+          "",
+          "| Slot | Purpose |",
+          "|------|---------|",
+          "| Column components | Declarative table columns (same as `<ui-table-view>`) |",
+          "| `#detail` | Template rendered for the selected item |",
+          "| `#filter` | Optional custom filter template (overrides auto-inferred filter) |",
+          "| `#nodeTemplate` | Optional custom tree-node template (tree mode only) |",
+        ].join("\n"),
       },
     },
   },
@@ -519,7 +542,11 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-/** Default master-detail view — click a row to see the detail panel. */
+/**
+ * **Default** — A table-based master-detail view with employee data.
+ * Click any row to see the detail panel on the right. Columns are
+ * content-projected just like in `<ui-table-view>`.
+ */
 export const Default: Story = {
   render: () => ({ template: `<ui-mdv-default-demo />` }),
   parameters: {
@@ -540,7 +567,11 @@ export const Default: Story = {
   },
 };
 
-/** With auto-inferred filter — just `[showFilter]="true"`, no boilerplate. */
+/**
+ * **With filter** — Enables the built-in auto-inferred filter bar by
+ * setting `[showFilter]="true"`. No additional boilerplate is needed —
+ * the component auto-generates filter fields from the column definitions.
+ */
 export const WithFilter: Story = {
   render: () => ({ template: `<ui-mdv-filter-demo />` }),
   parameters: {
@@ -564,7 +595,12 @@ export const WithFilter: Story = {
   },
 };
 
-/** With a fully custom filter template (override). */
+/**
+ * **Custom filter template** — Projects a `#filter` ng-template to
+ * completely replace the auto-inferred filter with a custom
+ * `<ui-filter>` instance. Gives full control over filter field
+ * definitions and junction toggles.
+ */
 export const CustomFilterTemplate: Story = {
   render: () => ({ template: `<ui-mdv-custom-filter-demo />` }),
   parameters: {
@@ -589,7 +625,12 @@ export const CustomFilterTemplate: Story = {
   },
 };
 
-/** Tree mode — hierarchical master list with a custom node template. */
+/**
+ * **Tree mode** — Switches from a table to a tree-view list panel by
+ * passing a `treeDatasource`. A custom `#nodeTemplate` shows each
+ * person's name and title. Selecting a tree node updates the detail
+ * panel on the right.
+ */
 export const TreeMode: Story = {
   render: () => ({ template: `<ui-mdv-tree-demo />` }),
   parameters: {

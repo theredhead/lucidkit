@@ -113,6 +113,29 @@ const meta: Meta<UIAvatar> = {
   title: "@Theredhead/UI Kit/Avatar",
   component: UIAvatar,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Displays a user avatar with automatic resolution fallback:\n" +
+          "`src` image → Gravatar (email) → initials → generic placeholder.\n\n" +
+          "### Features\n" +
+          "- **Five sizes** — `xs` (24 px), `sm` (32 px), `md` (40 px), `lg` (56 px), `xl` (80 px)\n" +
+          "- **Gravatar integration** — pass an `email` and the component fetches " +
+          "the Gravatar image via SHA-256 hash\n" +
+          "- **Initials fallback** — extracts up to two initials from `name` when no image is available\n" +
+          "- **Colour generation** — initials background colour is deterministically " +
+          "derived from the name string\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `src` | `string?` | — | Explicit image URL |\n" +
+          "| `email` | `string?` | — | Email for Gravatar lookup |\n" +
+          "| `name` | `string` | `''` | User name (used for initials & alt text) |\n" +
+          "| `size` | `AvatarSize` | `'md'` | Size preset |",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [AvatarDemo, GravatarDemo],
@@ -122,7 +145,12 @@ const meta: Meta<UIAvatar> = {
 export default meta;
 type Story = StoryObj<UIAvatar>;
 
-/** All avatar variants: sizes, images, initials, fallback. */
+/**
+ * Comprehensive overview of all avatar capabilities: size variants
+ * (xs through xl), image avatars from URLs, initial-based fallbacks,
+ * the generic placeholder (no name or image), and Gravatar integration
+ * via email.
+ */
 export const Default: Story = {
   render: () => ({
     template: `<ui-avatar-demo />`,
@@ -150,7 +178,11 @@ export const Default: Story = {
   },
 };
 
-/** Interactive Gravatar demo — type an email to see the avatar update. */
+/**
+ * Live Gravatar demo — type any email address in the input field
+ * to see the avatar update in real time across all four sizes.
+ * Non-existent Gravatars automatically fall back to initials.
+ */
 export const Gravatar: Story = {
   render: () => ({
     template: `<ui-avatar-gravatar-demo />`,

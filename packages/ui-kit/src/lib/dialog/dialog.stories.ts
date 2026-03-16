@@ -385,13 +385,38 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "Both declarative (template-driven) and imperative (service-based) dialog patterns.\n\n" +
-          "**CSS custom properties** — override on `ui-dialog` or any ancestor:\n" +
-          "- `--ui-surface` — dialog background (`#ffffff` / `#2a2f38`)\n" +
-          "- `--ui-text` — text color (`#1d232b` / `#f2f6fb`)\n" +
-          "- `--ui-border` — header & footer borders (`#d7dce2` / `#3a3f47`)\n" +
-          "- `--ui-accent` — accent color (`#3584e4` / `#7ab0ff`)",
+        component: [
+          "`UIDialog` supports two usage patterns: **declarative** (template-driven with `<ui-dialog>`) and **imperative** (service-based via `ModalService`).",
+          "",
+          "## Declarative (Template-driven)",
+          "",
+          "Place `<ui-dialog>` in your template with projected `<ui-dialog-header>`, `<ui-dialog-body>`, and `<ui-dialog-footer>` slots. Control visibility via `[(open)]` two-way binding.",
+          "",
+          "## Imperative (Service-based)",
+          "",
+          "Inject `ModalService` and call `openModal<T, R>()` with a component, optional `inputs`/`outputs`, and subscribe to `closed` for the result.",
+          "",
+          "## Key Features",
+          "",
+          "- **Backdrop** — modal backdrop with optional `closeOnBackdropClick`",
+          "- **Escape key** — configurable `closeOnEscape` (default `true`)",
+          "- **Typed results** — `ref.closed` emits `R | undefined` when the dialog closes",
+          "- **Input/output forwarding** — pass component inputs and wire outputs via config",
+          "- **Forced choice** — disable both escape and backdrop click to require an explicit button press",
+          "",
+          "## ModalConfig",
+          "",
+          "| Option | Type | Default | Description |",
+          "|--------|------|---------|-------------|",
+          "| `component` | `Type<T>` | *(required)* | The Angular component to render inside the dialog |",
+          "| `inputs` | `Record<string, any>` | — | Input bindings forwarded to the component |",
+          "| `outputs` | `Record<string, Function>` | — | Output handlers wired to the component |",
+          "| `closeOnEscape` | `boolean` | `true` | Allow closing with the Escape key |",
+          "| `closeOnBackdropClick` | `boolean` | `true` | Allow closing by clicking the backdrop |",
+          "| `ariaLabel` | `string` | — | Accessible label for the dialog |",
+          "",
+          "**CSS custom properties** — `--ui-surface`, `--ui-text`, `--ui-border`, `--ui-accent`",
+        ].join("\n"),
       },
     },
   },
@@ -414,7 +439,11 @@ type Story = StoryObj;
 
 // ── Declarative ────────────────────────────────────────────────────
 
-/** Declarative dialog with projected header / body / footer slots. */
+/**
+ * **Declarative** — Template-driven dialog using `<ui-dialog>` with
+ * projected header, body, and footer slots. Visibility is controlled
+ * via the `[(open)]` two-way binding.
+ */
 export const Declarative: Story = {
   render: () => ({
     template: `<ui-dialog-declarative-demo />`,
@@ -442,7 +471,11 @@ export const Declarative: Story = {
   },
 };
 
-/** Declarative dialog that cannot be closed by clicking the backdrop. */
+/**
+ * **Declarative persistent** — Same as above but with
+ * `[closeOnBackdropClick]="false"`. Clicking the backdrop does not close
+ * the dialog — the user must explicitly click the button.
+ */
 export const DeclarativePersistent: Story = {
   render: () => ({
     template: `<ui-dialog-persistent-demo />`,
@@ -472,7 +505,11 @@ export const DeclarativePersistent: Story = {
 
 // ── Service-based (imperative) ─────────────────────────────────────
 
-/** Basic confirm dialog opened via `ModalService.openModal()`. */
+/**
+ * **Service confirm** — Opens a confirmation dialog imperatively via
+ * `ModalService.openModal()`. The `closed` observable emits `true`
+ * (confirmed) or `undefined` (dismissed).
+ */
 export const ServiceConfirm: Story = {
   render: () => ({
     template: `<ui-dialog-svc-basic-demo />`,
@@ -495,7 +532,11 @@ this.modal
   },
 };
 
-/** Confirm dialog with custom title and message passed as inputs. */
+/**
+ * **Service with custom inputs** — Demonstrates forwarding `inputs` to the
+ * dialog component via the modal config. The title and message are set
+ * dynamically rather than hard-coded in the component.
+ */
 export const ServiceCustomInputs: Story = {
   render: () => ({
     template: `<ui-dialog-svc-custom-demo />`,
@@ -521,7 +562,11 @@ export const ServiceCustomInputs: Story = {
   },
 };
 
-/** Form dialog that returns a string value on save. */
+/**
+ * **Service form** — A dialog containing a text input that returns the
+ * entered value on save. Demonstrates how `ref.close(value)` passes
+ * a typed result back to the caller.
+ */
 export const ServiceForm: Story = {
   render: () => ({
     template: `<ui-dialog-svc-form-demo />`,
@@ -547,7 +592,11 @@ export const ServiceForm: Story = {
   },
 };
 
-/** Dialog demonstrating output handler wiring via `outputs` config. */
+/**
+ * **Service with outputs** — Wires component outputs via the `outputs`
+ * config option. The dialog component emits events and the caller
+ * handles them without needing `ref.closed`.
+ */
 export const ServiceOutputs: Story = {
   render: () => ({
     template: `<ui-dialog-svc-outputs-demo />`,
@@ -568,8 +617,9 @@ export const ServiceOutputs: Story = {
 };
 
 /**
- * Dialog that cannot be dismissed by Escape or backdrop click —
- * the user must explicitly choose a button.
+ * **Forced choice** — Both `closeOnEscape` and `closeOnBackdropClick` are
+ * disabled. The user must explicitly choose one of the dialog buttons.
+ * Ideal for unsaved-changes warnings or destructive-action confirmations.
  */
 export const ServiceForcedChoice: Story = {
   render: () => ({

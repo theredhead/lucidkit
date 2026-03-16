@@ -61,6 +61,30 @@ const meta: Meta<UIBreadcrumb> = {
   title: "@Theredhead/UI Kit/Breadcrumb",
   component: UIBreadcrumb,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A navigation aid that shows the user’s current location within " +
+          "a hierarchical structure.\n\n" +
+          "### Features\n" +
+          "- **Custom separator** — default `/`, or pass any string (`›`, `|`, etc.)\n" +
+          "- **Link variant** (default) — crumbs render as `<a>` anchors\n" +
+          "- **Button variant** — crumbs render as styled buttons with chevron separators\n" +
+          "- **Active item** — the last item (no `url`) renders as plain text\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `items` | `BreadcrumbItem[]` | *(required)* | Array of `{ label, url? }` |\n" +
+          "| `variant` | `'link' \\| 'button'` | `'link'` | Visual style |\n" +
+          "| `separator` | `string` | `'/'` | Separator between crumbs (link variant) |\n\n" +
+          "### Output\n" +
+          "| Output | Payload | Description |\n" +
+          "|--------|---------|-------------|\n" +
+          "| `itemClicked` | `BreadcrumbItem` | Emitted when a crumb is clicked |",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [BreadcrumbDemo, BreadcrumbButtonDemo],
@@ -70,7 +94,11 @@ const meta: Meta<UIBreadcrumb> = {
 export default meta;
 type Story = StoryObj<UIBreadcrumb>;
 
-/** Breadcrumb with various separators. */
+/**
+ * The link variant with three different separators: the default `/`,
+ * an arrow `›`, and a pipe `|`. The last crumb (\"Monthly Report\")
+ * has no `url` and renders as non-clickable text.
+ */
 export const Default: Story = {
   render: () => ({
     template: `<ui-breadcrumb-demo />`,
@@ -95,7 +123,11 @@ readonly items: BreadcrumbItem[] = [
   },
 };
 
-/** Button variant — crumbs are styled buttons separated by chevron icons. */
+/**
+ * The `button` variant renders each crumb as a styled button, with
+ * chevron icons as separators. This variant works well in
+ * application-style UIs where breadcrumbs act as navigation buttons.
+ */
 export const ButtonVariant: Story = {
   render: () => ({
     template: `<ui-breadcrumb-button-demo />`,

@@ -25,6 +25,30 @@ export interface RichTextPlaceholder {
 }
 
 /**
+ * Callback that handles an image file and returns a URL string.
+ *
+ * When provided to the rich-text editor's `imageHandler` input,
+ * this function is called when the user pastes an image from the
+ * clipboard.  The returned URL is inserted as an `<img>` (HTML
+ * mode) or `![alt](url)` (Markdown mode).
+ *
+ * Typical implementations upload the file to a CDN or object
+ * store and return the resulting public URL.
+ *
+ * @example
+ * ```ts
+ * const uploadImage: RichTextImageHandler = async (file) => {
+ *   const form = new FormData();
+ *   form.append('image', file);
+ *   const res = await fetch('/api/upload', { method: 'POST', body: form });
+ *   const { url } = await res.json();
+ *   return url;
+ * };
+ * ```
+ */
+export type RichTextImageHandler = (file: File) => Promise<string>;
+
+/**
  * Formatting actions the toolbar can expose.
  *
  * Each value maps to a `document.execCommand` call or a custom
@@ -43,10 +67,16 @@ export type RichTextFormatAction =
   | "codeBlock"
   | "unorderedList"
   | "orderedList"
+  | "indent"
+  | "outdent"
   | "alignLeft"
   | "alignCenter"
   | "alignRight"
+  | "horizontalRule"
+  | "image"
   | "link"
+  | "undo"
+  | "redo"
   | "removeFormat";
 
 /**
@@ -54,6 +84,8 @@ export type RichTextFormatAction =
  * provided.
  */
 export const DEFAULT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] = [
+  "undo",
+  "redo",
   "bold",
   "italic",
   "underline",
@@ -66,9 +98,13 @@ export const DEFAULT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] = [
   "codeBlock",
   "unorderedList",
   "orderedList",
+  "indent",
+  "outdent",
   "alignLeft",
   "alignCenter",
   "alignRight",
+  "horizontalRule",
+  "image",
   "link",
   "removeFormat",
 ];
@@ -110,6 +146,18 @@ export const TOOLBAR_BUTTON_REGISTRY: Record<
   RichTextFormatAction,
   ToolbarButtonMeta
 > = {
+  undo: {
+    action: "undo",
+    label: "Undo",
+    icon: UIIcons.Lucide.Arrows.Undo2,
+    group: "history",
+  },
+  redo: {
+    action: "redo",
+    label: "Redo",
+    icon: UIIcons.Lucide.Arrows.Redo2,
+    group: "history",
+  },
   bold: {
     action: "bold",
     label: "Bold",
@@ -182,6 +230,18 @@ export const TOOLBAR_BUTTON_REGISTRY: Record<
     icon: UIIcons.Lucide.Text.ListOrdered,
     group: "list",
   },
+  indent: {
+    action: "indent",
+    label: "Increase indent",
+    icon: UIIcons.Lucide.Development.ListIndentIncrease,
+    group: "list",
+  },
+  outdent: {
+    action: "outdent",
+    label: "Decrease indent",
+    icon: UIIcons.Lucide.Development.ListIndentDecrease,
+    group: "list",
+  },
   alignLeft: {
     action: "alignLeft",
     label: "Align left",
@@ -199,6 +259,18 @@ export const TOOLBAR_BUTTON_REGISTRY: Record<
     label: "Align right",
     icon: UIIcons.Lucide.Text.TextAlignEnd,
     group: "align",
+  },
+  horizontalRule: {
+    action: "horizontalRule",
+    label: "Horizontal rule",
+    icon: UIIcons.Lucide.Development.Minus,
+    group: "insert",
+  },
+  image: {
+    action: "image",
+    label: "Insert image",
+    icon: UIIcons.Lucide.Files.ImagePlus,
+    group: "insert",
   },
   link: {
     action: "link",
@@ -234,7 +306,9 @@ export interface ToolbarGroupMeta {
  * @internal
  */
 export const FLAT_TOOLBAR_GROUPS: ReadonlySet<string> = new Set([
+  "history",
   "inline",
+  "insert",
   "link-action",
   "misc",
 ]);
