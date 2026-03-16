@@ -91,8 +91,26 @@ export class UITableView implements OnInit, AfterViewInit {
    */
   selectionChange = output<readonly unknown[]>();
 
+  /**
+   * Explicitly provided column directives. When set (non-empty), the table
+   * uses these instead of the projected `contentChildren`. This allows
+   * wrapper components like `UIMasterDetailView` to query their own
+   * content children and forward them here.
+   */
+  externalColumns = input<readonly UITableViewColumn[]>([]);
+
   columns = contentChildren(UITableViewColumn);
   protected readonly captionId = `ui-table-caption-${UITableView.nextCaptionId++}`;
+
+  /**
+   * The effective column list. Prefers the explicit `externalColumns` input;
+   * falls back to the projected `contentChildren`.
+   * @internal
+   */
+  protected readonly resolvedColumns = computed(() => {
+    const ext = this.externalColumns();
+    return ext.length > 0 ? ext : this.columns();
+  });
 
   /**
    * The resolved selection model. Uses the externally-provided model
@@ -129,7 +147,7 @@ export class UITableView implements OnInit, AfterViewInit {
    * Returns 0 when no columns have explicit widths (natural sizing).
    */
   protected readonly totalRowWidth = computed(() => {
-    const cols = this.columns();
+    const cols = this.resolvedColumns();
     const widths = this.columnWidths();
     const rowIndexWidth = this.showRowIndexIndicator()
       ? ROW_INDEX_COLUMN_WIDTH

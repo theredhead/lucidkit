@@ -15,6 +15,15 @@ if (globalThis.crypto && !globalThis.crypto.subtle) {
   });
 }
 
+// jsdom does not implement ResizeObserver — provide a no-op stub
+if (typeof globalThis.ResizeObserver === "undefined") {
+  globalThis.ResizeObserver = class ResizeObserver {
+    observe(): void {}
+    unobserve(): void {}
+    disconnect(): void {}
+  };
+}
+
 TestBed.initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),

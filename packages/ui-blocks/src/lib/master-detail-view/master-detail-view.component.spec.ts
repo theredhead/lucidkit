@@ -1,312 +1,349 @@
+import { Component, signal } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { provideNoopAnimations } from "@angular/platform-browser/animations";
-
-import { vi } from "vitest";
 
 import {
-  MasterItem,
-  UiMasterDetailViewComponent,
-} from "./master-detail-view.component";
+  ArrayDatasource,
+  DatasourceAdapter,
+  UITextColumn,
+} from "@theredhead/ui-kit";
 
-describe("UiMasterDetailViewComponent", () => {
-  let component: UiMasterDetailViewComponent;
-  let fixture: ComponentFixture<UiMasterDetailViewComponent>;
+import { UIMasterDetailView } from "./master-detail-view.component";
 
-  const mockItems: MasterItem[] = [
-    { id: 1, label: "Item 1" },
-    { id: 2, label: "Item 2" },
-    { id: 3, label: "Item 3" },
-  ];
+interface Person {
+  name: string;
+  email: string;
+  role: string;
+}
+
+const PEOPLE: Person[] = [
+  { name: "Alice", email: "alice@example.com", role: "Admin" },
+  { name: "Bob", email: "bob@example.com", role: "Editor" },
+  { name: "Charlie", email: "charlie@example.com", role: "Viewer" },
+];
+
+@Component({
+  standalone: true,
+  imports: [UIMasterDetailView, UITextColumn],
+  template: `
+    <ui-master-detail-view
+      [data]="data()"
+      [title]="title()"
+      [placeholder]="placeholder()"
+      [showFilter]="showFilter()"
+      [filterExpanded]="filterExpanded()"
+      (selectedChange)="onSelected($event)"
+    >
+      <ui-text-column key="name" headerText="Name" />
+      <ui-text-column key="email" headerText="Email" />
+
+      <ng-template #detail let-object>
+        <div class="test-detail">
+          <h3 class="test-detail-name">{{ object.name }}</h3>
+          <p class="test-detail-email">{{ object.email }}</p>
+        </div>
+      </ng-template>
+
+      <ng-template #filter>
+        <div class="test-filter-content">Filter controls here</div>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class TestHost {
+  public readonly data = signal<Person[]>(PEOPLE);
+  public readonly title = signal("Team");
+  public readonly placeholder = signal("Select a person");
+  public readonly showFilter = signal(false);
+  public readonly filterExpanded = signal(true);
+  public readonly selected = signal<Person | undefined>(undefined);
+
+  public onSelected(item: Person | undefined): void {
+    this.selected.set(item);
+  }
+}
+
+describe("UIMasterDetailView", () => {
+  let fixture: ComponentFixture<TestHost>;
+  let host: TestHost;
+  let el: HTMLElement;
+
+  /**
+   * Performs change detection and flushes Angular effects so that
+   * the table-view's internal effect (which populates resolvedRows)
+   * has time to run and be reflected in the DOM.
+   */
+  function detectAndFlush(): void {
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    fixture.detectChanges();
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UiMasterDetailViewComponent],
-      providers: [provideNoopAnimations()],
+      imports: [TestHost],
     }).compileComponents();
-
-    fixture = TestBed.createComponent(UiMasterDetailViewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(TestHost);
+    host = fixture.componentInstance;
+    el = fixture.nativeElement;
+    detectAndFlush();
   });
 
   it("should create", () => {
-    expect(component).toBeTruthy();
+    const mdv = el.querySelector("ui-master-detail-view");
+    expect(mdv).toBeTruthy();
   });
 
-  describe("inputs", () => {
-    it("should have default empty items array", () => {
-      expect(component.items()).toEqual([]);
-    });
-
-    it("should have default selectedItemId as null", () => {
-      expect(component.selectedItemId()).toBeNull();
-    });
-
-    it('should have default masterTitle "Items"', () => {
-      expect(component.masterTitle()).toBe("Items");
-    });
-
-    it("should have default detailPlaceholderText", () => {
-      expect(component.detailPlaceholderText()).toBe(
-        "Select an item to view details",
-      );
-    });
+  it("should have the host class", () => {
+    const mdv = el.querySelector("ui-master-detail-view");
+    expect(mdv!.classList).toContain("ui-master-detail-view");
   });
 
-  describe("items rendering", () => {
-    it("should render list items when items are provided", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.detectChanges();
-
-      const listItems = fixture.nativeElement.querySelectorAll("mat-list-item");
-      expect(listItems.length).toBe(3);
-    });
-
-    it("should show empty state when no items are provided", () => {
-      fixture.componentRef.setInput("items", []);
-      fixture.detectChanges();
-
-      const emptyState = fixture.nativeElement.querySelector(".empty");
-      expect(emptyState).toBeTruthy();
-      expect(emptyState.textContent.trim()).toBe("No items available");
-    });
-
-    it("should display item labels", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.detectChanges();
-
-      const firstItem = fixture.nativeElement.querySelector(
-        "mat-list-item span[matListItemTitle]",
-      );
-      expect(firstItem.textContent.trim()).toBe("Item 1");
-    });
-  });
-
-  describe("master title", () => {
-    it("should display custom master title", () => {
-      fixture.componentRef.setInput("masterTitle", "My Items");
-      fixture.detectChanges();
-
-      const header = fixture.nativeElement.querySelector("aside header h2");
-      expect(header.textContent.trim()).toBe("My Items");
-    });
-  });
-
-  describe("item selection", () => {
-    it("should emit selectItem when item is clicked", () => {
-      const spy = vi.fn();
-      component.selectItem.subscribe(spy);
-
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.detectChanges();
-
-      const firstItem = fixture.nativeElement.querySelector("mat-list-item");
-      firstItem.click();
-
-      expect(spy).toHaveBeenCalledWith(mockItems[0]);
-    });
-
-    it("should mark item as selected via isItemSelected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 2);
-      fixture.detectChanges();
-
-      expect(component.isItemSelected(2)).toBe(true);
-      expect(component.isItemSelected(1)).toBe(false);
-    });
-  });
-
-  describe("selectedItem computed", () => {
-    it("should return null when no item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", null);
-      fixture.detectChanges();
-
-      expect(component.selectedItem()).toBeNull();
-    });
-
-    it("should return the selected item", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 2);
-      fixture.detectChanges();
-
-      expect(component.selectedItem()).toEqual({ id: 2, label: "Item 2" });
-    });
-
-    it("should return null if selectedItemId does not match any item", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 999);
-      fixture.detectChanges();
-
-      expect(component.selectedItem()).toBeNull();
-    });
-  });
-
-  describe("detail view", () => {
-    it("should show placeholder when no item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", null);
-      fixture.detectChanges();
-
-      const placeholder = fixture.nativeElement.querySelector(".placeholder");
-      expect(placeholder).toBeTruthy();
-    });
-
-    it("should show custom placeholder text", () => {
-      fixture.componentRef.setInput("detailPlaceholderText", "Choose an item");
-      fixture.detectChanges();
-
-      const placeholder = fixture.nativeElement.querySelector(".placeholder p");
-      expect(placeholder.textContent.trim()).toBe("Choose an item");
-    });
-
-    it("should show detail content when item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 1);
-      fixture.detectChanges();
-
-      const detailHeader =
-        fixture.nativeElement.querySelector("main header h2");
-      expect(detailHeader.textContent.trim()).toBe("Item 1");
-    });
-
-    it("should show divider when item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 1);
-      fixture.detectChanges();
-
-      const divider = fixture.nativeElement.querySelector("mat-divider");
-      expect(divider).toBeTruthy();
-    });
-  });
+  // ── Layout ──────────────────────────────────────────────────────
 
   describe("layout", () => {
-    it("should have master panel", () => {
-      const masterPanel = fixture.nativeElement.querySelector("aside");
-      expect(masterPanel).toBeTruthy();
+    it("should have a list panel", () => {
+      expect(el.querySelector(".mdv-list-panel")).toBeTruthy();
     });
 
-    it("should have detail panel", () => {
-      const detailPanel = fixture.nativeElement.querySelector("main");
-      expect(detailPanel).toBeTruthy();
+    it("should have a detail panel", () => {
+      expect(el.querySelector(".mdv-detail-panel")).toBeTruthy();
     });
 
-    it("should have grid layout container", () => {
-      // The host element itself is the grid container
-      const host = fixture.nativeElement;
-      expect(host).toBeTruthy();
+    it("should display the title", () => {
+      const title = el.querySelector(".mdv-title");
+      expect(title?.textContent?.trim()).toBe("Team");
+    });
+
+    it("should update the title", () => {
+      host.title.set("Staff");
+      fixture.detectChanges();
+      expect(el.querySelector(".mdv-title")?.textContent?.trim()).toBe("Staff");
     });
   });
 
-  describe("getItemContext", () => {
-    it("should return context with the item as $implicit", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.detectChanges();
+  // ── Placeholder ─────────────────────────────────────────────────
 
-      const ctx = component.getItemContext(mockItems[0]);
-      expect(ctx.$implicit).toBe(mockItems[0]);
-      expect(ctx.item).toBe(mockItems[0]);
+  describe("placeholder", () => {
+    it("should show placeholder when no item is selected", () => {
+      const placeholder = el.querySelector(".mdv-placeholder p");
+      expect(placeholder).toBeTruthy();
+      expect(placeholder?.textContent?.trim()).toBe("Select a person");
     });
 
-    it("should set selected=true when the item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 1);
-      fixture.detectChanges();
-
-      const ctx = component.getItemContext(mockItems[0]);
-      expect(ctx.selected).toBe(true);
-    });
-
-    it("should set selected=false when the item is not selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 2);
-      fixture.detectChanges();
-
-      const ctx = component.getItemContext(mockItems[0]);
-      expect(ctx.selected).toBe(false);
+    it("should hide placeholder after selection", () => {
+      // Programmatically select (CDK virtual scroll doesn't render in jsdom)
+      const mdv = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof UIMasterDetailView,
+      ).componentInstance as UIMasterDetailView<Person>;
+      mdv.selectionModel.select(PEOPLE[0]);
+      detectAndFlush();
+      expect(el.querySelector(".mdv-placeholder")).toBeNull();
     });
   });
 
-  describe("detailContext", () => {
-    it("should return null when no item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", null);
-      fixture.detectChanges();
+  // ── Table integration ───────────────────────────────────────────
 
-      expect(component.detailContext()).toBeNull();
+  describe("table", () => {
+    it("should render a table-view", () => {
+      expect(el.querySelector("ui-table-view")).toBeTruthy();
     });
 
-    it("should return context with detail data when item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 2);
-      fixture.componentRef.setInput("detailData", { extra: "info" });
-      fixture.detectChanges();
-
-      const ctx = component.detailContext();
-      expect(ctx).toBeTruthy();
-      expect(ctx!.$implicit).toEqual({ extra: "info" });
-      expect(ctx!.data).toEqual({ extra: "info" });
-      expect(ctx!.item).toEqual(mockItems[1]);
+    it("should discover projected columns", () => {
+      const mdv = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof UIMasterDetailView,
+      );
+      expect(mdv).toBeTruthy();
+      const mdvInstance = mdv.componentInstance as UIMasterDetailView<Person>;
+      expect(mdvInstance.columns().length).toBe(2);
     });
 
-    it("should provide null data when detailData is not set", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 1);
-      fixture.detectChanges();
-
-      const ctx = component.detailContext();
-      expect(ctx).toBeTruthy();
-      expect(ctx!.data).toBeNull();
-    });
-  });
-
-  describe("filterContext", () => {
-    it("should provide items in the context", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.detectChanges();
-
-      const ctx = component.filterContext();
-      expect(ctx.$implicit).toEqual(mockItems);
-      expect(ctx.items).toEqual(mockItems);
+    it("should forward columns to the table-view", () => {
+      const tv = fixture.debugElement.query(
+        (de) => de.nativeElement.localName === "ui-table-view",
+      );
+      expect(tv).toBeTruthy();
+      const tvInstance = tv.componentInstance;
+      expect(tvInstance.externalColumns().length).toBe(2);
+      expect(tvInstance.resolvedColumns().length).toBe(2);
     });
 
-    it("should return empty array when no items", () => {
-      const ctx = component.filterContext();
-      expect(ctx.$implicit).toEqual([]);
-      expect(ctx.items).toEqual([]);
+    it("should provide data to the table-view datasource", () => {
+      // CDK virtual scrolling doesn't render rows in jsdom (no viewport size).
+      // Instead verify the datasource exposes the correct number of items.
+      const tv = fixture.debugElement.query(
+        (de) => de.nativeElement.localName === "ui-table-view",
+      );
+      const ds: DatasourceAdapter<Person> = tv.componentInstance.datasource();
+      expect(ds.totalItems()).toBe(3);
+      expect(ds.visibleWindow().length).toBe(3);
+    });
+
+    it("should not show pagination", () => {
+      expect(el.querySelector("ui-table-footer")).toBeNull();
+    });
+
+    it("should not show row index column", () => {
+      expect(el.querySelector(".tv-row-index")).toBeNull();
     });
   });
 
-  describe("actionsContext", () => {
-    it("should provide null when no item is selected", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.detectChanges();
+  // ── Selection & detail ──────────────────────────────────────────
 
-      const ctx = component.actionsContext();
-      expect(ctx.$implicit).toBeNull();
-      expect(ctx.selectedItem).toBeNull();
+  describe("selection", () => {
+    it("should show detail template after selecting an item", () => {
+      const mdv = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof UIMasterDetailView,
+      ).componentInstance as UIMasterDetailView<Person>;
+      mdv.selectionModel.select(PEOPLE[0]);
+      detectAndFlush();
+
+      const detail = el.querySelector(".test-detail");
+      expect(detail).toBeTruthy();
+      expect(el.querySelector(".test-detail-name")?.textContent?.trim()).toBe(
+        "Alice",
+      );
+      expect(el.querySelector(".test-detail-email")?.textContent?.trim()).toBe(
+        "alice@example.com",
+      );
     });
 
-    it("should provide the selected item", () => {
-      fixture.componentRef.setInput("items", mockItems);
-      fixture.componentRef.setInput("selectedItemId", 3);
-      fixture.detectChanges();
+    it("should emit selectedChange with the selected item", () => {
+      const mdv = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof UIMasterDetailView,
+      ).componentInstance as UIMasterDetailView<Person>;
+      mdv.selectionModel.select(PEOPLE[0]);
+      detectAndFlush();
 
-      const ctx = component.actionsContext();
-      expect(ctx.$implicit).toEqual(mockItems[2]);
-      expect(ctx.selectedItem).toEqual(mockItems[2]);
+      expect(host.selected()?.name).toBe("Alice");
+    });
+
+    it("should update detail when different item is selected", () => {
+      const mdv = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof UIMasterDetailView,
+      ).componentInstance as UIMasterDetailView<Person>;
+      mdv.selectionModel.select(PEOPLE[1]);
+      detectAndFlush();
+
+      expect(el.querySelector(".test-detail-name")?.textContent?.trim()).toBe(
+        "Bob",
+      );
     });
   });
 
-  describe("detailData input", () => {
-    it("should default to null", () => {
-      expect(component.detailData()).toBeNull();
+  // ── Filter ──────────────────────────────────────────────────────
+
+  describe("filter", () => {
+    it("should not show filter by default", () => {
+      expect(el.querySelector(".mdv-filter-bar")).toBeNull();
     });
 
-    it("should accept arbitrary data", () => {
-      fixture.componentRef.setInput("detailData", { name: "test" });
+    it("should show filter bar when showFilter is true", () => {
+      host.showFilter.set(true);
       fixture.detectChanges();
-      expect(component.detailData()).toEqual({ name: "test" });
+      expect(el.querySelector(".mdv-filter-bar")).toBeTruthy();
+    });
+
+    it("should show filter content when expanded", () => {
+      host.showFilter.set(true);
+      fixture.detectChanges();
+      expect(el.querySelector(".test-filter-content")).toBeTruthy();
+    });
+
+    it("should hide filter content when collapsed", () => {
+      host.showFilter.set(true);
+      host.filterExpanded.set(false);
+      fixture.detectChanges();
+      expect(el.querySelector(".test-filter-content")).toBeNull();
+    });
+
+    it("should toggle filter on button click", () => {
+      host.showFilter.set(true);
+      fixture.detectChanges();
+
+      const toggle = el.querySelector(
+        ".mdv-filter-toggle",
+      ) as HTMLButtonElement;
+      expect(el.querySelector(".test-filter-content")).toBeTruthy();
+
+      toggle.click();
+      fixture.detectChanges();
+      expect(el.querySelector(".test-filter-content")).toBeNull();
+
+      toggle.click();
+      fixture.detectChanges();
+      expect(el.querySelector(".test-filter-content")).toBeTruthy();
+    });
+
+    it("should have correct aria-expanded attribute", () => {
+      host.showFilter.set(true);
+      fixture.detectChanges();
+
+      const toggle = el.querySelector(".mdv-filter-toggle");
+      expect(toggle?.getAttribute("aria-expanded")).toBe("true");
+
+      (toggle as HTMLButtonElement)?.click();
+      fixture.detectChanges();
+      expect(toggle?.getAttribute("aria-expanded")).toBe("false");
+    });
+  });
+
+  // ── Defaults ────────────────────────────────────────────────────
+
+  describe("defaults", () => {
+    it('should default title to "Items"', () => {
+      // Create a bare instance
+      const bare = TestBed.createComponent(UIMasterDetailView);
+      bare.detectChanges();
+      expect(bare.componentInstance.title()).toBe("Items");
+    });
+
+    it("should default showFilter to false", () => {
+      const bare = TestBed.createComponent(UIMasterDetailView);
+      bare.detectChanges();
+      expect(bare.componentInstance.showFilter()).toBe(false);
+    });
+
+    it("should default filterExpanded to true", () => {
+      const bare = TestBed.createComponent(UIMasterDetailView);
+      bare.detectChanges();
+      expect(bare.componentInstance.filterExpanded()).toBe(true);
+    });
+  });
+
+  // ── Datasource input ───────────────────────────────────────────
+
+  describe("datasource input", () => {
+    it("should accept an explicit datasource adapter", () => {
+      @Component({
+        standalone: true,
+        imports: [UIMasterDetailView, UITextColumn],
+        template: `
+          <ui-master-detail-view [datasource]="ds">
+            <ui-text-column key="name" headerText="Name" />
+            <ng-template #detail let-object>
+              <span class="ds-detail">{{ object.name }}</span>
+            </ng-template>
+          </ui-master-detail-view>
+        `,
+      })
+      class DsHost {
+        public readonly ds = new DatasourceAdapter<Person>(
+          new ArrayDatasource(PEOPLE),
+          100,
+        );
+      }
+
+      const dsFixture = TestBed.createComponent(DsHost);
+      dsFixture.detectChanges();
+      TestBed.flushEffects();
+      dsFixture.detectChanges();
+      // Check via the datasource API (CDK virtual scroll has no viewport in jsdom)
+      const tv = dsFixture.debugElement.query(
+        (de) => de.nativeElement.localName === "ui-table-view",
+      );
+      const ds: DatasourceAdapter<Person> = tv.componentInstance.datasource();
+      expect(ds.totalItems()).toBe(3);
+      expect(ds.visibleWindow().length).toBe(3);
     });
   });
 });
