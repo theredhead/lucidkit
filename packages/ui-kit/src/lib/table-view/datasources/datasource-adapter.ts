@@ -25,7 +25,7 @@ export class DatasourceAdapter<T> {
   );
 
   constructor(
-    private datasource: IDatasource<T>,
+    public readonly datasource: IDatasource<T>,
     initialPageSize: number = INITIAL_PAGE_SIZE,
   ) {
     if (!Number.isFinite(initialPageSize) || initialPageSize <= 0) {

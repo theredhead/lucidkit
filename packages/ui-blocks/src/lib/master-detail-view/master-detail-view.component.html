@@ -1,7 +1,7 @@
 <!-- Hidden slot: instantiates projected columns so contentChildren can discover them. -->
 <div class="mdv-columns-slot"><ng-content /></div>
 
-@if (showFilter() && filterTemplate(); as filterTpl) {
+@if (resolvedShowFilter()) {
   <div class="mdv-filter-bar">
     <button
       class="mdv-filter-toggle"
@@ -18,7 +18,21 @@
     </button>
     @if (!filterCollapsed()) {
       <div class="mdv-filter-content" id="mdv-filter-content">
-        <ng-container *ngTemplateOutlet="filterTpl" />
+        @if (filterTemplate(); as filterTpl) {
+          <ng-container *ngTemplateOutlet="filterTpl" />
+        } @else {
+          @if (resolvedFilterFields(); as fields) {
+            @if (fields.length > 0) {
+              <ui-filter
+                [fields]="fields"
+                [data]="resolvedFilterData()"
+                [allowJunction]="true"
+                [(value)]="filterDescriptor"
+                (predicateChange)="onFilterPredicateChange($event)"
+              />
+            }
+          }
+        }
       </div>
     }
   </div>

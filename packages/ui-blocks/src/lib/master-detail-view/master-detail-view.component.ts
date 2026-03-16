@@ -6,21 +6,29 @@ import {
   contentChildren,
   effect,
   input,
+  model,
   output,
   signal,
   TemplateRef,
   untracked,
+  type Predicate,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import {
   ArrayDatasource,
   DatasourceAdapter,
+  FilterableArrayDatasource,
   SelectionModel,
+  UIFilter,
   UIIcon,
   UIIcons,
   UITableView,
   UITableViewColumn,
   UITreeView,
+  inferFilterFields,
+  type ColumnMeta,
+  type FilterDescriptor,
+  type FilterFieldDefinition,
   type ITreeDatasource,
   type TreeNode,
   type TreeNodeContext,
@@ -65,6 +73,16 @@ export interface MasterDetailContext<T> {
  *
  * ### With filter
  * ```html
+ * <!-- Auto-inferred fields from columns + data types -->
+ * <ui-master-detail-view [data]="items" [showFilter]="true">
+ *   <ui-text-column key="name" headerText="Name" />
+ *   <ui-text-column key="email" headerText="Email" />
+ *   <ng-template #detail let-object>…</ng-template>
+ * </ui-master-detail-view>
+ * ```
+ *
+ * ### With custom filter template (override)
+ * ```html
  * <ui-master-detail-view [data]="items" [showFilter]="true">
  *   <ng-template #filter>
  *     <ui-filter [fields]="fields" [(value)]="descriptor"
@@ -77,7 +95,7 @@ export interface MasterDetailContext<T> {
 @Component({
   selector: "ui-master-detail-view",
   standalone: true,
-  imports: [UITableView, UITreeView, NgTemplateOutlet, UIIcon],
+  imports: [UITableView, UITreeView, UIFilter, NgTemplateOutlet, UIIcon],
   templateUrl: "./master-detail-view.component.html",
   styleUrl: "./master-detail-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -133,18 +151,58 @@ export class UIMasterDetailView<T = unknown> {
 
   /**
    * Whether the filter section is visible.
-   * When `true` a collapsible area is shown above the list.
-   * A `#filter` content template should be projected to fill it.
+   *
+   * - `true` — always show the filter.
+   * - `false` — never show the filter.
+   * - `undefined` (default) — auto-detect: show the filter when the
+   *   resolved datasource is a {@link FilterableArrayDatasource}.
+   *
+   * When shown without a projected `#filter` template, the component
+   * embeds a `<ui-filter>` internally using auto-inferred field
+   * definitions.
    */
-  public readonly showFilter = input<boolean>(false);
+  public readonly showFilter = input<boolean | undefined>(undefined);
 
   /** Whether the filter section starts expanded. */
   public readonly filterExpanded = input<boolean>(true);
+
+  /**
+   * Explicit filter field definitions.
+   *
+   * When provided these override the auto-inferred fields.
+   * Only relevant when no `#filter` template is projected.
+   */
+  public readonly filterFields = input<FilterFieldDefinition<T>[] | undefined>(
+    undefined,
+  );
 
   // ── Outputs ───────────────────────────────────────────────────────
 
   /** Emits whenever the selection changes. Carries the selected item or `undefined`. */
   public readonly selectedChange = output<T | undefined>();
+
+  /**
+   * Emits the compiled `Predicate<T>` every time the filter rules
+   * change. Emits `undefined` when no valid rules remain.
+   *
+   * For {@link FilterableArrayDatasource} instances the predicate is
+   * applied automatically — this output is for consumers who use a
+   * custom datasource and need to handle filtering manually.
+   */
+  public readonly predicateChange = output<Predicate<T> | undefined>();
+
+  // ── Models ────────────────────────────────────────────────────────
+
+  /**
+   * The filter descriptor state (two-way bindable).
+   *
+   * Provides full read/write access to the filter's rule set and
+   * junction mode. Defaults to an empty AND descriptor.
+   */
+  public readonly filterDescriptor = model<FilterDescriptor<T>>({
+    junction: "and",
+    rules: [],
+  });
 
   // ── Content queries ───────────────────────────────────────────────
 
@@ -202,7 +260,9 @@ export class UIMasterDetailView<T = unknown> {
 
   /**
    * The resolved datasource: explicit `datasource` input takes
-   * precedence, otherwise an internal adapter wraps the `data` array.
+   * precedence, otherwise an internal adapter wraps the `data` array
+   * using a {@link FilterableArrayDatasource} (so built-in filter
+   * support is available automatically).
    *
    * The adapter construction is wrapped in `untracked` because
    * {@link DatasourceAdapter}'s constructor writes to signals,
@@ -216,10 +276,81 @@ export class UIMasterDetailView<T = unknown> {
     return untracked(
       () =>
         new DatasourceAdapter<T>(
-          new ArrayDatasource<T>([...(data as T[])]),
+          new FilterableArrayDatasource<T>([...(data as T[])]),
           100,
         ),
     );
+  });
+
+  /**
+   * Whether the filter section should be displayed.
+   *
+   * - Explicit `showFilter` input wins when not `undefined`.
+   * - Otherwise auto-detects: `true` when the underlying raw
+   *   datasource is a {@link FilterableArrayDatasource}.
+   * @internal
+   */
+  protected readonly resolvedShowFilter = computed<boolean>(() => {
+    const explicit = this.showFilter();
+    if (explicit !== undefined) return explicit;
+
+    // Auto-detect: unwrap the DatasourceAdapter to check the raw datasource
+    const adapter = this.resolvedDatasource();
+    return adapter.datasource instanceof FilterableArrayDatasource;
+  });
+
+  /**
+   * The filter field definitions used by the embedded `<ui-filter>`.
+   *
+   * Priority: explicit `filterFields` input → inferred from projected
+   * columns and the first data row.
+   * @internal
+   */
+  protected readonly resolvedFilterFields = computed<
+    FilterFieldDefinition<T>[]
+  >(() => {
+    const explicit = this.filterFields();
+    if (explicit) return explicit;
+
+    // Derive column metadata from projected UITableViewColumn instances
+    const cols = this.columns();
+    const columnMeta: ColumnMeta[] = cols.map((c) => ({
+      key: c.key(),
+      headerText: c.headerText(),
+    }));
+
+    // Get a sample row from the datasource to sniff types
+    const adapter = this.resolvedDatasource();
+    const count = adapter.totalItems();
+    if (count === 0) return [];
+
+    const sample = adapter.datasource.getObjectAtRowIndex(0);
+    if (!sample || sample instanceof Promise) return [];
+
+    return inferFilterFields(
+      sample as Record<string, unknown>,
+      columnMeta.length > 0 ? columnMeta : undefined,
+    ) as FilterFieldDefinition<T>[];
+  });
+
+  /**
+   * The raw data array for the embedded filter (used to derive
+   * distinct values for autocomplete / select).
+   * @internal
+   */
+  protected readonly resolvedFilterData = computed<readonly T[]>(() => {
+    const adapter = this.resolvedDatasource();
+    const raw = adapter.datasource;
+    // For FilterableArrayDatasource, access the full unfiltered data
+    // For plain ArrayDatasource, gather all rows
+    const count = raw.getNumberOfItems();
+    if (typeof count !== "number" || count === 0 || count >= 1000) return [];
+    const rows: T[] = [];
+    for (let i = 0; i < count; i++) {
+      const row = raw.getObjectAtRowIndex(i);
+      if (!(row instanceof Promise)) rows.push(row);
+    }
+    return rows;
   });
 
   // ── Public fields ───────────────────────────────────────────────
@@ -257,6 +388,28 @@ export class UIMasterDetailView<T = unknown> {
       const item = this.selectedItem();
       untracked(() => this.selectedChange.emit(item));
     });
+  }
+
+  // ── Public methods ────────────────────────────────────────────────
+
+  /**
+   * Called by the embedded `<ui-filter>` when the predicate changes.
+   *
+   * - For {@link FilterableArrayDatasource} the predicate is applied
+   *   automatically and the adapter is refreshed.
+   * - Always emits via {@link predicateChange} so consumers with
+   *   custom datasources can react.
+   */
+  public onFilterPredicateChange(predicate: Predicate<T> | undefined): void {
+    this.predicateChange.emit(predicate);
+
+    const adapter = this.resolvedDatasource();
+    const raw = adapter.datasource;
+    if (raw instanceof FilterableArrayDatasource) {
+      raw.applyPredicate(predicate ?? null);
+      adapter.pageIndex.set(0);
+      adapter.totalItems.set(raw.getNumberOfItems() as number);
+    }
   }
 
   // ── Protected methods ─────────────────────────────────────────────
