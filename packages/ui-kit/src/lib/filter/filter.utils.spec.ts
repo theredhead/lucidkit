@@ -1,6 +1,7 @@
 import type { Predicate } from "@angular/core";
 
 import type { FilterDescriptor, FilterFieldDefinition } from "./filter.types";
+import { ANY_FIELD_KEY } from "./filter.types";
 import { toFilterExpression, toPredicate } from "./filter.utils";
 
 interface TestRow {
@@ -89,6 +90,95 @@ describe("filter.utils", () => {
         expect(buildPred("isNotEmpty", "")(row)).toBe(true);
         const empty = { ...row, name: "" };
         expect(buildPred("isNotEmpty", "")(empty)).toBe(false);
+      });
+    });
+
+    // ── Any field ────────────────────────────────────────────────────
+
+    describe("Any field (__any__)", () => {
+      const row: TestRow = { name: "Alice", age: 30, joined: "2024-01-15" };
+
+      function buildAnyPred(
+        operator: string,
+        value: string,
+      ): Predicate<TestRow> {
+        const d: FilterDescriptor<TestRow> = {
+          junction: "and",
+          rules: [
+            {
+              id: 1,
+              field: ANY_FIELD_KEY as any,
+              operator: operator as any,
+              value,
+            },
+          ],
+        };
+        return toPredicate(d, fields)!;
+      }
+
+      it("contains should match when any field value includes the term", () => {
+        expect(buildAnyPred("contains", "ali")(row)).toBe(true);
+        expect(buildAnyPred("contains", "30")(row)).toBe(true);
+        expect(buildAnyPred("contains", "2024")(row)).toBe(true);
+      });
+
+      it("contains should not match when no field value includes the term", () => {
+        expect(buildAnyPred("contains", "xyz")(row)).toBe(false);
+      });
+
+      it("equals should match when any field value equals the term", () => {
+        expect(buildAnyPred("equals", "Alice")(row)).toBe(true);
+        expect(buildAnyPred("equals", "30")(row)).toBe(true);
+      });
+
+      it("equals should not match partial values", () => {
+        expect(buildAnyPred("equals", "Ali")(row)).toBe(false);
+      });
+
+      it("startsWith should match when any field value starts with the term", () => {
+        expect(buildAnyPred("startsWith", "Ali")(row)).toBe(true);
+        expect(buildAnyPred("startsWith", "2024")(row)).toBe(true);
+      });
+
+      it("isEmpty should match when any field value is empty", () => {
+        const emptyRow: TestRow = { name: "", age: 0, joined: "" };
+        expect(buildAnyPred("isEmpty", "")(emptyRow)).toBe(true);
+        expect(buildAnyPred("isEmpty", "")(row)).toBe(false);
+      });
+
+      it("should work with AND junction alongside regular rules", () => {
+        const d: FilterDescriptor<TestRow> = {
+          junction: "and",
+          rules: [
+            {
+              id: 1,
+              field: ANY_FIELD_KEY as any,
+              operator: "contains" as any,
+              value: "Alice",
+            },
+            { id: 2, field: "age", operator: "greaterThan" as any, value: "20" },
+          ],
+        };
+        const pred = toPredicate(d, fields)!;
+        expect(pred(row)).toBe(true);
+        expect(pred({ name: "Alice", age: 10, joined: "" })).toBe(false);
+      });
+
+      it("should work with OR junction", () => {
+        const d: FilterDescriptor<TestRow> = {
+          junction: "or",
+          rules: [
+            {
+              id: 1,
+              field: ANY_FIELD_KEY as any,
+              operator: "contains" as any,
+              value: "xyz",
+            },
+            { id: 2, field: "name", operator: "equals" as any, value: "Alice" },
+          ],
+        };
+        const pred = toPredicate(d, fields)!;
+        expect(pred(row)).toBe(true);
       });
     });
 
@@ -357,6 +447,58 @@ describe("filter.utils", () => {
         rules: [{ id: 1, field: "unknown", operator: "equals", value: "x" }],
       };
       expect(toFilterExpression(descriptor, fields)).toEqual([]);
+    });
+
+    it("AND with Any field rule should produce a row-level entry for it", () => {
+      const descriptor: FilterDescriptor<TestRow> = {
+        junction: "and",
+        rules: [
+          {
+            id: 1,
+            field: ANY_FIELD_KEY as any,
+            operator: "contains" as any,
+            value: "Alice",
+          },
+          { id: 2, field: "age", operator: "greaterThan" as any, value: "20" },
+        ],
+      };
+
+      const expr = toFilterExpression(descriptor, fields);
+      // Any-field rule becomes row-level, age rule stays property-level
+      expect(expr.length).toBe(2);
+      const anyEntry = expr.find((e) => !("property" in e));
+      const propEntry = expr.find((e) => "property" in e);
+      expect(anyEntry).toBeDefined();
+      expect(propEntry).toBeDefined();
+    });
+
+    it("OR with Any field rule should filter correctly", () => {
+      const rows: TestRow[] = [
+        { name: "Alice", age: 30, joined: "2024-01-01" },
+        { name: "Bob", age: 25, joined: "2024-01-01" },
+      ];
+
+      const descriptor: FilterDescriptor<TestRow> = {
+        junction: "or",
+        rules: [
+          {
+            id: 1,
+            field: ANY_FIELD_KEY as any,
+            operator: "contains" as any,
+            value: "Alice",
+          },
+        ],
+      };
+
+      const expr = toFilterExpression(descriptor, fields);
+      expect(expr.length).toBe(1);
+      const entry = expr[0];
+      if ("predicate" in entry && !("property" in entry)) {
+        expect(entry.predicate(rows[0])).toBe(true);
+        expect(entry.predicate(rows[1])).toBe(false);
+      } else {
+        throw new Error("Expected row-level entry");
+      }
     });
   });
 

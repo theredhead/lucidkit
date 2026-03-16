@@ -20,7 +20,7 @@ import type {
   FilterOperator,
   FilterRule,
 } from "./filter.types";
-import { operatorsForType } from "./filter.types";
+import { ANY_FIELD_KEY, operatorsForType } from "./filter.types";
 import { toPredicate } from "./filter.utils";
 
 const JUNCTION_OPTIONS: SelectOption[] = [
@@ -116,6 +116,22 @@ export class UIFilter<T = any> {
   protected readonly rules = computed(() => this.value().rules);
 
   /**
+   * The field list augmented with an "Any field" entry at the top.
+   *
+   * This is forwarded to child {@link UIFilterRow} instances so
+   * the user can choose to search across all fields at once.
+   * @internal
+   */
+  protected readonly augmentedFields = computed<FilterFieldDefinition[]>(() => {
+    const anyField: FilterFieldDefinition = {
+      key: ANY_FIELD_KEY,
+      label: "Any field",
+      type: "string",
+    };
+    return [anyField, ...this.fields()];
+  });
+
+  /**
    * Map of field key → sorted distinct string values.
    *
    * Only populated when {@link data} has fewer than 1 000 rows.
@@ -147,26 +163,15 @@ export class UIFilter<T = any> {
 
   // ── Actions ─────────────────────────────────────────────────────────
 
-  /** Adds a new empty rule using the first available field. */
+  /** Adds a new empty rule defaulting to the "Any field" option. */
   addRule(): void {
     const current = this.value();
-    const defaultField = this.fields()[0];
-    const ops = defaultField ? operatorsForType(defaultField.type) : [];
     const maxId = current.rules.reduce((m, r) => Math.max(m, r.id), 0);
-
-    // Default to 'equals' when distinct values exist (select / autocomplete mode)
-    const distinct = defaultField
-      ? this.distinctValuesMap().get(defaultField.key)
-      : undefined;
-    const defaultOp =
-      defaultField?.type === "string" && distinct && distinct.length > 0
-        ? "equals"
-        : (ops[0]?.value ?? "equals");
 
     const rule: FilterRule = {
       id: maxId + 1,
-      field: defaultField?.key ?? "",
-      operator: defaultOp as FilterOperator,
+      field: ANY_FIELD_KEY,
+      operator: "contains",
       value: "",
     };
 

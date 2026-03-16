@@ -2,6 +2,7 @@ export { UIFilter } from "./filter.component";
 export {
   type FilterFieldDefinition,
   type FilterFieldType,
+  ANY_FIELD_KEY,
   type StringOperator,
   type NumberOperator,
   type DateOperator,
