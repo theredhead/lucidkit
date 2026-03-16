@@ -319,13 +319,32 @@ export class UIMasterDetailView<T = unknown> {
       headerText: c.headerText(),
     }));
 
-    // Get a sample row from the datasource to sniff types
+    // Get a sample row from the *unfiltered* datasource to sniff
+    // types.  We must NOT use adapter.totalItems() or
+    // raw.getNumberOfItems() — those reflect the *filtered* count,
+    // which drops to 0 when no rows match the current predicate and
+    // would make the filter fields (and the filter component)
+    // disappear.
     const adapter = this.resolvedDatasource();
-    const count = adapter.totalItems();
-    if (count === 0) return [];
+    const raw = adapter.datasource;
 
-    const sample = adapter.datasource.getObjectAtRowIndex(0);
-    if (!sample || sample instanceof Promise) return [];
+    // Prefer the full unfiltered list when available
+    const allRows =
+      raw instanceof FilterableArrayDatasource ? raw.allRows : undefined;
+
+    let sample: T | undefined;
+    if (allRows && allRows.length > 0) {
+      sample = allRows[0];
+    } else {
+      // Fallback for non-filterable datasources
+      const count = raw.getNumberOfItems();
+      if (typeof count !== "number" || count === 0) return [];
+      const result = raw.getObjectAtRowIndex(0);
+      if (!result || result instanceof Promise) return [];
+      sample = result;
+    }
+
+    if (!sample) return [];
 
     return inferFilterFields(
       sample as Record<string, unknown>,
@@ -341,8 +360,16 @@ export class UIMasterDetailView<T = unknown> {
   protected readonly resolvedFilterData = computed<readonly T[]>(() => {
     const adapter = this.resolvedDatasource();
     const raw = adapter.datasource;
-    // For FilterableArrayDatasource, access the full unfiltered data
-    // For plain ArrayDatasource, gather all rows
+
+    // Use the full unfiltered dataset when available so that distinct
+    // value lists and autocomplete options don't shrink as the user
+    // narrows the filter.
+    if (raw instanceof FilterableArrayDatasource) {
+      const all = raw.allRows;
+      return all.length < 1000 ? all : [];
+    }
+
+    // Fallback for non-filterable datasources: gather visible rows
     const count = raw.getNumberOfItems();
     if (typeof count !== "number" || count === 0 || count >= 1000) return [];
     const rows: T[] = [];

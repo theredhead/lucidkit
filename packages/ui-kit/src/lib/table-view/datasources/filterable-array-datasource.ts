@@ -25,6 +25,17 @@ export class FilterableArrayDatasource<T> extends ArrayDatasource<T> {
   /** The currently visible (filtered) rows. */
   private _filteredRows: readonly T[];
 
+  /**
+   * The full, unfiltered dataset.
+   *
+   * Useful when consumers need to inspect the original data while a
+   * filter is active (e.g. to infer field types from a sample row
+   * without the result disappearing when the filter yields no matches).
+   */
+  public get allRows(): readonly T[] {
+    return this._allRows;
+  }
+
   constructor(data: T[]) {
     super(data);
     this._allRows = [...data];
