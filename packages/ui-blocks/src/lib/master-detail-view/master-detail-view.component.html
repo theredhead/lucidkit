@@ -1,48 +1,57 @@
-<aside>
-    <header>
-        <h2>{{ masterTitle() }}</h2>
-    </header>
-    @if (filterTemplate(); as tpl) {
-    <div class="filter">
-        <ng-container *ngTemplateOutlet="tpl; context: filterContext()"></ng-container>
+<!-- Hidden slot: instantiates projected columns so contentChildren can discover them. -->
+<div class="mdv-columns-slot"><ng-content /></div>
+
+<aside class="mdv-list-panel">
+  <header class="mdv-header">
+    <h2 class="mdv-title">{{ title() }}</h2>
+  </header>
+
+  @if (showFilter() && filterTemplate(); as filterTpl) {
+    <div class="mdv-filter-bar">
+      <button
+        class="mdv-filter-toggle"
+        type="button"
+        (click)="toggleFilter()"
+        [attr.aria-expanded]="!filterCollapsed()"
+        aria-controls="mdv-filter-content"
+      >
+        <ui-icon
+          [svg]="filterCollapsed() ? chevronRight : chevronDown"
+          [size]="14"
+        />
+        <span>Filter</span>
+      </button>
+      @if (!filterCollapsed()) {
+        <div class="mdv-filter-content" id="mdv-filter-content">
+          <ng-container *ngTemplateOutlet="filterTpl" />
+        </div>
+      }
     </div>
-    }
-    <mat-nav-list>
-        @for (item of items(); track item.id) {
-        <mat-list-item [activated]="isItemSelected(item.id)" (click)="selectItem.emit(item)">
-            @if (itemTemplate()) {
-            <ng-container *ngTemplateOutlet="itemTemplate()!; context: getItemContext(item)"></ng-container>
-            } @else {
-            <span matListItemTitle>{{ item.label }}</span>
-            }
-        </mat-list-item>
-        } @empty {
-        <p class="empty">No items available</p>
-        }
-    </mat-nav-list>
-    @if (actionsTemplate(); as tpl) {
-    <footer>
-        <ng-container *ngTemplateOutlet="tpl; context: actionsContext()"></ng-container>
-    </footer>
-    }
+  }
+
+  <div class="mdv-table-wrapper">
+    <ui-table-view
+      [datasource]="resolvedDatasource()"
+      [externalColumns]="columns()"
+      [showBuiltInPaginator]="false"
+      [showRowIndexIndicator]="false"
+      selectionMode="single"
+      [rowClickSelect]="true"
+      [selectionModel]="selectionModel"
+    />
+  </div>
 </aside>
 
-<main>
-    @if (selectedItem(); as item) {
-    <header>
-        <h2>{{ item.label }}</h2>
-    </header>
-    <mat-divider></mat-divider>
-    <section>
-        @if (detailTemplate(); as tpl) {
-        <ng-container *ngTemplateOutlet="tpl; context: detailContext()"></ng-container>
-        } @else {
-        <ng-content></ng-content>
-        }
-    </section>
-    } @else {
-    <div class="placeholder">
-        <p>{{ detailPlaceholderText() }}</p>
-    </div>
+<main class="mdv-detail-panel">
+  @if (detailContext(); as ctx) {
+    @if (detailTemplate(); as tpl) {
+      <section class="mdv-detail-content">
+        <ng-container *ngTemplateOutlet="tpl; context: ctx" />
+      </section>
     }
+  } @else {
+    <div class="mdv-placeholder">
+      <p>{{ placeholder() }}</p>
+    </div>
+  }
 </main>

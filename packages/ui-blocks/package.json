@@ -6,7 +6,8 @@
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
-    "@angular/material": "^21.0.0"
+    "@theredhead/ui-kit": "0.0.1",
+    "@theredhead/ui-theme": "0.0.1"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json",

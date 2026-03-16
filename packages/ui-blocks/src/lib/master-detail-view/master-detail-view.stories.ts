@@ -1,364 +1,290 @@
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-
-import type {
-  Meta,
-  StoryObj,
-} from '@storybook/angular';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from "@angular/core";
+import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import {
-  type MasterItem,
-  UiMasterDetailViewComponent,
-} from './master-detail-view.component';
+  ArrayDatasource,
+  DatasourceAdapter,
+  FilterableArrayDatasource,
+  UIFilter,
+  UITextColumn,
+  type FilterFieldDefinition,
+  type FilterDescriptor,
+} from "@theredhead/ui-kit";
 
-const sampleItems: MasterItem[] = [
-    { id: 1, label: 'Document A', description: 'First document description', status: 'active' },
-    { id: 2, label: 'Document B', description: 'Second document with more details', status: 'pending' },
-    { id: 3, label: 'Document C', description: 'Third document info', status: 'completed' },
-    { id: 4, label: 'Document D', description: 'Fourth item in the list', status: 'active' },
-    { id: 5, label: 'Document E', description: 'Fifth and final document', status: 'archived' },
+import { UIMasterDetailView } from "./master-detail-view.component";
+
+// ── Sample data ──────────────────────────────────────────────────────
+
+interface Employee {
+  name: string;
+  email: string;
+  department: string;
+  role: string;
+  joined: string;
+}
+
+const EMPLOYEES: Employee[] = [
+  {
+    name: "Alice Johnson",
+    email: "alice@example.com",
+    department: "Engineering",
+    role: "Lead",
+    joined: "2021-03-15",
+  },
+  {
+    name: "Bob Smith",
+    email: "bob@example.com",
+    department: "Design",
+    role: "Senior",
+    joined: "2022-01-10",
+  },
+  {
+    name: "Charlie Lee",
+    email: "charlie@example.com",
+    department: "Engineering",
+    role: "Junior",
+    joined: "2023-06-01",
+  },
+  {
+    name: "Diana Patel",
+    email: "diana@example.com",
+    department: "Product",
+    role: "Manager",
+    joined: "2020-11-20",
+  },
+  {
+    name: "Ethan Kim",
+    email: "ethan@example.com",
+    department: "Engineering",
+    role: "Senior",
+    joined: "2022-08-14",
+  },
+  {
+    name: "Fiona Davis",
+    email: "fiona@example.com",
+    department: "Design",
+    role: "Lead",
+    joined: "2019-05-03",
+  },
+  {
+    name: "George Nguyen",
+    email: "george@example.com",
+    department: "Marketing",
+    role: "Junior",
+    joined: "2024-02-28",
+  },
+  {
+    name: "Hannah Brown",
+    email: "hannah@example.com",
+    department: "Product",
+    role: "Senior",
+    joined: "2021-09-12",
+  },
 ];
 
-// Mock detail data keyed by item ID
-const mockDetailData: Record<number, { content: string; metadata: { created: string; modified: string; author: string } }> = {
-    1: { content: 'Full content of Document A...', metadata: { created: '2025-01-01', modified: '2025-06-15', author: 'Alice' } },
-    2: { content: 'Full content of Document B with extended info...', metadata: { created: '2025-02-10', modified: '2025-07-20', author: 'Bob' } },
-    3: { content: 'Document C complete text here...', metadata: { created: '2025-03-05', modified: '2025-08-01', author: 'Charlie' } },
-    4: { content: 'Document D body content...', metadata: { created: '2025-04-12', modified: '2025-09-10', author: 'Diana' } },
-    5: { content: 'Document E archived content...', metadata: { created: '2025-05-20', modified: '2025-10-05', author: 'Eve' } },
-};
+// ── Demo: Default ────────────────────────────────────────────────────
 
-const meta: Meta<UiMasterDetailViewComponent> = {
-    title: '@Theredhead/UI Blocks/Master Detail View',
-    component: UiMasterDetailViewComponent,
-    tags: ['autodocs'],
-    argTypes: {
-        items: {
-            control: 'object',
-            description: 'Array of items to display in the master list',
-        },
-        selectedItemId: {
-            control: 'text',
-            description: 'ID of the currently selected item',
-        },
-        masterTitle: {
-            control: 'text',
-            description: 'Title displayed above the master list',
-        },
-        detailPlaceholderText: {
-            control: 'text',
-            description: 'Text shown when no item is selected',
-        },
-        detailData: {
-            control: 'object',
-            description: 'Optional detail data passed to the detail template',
-        },
+@Component({
+  selector: "ui-mdv-default-demo",
+  standalone: true,
+  imports: [UIMasterDetailView, UITextColumn],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 420px;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+    `,
+  ],
+  template: `
+    <ui-master-detail-view
+      [data]="employees"
+      title="Employees"
+      placeholder="Select an employee to view their profile"
+      (selectedChange)="selected.set($event)"
+    >
+      <ui-text-column key="name" headerText="Name" />
+      <ui-text-column key="department" headerText="Department" />
+      <ui-text-column key="role" headerText="Role" />
+
+      <ng-template #detail let-person>
+        <div class="detail">
+          <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
+          <dl
+            style="margin: 0; display: grid; grid-template-columns: 7rem 1fr; gap: 0.35rem 1rem; font-size: 0.88rem;"
+          >
+            <dt style="font-weight: 600">Email</dt>
+            <dd style="margin: 0">{{ person.email }}</dd>
+            <dt style="font-weight: 600">Department</dt>
+            <dd style="margin: 0">{{ person.department }}</dd>
+            <dt style="font-weight: 600">Role</dt>
+            <dd style="margin: 0">{{ person.role }}</dd>
+            <dt style="font-weight: 600">Joined</dt>
+            <dd style="margin: 0">{{ person.joined }}</dd>
+          </dl>
+        </div>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class DefaultDemo {
+  protected readonly employees = EMPLOYEES;
+  protected readonly selected = signal<Employee | undefined>(undefined);
+}
+
+// ── Demo: With Filter ────────────────────────────────────────────────
+
+const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
+  { key: "name", label: "Name", type: "string" },
+  { key: "department", label: "Department", type: "string" },
+  { key: "role", label: "Role", type: "string" },
+];
+
+@Component({
+  selector: "ui-mdv-filter-demo",
+  standalone: true,
+  imports: [UIMasterDetailView, UITextColumn, UIFilter],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 520px;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+    `,
+  ],
+  template: `
+    <ui-master-detail-view
+      [datasource]="adapter"
+      title="Employees"
+      [showFilter]="true"
+    >
+      <ng-template #filter>
+        <ui-filter
+          [fields]="fields"
+          [(value)]="filterDescriptor"
+          (predicateChange)="onPredicate($event)"
+        />
+      </ng-template>
+
+      <ui-text-column key="name" headerText="Name" />
+      <ui-text-column key="department" headerText="Department" />
+      <ui-text-column key="role" headerText="Role" />
+
+      <ng-template #detail let-person>
+        <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
+        <p style="margin: 0; font-size: 0.88rem; opacity: 0.7">
+          {{ person.department }} · {{ person.role }}
+        </p>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem">
+          {{ person.email }}
+        </p>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class FilterDemo {
+  protected readonly fields = FILTER_FIELDS;
+  protected readonly filterDescriptor = signal<FilterDescriptor<Employee>>({
+    junction: "and",
+    rules: [],
+  });
+
+  private readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
+  protected readonly adapter = new DatasourceAdapter(this.datasource, 100);
+
+  protected onPredicate(
+    predicate: ((item: Employee) => boolean) | undefined,
+  ): void {
+    this.datasource.applyPredicate(predicate ?? null);
+    // Reset to page 0 and refresh
+    this.adapter.pageIndex.set(0);
+    this.adapter.totalItems.set(this.datasource.getNumberOfItems() as number);
+  }
+}
+
+// ── Storybook meta ───────────────────────────────────────────────────
+
+const meta: Meta = {
+  title: "@Theredhead/UI Blocks/Master Detail View",
+  tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A master-detail layout combining a `<ui-table-view>` list panel " +
+          "with a detail template pane. Content-project table columns and " +
+          "a `#detail` ng-template (selected item available as `$implicit`). " +
+          "Optionally add a collapsible `#filter` template above the list.\n\n" +
+          "The table uses single selection, row-click select, page size 100, " +
+          "no pagination, and no built-in leading columns.",
+      },
     },
-    decorators: [
-        (story) => ({
-            ...story(),
-            styles: [`
-        :host {
-          display: block;
-          height: 400px;
-          border: 1px solid var(--mat-sys-outline-variant, #ccc);
-          border-radius: 8px;
-          overflow: hidden;
-        }
-      `],
-        }),
-    ],
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [DefaultDemo, FilterDemo],
+    }),
+  ],
 };
-
 export default meta;
-type Story = StoryObj<UiMasterDetailViewComponent>;
+type Story = StoryObj;
 
-/**
- * Default master-detail view with no selection.
- */
+/** Default master-detail view — click a row to see the detail panel. */
 export const Default: Story = {
-    args: {
-        items: sampleItems,
-        selectedItemId: null,
-        masterTitle: 'Documents',
-        detailPlaceholderText: 'Select a document to view details',
+  render: () => ({ template: `<ui-mdv-default-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-master-detail-view [data]="employees" title="Employees">
+  <ui-text-column key="name" headerText="Name" />
+  <ui-text-column key="department" headerText="Department" />
+  <ui-text-column key="role" headerText="Role" />
+
+  <ng-template #detail let-person>
+    <h3>{{ person.name }}</h3>
+    <p>{{ person.email }}</p>
+  </ng-template>
+</ui-master-detail-view>`,
+        language: "html",
+      },
     },
+  },
 };
 
-/**
- * Master-detail view with a pre-selected item.
- */
-export const WithSelection: Story = {
-    args: {
-        items: sampleItems,
-        selectedItemId: 2,
-        masterTitle: 'Documents',
-        detailPlaceholderText: 'Select a document to view details',
+/** With a collapsible filter panel above the list. */
+export const WithFilter: Story = {
+  render: () => ({ template: `<ui-mdv-filter-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-master-detail-view [datasource]="adapter" title="Employees" [showFilter]="true">
+  <ng-template #filter>
+    <ui-filter [fields]="fields" [(value)]="descriptor"
+               (predicateChange)="onPredicate($event)" />
+  </ng-template>
+
+  <ui-text-column key="name" headerText="Name" />
+  <ui-text-column key="department" headerText="Department" />
+
+  <ng-template #detail let-person>
+    <h3>{{ person.name }}</h3>
+  </ng-template>
+</ui-master-detail-view>`,
+        language: "html",
+      },
     },
-};
-
-/**
- * Empty state with no items.
- */
-export const Empty: Story = {
-    args: {
-        items: [],
-        selectedItemId: null,
-        masterTitle: 'Documents',
-        detailPlaceholderText: 'No documents available',
-    },
-};
-
-/**
- * Custom titles and placeholder text.
- */
-export const CustomTitles: Story = {
-    args: {
-        items: [
-            { id: 'user-1', label: 'John Doe', email: 'john@example.com', role: 'Admin' },
-            { id: 'user-2', label: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },
-            { id: 'user-3', label: 'Bob Wilson', email: 'bob@example.com', role: 'Viewer' },
-        ],
-        selectedItemId: null,
-        masterTitle: 'Team Members',
-        detailPlaceholderText: 'Click on a team member to see their profile',
-    },
-};
-
-/**
- * Long list of items to demonstrate scrolling.
- */
-export const LongList: Story = {
-    args: {
-        items: Array.from({ length: 20 }, (_, i) => ({
-            id: i + 1,
-            label: `Item ${i + 1}`,
-            description: `Description for item ${i + 1}`,
-        })),
-        selectedItemId: null,
-        masterTitle: 'All Items',
-        detailPlaceholderText: 'Select an item',
-    },
-};
-
-/**
- * Interactive example showing selection behavior.
- */
-export const Interactive: Story = {
-    render: () => ({
-        template: `
-      <ui-master-detail-view
-        [items]="items"
-        [selectedItemId]="selectedId"
-        masterTitle="Projects"
-        detailPlaceholderText="Select a project to view details"
-        (selectItem)="onSelect($event)"
-      >
-      </ui-master-detail-view>
-      <p style="margin-top: 16px; padding: 8px; background: #f5f5f5; border-radius: 4px;">
-        Selected: {{ selectedId || 'None' }}
-      </p>
-    `,
-        props: {
-            items: sampleItems,
-            selectedId: null as string | number | null,
-            onSelect(item: MasterItem) {
-                this['selectedId'] = item.id;
-            },
-        },
-    }),
-};
-
-/**
- * Custom item template with status badge and description.
- */
-export const CustomItemTemplate: Story = {
-    render: () => ({
-        template: `
-      <ui-master-detail-view
-        [items]="items"
-        [selectedItemId]="selectedId"
-        masterTitle="Documents"
-        (selectItem)="selectedId = $event.id"
-      >
-        <ng-template #itemTemplate let-item let-selected="selected">
-          <span matListItemTitle>{{ item.label }}</span>
-          <span matListItemLine style="color: var(--mat-sys-on-surface-variant)">{{ item.description }}</span>
-          <span matListItemMeta [style.color]="getStatusColor(item.status)">
-            {{ item.status }}
-          </span>
-        </ng-template>
-      </ui-master-detail-view>
-    `,
-        props: {
-            items: sampleItems,
-            selectedId: null as string | number | null,
-            getStatusColor(status: string): string {
-                const colors: Record<string, string> = {
-                    active: '#4caf50',
-                    pending: '#ff9800',
-                    completed: '#2196f3',
-                    archived: '#9e9e9e',
-                };
-                return colors[status] || '#000';
-            },
-        },
-    }),
-};
-
-/**
- * Custom detail template with structured data display.
- */
-export const CustomDetailTemplate: Story = {
-    render: () => ({
-        template: `
-      <ui-master-detail-view
-        [items]="items"
-        [selectedItemId]="selectedId"
-        [detailData]="getDetailData(selectedId)"
-        masterTitle="Documents"
-        (selectItem)="selectedId = $event.id"
-      >
-        <ng-template #detailTemplate let-data let-item="item">
-          <div style="display: flex; flex-direction: column; gap: 16px;">
-            <div>
-              <h4 style="margin: 0 0 8px; color: var(--mat-sys-on-surface-variant)">Content</h4>
-              <p style="margin: 0">{{ data?.content || 'No content available' }}</p>
-            </div>
-            <div>
-              <h4 style="margin: 0 0 8px; color: var(--mat-sys-on-surface-variant)">Metadata</h4>
-              <dl style="margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px;">
-                <dt style="font-weight: 500">Author:</dt>
-                <dd style="margin: 0">{{ data?.metadata?.author }}</dd>
-                <dt style="font-weight: 500">Created:</dt>
-                <dd style="margin: 0">{{ data?.metadata?.created }}</dd>
-                <dt style="font-weight: 500">Modified:</dt>
-                <dd style="margin: 0">{{ data?.metadata?.modified }}</dd>
-              </dl>
-            </div>
-          </div>
-        </ng-template>
-      </ui-master-detail-view>
-    `,
-        props: {
-            items: sampleItems,
-            selectedId: null as string | number | null,
-            detailDataMap: mockDetailData,
-            getDetailData(id: string | number | null) {
-                if (!id) return null;
-                return this['detailDataMap'][id as number] || null;
-            },
-        },
-    }),
-};
-
-/**
- * Full example with both custom item and detail templates.
- */
-export const FullCustomization: Story = {
-    render: () => ({
-        template: `
-      <ui-master-detail-view
-        [items]="items"
-        [selectedItemId]="selectedId"
-        [detailData]="getDetailData(selectedId)"
-        masterTitle="Project Files"
-        detailPlaceholderText="Select a file to preview"
-        (selectItem)="selectedId = $event.id"
-      >
-        <ng-template #itemTemplate let-item let-selected="selected">
-          <mat-icon matListItemIcon [style.color]="selected ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface-variant)'">
-            description
-          </mat-icon>
-          <span matListItemTitle>{{ item.label }}</span>
-          <span matListItemLine>{{ item.description }}</span>
-        </ng-template>
-
-        <ng-template #detailTemplate let-data let-item="item">
-          <div style="padding: 8px; background: var(--mat-sys-surface-container); border-radius: 8px; margin-bottom: 16px;">
-            <mat-chip-set>
-              <mat-chip>{{ item.status }}</mat-chip>
-              <mat-chip>{{ data?.metadata?.author }}</mat-chip>
-            </mat-chip-set>
-          </div>
-          <p>{{ data?.content }}</p>
-          <p style="color: var(--mat-sys-on-surface-variant); font-size: 0.875rem;">
-            Last modified: {{ data?.metadata?.modified }}
-          </p>
-        </ng-template>
-      </ui-master-detail-view>
-    `,
-        moduleMetadata: {
-            imports: [MatIconModule, MatChipsModule],
-        },
-        props: {
-            items: sampleItems,
-            selectedId: 1 as string | number | null,
-            detailDataMap: mockDetailData,
-            getDetailData(id: string | number | null) {
-                if (!id) return null;
-                return this['detailDataMap'][id as number] || null;
-            },
-        },
-    }),
-};
-
-/**
- * Filter and actions templates for list management.
- */
-export const WithFilterAndActions: Story = {
-    render: () => ({
-        template: `
-      <ui-master-detail-view
-        [items]="filteredItems"
-        [selectedItemId]="selectedId"
-        masterTitle="Documents"
-        (selectItem)="selectedId = $event.id"
-      >
-        <ng-template #filterTemplate>
-          <mat-form-field appearance="outline" style="width: 100%">
-            <mat-label>Search</mat-label>
-            <input matInput [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" placeholder="Filter items...">
-            <mat-icon matSuffix>search</mat-icon>
-          </mat-form-field>
-        </ng-template>
-
-        <ng-template #actionsTemplate let-selectedItem>
-          <button mat-button (click)="onAdd()">
-            <mat-icon>add</mat-icon>
-            Add
-          </button>
-          <button mat-button [disabled]="!selectedItem" (click)="onDelete(selectedItem)">
-            <mat-icon>delete</mat-icon>
-            Delete
-          </button>
-        </ng-template>
-      </ui-master-detail-view>
-    `,
-        moduleMetadata: {
-            imports: [MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, FormsModule],
-        },
-        props: {
-            items: sampleItems,
-            filteredItems: [...sampleItems],
-            selectedId: null as string | number | null,
-            searchTerm: '',
-            filterItems() {
-                const term = this['searchTerm'].toLowerCase();
-                this['filteredItems'] = this['items'].filter((item: MasterItem) =>
-                    item.label.toLowerCase().includes(term)
-                );
-            },
-            onAdd() {
-                console.log('Add clicked');
-            },
-            onDelete(item: MasterItem | null) {
-                if (item) console.log('Delete clicked for:', item.label);
-            },
-        },
-    }),
+  },
 };

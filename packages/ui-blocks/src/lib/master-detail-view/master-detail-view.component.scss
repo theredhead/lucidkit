@@ -1,93 +1,156 @@
+/* ── Light defaults ── */
 :host {
+  --ui-text: #1d232b;
+  --ui-text-muted: #5a6470;
+  --ui-bg: #f6f7f8;
+  --ui-surface: #ffffff;
+  --ui-border: #d7dce2;
+  --ui-accent: #3584e4;
+  --ui-shadow: 0 1px 3px rgba(18, 24, 33, 0.06);
+  --ui-filter-bg: #f0f2f5;
+  --ui-radius: 6px;
+
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: minmax(280px, 1fr) 2fr;
   height: 100%;
-  background-color: var(--mat-sys-surface);
+  color: var(--ui-text);
+  font-family: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr 1fr;
   }
 }
 
-aside {
+/* Hidden slot — instantiates projected columns for contentChildren discovery */
+.mdv-columns-slot {
+  display: none;
+}
+
+/* ── Explicit dark class ── */
+:host-context(html.dark-theme) {
+  --ui-text: #f2f6fb;
+  --ui-text-muted: #a0aab6;
+  --ui-bg: #1f242a;
+  --ui-surface: #242b33;
+  --ui-border: #3a3f47;
+  --ui-accent: #7ab0ff;
+  --ui-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+  --ui-filter-bg: #2a3240;
+}
+
+/* ── System preference fallback ── */
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-text: #f2f6fb;
+    --ui-text-muted: #a0aab6;
+    --ui-bg: #1f242a;
+    --ui-surface: #242b33;
+    --ui-border: #3a3f47;
+    --ui-accent: #7ab0ff;
+    --ui-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+    --ui-filter-bg: #2a3240;
+  }
+}
+
+/* ── List panel (aside) ── */
+
+.mdv-list-panel {
   display: flex;
   flex-direction: column;
-  background-color: var(--mat-sys-surface-container);
-  border-right: 1px solid var(--mat-sys-outline-variant);
+  background: var(--ui-surface);
+  border-right: 1px solid var(--ui-border);
   overflow: hidden;
 
   @media (max-width: 768px) {
     border-right: none;
-    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    border-bottom: 1px solid var(--ui-border);
   }
 }
 
-header {
-  padding: 1.5rem;
-
-  h2 {
-    margin: 0;
-    font: var(--mat-sys-title-medium);
-    color: var(--mat-sys-on-surface);
-  }
-}
-
-.filter {
-  padding: 0 1rem 1rem;
+.mdv-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ui-border);
   flex-shrink: 0;
 }
 
-mat-nav-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0;
+.mdv-title {
   margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ui-text);
 }
 
-.empty {
-  padding: 2rem 1rem;
-  text-align: center;
-  color: var(--mat-sys-on-surface-variant);
-  font: var(--mat-sys-body-medium);
-  margin: 0;
-}
+/* ── Filter bar ── */
 
-footer {
-  padding: 1rem;
-  border-top: 1px solid var(--mat-sys-outline-variant);
+.mdv-filter-bar {
+  border-bottom: 1px solid var(--ui-border);
   flex-shrink: 0;
+}
+
+.mdv-filter-toggle {
   display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0.45rem 1rem;
+  border: none;
+  background: var(--ui-filter-bg);
+  color: var(--ui-text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    color: var(--ui-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-accent);
+    outline-offset: -2px;
+  }
 }
 
-main {
+.mdv-filter-content {
+  padding: 0.75rem 1rem;
+  background: var(--ui-filter-bg);
+  border-top: 1px solid var(--ui-border);
+}
+
+/* ── Table wrapper ── */
+
+.mdv-table-wrapper {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Detail panel ── */
+
+.mdv-detail-panel {
   display: flex;
   flex-direction: column;
-  background-color: var(--mat-sys-surface);
+  background: var(--ui-bg);
   overflow: hidden;
-
-  header h2 {
-    font: var(--mat-sys-title-large);
-  }
 }
 
-section {
+.mdv-detail-content {
   flex: 1;
   overflow-y: auto;
-  padding: 1.5rem;
+  padding: 1.25rem;
 }
 
-.placeholder {
+.mdv-placeholder {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--mat-sys-on-surface-variant);
 
   p {
     margin: 0;
-    font: var(--mat-sys-body-large);
+    font-size: 0.88rem;
+    color: var(--ui-text-muted);
   }
 }

@@ -1,130 +1,211 @@
-import { CommonModule } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
+  contentChildren,
+  effect,
   input,
   output,
+  signal,
   TemplateRef,
+  untracked,
 } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatListModule } from "@angular/material/list";
+import { NgTemplateOutlet } from "@angular/common";
+import {
+  ArrayDatasource,
+  DatasourceAdapter,
+  SelectionModel,
+  UIIcon,
+  UIIcons,
+  UITableView,
+  UITableViewColumn,
+} from "@theredhead/ui-kit";
 
-export interface MasterItem {
-  id: string | number;
-  label: string;
-  [key: string]: any;
-}
-
-/** Context provided to the itemTemplate */
-export interface ItemTemplateContext {
-  $implicit: MasterItem;
-  item: MasterItem;
-  selected: boolean;
-}
-
-/** Context provided to the detailTemplate */
-export interface DetailTemplateContext<T = unknown> {
+/**
+ * Context provided to the detail template.
+ *
+ * @typeParam T - The row object type.
+ */
+export interface MasterDetailContext<T> {
+  /** The selected item (also available as `let-object`). */
   $implicit: T;
-  data: T;
-  item: MasterItem;
 }
 
-/** Context provided to the filterTemplate */
-export interface FilterTemplateContext {
-  $implicit: MasterItem[];
-  items: MasterItem[];
-}
-
-/** Context provided to the actionsTemplate */
-export interface ActionsTemplateContext {
-  $implicit: MasterItem | null;
-  selectedItem: MasterItem | null;
-}
-
+/**
+ * A master-detail layout that shows a list of items in a
+ * {@link UITableView} and renders a detail template for the
+ * currently selected item.
+ *
+ * ### Basic usage
+ * ```html
+ * <ui-master-detail-view [data]="items">
+ *   <ui-text-column key="name" headerText="Name" />
+ *   <ui-text-column key="email" headerText="Email" />
+ *
+ *   <ng-template #detail let-object>
+ *     <h3>{{ object.name }}</h3>
+ *     <p>{{ object.email }}</p>
+ *   </ng-template>
+ * </ui-master-detail-view>
+ * ```
+ *
+ * ### With filter
+ * ```html
+ * <ui-master-detail-view [data]="items" [showFilter]="true">
+ *   <ng-template #filter>
+ *     <ui-filter [fields]="fields" [(value)]="descriptor"
+ *                (predicateChange)="ds.applyPredicate($event)" />
+ *   </ng-template>
+ *   <!-- columns and detail template -->
+ * </ui-master-detail-view>
+ * ```
+ */
 @Component({
   selector: "ui-master-detail-view",
   standalone: true,
-  imports: [CommonModule, MatListModule, MatDividerModule, MatButtonModule],
+  imports: [UITableView, NgTemplateOutlet, UIIcon],
   templateUrl: "./master-detail-view.component.html",
-  styleUrls: ["./master-detail-view.component.scss"],
+  styleUrl: "./master-detail-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: "ui-master-detail-view",
+  },
 })
-export class UiMasterDetailViewComponent<T = unknown> {
-  readonly items = input<MasterItem[]>([]);
-  readonly selectedItemId = input<string | number | null>(null);
-  readonly masterTitle = input<string>("Items");
-  readonly detailPlaceholderText = input<string>(
-    "Select an item to view details",
+export class UIMasterDetailView<T = unknown> {
+  // ── Inputs ────────────────────────────────────────────────────────
+
+  /** Title displayed above the list panel. */
+  public readonly title = input<string>("Items");
+
+  /**
+   * The datasource adapter powering the table-view.
+   *
+   * When provided, this takes precedence over the `data` input.
+   * The adapter should be pre-configured with a page size of 100.
+   */
+  public readonly datasource = input<DatasourceAdapter<T> | undefined>(
+    undefined,
   );
 
-  /** Optional detail data - can be a computed signal result, service data, etc. */
-  readonly detailData = input<T | null>(null);
+  /**
+   * Convenience: raw data array. When set, an internal
+   * {@link ArrayDatasource} is created automatically.
+   * Ignored when `datasource` is provided.
+   */
+  public readonly data = input<readonly T[]>([]);
 
-  readonly selectItem = output<MasterItem>();
+  /** Placeholder text shown when no item is selected. */
+  public readonly placeholder = input<string>("Select an item to view details");
 
-  /** Optional template for rendering list items */
-  readonly itemTemplate =
-    contentChild<TemplateRef<ItemTemplateContext>>("itemTemplate");
+  /**
+   * Whether the filter section is visible.
+   * When `true` a collapsible area is shown above the list.
+   * A `#filter` content template should be projected to fill it.
+   */
+  public readonly showFilter = input<boolean>(false);
 
-  /** Optional template for rendering the detail view */
-  readonly detailTemplate =
-    contentChild<TemplateRef<DetailTemplateContext<T>>>("detailTemplate");
+  /** Whether the filter section starts expanded. */
+  public readonly filterExpanded = input<boolean>(true);
 
-  /** Optional template for filter controls displayed above the list */
-  readonly filterTemplate =
-    contentChild<TemplateRef<FilterTemplateContext>>("filterTemplate");
+  // ── Outputs ───────────────────────────────────────────────────────
 
-  /** Optional template for action buttons displayed below the list */
-  readonly actionsTemplate =
-    contentChild<TemplateRef<ActionsTemplateContext>>("actionsTemplate");
+  /** Emits whenever the selection changes. Carries the selected item or `undefined`. */
+  public readonly selectedChange = output<T | undefined>();
 
-  readonly selectedItem = computed(() => {
-    const selectedId = this.selectedItemId();
-    if (!selectedId) return null;
-    return this.items().find((item) => item.id === selectedId) || null;
+  // ── Content queries ───────────────────────────────────────────────
+
+  /**
+   * Projected table-view columns.
+   * These are forwarded to the internal `<ui-table-view>`.
+   */
+  public readonly columns = contentChildren(UITableViewColumn);
+
+  /** Detail template — rendered when an item is selected. */
+  public readonly detailTemplate =
+    contentChild<TemplateRef<MasterDetailContext<T>>>("detail");
+
+  /** Optional filter template — shown in the collapsible filter area. */
+  public readonly filterTemplate = contentChild<TemplateRef<unknown>>("filter");
+
+  // ── Computed ──────────────────────────────────────────────────────
+
+  /** The currently selected item, derived from the selection model. @internal */
+  protected readonly selectedItem = computed<T | undefined>(() => {
+    const items = this.selectionModel.selected();
+    return items.length > 0 ? items[0] : undefined;
   });
 
-  readonly isItemSelected = (itemId: string | number) => {
-    return this.selectedItemId() === itemId;
-  };
+  /** Context for the detail template outlet. @internal */
+  protected readonly detailContext = computed<
+    MasterDetailContext<T> | undefined
+  >(() => {
+    const item = this.selectedItem();
+    if (item === undefined) return undefined;
+    return { $implicit: item };
+  });
 
-  /** Context for item template */
-  getItemContext(item: MasterItem): ItemTemplateContext {
-    return {
-      $implicit: item,
-      item,
-      selected: this.isItemSelected(item.id),
-    };
+  /**
+   * The resolved datasource: explicit `datasource` input takes
+   * precedence, otherwise an internal adapter wraps the `data` array.
+   *
+   * The adapter construction is wrapped in `untracked` because
+   * {@link DatasourceAdapter}'s constructor writes to signals,
+   * which is forbidden inside `computed` contexts.
+   * @internal
+   */
+  protected readonly resolvedDatasource = computed<DatasourceAdapter<T>>(
+    () => {
+      const explicit = this.datasource();
+      if (explicit) return explicit;
+      const data = this.data();
+      return untracked(() =>
+        new DatasourceAdapter<T>(
+          new ArrayDatasource<T>([...(data as T[])]),
+          100,
+        ),
+      );
+    },
+  );
+
+  // ── Public fields ───────────────────────────────────────────────
+
+  /** Selection model for the table-view (single mode). */
+  public readonly selectionModel = new SelectionModel<T>("single");
+
+  // ── Protected fields ──────────────────────────────────────────────
+
+  /** @internal — whether the filter section is collapsed. */
+  protected readonly filterCollapsed = signal(false);
+
+  // ── Protected constants ───────────────────────────────────────────
+
+  /** @internal */
+  protected readonly chevronDown = UIIcons.Lucide.Arrows.ChevronDown;
+
+  /** @internal */
+  protected readonly chevronRight = UIIcons.Lucide.Arrows.ChevronRight;
+
+  // ── Constructor ───────────────────────────────────────────────────
+
+  public constructor() {
+    // Initialise filterCollapsed from the filterExpanded input
+    effect(() => {
+      const expanded = this.filterExpanded();
+      untracked(() => this.filterCollapsed.set(!expanded));
+    });
+
+    // Emit selectedChange whenever selection changes
+    effect(() => {
+      const item = this.selectedItem();
+      untracked(() => this.selectedChange.emit(item));
+    });
   }
 
-  /** Context for detail template */
-  readonly detailContext = computed((): DetailTemplateContext<T> | null => {
-    const item = this.selectedItem();
-    const data = this.detailData();
-    if (!item) return null;
-    return {
-      $implicit: data as T,
-      data: data as T,
-      item,
-    };
-  });
+  // ── Protected methods ─────────────────────────────────────────────
 
-  /** Context for filter template */
-  readonly filterContext = computed(
-    (): FilterTemplateContext => ({
-      $implicit: this.items(),
-      items: this.items(),
-    }),
-  );
-
-  /** Context for actions template */
-  readonly actionsContext = computed(
-    (): ActionsTemplateContext => ({
-      $implicit: this.selectedItem(),
-      selectedItem: this.selectedItem(),
-    }),
-  );
+  /** @internal — toggle filter visibility. */
+  protected toggleFilter(): void {
+    this.filterCollapsed.update((v) => !v);
+  }
 }

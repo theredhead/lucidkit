@@ -6,13 +6,13 @@
     @if (caption()) {
     <div class="table-caption" [id]="captionId">{{ caption() }}</div>
     }
-    <ui-table-header [columns]="columns()" [showRowIndexIndicator]="showRowIndexIndicator()"
+    <ui-table-header [columns]="resolvedColumns()" [showRowIndexIndicator]="showRowIndexIndicator()"
         [rowIndexHeaderText]="rowIndexHeaderText()" [resizable]="isResizable()" [columnWidths]="columnWidths()"
         [selectionMode]="selectionMode()" [allSelected]="selection().isAllSelected(sortedRows())"
         [indeterminate]="selection().isPartiallySelected(sortedRows())"
         (sortChange)="onSortChange($event)" (columnResize)="onColumnResize($event)"
         (selectAllChange)="onSelectAllChange($event)" />
-    <ui-table-body [columns]="columns()" [rows]="sortedRows()" [showRowIndexIndicator]="showRowIndexIndicator()"
+    <ui-table-body [columns]="resolvedColumns()" [rows]="sortedRows()" [showRowIndexIndicator]="showRowIndexIndicator()"
         [rowIndexOffset]="rowIndexOffset()" [columnWidths]="columnWidths()"
         [selectionMode]="selectionMode()" [selection]="selection()" [rowClickSelect]="rowClickSelect()"
         (rowClick)="onRowClick($event)" />
