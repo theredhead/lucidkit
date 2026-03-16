@@ -8,6 +8,7 @@ import {
   output,
   signal,
   TemplateRef,
+  type Predicate,
 } from "@angular/core";
 
 import { UITreeNode } from "./tree-node.component";
@@ -92,6 +93,20 @@ export class UITreeView<T = unknown> {
     String(data),
   );
 
+  /**
+   * Optional predicate applied to each node's data payload.
+   *
+   * When set, only nodes that satisfy the predicate (or whose
+   * descendants satisfy it) are rendered. Ancestor nodes of matching
+   * descendants are kept visible and auto-expanded so the user can
+   * see the full path.
+   *
+   * Pass `undefined` or `null` to clear the filter.
+   */
+  public readonly filterPredicate = input<Predicate<T> | null | undefined>(
+    undefined,
+  );
+
   // ── Model ───────────────────────────────────────────────────────────
 
   /**
@@ -133,13 +148,17 @@ export class UITreeView<T = unknown> {
 
   // ── Computed ────────────────────────────────────────────────────────
 
-  /** The root nodes from the datasource. @internal */
+  /** The root nodes from the datasource (filtered when a predicate is set). @internal */
   protected readonly rootNodes = computed<TreeNode<T>[]>(() => {
     const ds = this.datasource();
     const roots = ds.getRootNodes();
     // Only synchronous for now — async support can be added later
-    if (Array.isArray(roots)) return roots;
-    return [];
+    if (!Array.isArray(roots)) return [];
+
+    const predicate = this.filterPredicate();
+    if (!predicate) return roots;
+
+    return this.filterTree(roots, predicate, ds);
   });
 
   // ── Public methods ──────────────────────────────────────────────────
@@ -361,6 +380,53 @@ export class UITreeView<T = unknown> {
 
     const roots = ds.getRootNodes();
     if (Array.isArray(roots)) walk(roots, 0);
+    return result;
+  }
+
+  /**
+   * Recursively filters a tree, keeping nodes whose data matches the
+   * predicate or whose descendants match. Ancestor nodes of matching
+   * descendants are preserved and marked as expanded so the match is
+   * visible.
+   */
+  private filterTree(
+    nodes: TreeNode<T>[],
+    predicate: Predicate<T>,
+    ds: ITreeDatasource<T>,
+  ): TreeNode<T>[] {
+    const result: TreeNode<T>[] = [];
+
+    for (const node of nodes) {
+      const selfMatch = predicate(node.data);
+
+      // Recursively filter children
+      const rawChildren = ds.getChildren(node);
+      const filteredChildren = Array.isArray(rawChildren)
+        ? this.filterTree(rawChildren, predicate, ds)
+        : [];
+
+      if (selfMatch || filteredChildren.length > 0) {
+        // Keep the node — if children matched, auto-expand
+        const clone: TreeNode<T> = {
+          ...node,
+          children:
+            filteredChildren.length > 0 ? filteredChildren : node.children,
+          expanded: filteredChildren.length > 0 ? true : node.expanded,
+        };
+        result.push(clone);
+
+        // Also add to expanded IDs so the tree renders them open
+        if (filteredChildren.length > 0) {
+          this.expandedIds.update((ids) => {
+            if (ids.has(node.id)) return ids;
+            const next = new Set(ids);
+            next.add(node.id);
+            return next;
+          });
+        }
+      }
+    }
+
     return result;
   }
 }

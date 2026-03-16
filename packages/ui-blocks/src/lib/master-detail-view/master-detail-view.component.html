@@ -38,53 +38,63 @@
   </div>
 }
 
-<aside class="mdv-list-panel">
-  <header class="mdv-header">
-    <h2 class="mdv-title">{{ title() }}</h2>
-  </header>
+<ui-split-container
+  class="mdv-split"
+  [initialSizes]="splitSizes()"
+  [name]="splitName()"
+  [collapseTarget]="splitCollapseTarget()"
+  [firstConstraints]="listConstraints()"
+  ariaLabel="Resize list and detail panels"
+>
+  <aside first class="mdv-list-panel">
+    <header class="mdv-header">
+      <h2 class="mdv-title">{{ title() }}</h2>
+    </header>
 
-  @if (isTreeMode()) {
-    <div class="mdv-tree-wrapper">
-      <ui-tree-view
-        [datasource]="treeDatasource()!"
-        [displayWith]="treeDisplayWith()"
-        selectionMode="single"
-        [(selected)]="selectedTreeNodes"
-        ariaLabel="Master list"
-      >
-        @if (treeNodeTemplate(); as nodeTpl) {
-          <ng-template #nodeTemplate let-node let-level="level" let-expanded="expanded" let-hasChildren="hasChildren">
-            <ng-container *ngTemplateOutlet="nodeTpl; context: { $implicit: node, level: level, expanded: expanded, hasChildren: hasChildren }" />
-          </ng-template>
-        }
-      </ui-tree-view>
-    </div>
-  } @else {
-    <div class="mdv-table-wrapper">
-      <ui-table-view
-        [datasource]="resolvedDatasource()"
-        [externalColumns]="columns()"
-        [showBuiltInPaginator]="false"
-        [showRowIndexIndicator]="false"
-        selectionMode="single"
-        [showSelectionColumn]="false"
-        [rowClickSelect]="true"
-        [selectionModel]="selectionModel"
-      />
-    </div>
-  }
-</aside>
-
-<main class="mdv-detail-panel">
-  @if (detailContext(); as ctx) {
-    @if (detailTemplate(); as tpl) {
-      <section class="mdv-detail-content">
-        <ng-container *ngTemplateOutlet="tpl; context: ctx" />
-      </section>
+    @if (isTreeMode()) {
+      <div class="mdv-tree-wrapper">
+        <ui-tree-view
+          [datasource]="treeDatasource()!"
+          [displayWith]="treeDisplayWith()"
+          [filterPredicate]="treeFilterPredicate()"
+          selectionMode="single"
+          [(selected)]="selectedTreeNodes"
+          ariaLabel="Master list"
+        >
+          @if (treeNodeTemplate(); as nodeTpl) {
+            <ng-template #nodeTemplate let-node let-level="level" let-expanded="expanded" let-hasChildren="hasChildren">
+              <ng-container *ngTemplateOutlet="nodeTpl; context: { $implicit: node, level: level, expanded: expanded, hasChildren: hasChildren }" />
+            </ng-template>
+          }
+        </ui-tree-view>
+      </div>
+    } @else {
+      <div class="mdv-table-wrapper">
+        <ui-table-view
+          [datasource]="resolvedDatasource()"
+          [externalColumns]="columns()"
+          [showBuiltInPaginator]="false"
+          [showRowIndexIndicator]="false"
+          selectionMode="single"
+          [showSelectionColumn]="false"
+          [rowClickSelect]="true"
+          [selectionModel]="selectionModel"
+        />
+      </div>
     }
-  } @else {
-    <div class="mdv-placeholder">
-      <p>{{ placeholder() }}</p>
-    </div>
-  }
-</main>
+  </aside>
+
+  <main second class="mdv-detail-panel">
+    @if (detailContext(); as ctx) {
+      @if (detailTemplate(); as tpl) {
+        <section class="mdv-detail-content">
+          <ng-container *ngTemplateOutlet="tpl; context: ctx" />
+        </section>
+      }
+    } @else {
+      <div class="mdv-placeholder">
+        <p>{{ placeholder() }}</p>
+      </div>
+    }
+  </main>
+</ui-split-container>

@@ -10,22 +10,22 @@
   --ui-filter-bg: #f0f2f5;
   --ui-radius: 6px;
 
-  display: grid;
-  grid-template-columns: minmax(280px, 1fr) 2fr;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   color: var(--ui-text);
   font-family: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr 1fr;
-  }
 }
 
 /* Hidden slot — instantiates projected columns for contentChildren discovery */
 .mdv-columns-slot {
   display: none;
+}
+
+/* ── Split container ── */
+.mdv-split {
+  flex: 1;
+  min-height: 0;
 }
 
 /* ── Explicit dark class ── */
@@ -57,19 +57,12 @@
 /* ── List panel (aside) ── */
 
 .mdv-list-panel {
-  grid-row: 2;
-  grid-column: 1;
   display: flex;
   flex-direction: column;
   background: var(--ui-surface);
-  border-right: 1px solid var(--ui-border);
   overflow: hidden;
+  height: 100%;
   min-height: 0;
-
-  @media (max-width: 768px) {
-    border-right: none;
-    border-bottom: 1px solid var(--ui-border);
-  }
 }
 
 .mdv-header {
@@ -89,8 +82,7 @@
 /* ── Filter bar ── */
 
 .mdv-filter-bar {
-  grid-row: 1;
-  grid-column: 1 / -1;
+  flex-shrink: 0;
   border-bottom: 1px solid var(--ui-border);
 }
 
@@ -174,17 +166,11 @@
 /* ── Detail panel ── */
 
 .mdv-detail-panel {
-  grid-row: 2;
-  grid-column: 2;
   display: flex;
   flex-direction: column;
   background: var(--ui-bg);
   overflow: hidden;
-
-  @media (max-width: 768px) {
-    grid-row: 3;
-    grid-column: 1;
-  }
+  height: 100%;
 }
 
 .mdv-detail-content {

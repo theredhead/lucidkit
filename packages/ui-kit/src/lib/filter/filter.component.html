@@ -4,7 +4,7 @@
     <ui-input
       type="text"
       ariaLabel="Search all fields"
-      placeholder="Search…"
+      placeholder="Find…"
       [value]="simpleQuery()"
       (valueChange)="onSimpleInput($event)"
     />
@@ -14,7 +14,7 @@
         size="sm"
         ariaLabel="Switch to advanced filter"
         (click)="toggleMode()"
-      >Advanced</ui-button>
+      ><ui-icon [svg]="advancedIcon" [size]="14" /> Advanced</ui-button>
     }
   </div>
 } @else {
@@ -39,7 +39,7 @@
         size="sm"
         ariaLabel="Switch to simple search"
         (click)="toggleMode()"
-      >Simple</ui-button>
+      ><ui-icon [svg]="simpleIcon" [size]="14" /> Simple</ui-button>
     }
   </div>
 
