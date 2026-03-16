@@ -50,6 +50,16 @@
 }
 
 .ui-filter {
+  &__simple {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    ui-input {
+      flex: 1;
+    }
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -63,6 +73,10 @@
     border-bottom: 1px solid var(--ui-border);
     margin-bottom: 0.625rem;
     user-select: none;
+  }
+
+  &__mode-toggle {
+    margin-left: auto;
   }
 
   &__rules {

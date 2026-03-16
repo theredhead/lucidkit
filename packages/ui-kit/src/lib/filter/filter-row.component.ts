@@ -172,9 +172,7 @@ export class UIFilterRow {
     const ops = field ? operatorsForType(field.type) : [];
 
     const defaultOp =
-      field?.type === "string"
-        ? "contains"
-        : (ops[0]?.value ?? "contains");
+      field?.type === "string" ? "contains" : (ops[0]?.value ?? "contains");
 
     this.ruleChange.emit({
       ...this.rule(),

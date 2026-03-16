@@ -6,10 +6,12 @@ import {
   input,
   model,
   output,
+  signal,
   type Predicate,
 } from "@angular/core";
 
 import { UIButton } from "../button/button.component";
+import { UIInput } from "../input/input.component";
 import { UISelect } from "../select/select.component";
 import type { SelectOption } from "../select/select.component";
 import { UIFilterRow } from "./filter-row.component";
@@ -17,10 +19,11 @@ import type {
   FilterDescriptor,
   FilterFieldDefinition,
   FilterJunction,
+  FilterMode,
   FilterOperator,
   FilterRule,
 } from "./filter.types";
-import { ANY_FIELD_KEY, operatorsForType } from "./filter.types";
+import { ANY_FIELD_KEY } from "./filter.types";
 import { toPredicate } from "./filter.utils";
 
 const JUNCTION_OPTIONS: SelectOption[] = [
@@ -49,7 +52,7 @@ const JUNCTION_OPTIONS: SelectOption[] = [
 @Component({
   selector: "ui-filter",
   standalone: true,
-  imports: [UISelect, UIButton, UIFilterRow],
+  imports: [UISelect, UIButton, UIInput, UIFilterRow],
   templateUrl: "./filter.component.html",
   styleUrl: "./filter.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,6 +60,8 @@ const JUNCTION_OPTIONS: SelectOption[] = [
     class: "ui-filter",
     role: "region",
     "aria-label": "Filter builder",
+    "[class.ui-filter--simple]": "mode() === 'simple'",
+    "[class.ui-filter--advanced]": "mode() === 'advanced'",
   },
 })
 export class UIFilter<T = any> {
@@ -70,6 +75,21 @@ export class UIFilter<T = any> {
    * Defaults to `false` (AND-only).
    */
   readonly allowJunction = input(false);
+
+  /**
+   * Whether simple mode is available. Defaults to `true`.
+   *
+   * Simple mode renders a single search textbox using
+   * "Any field contains" logic behind the scenes.
+   */
+  readonly allowSimple = input(true);
+
+  /**
+   * Whether advanced mode is available. Defaults to `true`.
+   *
+   * Advanced mode renders the full multi-rule predicate builder.
+   */
+  readonly allowAdvanced = input(true);
 
   /**
    * Optional raw dataset used to derive distinct values per string field.
@@ -98,12 +118,61 @@ export class UIFilter<T = any> {
    */
   readonly predicateChange = output<Predicate<T> | undefined>();
 
+  // ── Mode state ──────────────────────────────────────────────────────
+
+  /**
+   * The current display mode of the filter.
+   *
+   * Determined automatically from `allowSimple` / `allowAdvanced`
+   * on init. Toggled by the user via the mode toggle button when
+   * both modes are enabled.
+   */
+  readonly mode = signal<FilterMode>("simple");
+
+  /**
+   * The search term used in simple mode.
+   * @internal
+   */
+  readonly simpleQuery = signal("");
+
   constructor() {
+    // Resolve the initial mode from allowed modes.
+    effect(() => {
+      const simple = this.allowSimple();
+      const advanced = this.allowAdvanced();
+      // First run: pick the best starting mode
+      if (!simple && advanced) {
+        this.mode.set("advanced");
+      } else if (simple) {
+        this.mode.set("simple");
+      }
+    });
+
     // Derive and emit a predicate every time the descriptor changes.
     effect(() => {
       const descriptor = this.value();
       const fields = this.fields();
       this.predicateChange.emit(toPredicate(descriptor, fields));
+    });
+
+    // In simple mode, sync the search term into the descriptor.
+    effect(() => {
+      const m = this.mode();
+      const q = this.simpleQuery();
+      if (m !== "simple") return;
+      this.value.set({
+        junction: "and",
+        rules: q.trim()
+          ? [
+              {
+                id: 1,
+                field: ANY_FIELD_KEY,
+                operator: "contains" as FilterOperator,
+                value: q,
+              },
+            ]
+          : [],
+      });
     });
   }
 
@@ -114,6 +183,14 @@ export class UIFilter<T = any> {
   protected readonly currentJunction = computed(() => this.value().junction);
 
   protected readonly rules = computed(() => this.value().rules);
+
+  /**
+   * Whether the mode toggle button should be visible.
+   * @internal
+   */
+  protected readonly showModeToggle = computed(
+    () => this.allowSimple() && this.allowAdvanced(),
+  );
 
   /**
    * The field list augmented with an "Any field" entry at the top.
@@ -204,5 +281,54 @@ export class UIFilter<T = any> {
       ...this.value(),
       junction: junction as FilterJunction,
     });
+  }
+
+  /**
+   * Toggles between simple and advanced mode.
+   *
+   * When switching **to advanced**, if there are no rules, one empty
+   * rule is added so the user sees a starting row. If the simple
+   * search had text, the "Any field contains" rule is preserved.
+   *
+   * When switching **to simple**, the current descriptor is replaced
+   * by the simple search term.
+   */
+  toggleMode(): void {
+    if (this.mode() === "simple") {
+      this.mode.set("advanced");
+      // Carry over the simple search as an initial rule
+      const q = this.simpleQuery().trim();
+      if (q) {
+        this.value.set({
+          junction: "and",
+          rules: [
+            {
+              id: 1,
+              field: ANY_FIELD_KEY,
+              operator: "contains" as FilterOperator,
+              value: q,
+            },
+          ],
+        });
+      } else if (this.value().rules.length === 0) {
+        this.addRule();
+      }
+    } else {
+      this.mode.set("simple");
+      // Try to extract a simple search term from the current rules
+      const rules = this.value().rules;
+      const anyContains = rules.find(
+        (r) => r.field === ANY_FIELD_KEY && r.operator === "contains",
+      );
+      this.simpleQuery.set(anyContains?.value ?? "");
+    }
+  }
+
+  /**
+   * Handles the simple search input.
+   * @internal
+   */
+  onSimpleInput(value: string): void {
+    this.simpleQuery.set(value);
   }
 }

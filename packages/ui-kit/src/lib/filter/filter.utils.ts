@@ -288,8 +288,7 @@ export function toFilterExpression<T>(
 
   return [
     {
-      predicate: ((row: T) =>
-        rowTests.some((t) => t(row))) as Predicate<T>,
+      predicate: ((row: T) => rowTests.some((t) => t(row))) as Predicate<T>,
     },
   ];
 }

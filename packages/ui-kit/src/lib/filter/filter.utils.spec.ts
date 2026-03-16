@@ -156,7 +156,12 @@ describe("filter.utils", () => {
               operator: "contains" as any,
               value: "Alice",
             },
-            { id: 2, field: "age", operator: "greaterThan" as any, value: "20" },
+            {
+              id: 2,
+              field: "age",
+              operator: "greaterThan" as any,
+              value: "20",
+            },
           ],
         };
         const pred = toPredicate(d, fields)!;
