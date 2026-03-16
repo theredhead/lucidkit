@@ -1,35 +1,31 @@
 // Theredhead UI Theme - Color Palettes
-// Material 3 color system using Angular Material's theming APIs
+// Standalone colour definitions — no external dependency.
+//
+// Values are derived from the Material 3 Azure / Violet tonal palettes
+// but declared as plain SCSS variables so the library ships zero-dep.
 
-// @Note: This file (and its neighbours) will be largely, if not completely, overwritten with those created by Erik, so kept minimal and default for now.
+// ── Light mode colours ──────────────────────────────────────────────
 
-@use '@angular/material' as mat;
+$light-primary: #0061a4 !default;
+$light-on-primary: #ffffff !default;
+$light-secondary: #625b71 !default;
+$light-on-secondary: #ffffff !default;
+$light-error: #ba1a1a !default;
+$light-on-error: #ffffff !default;
+$light-surface: #fdfbff !default;
+$light-surface-container: #f0f0f4 !default;
+$light-on-surface: #1b1b1f !default;
+$light-outline: #747680 !default;
 
-// Default color hues (can be overridden)
-$primary-hue: 210 !default;      // Blue
-$secondary-hue: 280 !default;    // Purple
-$tertiary-hue: 160 !default;     // Teal
-$error-hue: 0 !default;          // Red
+// ── Dark mode colours ───────────────────────────────────────────────
 
-// Generate a Material 3 palette from a hue value
-// Uses the Angular Material M3 palette generation
-
-/// Creates the light theme color configuration
-@function create-light-palette() {
-  @return (
-    primary: mat.$azure-palette,
-    secondary: mat.$violet-palette,
-    tertiary: mat.$cyan-palette,
-    error: mat.$red-palette,
-  );
-}
-
-/// Creates the dark theme color configuration  
-@function create-dark-palette() {
-  @return (
-    primary: mat.$azure-palette,
-    secondary: mat.$violet-palette,
-    tertiary: mat.$cyan-palette,
-    error: mat.$red-palette,
-  );
-}
+$dark-primary: #9ecaff !default;
+$dark-on-primary: #003258 !default;
+$dark-secondary: #ccc2dc !default;
+$dark-on-secondary: #332d41 !default;
+$dark-error: #ffb4ab !default;
+$dark-on-error: #690005 !default;
+$dark-surface: #1b1b1f !default;
+$dark-surface-container: #2b2b2f !default;
+$dark-on-surface: #e4e2e6 !default;
+$dark-outline: #8e9099 !default;

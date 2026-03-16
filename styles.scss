@@ -1,17 +1,12 @@
-// Theredhead UI Theme - Material 3 theming with light/dark mode
+// Theredhead UI Theme — light/dark mode via CSS custom properties
 @use "./packages/ui-theme/src/lib/styles" as theme;
 
-// Apply the full theme (includes Material 3 theming and light/dark mode)
+// Apply the full theme (includes light/dark mode and --ui-* design tokens)
 @include theme.theredhead-theme();
-
-// Google Material Icons and Roboto fonts (must come after @use rules)
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
 
 // Base body styles
 body {
-  font-family: Roboto, sans-serif;
+  font-family: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
   margin: 0;
 }
 

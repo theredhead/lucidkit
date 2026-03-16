@@ -1,90 +1,83 @@
 # @theredhead/ui-blocks
 
-Advanced layout and block components library for Theredhead projects using Angular Material.
+Higher-level layout compositions for Theredhead Angular applications. Built on
+top of `@theredhead/ui-kit` primitives, standalone, signal-based, and OnPush.
+
+---
 
 ## Components
 
-### UiMasterDetailViewComponent
+### UIMasterDetailView
 
-A responsive master-detail layout component using Material design principles.
+A responsive master-detail layout. The master pane can render data as either a
+**table** (`UITableView`) or a **tree** (`UITreeView`). The detail pane uses
+content projection so you can render anything for the selected item.
 
 ```typescript
-import { UiMasterDetailViewComponent, MasterItem } from '@theredhead/ui-blocks';
-import { signal } from '@angular/core';
+import { UIMasterDetailView } from "@theredhead/ui-blocks";
 
 @Component({
-  selector: 'app-example',
+  selector: "app-users",
   standalone: true,
-  imports: [UiMasterDetailViewComponent],
+  imports: [UIMasterDetailView, UITextColumn],
   template: `
     <ui-master-detail-view
-      [items]="items()"
-      [selectedItemId]="selectedItemId()"
+      [datasource]="adapter"
       masterTitle="Users"
       detailPlaceholderText="Select a user to view details"
-      (onSelectItem)="selectItem($event)"
+      (selectedItemChange)="onSelect($event)"
     >
-      <!-- Detail content goes here -->
-      @if (selectedUser(); as user) {
-        <div class="user-details">
-          <p><strong>Email:</strong> {{ user.email }}</p>
-          <p><strong>Role:</strong> {{ user.role }}</p>
-        </div>
-      }
+      <ui-text-column key="name" headerText="Name" [sortable]="true" />
+      <ui-text-column key="email" headerText="Email" />
+
+      <ng-template #detail let-item>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.email }}</p>
+      </ng-template>
     </ui-master-detail-view>
-  `
+  `,
 })
-export class UserListComponent {
-  items = signal<MasterItem[]>([
-    { id: 1, label: 'John Doe', email: 'john@example.com', role: 'Admin' },
-    { id: 2, label: 'Jane Smith', email: 'jane@example.com', role: 'User' },
-  ]);
-  
-  selectedItemId = signal<string | number | null>(null);
-  
-  selectItem(item: MasterItem) {
-    this.selectedItemId.set(item.id);
-  }
-  
-  get selectedUser() {
-    return computed(() => 
-      this.items().find(item => item.id === this.selectedItemId())
-    );
+export class UsersComponent {
+  adapter = new DatasourceAdapter(new ArrayDatasource(this.users));
+
+  onSelect(item: unknown) {
+    console.log("selected", item);
   }
 }
 ```
 
-#### Inputs
+#### Key inputs
 
-- `items: MasterItem[]` - List of items to display in master pane
-- `selectedItemId: string | number | null` - Currently selected item ID
-- `masterTitle: string` - Title for master pane (default: 'Items')
-- `detailPlaceholderText: string` - Placeholder when no item selected
+| Input                   | Type                   | Default            | Description                            |
+| ----------------------- | ---------------------- | ------------------ | -------------------------------------- |
+| `datasource`            | `DatasourceAdapter<T>` | —                  | Data source for the master list/table  |
+| `treeDatasource`        | `ITreeDatasource<T>`   | —                  | Data source for tree mode              |
+| `masterTitle`           | `string`               | `'Items'`          | Title shown above the master pane      |
+| `detailPlaceholderText` | `string`               | `'Select an item'` | Placeholder when nothing is selected   |
+| `mode`                  | `'table' \| 'tree'`    | `'table'`          | Master pane display mode               |
+| `showFilter`            | `boolean`              | `false`            | Show a filter section above the master |
 
 #### Outputs
 
-- `onSelectItem: EventEmitter<MasterItem>` - Emitted when user selects an item
+| Output               | Type | Description                    |
+| -------------------- | ---- | ------------------------------ |
+| `selectedItemChange` | `T`  | Emitted when selection changes |
 
-#### Content Projection
+#### Content projection
 
-The component supports content projection for the detail panel. Use `<ng-content></ng-content>` in your template to display custom detail content.
+- **Columns** — project `UITableViewColumn` children for table mode
+- **`#detail` template** — rendered in the detail pane with the selected item
+- **`#filter` template** — optional filter controls above the master pane
+
+---
 
 ## Features
 
-✅ Built on Angular Material components (List, Divider)  
-✅ Responsive grid layout (desktop & mobile)  
-✅ Smooth Material transitions and animations  
-✅ Keyboard navigation support  
-✅ Material list activation states  
-✅ State management with signals  
-✅ Full TypeScript support  
-✅ OnPush change detection  
-✅ Mobile-friendly design  
-✅ Accessible ARIA attributes  
-✅ Material theming support
-
-## Responsive Behavior
-
-- **Desktop (> 768px)**: Two-column layout (300px master + detail)
-- **Mobile (≤ 768px)**: Stacked layout
-
+- Standalone component — no module imports needed
+- Responsive grid layout (two-column on desktop, stacked on mobile)
+- Supports both flat-list (table) and hierarchical (tree) master views
+- Signal-based state management
+- OnPush change detection
+- Keyboard navigation support
+- CSS custom-property theming (`--ui-*` tokens)
+- Light & dark mode support

@@ -1,13 +1,26 @@
 // Theredhead UI Theme - Typography
-// Material 3 typography configuration
+// Standalone typography configuration — no external dependency.
 
-@use '@angular/material' as mat;
+/// Default font stacks
+$font-family-sans: "Cantarell", "Noto Sans", "Segoe UI", sans-serif !default;
+$font-family-mono:
+  "JetBrains Mono", "Fira Code", "Source Code Pro", monospace !default;
 
-/// Creates the typography configuration for the theme
-/// Uses Material 3 typography scale with customizable font family
-@function create-typography($font-family: 'Roboto, sans-serif') {
-  @return mat.define-typography((
-    plain-family: $font-family,
-    brand-family: $font-family,
-  ));
-}
+/// Base font sizing scale (rem)
+$font-size-xs: 0.73rem !default;
+$font-size-sm: 0.8rem !default;
+$font-size-body: 0.875rem !default;
+$font-size-md: 0.9rem !default;
+$font-size-lg: 1.125rem !default;
+$font-size-xl: 1.5rem !default;
+
+/// Font weight scale
+$font-weight-regular: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+
+/// Line height
+$line-height-tight: 1.2 !default;
+$line-height-normal: 1.4 !default;
+$line-height-relaxed: 1.6 !default;
