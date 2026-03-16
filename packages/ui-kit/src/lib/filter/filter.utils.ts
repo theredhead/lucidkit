@@ -8,6 +8,7 @@ import type {
   FilterFieldType,
   FilterRule,
 } from "./filter.types";
+import { ANY_FIELD_KEY } from "./filter.types";
 
 // ---------------------------------------------------------------------------
 // Internal predicate builders
@@ -197,12 +198,20 @@ export function toPredicate<T>(
     fields.map((f) => [f.key, f]),
   );
   const validRules = descriptor.rules.filter(
-    (r) => r.field && fieldMap.has(r.field),
+    (r) => r.field && (r.field === ANY_FIELD_KEY || fieldMap.has(r.field)),
   );
 
   if (validRules.length === 0) return undefined;
 
   const tests = validRules.map((r) => {
+    if (r.field === ANY_FIELD_KEY) {
+      // "Any field" — test as string against every value in the row
+      const test = buildStringPredicate(r);
+      return (row: T) => {
+        const record = row as Record<string, unknown>;
+        return Object.values(record).some((val) => test(String(val ?? "")));
+      };
+    }
     const field = fieldMap.get(r.field)!;
     const test = buildPredicate(r, field.type);
     return (row: T) => test((row as Record<string, unknown>)[r.field]);
@@ -234,36 +243,53 @@ export function toFilterExpression<T>(
     fields.map((f) => [f.key, f]),
   );
   const validRules = descriptor.rules.filter(
-    (r) => r.field && fieldMap.has(r.field),
+    (r) => r.field && (r.field === ANY_FIELD_KEY || fieldMap.has(r.field)),
   );
 
   if (validRules.length === 0) return [];
 
-  if (descriptor.junction === "and") {
-    return validRules.map((r) => {
-      const field = fieldMap.get(r.field)!;
-      return {
-        property: r.field as keyof T & string,
-        predicate: buildPredicate(r, field.type) as Predicate<T[keyof T]>,
+  /**
+   * Builds a row-level test for a single rule, handling both
+   * "Any field" (string match across all values) and regular
+   * property-level rules.
+   */
+  function buildRowTest(r: FilterRule): (row: T) => boolean {
+    if (r.field === ANY_FIELD_KEY) {
+      const test = buildStringPredicate(r);
+      return (row: T) => {
+        const record = row as Record<string, unknown>;
+        return Object.values(record).some((val) => test(String(val ?? "")));
       };
-    });
+    }
+    const field = fieldMap.get(r.field)!;
+    const test = buildPredicate(r, field.type);
+    return (row: T) => test((row as Record<string, unknown>)[r.field]);
+  }
+
+  if (descriptor.junction === "and") {
+    // "Any field" rules become row-level predicates; others stay property-level
+    const entries: FilterExpression<T> = [];
+    for (const r of validRules) {
+      if (r.field === ANY_FIELD_KEY) {
+        entries.push({ predicate: buildRowTest(r) as Predicate<T> });
+      } else {
+        const field = fieldMap.get(r.field)!;
+        entries.push({
+          property: r.field as keyof T & string,
+          predicate: buildPredicate(r, field.type) as Predicate<T[keyof T]>,
+        });
+      }
+    }
+    return entries;
   }
 
   // OR → single row-level predicate
-  const predicates = validRules.map((r) => {
-    const field = fieldMap.get(r.field)!;
-    return {
-      key: r.field,
-      test: buildPredicate(r, field.type),
-    };
-  });
+  const rowTests = validRules.map((r) => buildRowTest(r));
 
   return [
     {
       predicate: ((row: T) =>
-        predicates.some((p) =>
-          p.test((row as Record<string, unknown>)[p.key]),
-        )) as Predicate<T>,
+        rowTests.some((t) => t(row))) as Predicate<T>,
     },
   ];
 }

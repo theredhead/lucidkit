@@ -171,12 +171,10 @@ export class UIFilterRow {
     const field = this.fields().find((f) => f.key === key);
     const ops = field ? operatorsForType(field.type) : [];
 
-    // Default to 'equals' when distinct values exist (select / autocomplete mode)
-    const distinct = this.distinctValuesMap().get(key);
     const defaultOp =
-      field?.type === "string" && distinct && distinct.length > 0
-        ? "equals"
-        : (ops[0]?.value ?? "equals");
+      field?.type === "string"
+        ? "contains"
+        : (ops[0]?.value ?? "contains");
 
     this.ruleChange.emit({
       ...this.rule(),

@@ -47,17 +47,16 @@ describe("UIFilter", () => {
   });
 
   describe("addRule", () => {
-    it("should add a rule using the first field", () => {
+    it("should add a rule defaulting to Any field", () => {
       component.addRule();
 
       expect(component.value().rules.length).toBe(1);
-      expect(component.value().rules[0].field).toBe("name");
+      expect(component.value().rules[0].field).toBe("__any__");
     });
 
-    it("should assign the first operator of that field type", () => {
+    it("should default to contains operator", () => {
       component.addRule();
 
-      // String fields default to "contains"
       expect(component.value().rules[0].operator).toBe("contains");
     });
 

@@ -21,6 +21,15 @@ export interface FilterFieldDefinition<T = any> {
   type: FilterFieldType;
 }
 
+/**
+ * Sentinel key used for the "Any field" option.
+ *
+ * When a filter rule uses this key, the comparison is performed
+ * as a case-insensitive string against *every* field value on the
+ * row. At least one field must match for the rule to pass.
+ */
+export const ANY_FIELD_KEY = "__any__";
+
 // ---------------------------------------------------------------------------
 // Operators
 // ---------------------------------------------------------------------------

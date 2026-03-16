@@ -17,7 +17,7 @@
   @for (rule of rules(); track rule.id; let idx = $index) {
     <ui-filter-row
       role="listitem"
-      [fields]="fields()"
+      [fields]="augmentedFields()"
       [rule]="rule"
       [distinctValuesMap]="distinctValuesMap()"
       (ruleChange)="updateRule(idx, $event)"
