@@ -44,37 +44,189 @@ describe("UIFilter", () => {
     it("should default allowJunction to false", () => {
       expect(component.allowJunction()).toBe(false);
     });
+
+    it("should default allowSimple to true", () => {
+      expect(component.allowSimple()).toBe(true);
+    });
+
+    it("should default allowAdvanced to true", () => {
+      expect(component.allowAdvanced()).toBe(true);
+    });
+
+    it('should default mode to "simple"', () => {
+      expect(component.mode()).toBe("simple");
+    });
+  });
+
+  describe("mode resolution", () => {
+    it("should start in advanced mode when allowSimple is false", async () => {
+      const f = TestBed.createComponent(UIFilter<TestRow>);
+      f.componentRef.setInput("fields", fields);
+      f.componentRef.setInput("allowSimple", false);
+      f.detectChanges();
+
+      expect(f.componentInstance.mode()).toBe("advanced");
+    });
+
+    it("should start in simple mode when allowAdvanced is false", async () => {
+      const f = TestBed.createComponent(UIFilter<TestRow>);
+      f.componentRef.setInput("fields", fields);
+      f.componentRef.setInput("allowAdvanced", false);
+      f.detectChanges();
+
+      expect(f.componentInstance.mode()).toBe("simple");
+    });
+  });
+
+  describe("simple mode", () => {
+    it("should render a search input in simple mode", () => {
+      const input = fixture.nativeElement.querySelector(
+        ".ui-filter__simple ui-input",
+      );
+      expect(input).toBeTruthy();
+    });
+
+    it("should not render filter rows in simple mode", () => {
+      const rows = fixture.nativeElement.querySelectorAll("ui-filter-row");
+      expect(rows.length).toBe(0);
+    });
+
+    it("should build an 'any field contains' rule from simple search", () => {
+      component.onSimpleInput("hello");
+      fixture.detectChanges();
+
+      const rules = component.value().rules;
+      expect(rules.length).toBe(1);
+      expect(rules[0].field).toBe("__any__");
+      expect(rules[0].operator).toBe("contains");
+      expect(rules[0].value).toBe("hello");
+    });
+
+    it("should clear rules when simple search is cleared", () => {
+      component.onSimpleInput("hello");
+      fixture.detectChanges();
+
+      component.onSimpleInput("");
+      fixture.detectChanges();
+
+      expect(component.value().rules.length).toBe(0);
+    });
+
+    it("should show mode toggle when both modes allowed", () => {
+      const btn = fixture.nativeElement.querySelector(
+        ".ui-filter__simple ui-button",
+      );
+      expect(btn).toBeTruthy();
+    });
+
+    it("should hide mode toggle when only simple is allowed", () => {
+      fixture.componentRef.setInput("allowAdvanced", false);
+      fixture.detectChanges();
+
+      const btn = fixture.nativeElement.querySelector(
+        ".ui-filter__simple ui-button",
+      );
+      expect(btn).toBeFalsy();
+    });
+  });
+
+  describe("toggleMode", () => {
+    it("should switch from simple to advanced", () => {
+      expect(component.mode()).toBe("simple");
+      component.toggleMode();
+      fixture.detectChanges();
+
+      expect(component.mode()).toBe("advanced");
+    });
+
+    it("should switch from advanced to simple", () => {
+      component.toggleMode(); // → advanced
+      component.toggleMode(); // → simple
+      fixture.detectChanges();
+
+      expect(component.mode()).toBe("simple");
+    });
+
+    it("should add an initial rule when switching to advanced with no rules", () => {
+      component.toggleMode();
+      fixture.detectChanges();
+
+      expect(component.value().rules.length).toBe(1);
+    });
+
+    it("should carry over simple search term to advanced rule", () => {
+      component.onSimpleInput("test");
+      fixture.detectChanges();
+
+      component.toggleMode();
+      fixture.detectChanges();
+
+      const rules = component.value().rules;
+      expect(rules.length).toBe(1);
+      expect(rules[0].field).toBe("__any__");
+      expect(rules[0].operator).toBe("contains");
+      expect(rules[0].value).toBe("test");
+    });
+
+    it("should extract simple search term when switching to simple", () => {
+      component.toggleMode(); // → advanced
+      component.updateRule(0, {
+        id: 1,
+        field: "__any__",
+        operator: "contains",
+        value: "extracted",
+      });
+      fixture.detectChanges();
+
+      component.toggleMode(); // → simple
+      fixture.detectChanges();
+
+      expect(component.simpleQuery()).toBe("extracted");
+    });
   });
 
   describe("addRule", () => {
+    beforeEach(() => {
+      // Switch to advanced mode for addRule tests
+      component.toggleMode();
+      fixture.detectChanges();
+    });
+
     it("should add a rule defaulting to Any field", () => {
+      const initialCount = component.value().rules.length;
       component.addRule();
 
-      expect(component.value().rules.length).toBe(1);
-      expect(component.value().rules[0].field).toBe("__any__");
+      expect(component.value().rules.length).toBe(initialCount + 1);
+      const lastRule =
+        component.value().rules[component.value().rules.length - 1];
+      expect(lastRule.field).toBe("__any__");
     });
 
     it("should default to contains operator", () => {
       component.addRule();
 
-      expect(component.value().rules[0].operator).toBe("contains");
+      const lastRule =
+        component.value().rules[component.value().rules.length - 1];
+      expect(lastRule.operator).toBe("contains");
     });
 
     it("should assign incremental ids", () => {
       component.addRule();
       component.addRule();
-      component.addRule();
 
       const ids = component.value().rules.map((r) => r.id);
+      // First rule is from toggleMode (id=1), then two added (id=2, id=3)
       expect(ids).toEqual([1, 2, 3]);
     });
   });
 
   describe("removeRule", () => {
     it("should remove the rule at the given index", () => {
-      component.addRule();
-      component.addRule();
-      component.addRule();
+      component.toggleMode(); // → advanced (creates rule id=1)
+      fixture.detectChanges();
+
+      component.addRule(); // id=2
+      component.addRule(); // id=3
 
       component.removeRule(1);
 
@@ -85,7 +237,8 @@ describe("UIFilter", () => {
 
   describe("updateRule", () => {
     it("should replace a rule at the given index", () => {
-      component.addRule();
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
 
       const updated: FilterRule = {
         ...component.value().rules[0],
@@ -97,7 +250,9 @@ describe("UIFilter", () => {
     });
 
     it("should not affect other rules", () => {
-      component.addRule();
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
+
       component.addRule();
 
       const updated: FilterRule = {
@@ -117,7 +272,9 @@ describe("UIFilter", () => {
     });
 
     it("should preserve existing rules when changing junction", () => {
-      component.addRule();
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
+
       component.addRule();
 
       component.setJunction("or");
@@ -141,7 +298,9 @@ describe("UIFilter", () => {
     });
 
     it("should emit a predicate when valid rules exist", () => {
-      component.addRule();
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
+
       component.updateRule(0, {
         ...component.value().rules[0],
         field: "name",
@@ -158,7 +317,12 @@ describe("UIFilter", () => {
     });
   });
 
-  describe("template rendering", () => {
+  describe("template rendering (advanced mode)", () => {
+    beforeEach(() => {
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
+    });
+
     it("should render an add-rule button", () => {
       const btn = fixture.nativeElement.querySelector(
         ".ui-filter__actions ui-button",
@@ -168,11 +332,10 @@ describe("UIFilter", () => {
 
     it("should render filter rows when rules are added", () => {
       component.addRule();
-      component.addRule();
       fixture.detectChanges();
 
       const rows = fixture.nativeElement.querySelectorAll("ui-filter-row");
-      expect(rows.length).toBe(2);
+      expect(rows.length).toBe(2); // one from toggleMode, one from addRule
     });
 
     it("should not show junction selector when allowJunction is false", () => {
@@ -198,6 +361,19 @@ describe("UIFilter", () => {
       const host: HTMLElement = fixture.nativeElement;
       expect(host.classList.contains("ui-filter")).toBe(true);
     });
+
+    it("should have the simple mode class when in simple mode", () => {
+      const host: HTMLElement = fixture.nativeElement;
+      expect(host.classList.contains("ui-filter--simple")).toBe(true);
+    });
+
+    it("should have the advanced mode class when in advanced mode", () => {
+      component.toggleMode();
+      fixture.detectChanges();
+
+      const host: HTMLElement = fixture.nativeElement;
+      expect(host.classList.contains("ui-filter--advanced")).toBe(true);
+    });
   });
 
   describe("accessibility", () => {
@@ -212,16 +388,25 @@ describe("UIFilter", () => {
     });
 
     it('should have aria-live="polite" on the rules container', () => {
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
+
       const rules = fixture.nativeElement.querySelector(".ui-filter__rules");
       expect(rules.getAttribute("aria-live")).toBe("polite");
     });
 
     it('should have role="list" on the rules container', () => {
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
+
       const rules = fixture.nativeElement.querySelector(".ui-filter__rules");
       expect(rules.getAttribute("role")).toBe("list");
     });
 
     it("should have aria-label on the add-rule button", () => {
+      component.toggleMode(); // → advanced
+      fixture.detectChanges();
+
       const btn = fixture.nativeElement.querySelector(
         ".ui-filter__actions ui-button button",
       );

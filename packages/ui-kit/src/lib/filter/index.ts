@@ -3,6 +3,7 @@ export {
   type FilterFieldDefinition,
   type FilterFieldType,
   ANY_FIELD_KEY,
+  type FilterMode,
   type StringOperator,
   type NumberOperator,
   type DateOperator,

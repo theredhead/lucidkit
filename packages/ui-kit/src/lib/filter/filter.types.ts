@@ -30,6 +30,14 @@ export interface FilterFieldDefinition<T = any> {
  */
 export const ANY_FIELD_KEY = "__any__";
 
+/**
+ * The display mode of the filter component.
+ *
+ * - `simple` — a single search textbox backed by "Any field contains" logic.
+ * - `advanced` — the full multi-rule predicate builder.
+ */
+export type FilterMode = "simple" | "advanced";
+
 // ---------------------------------------------------------------------------
 // Operators
 // ---------------------------------------------------------------------------

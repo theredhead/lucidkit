@@ -1,31 +1,62 @@
-<div class="ui-filter__header" role="group" aria-label="Filter junction">
-  @if (allowJunction()) {
-    <span id="filter-junction-label">Match</span>
-    <ui-select
-      ariaLabel="Filter junction"
-      [options]="junctionOptions"
-      [value]="currentJunction()"
-      (valueChange)="setJunction($event)"
+@if (mode() === 'simple') {
+  <!-- ── Simple mode: single search textbox ── -->
+  <div class="ui-filter__simple">
+    <ui-input
+      type="text"
+      ariaLabel="Search all fields"
+      placeholder="Search…"
+      [value]="simpleQuery()"
+      (valueChange)="onSimpleInput($event)"
     />
-    <span>of the following rules:</span>
-  } @else {
-    <span>Match <strong>all</strong> of the following rules:</span>
-  }
-</div>
+    @if (showModeToggle()) {
+      <ui-button
+        variant="ghost"
+        size="sm"
+        ariaLabel="Switch to advanced filter"
+        (click)="toggleMode()"
+      >Advanced</ui-button>
+    }
+  </div>
+} @else {
+  <!-- ── Advanced mode: full predicate builder ── -->
+  <div class="ui-filter__header" role="group" aria-label="Filter junction">
+    @if (allowJunction()) {
+      <span id="filter-junction-label">Match</span>
+      <ui-select
+        ariaLabel="Filter junction"
+        [options]="junctionOptions"
+        [value]="currentJunction()"
+        (valueChange)="setJunction($event)"
+      />
+      <span>of the following rules:</span>
+    } @else {
+      <span>Match <strong>all</strong> of the following rules:</span>
+    }
+    @if (showModeToggle()) {
+      <ui-button
+        class="ui-filter__mode-toggle"
+        variant="ghost"
+        size="sm"
+        ariaLabel="Switch to simple search"
+        (click)="toggleMode()"
+      >Simple</ui-button>
+    }
+  </div>
 
-<div class="ui-filter__rules" role="list" aria-label="Filter rules" aria-live="polite">
-  @for (rule of rules(); track rule.id; let idx = $index) {
-    <ui-filter-row
-      role="listitem"
-      [fields]="augmentedFields()"
-      [rule]="rule"
-      [distinctValuesMap]="distinctValuesMap()"
-      (ruleChange)="updateRule(idx, $event)"
-      (remove)="removeRule(idx)"
-    />
-  }
-</div>
+  <div class="ui-filter__rules" role="list" aria-label="Filter rules" aria-live="polite">
+    @for (rule of rules(); track rule.id; let idx = $index) {
+      <ui-filter-row
+        role="listitem"
+        [fields]="augmentedFields()"
+        [rule]="rule"
+        [distinctValuesMap]="distinctValuesMap()"
+        (ruleChange)="updateRule(idx, $event)"
+        (remove)="removeRule(idx)"
+      />
+    }
+  </div>
 
-<div class="ui-filter__actions">
-  <ui-button variant="ghost" size="sm" ariaLabel="Add filter rule" (click)="addRule()">+ Add Rule</ui-button>
-</div>
+  <div class="ui-filter__actions">
+    <ui-button variant="ghost" size="sm" ariaLabel="Add filter rule" (click)="addRule()">+ Add Rule</ui-button>
+  </div>
+}
