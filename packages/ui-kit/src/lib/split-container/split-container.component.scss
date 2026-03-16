@@ -1,0 +1,131 @@
+// ── Light defaults ──
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  --ui-divider-width: 6px;
+  --ui-divider-bg: #e2e6eb;
+  --ui-divider-bg-hover: #c8cdd4;
+  --ui-divider-bg-active: #3584e4;
+  --ui-divider-handle: #a0a8b4;
+  --ui-divider-handle-hover: #6b7685;
+}
+
+// ── Dark mode: explicit class ──
+:host-context(html.dark-theme) {
+  --ui-divider-bg: #3a3f47;
+  --ui-divider-bg-hover: #505860;
+  --ui-divider-bg-active: #7ab0ff;
+  --ui-divider-handle: #6b7685;
+  --ui-divider-handle-hover: #a0a8b4;
+}
+
+// ── Dark mode: system preference fallback ──
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-divider-bg: #3a3f47;
+    --ui-divider-bg-hover: #505860;
+    --ui-divider-bg-active: #7ab0ff;
+    --ui-divider-handle: #6b7685;
+    --ui-divider-handle-hover: #a0a8b4;
+  }
+}
+
+/* ── Container ── */
+
+.sc-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+:host(.ui-split-container--vertical) .sc-container {
+  flex-direction: column;
+}
+
+/* ── Panels ── */
+
+.sc-panel {
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ── Divider ── */
+
+.sc-divider {
+  flex: 0 0 var(--ui-divider-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-divider-bg);
+  border: none;
+  outline: none;
+  user-select: none;
+  touch-action: none;
+  transition: background-color 0.15s ease;
+  position: relative;
+  z-index: 1;
+}
+
+:host(.ui-split-container--horizontal) .sc-divider {
+  cursor: col-resize;
+}
+
+:host(.ui-split-container--vertical) .sc-divider {
+  cursor: row-resize;
+}
+
+.sc-divider:hover,
+.sc-divider:focus-visible {
+  background: var(--ui-divider-bg-hover);
+}
+
+.sc-divider:focus-visible {
+  outline: 2px solid var(--ui-divider-bg-active);
+  outline-offset: -2px;
+}
+
+:host(.ui-split-container--dragging) .sc-divider {
+  background: var(--ui-divider-bg-active);
+}
+
+/* ── Divider handle grip ── */
+
+.sc-divider__handle {
+  border-radius: 2px;
+  background: var(--ui-divider-handle);
+  transition: background-color 0.15s ease;
+}
+
+.sc-divider:hover .sc-divider__handle,
+.sc-divider:focus-visible .sc-divider__handle {
+  background: var(--ui-divider-handle-hover);
+}
+
+:host(.ui-split-container--horizontal) .sc-divider__handle {
+  width: 2px;
+  height: 24px;
+}
+
+:host(.ui-split-container--vertical) .sc-divider__handle {
+  width: 24px;
+  height: 2px;
+}
+
+/* ── Prevent text selection during drag ── */
+
+:host(.ui-split-container--dragging) {
+  cursor: col-resize;
+}
+
+:host(.ui-split-container--dragging.ui-split-container--vertical) {
+  cursor: row-resize;
+}
+
+:host(.ui-split-container--dragging) .sc-panel {
+  pointer-events: none;
+  user-select: none;
+}

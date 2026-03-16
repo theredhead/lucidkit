@@ -459,6 +459,7 @@ const ORG_TREE: TreeNode<OrgNode>[] = [
     <ui-master-detail-view
       [treeDatasource]="treeDatasource"
       [treeDisplayWith]="displayWith"
+      [showFilter]="true"
       title="Organization"
       placeholder="Select a person to view their profile"
     >

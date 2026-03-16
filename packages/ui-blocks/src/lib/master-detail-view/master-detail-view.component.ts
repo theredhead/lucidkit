@@ -15,13 +15,14 @@ import {
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import {
-  ArrayDatasource,
+  ArrayDatasource as _ArrayDatasource,
   DatasourceAdapter,
   FilterableArrayDatasource,
   SelectionModel,
   UIFilter,
   UIIcon,
   UIIcons,
+  UISplitContainer,
   UITableView,
   UITableViewColumn,
   UITreeView,
@@ -30,6 +31,8 @@ import {
   type FilterDescriptor,
   type FilterFieldDefinition,
   type ITreeDatasource,
+  type SplitCollapseTarget,
+  type SplitPanelConstraints,
   type TreeNode,
   type TreeNodeContext,
 } from "@theredhead/ui-kit";
@@ -95,7 +98,14 @@ export interface MasterDetailContext<T> {
 @Component({
   selector: "ui-master-detail-view",
   standalone: true,
-  imports: [UITableView, UITreeView, UIFilter, NgTemplateOutlet, UIIcon],
+  imports: [
+    UISplitContainer,
+    UITableView,
+    UITreeView,
+    UIFilter,
+    NgTemplateOutlet,
+    UIIcon,
+  ],
   templateUrl: "./master-detail-view.component.html",
   styleUrl: "./master-detail-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -175,6 +185,32 @@ export class UIMasterDetailView<T = unknown> {
   public readonly filterFields = input<FilterFieldDefinition<T>[] | undefined>(
     undefined,
   );
+
+  /**
+   * Initial split sizes as a `[list, detail]` percentage tuple.
+   * Must sum to 100. Defaults to `[33, 67]`.
+   */
+  public readonly splitSizes = input<readonly [number, number]>([33, 67]);
+
+  /**
+   * Optional localStorage key for persisting the split panel sizes.
+   * When set the user's last divider position is restored on init.
+   */
+  public readonly splitName = input<string | undefined>(undefined);
+
+  /**
+   * Which panel to collapse when the divider is double-clicked.
+   * Defaults to `'first'` so the list panel can be collapsed.
+   */
+  public readonly splitCollapseTarget = input<SplitCollapseTarget>("first");
+
+  /**
+   * Size constraints for the list (first) panel in pixels.
+   * Defaults to `{ min: 200 }`.
+   */
+  public readonly listConstraints = input<SplitPanelConstraints>({
+    min: 200,
+  });
 
   // ── Outputs ───────────────────────────────────────────────────────
 
@@ -294,6 +330,9 @@ export class UIMasterDetailView<T = unknown> {
     const explicit = this.showFilter();
     if (explicit !== undefined) return explicit;
 
+    // Tree mode: auto-show when a tree datasource is provided
+    if (this.treeDatasource() !== undefined) return false;
+
     // Auto-detect: unwrap the DatasourceAdapter to check the raw datasource
     const adapter = this.resolvedDatasource();
     return adapter.datasource instanceof FilterableArrayDatasource;
@@ -312,6 +351,17 @@ export class UIMasterDetailView<T = unknown> {
     const explicit = this.filterFields();
     if (explicit) return explicit;
 
+    // ── Tree mode: infer from tree node data ──
+    const treeDs = this.treeDatasource();
+    if (treeDs) {
+      const flatData = this.collectTreeData(treeDs);
+      if (flatData.length === 0) return [];
+      return inferFilterFields(
+        flatData[0] as Record<string, unknown>,
+      ) as FilterFieldDefinition<T>[];
+    }
+
+    // ── Table mode: infer from columns + datasource rows ──
     // Derive column metadata from projected UITableViewColumn instances
     const cols = this.columns();
     const columnMeta: ColumnMeta[] = cols.map((c) => ({
@@ -358,6 +408,14 @@ export class UIMasterDetailView<T = unknown> {
    * @internal
    */
   protected readonly resolvedFilterData = computed<readonly T[]>(() => {
+    // ── Tree mode: flatten all node data ──
+    const treeDs = this.treeDatasource();
+    if (treeDs) {
+      const flatData = this.collectTreeData(treeDs);
+      return flatData.length < 1000 ? flatData : [];
+    }
+
+    // ── Table mode ──
     const adapter = this.resolvedDatasource();
     const raw = adapter.datasource;
 
@@ -392,6 +450,15 @@ export class UIMasterDetailView<T = unknown> {
 
   /** @internal — whether the filter section is collapsed. */
   protected readonly filterCollapsed = signal(false);
+
+  /**
+   * The current filter predicate for tree mode.
+   * Forwarded to the `<ui-tree-view>` `filterPredicate` input.
+   * @internal
+   */
+  protected readonly treeFilterPredicate = signal<Predicate<T> | undefined>(
+    undefined,
+  );
 
   // ── Protected constants ───────────────────────────────────────────
 
@@ -430,6 +497,13 @@ export class UIMasterDetailView<T = unknown> {
   public onFilterPredicateChange(predicate: Predicate<T> | undefined): void {
     this.predicateChange.emit(predicate);
 
+    // Tree mode: store predicate for the tree-view
+    if (this.isTreeMode()) {
+      this.treeFilterPredicate.set(predicate);
+      return;
+    }
+
+    // Table mode: apply to FilterableArrayDatasource
     const adapter = this.resolvedDatasource();
     const raw = adapter.datasource;
     if (raw instanceof FilterableArrayDatasource) {
@@ -444,5 +518,26 @@ export class UIMasterDetailView<T = unknown> {
   /** @internal — toggle filter visibility. */
   protected toggleFilter(): void {
     this.filterCollapsed.update((v) => !v);
+  }
+
+  // ── Private helpers ───────────────────────────────────────────────
+
+  /**
+   * Recursively collects the `data` payloads from every node in the
+   * tree datasource into a flat array. Used to infer filter fields
+   * and provide distinct values in tree mode.
+   */
+  private collectTreeData(ds: ITreeDatasource<T>): T[] {
+    const items: T[] = [];
+    const walk = (nodes: TreeNode<T>[]): void => {
+      for (const node of nodes) {
+        items.push(node.data);
+        const children = ds.getChildren(node);
+        if (Array.isArray(children)) walk(children);
+      }
+    };
+    const roots = ds.getRootNodes();
+    if (Array.isArray(roots)) walk(roots);
+    return items;
   }
 }

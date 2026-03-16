@@ -1,0 +1,25 @@
+<div class="sc-container" #container>
+  <div class="sc-panel sc-panel--first" [style.flex]="firstFlex()">
+    <ng-content select="[first]" />
+  </div>
+
+  <div
+    class="sc-divider"
+    role="separator"
+    tabindex="0"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-orientation]="orientation()"
+    [attr.aria-valuenow]="firstPercent()"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    (pointerdown)="onDividerPointerDown($event)"
+    (dblclick)="onDividerDblClick()"
+    (keydown)="onDividerKeydown($event)"
+  >
+    <div class="sc-divider__handle"></div>
+  </div>
+
+  <div class="sc-panel sc-panel--second" [style.flex]="secondFlex()">
+    <ng-content select="[second]" />
+  </div>
+</div>

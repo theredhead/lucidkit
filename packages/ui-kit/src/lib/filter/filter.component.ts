@@ -11,6 +11,8 @@ import {
 } from "@angular/core";
 
 import { UIButton } from "../button/button.component";
+import { UIIcon } from "../icon/icon.component";
+import { UIIcons } from "../icon/lucide-icons.generated";
 import { UIInput } from "../input/input.component";
 import { UISelect } from "../select/select.component";
 import type { SelectOption } from "../select/select.component";
@@ -52,7 +54,7 @@ const JUNCTION_OPTIONS: SelectOption[] = [
 @Component({
   selector: "ui-filter",
   standalone: true,
-  imports: [UISelect, UIButton, UIInput, UIFilterRow],
+  imports: [UISelect, UIButton, UIIcon, UIInput, UIFilterRow],
   templateUrl: "./filter.component.html",
   styleUrl: "./filter.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -179,6 +181,12 @@ export class UIFilter<T = any> {
   // ── Derived state ───────────────────────────────────────────────────
 
   protected readonly junctionOptions = JUNCTION_OPTIONS;
+
+  /** @internal Icon shown on the "Advanced" toggle button. */
+  protected readonly advancedIcon = UIIcons.Lucide.Account.SlidersHorizontal;
+
+  /** @internal Icon shown on the "Simple" toggle button. */
+  protected readonly simpleIcon = UIIcons.Lucide.Social.Search;
 
   protected readonly currentJunction = computed(() => this.value().junction);
 
