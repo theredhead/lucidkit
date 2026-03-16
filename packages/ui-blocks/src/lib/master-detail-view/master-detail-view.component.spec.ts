@@ -300,10 +300,10 @@ describe("UIMasterDetailView", () => {
       expect(bare.componentInstance.title()).toBe("Items");
     });
 
-    it("should default showFilter to false", () => {
+    it("should default showFilter to undefined (auto-detect)", () => {
       const bare = TestBed.createComponent(UIMasterDetailView);
       bare.detectChanges();
-      expect(bare.componentInstance.showFilter()).toBe(false);
+      expect(bare.componentInstance.showFilter()).toBeUndefined();
     });
 
     it("should default filterExpanded to true", () => {

@@ -1,13 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  signal,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import {
-  ArrayDatasource,
   ArrayTreeDatasource,
   DatasourceAdapter,
   FilterableArrayDatasource,
@@ -214,18 +208,12 @@ class DefaultDemo {
   protected readonly selected = signal<Employee | undefined>(undefined);
 }
 
-// ── Demo: With Filter ────────────────────────────────────────────────
-
-const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
-  { key: "name", label: "Name", type: "string" },
-  { key: "department", label: "Department", type: "string" },
-  { key: "role", label: "Role", type: "string" },
-];
+// ── Demo: With Filter (auto-inferred) ────────────────────────────────
 
 @Component({
   selector: "ui-mdv-filter-demo",
   standalone: true,
-  imports: [UIMasterDetailView, UITemplateColumn, UIAvatar, UIFilter],
+  imports: [UIMasterDetailView, UITemplateColumn, UIAvatar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -240,20 +228,10 @@ const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
   ],
   template: `
     <ui-master-detail-view
-      [datasource]="adapter"
+      [data]="employees"
       title="Employees"
       [showFilter]="true"
     >
-      <ng-template #filter>
-        <ui-filter
-          [fields]="fields"
-          [data]="employees"
-          [allowJunction]="true"
-          [(value)]="filterDescriptor"
-          (predicateChange)="onPredicate($event)"
-        />
-      </ng-template>
-
       <ui-template-column key="name" headerText="Employee">
         <ng-template let-row>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -287,6 +265,66 @@ const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
   `,
 })
 class FilterDemo {
+  protected readonly employees = EMPLOYEES;
+}
+
+// ── Demo: With Custom Filter Template ────────────────────────────────
+
+const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
+  { key: "name", label: "Name", type: "string" },
+  { key: "department", label: "Department", type: "string" },
+  { key: "role", label: "Role", type: "string" },
+];
+
+@Component({
+  selector: "ui-mdv-custom-filter-demo",
+  standalone: true,
+  imports: [UIMasterDetailView, UITextColumn, UIFilter],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 520px;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+    `,
+  ],
+  template: `
+    <ui-master-detail-view
+      [datasource]="adapter"
+      title="Employees"
+      [showFilter]="true"
+    >
+      <ng-template #filter>
+        <ui-filter
+          [fields]="fields"
+          [data]="employees"
+          [allowJunction]="true"
+          [(value)]="filterDescriptor"
+          (predicateChange)="onPredicate($event)"
+        />
+      </ng-template>
+
+      <ui-text-column key="name" headerText="Name" [sortable]="true" />
+      <ui-text-column key="department" headerText="Department" />
+      <ui-text-column key="role" headerText="Role" />
+
+      <ng-template #detail let-person>
+        <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
+        <p style="margin: 0; font-size: 0.88rem; opacity: 0.7">
+          {{ person.department }} · {{ person.role }}
+        </p>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem">
+          {{ person.email }}
+        </p>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class CustomFilterDemo {
   protected readonly fields = FILTER_FIELDS;
   protected readonly employees = EMPLOYEES;
   protected readonly filterDescriptor = signal<FilterDescriptor<Employee>>({
@@ -301,7 +339,6 @@ class FilterDemo {
     predicate: ((item: Employee) => boolean) | undefined,
   ): void {
     this.datasource.applyPredicate(predicate ?? null);
-    // Reset to page 0 and refresh
     this.adapter.pageIndex.set(0);
     this.adapter.totalItems.set(this.datasource.getNumberOfItems() as number);
   }
@@ -474,7 +511,7 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [DefaultDemo, FilterDemo, TreeDemo],
+      imports: [DefaultDemo, FilterDemo, CustomFilterDemo, TreeDemo],
     }),
   ],
 };
@@ -502,9 +539,33 @@ export const Default: Story = {
   },
 };
 
-/** With a collapsible filter panel above the list. */
+/** With auto-inferred filter — just `[showFilter]="true"`, no boilerplate. */
 export const WithFilter: Story = {
   render: () => ({ template: `<ui-mdv-filter-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-master-detail-view [data]="employees" title="Employees" [showFilter]="true">
+  <ui-template-column key="name" headerText="Employee">
+    <ng-template let-row>
+      <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+      {{ row.name }}
+    </ng-template>
+  </ui-template-column>
+
+  <ng-template #detail let-person>
+    <h3>{{ person.name }}</h3>
+  </ng-template>
+</ui-master-detail-view>`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/** With a fully custom filter template (override). */
+export const CustomFilterTemplate: Story = {
+  render: () => ({ template: `<ui-mdv-custom-filter-demo />` }),
   parameters: {
     docs: {
       source: {
@@ -515,17 +576,7 @@ export const WithFilter: Story = {
                (predicateChange)="onPredicate($event)" />
   </ng-template>
 
-  <ui-template-column key="name" headerText="Employee">
-    <ng-template let-row>
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
-        <div>
-          <span style="font-weight: 600">{{ row.name }}</span>
-          <span style="font-size: 0.78rem; opacity: 0.65">{{ row.role }}</span>
-        </div>
-      </div>
-    </ng-template>
-  </ui-template-column>
+  <ui-text-column key="name" headerText="Name" [sortable]="true" />
 
   <ng-template #detail let-person>
     <h3>{{ person.name }}</h3>

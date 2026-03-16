@@ -19,3 +19,9 @@ export {
   isNoValueOperator,
 } from "./filter.types";
 export { toFilterExpression, toPredicate } from "./filter.utils";
+export {
+  inferFilterFields,
+  humanizeKey,
+  sniffFieldType,
+  type ColumnMeta,
+} from "./infer-filter-fields";
