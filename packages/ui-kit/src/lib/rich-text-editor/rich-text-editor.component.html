@@ -84,6 +84,16 @@
           role="listbox"
           aria-label="Available placeholders"
         >
+          <div class="rte-placeholder-search">
+            <input
+              type="text"
+              class="rte-placeholder-search-input"
+              placeholder="Search placeholders…"
+              aria-label="Filter placeholders"
+              (input)="onPlaceholderSearch($event)"
+              (mousedown)="$event.stopPropagation()"
+            />
+          </div>
           @for (group of placeholdersByCategory(); track group.category) {
             @if (group.category) {
               <div class="rte-placeholder-category">{{ group.category }}</div>
@@ -101,29 +111,35 @@
               </button>
             }
           }
+          @if (placeholdersByCategory().length === 0) {
+            <div class="rte-placeholder-empty">No matches</div>
+          }
         </div>
       }
     </div>
   }
+
   <!-- Source toggle -->
-  <span class="rte-toolbar-separator" aria-hidden="true"></span>
-  <button
-    type="button"
-    class="rte-toolbar-btn rte-toolbar-btn--source"
-    [class.rte-toolbar-btn--active]="isSourceMode()"
-    aria-label="Edit HTML source"
-    title="Edit HTML source"
-    [attr.aria-pressed]="isSourceMode()"
-    [disabled]="disabled() || readonly()"
-    (mousedown)="$event.preventDefault()"
-    (click)="toggleSourceMode()"
-  >
-    <ui-icon [svg]="sourceIcon" [size]="16" />
-  </button>
+  @if (!isMarkdownMode()) {
+    <span class="rte-toolbar-separator" aria-hidden="true"></span>
+    <button
+      type="button"
+      class="rte-toolbar-btn rte-toolbar-btn--source"
+      [class.rte-toolbar-btn--active]="isSourceMode()"
+      [attr.aria-label]="sourceToggleLabel()"
+      [attr.title]="sourceToggleLabel()"
+      [attr.aria-pressed]="isSourceMode()"
+      [disabled]="disabled() || readonly()"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleSourceMode()"
+    >
+      <ui-icon [svg]="sourceIcon" [size]="16" />
+    </button>
+  }
 </div>
 
-<!-- ── Editor area ────────────────────────────────────────── -->
-@if (isSourceMode()) {
+<!-- ── HTML source textarea (HTML mode only) ──────────────── -->
+@if (!isMarkdownMode() && isSourceMode()) {
   <textarea
     class="rte-source-editor"
     [attr.aria-label]="ariaLabel() + ' (HTML source)'"
@@ -137,10 +153,33 @@
   ></textarea>
   <div class="rte-preview-label" aria-hidden="true">Preview</div>
 }
+
+<!-- ── Markdown textarea (Markdown mode) ─────────────────── -->
+@if (isMarkdownMode()) {
+  <textarea
+    #mdTextarea
+    class="rte-source-editor rte-markdown-editor"
+    [attr.aria-label]="ariaLabel()"
+    [value]="value()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    [attr.data-placeholder]="placeholder()"
+    [attr.placeholder]="placeholder()"
+    (input)="onSourceInput($event)"
+    (focus)="onEditorFocus()"
+    (blur)="onEditorBlur()"
+    (paste)="onEditorPaste($event)"
+    (keydown)="onEditorKeydown($event)"
+    spellcheck="true"
+  ></textarea>
+  <div class="rte-preview-label" aria-hidden="true">Preview</div>
+}
+
+<!-- ── WYSIWYG editor / preview ──────────────────────────── -->
 <div
   class="rte-editor-wrapper"
-  [class.rte-editor-wrapper--focused]="isFocused() && !isSourceMode()"
-  [class.rte-editor-wrapper--preview]="isSourceMode()"
+  [class.rte-editor-wrapper--focused]="isFocused() && !isSourceMode() && !isMarkdownMode()"
+  [class.rte-editor-wrapper--preview]="isSourceMode() || isMarkdownMode()"
 >
   <div
     #editorEl
@@ -148,8 +187,8 @@
     role="textbox"
     tabindex="0"
     aria-multiline="true"
-    [attr.aria-label]="ariaLabel()"
-    [attr.contenteditable]="!disabled() && !readonly() && !isSourceMode()"
+    [attr.aria-label]="isMarkdownMode() ? ariaLabel() + ' (preview)' : ariaLabel()"
+    [attr.contenteditable]="!disabled() && !readonly() && !isSourceMode() && !isMarkdownMode()"
     [attr.data-placeholder]="placeholder()"
     (input)="onEditorInput()"
     (focus)="onEditorFocus()"
@@ -158,3 +197,14 @@
     (keydown)="onEditorKeydown($event)"
   ></div>
 </div>
+
+<!-- ── Character count footer ────────────────────────────── -->
+@if (maxLength(); as max) {
+  <div
+    class="rte-footer"
+    [class.rte-footer--over]="isOverMaxLength()"
+    aria-live="polite"
+  >
+    <span class="rte-char-count">{{ charCount() }} / {{ max }}</span>
+  </div>
+}

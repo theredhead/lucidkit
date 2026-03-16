@@ -463,6 +463,50 @@ class ManualDismissDemo {
 const meta: Meta = {
   title: "@theredhead/UI Kit/Popover",
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          '`PopoverService` provides an imperative API for opening floating popover panels anchored to any DOM element. It uses the native Popover API (`popover="auto"` or `popover="manual"`) for stacking and light-dismiss behaviour.',
+          "",
+          "## Key Features",
+          "",
+          "- **Anchored positioning** — popovers attach to a trigger element with configurable vertical and horizontal alignment",
+          "- **Component projection** — pass any Angular component as the popover content; forward `inputs` and `outputs`",
+          "- **Light dismiss** — by default, clicking outside closes the popover; set `closeOnOutsideClick: false` for manual mode",
+          "- **Result subscription** — `ref.closed` is an `Observable` that emits the close value (useful for menus and confirmations)",
+          "- **Placement options** — `verticalAxisAlignment` (`top`, `bottom`, `center`, `auto`) and `horizontalAxisAlignment` (`start`, `end`, `center`, `auto`)",
+          "",
+          "## Usage",
+          "",
+          "```ts",
+          "private readonly popover = inject(PopoverService);",
+          "",
+          "this.popover.openPopover({",
+          "  component: MyContent,",
+          "  anchor: buttonElement,",
+          '  ariaLabel: "My popover",',
+          '  inputs: { title: "Hello" },',
+          "  outputs: { chosen: (v) => console.log(v) },",
+          "});",
+          "```",
+          "",
+          "## PopoverConfig",
+          "",
+          "| Option | Type | Default | Description |",
+          "|--------|------|---------|-------------|",
+          "| `component` | `Type<T>` | *(required)* | The Angular component to render |",
+          "| `anchor` | `HTMLElement` | *(required)* | The DOM element to anchor to |",
+          '| `verticalAxisAlignment` | `"top" \\| "bottom" \\| "center" \\| "auto"` | `"auto"` | Vertical placement |',
+          '| `horizontalAxisAlignment` | `"start" \\| "end" \\| "center" \\| "auto"` | `"auto"` | Horizontal placement |',
+          "| `closeOnOutsideClick` | `boolean` | `true` | Whether clicking outside closes the popover |",
+          "| `inputs` | `Record<string, any>` | — | Input bindings forwarded to the component |",
+          "| `outputs` | `Record<string, Function>` | — | Output handlers wired to the component |",
+          "| `ariaLabel` | `string` | — | Accessible label for the popover container |",
+        ].join("\n"),
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -478,7 +522,10 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-/** Rich tooltip popover with title and description. */
+/**
+ * **Rich tooltip** — A popover used as an enhanced tooltip with a title
+ * and body text. Opens on button click and auto-dismisses on outside click.
+ */
 export const RichTooltip: Story = {
   render: () => ({
     template: `<ui-popover-tooltip-demo />`,
@@ -500,8 +547,9 @@ this.popover.openPopover({
 };
 
 /**
- * Context menu with Cut/Copy/Paste/Delete actions.
- * Demonstrates output wiring and result subscription.
+ * **Context menu** — A popover rendering Cut / Copy / Paste / Delete
+ * actions. Demonstrates output wiring via the `outputs` config and
+ * subscribing to the `closed` observable for the chosen action.
  */
 export const ContextMenu: Story = {
   render: () => ({
@@ -530,7 +578,10 @@ export const ContextMenu: Story = {
   },
 };
 
-/** Dropdown action menu anchored to a ghost button. */
+/**
+ * **Action menu** — A dropdown-style action menu anchored to a ghost
+ * button. Selecting an action closes the popover and emits the result.
+ */
 export const ActionMenu: Story = {
   render: () => ({
     template: `<ui-popover-action-menu-demo />`,
@@ -556,8 +607,9 @@ export const ActionMenu: Story = {
 };
 
 /**
- * Shows four buttons with different placement options.
- * Click any button to see the popover appear on that side.
+ * **Placement** — Four buttons demonstrate different popover placements:
+ * top, bottom, left, and right. Click each button to see the popover
+ * appear on that side of the trigger.
  */
 export const Placement: Story = {
   render: () => ({
@@ -583,8 +635,10 @@ export const Placement: Story = {
 };
 
 /**
- * Popover with `closeOnOutsideClick: false` — uses `popover="manual"`
- * so it stays open until explicitly dismissed.
+ * **Manual dismiss** — The popover uses `popover="manual"` so it stays
+ * open even when clicking outside. It must be dismissed programmatically
+ * via `ref.close()`. Useful for persistent tooltips or step-by-step
+ * onboarding flows.
  */
 export const ManualDismiss: Story = {
   render: () => ({

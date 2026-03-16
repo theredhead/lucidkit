@@ -6,11 +6,33 @@ const meta: Meta<UIBadge> = {
   title: "@theredhead/UI Kit/Badge",
   component: UIBadge,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A small status indicator that conveys a numeric count, a presence dot, " +
+          "or a short text label.\n\n" +
+          "### Variants\n" +
+          "| Variant | Purpose | Example |\n" +
+          "|---------|---------|---------|\n" +
+          "| `count` | Numeric notification badge | Unread messages (5) |\n" +
+          "| `dot` | Presence / status indicator | Online status |\n" +
+          '| `label` | Short text tag | "New", "Beta" |\n\n' +
+          "### Colors\n" +
+          "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
+          "### Overflow\n" +
+          "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
+          '(e.g. "99+").',
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: "select",
       options: ["count", "dot", "label"] satisfies BadgeVariant[],
-      description: "Visual variant",
+      description:
+        "Controls the visual shape: `count` shows a number, `dot` shows a " +
+        "small circle, `label` renders projected text content.",
     },
     color: {
       control: "select",
@@ -21,15 +43,21 @@ const meta: Meta<UIBadge> = {
         "danger",
         "neutral",
       ] satisfies BadgeColor[],
-      description: "Color preset",
+      description:
+        "Semantic colour preset. Maps to `--ui-badge-bg` and " +
+        "`--ui-badge-text` CSS custom properties.",
     },
     count: {
       control: "number",
-      description: "Count value (count variant only)",
+      description:
+        "Numeric value displayed when `variant` is `count`. " +
+        "Clamped to `maxCount` with a `+` suffix when exceeded.",
     },
     maxCount: {
       control: "number",
-      description: "Maximum count before showing max+",
+      description:
+        "Upper display limit for the `count` variant. Counts above this " +
+        'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
     },
   },
 };
@@ -37,7 +65,11 @@ const meta: Meta<UIBadge> = {
 export default meta;
 type Story = StoryObj<UIBadge>;
 
-/** Count badge. */
+/**
+ * A numeric count badge — the most common variant. Displays the
+ * current `count` value, or `maxCount+` when the count exceeds the
+ * maximum. Useful for notification counts, cart items, etc.
+ */
 export const Count: Story = {
   render: (args) => ({
     props: args,
@@ -46,14 +78,20 @@ export const Count: Story = {
   args: { count: 5, color: "danger", maxCount: 99 },
 };
 
-/** Overflow count. */
+/**
+ * Demonstrates overflow behaviour: when `count` (150) exceeds
+ * `maxCount` (99), the badge renders as "99+".
+ */
 export const Overflow: Story = {
   render: () => ({
     template: `<ui-badge [count]="150" [maxCount]="99" color="danger" />`,
   }),
 };
 
-/** Dot badge. */
+/**
+ * The `dot` variant renders a small coloured circle without text.
+ * Ideal for online/offline indicators, status dots, or attention markers.
+ */
 export const Dot: Story = {
   render: (args) => ({
     props: args,
@@ -62,14 +100,21 @@ export const Dot: Story = {
   args: { color: "success" },
 };
 
-/** Label badge. */
+/**
+ * The `label` variant renders projected text content inside the badge.
+ * Perfect for status tags like "New", "Beta", "Sale", or category labels.
+ */
 export const Label: Story = {
   render: () => ({
     template: `<ui-badge variant="label" color="primary">New</ui-badge>`,
   }),
 };
 
-/** All colors. */
+/**
+ * All five colour presets side-by-side for quick visual comparison.
+ * Each colour maps to semantic meaning: primary (info), success,
+ * warning, danger (error), and neutral.
+ */
 export const AllColors: Story = {
   render: () => ({
     template: `
@@ -84,7 +129,11 @@ export const AllColors: Story = {
   }),
 };
 
-/** All variants. */
+/**
+ * All three variants rendered together: a count badge, a status dot,
+ * and a text label. Shows how badges can convey different types
+ * of information at a glance.
+ */
 export const AllVariants: Story = {
   render: () => ({
     template: `

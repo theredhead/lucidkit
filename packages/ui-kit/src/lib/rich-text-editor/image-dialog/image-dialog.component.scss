@@ -1,0 +1,146 @@
+// Image dialog reuses the same visual design as the link dialog.
+// Shared classes are prefixed `ld-` (link-dialog) for consistency.
+
+:host {
+  display: block;
+  padding: 0.6rem;
+  min-width: 18rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+}
+
+.ld-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  & + .ld-field {
+    margin-top: 0.4rem;
+  }
+}
+
+.ld-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--theredhead-on-surface-variant, #5a6470);
+}
+
+:host-context(html.dark-theme) .ld-label {
+  color: var(--theredhead-on-surface-variant, #d0d8e3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) .ld-label {
+    color: var(--theredhead-on-surface-variant, #d0d8e3);
+  }
+}
+
+.ld-input {
+  appearance: none;
+  border: 1px solid var(--theredhead-outline-variant, #d7dce2);
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.45rem;
+  background: var(--theredhead-surface, #fff);
+  color: var(--theredhead-on-surface, #1d232b);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  outline: none;
+  transition: border-color 120ms ease;
+
+  &::placeholder {
+    color: var(--theredhead-on-surface-variant, #5a6470);
+    opacity: 0.7;
+  }
+
+  &:focus {
+    border-color: var(--theredhead-primary, #3584e4);
+    box-shadow: 0 0 0 1px var(--theredhead-primary, #3584e4);
+  }
+}
+
+:host-context(html.dark-theme) .ld-input {
+  background: var(--theredhead-surface, #1e2228);
+  color: var(--theredhead-on-surface, #f2f6fb);
+  border-color: var(--theredhead-outline-variant, #3a3f47);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) .ld-input {
+    background: var(--theredhead-surface, #1e2228);
+    color: var(--theredhead-on-surface, #f2f6fb);
+    border-color: var(--theredhead-outline-variant, #3a3f47);
+  }
+}
+
+.ld-actions {
+  display: flex;
+  gap: 0.35rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.ld-btn {
+  appearance: none;
+  border: 1px solid var(--theredhead-outline-variant, #d7dce2);
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.6rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease;
+  white-space: nowrap;
+}
+
+.ld-btn--apply {
+  background: var(--theredhead-primary, #3584e4);
+  color: #fff;
+  border-color: var(--theredhead-primary, #3584e4);
+
+  &:hover:not(:disabled) {
+    background: var(--theredhead-primary-hover, #2b71c7);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.ld-btn--cancel {
+  background: transparent;
+  color: var(--theredhead-on-surface, #1d232b);
+
+  &:hover {
+    background: var(--theredhead-surface-variant, #f0f2f5);
+  }
+}
+
+:host-context(html.dark-theme) {
+  .ld-btn--cancel {
+    color: var(--theredhead-on-surface, #f2f6fb);
+
+    &:hover {
+      background: var(--theredhead-surface-variant, #2a2f38);
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    .ld-btn--cancel {
+      color: var(--theredhead-on-surface, #f2f6fb);
+
+      &:hover {
+        background: var(--theredhead-surface-variant, #2a2f38);
+      }
+    }
+  }
+}

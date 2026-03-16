@@ -86,6 +86,30 @@ const meta: Meta<UISlider> = {
   title: "@theredhead/UI Kit/Slider",
   component: UISlider,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A range-input component that supports both single-value and " +
+          "dual-thumb range selection.\n\n" +
+          "### Features\n" +
+          "- **Single mode** — one draggable thumb for scalar values (e.g. volume)\n" +
+          "- **Range mode** — two thumbs for selecting a min/max interval (e.g. price range)\n" +
+          "- **Step snapping** — constrain values to discrete increments\n" +
+          "- **Value display** — optional current-value label above the thumb\n" +
+          "- **Two-way binding** — `[(value)]` model signal\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `mode` | `'single' \\| 'range'` | `'single'` | Selection mode |\n" +
+          "| `value` | `number \\| [number, number]` | `0` | Current value (model) |\n" +
+          "| `min` / `max` | `number` | `0` / `100` | Value bounds |\n" +
+          "| `step` | `number` | `1` | Step increment |\n" +
+          "| `showValue` | `boolean` | `false` | Show numeric label |\n" +
+          "| `disabled` | `boolean` | `false` | Disable interaction |",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [SliderSingleDemo, SliderRangeDemo],
@@ -95,7 +119,11 @@ const meta: Meta<UISlider> = {
 export default meta;
 type Story = StoryObj<UISlider>;
 
-/** Single-thumb slider with various configurations. */
+/**
+ * Single-thumb sliders with three configurations: a basic slider
+ * with live value display, a stepped slider (increments of 10),
+ * and a disabled slider frozen at 40.
+ */
 export const Single: Story = {
   render: () => ({
     template: `<ui-slider-demo />`,
@@ -118,7 +146,12 @@ readonly stepped = signal(30); -->`,
   },
 };
 
-/** Dual-thumb range slider. */
+/**
+ * Dual-thumb range sliders for selecting an interval.
+ * The price range uses a 10-step increment between 0–1000;
+ * the age range allows free selection between 18–65.
+ * Drag either thumb to adjust the bounds.
+ */
 export const Range: Story = {
   render: () => ({
     template: `<ui-slider-range-demo />`,

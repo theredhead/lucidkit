@@ -200,17 +200,45 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "File upload component with a drag-and-drop zone and click-to-browse " +
-          "button. Supports file type filtering (`accept`), size limits " +
-          "(`maxFileSize`), single or multi-file selection, and a two-way " +
-          "`files` model signal.\n\n" +
-          "**CSS custom properties** — inherited from `--ui-*` theme tokens:\n" +
-          "- `--ui-border` — drop zone border\n" +
-          "- `--ui-accent` — hover / drag highlight\n" +
-          "- `--ui-bg` — drop zone background\n" +
-          "- `--ui-surface` — file list item background\n" +
-          "- `--ui-text` / `--ui-text-muted` — text colours",
+        component: [
+          "`UIFileUpload` provides a drag-and-drop zone with a click-to-browse fallback for selecting files. It supports file-type filtering, size limits, single or multi-file selection, and a two-way `files` model.",
+          "",
+          "## Key Features",
+          "",
+          "- **Drag & drop** — visually highlights when files are dragged over the zone",
+          "- **Click to browse** — a native file picker opens on click",
+          "- **Accept filter** — restrict by MIME type (`image/*`) or extension (`.pdf,.docx`)",
+          "- **Size limit** — reject files exceeding `maxFileSize` bytes",
+          "- **Multi-file** — toggle `[multiple]` for batch uploads",
+          "- **Events** — `fileAdded`, `fileRemoved`, `fileRejected` outputs for logging and feedback",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          '| `accept` | `string` | `"*"` | Accepted file types (MIME or extensions) |',
+          "| `multiple` | `boolean` | `false` | Allow selecting multiple files |",
+          "| `maxFileSize` | `number` | — | Maximum file size in bytes |",
+          "| `disabled` | `boolean` | `false` | Disables the drop zone |",
+          '| `label` | `string` | `"Drop files here…"` | Instruction text shown in the zone |',
+          "",
+          "## Model",
+          "",
+          "| Model | Type | Description |",
+          "|-------|------|-------------|",
+          "| `files` | `readonly UIFileEntry[]` | Two-way bound array of selected files |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `fileAdded` | `UIFileEntry` | Emitted when a file is accepted |",
+          "| `fileRemoved` | `UIFileEntry` | Emitted when a file is removed from the list |",
+          "| `fileRejected` | `{ file: File; reason: string }` | Emitted when a file is rejected (wrong type or too large) |",
+          "",
+          "**CSS custom properties** — inherited from `--ui-*` theme tokens:",
+          "`--ui-border`, `--ui-accent`, `--ui-bg`, `--ui-surface`, `--ui-text`, `--ui-text-muted`",
+        ].join("\n"),
       },
     },
   },
@@ -229,7 +257,11 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-/** Default single-file upload with event logging. */
+/**
+ * **Default** — A single-file upload zone with event logging. Drop a file
+ * or click to browse. The log below shows `fileAdded` and `fileRemoved`
+ * events as they fire.
+ */
 export const Default: Story = {
   render: () => ({ template: `<ui-file-upload-default-demo />` }),
   parameters: {
@@ -248,7 +280,11 @@ export const Default: Story = {
   },
 };
 
-/** Multi-file image-only upload with rejection logging. */
+/**
+ * **Images only** — Multi-file upload restricted to `image/*` MIME types.
+ * Non-image files are rejected and the rejection reason is logged below
+ * via the `fileRejected` output.
+ */
 export const ImagesOnly: Story = {
   render: () => ({ template: `<ui-file-upload-images-demo />` }),
   parameters: {
@@ -267,7 +303,10 @@ export const ImagesOnly: Story = {
   },
 };
 
-/** Multi-file upload with a 1 MB size limit per file. */
+/**
+ * **Size limit** — Multi-file upload with a 1 MB (`1048576` bytes) per-file
+ * limit. Files exceeding this size are rejected with a descriptive message.
+ */
 export const SizeLimit: Story = {
   render: () => ({ template: `<ui-file-upload-size-limit-demo />` }),
   parameters: {
@@ -286,7 +325,10 @@ export const SizeLimit: Story = {
   },
 };
 
-/** Disabled state — interactions are blocked. */
+/**
+ * **Disabled** — The drop zone is visually dimmed and does not respond to
+ * drag, drop, or click interactions.
+ */
 export const Disabled: Story = {
   render: () => ({ template: `<ui-file-upload-disabled-demo />` }),
   parameters: {
@@ -299,7 +341,10 @@ export const Disabled: Story = {
   },
 };
 
-/** Accept only document file extensions. */
+/**
+ * **Documents** — Restricts accepted files to specific extensions:
+ * `.pdf`, `.doc`, `.docx`, and `.txt`. Other file types are rejected.
+ */
 export const Documents: Story = {
   render: () => ({ template: `<ui-file-upload-documents-demo />` }),
   parameters: {

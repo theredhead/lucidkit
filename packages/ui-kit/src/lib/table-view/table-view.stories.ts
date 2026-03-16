@@ -40,11 +40,7 @@ import { SelectionModel } from "../core/selection-model";
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle table theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
     </div>
     <ui-table-view
       uiDensity="comfortable"
@@ -96,11 +92,7 @@ class UITableViewStoryDemo {
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle table theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
     </div>
     <ui-table-view
       uiDensity="compact"
@@ -152,11 +144,7 @@ class UITableViewCommentsStoryDemo {
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle table theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
     </div>
     <ui-table-view
       uiDensity="generous"
@@ -212,11 +200,7 @@ class UITableViewPhotosStoryDemo {
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle table theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
     </div>
     <ui-table-view
       uiDensity="comfortable"
@@ -285,11 +269,7 @@ class UITableViewSingleSelectDemo {
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle table theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
     </div>
     <ui-table-view
       uiDensity="comfortable"
@@ -363,8 +343,43 @@ const meta: Meta<object> = {
     layout: "fullscreen",
     docs: {
       description: {
-        component:
-          "Table View demo backed by JSONPlaceholder posts using the Storybook-only JSONPlaceholder datasource adapters.",
+        component: [
+          "`UITableView` is a full-featured data table with pluggable datasources, declarative columns, sorting, pagination, row selection, and density control.",
+          "",
+          "## Key Features",
+          "",
+          "- **Datasource-driven** — any object implementing `TableViewDatasource<T>` can feed the table; ships with `DatasourceAdapter`, `FilterableArrayDatasource`, and JSONPlaceholder demo sources",
+          "- **Declarative columns** — add `<ui-text-column>`, `<ui-number-column>`, `<ui-badge-column>`, or `<ui-template-column>` as content children",
+          '- **Sorting** — enable per-column with `[sortable]="true"`; click headers to cycle asc / desc / none',
+          '- **Pagination** — built-in paginator with configurable page sizes, or bring your own with `[showBuiltInPaginator]="false"`',
+          '- **Row selection** — `selectionMode` supports `"none"`, `"single"`, and `"multiple"` with a `SelectionModel` for external tracking',
+          "- **UI Density** — apply the `uiDensity` directive (`compact`, `comfortable`, `spacious`) to control row height",
+          "- **Resizable columns** — drag column borders to resize",
+          "- **Filter integration** — pair with `<ui-filter>` and `FilterableArrayDatasource` for dynamic client-side filtering",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `datasource` | `TableViewDatasource<T>` | *(required)* | Provides rows and page metadata |",
+          '| `caption` | `string` | `""` | Accessible table caption |',
+          "| `tableId` | `string` | auto | Unique ID for the `<table>` element |",
+          "| `showBuiltInPaginator` | `boolean` | `true` | Show / hide the built-in paginator footer |",
+          "| `showRowIndexIndicator` | `boolean` | `false` | Show a row-number column |",
+          "| `resizable` | `boolean` | `false` | Enable column resize handles |",
+          '| `selectionMode` | `"none" \\| "single" \\| "multiple"` | `"none"` | Row selection behaviour |',
+          "| `selectionModel` | `SelectionModel<T>` | — | External selection tracker |",
+          "| `rowClickSelect` | `boolean` | `false` | Select rows by clicking anywhere on the row |",
+          "",
+          "## Column Types",
+          "",
+          "| Column | Purpose |",
+          "|--------|---------|",
+          "| `<ui-text-column>` | Plain text, optional truncation |",
+          "| `<ui-number-column>` | Formatted numbers via `Intl.NumberFormat` |",
+          "| `<ui-badge-column>` | Coloured badge pill |",
+          "| `<ui-template-column>` | Fully custom `<ng-template let-row>` |",
+        ].join("\n"),
       },
     },
   },
@@ -373,6 +388,12 @@ const meta: Meta<object> = {
 export default meta;
 type Story = StoryObj<object>;
 
+/**
+ * **JSONPlaceholder Posts** — The default demo fetching 25 posts from the
+ * JSONPlaceholder API. Demonstrates number columns (ID, User ID), a
+ * truncated text column (Title), and a badge column (Owner). Sorting,
+ * pagination, and row-index indicators are all enabled.
+ */
 export const JsonPlaceholderPosts: Story = {
   parameters: {
     docs: {
@@ -400,6 +421,11 @@ export const JsonPlaceholderPosts: Story = {
   },
 };
 
+/**
+ * **JSONPlaceholder Comments** — A compact-density table showing comments
+ * from the JSONPlaceholder API. Demonstrates a different dataset and
+ * the `uiDensity="compact"` directive for denser row layouts.
+ */
 export const JsonPlaceholderComments: Story = {
   decorators: [
     moduleMetadata({
@@ -570,6 +596,12 @@ export const DensityPlayground: Story = {
   }),
 };
 
+/**
+ * **Without built-in paginator** — Sets `[showBuiltInPaginator]="false"`
+ * to hide the default pagination footer. Use this when you want to supply
+ * your own external pagination UI or when the dataset is small enough
+ * to display without pages.
+ */
 export const WithoutBuiltInPaginator: Story = {
   decorators: [
     moduleMetadata({
@@ -630,6 +662,12 @@ export const WithoutBuiltInPaginator: Story = {
   }),
 };
 
+/**
+ * **Single selection** — Enables single-row selection via
+ * `selectionMode="single"` and `[rowClickSelect]="true"`. A
+ * `SelectionModel` tracks the current selection externally.
+ * Clicking a row highlights it and emits a `selectionChange` event.
+ */
 export const SingleSelection: Story = {
   decorators: [
     moduleMetadata({
@@ -671,6 +709,12 @@ onSelectionChange(rows: readonly Post[]): void {
   },
 };
 
+/**
+ * **Multiple selection** — Enables multi-row selection via
+ * `selectionMode="multiple"`. Users can click rows to toggle selection;
+ * a checkbox column appears automatically. The `SelectionModel` tracks
+ * all selected rows.
+ */
 export const MultipleSelection: Story = {
   decorators: [
     moduleMetadata({
@@ -871,11 +915,7 @@ const EMPLOYEE_FIELDS: FilterFieldDefinition<Employee>[] = [
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle table theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
     </div>
     <ui-filter
       [fields]="fields"
@@ -936,6 +976,12 @@ class UITableViewFilteredDemo {
   }
 }
 
+/**
+ * **Filtered table** — Combines `<ui-filter>` with `<ui-table-view>` using
+ * a `FilterableArrayDatasource`. The filter emits a `Predicate<T>` that
+ * is applied to the datasource in real time. This example uses a static
+ * employee dataset with string, number, and date filter fields.
+ */
 export const FilteredTable: Story = {
   decorators: [
     moduleMetadata({
@@ -1002,11 +1048,7 @@ onPredicateChange(predicate: Predicate<Employee> | undefined): void {
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle table theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
     </div>
     <ui-table-view
       uiDensity="comfortable"
@@ -1084,6 +1126,12 @@ class UITableViewTemplateColDemo {
   }
 }
 
+/**
+ * **Template column** — Uses `<ui-template-column>` to render fully custom
+ * cell content via `<ng-template let-row>`. This example shows an avatar
+ * circle for the author and action buttons (View / Edit) that log the
+ * clicked row.
+ */
 export const TemplateColumn: Story = {
   decorators: [
     moduleMetadata({

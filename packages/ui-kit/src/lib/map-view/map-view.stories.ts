@@ -91,11 +91,7 @@ const FLAG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28
   imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <ui-map-view [center]="center" [zoom]="13" height="500px" />
   `,
@@ -111,11 +107,7 @@ class MapViewBasicDemo {
   imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <ui-map-view
       [center]="center"
@@ -138,11 +130,7 @@ class MapViewMarkersDemo {
   imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <ui-map-view
       [center]="center"
@@ -171,11 +159,7 @@ class MapViewRouteDemo {
   imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <ui-map-view
       [center]="center"
@@ -204,11 +188,7 @@ class MapViewPolygonDemo {
   imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
       <div>
@@ -258,11 +238,7 @@ class MapViewHighlightDemo {
   imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <ui-map-view
       [center]="center"
@@ -309,11 +285,7 @@ class MapViewCustomIconsDemo {
   imports: [UIMapView, UIThemeToggle, UIDensityDirective],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <ui-map-view
       uiDensity="comfortable"
@@ -362,11 +334,7 @@ class MapViewCombinedDemo {
       <button (click)="toggle()">
         {{ highlighted() ? "Remove highlight" : "Highlight route" }}
       </button>
-      <ui-theme-toggle
-        variant="button"
-       
-        ariaLabel="Toggle theme"
-      />
+      <ui-theme-toggle variant="button" ariaLabel="Toggle theme" />
     </div>
     <ui-map-view
       [center]="center"
@@ -410,10 +378,30 @@ const meta: Meta<object> = {
     layout: "fullscreen",
     docs: {
       description: {
-        component:
-          "Static map snapshot component. Renders tiles centred on a location " +
-          "with optional SVG polylines, polygons, and markers. " +
-          "No external dependencies — pure tile math + native browser APIs.",
+        component: [
+          "`UIMapView` is a lightweight static map component that renders OpenStreetMap tiles centred on a given location with optional SVG overlays. It has **zero external dependencies** — all tile math and rendering uses native browser APIs.",
+          "",
+          "## Key Features",
+          "",
+          "- **Tile rendering** — fetches and positions OpenStreetMap raster tiles based on `center` and `zoom`",
+          "- **Markers** — drop pins with labels, custom colours, and optional custom SVG icons",
+          "- **Polylines** — draw routes and paths with configurable colour, width, and dash patterns",
+          "- **Polygons** — render filled regions with stroke and fill colours",
+          "- **Highlight mode** — enable a glow effect on polylines and polygons with `highlighted: true`",
+          "- **Accessible** — configurable `ariaLabel` for the map container",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `center` | `{ lat: number; lng: number }` | *(required)* | Geographic centre of the map |",
+          "| `zoom` | `number` | `13` | Zoom level (1 = world, 18 = building) |",
+          '| `height` | `string` | `"400px"` | CSS height of the map container |',
+          "| `markers` | `MapMarker[]` | `[]` | Pin markers with position, label, colour |",
+          "| `polylines` | `MapPolyline[]` | `[]` | Line overlays (routes, paths) |",
+          "| `polygons` | `MapPolygon[]` | `[]` | Filled region overlays |",
+          '| `ariaLabel` | `string` | `"Map"` | Accessible label |',
+        ].join("\n"),
       },
     },
   },
@@ -422,6 +410,10 @@ const meta: Meta<object> = {
 export default meta;
 type Story = StoryObj<object>;
 
+/**
+ * **Basic** — A simple map centred on Amsterdam at zoom level 13.
+ * No overlays — just the OpenStreetMap tile layer.
+ */
 export const Basic: Story = {
   parameters: {
     docs: {
@@ -438,6 +430,11 @@ export const Basic: Story = {
   },
 };
 
+/**
+ * **With markers** — Three European city markers (Amsterdam, Paris, London)
+ * with custom colours. Demonstrates the `MapMarker` interface including
+ * `position`, `label`, and optional `color`.
+ */
 export const WithMarkers: Story = {
   decorators: [moduleMetadata({ imports: [MapViewMarkersDemo] })],
   render: () => ({ template: "<ui-map-view-markers-demo />" }),
@@ -464,6 +461,11 @@ readonly markers: MapMarker[] = [
   },
 };
 
+/**
+ * **Route polyline** — Draws a dashed red polyline from Amsterdam through
+ * Brussels to Paris with markers at each waypoint. Demonstrates
+ * `MapPolyline` with `dashArray` and custom `width`.
+ */
 export const RoutePolyline: Story = {
   decorators: [moduleMetadata({ imports: [MapViewRouteDemo] })],
   render: () => ({ template: "<ui-map-view-route-demo />" }),
@@ -492,6 +494,11 @@ readonly polylines: MapPolyline[] = [{
   },
 };
 
+/**
+ * **Polygon region** — Renders a semi-transparent blue polygon covering
+ * the Benelux area. Demonstrates `MapPolygon` with `fillColor` and
+ * `strokeColor`.
+ */
 export const PolygonRegion: Story = {
   decorators: [moduleMetadata({ imports: [MapViewPolygonDemo] })],
   render: () => ({ template: "<ui-map-view-polygon-demo />" }),
@@ -524,6 +531,11 @@ readonly polygons: MapPolygon[] = [{
   },
 };
 
+/**
+ * **Highlight comparison** — Side-by-side maps comparing normal and
+ * highlighted overlays. The highlighted version adds a golden glow
+ * effect to both the route polyline and the region polygon.
+ */
 export const HighlightComparison: Story = {
   decorators: [moduleMetadata({ imports: [MapViewHighlightDemo] })],
   render: () => ({ template: "<ui-map-view-highlight-demo />" }),
@@ -557,6 +569,11 @@ const routeHighlighted: MapPolyline = {
   },
 };
 
+/**
+ * **Custom marker icons** — Replaces the default pin markers with custom
+ * SVG icons. Each marker specifies `iconSvg`, `iconSize`, and `iconAnchor`
+ * for precise positioning.
+ */
 export const CustomMarkerIcons: Story = {
   decorators: [moduleMetadata({ imports: [MapViewCustomIconsDemo] })],
   render: () => ({ template: "<ui-map-view-custom-icons-demo />" }),
@@ -587,6 +604,11 @@ readonly markers: MapMarker[] = [
   },
 };
 
+/**
+ * **Combined overview** — All overlay types together: markers, polylines,
+ * and polygons on a single map of Europe. Demonstrates the full range of
+ * the component's capabilities.
+ */
 export const CombinedOverview: Story = {
   decorators: [moduleMetadata({ imports: [MapViewCombinedDemo] })],
   render: () => ({ template: "<ui-map-view-combined-demo />" }),
@@ -609,6 +631,11 @@ export const CombinedOverview: Story = {
   },
 };
 
+/**
+ * **Toggle highlight** — A button toggles the `highlighted` flag on
+ * polylines and polygons at runtime. Demonstrates reactive overlay
+ * updates without re-creating the map component.
+ */
 export const ToggleHighlight: Story = {
   decorators: [moduleMetadata({ imports: [MapViewToggleHighlightDemo] })],
   render: () => ({ template: "<ui-map-view-toggle-highlight-demo />" }),

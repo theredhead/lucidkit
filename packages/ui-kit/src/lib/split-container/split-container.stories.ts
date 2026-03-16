@@ -211,10 +211,37 @@ const meta: Meta<UISplitContainer> = {
   parameters: {
     docs: {
       description: {
-        component:
-          "A resizable split container with a draggable divider. " +
-          "Supports horizontal / vertical orientation, panel size constraints (min / max), " +
-          "localStorage persistence, configurable divider width, and double-click-to-collapse.",
+        component: [
+          "`UISplitContainer` is a resizable split-pane layout with a draggable divider. Project two child elements with `first` and `second` attributes to fill each panel.",
+          "",
+          "## Key Features",
+          "",
+          '- **Orientation** — `"horizontal"` (side-by-side, default) or `"vertical"` (stacked)',
+          "- **Size constraints** — set `min` / `max` pixel limits per panel via `firstConstraints` and `secondConstraints`",
+          '- **Initial sizes** — provide a `[initialSizes]="[30, 70]"` percentage tuple',
+          '- **Double-click collapse** — set `collapseTarget` to `"first"` or `"second"` to enable collapse/restore on double-click',
+          "- **Persistence** — give the container a `name` and sizes are saved to `localStorage` automatically",
+          "- **Divider width** — customise via `[dividerWidth]` (default 6 px)",
+          "- **Resize event** — `(resized)` emits a `SplitResizeEvent` with the new percentage sizes",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          '| `orientation` | `"horizontal" \\| "vertical"` | `"horizontal"` | Split direction |',
+          "| `initialSizes` | `[number, number]` | `[50, 50]` | Initial panel sizes as percentages |",
+          "| `firstConstraints` | `{ min?: number; max?: number }` | — | Pixel constraints for the first panel |",
+          "| `secondConstraints` | `{ min?: number; max?: number }` | — | Pixel constraints for the second panel |",
+          '| `collapseTarget` | `"first" \\| "second"` | — | Which panel collapses on divider double-click |',
+          "| `dividerWidth` | `number` | `6` | Divider thickness in pixels |",
+          "| `name` | `string` | — | If set, sizes are persisted to localStorage under this key |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `resized` | `SplitResizeEvent` | Emitted after a drag ends with the new sizes |",
+        ].join("\n"),
       },
     },
   },
@@ -234,32 +261,56 @@ const meta: Meta<UISplitContainer> = {
 export default meta;
 type Story = StoryObj<UISplitContainer>;
 
-/** Default horizontal split — drag the divider to resize. */
+/**
+ * **Default (horizontal)** — The simplest configuration: two panels side by
+ * side with a draggable divider in the middle. Drag left/right to resize.
+ * Both panels scroll independently.
+ */
 export const Default: Story = {
   render: () => ({ template: `<ui-split-default-demo />` }),
 };
 
-/** Vertical split — panels stack top / bottom. */
+/**
+ * **Vertical** — Panels are stacked top/bottom. The divider is horizontal
+ * and drags up/down. Initial sizes are set to 30% / 70%.
+ */
 export const Vertical: Story = {
   render: () => ({ template: `<ui-split-vertical-demo />` }),
 };
 
-/** Constrained panels — the sidebar is limited to 150–400 px, the main panel has a 200 px minimum. */
+/**
+ * **Constrained** — Demonstrates pixel-based panel constraints. The sidebar
+ * (first panel) is limited to 150–400 px, while the main area (second panel)
+ * has a 200 px minimum. The divider respects these limits during drag.
+ */
 export const Constrained: Story = {
   render: () => ({ template: `<ui-split-constrained-demo />` }),
 };
 
-/** Double-click the divider to collapse / restore the first panel. */
+/**
+ * **Double-click collapse** — Double-click the divider to collapse the
+ * first panel to zero width. Double-click again to restore it to its
+ * previous size. The `(resized)` output logs each size change.
+ */
 export const DoubleClickCollapse: Story = {
   render: () => ({ template: `<ui-split-collapse-demo />` }),
 };
 
-/** Persistent sizes — resize and reload the page to see them restored. */
+/**
+ * **Persistent (localStorage)** — Giving the container a `name` enables
+ * automatic size persistence. Resize the panels, reload the page, and
+ * the sizes are restored. Stored under the key
+ * `ui-split-container:<name>` in `localStorage`.
+ */
 export const Persistent: Story = {
   render: () => ({ template: `<ui-split-persistent-demo />` }),
 };
 
-/** Custom divider width — 12 px instead of the default 6 px. */
+/**
+ * **Custom divider width** — Sets `[dividerWidth]="12"` for a 12 px wide
+ * divider instead of the default 6 px. Useful for touch-friendly interfaces
+ * or when the divider needs more visual prominence.
+ */
 export const CustomDividerWidth: Story = {
   render: () => ({ template: `<ui-split-divider-width-demo />` }),
 };

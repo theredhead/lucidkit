@@ -177,6 +177,34 @@ const meta: Meta<UIIcon> = {
   title: "@theredhead/UI Kit/Icon",
   component: UIIcon,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Renders an inline SVG icon from a raw SVG string. The library ships " +
+          "a categorised icon registry (`UIIcons.Lucide`) generated from the " +
+          "Lucide icon set.\n\n" +
+          "### Features\n" +
+          "- **Tree-shakeable** — only referenced icons end up in the bundle\n" +
+          "- **Scalable** — `size` input controls width & height in pixels\n" +
+          "- **Accessible** — optional `ariaLabel`; icons are `aria-hidden` by default\n" +
+          "- **Categorised** — `UIIcons.Lucide.Text.*`, `UIIcons.Lucide.Navigation.*`, etc.\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `svg` | `string` | *(required)* | Raw SVG markup |\n" +
+          "| `size` | `number` | `24` | Icon dimensions in px |\n" +
+          "| `ariaLabel` | `string` | `''` | Accessible label (sets `aria-hidden=\"false\"`) |\n\n" +
+          "### Usage\n" +
+          "```ts\n" +
+          "import { UIIcons } from '@theredhead/ui-kit';\n" +
+          "```\n" +
+          "```html\n" +
+          '<ui-icon [svg]="UIIcons.Lucide.Text.Bold" [size]="20" />\n' +
+          "```",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [StoryIconGallery],
@@ -186,7 +214,10 @@ const meta: Meta<UIIcon> = {
 export default meta;
 type Story = StoryObj<UIIcon>;
 
-/** Single icon with controls. */
+/**
+ * A single icon with Storybook controls for `size` and `ariaLabel`.
+ * The default SVG is the Bold icon from the Text category.
+ */
 export const Default: Story = {
   render: (args) => ({
     props: {
@@ -201,7 +232,11 @@ export const Default: Story = {
   },
 };
 
-/** All available sizes side by side. */
+/**
+ * All available size presets rendered side-by-side (12, 16, 20, 24,
+ * 32, 48 px). Demonstrates how the `size` input scales the SVG
+ * viewport proportionally.
+ */
 export const Sizes: Story = {
   render: () => ({
     props: {
@@ -221,7 +256,11 @@ export const Sizes: Story = {
   }),
 };
 
-/** Text-editing icons used in the rich-text editor toolbar. */
+/**
+ * The text-editing icons used in the rich-text-editor toolbar.
+ * This subset lives in `UIIcons.Lucide.Text` and
+ * `UIIcons.Lucide.Development`.
+ */
 export const TextEditing: Story = {
   render: () => ({
     props: {
@@ -252,7 +291,11 @@ export const TextEditing: Story = {
   }),
 };
 
-/** Browseable gallery of all icons. */
+/**
+ * Interactive searchable gallery of every icon in the Lucide set.
+ * Filter by name or category using the controls at the top.
+ * Each tile shows the icon at the current size with its registry name.
+ */
 export const Gallery: Story = {
   render: () => ({
     template: `<ui-icon-gallery />`,

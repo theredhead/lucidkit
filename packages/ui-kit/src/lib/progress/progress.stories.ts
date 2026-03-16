@@ -48,6 +48,29 @@ const meta: Meta<UIProgress> = {
   title: "@theredhead/UI Kit/Progress",
   component: UIProgress,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A progress indicator available in two shapes and two modes.\n\n" +
+          "### Variants\n" +
+          "| Variant | Shape | Use case |\n" +
+          "|---------|-------|----------|\n" +
+          "| `linear` | Horizontal bar | Page loads, file uploads |\n" +
+          "| `circular` | Spinning ring | Inline loading spinners |\n\n" +
+          "### Modes\n" +
+          "- **Determinate** — shows a `value` (0–100) as a filled portion\n" +
+          "- **Indeterminate** — animates continuously when the total is unknown\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default |\n" +
+          "|-------|------|---------|\n" +
+          "| `variant` | `'linear' \\| 'circular'` | `'linear'` |\n" +
+          "| `mode` | `'determinate' \\| 'indeterminate'` | `'determinate'` |\n" +
+          "| `value` | `number` | `0` |\n" +
+          "| `ariaLabel` | `string` | `'Progress'` |",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [ProgressDemo],
@@ -57,7 +80,11 @@ const meta: Meta<UIProgress> = {
 export default meta;
 type Story = StoryObj<UIProgress>;
 
-/** All progress variants and modes. */
+/**
+ * All progress combinations in one view: linear (determinate &
+ * indeterminate) and circular (determinate & indeterminate).
+ * Drag the slider to adjust the determinate value in real time.
+ */
 export const Default: Story = {
   render: () => ({
     template: `<ui-progress-demo />`,

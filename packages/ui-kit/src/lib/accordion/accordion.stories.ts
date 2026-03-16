@@ -77,6 +77,31 @@ const meta: Meta<UIAccordion> = {
   title: "@theredhead/UI Kit/Accordion",
   component: UIAccordion,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A collapsible content container for organising related sections " +
+          "under expandable headers.\n\n" +
+          "### Composition\n" +
+          "`UIAccordion` wraps `UIAccordionItem` children. Each item has a " +
+          "`label` and projects its body content.\n\n" +
+          "### Modes\n" +
+          "| Mode | Behaviour |\n" +
+          "|------|-----------|\n" +
+          "| `single` | Only one panel open at a time (default) |\n" +
+          "| `multi` | Any number of panels can be open simultaneously |\n\n" +
+          "### Key Inputs\n" +
+          "| Input | Component | Description |\n" +
+          "|-------|-----------|-------------|\n" +
+          "| `mode` | `UIAccordion` | `'single'` or `'multi'` |\n" +
+          "| `requireOpen` | `UIAccordion` | If `false`, all panels can be collapsed (single mode) |\n" +
+          "| `label` | `UIAccordionItem` | Panel header text (required) |\n" +
+          "| `expanded` | `UIAccordionItem` | Two-way model for open state |\n" +
+          "| `disabled` | `UIAccordionItem` | Prevents expanding/collapsing |",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -90,7 +115,11 @@ const meta: Meta<UIAccordion> = {
 export default meta;
 type Story = StoryObj<UIAccordion>;
 
-/** Single-expand mode — only one panel open at a time. */
+/**
+ * **Single-expand mode** — opening a panel automatically closes
+ * the previously open one. The last item is disabled and cannot
+ * be expanded. This is the default accordion behaviour.
+ */
 export const SingleMode: Story = {
   render: () => ({
     template: `<ui-accordion-single-demo />`,
@@ -118,7 +147,11 @@ export const SingleMode: Story = {
   },
 };
 
-/** Single mode with requireOpen=false — all panels can be collapsed. */
+/**
+ * Single mode with `requireOpen` set to `false`. This allows all
+ * panels to be collapsed simultaneously — clicking the open panel
+ * again closes it without forcing another to open.
+ */
 export const SingleCollapsible: Story = {
   render: () => ({
     template: `<ui-accordion-collapsible-demo />`,
@@ -137,7 +170,12 @@ export const SingleCollapsible: Story = {
   },
 };
 
-/** Multi-expand mode — any number of panels can be open. */
+/**
+ * **Multi-expand mode** — any number of panels can be open at the
+ * same time. The first panel starts expanded via `[expanded]=\"true\"`.
+ * This is useful for forms or settings where multiple sections are
+ * relevant simultaneously.
+ */
 export const MultiMode: Story = {
   render: () => ({
     template: `<ui-accordion-multi-demo />`,

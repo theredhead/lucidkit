@@ -491,3 +491,89 @@
     }
   }
 }
+
+/* ── Markdown mode ─────────────────────────────────────── */
+
+:host.ui-rich-text-editor--markdown {
+  .rte-markdown-editor {
+    min-height: 12rem;
+    border-bottom: none;
+    font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    tab-size: 4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  // In Markdown mode the preview is always visible (read-only)
+  .rte-editor-wrapper--preview {
+    opacity: 1;
+    pointer-events: none;
+
+    .rte-editor {
+      min-height: 4rem;
+      cursor: default;
+    }
+  }
+}
+
+/* ── Placeholder search ────────────────────────────────── */
+
+.rte-placeholder-search {
+  padding: 0.25rem;
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.rte-placeholder-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  background: var(--ui-surface);
+  color: var(--ui-text);
+  border: 1px solid var(--ui-border);
+  border-radius: 0.2rem;
+  outline: none;
+
+  &:focus {
+    border-color: var(--ui-accent);
+  }
+
+  &::placeholder {
+    color: var(--ui-muted);
+  }
+}
+
+.rte-placeholder-empty {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--ui-muted);
+  font-style: italic;
+}
+
+/* ── Character count footer ────────────────────────────── */
+
+.rte-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.125rem 0.5rem;
+  background: var(--ui-surface-2);
+  border: 1px solid var(--ui-border);
+  border-top: none;
+  border-radius: 0 0 0.25rem 0.25rem;
+  font-size: 0.6875rem;
+  color: var(--ui-muted);
+
+  &--over {
+    .rte-char-count {
+      color: #d93025;
+      font-weight: 600;
+    }
+  }
+}
+
+.rte-char-count {
+  font-variant-numeric: tabular-nums;
+}
