@@ -1,33 +1,33 @@
 <!-- Hidden slot: instantiates projected columns so contentChildren can discover them. -->
 <div class="mdv-columns-slot"><ng-content /></div>
 
+@if (showFilter() && filterTemplate(); as filterTpl) {
+  <div class="mdv-filter-bar">
+    <button
+      class="mdv-filter-toggle"
+      type="button"
+      (click)="toggleFilter()"
+      [attr.aria-expanded]="!filterCollapsed()"
+      aria-controls="mdv-filter-content"
+    >
+      <ui-icon
+        [svg]="filterCollapsed() ? chevronRight : chevronDown"
+        [size]="14"
+      />
+      <span>Filter</span>
+    </button>
+    @if (!filterCollapsed()) {
+      <div class="mdv-filter-content" id="mdv-filter-content">
+        <ng-container *ngTemplateOutlet="filterTpl" />
+      </div>
+    }
+  </div>
+}
+
 <aside class="mdv-list-panel">
   <header class="mdv-header">
     <h2 class="mdv-title">{{ title() }}</h2>
   </header>
-
-  @if (showFilter() && filterTemplate(); as filterTpl) {
-    <div class="mdv-filter-bar">
-      <button
-        class="mdv-filter-toggle"
-        type="button"
-        (click)="toggleFilter()"
-        [attr.aria-expanded]="!filterCollapsed()"
-        aria-controls="mdv-filter-content"
-      >
-        <ui-icon
-          [svg]="filterCollapsed() ? chevronRight : chevronDown"
-          [size]="14"
-        />
-        <span>Filter</span>
-      </button>
-      @if (!filterCollapsed()) {
-        <div class="mdv-filter-content" id="mdv-filter-content">
-          <ng-container *ngTemplateOutlet="filterTpl" />
-        </div>
-      }
-    </div>
-  }
 
   <div class="mdv-table-wrapper">
     <ui-table-view

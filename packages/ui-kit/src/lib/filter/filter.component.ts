@@ -71,6 +71,16 @@ export class UIFilter<T = any> {
    */
   readonly allowJunction = input(false);
 
+  /**
+   * Optional raw dataset used to derive distinct values per string field.
+   *
+   * When provided and the total row count is below 1 000, each string
+   * field's unique values are collected and forwarded to child rows so
+   * they can render a dropdown (≤ 5 distinct) or autocomplete (6–99)
+   * instead of a plain text input.
+   */
+  readonly data = input<readonly T[]>([]);
+
   // ── Model ───────────────────────────────────────────────────────────
 
   /** The complete filter state (two-way bindable). */
@@ -105,6 +115,36 @@ export class UIFilter<T = any> {
 
   protected readonly rules = computed(() => this.value().rules);
 
+  /**
+   * Map of field key → sorted distinct string values.
+   *
+   * Only populated when {@link data} has fewer than 1 000 rows.
+   * Fields with ≥ 100 distinct values are omitted (plain text input).
+   *
+   * @internal Forwarded to child {@link UIFilterRow} instances.
+   */
+  protected readonly distinctValuesMap = computed(() => {
+    const rows = this.data();
+    const fields = this.fields();
+    const map = new Map<string, string[]>();
+
+    if (rows.length === 0 || rows.length >= 1000) return map;
+
+    for (const field of fields) {
+      if (field.type !== "string") continue;
+      const values = new Set<string>();
+      for (const row of rows) {
+        const val = (row as Record<string, unknown>)[field.key];
+        if (val != null && String(val).trim() !== "") {
+          values.add(String(val));
+        }
+      }
+      map.set(field.key, [...values].sort());
+    }
+
+    return map;
+  });
+
   // ── Actions ─────────────────────────────────────────────────────────
 
   /** Adds a new empty rule using the first available field. */
@@ -114,10 +154,19 @@ export class UIFilter<T = any> {
     const ops = defaultField ? operatorsForType(defaultField.type) : [];
     const maxId = current.rules.reduce((m, r) => Math.max(m, r.id), 0);
 
+    // Default to 'equals' when distinct values exist (select / autocomplete mode)
+    const distinct = defaultField
+      ? this.distinctValuesMap().get(defaultField.key)
+      : undefined;
+    const defaultOp =
+      defaultField?.type === "string" && distinct && distinct.length > 0
+        ? "equals"
+        : (ops[0]?.value ?? "equals");
+
     const rule: FilterRule = {
       id: maxId + 1,
       field: defaultField?.key ?? "",
-      operator: (ops[0]?.value ?? "equals") as FilterOperator,
+      operator: defaultOp as FilterOperator,
       value: "",
     };
 

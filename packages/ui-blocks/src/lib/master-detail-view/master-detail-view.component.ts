@@ -154,19 +154,18 @@ export class UIMasterDetailView<T = unknown> {
    * which is forbidden inside `computed` contexts.
    * @internal
    */
-  protected readonly resolvedDatasource = computed<DatasourceAdapter<T>>(
-    () => {
-      const explicit = this.datasource();
-      if (explicit) return explicit;
-      const data = this.data();
-      return untracked(() =>
+  protected readonly resolvedDatasource = computed<DatasourceAdapter<T>>(() => {
+    const explicit = this.datasource();
+    if (explicit) return explicit;
+    const data = this.data();
+    return untracked(
+      () =>
         new DatasourceAdapter<T>(
           new ArrayDatasource<T>([...(data as T[])]),
           100,
         ),
-      );
-    },
-  );
+    );
+  });
 
   // ── Public fields ───────────────────────────────────────────────
 

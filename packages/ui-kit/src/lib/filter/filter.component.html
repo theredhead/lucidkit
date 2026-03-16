@@ -19,6 +19,7 @@
       role="listitem"
       [fields]="fields()"
       [rule]="rule"
+      [distinctValuesMap]="distinctValuesMap()"
       (ruleChange)="updateRule(idx, $event)"
       (remove)="removeRule(idx)"
     />

@@ -10,7 +10,9 @@ import {
   ArrayDatasource,
   DatasourceAdapter,
   FilterableArrayDatasource,
+  UIAvatar,
   UIFilter,
+  UITemplateColumn,
   UITextColumn,
   type FilterFieldDefinition,
   type FilterDescriptor,
@@ -85,6 +87,76 @@ const EMPLOYEES: Employee[] = [
     role: "Senior",
     joined: "2021-09-12",
   },
+  {
+    name: "Ivan Torres",
+    email: "ivan@example.com",
+    department: "Engineering",
+    role: "Senior",
+    joined: "2020-04-07",
+  },
+  {
+    name: "Julia Chen",
+    email: "julia@example.com",
+    department: "Design",
+    role: "Junior",
+    joined: "2023-11-18",
+  },
+  {
+    name: "Kevin Müller",
+    email: "kevin@example.com",
+    department: "Marketing",
+    role: "Manager",
+    joined: "2019-08-25",
+  },
+  {
+    name: "Laura Rossi",
+    email: "laura@example.com",
+    department: "Engineering",
+    role: "Junior",
+    joined: "2024-01-09",
+  },
+  {
+    name: "Marcus Andersen",
+    email: "marcus@example.com",
+    department: "Product",
+    role: "Lead",
+    joined: "2018-12-03",
+  },
+  {
+    name: "Nadia Okafor",
+    email: "nadia@example.com",
+    department: "Engineering",
+    role: "Manager",
+    joined: "2020-07-22",
+  },
+  {
+    name: "Oscar Petrov",
+    email: "oscar@example.com",
+    department: "Design",
+    role: "Senior",
+    joined: "2021-05-30",
+  },
+  {
+    name: "Priya Sharma",
+    email: "priya@example.com",
+    department: "Marketing",
+    role: "Senior",
+    joined: "2022-10-14",
+  },
+  {
+    name: "Quinn Yamamoto",
+    email: "quinn@example.com",
+    department: "Product",
+    role: "Junior",
+    joined: "2023-03-19",
+  },
+  {
+    name: "Rachel Dubois",
+    email: "rachel@example.com",
+    department: "Engineering",
+    role: "Lead",
+    joined: "2019-01-28",
+  },
 ];
 
 // ── Demo: Default ────────────────────────────────────────────────────
@@ -112,8 +184,8 @@ const EMPLOYEES: Employee[] = [
       placeholder="Select an employee to view their profile"
       (selectedChange)="selected.set($event)"
     >
-      <ui-text-column key="name" headerText="Name" />
-      <ui-text-column key="role" headerText="Role" />
+      <ui-text-column key="name" headerText="Name" [sortable]="true" />
+      <ui-text-column key="role" headerText="Role" [sortable]="true" />
 
       <ng-template #detail let-person>
         <div class="detail">
@@ -151,7 +223,7 @@ const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
 @Component({
   selector: "ui-mdv-filter-demo",
   standalone: true,
-  imports: [UIMasterDetailView, UITextColumn, UIFilter],
+  imports: [UIMasterDetailView, UITemplateColumn, UIAvatar, UIFilter],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -173,13 +245,32 @@ const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
       <ng-template #filter>
         <ui-filter
           [fields]="fields"
+          [data]="employees"
+          [allowJunction]="true"
           [(value)]="filterDescriptor"
           (predicateChange)="onPredicate($event)"
         />
       </ng-template>
 
-      <ui-text-column key="name" headerText="Name" />
-      <ui-text-column key="department" headerText="Department" />
+      <ui-template-column key="name" headerText="Employee">
+        <ng-template let-row>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+            <div
+              style="display: flex; flex-direction: column; gap: 0.1rem; min-width: 0;"
+            >
+              <span
+                style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                >{{ row.name }}</span
+              >
+              <span
+                style="font-size: 0.78rem; opacity: 0.65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                >{{ row.role }}</span
+              >
+            </div>
+          </div>
+        </ng-template>
+      </ui-template-column>
 
       <ng-template #detail let-person>
         <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
@@ -195,6 +286,7 @@ const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
 })
 class FilterDemo {
   protected readonly fields = FILTER_FIELDS;
+  protected readonly employees = EMPLOYEES;
   protected readonly filterDescriptor = signal<FilterDescriptor<Employee>>({
     junction: "and",
     rules: [],
@@ -247,8 +339,8 @@ export const Default: Story = {
     docs: {
       source: {
         code: `<ui-master-detail-view [data]="employees" title="Employees">
-  <ui-text-column key="name" headerText="Name" />
-  <ui-text-column key="role" headerText="Role" />
+  <ui-text-column key="name" headerText="Name" [sortable]="true" />
+  <ui-text-column key="role" headerText="Role" [sortable]="true" />
 
   <ng-template #detail let-person>
     <h3>{{ person.name }}</h3>
@@ -269,12 +361,22 @@ export const WithFilter: Story = {
       source: {
         code: `<ui-master-detail-view [datasource]="adapter" title="Employees" [showFilter]="true">
   <ng-template #filter>
-    <ui-filter [fields]="fields" [(value)]="descriptor"
+    <ui-filter [fields]="fields" [data]="employees" [allowJunction]="true"
+               [(value)]="descriptor"
                (predicateChange)="onPredicate($event)" />
   </ng-template>
 
-  <ui-text-column key="name" headerText="Name" />
-  <ui-text-column key="department" headerText="Department" />
+  <ui-template-column key="name" headerText="Employee">
+    <ng-template let-row>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+        <div>
+          <span style="font-weight: 600">{{ row.name }}</span>
+          <span style="font-size: 0.78rem; opacity: 0.65">{{ row.role }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </ui-template-column>
 
   <ng-template #detail let-person>
     <h3>{{ person.name }}</h3>
