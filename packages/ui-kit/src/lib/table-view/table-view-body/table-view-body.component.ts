@@ -28,6 +28,7 @@ export class UITableBody {
   rowHeight = input<number>(DEFAULT_ROW_HEIGHT);
   columnWidths = input<Record<string, number>>({});
   selectionMode = input<SelectionMode>("none");
+  showSelectionColumn = input<boolean>(true);
   selection = input<SelectionModel<any> | undefined>(undefined);
   rowClickSelect = input<boolean>(false);
   rowClick = output<unknown>();

@@ -37,6 +37,7 @@ export class UITableHeader {
   resizable = input<boolean>(false);
   columnWidths = input<Record<string, number>>({});
   selectionMode = input<SelectionMode>("none");
+  showSelectionColumn = input<boolean>(true);
   allSelected = input<boolean>(false);
   indeterminate = input<boolean>(false);
   sortChange = output<SortState | null>();

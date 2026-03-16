@@ -79,6 +79,14 @@ export class UITableView implements OnInit, AfterViewInit {
   rowClickSelect = input<boolean>(false);
 
   /**
+   * Whether to show the leading radio / checkbox column.
+   * Defaults to `true`. Set to `false` when you want row-click
+   * selection without a dedicated selection column (e.g. in a
+   * master-detail list).
+   */
+  showSelectionColumn = input<boolean>(true);
+
+  /**
    * Optional external selection model. When provided the table will use
    * this instance instead of creating its own, giving the consumer full
    * programmatic control.
@@ -153,7 +161,9 @@ export class UITableView implements OnInit, AfterViewInit {
       ? ROW_INDEX_COLUMN_WIDTH
       : 0;
     const selectionWidth =
-      this.selectionMode() !== "none" ? SELECTION_COLUMN_WIDTH : 0;
+      this.selectionMode() !== "none" && this.showSelectionColumn()
+        ? SELECTION_COLUMN_WIDTH
+        : 0;
 
     let total = rowIndexWidth + selectionWidth;
     let hasExplicit = false;

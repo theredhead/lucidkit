@@ -113,7 +113,6 @@ const EMPLOYEES: Employee[] = [
       (selectedChange)="selected.set($event)"
     >
       <ui-text-column key="name" headerText="Name" />
-      <ui-text-column key="department" headerText="Department" />
       <ui-text-column key="role" headerText="Role" />
 
       <ng-template #detail let-person>
@@ -181,7 +180,6 @@ const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
 
       <ui-text-column key="name" headerText="Name" />
       <ui-text-column key="department" headerText="Department" />
-      <ui-text-column key="role" headerText="Role" />
 
       <ng-template #detail let-person>
         <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
@@ -250,7 +248,6 @@ export const Default: Story = {
       source: {
         code: `<ui-master-detail-view [data]="employees" title="Employees">
   <ui-text-column key="name" headerText="Name" />
-  <ui-text-column key="department" headerText="Department" />
   <ui-text-column key="role" headerText="Role" />
 
   <ng-template #detail let-person>

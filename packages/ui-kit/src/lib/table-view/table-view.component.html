@@ -8,13 +8,15 @@
     }
     <ui-table-header [columns]="resolvedColumns()" [showRowIndexIndicator]="showRowIndexIndicator()"
         [rowIndexHeaderText]="rowIndexHeaderText()" [resizable]="isResizable()" [columnWidths]="columnWidths()"
-        [selectionMode]="selectionMode()" [allSelected]="selection().isAllSelected(sortedRows())"
+        [selectionMode]="selectionMode()" [showSelectionColumn]="showSelectionColumn()"
+        [allSelected]="selection().isAllSelected(sortedRows())"
         [indeterminate]="selection().isPartiallySelected(sortedRows())"
         (sortChange)="onSortChange($event)" (columnResize)="onColumnResize($event)"
         (selectAllChange)="onSelectAllChange($event)" />
     <ui-table-body [columns]="resolvedColumns()" [rows]="sortedRows()" [showRowIndexIndicator]="showRowIndexIndicator()"
         [rowIndexOffset]="rowIndexOffset()" [columnWidths]="columnWidths()"
-        [selectionMode]="selectionMode()" [selection]="selection()" [rowClickSelect]="rowClickSelect()"
+        [selectionMode]="selectionMode()" [showSelectionColumn]="showSelectionColumn()"
+        [selection]="selection()" [rowClickSelect]="rowClickSelect()"
         (rowClick)="onRowClick($event)" />
     @if (showBuiltInPaginator()) {
     <ui-table-footer [pageIndex]="datasource().pageIndex()" [pageSize]="datasource().pageSize()"
