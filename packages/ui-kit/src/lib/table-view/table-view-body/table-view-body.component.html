@@ -22,7 +22,7 @@
         }
       </div>
     }
-    @if (selectionMode() === 'single') {
+    @if (showSelectionColumn() && selectionMode() === 'single') {
       <div class="table-cell table-cell--selection">
         @if (row !== null) {
           <input
@@ -36,7 +36,7 @@
         }
       </div>
     }
-    @if (selectionMode() === 'multiple') {
+    @if (showSelectionColumn() && selectionMode() === 'multiple') {
       <div class="table-cell table-cell--selection">
         @if (row !== null) {
           <input

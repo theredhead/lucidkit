@@ -4,11 +4,11 @@
       {{ rowIndexHeaderText() }}
     </div>
   }
-  @if (selectionMode() === 'single') {
+  @if (showSelectionColumn() && selectionMode() === 'single') {
     <div class="table-header-cell table-header-cell--selection" aria-label="Selection">
     </div>
   }
-  @if (selectionMode() === 'multiple') {
+  @if (showSelectionColumn() && selectionMode() === 'multiple') {
     <div class="table-header-cell table-header-cell--selection">
       <input
         type="checkbox"
