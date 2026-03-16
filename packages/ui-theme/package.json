@@ -1,12 +1,11 @@
 {
   "name": "@theredhead/ui-theme",
   "version": "0.0.1",
-  "description": "theredhead UI Theme - Material 3 Theme with Light/Dark Mode",
+  "description": "theredhead UI Theme - Light/Dark Mode Theming with CSS Custom Properties",
   "private": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0",
-    "@angular/material": "^21.0.0"
+    "@angular/core": "^21.0.0"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json"

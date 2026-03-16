@@ -10,7 +10,7 @@ import { moduleMetadata } from "@storybook/angular";
 
 import { UIFilter } from "../filter/filter.component";
 import type { FilterFieldDefinition } from "../filter/filter.types";
-import { UiThemeToggleComponent } from "../theme-toggle/theme-toggle.component";
+import { UIThemeToggle } from "../theme-toggle/theme-toggle.component";
 import { UIDensity, UIDensityDirective } from "../ui-density";
 import { UIBadgeColumn } from "./columns/badge-column/badge-column.component";
 import { UINumberColumn } from "./columns/number-column/number-column.component";
@@ -36,13 +36,13 @@ import { SelectionModel } from "../core/selection-model";
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UiThemeToggleComponent,
+    UIThemeToggle,
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle table theme"
       />
     </div>
@@ -92,13 +92,13 @@ class UITableViewStoryDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UiThemeToggleComponent,
+    UIThemeToggle,
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle table theme"
       />
     </div>
@@ -148,13 +148,13 @@ class UITableViewCommentsStoryDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UiThemeToggleComponent,
+    UIThemeToggle,
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle table theme"
       />
     </div>
@@ -208,13 +208,13 @@ class UITableViewPhotosStoryDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UiThemeToggleComponent,
+    UIThemeToggle,
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle table theme"
       />
     </div>
@@ -281,13 +281,13 @@ class UITableViewSingleSelectDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UiThemeToggleComponent,
+    UIThemeToggle,
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle table theme"
       />
     </div>
@@ -481,7 +481,7 @@ export const DensityPlayground: Story = {
         UITextColumn,
         UIBadgeColumn,
         UIDensityDirective,
-        UiThemeToggleComponent,
+        UIThemeToggle,
       ],
     }),
   ],
@@ -532,7 +532,7 @@ export const DensityPlayground: Story = {
     },
     template: `
             <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-                <ui-theme-toggle variant="button" [showTooltip]="true" ariaLabel="Toggle table theme" />
+                <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
             </div>
             <ui-table-view
                 [uiDensity]="density"
@@ -579,7 +579,7 @@ export const WithoutBuiltInPaginator: Story = {
         UITextColumn,
         UIBadgeColumn,
         UIDensityDirective,
-        UiThemeToggleComponent,
+        UIThemeToggle,
       ],
     }),
   ],
@@ -592,7 +592,7 @@ export const WithoutBuiltInPaginator: Story = {
     },
     template: `
             <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-                <ui-theme-toggle variant="button" [showTooltip]="true" ariaLabel="Toggle table theme" />
+                <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
             </div>
             <ui-table-view
                 uiDensity="comfortable"
@@ -866,14 +866,14 @@ const EMPLOYEE_FIELDS: FilterFieldDefinition<Employee>[] = [
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UiThemeToggleComponent,
+    UIThemeToggle,
     UIFilter,
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle table theme"
       />
     </div>
@@ -998,13 +998,13 @@ onPredicateChange(predicate: Predicate<Employee> | undefined): void {
     UITextColumn,
     UITemplateColumn,
     UIDensityDirective,
-    UiThemeToggleComponent,
+    UIThemeToggle,
   ],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle table theme"
       />
     </div>

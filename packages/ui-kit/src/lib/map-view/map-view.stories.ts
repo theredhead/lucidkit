@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
 
-import { UiThemeToggleComponent } from "../theme-toggle/theme-toggle.component";
+import { UIThemeToggle } from "../theme-toggle/theme-toggle.component";
 import { UIDensityDirective } from "../ui-density";
 import { UIMapView } from "./map-view.component";
 import type {
@@ -88,12 +88,12 @@ const FLAG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28
   selector: "ui-map-view-basic-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent],
+  imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>
@@ -108,12 +108,12 @@ class MapViewBasicDemo {
   selector: "ui-map-view-markers-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent],
+  imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>
@@ -135,12 +135,12 @@ class MapViewMarkersDemo {
   selector: "ui-map-view-route-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent],
+  imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>
@@ -168,12 +168,12 @@ class MapViewRouteDemo {
   selector: "ui-map-view-polygon-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent],
+  imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>
@@ -201,12 +201,12 @@ class MapViewPolygonDemo {
   selector: "ui-map-view-highlight-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent],
+  imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>
@@ -255,12 +255,12 @@ class MapViewHighlightDemo {
   selector: "ui-map-view-custom-icons-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent],
+  imports: [UIMapView, UIThemeToggle],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>
@@ -306,12 +306,12 @@ class MapViewCustomIconsDemo {
   selector: "ui-map-view-combined-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent, UIDensityDirective],
+  imports: [UIMapView, UIThemeToggle, UIDensityDirective],
   template: `
     <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>
@@ -354,7 +354,7 @@ class MapViewCombinedDemo {
   selector: "ui-map-view-toggle-highlight-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView, UiThemeToggleComponent],
+  imports: [UIMapView, UIThemeToggle],
   template: `
     <div
       style="display:flex;justify-content:flex-end;gap:0.5rem;margin:0 0 0.75rem;"
@@ -364,7 +364,7 @@ class MapViewCombinedDemo {
       </button>
       <ui-theme-toggle
         variant="button"
-        [showTooltip]="true"
+       
         ariaLabel="Toggle theme"
       />
     </div>

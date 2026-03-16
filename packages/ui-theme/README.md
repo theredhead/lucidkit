@@ -1,6 +1,10 @@
 # @theredhead/ui-theme
 
-Material 3 theme library for theredhead applications with light and dark mode support.
+Light/dark mode theming with CSS custom properties for theredhead Angular
+applications. **No Angular Material dependency** — colours and typography are
+defined as standalone SCSS variables derived from Material 3 tonal palettes.
+
+---
 
 ## Installation
 
@@ -8,30 +12,30 @@ Material 3 theme library for theredhead applications with light and dark mode su
 npm install @theredhead/ui-theme
 ```
 
+---
+
 ## Usage
 
 ### 1. Import the theme styles
 
-In your application's main styles file (e.g., `styles.scss`):
+In your application's main `styles.scss`:
 
 ```scss
-@use '@theredhead/ui-theme' as theme;
+@use "@theredhead/ui-theme" as theme;
 
-// Apply the full theme (includes Material 3 theming and light/dark mode)
+// Apply the full theme (sets all --theredhead-* and --ui-* custom properties)
 @include theme.theredhead-theme();
 ```
 
-### 2. Use the theme service
+### 2. Use the ThemeService
 
 ```typescript
-import { Component, inject } from '@angular/core';
-import { ThemeService } from '@theredhead/ui-theme';
+import { Component, inject } from "@angular/core";
+import { ThemeService } from "@theredhead/ui-theme";
 
 @Component({
-  selector: 'app-root',
-  template: `
-    <button (click)="toggleTheme()">Toggle Theme</button>
-  `
+  selector: "app-root",
+  template: `<button (click)="toggleTheme()">Toggle Theme</button>`,
 })
 export class AppComponent {
   private themeService = inject(ThemeService);
@@ -45,35 +49,92 @@ export class AppComponent {
 ### 3. Theme modes
 
 The library supports three theme modes:
-- `light` - Light mode only
-- `dark` - Dark mode only
-- `system` - Follows system preference (default)
+
+| Mode     | Description                     |
+| -------- | ------------------------------- |
+| `light`  | Forces light mode               |
+| `dark`   | Forces dark mode                |
+| `system` | Follows OS / browser preference |
 
 ```typescript
-// Set specific theme
-themeService.setTheme('dark');
+themeService.setTheme("dark"); // Force dark
+themeService.toggleTheme(); // Toggle light ↔ dark
+themeService.resetToSystem(); // Follow system preference
 
-// Toggle between light and dark
-themeService.toggleTheme();
-
-// Follow system preference
-themeService.setTheme('system');
-
-// Get current theme as signal
-const isDark = themeService.isDarkMode();
+// Reactive signals
+const isDark = themeService.isDarkMode(); // Signal<boolean>
+const isLight = themeService.isLightMode(); // Signal<boolean>
+const mode = themeService.themeMode(); // Signal<'light'|'dark'|'system'>
 ```
 
-## Customization
+---
 
-You can customize the theme colors by overriding the default palette:
+## CSS custom property namespaces
+
+| Namespace        | Scope                         | Examples                                                                  |
+| ---------------- | ----------------------------- | ------------------------------------------------------------------------- |
+| `--theredhead-*` | Global theme colours          | `--theredhead-primary`, `--theredhead-surface`, `--theredhead-background` |
+| `--ui-*`         | Component-level design tokens | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`                 |
+
+---
+
+## Dark mode (three-tier pattern)
+
+All components and the theme mixin follow a three-tier dark-mode strategy:
 
 ```scss
-@use '@theredhead/ui-theme' as theme with (
-  $primary-hue: 250,      // Custom primary color hue
-  $secondary-hue: 330,    // Custom secondary color hue
-  $tertiary-hue: 60,      // Custom tertiary color hue
-  $error-hue: 0           // Custom error color hue
+// 1. Light defaults
+html {
+  --theredhead-primary: #0061a4;
+}
+
+// 2. Explicit dark class (toggled by ThemeService)
+html.dark-theme {
+  --theredhead-primary: #9ecaff;
+}
+
+// 3. System preference fallback (no class set)
+@media (prefers-color-scheme: dark) {
+  html:not(.light-theme):not(.dark-theme) {
+    --theredhead-primary: #9ecaff;
+  }
+}
+```
+
+---
+
+## Customisation
+
+Override the default palette by setting SCSS variables before importing:
+
+```scss
+@use "@theredhead/ui-theme/lib/styles/palettes" as palettes with (
+  $light-primary: #006b5e,
+  $dark-primary: #6bdbcb
 );
 
+@use "@theredhead/ui-theme" as theme;
 @include theme.theredhead-theme();
+```
+
+All palette variables are declared `!default` so consumer overrides take
+precedence.
+
+---
+
+## Architecture
+
+```text
+_palettes.scss      ← standalone colour variables (light + dark)
+_typography.scss    ← font family, sizes, weights
+_tokens.scss        ← all --ui-* CSS custom property definitions
+_theme.scss         ← theredhead-theme() mixin (wires everything together)
+_index.scss         ← barrel (@forward)
+
+services/
+  theme.service.ts  ← ThemeService (signals, localStorage, class toggling)
+
+tokens/
+  theme.tokens.ts   ← TypeScript constant mapping all --ui-* property names
+  colors.ts         ← colour-name constants
 ```
