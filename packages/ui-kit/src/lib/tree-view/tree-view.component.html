@@ -1,0 +1,20 @@
+<!-- Tree-view container – delegates rendering to recursive ui-tree-node -->
+@for (node of rootNodes(); track node.id) {
+  <ui-tree-node
+    [node]="node"
+    [level]="0"
+    [datasource]="datasource()"
+    [isExpanded]="isExpanded(node)"
+    [hasChildren]="datasource().hasChildren(node)"
+    [isSelected]="isSelected(node)"
+    [isFocused]="focusedNodeId() === node.id"
+    [displayWith]="displayWith()"
+    [expandedIds]="expandedIds()"
+    [selectedNodes]="selected()"
+    [focusedNodeId]="focusedNodeId()"
+    [nodeTemplate]="nodeTemplate() ?? null"
+    (nodeClick)="onNodeClick($event)"
+    (nodeDblClick)="onNodeDblClick($event)"
+    (toggleExpand)="onToggleExpand($event)"
+  />
+}

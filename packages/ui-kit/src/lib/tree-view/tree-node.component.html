@@ -1,0 +1,74 @@
+<!-- Node row -->
+<div
+  class="tv-node-row"
+  [style.padding-left.px]="indentPx"
+  [attr.tabindex]="node().disabled ? -1 : 0"
+  (click)="onRowClick()"
+  (dblclick)="onRowDblClick()"
+  (keydown.enter)="onRowClick()"
+  (keydown.space)="onRowClick(); $event.preventDefault()"
+>
+  <!-- Expand / collapse toggle -->
+  @if (hasChildren()) {
+    <button
+      class="tv-toggle"
+      type="button"
+      [attr.aria-label]="isExpanded() ? 'Collapse' : 'Expand'"
+      (click)="onToggleClick($event)"
+    >
+      <svg class="tv-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+        [class.tv-chevron--expanded]="isExpanded()">
+        <polyline
+          points="6,4 10,8 6,12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+  } @else {
+    <span class="tv-toggle-spacer"></span>
+  }
+
+  <!-- Node content -->
+  <div class="tv-node-content">
+    @if (node().icon) {
+      <ui-icon [svg]="node().icon!" [size]="16" />
+    }
+
+    @if (nodeTemplate()) {
+      <ng-container
+        [ngTemplateOutlet]="nodeTemplate()!"
+        [ngTemplateOutletContext]="templateContext"
+      />
+    } @else {
+      <span class="tv-node-label">{{ displayWith()(node().data) }}</span>
+    }
+  </div>
+</div>
+
+<!-- Children (recursive) -->
+@if (isExpanded() && hasChildren()) {
+  <div class="tv-children" role="group">
+    @for (child of children; track child.id) {
+      <ui-tree-node
+        [node]="child"
+        [level]="level() + 1"
+        [datasource]="datasource()"
+        [isExpanded]="isChildExpanded(child)"
+        [hasChildren]="childHasChildren(child)"
+        [isSelected]="isChildSelected(child)"
+        [isFocused]="isChildFocused(child)"
+        [displayWith]="displayWith()"
+        [expandedIds]="expandedIds()"
+        [selectedNodes]="selectedNodes()"
+        [focusedNodeId]="focusedNodeId()"
+        [nodeTemplate]="nodeTemplate()"
+        (nodeClick)="onChildNodeClick($event)"
+        (nodeDblClick)="onChildNodeDblClick($event)"
+        (toggleExpand)="onChildToggleExpand($event)"
+      />
+    }
+  </div>
+}

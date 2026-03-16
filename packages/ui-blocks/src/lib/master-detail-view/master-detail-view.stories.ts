@@ -8,6 +8,7 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import {
   ArrayDatasource,
+  ArrayTreeDatasource,
   DatasourceAdapter,
   FilterableArrayDatasource,
   UIAvatar,
@@ -16,6 +17,7 @@ import {
   UITextColumn,
   type FilterFieldDefinition,
   type FilterDescriptor,
+  type TreeNode,
 } from "@theredhead/ui-kit";
 
 import { UIMasterDetailView } from "./master-detail-view.component";
@@ -305,6 +307,152 @@ class FilterDemo {
   }
 }
 
+// ── Demo: Tree Mode ──────────────────────────────────────────────────
+
+interface OrgNode {
+  name: string;
+  title: string;
+  email: string;
+}
+
+const ORG_TREE: TreeNode<OrgNode>[] = [
+  {
+    id: "ceo",
+    data: { name: "Alice Chen", title: "CEO", email: "alice@example.com" },
+    children: [
+      {
+        id: "cto",
+        data: { name: "Bob Smith", title: "CTO", email: "bob@example.com" },
+        children: [
+          {
+            id: "eng-lead",
+            data: {
+              name: "Carol Davis",
+              title: "Engineering Lead",
+              email: "carol@example.com",
+            },
+            children: [
+              {
+                id: "dev-1",
+                data: {
+                  name: "Dan Lee",
+                  title: "Senior Developer",
+                  email: "dan@example.com",
+                },
+              },
+              {
+                id: "dev-2",
+                data: {
+                  name: "Eve Wong",
+                  title: "Developer",
+                  email: "eve@example.com",
+                },
+              },
+            ],
+          },
+          {
+            id: "qa-lead",
+            data: {
+              name: "Frank Miller",
+              title: "QA Lead",
+              email: "frank@example.com",
+            },
+            children: [
+              {
+                id: "qa-1",
+                data: {
+                  name: "Grace Kim",
+                  title: "QA Engineer",
+                  email: "grace@example.com",
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "cfo",
+        data: { name: "Helen Park", title: "CFO", email: "helen@example.com" },
+        children: [
+          {
+            id: "acct",
+            data: {
+              name: "Ivan Brown",
+              title: "Senior Accountant",
+              email: "ivan@example.com",
+            },
+          },
+        ],
+      },
+      {
+        id: "cmo",
+        data: { name: "Julia Adams", title: "CMO", email: "julia@example.com" },
+        children: [
+          {
+            id: "mktg",
+            data: {
+              name: "Kevin White",
+              title: "Marketing Manager",
+              email: "kevin@example.com",
+            },
+          },
+        ],
+      },
+    ],
+  },
+];
+
+@Component({
+  selector: "ui-mdv-tree-demo",
+  standalone: true,
+  imports: [UIMasterDetailView],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 480px;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+    `,
+  ],
+  template: `
+    <ui-master-detail-view
+      [treeDatasource]="treeDatasource"
+      [treeDisplayWith]="displayWith"
+      title="Organization"
+      placeholder="Select a person to view their profile"
+    >
+      <ng-template #nodeTemplate let-node>
+        <div style="line-height: 1.3">
+          <strong>{{ node.data.name }}</strong>
+          <div style="font-size: 0.75rem; opacity: 0.65;">
+            {{ node.data.title }}
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #detail let-person>
+        <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
+        <dl
+          style="margin: 0; display: grid; grid-template-columns: 7rem 1fr; gap: 0.35rem 1rem; font-size: 0.88rem;"
+        >
+          <dt style="font-weight: 600">Title</dt>
+          <dd style="margin: 0">{{ person.title }}</dd>
+          <dt style="font-weight: 600">Email</dt>
+          <dd style="margin: 0">{{ person.email }}</dd>
+        </dl>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class TreeDemo {
+  protected readonly treeDatasource = new ArrayTreeDatasource(ORG_TREE);
+  protected readonly displayWith = (data: OrgNode): string => data.name;
+}
+
 // ── Storybook meta ───────────────────────────────────────────────────
 
 const meta: Meta = {
@@ -314,18 +462,19 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "A master-detail layout combining a `<ui-table-view>` list panel " +
-          "with a detail template pane. Content-project table columns and " +
+          "A master-detail layout combining a `<ui-table-view>` or `<ui-tree-view>` " +
+          "list panel with a detail template pane. Content-project table columns and " +
           "a `#detail` ng-template (selected item available as `$implicit`). " +
+          "Pass a `treeDatasource` to switch to hierarchical tree mode. " +
           "Optionally add a collapsible `#filter` template above the list.\n\n" +
-          "The table uses single selection, row-click select, page size 100, " +
-          "no pagination, and no built-in leading columns.",
+          "Both table and tree modes use single selection. " +
+          "Table mode: row-click select, page size 100, no pagination.",
       },
     },
   },
   decorators: [
     moduleMetadata({
-      imports: [DefaultDemo, FilterDemo],
+      imports: [DefaultDemo, FilterDemo, TreeDemo],
     }),
   ],
 };
@@ -380,6 +529,34 @@ export const WithFilter: Story = {
 
   <ng-template #detail let-person>
     <h3>{{ person.name }}</h3>
+  </ng-template>
+</ui-master-detail-view>`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/** Tree mode — hierarchical master list with a custom node template. */
+export const TreeMode: Story = {
+  render: () => ({ template: `<ui-mdv-tree-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-master-detail-view
+  [treeDatasource]="treeDatasource"
+  [treeDisplayWith]="displayWith"
+  title="Organization"
+>
+  <ng-template #nodeTemplate let-node>
+    <strong>{{ node.data.name }}</strong>
+    <div style="font-size: 0.75rem">{{ node.data.title }}</div>
+  </ng-template>
+
+  <ng-template #detail let-person>
+    <h3>{{ person.name }}</h3>
+    <p>{{ person.title }}</p>
+    <p>{{ person.email }}</p>
   </ng-template>
 </ui-master-detail-view>`,
         language: "html",

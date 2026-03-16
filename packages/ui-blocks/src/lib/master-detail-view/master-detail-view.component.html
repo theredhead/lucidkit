@@ -29,18 +29,36 @@
     <h2 class="mdv-title">{{ title() }}</h2>
   </header>
 
-  <div class="mdv-table-wrapper">
-    <ui-table-view
-      [datasource]="resolvedDatasource()"
-      [externalColumns]="columns()"
-      [showBuiltInPaginator]="false"
-      [showRowIndexIndicator]="false"
-      selectionMode="single"
-      [showSelectionColumn]="false"
-      [rowClickSelect]="true"
-      [selectionModel]="selectionModel"
-    />
-  </div>
+  @if (isTreeMode()) {
+    <div class="mdv-tree-wrapper">
+      <ui-tree-view
+        [datasource]="treeDatasource()!"
+        [displayWith]="treeDisplayWith()"
+        selectionMode="single"
+        [(selected)]="selectedTreeNodes"
+        ariaLabel="Master list"
+      >
+        @if (treeNodeTemplate(); as nodeTpl) {
+          <ng-template #nodeTemplate let-node let-level="level" let-expanded="expanded" let-hasChildren="hasChildren">
+            <ng-container *ngTemplateOutlet="nodeTpl; context: { $implicit: node, level: level, expanded: expanded, hasChildren: hasChildren }" />
+          </ng-template>
+        }
+      </ui-tree-view>
+    </div>
+  } @else {
+    <div class="mdv-table-wrapper">
+      <ui-table-view
+        [datasource]="resolvedDatasource()"
+        [externalColumns]="columns()"
+        [showBuiltInPaginator]="false"
+        [showRowIndexIndicator]="false"
+        selectionMode="single"
+        [showSelectionColumn]="false"
+        [rowClickSelect]="true"
+        [selectionModel]="selectionModel"
+      />
+    </div>
+  }
 </aside>
 
 <main class="mdv-detail-panel">
