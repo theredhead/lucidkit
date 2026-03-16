@@ -3,8 +3,11 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import {
   ArrayDatasource,
+  ArrayTreeDatasource,
   DatasourceAdapter,
   UITextColumn,
+  type ITreeDatasource,
+  type TreeNode,
 } from "@theredhead/ui-kit";
 
 import { UIMasterDetailView } from "./master-detail-view.component";
@@ -345,5 +348,148 @@ describe("UIMasterDetailView", () => {
       expect(ds.totalItems()).toBe(3);
       expect(ds.visibleWindow().length).toBe(3);
     });
+  });
+});
+
+// ── Tree mode ─────────────────────────────────────────────────────
+
+interface Department {
+  name: string;
+}
+
+const TREE_DATA: TreeNode<Department>[] = [
+  {
+    id: "eng",
+    data: { name: "Engineering" },
+    children: [
+      { id: "eng-fe", data: { name: "Frontend" } },
+      { id: "eng-be", data: { name: "Backend" } },
+    ],
+  },
+  {
+    id: "design",
+    data: { name: "Design" },
+    children: [{ id: "design-ux", data: { name: "UX" } }],
+  },
+  {
+    id: "hr",
+    data: { name: "HR" },
+  },
+];
+
+@Component({
+  standalone: true,
+  imports: [UIMasterDetailView],
+  template: `
+    <ui-master-detail-view
+      [treeDatasource]="treeDatasource()"
+      [treeDisplayWith]="displayWith"
+      title="Departments"
+      placeholder="Select a department"
+      (selectedChange)="onSelected($event)"
+    >
+      <ng-template #detail let-dept>
+        <div class="test-tree-detail">
+          <h3 class="test-tree-detail-name">{{ dept.name }}</h3>
+        </div>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class TreeTestHost {
+  public readonly treeDatasource = signal<ITreeDatasource<Department>>(
+    new ArrayTreeDatasource(TREE_DATA),
+  );
+  public readonly displayWith = (data: Department): string => data.name;
+  public readonly selected = signal<Department | undefined>(undefined);
+
+  public onSelected(item: Department | undefined): void {
+    this.selected.set(item);
+  }
+}
+
+describe("UIMasterDetailView (tree mode)", () => {
+  let treeFixture: ComponentFixture<TreeTestHost>;
+  let treeHost: TreeTestHost;
+  let treeEl: HTMLElement;
+
+  function detectAndFlushTree(): void {
+    treeFixture.detectChanges();
+    TestBed.flushEffects();
+    treeFixture.detectChanges();
+  }
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TreeTestHost],
+    }).compileComponents();
+    treeFixture = TestBed.createComponent(TreeTestHost);
+    treeHost = treeFixture.componentInstance;
+    treeEl = treeFixture.nativeElement;
+    detectAndFlushTree();
+  });
+
+  it("should render a tree-view instead of a table-view", () => {
+    expect(treeEl.querySelector("ui-tree-view")).toBeTruthy();
+    expect(treeEl.querySelector("ui-table-view")).toBeNull();
+  });
+
+  it("should render root-level tree nodes", () => {
+    const nodes = treeEl.querySelectorAll("ui-tree-view > ui-tree-node");
+    expect(nodes.length).toBe(3);
+  });
+
+  it("should display node labels using treeDisplayWith", () => {
+    const label = treeEl.querySelector(".tv-node-label");
+    expect(label?.textContent?.trim()).toBe("Engineering");
+  });
+
+  it("should show the placeholder when no node is selected", () => {
+    expect(treeEl.querySelector(".mdv-placeholder")).toBeTruthy();
+    expect(
+      treeEl.querySelector(".mdv-placeholder p")?.textContent?.trim(),
+    ).toBe("Select a department");
+  });
+
+  it("should show detail after selecting a tree node", () => {
+    const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+    row.click();
+    detectAndFlushTree();
+
+    expect(treeEl.querySelector(".test-tree-detail")).toBeTruthy();
+    expect(
+      treeEl.querySelector(".test-tree-detail-name")?.textContent?.trim(),
+    ).toBe("Engineering");
+  });
+
+  it("should emit selectedChange with the node data", () => {
+    const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+    row.click();
+    detectAndFlushTree();
+
+    expect(treeHost.selected()?.name).toBe("Engineering");
+  });
+
+  it("should update detail when a different node is selected", () => {
+    const rows = treeEl.querySelectorAll(
+      "ui-tree-view > ui-tree-node > .tv-node-row",
+    );
+    (rows[2] as HTMLElement).click(); // HR
+    detectAndFlushTree();
+
+    expect(
+      treeEl.querySelector(".test-tree-detail-name")?.textContent?.trim(),
+    ).toBe("HR");
+  });
+
+  it("should display the title", () => {
+    expect(treeEl.querySelector(".mdv-title")?.textContent?.trim()).toBe(
+      "Departments",
+    );
+  });
+
+  it("should use the tree wrapper class", () => {
+    expect(treeEl.querySelector(".mdv-tree-wrapper")).toBeTruthy();
+    expect(treeEl.querySelector(".mdv-table-wrapper")).toBeNull();
   });
 });

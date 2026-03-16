@@ -33,3 +33,4 @@ export * from "./lib/progress";
 export * from "./lib/avatar";
 export * from "./lib/chip";
 export * from "./lib/file-upload";
+export * from "./lib/tree-view";

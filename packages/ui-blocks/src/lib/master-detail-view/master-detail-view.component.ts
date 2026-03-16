@@ -20,6 +20,10 @@ import {
   UIIcons,
   UITableView,
   UITableViewColumn,
+  UITreeView,
+  type ITreeDatasource,
+  type TreeNode,
+  type TreeNodeContext,
 } from "@theredhead/ui-kit";
 
 /**
@@ -37,7 +41,7 @@ export interface MasterDetailContext<T> {
  * {@link UITableView} and renders a detail template for the
  * currently selected item.
  *
- * ### Basic usage
+ * ### Basic usage (table mode)
  * ```html
  * <ui-master-detail-view [data]="items">
  *   <ui-text-column key="name" headerText="Name" />
@@ -46,6 +50,15 @@ export interface MasterDetailContext<T> {
  *   <ng-template #detail let-object>
  *     <h3>{{ object.name }}</h3>
  *     <p>{{ object.email }}</p>
+ *   </ng-template>
+ * </ui-master-detail-view>
+ * ```
+ *
+ * ### Tree mode
+ * ```html
+ * <ui-master-detail-view [treeDatasource]="treeDs" [displayWith]="labelFn">
+ *   <ng-template #detail let-object>
+ *     <h3>{{ object.name }}</h3>
  *   </ng-template>
  * </ui-master-detail-view>
  * ```
@@ -64,7 +77,7 @@ export interface MasterDetailContext<T> {
 @Component({
   selector: "ui-master-detail-view",
   standalone: true,
-  imports: [UITableView, NgTemplateOutlet, UIIcon],
+  imports: [UITableView, UITreeView, NgTemplateOutlet, UIIcon],
   templateUrl: "./master-detail-view.component.html",
   styleUrl: "./master-detail-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -94,6 +107,26 @@ export class UIMasterDetailView<T = unknown> {
    * Ignored when `datasource` is provided.
    */
   public readonly data = input<readonly T[]>([]);
+
+  /**
+   * Tree datasource for hierarchical master lists.
+   *
+   * When provided, the list panel renders a `<ui-tree-view>` instead
+   * of a `<ui-table-view>`. The `data`, `datasource`, and column
+   * inputs are ignored in tree mode.
+   */
+  public readonly treeDatasource = input<ITreeDatasource<T> | undefined>(
+    undefined,
+  );
+
+  /**
+   * Function that returns a display string for tree node data.
+   * Only used in tree mode when no `#nodeTemplate` is projected.
+   * Defaults to `String(data)`.
+   */
+  public readonly treeDisplayWith = input<(data: T) => string>((data: T) =>
+    String(data),
+  );
 
   /** Placeholder text shown when no item is selected. */
   public readonly placeholder = input<string>("Select an item to view details");
@@ -128,10 +161,32 @@ export class UIMasterDetailView<T = unknown> {
   /** Optional filter template — shown in the collapsible filter area. */
   public readonly filterTemplate = contentChild<TemplateRef<unknown>>("filter");
 
+  /**
+   * Optional tree-node template — forwarded to `<ui-tree-view>`.
+   * Receives {@link TreeNodeContext} as its context.
+   */
+  public readonly treeNodeTemplate =
+    contentChild<TemplateRef<TreeNodeContext<T>>>("nodeTemplate");
+
   // ── Computed ──────────────────────────────────────────────────────
 
-  /** The currently selected item, derived from the selection model. @internal */
+  /**
+   * Whether the component is in tree mode.
+   * `true` when a `treeDatasource` is provided. @internal
+   */
+  protected readonly isTreeMode = computed(
+    () => this.treeDatasource() !== undefined,
+  );
+
+  /**
+   * The currently selected item, derived from the table selection
+   * model or the tree selection signal. @internal
+   */
   protected readonly selectedItem = computed<T | undefined>(() => {
+    if (this.isTreeMode()) {
+      const nodes = this.selectedTreeNodes();
+      return nodes.length > 0 ? nodes[0].data : undefined;
+    }
     const items = this.selectionModel.selected();
     return items.length > 0 ? items[0] : undefined;
   });
@@ -173,6 +228,9 @@ export class UIMasterDetailView<T = unknown> {
   public readonly selectionModel = new SelectionModel<T>("single");
 
   // ── Protected fields ──────────────────────────────────────────────
+
+  /** @internal — currently selected tree nodes (tree mode). */
+  protected readonly selectedTreeNodes = signal<readonly TreeNode<T>[]>([]);
 
   /** @internal — whether the filter section is collapsed. */
   protected readonly filterCollapsed = signal(false);
