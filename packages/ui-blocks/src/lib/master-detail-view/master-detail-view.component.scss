@@ -12,13 +12,14 @@
 
   display: grid;
   grid-template-columns: minmax(280px, 1fr) 2fr;
+  grid-template-rows: auto 1fr;
   height: 100%;
   color: var(--ui-text);
   font-family: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
   }
 }
 
@@ -56,11 +57,14 @@
 /* ── List panel (aside) ── */
 
 .mdv-list-panel {
+  grid-row: 2;
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   background: var(--ui-surface);
   border-right: 1px solid var(--ui-border);
   overflow: hidden;
+  min-height: 0;
 
   @media (max-width: 768px) {
     border-right: none;
@@ -85,8 +89,9 @@
 /* ── Filter bar ── */
 
 .mdv-filter-bar {
+  grid-row: 1;
+  grid-column: 1 / -1;
   border-bottom: 1px solid var(--ui-border);
-  flex-shrink: 0;
 }
 
 .mdv-filter-toggle {
@@ -125,15 +130,52 @@
   flex: 1;
   overflow: hidden;
   min-height: 0;
+
+  /* Let the table-view and its CDK viewport fill the available height
+     instead of using the default fixed --ui-viewport-height. */
+  // stylelint-disable-next-line selector-pseudo-element-no-unknown
+  ::ng-deep {
+    ui-table-view {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .table-view-root {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    ui-table-body {
+      flex: 1;
+      min-height: 0;
+    }
+
+    .table-body-viewport {
+      height: 100%;
+    }
+  }
 }
 
 /* ── Detail panel ── */
 
 .mdv-detail-panel {
+  grid-row: 2;
+  grid-column: 2;
   display: flex;
   flex-direction: column;
   background: var(--ui-bg);
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    grid-row: 3;
+    grid-column: 1;
+  }
 }
 
 .mdv-detail-content {

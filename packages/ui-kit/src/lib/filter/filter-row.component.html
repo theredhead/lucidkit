@@ -48,13 +48,30 @@
         (valueChange)="onValueToChange($event)"
       />
     } @else {
-      <!-- Standard single value -->
-      <ui-input
-        ariaLabel="Filter value"
-        [type]="inputType()"
-        [value]="rule().value"
-        (valueChange)="onValueChange($event)"
-      />
+      <!-- Standard single value — mode depends on distinct values -->
+      @if (valueInputMode() === 'select') {
+        <ui-select
+          ariaLabel="Filter value"
+          [options]="valueSelectOptions()"
+          [value]="rule().value"
+          (valueChange)="onValueChange($event)"
+        />
+      } @else if (valueInputMode() === 'autocomplete') {
+        <ui-autocomplete
+          [datasource]="autocompleteDatasource()"
+          ariaLabel="Filter value"
+          placeholder="Type to search…"
+          [minChars]="0"
+          (itemSelected)="onValueChange($event)"
+        />
+      } @else {
+        <ui-input
+          ariaLabel="Filter value"
+          [type]="inputType()"
+          [value]="rule().value"
+          (valueChange)="onValueChange($event)"
+        />
+      }
     }
   }
 
