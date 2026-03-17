@@ -1,0 +1,104 @@
+// ── Light defaults ───────────────────────────────────────────────
+:host {
+  --ui-clock-rim: #b0b8c4;
+  --ui-clock-bg: #ffffff;
+  --ui-clock-text: #1d232b;
+  --ui-clock-tick: #6b7280;
+  --ui-clock-tick-hour: #1d232b;
+  --ui-clock-hand-hour: #1d232b;
+  --ui-clock-hand-minute: #374151;
+  --ui-clock-hand-second: #dc2626;
+  --ui-clock-center: #1d232b;
+
+  display: inline-block;
+  line-height: 0;
+}
+
+// ── Explicit dark class ──────────────────────────────────────────
+:host-context(html.dark-theme) {
+  --ui-clock-rim: #4b5563;
+  --ui-clock-bg: #1f2937;
+  --ui-clock-text: #f2f6fb;
+  --ui-clock-tick: #9ca3af;
+  --ui-clock-tick-hour: #f2f6fb;
+  --ui-clock-hand-hour: #f2f6fb;
+  --ui-clock-hand-minute: #d1d5db;
+  --ui-clock-hand-second: #ef4444;
+  --ui-clock-center: #f2f6fb;
+}
+
+// ── System preference fallback ───────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-clock-rim: #4b5563;
+    --ui-clock-bg: #1f2937;
+    --ui-clock-text: #f2f6fb;
+    --ui-clock-tick: #9ca3af;
+    --ui-clock-tick-hour: #f2f6fb;
+    --ui-clock-hand-hour: #f2f6fb;
+    --ui-clock-hand-minute: #d1d5db;
+    --ui-clock-hand-second: #ef4444;
+    --ui-clock-center: #f2f6fb;
+  }
+}
+
+// ── SVG elements ─────────────────────────────────────────────────
+
+.clock-rim {
+  fill: none;
+  stroke: var(--ui-clock-rim);
+  stroke-width: 1;
+}
+
+.clock-bg {
+  fill: var(--ui-clock-bg);
+}
+
+.tick {
+  stroke-linecap: round;
+
+  &--hour {
+    stroke: var(--ui-clock-tick-hour);
+    stroke-width: 1.2;
+  }
+
+  &--minute {
+    stroke: var(--ui-clock-tick);
+    stroke-width: 0.5;
+  }
+}
+
+.hour-number {
+  fill: var(--ui-clock-text);
+  font-size: 7px;
+  font-weight: 600;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  user-select: none;
+}
+
+.hand {
+  stroke-linecap: round;
+  transform-origin: 50px 50px;
+
+  &--hour {
+    stroke: var(--ui-clock-hand-hour);
+    stroke-width: 2.5;
+  }
+
+  &--minute {
+    stroke: var(--ui-clock-hand-minute);
+    stroke-width: 1.8;
+  }
+
+  &--second {
+    stroke: var(--ui-clock-hand-second);
+    stroke-width: 0.8;
+  }
+}
+
+.center-cap {
+  fill: var(--ui-clock-center);
+}
