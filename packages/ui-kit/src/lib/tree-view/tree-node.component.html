@@ -3,10 +3,9 @@
   class="tv-node-row"
   [style.padding-left.px]="indentPx"
   [attr.tabindex]="node().disabled ? -1 : 0"
-  (click)="onRowClick()"
+  (click)="onRowClick($event)"
   (dblclick)="onRowDblClick()"
-  (keydown.enter)="onRowClick()"
-  (keydown.space)="onRowClick(); $event.preventDefault()"
+  (keydown.enter)="$event"
 >
   <!-- Expand / collapse toggle -->
   @if (hasChildren()) {
@@ -63,7 +62,7 @@
         [displayWith]="displayWith()"
         [expandedIds]="expandedIds()"
         [selectedNodes]="selectedNodes()"
-        [focusedNodeId]="focusedNodeId()"
+        [cursorId]="cursorId()"
         [nodeTemplate]="nodeTemplate()"
         (nodeClick)="onChildNodeClick($event)"
         (nodeDblClick)="onChildNodeDblClick($event)"

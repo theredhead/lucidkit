@@ -19,7 +19,8 @@
     "paths": {
       "@theredhead/ui-kit": ["./packages/ui-kit/src/public-api.ts", "./dist/ui-kit"],
       "@theredhead/ui-blocks": ["./packages/ui-blocks/src/public-api.ts", "./dist/ui-blocks"],
-      "@theredhead/ui-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"]
+      "@theredhead/ui-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"],
+      "@theredhead/foundation": ["./packages/foundation/src/public-api.ts", "./dist/foundation"]
     }
   },
   "angularCompilerOptions": {

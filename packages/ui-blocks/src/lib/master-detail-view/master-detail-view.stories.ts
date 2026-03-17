@@ -268,6 +268,130 @@ class FilterDemo {
   protected readonly employees = EMPLOYEES;
 }
 
+// ── Demo: Filter Always Expanded ─────────────────────────────────────
+
+@Component({
+  selector: "ui-mdv-filter-expanded-demo",
+  standalone: true,
+  imports: [UIMasterDetailView, UITemplateColumn, UIAvatar],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 520px;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+    `,
+  ],
+  template: `
+    <ui-master-detail-view
+      [data]="employees"
+      title="Employees"
+      [showFilter]="true"
+      [filterExpanded]="true"
+      [filterModeLocked]="true"
+    >
+      <ui-template-column key="name" headerText="Employee">
+        <ng-template let-row>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+            <div
+              style="display: flex; flex-direction: column; gap: 0.1rem; min-width: 0;"
+            >
+              <span
+                style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                >{{ row.name }}</span
+              >
+              <span
+                style="font-size: 0.78rem; opacity: 0.65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                >{{ row.role }}</span
+              >
+            </div>
+          </div>
+        </ng-template>
+      </ui-template-column>
+
+      <ng-template #detail let-person>
+        <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
+        <p style="margin: 0; font-size: 0.88rem; opacity: 0.7">
+          {{ person.department }} · {{ person.role }}
+        </p>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem">
+          {{ person.email }}
+        </p>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class FilterExpandedDemo {
+  protected readonly employees = EMPLOYEES;
+}
+
+// ── Demo: Filter Starts Collapsed ───────────────────────────────────
+
+@Component({
+  selector: "ui-mdv-filter-collapsed-demo",
+  standalone: true,
+  imports: [UIMasterDetailView, UITemplateColumn, UIAvatar],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 520px;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+    `,
+  ],
+  template: `
+    <ui-master-detail-view
+      [data]="employees"
+      title="Employees"
+      [showFilter]="true"
+      [filterExpanded]="false"
+      [filterModeLocked]="true"
+    >
+      <ui-template-column key="name" headerText="Employee">
+        <ng-template let-row>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+            <div
+              style="display: flex; flex-direction: column; gap: 0.1rem; min-width: 0;"
+            >
+              <span
+                style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                >{{ row.name }}</span
+              >
+              <span
+                style="font-size: 0.78rem; opacity: 0.65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                >{{ row.role }}</span
+              >
+            </div>
+          </div>
+        </ng-template>
+      </ui-template-column>
+
+      <ng-template #detail let-person>
+        <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
+        <p style="margin: 0; font-size: 0.88rem; opacity: 0.7">
+          {{ person.department }} · {{ person.role }}
+        </p>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem">
+          {{ person.email }}
+        </p>
+      </ng-template>
+    </ui-master-detail-view>
+  `,
+})
+class FilterCollapsedDemo {
+  protected readonly employees = EMPLOYEES;
+}
+
 // ── Demo: With Custom Filter Template ────────────────────────────────
 
 const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
@@ -535,7 +659,14 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [DefaultDemo, FilterDemo, CustomFilterDemo, TreeDemo],
+      imports: [
+        DefaultDemo,
+        FilterDemo,
+        FilterExpandedDemo,
+        FilterCollapsedDemo,
+        CustomFilterDemo,
+        TreeDemo,
+      ],
     }),
   ],
 };
@@ -588,6 +719,57 @@ export const WithFilter: Story = {
   <ng-template #detail let-person>
     <h3>{{ person.name }}</h3>
   </ng-template>
+</ui-master-detail-view>`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/**
+ * **Filter mode-locked open** — The filter is always visible with no
+ * toggle button. Useful when filtering is a core part of the
+ * workflow and should not be hidden.
+ */
+export const FilterModeLockedOpen: Story = {
+  render: () => ({ template: `<ui-mdv-filter-expanded-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-master-detail-view
+  [data]="employees"
+  title="Employees"
+  [showFilter]="true"
+  [filterExpanded]="true"
+  [filterModeLocked]="true"
+>
+  <!-- columns and detail template -->
+</ui-master-detail-view>`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/**
+ * **Filter mode-locked closed** — The filter bar is completely hidden
+ * with no toggle button visible. The user cannot open the filter.
+ * Useful when filtering is available programmatically but the UI
+ * should remain clean.
+ */
+export const FilterModeLockedClosed: Story = {
+  render: () => ({ template: `<ui-mdv-filter-collapsed-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `<ui-master-detail-view
+  [data]="employees"
+  title="Employees"
+  [showFilter]="true"
+  [filterExpanded]="false"
+  [filterModeLocked]="true"
+>
+  <!-- columns and detail template -->
 </ui-master-detail-view>`,
         language: "html",
       },

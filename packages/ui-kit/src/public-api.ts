@@ -35,3 +35,4 @@ export * from "./lib/chip";
 export * from "./lib/file-upload";
 export * from "./lib/tree-view";
 export * from "./lib/split-container";
+export * from "./lib/color-picker";

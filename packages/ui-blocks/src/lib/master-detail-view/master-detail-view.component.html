@@ -3,19 +3,21 @@
 
 @if (resolvedShowFilter()) {
   <div class="mdv-filter-bar">
-    <button
-      class="mdv-filter-toggle"
-      type="button"
-      (click)="toggleFilter()"
-      [attr.aria-expanded]="!filterCollapsed()"
-      aria-controls="mdv-filter-content"
-    >
-      <ui-icon
-        [svg]="filterCollapsed() ? chevronRight : chevronDown"
-        [size]="14"
-      />
-      <span>Filter</span>
-    </button>
+    @if (!filterModeLocked()) {
+      <button
+        class="mdv-filter-toggle"
+        type="button"
+        (click)="toggleFilter()"
+        [attr.aria-expanded]="!filterCollapsed()"
+        aria-controls="mdv-filter-content"
+      >
+        <ui-icon
+          [svg]="filterCollapsed() ? chevronRight : chevronDown"
+          [size]="14"
+        />
+        <span>Filter</span>
+      </button>
+    }
     @if (!filterCollapsed()) {
       <div class="mdv-filter-content" id="mdv-filter-content">
         @if (filterTemplate(); as filterTpl) {
@@ -27,6 +29,7 @@
                 [fields]="fields"
                 [data]="resolvedFilterData()"
                 [allowJunction]="true"
+                [modeLocked]="filterModeLocked()"
                 [(value)]="filterDescriptor"
                 (predicateChange)="onFilterPredicateChange($event)"
               />
@@ -57,7 +60,6 @@
           [datasource]="treeDatasource()!"
           [displayWith]="treeDisplayWith()"
           [filterPredicate]="treeFilterPredicate()"
-          selectionMode="single"
           [(selected)]="selectedTreeNodes"
           ariaLabel="Master list"
         >

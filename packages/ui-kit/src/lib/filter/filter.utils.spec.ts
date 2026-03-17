@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Predicate } from "@angular/core";
 
 import type { FilterDescriptor, FilterFieldDefinition } from "./filter.types";

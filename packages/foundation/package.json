@@ -1,0 +1,13 @@
+{
+  "name": "@theredhead/foundation",
+  "version": "0.0.1",
+  "description": "Theredhead Foundation - Core utilities, types, and base classes for the Theredhead UI library family",
+  "private": false,
+  "peerDependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0"
+  },
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json"
+  }
+}

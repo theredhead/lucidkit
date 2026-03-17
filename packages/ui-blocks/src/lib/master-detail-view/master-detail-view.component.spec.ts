@@ -34,6 +34,7 @@ const PEOPLE: Person[] = [
       [placeholder]="placeholder()"
       [showFilter]="showFilter()"
       [filterExpanded]="filterExpanded()"
+      [filterModeLocked]="filterModeLocked()"
       (selectedChange)="onSelected($event)"
     >
       <ui-text-column key="name" headerText="Name" />
@@ -58,6 +59,7 @@ class TestHost {
   public readonly placeholder = signal("Select a person");
   public readonly showFilter = signal(false);
   public readonly filterExpanded = signal(true);
+  public readonly filterModeLocked = signal(false);
   public readonly selected = signal<Person | undefined>(undefined);
 
   public onSelected(item: Person | undefined): void {
@@ -288,6 +290,31 @@ describe("UIMasterDetailView", () => {
       fixture.detectChanges();
       expect(toggle?.getAttribute("aria-expanded")).toBe("false");
     });
+
+    it("should hide toggle button when filter is mode-locked", () => {
+      host.showFilter.set(true);
+      host.filterModeLocked.set(true);
+      fixture.detectChanges();
+      expect(el.querySelector(".mdv-filter-toggle")).toBeNull();
+    });
+
+    it("should always show filter content when mode-locked and expanded", () => {
+      host.showFilter.set(true);
+      host.filterExpanded.set(true);
+      host.filterModeLocked.set(true);
+      fixture.detectChanges();
+      expect(el.querySelector(".test-filter-content")).toBeTruthy();
+      expect(el.querySelector(".mdv-filter-toggle")).toBeNull();
+    });
+
+    it("should hide filter content when mode-locked and collapsed", () => {
+      host.showFilter.set(true);
+      host.filterExpanded.set(false);
+      host.filterModeLocked.set(true);
+      fixture.detectChanges();
+      expect(el.querySelector(".test-filter-content")).toBeNull();
+      expect(el.querySelector(".mdv-filter-toggle")).toBeNull();
+    });
   });
 
   // ── Defaults ────────────────────────────────────────────────────
@@ -310,6 +337,12 @@ describe("UIMasterDetailView", () => {
       const bare = TestBed.createComponent(UIMasterDetailView);
       bare.detectChanges();
       expect(bare.componentInstance.filterExpanded()).toBe(true);
+    });
+
+    it("should default filterModeLocked to false", () => {
+      const bare = TestBed.createComponent(UIMasterDetailView);
+      bare.detectChanges();
+      expect(bare.componentInstance.filterModeLocked()).toBe(false);
     });
   });
 

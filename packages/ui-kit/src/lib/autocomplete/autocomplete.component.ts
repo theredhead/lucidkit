@@ -14,19 +14,10 @@ import {
   TemplateRef,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
+import type { AutocompleteDatasource } from "@theredhead/foundation";
 
-// ── Datasource contract ────────────────────────────────────────────
-
-/**
- * Contract for an autocomplete suggestion provider.
- *
- * `completeFor` receives the current query string and the items that
- * are already selected (so the implementation can exclude them) and
- * returns an array of suggestions.
- */
-export interface AutocompleteDatasource<T> {
-  completeFor(query: string, selection: readonly T[]): T[];
-}
+// Re-export so consumers importing from @theredhead/ui-kit keep working.
+export type { AutocompleteDatasource } from "@theredhead/foundation";
 
 // ── Component ──────────────────────────────────────────────────────
 

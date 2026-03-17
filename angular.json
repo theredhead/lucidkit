@@ -21,6 +21,12 @@
       "sourceRoot": "packages/ui-theme/src",
       "architect": {}
     },
+    "foundation": {
+      "projectType": "library",
+      "root": "packages/foundation",
+      "sourceRoot": "packages/foundation/src",
+      "architect": {}
+    },
     "storybook-host": {
       "projectType": "application",
       "root": "",

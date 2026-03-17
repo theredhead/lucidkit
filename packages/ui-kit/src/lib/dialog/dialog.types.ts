@@ -107,6 +107,7 @@ export interface OpenModalConfig<T> {
    * Works with both signal `output()` and legacy `EventEmitter`
    * outputs.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly outputs?: Record<string, (event: any) => void>;
 
   /** Accessible label applied to the `<dialog>` element. */

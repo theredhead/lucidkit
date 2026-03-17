@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TestBed } from "@angular/core/testing";
 
 import { UIDensityService } from "./ui-density.service";

@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
 import { UITreeView } from "./tree-view.component";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
-import type { TreeNode, TreeSelectionMode } from "./tree-view.types";
+import type { TreeNode } from "./tree-view.types";
 
 // ── Demo data ─────────────────────────────────────────────────────────
 
@@ -117,19 +117,16 @@ class TreeViewFileDemo {
       <ui-tree-view
         [datasource]="ds"
         [displayWith]="displayWith"
-        [selectionMode]="selectionMode()"
         [(selected)]="selected"
         ariaLabel="File explorer"
         style="flex: 1"
       />
       <div style="flex: 1; font-size: 0.85rem;">
-        <p><strong>Mode:</strong> {{ selectionMode() }}</p>
-        <div style="margin-bottom: 0.5rem;">
-          <button (click)="selectionMode.set('single')">Single</button>
-          <button (click)="selectionMode.set('multiple')">Multiple</button>
-          <button (click)="selectionMode.set('none')">None</button>
-        </div>
-        <p><strong>Selected:</strong></p>
+        <p><strong>Selection:</strong></p>
+        <p style="font-size: 0.75rem; opacity: 0.7;">
+          Click to select &bull; Ctrl/⌘+click to toggle &bull; Shift+arrows to
+          extend &bull; Escape to clear
+        </p>
         <pre
           style="background: rgba(0,0,0,0.05); padding: 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; overflow: auto;"
           >{{ selectedNames() }}</pre
@@ -141,7 +138,6 @@ class TreeViewFileDemo {
 class TreeViewSelectionDemo {
   protected readonly ds = new ArrayTreeDatasource(FILE_TREE);
   protected readonly displayWith = (data: FileEntry): string => data.name;
-  protected readonly selectionMode = signal<TreeSelectionMode>("single");
   protected readonly selected = signal<readonly TreeNode<FileEntry>[]>([]);
 
   protected readonly selectedNames = () =>
@@ -269,25 +265,24 @@ const meta: Meta<UITreeView> = {
     docs: {
       description: {
         component: [
-          "`UITreeView` renders hierarchical data as an expandable / collapsible tree. It is datasource-driven, supports single and multi-select, custom node templates, per-node icons, and disabled nodes.",
+          "`UITreeView` renders hierarchical data as an expandable / collapsible tree. It is datasource-driven, supports multi-select via Ctrl/⌘+click and Shift+arrows, custom node templates, per-node icons, and disabled nodes.",
           "",
           "## Key Features",
           "",
           "- **Datasource-driven** — supply an `ArrayTreeDatasource<T>` (or any `TreeDatasource`) with nested `TreeNode<T>` objects",
-          '- **Selection modes** — `"none"`, `"single"`, or `"multiple"` with two-way bound `selected` model',
+          "- **Unified selection** — click to select, Ctrl/⌘+click to toggle, Shift+arrow to extend, Escape to clear",
           "- **Custom templates** — project a `#nodeTemplate` to render rich node content (e.g. org-chart cards)",
           "- **SVG icons** — each `TreeNode` can carry an `icon` string (raw SVG path data) rendered inline",
           "- **Disabled nodes** — set `disabled: true` on a node to make it non-interactive",
           "- **Expand / collapse API** — call `tree.expandAll()` or `tree.collapseAll()` programmatically",
           "- **Accessible** — ARIA tree / treeitem roles with keyboard navigation (arrow keys, Enter, Space)",
-          "",
+          "- **Accessible** — ARIA tree / treeitem roles with keyboard navigation (arrow keys, Enter, Escape)",
           "## Inputs",
           "",
           "| Input | Type | Default | Description |",
           "|-------|------|---------|-------------|",
           "| `datasource` | `TreeDatasource<T>` | *(required)* | Provides the tree data |",
           "| `displayWith` | `(data: T) => string` | `String()` | Formats a node’s data for display text |",
-          '| `selectionMode` | `"none" \\| "single" \\| "multiple"` | `"none"` | How nodes can be selected |',
           '| `ariaLabel` | `string` | `"Tree view"` | Accessible label for the tree root |',
           "| `filterPredicate` | `(node: TreeNode<T>) => boolean` | — | Optional filter for visible nodes |",
           "",
@@ -352,9 +347,9 @@ export const FileExplorer: Story = {
 };
 
 /**
- * **Selection** — An interactive demo where you can toggle between `single`,
- * `multiple`, and `none` selection modes at runtime. The selected node
- * names are displayed alongside the tree for immediate feedback.
+ * **Selection** — An interactive demo showing the unified selection model.
+ * Click to select, Ctrl/\u2318+click to toggle individual nodes, use
+ * Shift+arrows to extend the selection, and Escape to clear it.
  */
 export const Selection: Story = {
   render: () => ({
@@ -365,7 +360,6 @@ export const Selection: Story = {
       source: {
         code: `<ui-tree-view
   [datasource]="ds"
-  [selectionMode]="selectionMode()"
   [(selected)]="selected"
 />`,
         language: "html",

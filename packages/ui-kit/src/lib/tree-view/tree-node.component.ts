@@ -73,8 +73,8 @@ export class UITreeNode<T = unknown> {
   /** Set of selected node IDs as node references (forwarded for checking). */
   public readonly selectedNodes = input.required<readonly TreeNode<T>[]>();
 
-  /** Focused node ID (forwarded to children). */
-  public readonly focusedNodeId = input.required<string | null>();
+  /** Cursor node ID — the node with keyboard focus (forwarded to children). */
+  public readonly cursorId = input.required<string | null>();
 
   /** Optional custom template for node content. */
   public readonly nodeTemplate = input<TemplateRef<TreeNodeContext<T>> | null>(
@@ -84,7 +84,10 @@ export class UITreeNode<T = unknown> {
   // ── Outputs ─────────────────────────────────────────────────────────
 
   /** Emits when the node row is clicked (for selection). */
-  public readonly nodeClick = output<TreeNode<T>>();
+  public readonly nodeClick = output<{
+    node: TreeNode<T>;
+    event: MouseEvent;
+  }>();
 
   /** Emits when the node row is double-clicked (for activation). */
   public readonly nodeDblClick = output<TreeNode<T>>();
@@ -126,9 +129,9 @@ export class UITreeNode<T = unknown> {
     return this.selectedNodes().some((n) => n.id === child.id);
   }
 
-  /** @internal — whether a given child node is focused. */
+  /** @internal — whether a given child node has the keyboard cursor. */
   protected isChildFocused(child: TreeNode<T>): boolean {
-    return this.focusedNodeId() === child.id;
+    return this.cursorId() === child.id;
   }
 
   /** @internal — handle click on the toggle chevron. */
@@ -138,8 +141,8 @@ export class UITreeNode<T = unknown> {
   }
 
   /** @internal — handle click on the node row. */
-  protected onRowClick(): void {
-    this.nodeClick.emit(this.node());
+  protected onRowClick(event: MouseEvent): void {
+    this.nodeClick.emit({ node: this.node(), event });
   }
 
   /** @internal — handle double-click on the node row. */
@@ -147,9 +150,12 @@ export class UITreeNode<T = unknown> {
     this.nodeDblClick.emit(this.node());
   }
 
-  /** @internal — forward child events upward. */
-  protected onChildNodeClick(node: TreeNode<T>): void {
-    this.nodeClick.emit(node);
+  /** @internal — forward child click events upward. */
+  protected onChildNodeClick(payload: {
+    node: TreeNode<T>;
+    event: MouseEvent;
+  }): void {
+    this.nodeClick.emit(payload);
   }
 
   /** @internal — forward child events upward. */

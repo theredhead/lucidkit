@@ -177,6 +177,22 @@ export class UIMasterDetailView<T = unknown> {
   public readonly filterExpanded = input<boolean>(true);
 
   /**
+   * Whether the filter toggle button is hidden.
+   *
+   * When `true`, the toggle is removed and the filter section stays
+   * permanently in whatever state `filterExpanded` dictates:
+   * - `filterExpanded: true` + `filterModeLocked: true` → filter is
+   *   always visible, cannot be collapsed.
+   * - `filterExpanded: false` + `filterModeLocked: true` → filter bar
+   *   is completely hidden (equivalent to `showFilter: false`).
+   *
+   * This value is also forwarded to the embedded `<ui-filter>` as
+   * `[modeLocked]`, preventing the user from toggling between
+   * simple and advanced filter modes.
+   */
+  public readonly filterModeLocked = input<boolean>(false);
+
+  /**
    * Explicit filter field definitions.
    *
    * When provided these override the auto-inferred fields.

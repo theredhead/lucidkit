@@ -23,6 +23,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      "@theredhead/foundation": resolve(
+        root,
+        "packages/foundation/src/public-api.ts",
+      ),
       "@theredhead/ui-kit": resolve(root, "packages/ui-kit/src/public-api.ts"),
       "@theredhead/ui-blocks": resolve(
         root,

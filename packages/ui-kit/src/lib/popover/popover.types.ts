@@ -149,6 +149,7 @@ export interface OpenPopoverConfig<T> {
   /**
    * Map of output property names to handler callbacks.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly outputs?: Record<string, (event: any) => void>;
 
   /** Accessible label applied to the popover element. */
