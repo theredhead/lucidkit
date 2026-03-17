@@ -244,13 +244,16 @@ describe("UITableView", () => {
   });
 
   describe("row click", () => {
-    it("should sync activeIndex when a row is clicked", () => {
-      const rows = tableEl.querySelectorAll<HTMLElement>(".table-row");
-      // Click the third row (index 2)
-      rows[2]?.click();
+    it("should sync activeIndex when a row is clicked", async () => {
+      // Simulate the row-click handler (CdkVirtualScrollViewport
+      // does not render rows in the jsdom/zoneless test environment)
+      tableView["onRowClick"](PEOPLE[2]); // Charlie → index 2
       fixture.detectChanges();
+      await fixture.whenStable();
 
-      // Now ArrowDown should go to index 3 (Diana)
+      expect(tableView["activeIndex"]()).toBe(2);
+
+      // ArrowDown from index 2 → index 3 (Diana)
       keydown(tableEl, "ArrowDown");
       fixture.detectChanges();
 

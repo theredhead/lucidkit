@@ -4,9 +4,7 @@ import {
   Component,
   computed,
   ElementRef,
-  inject,
   input,
-  NgZone,
   output,
   signal,
   viewChild,
@@ -163,10 +161,6 @@ export class UISplitContainer implements AfterViewInit {
     readonly [number, number] | null
   >(null);
 
-  // ── Private fields ────────────────────────────────────────────────
-
-  private readonly zone = inject(NgZone);
-
   // ── Lifecycle ─────────────────────────────────────────────────────
 
   public ngAfterViewInit(): void {
@@ -233,12 +227,9 @@ export class UISplitContainer implements AfterViewInit {
       });
     };
 
-    // Run outside Angular zone for performance during drag
-    this.zone.runOutsideAngular(() => {
-      divider.addEventListener("pointermove", onMove);
-      divider.addEventListener("pointerup", onUp);
-      divider.addEventListener("pointercancel", onUp);
-    });
+    divider.addEventListener("pointermove", onMove);
+    divider.addEventListener("pointerup", onUp);
+    divider.addEventListener("pointercancel", onUp);
   }
 
   /** @internal — handles double-click on divider to collapse/restore. */

@@ -34,25 +34,17 @@ export class Emitter<T> {
    * Fires the event, invoking all registered listeners synchronously.
    * Listener errors are caught individually so one failing handler
    * never prevents the remaining listeners from executing.
-   * All caught errors are re-thrown asynchronously after the loop
-   * so they still surface in the console / error tracking.
+   * Caught errors are reported via `console.error` so they still
+   * surface in logs without causing unhandled exceptions.
    *
    * @param event - The payload to deliver to every listener.
    */
   public emit(event: T): void {
-    let errors: unknown[] | undefined;
     for (const fn of this.listeners) {
       try {
         fn(event);
       } catch (e) {
-        (errors ??= []).push(e);
-      }
-    }
-    if (errors) {
-      for (const e of errors) {
-        queueMicrotask(() => {
-          throw e;
-        });
+        console.error("Emitter: listener threw", e);
       }
     }
   }

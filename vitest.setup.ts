@@ -1,11 +1,5 @@
-import "@analogjs/vitest-angular/setup-zone";
+import { setupTestBed } from "@analogjs/vitest-angular/setup-testbed";
 import { webcrypto } from "node:crypto";
-
-import { TestBed } from "@angular/core/testing";
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from "@angular/platform-browser-dynamic/testing";
 
 // jsdom does not expose crypto.subtle — polyfill from Node's webcrypto
 if (globalThis.crypto && !globalThis.crypto.subtle) {
@@ -24,7 +18,4 @@ if (typeof globalThis.ResizeObserver === "undefined") {
   };
 }
 
-TestBed.initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
-);
+setupTestBed({ zoneless: true });
