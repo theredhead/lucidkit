@@ -37,3 +37,4 @@ export * from "./lib/tree-view";
 export * from "./lib/split-container";
 export * from "./lib/color-picker";
 export * from "./lib/image-cropper";
+export * from "./lib/chart";
