@@ -1,0 +1,23 @@
+<div
+  class="chart-viewport"
+  #chartContainer
+  [style.width.px]="width()"
+  [style.height.px]="height()"
+  [attr.aria-label]="ariaLabel()"
+  role="img"
+></div>
+
+@if (showLegend() && legendEntries().length > 0) {
+  <ul class="chart-legend" role="list" aria-label="Chart legend">
+    @for (entry of legendEntries(); track entry.label) {
+      <li class="chart-legend__item">
+        <span
+          class="chart-legend__swatch"
+          [style.background-color]="entry.color"
+        ></span>
+        <span class="chart-legend__label">{{ entry.label }}</span>
+        <span class="chart-legend__value">{{ entry.value }}</span>
+      </li>
+    }
+  </ul>
+}
