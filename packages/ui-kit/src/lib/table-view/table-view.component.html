@@ -17,6 +17,7 @@
         [rowIndexOffset]="rowIndexOffset()" [columnWidths]="columnWidths()"
         [selectionMode]="selectionMode()" [showSelectionColumn]="showSelectionColumn()"
         [selection]="selection()" [rowClickSelect]="rowClickSelect()"
+        [activeIndex]="activeIndex()"
         (rowClick)="onRowClick($event)" />
     @if (showBuiltInPaginator()) {
     <ui-table-footer [pageIndex]="datasource().pageIndex()" [pageSize]="datasource().pageSize()"

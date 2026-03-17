@@ -12,6 +12,7 @@ export type FilterFieldType = "string" | "number" | "date";
  *
  * @typeParam T - The row object type so `key` is constrained.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface FilterFieldDefinition<T = any> {
   /** Property key on the row object. */
   key: keyof T & string;
@@ -114,6 +115,7 @@ export type FilterJunction = "and" | "or";
  *
  * @typeParam T - The row object type (for documentation; not enforced at runtime).
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface FilterDescriptor<T = any> {
   /** How the rules are combined (`and` = all must match, `or` = any). */
   junction: FilterJunction;

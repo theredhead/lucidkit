@@ -16,6 +16,8 @@ import {
   viewChild,
 } from "@angular/core";
 
+import { LoggerFactory } from "@theredhead/foundation";
+
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
 import { PopoverService } from "../popover/popover.service";
@@ -113,6 +115,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   private readonly elRef = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly popoverService = inject(PopoverService);
+  private readonly log = inject(LoggerFactory).createLogger("UIRichTextEditor");
 
   // ── View queries ───────────────────────────────────────────
 
@@ -978,7 +981,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     if (handler) {
       handler(file).then(
         (url) => this.insertPastedImage(url, file.name),
-        (err) => console.error("Image upload failed:", err),
+        (err) => this.log.error("Image upload failed", [err]),
       );
     } else {
       const reader = new FileReader();

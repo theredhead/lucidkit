@@ -1,12 +1,5 @@
 /**
- * Defines a contiguous range of row indices.
- *
- * Used to request a slice of data from a datasource (e.g. for
- * virtual scrolling or pagination).
+ * Re-exported from `@theredhead/foundation`.
+ * @see {@link @theredhead/foundation!RangeDefinition}
  */
-export interface RangeDefinition {
-  /** Zero-based index of the first row in the range. */
-  start: number;
-  /** Number of rows in the range. */
-  length: number;
-}
+export type { RangeDefinition } from "@theredhead/foundation";

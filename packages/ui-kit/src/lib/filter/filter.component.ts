@@ -66,6 +66,7 @@ const JUNCTION_OPTIONS: SelectOption[] = [
     "[class.ui-filter--advanced]": "mode() === 'advanced'",
   },
 })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class UIFilter<T = any> {
   // ── Inputs ──────────────────────────────────────────────────────────
 
@@ -92,6 +93,15 @@ export class UIFilter<T = any> {
    * Advanced mode renders the full multi-rule predicate builder.
    */
   readonly allowAdvanced = input(true);
+
+  /**
+   * Whether the simple / advanced mode toggle is hidden.
+   *
+   * When `true`, the component stays permanently in whichever mode
+   * was resolved at init (from `allowSimple` / `allowAdvanced`).
+   * The user cannot switch modes.
+   */
+  readonly modeLocked = input(false);
 
   /**
    * Optional raw dataset used to derive distinct values per string field.
@@ -197,7 +207,7 @@ export class UIFilter<T = any> {
    * @internal
    */
   protected readonly showModeToggle = computed(
-    () => this.allowSimple() && this.allowAdvanced(),
+    () => this.allowSimple() && this.allowAdvanced() && !this.modeLocked(),
   );
 
   /**

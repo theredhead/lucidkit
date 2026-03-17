@@ -38,6 +38,10 @@ import { type SelectionMode, SelectionModel } from "../core/selection-model";
   imports: [UITableHeader, UITableBody, UITableFooter],
   templateUrl: "./table-view.component.html",
   styleUrl: "./table-view.component.scss",
+  host: {
+    tabindex: "0",
+    "(keydown)": "onKeydown($event)",
+  },
 })
 export class UITableView implements OnInit, AfterViewInit {
   private static nextCaptionId = 0;
@@ -45,6 +49,7 @@ export class UITableView implements OnInit, AfterViewInit {
   private readonly elRef = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   datasource = input.required<DatasourceAdapter<any>>();
   showBuiltInPaginator = input<boolean>(true);
   caption = input<string>("");
@@ -91,6 +96,7 @@ export class UITableView implements OnInit, AfterViewInit {
    * this instance instead of creating its own, giving the consumer full
    * programmatic control.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selectionModel = input<SelectionModel<any> | undefined>(undefined);
 
   /**
@@ -128,6 +134,7 @@ export class UITableView implements OnInit, AfterViewInit {
     return this.selectionModel() ?? this._internalSelection;
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private readonly _internalSelection = new SelectionModel<any>("none");
 
   protected readonly resolvedRows = signal<unknown[]>([]);
@@ -178,6 +185,12 @@ export class UITableView implements OnInit, AfterViewInit {
     }
     return hasExplicit ? total : 0;
   });
+
+  /**
+   * The index of the currently active (keyboard-focused) row, or −1
+   * when no row is active.
+   */
+  protected readonly activeIndex = signal(-1);
 
   /** Generation counter to discard stale promise resolutions after page changes. */
   private resolveGeneration = 0;
@@ -338,6 +351,48 @@ export class UITableView implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * Handles keyboard navigation within the table.
+   *
+   * Arrow keys move the active row; Home / End jump to the
+   * first / last row. When `selectionMode` is not `'none'`,
+   * the active row is automatically selected.
+   */
+  protected onKeydown(event: KeyboardEvent): void {
+    const rows = this.sortedRows();
+    if (rows.length === 0) return;
+
+    let idx = this.activeIndex();
+
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault();
+        idx = Math.min(idx + 1, rows.length - 1);
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        idx = Math.max(idx - 1, 0);
+        break;
+      case "Home":
+        event.preventDefault();
+        idx = 0;
+        break;
+      case "End":
+        event.preventDefault();
+        idx = rows.length - 1;
+        break;
+      default:
+        return;
+    }
+
+    this.activeIndex.set(idx);
+
+    const row = rows[idx];
+    if (row !== null && this.selectionMode() !== "none") {
+      this.selection().select(row);
+    }
+  }
+
   protected onSortChange(state: SortState | null): void {
     this.sortState.set(state);
   }
@@ -360,8 +415,15 @@ export class UITableView implements OnInit, AfterViewInit {
   }
 
   protected onRowClick(row: unknown): void {
-    if (this.selectionMode() === "none" || !this.rowClickSelect()) return;
     if (row === null) return; // still loading
+
+    // Always sync the active-row indicator
+    const idx = this.sortedRows().indexOf(row);
+    if (idx >= 0) {
+      this.activeIndex.set(idx);
+    }
+
+    if (this.selectionMode() === "none" || !this.rowClickSelect()) return;
     this.selection().toggle(row);
   }
 

@@ -3,7 +3,7 @@ import { Component, signal } from "@angular/core";
 
 import { UITreeView } from "./tree-view.component";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
-import type { TreeNode, TreeSelectionMode } from "./tree-view.types";
+import type { TreeNode } from "./tree-view.types";
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
@@ -64,7 +64,6 @@ function makeTree(): TreeNode<FileEntry>[] {
   template: `
     <ui-tree-view
       [datasource]="ds()"
-      [selectionMode]="selectionMode()"
       [displayWith]="displayWith"
       [(selected)]="selected"
     />
@@ -72,7 +71,6 @@ function makeTree(): TreeNode<FileEntry>[] {
 })
 class TestHost {
   public readonly ds = signal(new ArrayTreeDatasource(makeTree()));
-  public readonly selectionMode = signal<TreeSelectionMode>("single");
   public readonly displayWith = (data: FileEntry): string => data.name;
   public selected: readonly TreeNode<FileEntry>[] = [];
 }
@@ -119,9 +117,7 @@ describe("UITreeView", () => {
       expect(treeEl.getAttribute("aria-label")).toBe("Tree view");
     });
 
-    it("should set aria-multiselectable in multiple mode", () => {
-      host.selectionMode.set("multiple");
-      fixture.detectChanges();
+    it("should always set aria-multiselectable to true", () => {
       expect(treeEl.getAttribute("aria-multiselectable")).toBe("true");
     });
 
@@ -228,9 +224,9 @@ describe("UITreeView", () => {
     });
   });
 
-  // ── Selection ──────────────────────────────────────────────────────
+  // ── Click selection ────────────────────────────────────────────────
 
-  describe("selection", () => {
+  describe("click selection", () => {
     it("should select a node when row is clicked", () => {
       const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
       row.click();
@@ -248,7 +244,7 @@ describe("UITreeView", () => {
       expect(item?.classList.contains("ui-tree-node--selected")).toBe(true);
     });
 
-    it("should replace selection in single mode", () => {
+    it("should replace selection on plain click", () => {
       const rows = treeEl.querySelectorAll(
         ":scope > ui-tree-node > .tv-node-row",
       );
@@ -260,30 +256,45 @@ describe("UITreeView", () => {
       expect(host.selected[0].id).toBe("readme");
     });
 
-    it("should accumulate selection in multiple mode", () => {
-      host.selectionMode.set("multiple");
-      fixture.detectChanges();
-
+    it("should add to selection on Ctrl+click", () => {
       const rows = treeEl.querySelectorAll(
         ":scope > ui-tree-node > .tv-node-row",
       );
       (rows[0] as HTMLElement).click();
       fixture.detectChanges();
-      (rows[1] as HTMLElement).click();
+
+      (rows[1] as HTMLElement).dispatchEvent(
+        new MouseEvent("click", { bubbles: true, ctrlKey: true }),
+      );
+      fixture.detectChanges();
+      expect(host.selected.length).toBe(2);
+      expect(host.selected.map((n) => n.id)).toContain("src");
+      expect(host.selected.map((n) => n.id)).toContain("readme");
+    });
+
+    it("should add to selection on Meta+click (⌘ on macOS)", () => {
+      const rows = treeEl.querySelectorAll(
+        ":scope > ui-tree-node > .tv-node-row",
+      );
+      (rows[0] as HTMLElement).click();
+      fixture.detectChanges();
+
+      (rows[1] as HTMLElement).dispatchEvent(
+        new MouseEvent("click", { bubbles: true, metaKey: true }),
+      );
       fixture.detectChanges();
       expect(host.selected.length).toBe(2);
     });
 
-    it("should deselect a selected node in multiple mode", () => {
-      host.selectionMode.set("multiple");
-      fixture.detectChanges();
-
+    it("should deselect a node on Ctrl+click when already selected", () => {
       const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
       row.click();
       fixture.detectChanges();
       expect(host.selected.length).toBe(1);
 
-      row.click();
+      row.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, ctrlKey: true }),
+      );
       fixture.detectChanges();
       expect(host.selected.length).toBe(0);
     });
@@ -296,14 +307,13 @@ describe("UITreeView", () => {
       expect(host.selected.length).toBe(0);
     });
 
-    it("should not select any node in none mode", () => {
-      host.selectionMode.set("none");
-      fixture.detectChanges();
-
+    it("should apply focused host class on the clicked node", () => {
       const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
       row.click();
       fixture.detectChanges();
-      expect(host.selected.length).toBe(0);
+
+      const item = treeEl.querySelector("ui-tree-node");
+      expect(item?.classList.contains("ui-tree-node--focused")).toBe(true);
     });
   });
 
@@ -341,60 +351,108 @@ describe("UITreeView", () => {
   // ── Keyboard navigation ────────────────────────────────────────────
 
   describe("keyboard navigation", () => {
-    function press(key: string): void {
+    function press(key: string, opts?: Partial<KeyboardEventInit>): void {
       treeEl.dispatchEvent(
-        new KeyboardEvent("keydown", { key, bubbles: true }),
+        new KeyboardEvent("keydown", { key, bubbles: true, ...opts }),
       );
       fixture.detectChanges();
     }
 
-    it("should focus the first node with ArrowDown", () => {
+    it("should move cursor to the first node with ArrowDown", () => {
       press("ArrowDown");
       const firstNode = treeEl.querySelector("ui-tree-node");
       expect(firstNode?.classList.contains("ui-tree-node--focused")).toBe(true);
     });
 
-    it("should move focus down with ArrowDown", () => {
-      press("ArrowDown"); // focus src
-      press("ArrowDown"); // focus readme
+    it("should select the cursor node on ArrowDown", () => {
+      press("ArrowDown");
+      expect(host.selected.length).toBe(1);
+      expect(host.selected[0].id).toBe("src");
+    });
+
+    it("should move cursor down with ArrowDown", () => {
+      press("ArrowDown"); // cursor → src
+      press("ArrowDown"); // cursor → readme
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
       expect(items[1].classList.contains("ui-tree-node--focused")).toBe(true);
     });
 
-    it("should move focus up with ArrowUp", () => {
-      press("ArrowDown"); // focus src
-      press("ArrowDown"); // focus readme
+    it("should replace selection when moving with ArrowDown", () => {
+      press("ArrowDown"); // → src
+      press("ArrowDown"); // → readme
+      expect(host.selected.length).toBe(1);
+      expect(host.selected[0].id).toBe("readme");
+    });
+
+    it("should remove selected/focused classes from the previous node on ArrowDown", () => {
+      press("ArrowDown"); // cursor → src
+      const items = treeEl.querySelectorAll(":scope > ui-tree-node");
+      expect(items[0].classList.contains("ui-tree-node--selected")).toBe(true);
+      expect(items[0].classList.contains("ui-tree-node--focused")).toBe(true);
+
+      press("ArrowDown"); // cursor → readme
+      expect(items[0].classList.contains("ui-tree-node--selected")).toBe(false);
+      expect(items[0].classList.contains("ui-tree-node--focused")).toBe(false);
+      expect(items[1].classList.contains("ui-tree-node--selected")).toBe(true);
+      expect(items[1].classList.contains("ui-tree-node--focused")).toBe(true);
+    });
+
+    it("should move cursor up with ArrowUp", () => {
+      press("ArrowDown"); // cursor → src
+      press("ArrowDown"); // cursor → readme
       press("ArrowUp"); // back to src
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
       expect(items[0].classList.contains("ui-tree-node--focused")).toBe(true);
     });
 
+    it("should replace selection when moving with ArrowUp", () => {
+      press("ArrowDown"); // → src
+      press("ArrowDown"); // → readme
+      press("ArrowUp"); // → src
+      expect(host.selected.length).toBe(1);
+      expect(host.selected[0].id).toBe("src");
+    });
+
     it("should expand a node with ArrowRight", () => {
-      press("ArrowDown"); // focus src
+      press("ArrowDown"); // cursor → src
       press("ArrowRight"); // expand src
       expect(treeEl.querySelector(".tv-children")).toBeTruthy();
     });
 
     it("should collapse an expanded node with ArrowLeft", () => {
-      press("ArrowDown"); // focus src
+      press("ArrowDown"); // cursor → src
       press("ArrowRight"); // expand
       expect(treeEl.querySelector(".tv-children")).toBeTruthy();
       press("ArrowLeft"); // collapse
       expect(treeEl.querySelector(".tv-children")).toBeFalsy();
     });
 
-    it("should select focused node with Space", () => {
-      press("ArrowDown"); // focus src
-      press(" "); // select
+    it("should move cursor to parent with ArrowLeft on a collapsed node", () => {
+      // Expand src so children are visible
+      const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+      toggle.click();
+      fixture.detectChanges();
+
+      press("ArrowDown"); // → src
+      press("ArrowDown"); // → app (child)
+      press("ArrowLeft"); // → parent (src)
+
+      const srcNode = treeEl.querySelector(":scope > ui-tree-node");
+      expect(srcNode?.classList.contains("ui-tree-node--focused")).toBe(true);
       expect(host.selected.length).toBe(1);
       expect(host.selected[0].id).toBe("src");
     });
 
-    it("should select focused node with Enter", () => {
-      press("ArrowDown"); // focus src
+    it("should activate cursor node with Enter", () => {
+      let activated = false;
+      const treeView = fixture.debugElement.query(
+        (de) => de.nativeElement.tagName === "UI-TREE-VIEW",
+      ).componentInstance as UITreeView<FileEntry>;
+      treeView.nodeActivated.subscribe(() => (activated = true));
+
+      press("ArrowDown"); // cursor → src
       press("Enter");
-      expect(host.selected.length).toBe(1);
-      expect(host.selected[0].id).toBe("src");
+      expect(activated).toBe(true);
     });
 
     it("should jump to first node with Home", () => {
@@ -403,6 +461,7 @@ describe("UITreeView", () => {
       press("Home");
       const first = treeEl.querySelector("ui-tree-node");
       expect(first?.classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(host.selected[0].id).toBe("src");
     });
 
     it("should jump to last node with End", () => {
@@ -410,6 +469,102 @@ describe("UITreeView", () => {
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
       const last = items[items.length - 1];
       expect(last.classList.contains("ui-tree-node--focused")).toBe(true);
+    });
+
+    it("should clear selection with Escape", () => {
+      press("ArrowDown"); // select src
+      expect(host.selected.length).toBe(1);
+      press("Escape");
+      expect(host.selected.length).toBe(0);
+    });
+
+    describe("Shift+Arrow extends selection", () => {
+      it("should extend selection downward with Shift+ArrowDown", () => {
+        press("ArrowDown"); // select src
+        expect(host.selected.length).toBe(1);
+
+        press("ArrowDown", { shiftKey: true }); // extend to readme
+        expect(host.selected.length).toBe(2);
+        expect(host.selected.map((n) => n.id)).toContain("src");
+        expect(host.selected.map((n) => n.id)).toContain("readme");
+      });
+
+      it("should extend selection upward with Shift+ArrowUp", () => {
+        press("ArrowDown"); // select src
+        press("ArrowDown"); // select readme (replace)
+        press("ArrowUp", { shiftKey: true }); // extend upward to src
+        expect(host.selected.length).toBe(2);
+        expect(host.selected.map((n) => n.id)).toContain("src");
+        expect(host.selected.map((n) => n.id)).toContain("readme");
+      });
+
+      it("should extend selection to first with Shift+Home", () => {
+        press("ArrowDown"); // select src
+        press("ArrowDown"); // select readme (replace)
+        press("Home", { shiftKey: true }); // extend to first (src)
+        expect(host.selected.length).toBe(2);
+        expect(host.selected.map((n) => n.id)).toContain("src");
+        expect(host.selected.map((n) => n.id)).toContain("readme");
+      });
+
+      it("should keep existing selection when Shift+End lands on disabled node", () => {
+        press("ArrowDown"); // select src
+        press("End", { shiftKey: true }); // cursor to disabled-folder — disabled, not added
+        // Selection preserved because last node is disabled
+        expect(host.selected.length).toBe(1);
+        expect(host.selected[0].id).toBe("src");
+      });
+
+      it("should not duplicate nodes in extended selection", () => {
+        press("ArrowDown"); // select src
+        press("ArrowDown", { shiftKey: true }); // extend to readme
+        press("ArrowUp", { shiftKey: true }); // extend back to src (already selected)
+        // src should not appear twice
+        const srcCount = host.selected.filter((n) => n.id === "src").length;
+        expect(srcCount).toBe(1);
+      });
+
+      it("should replace selection when arrow is pressed without Shift after extending", () => {
+        // Expand src so there are more non-disabled nodes
+        const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+        toggle.click();
+        fixture.detectChanges();
+
+        press("ArrowDown"); // select src
+        press("ArrowDown", { shiftKey: true }); // extend to app
+        expect(host.selected.length).toBe(2);
+
+        press("ArrowDown"); // no shift → replace with index.html
+        expect(host.selected.length).toBe(1);
+        expect(host.selected[0].id).toBe("src/index.html");
+      });
+    });
+
+    describe("keyboard events from node row (bubbled)", () => {
+      function pressOnRow(row: HTMLElement, key: string): void {
+        row.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
+        fixture.detectChanges();
+      }
+
+      it("should expand via ArrowRight after clicking a node row", () => {
+        const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+        row.click();
+        fixture.detectChanges();
+
+        pressOnRow(row, "ArrowRight");
+        expect(treeEl.querySelector(".tv-children")).toBeTruthy();
+      });
+
+      it("should navigate via ArrowDown after clicking a node row", () => {
+        const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+        row.click();
+        fixture.detectChanges();
+
+        pressOnRow(row, "ArrowDown");
+
+        const items = treeEl.querySelectorAll(":scope > ui-tree-node");
+        expect(items[1].classList.contains("ui-tree-node--focused")).toBe(true);
+      });
     });
   });
 });

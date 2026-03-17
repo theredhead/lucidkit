@@ -1,0 +1,387 @@
+// ── Color picker popover ───────────────────────────────────────────
+
+// ── Light defaults ────────────────────────────────────────────────
+:host {
+  --cp-bg: #fff;
+  --cp-text: #1d232b;
+  --cp-text-muted: #5a6470;
+  --cp-border: #d7dce2;
+  --cp-surface: #f6f7f8;
+  --cp-accent: var(--theredhead-primary, #3584e4);
+  --cp-accent-hover: #2b71c7;
+  --cp-slider-thumb: #fff;
+  --cp-slider-thumb-border: #999;
+  --cp-swatch-ring: rgba(0, 0, 0, 0.12);
+
+  display: block;
+  width: 19rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  color: var(--cp-text);
+  padding: 0.5rem;
+}
+
+// ── Explicit dark class ───────────────────────────────────────────
+:host-context(html.dark-theme) {
+  --cp-bg: #1e2228;
+  --cp-text: #f2f6fb;
+  --cp-text-muted: #a0a8b4;
+  --cp-border: #3a3f47;
+  --cp-surface: #2a2f38;
+  --cp-slider-thumb: #2a2f38;
+  --cp-slider-thumb-border: #666;
+  --cp-swatch-ring: rgba(255, 255, 255, 0.2);
+}
+
+// ── System preference fallback ────────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --cp-bg: #1e2228;
+    --cp-text: #f2f6fb;
+    --cp-text-muted: #a0a8b4;
+    --cp-border: #3a3f47;
+    --cp-surface: #2a2f38;
+    --cp-slider-thumb: #2a2f38;
+    --cp-slider-thumb-border: #666;
+    --cp-swatch-ring: rgba(255, 255, 255, 0.2);
+  }
+}
+
+// ── Header / Tab bar ──────────────────────────────────────────────
+.cp-header {
+  margin-bottom: 0.5rem;
+}
+
+.cp-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--cp-border);
+}
+
+.cp-tab {
+  appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0.35rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cp-text-muted);
+  border-bottom: 2px solid transparent;
+  transition:
+    color 100ms ease,
+    border-color 100ms ease;
+
+  &:hover {
+    color: var(--cp-text);
+  }
+
+  &--active {
+    color: var(--cp-accent);
+    border-bottom-color: var(--cp-accent);
+  }
+}
+
+// ── Preview row ───────────────────────────────────────────────────
+.cp-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cp-swatch-wrap {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--cp-border);
+  overflow: hidden;
+  flex-shrink: 0;
+
+  // Checkerboard background for alpha visibility
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 8px 8px;
+  background-position:
+    0 0,
+    0 4px,
+    4px -4px,
+    -4px 0;
+}
+
+.cp-swatch {
+  width: 100%;
+  height: 100%;
+}
+
+.cp-hex-input {
+  flex: 1;
+  appearance: none;
+  border: 1px solid var(--cp-border);
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.45rem;
+  background: var(--cp-surface);
+  color: var(--cp-text);
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 0.8125rem;
+  outline: none;
+  transition: border-color 120ms ease;
+
+  &:focus {
+    border-color: var(--cp-accent);
+    box-shadow: 0 0 0 1px var(--cp-accent);
+  }
+}
+
+// ── Theme palette ─────────────────────────────────────────────────
+.cp-theme {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cp-palette-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cp-palette-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cp-text-muted);
+  width: 3.5rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-palette-swatches {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+}
+
+.cp-palette-swatch {
+  appearance: none;
+  border: 1px solid var(--cp-swatch-ring);
+  border-radius: 2px;
+  width: 100%;
+  aspect-ratio: 1;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease;
+
+  &:hover {
+    transform: scale(1.2);
+    z-index: 1;
+  }
+
+  &--selected {
+    outline: 2px solid var(--cp-accent);
+    outline-offset: 1px;
+    transform: scale(1.15);
+    z-index: 1;
+  }
+}
+
+// ── Colour grid ───────────────────────────────────────────────────
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
+}
+
+.cp-grid-swatch {
+  appearance: none;
+  border: 1px solid var(--cp-swatch-ring);
+  border-radius: 2px;
+  aspect-ratio: 1;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease;
+
+  &:hover {
+    transform: scale(1.25);
+    z-index: 1;
+  }
+
+  &--selected {
+    outline: 2px solid var(--cp-accent);
+    outline-offset: 1px;
+    transform: scale(1.2);
+    z-index: 1;
+  }
+}
+
+// ── Sliders ───────────────────────────────────────────────────────
+.cp-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cp-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cp-slider-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--cp-text-muted);
+  width: 1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.cp-slider-track {
+  position: relative;
+  flex: 1;
+  height: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--cp-border);
+  overflow: hidden;
+
+  &--alpha {
+    // Checkerboard underneath for alpha visibility
+    background-image:
+      linear-gradient(45deg, #ccc 25%, transparent 25%),
+      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ccc 75%),
+      linear-gradient(-45deg, transparent 75%, #ccc 75%) !important;
+    background-size: 8px 8px !important;
+    background-position:
+      0 0,
+      0 4px,
+      4px -4px,
+      -4px 0 !important;
+  }
+}
+
+.cp-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+
+  // WebKit thumb
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--cp-slider-thumb);
+    border: 2px solid var(--cp-slider-thumb-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+  }
+
+  // Firefox thumb
+  &::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--cp-slider-thumb);
+    border: 2px solid var(--cp-slider-thumb-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+  }
+
+  // Firefox track
+  &::-moz-range-track {
+    background: transparent;
+    border: none;
+    height: 100%;
+  }
+}
+
+// Alpha track needs the gradient on top of the checkerboard
+.cp-slider-track--alpha .cp-slider {
+  position: absolute;
+  inset: 0;
+}
+
+.cp-slider-track--alpha {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    // Gradient is set inline via [style.background], but we need
+    // the checkerboard underneath. The inline style goes on the
+    // parent; this pseudo is used only when needed.
+  }
+}
+
+.cp-slider-value {
+  font-size: 0.6875rem;
+  font-family: ui-monospace, "SF Mono", monospace;
+  color: var(--cp-text-muted);
+  width: 2.5rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+// ── Footer ────────────────────────────────────────────────────────
+.cp-footer {
+  display: flex;
+  gap: 0.35rem;
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--cp-border);
+}
+
+.cp-btn {
+  appearance: none;
+  border: 1px solid var(--cp-border);
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease;
+  white-space: nowrap;
+}
+
+.cp-btn--apply {
+  background: var(--cp-accent);
+  color: #fff;
+  border-color: var(--cp-accent);
+
+  &:hover {
+    background: var(--cp-accent-hover);
+  }
+}
+
+.cp-btn--cancel {
+  background: transparent;
+  color: var(--cp-text);
+
+  &:hover {
+    background: var(--cp-surface);
+  }
+}

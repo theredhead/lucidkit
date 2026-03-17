@@ -154,6 +154,7 @@ export class ModalService {
     if (config.outputs) {
       for (const [key, handler] of Object.entries(config.outputs)) {
         if (!handler) continue;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const ref = (componentRef.instance as Record<string, any>)[key];
         if (ref && typeof ref.subscribe === "function") {
           const sub = ref.subscribe(handler);

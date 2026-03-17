@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { PopoverRef } from "../popover/popover.types";
@@ -2358,7 +2359,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "Image upload failed:",
+        "UIRichTextEditor: Image upload failed",
         expect.any(Error),
       );
       consoleErrorSpy.mockRestore();

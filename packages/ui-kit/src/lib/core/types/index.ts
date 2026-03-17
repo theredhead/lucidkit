@@ -1,11 +1,15 @@
-export { Emitter } from "./emitter";
-export { SortDirection, type SortExpression } from "./sort";
-export { type FilterExpression } from "./filter";
-export { type RangeDefinition } from "./range";
+// Core types — re-exported from @theredhead/foundation
 export {
+  Emitter,
+  SortDirection,
+  type SortExpression,
+  type FilterExpression,
+  type RangeDefinition,
   type RowChangedNotification,
   type RowRangeChangedNotification,
-} from "./notifications";
+} from "@theredhead/foundation";
+
+// Selection model — remains in ui-kit
 export {
   SelectionModel,
   TableSelectionModel,

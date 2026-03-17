@@ -3,6 +3,8 @@ import {
   Component,
   computed,
   contentChild,
+  ElementRef,
+  inject,
   input,
   model,
   output,
@@ -12,11 +14,11 @@ import {
 } from "@angular/core";
 
 import { UITreeNode } from "./tree-node.component";
-import type {
-  ITreeDatasource,
-  TreeNode,
-  TreeSelectionMode,
-} from "./tree-view.types";
+import {
+  TreeKeyboardHandler,
+  type TreeKeyboardDelegate,
+} from "./tree-keyboard-handler";
+import type { ITreeDatasource, TreeNode } from "./tree-view.types";
 
 /**
  * Context provided to a custom node template.
@@ -68,18 +70,15 @@ export interface TreeNodeContext<T = unknown> {
     role: "tree",
     tabindex: "0",
     "[attr.aria-label]": "ariaLabel()",
-    "[attr.aria-multiselectable]": "selectionMode() === 'multiple' || null",
+    "aria-multiselectable": "true",
     "(keydown)": "onKeydown($event)",
   },
 })
-export class UITreeView<T = unknown> {
+export class UITreeView<T = unknown> implements TreeKeyboardDelegate {
   // ── Inputs ──────────────────────────────────────────────────────────
 
   /** The datasource providing the tree structure. */
   public readonly datasource = input.required<ITreeDatasource<T>>();
-
-  /** How selection is handled. Defaults to `'single'`. */
-  public readonly selectionMode = input<TreeSelectionMode>("single");
 
   /** Accessible label for the tree. */
   public readonly ariaLabel = input<string>("Tree view");
@@ -112,9 +111,10 @@ export class UITreeView<T = unknown> {
   /**
    * The currently selected node(s). Two-way bindable via `[(selected)]`.
    *
-   * In `single` mode this will contain at most one node.
-   * In `multiple` mode it may contain many.
-   * In `none` mode it will always be empty.
+   * - Arrow keys replace the selection with the cursor node.
+   * - Shift + arrows extend the selection.
+   * - Ctrl / ⌘ + click toggles individual nodes.
+   * - Escape clears the selection.
    */
   public readonly selected = model<readonly TreeNode<T>[]>([]);
 
@@ -143,8 +143,17 @@ export class UITreeView<T = unknown> {
   /** Set of expanded node IDs. @internal */
   protected readonly expandedIds = signal(new Set<string>());
 
-  /** The currently focused node ID (for keyboard navigation). @internal */
-  protected readonly focusedNodeId = signal<string | null>(null);
+  /** The cursor node ID — the node with keyboard focus. @internal */
+  protected readonly cursorId = signal<string | null>(null);
+
+  /**
+   * Extracted keyboard-navigation handler.
+   * @internal
+   */
+  private readonly keyboardHandler = new TreeKeyboardHandler(this);
+
+  /** @internal */
+  private readonly el = inject(ElementRef<HTMLElement>);
 
   // ── Computed ────────────────────────────────────────────────────────
 
@@ -206,20 +215,11 @@ export class UITreeView<T = unknown> {
     return this.selected().some((n) => n.id === node.id);
   }
 
-  /** Selects the given node according to the current selection mode. */
+  /** Selects the given node, replacing any existing selection. */
   public select(node: TreeNode<T>): void {
-    if (node.disabled || this.selectionMode() === "none") return;
-
-    if (this.selectionMode() === "single") {
-      this.selected.set([node]);
-    } else {
-      // Multiple — toggle
-      if (this.isSelected(node)) {
-        this.selected.set(this.selected().filter((n) => n.id !== node.id));
-      } else {
-        this.selected.set([...this.selected(), node]);
-      }
-    }
+    if (node.disabled) return;
+    this.selected.set([node]);
+    this.cursorId.set(node.id);
   }
 
   /**
@@ -250,9 +250,24 @@ export class UITreeView<T = unknown> {
   // ── Protected methods (template helpers) ────────────────────────────
 
   /** @internal — handles node click from UITreeNode. */
-  protected onNodeClick(node: TreeNode<T>): void {
-    this.select(node);
-    this.focusedNodeId.set(node.id);
+  protected onNodeClick(payload: {
+    node: TreeNode<T>;
+    event: MouseEvent;
+  }): void {
+    const { node, event } = payload;
+    if (node.disabled) return;
+    if (event.ctrlKey || event.metaKey) {
+      // Ctrl / ⌘ + click — toggle this node in the selection
+      if (this.isSelected(node)) {
+        this.selected.set(this.selected().filter((n) => n.id !== node.id));
+      } else {
+        this.selected.set([...this.selected(), node]);
+      }
+    } else {
+      // Plain click — replace selection
+      this.selected.set([node]);
+    }
+    this.cursorId.set(node.id);
   }
 
   /** @internal — handles node double-click. */
@@ -267,102 +282,128 @@ export class UITreeView<T = unknown> {
 
   /** @internal — handles keyboard events on the tree. */
   protected onKeydown(event: KeyboardEvent): void {
-    const visible = this.getVisibleNodes();
+    this.keyboardHandler.handleKeydown(event);
+
+    // Move browser focus to the tree host so the previously focused
+    // node-row loses its :focus-visible outline. The visual cursor is
+    // managed entirely via the --focused host class.
+    this.el.nativeElement.focus({ preventScroll: true });
+  }
+
+  // ── TreeKeyboardDelegate implementation ─────────────────────────
+
+  /** @internal */
+  public hasCursor(): boolean {
+    return this.cursorId() !== null;
+  }
+
+  /** @internal */
+  public isCursorExpanded(): boolean {
+    const id = this.cursorId();
+    return id !== null && this.expandedIds().has(id);
+  }
+
+  /** @internal */
+  public cursorHasChildren(): boolean {
+    const node = this.findCursorNode();
+    return node !== null && this.datasource().hasChildren(node);
+  }
+
+  /** @internal */
+  public moveCursorDown(extend: boolean): void {
+    const { visible, currentIdx } = this.resolveNavigation();
     if (visible.length === 0) return;
+    const nextIdx = Math.min(currentIdx + 1, visible.length - 1);
+    this.setCursorAndSelect(visible[nextIdx].node, extend);
+  }
 
-    const focusedId = this.focusedNodeId();
-    const currentIdx = focusedId
-      ? visible.findIndex((v) => v.node.id === focusedId)
-      : -1;
+  /** @internal */
+  public moveCursorUp(extend: boolean): void {
+    const { visible, currentIdx } = this.resolveNavigation();
+    if (visible.length === 0) return;
+    const prevIdx = Math.max(currentIdx - 1, 0);
+    this.setCursorAndSelect(visible[prevIdx].node, extend);
+  }
 
-    switch (event.key) {
-      case "ArrowDown": {
-        event.preventDefault();
-        const nextIdx = Math.min(currentIdx + 1, visible.length - 1);
-        this.focusedNodeId.set(visible[nextIdx].node.id);
-        break;
-      }
-      case "ArrowUp": {
-        event.preventDefault();
-        const prevIdx = Math.max(currentIdx - 1, 0);
-        this.focusedNodeId.set(visible[prevIdx].node.id);
-        break;
-      }
-      case "ArrowRight": {
-        event.preventDefault();
-        if (currentIdx >= 0) {
-          const { node } = visible[currentIdx];
-          if (this.datasource().hasChildren(node) && !this.isExpanded(node)) {
-            this.expand(node);
-          } else {
-            // Move to first child
-            const nextIdx = Math.min(currentIdx + 1, visible.length - 1);
-            this.focusedNodeId.set(visible[nextIdx].node.id);
-          }
+  /** @internal */
+  public moveCursorToFirst(extend: boolean): void {
+    const visible = this.buildVisibleNodes();
+    if (visible.length === 0) return;
+    this.setCursorAndSelect(visible[0].node, extend);
+  }
+
+  /** @internal */
+  public moveCursorToLast(extend: boolean): void {
+    const visible = this.buildVisibleNodes();
+    if (visible.length === 0) return;
+    this.setCursorAndSelect(visible[visible.length - 1].node, extend);
+  }
+
+  /** @internal */
+  public moveCursorToParent(): void {
+    const { visible, currentIdx } = this.resolveNavigation();
+    if (currentIdx < 0) return;
+    const { level } = visible[currentIdx];
+    if (level > 0) {
+      for (let i = currentIdx - 1; i >= 0; i--) {
+        if (visible[i].level < level) {
+          this.setCursorAndSelect(visible[i].node, false);
+          break;
         }
-        break;
-      }
-      case "ArrowLeft": {
-        event.preventDefault();
-        if (currentIdx >= 0) {
-          const { node, level } = visible[currentIdx];
-          if (this.isExpanded(node)) {
-            this.collapse(node);
-          } else if (level > 0) {
-            // Move to parent
-            for (let i = currentIdx - 1; i >= 0; i--) {
-              if (visible[i].level < level) {
-                this.focusedNodeId.set(visible[i].node.id);
-                break;
-              }
-            }
-          }
-        }
-        break;
-      }
-      case "Enter": {
-        event.preventDefault();
-        if (currentIdx >= 0) {
-          const { node } = visible[currentIdx];
-          if (this.isSelected(node)) {
-            this.nodeActivated.emit(node);
-          } else {
-            this.select(node);
-          }
-        }
-        break;
-      }
-      case " ": {
-        event.preventDefault();
-        if (currentIdx >= 0) {
-          this.select(visible[currentIdx].node);
-        }
-        break;
-      }
-      case "Home": {
-        event.preventDefault();
-        if (visible.length > 0) {
-          this.focusedNodeId.set(visible[0].node.id);
-        }
-        break;
-      }
-      case "End": {
-        event.preventDefault();
-        if (visible.length > 0) {
-          this.focusedNodeId.set(visible[visible.length - 1].node.id);
-        }
-        break;
       }
     }
+  }
+
+  /** @internal */
+  public expandCursor(): void {
+    const node = this.findCursorNode();
+    if (node) this.expand(node);
+  }
+
+  /** @internal */
+  public collapseCursor(): void {
+    const node = this.findCursorNode();
+    if (node) this.collapse(node);
+  }
+
+  /** @internal */
+  public activateCursor(): void {
+    const node = this.findCursorNode();
+    if (node) this.nodeActivated.emit(node);
+  }
+
+  /** @internal */
+  public clearSelection(): void {
+    this.selected.set([]);
+    this.cursorId.set(null);
   }
 
   // ── Private helpers ────────────────────────────────────────────────
 
   /**
-   * Builds a flat list of visible nodes (honoring expand state) for
-   * keyboard navigation.
+   * Sets the cursor to the given node and updates selection.
+   *
+   * - `extend = false`: selection is replaced with `[node]`.
+   * - `extend = true` (Shift): node is added to the existing selection.
+   * @internal
    */
-  private getVisibleNodes(): { node: TreeNode<T>; level: number }[] {
+  private setCursorAndSelect(node: TreeNode<T>, extend: boolean): void {
+    this.cursorId.set(node.id);
+    if (node.disabled) return;
+    if (extend) {
+      if (!this.isSelected(node)) {
+        this.selected.set([...this.selected(), node]);
+      }
+    } else {
+      this.selected.set([node]);
+    }
+  }
+
+  /**
+   * Builds a flat list of visible nodes honouring expand state.
+   * @internal
+   */
+  private buildVisibleNodes(): { node: TreeNode<T>; level: number }[] {
     const result: { node: TreeNode<T>; level: number }[] = [];
     const ds = this.datasource();
 
@@ -381,6 +422,31 @@ export class UITreeView<T = unknown> {
     const roots = ds.getRootNodes();
     if (Array.isArray(roots)) walk(roots, 0);
     return result;
+  }
+
+  /**
+   * Returns the visible node list and the index of the cursor node.
+   * @internal
+   */
+  private resolveNavigation(): {
+    visible: { node: TreeNode<T>; level: number }[];
+    currentIdx: number;
+  } {
+    const visible = this.buildVisibleNodes();
+    const id = this.cursorId();
+    const currentIdx = id ? visible.findIndex((v) => v.node.id === id) : -1;
+    return { visible, currentIdx };
+  }
+
+  /**
+   * Finds the cursor node in the visible tree.
+   * @internal
+   */
+  private findCursorNode(): TreeNode<T> | null {
+    const id = this.cursorId();
+    if (!id) return null;
+    const visible = this.buildVisibleNodes();
+    return visible.find((v) => v.node.id === id)?.node ?? null;
   }
 
   /**

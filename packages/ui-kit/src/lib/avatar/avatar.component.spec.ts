@@ -20,6 +20,7 @@ async function flushAsync(): Promise<void> {
       [email]="email()"
       [name]="name()"
       [size]="size()"
+      [ariaLabel]="ariaLabel()"
     />
   `,
 })
@@ -28,6 +29,7 @@ class TestHost {
   public readonly email = signal<string | undefined>(undefined);
   public readonly name = signal("Jane Doe");
   public readonly size = signal<AvatarSize>("md");
+  public readonly ariaLabel = signal<string | undefined>(undefined);
 }
 
 describe("UIAvatar", () => {
@@ -126,7 +128,7 @@ describe("UIAvatar", () => {
       await flushAsync();
       fixture.detectChanges();
 
-      const img = fixture.nativeElement.querySelector(".av-image");
+      const img = fixture.nativeElement.querySelector("img");
       expect(img).toBeTruthy();
       expect(img.getAttribute("src")).toContain("gravatar.com/avatar/");
       expect(img.getAttribute("src")).toContain("d=404");
@@ -217,6 +219,238 @@ describe("UIAvatar", () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector(".av-image")).toBeTruthy();
+    });
+
+    it("should clear gravatar when email is removed", async () => {
+      host.email.set("test@example.com");
+      host.name.set("Jane Doe");
+      fixture.detectChanges();
+      await flushAsync();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector("img")).toBeTruthy();
+
+      host.email.set(undefined);
+      fixture.detectChanges();
+      await flushAsync();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector("img")).toBeNull();
+      expect(
+        fixture.nativeElement.querySelector(".av-initials")?.textContent.trim(),
+      ).toBe("JD");
+    });
+  });
+
+  describe("accessibility", () => {
+    it("should use name as alt text on image by default", () => {
+      host.src.set("https://example.com/photo.jpg");
+      host.name.set("Jane Doe");
+      fixture.detectChanges();
+
+      const img: HTMLImageElement =
+        fixture.nativeElement.querySelector(".av-image");
+      expect(img.alt).toBe("Jane Doe");
+    });
+
+    it("should use custom ariaLabel as alt text when provided", () => {
+      host.src.set("https://example.com/photo.jpg");
+      host.name.set("Jane Doe");
+      host.ariaLabel.set("Profile photo of Jane");
+      fixture.detectChanges();
+
+      const img: HTMLImageElement =
+        fixture.nativeElement.querySelector(".av-image");
+      expect(img.alt).toBe("Profile photo of Jane");
+    });
+
+    it("should set aria-label on initials span", () => {
+      host.name.set("Jane Doe");
+      fixture.detectChanges();
+
+      const initials = fixture.nativeElement.querySelector(".av-initials");
+      expect(initials.getAttribute("aria-label")).toBe("Jane Doe");
+    });
+
+    it("should use custom ariaLabel on initials when provided", () => {
+      host.name.set("Jane Doe");
+      host.ariaLabel.set("User avatar");
+      fixture.detectChanges();
+
+      const initials = fixture.nativeElement.querySelector(".av-initials");
+      expect(initials.getAttribute("aria-label")).toBe("User avatar");
+    });
+
+    it("should set aria-label on fallback icon", () => {
+      host.name.set("");
+      host.src.set(undefined);
+      fixture.detectChanges();
+
+      const fallback = fixture.nativeElement.querySelector(".av-fallback");
+      expect(fallback.getAttribute("aria-label")).toBe("Avatar");
+    });
+
+    it("should use custom ariaLabel on fallback icon when provided", () => {
+      host.name.set("");
+      host.src.set(undefined);
+      host.ariaLabel.set("Unknown user");
+      fixture.detectChanges();
+
+      const fallback = fixture.nativeElement.querySelector(".av-fallback");
+      expect(fallback.getAttribute("aria-label")).toBe("Unknown user");
+    });
+  });
+
+  describe("resolution order", () => {
+    it("should transition from image to initials when src is removed", () => {
+      host.src.set("https://example.com/photo.jpg");
+      host.name.set("Jane Doe");
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector("img")).toBeTruthy();
+
+      host.src.set(undefined);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector("img")).toBeNull();
+      expect(
+        fixture.nativeElement.querySelector(".av-initials")?.textContent.trim(),
+      ).toBe("JD");
+    });
+
+    it("should transition from initials to image when src is added", () => {
+      host.name.set("Jane Doe");
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".av-initials")).toBeTruthy();
+
+      host.src.set("https://example.com/photo.jpg");
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".av-initials")).toBeNull();
+      const img = fixture.nativeElement.querySelector("img");
+      expect(img).toBeTruthy();
+      expect(img.getAttribute("src")).toBe("https://example.com/photo.jpg");
+    });
+
+    it("should transition from initials to fallback when name is cleared", () => {
+      host.name.set("Jane Doe");
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".av-initials")).toBeTruthy();
+
+      host.name.set("");
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".av-initials")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".av-fallback")).toBeTruthy();
+    });
+
+    it("should transition from fallback to initials when name is set", () => {
+      host.name.set("");
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".av-fallback")).toBeTruthy();
+
+      host.name.set("New User");
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".av-fallback")).toBeNull();
+      expect(
+        fixture.nativeElement.querySelector(".av-initials")?.textContent.trim(),
+      ).toBe("NU");
+    });
+
+    it("should show explicit src even when gravatar also resolves", async () => {
+      host.email.set("test@example.com");
+      host.src.set("https://example.com/override.jpg");
+      fixture.detectChanges();
+      await flushAsync();
+      fixture.detectChanges();
+
+      const img = fixture.nativeElement.querySelector("img");
+      expect(img.getAttribute("src")).toBe("https://example.com/override.jpg");
+    });
+  });
+
+  describe("error recovery", () => {
+    it("should reset error state when src changes to a new URL", () => {
+      host.src.set("https://example.com/broken.jpg");
+      fixture.detectChanges();
+
+      const img = fixture.nativeElement.querySelector("img");
+      img.dispatchEvent(new Event("error"));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector("img")).toBeNull();
+
+      host.src.set("https://example.com/working.jpg");
+      fixture.detectChanges();
+
+      const newImg = fixture.nativeElement.querySelector("img");
+      expect(newImg).toBeTruthy();
+      expect(newImg.getAttribute("src")).toBe(
+        "https://example.com/working.jpg",
+      );
+    });
+
+    it("should recover when broken src is replaced by valid gravatar", async () => {
+      host.src.set("https://example.com/broken.jpg");
+      host.name.set("Jane Doe");
+      fixture.detectChanges();
+
+      const img = fixture.nativeElement.querySelector("img");
+      img.dispatchEvent(new Event("error"));
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector(".av-initials")).toBeTruthy();
+
+      // Remove broken src, add email
+      host.src.set(undefined);
+      host.email.set("test@example.com");
+      fixture.detectChanges();
+      await flushAsync();
+      fixture.detectChanges();
+
+      const newImg = fixture.nativeElement.querySelector("img");
+      expect(newImg).toBeTruthy();
+      expect(newImg.getAttribute("src")).toContain("gravatar.com/avatar/");
+    });
+  });
+
+  describe("initials edge cases", () => {
+    it("should handle whitespace-only name as empty", () => {
+      host.name.set("   ");
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".av-initials")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".av-fallback")).toBeTruthy();
+    });
+
+    it("should handle name with extra internal whitespace", () => {
+      host.name.set("  Jane    Doe  ");
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement.querySelector(".av-initials").textContent.trim(),
+      ).toBe("JD");
+    });
+
+    it("should use first and last word for names with many parts", () => {
+      host.name.set("Mary Jane Watson Parker");
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement.querySelector(".av-initials").textContent.trim(),
+      ).toBe("MP");
+    });
+  });
+
+  describe("defaults", () => {
+    it("should default to md size", () => {
+      expect(
+        fixture.nativeElement.querySelector("ui-avatar").classList,
+      ).toContain("ui-avatar--md");
+    });
+
+    it("should show initials by default (no src, no email)", () => {
+      // TestHost defaults: name="Jane Doe", no src, no email
+      expect(fixture.nativeElement.querySelector(".av-initials")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector("img")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".av-fallback")).toBeNull();
     });
   });
 });

@@ -12,11 +12,12 @@ This is an **Angular 21** component library workspace (`theredhead-fe-workspace`
 built with standalone components, signals, and zero external runtime dependencies
 beyond Angular core and CDK. It ships three npm packages:
 
-| Package                 | Scope      | Purpose                                                                                     |
-| ----------------------- | ---------- | ------------------------------------------------------------------------------------------- |
-| `@theredhead/ui-kit`    | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
-| `@theredhead/ui-blocks` | Composites | Master-Detail View (higher-level compositions)                                              |
-| `@theredhead/ui-theme`  | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
+| Package                  | Scope      | Purpose                                                                                     |
+| ------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
+| `@theredhead/foundation` | Core       | Logger, type utilities, base classes — shared by all higher-level packages                  |
+| `@theredhead/ui-kit`     | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
+| `@theredhead/ui-blocks`  | Composites | Master-Detail View (higher-level compositions)                                              |
+| `@theredhead/ui-theme`   | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
 
 ---
 
@@ -101,6 +102,41 @@ implicit `public`. This applies to constructors as well (`public constructor`,
 
 ---
 
+## Logging
+
+**Never call `console.log` / `console.warn` / `console.error` directly in
+production code.** Use the `Logger` from `@theredhead/foundation` instead.
+
+Inject `LoggerFactory` and create a context-scoped logger:
+
+```ts
+import { LoggerFactory } from "@theredhead/foundation";
+
+export class UIMyComponent {
+  private readonly log = inject(LoggerFactory).createLogger("UIMyComponent");
+
+  public save(): void {
+    this.log.log("saving");
+    this.log.warn("field missing", [fieldName]);
+    this.log.error("save failed", [err]);
+  }
+}
+```
+
+Key rules:
+
+- The **context** string should be the class name (e.g. `"UIRichTextEditor"`).
+- Use `log.log()` for informational messages, `log.warn()` for warnings,
+  `log.error()` for errors.
+- Pass additional data as an `unknown[]` in the second argument — do not
+  concatenate into the message string.
+- The default `ConsoleLoggingStrategy` writes to the browser console. Custom
+  strategies (e.g. remote telemetry) can be passed to `createLogger()`.
+- **Storybook stories and JSDoc examples** may still reference `console.log`
+  for brevity — the rule applies to library source code only.
+
+---
+
 ## Class Member Ordering
 
 These rules apply to **all** TypeScript classes — components, services,
@@ -159,8 +195,8 @@ export class UIExample {
   protected reset(): void {
     this.state.set(false);
   }
-  private log(msg: string): void {
-    console.log(msg);
+  private logMessage(msg: string): void {
+    this.log.log(msg);
   }
 }
 ```
