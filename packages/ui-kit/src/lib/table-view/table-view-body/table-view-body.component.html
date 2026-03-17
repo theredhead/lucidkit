@@ -6,6 +6,7 @@
     *cdkVirtualFor="let row of rows(); let rowIndex = index"
     class="table-row"
     role="row"
+    tabindex="-1"
     [class.table-row--loading]="row === null"
     [class.table-row--selected]="isRowSelected(row)"
     [class.table-row--selectable]="selectionMode() !== 'none' && rowClickSelect()"
@@ -13,6 +14,7 @@
     [style.height.px]="rowHeight()"
     [style.min-height.px]="rowHeight()"
     (click)="onRowClick(row)"
+    (keydown.enter)="onRowClick(row)"
   >
     @if (showRowIndexIndicator()) {
       <div class="table-cell table-cell--row-index">

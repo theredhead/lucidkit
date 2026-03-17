@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
-  SecurityContext,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 
@@ -74,10 +74,10 @@ export class UIIcon {
   /** Accessible label. When provided, `aria-hidden` is removed. */
   readonly ariaLabel = input<string>("");
 
+  private readonly sanitizer = inject(DomSanitizer);
+
   /** @internal */
   protected readonly safeSvg = computed(() =>
     this.sanitizer.bypassSecurityTrustHtml(this.svg()),
   );
-
-  constructor(private readonly sanitizer: DomSanitizer) {}
 }

@@ -85,15 +85,17 @@ describe("Emitter", () => {
 
     it("should isolate listener errors so other listeners still fire", () => {
       const spy = vi.fn();
+      const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
       emitter.subscribe(() => {
         throw new Error("boom");
       });
       emitter.subscribe(spy);
 
-      // Errors are re-thrown asynchronously via queueMicrotask
       emitter.emit(5);
 
       expect(spy).toHaveBeenCalledWith(5);
+      expect(errorSpy).toHaveBeenCalledOnce();
+      errorSpy.mockRestore();
     });
 
     it("should deliver the correct payload to each listener", () => {

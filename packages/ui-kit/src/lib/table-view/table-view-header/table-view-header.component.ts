@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  inject,
   input,
-  NgZone,
   output,
   signal,
 } from "@angular/core";
@@ -47,10 +47,7 @@ export class UITableHeader {
 
   protected readonly minColumnWidth = MIN_COLUMN_WIDTH;
 
-  constructor(
-    private readonly elRef: ElementRef<HTMLElement>,
-    private readonly zone: NgZone,
-  ) {}
+  private readonly elRef = inject(ElementRef<HTMLElement>);
 
   protected getColWidth(key: string): number | null {
     return this.columnWidths()[key] ?? null;
@@ -107,9 +104,7 @@ export class UITableHeader {
         MIN_COLUMN_WIDTH,
         Math.round(cell.getBoundingClientRect().width),
       );
-      this.zone.run(() => {
-        this.columnResize.emit({ key: colKey, widthPx: finalWidth });
-      });
+      this.columnResize.emit({ key: colKey, widthPx: finalWidth });
     };
 
     handle.addEventListener("pointermove", onMove);

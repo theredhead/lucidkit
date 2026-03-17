@@ -512,8 +512,6 @@ describe("filter.utils", () => {
   // Date operators — inTheLast
   // ---------------------------------------------------------------------------
   describe("date operator: inTheLast", () => {
-    const now = new Date();
-
     function buildDatePred(value: string, unit: string) {
       const d: FilterDescriptor<TestRow> = {
         junction: "and",

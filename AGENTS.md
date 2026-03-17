@@ -28,11 +28,19 @@ beyond Angular core and CDK. It ships three npm packages:
 | Angular    | 21                                  | Standalone components, signal APIs, OnPush everywhere   |
 | TypeScript | 5.9+                                | `strict: true`, `noImplicitOverride`, `isolatedModules` |
 | Build      | ng-packagr 21                       | Library builds via `npm run build --workspaces`         |
-| Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zone.js setup              |
+| Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zoneless setup             |
 | Lint       | ESLint 10 + angular-eslint 21       | `npm run lint`, flat config (`eslint.config.js`)        |
 | Git hooks  | Husky + lint-staged                 | Pre-commit: lint staged `.ts` and `.html` files         |
 | Storybook  | 10.x                                | `npm run storybook` → `ng run storybook-host:storybook` |
 | Styles     | SCSS                                | Component-scoped, CSS custom property tokens            |
+
+> **Zoneless architecture** — this library is fully zoneless. **Never** import
+> or inject `NgZone`. All change detection is driven by Angular signals and
+> `ChangeDetectionStrategy.OnPush`. The Vitest setup uses
+> `@analogjs/vitest-angular/setup-testbed` with `zoneless: true`. If you need
+> to escape Angular's change-detection cycle for high-frequency DOM events
+> (e.g. `pointermove`), use plain `addEventListener` — do **not** reach for
+> `NgZone.runOutsideAngular`.
 
 ---
 
