@@ -6,3 +6,5 @@ export {
   UIMasterDetailView,
   type MasterDetailContext,
 } from "./lib/master-detail-view/master-detail-view.component";
+
+export * from "./lib/dashboard";

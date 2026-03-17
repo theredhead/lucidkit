@@ -1,0 +1,9 @@
+<div
+  class="dashboard-grid"
+  [style.grid-template-columns]="gridTemplateColumns()"
+  [style.gap]="gridGap()"
+  [attr.aria-label]="ariaLabel()"
+  role="region"
+>
+  <ng-content />
+</div>

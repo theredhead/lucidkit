@@ -1,0 +1,31 @@
+// ── Light defaults ───────────────────────────────────────────────
+:host {
+  --ui-dashboard-bg: transparent;
+  --ui-dashboard-text: #1d232b;
+
+  display: block;
+  color: var(--ui-dashboard-text);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+// ── Explicit dark class ──────────────────────────────────────────
+:host-context(html.dark-theme) {
+  --ui-dashboard-text: #f2f6fb;
+}
+
+// ── System preference fallback ───────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-dashboard-text: #f2f6fb;
+  }
+}
+
+// ── Grid ─────────────────────────────────────────────────────────
+
+.dashboard-grid {
+  display: grid;
+  grid-auto-rows: minmax(120px, auto);
+}
