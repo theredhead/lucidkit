@@ -36,3 +36,4 @@ export * from "./lib/file-upload";
 export * from "./lib/tree-view";
 export * from "./lib/split-container";
 export * from "./lib/color-picker";
+export * from "./lib/image-cropper";
