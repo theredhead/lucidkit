@@ -1,0 +1,31 @@
+<header class="panel-header">
+  <h3 class="panel-title">{{ config().title }}</h3>
+
+  <div class="panel-actions">
+    @if (isCollapsible()) {
+      <button
+        type="button"
+        class="panel-action-btn"
+        [attr.aria-label]="collapsed() ? 'Expand panel' : 'Collapse panel'"
+        [attr.aria-expanded]="!collapsed()"
+        (click)="toggleCollapse()"
+      >
+        {{ collapsed() ? '▶' : '▼' }}
+      </button>
+    }
+    @if (isRemovable()) {
+      <button
+        type="button"
+        class="panel-action-btn panel-action-btn--remove"
+        aria-label="Remove panel"
+        (click)="remove()"
+      >✕</button>
+    }
+  </div>
+</header>
+
+@if (!collapsed()) {
+  <div class="panel-body">
+    <ng-content />
+  </div>
+}

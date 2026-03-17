@@ -22,7 +22,13 @@ import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
   host: { class: "ui-calendar-day-popover" },
   styles: [
     `
+      /* ── Light defaults ─────────────────────────────────── */
       :host {
+        --ui-cal-popover-text: #1d232b;
+        --ui-cal-popover-text-muted: #6b7280;
+        --ui-cal-popover-border: #e5e7eb;
+        --ui-cal-popover-hover: rgba(0, 0, 0, 0.06);
+
         display: block;
         padding: 0.5rem;
         font-family:
@@ -30,12 +36,31 @@ import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
           -apple-system,
           sans-serif;
         min-width: 180px;
+        color: var(--ui-cal-popover-text);
+      }
+
+      /* ── Explicit dark class ────────────────────────────── */
+      :host-context(html.dark-theme) {
+        --ui-cal-popover-text: #f2f6fb;
+        --ui-cal-popover-text-muted: #9ca3af;
+        --ui-cal-popover-border: #3a3f47;
+        --ui-cal-popover-hover: rgba(255, 255, 255, 0.08);
+      }
+
+      /* ── System preference fallback ─────────────────────── */
+      @media (prefers-color-scheme: dark) {
+        :host-context(html:not(.light-theme):not(.dark-theme)) {
+          --ui-cal-popover-text: #f2f6fb;
+          --ui-cal-popover-text-muted: #9ca3af;
+          --ui-cal-popover-border: #3a3f47;
+          --ui-cal-popover-hover: rgba(255, 255, 255, 0.08);
+        }
       }
 
       .popover-header {
         margin-bottom: 0.375rem;
         padding-bottom: 0.375rem;
-        border-bottom: 1px solid var(--theredhead-outline-variant, #e5e7eb);
+        border-bottom: 1px solid var(--ui-cal-popover-border);
       }
 
       .popover-title {
@@ -57,7 +82,7 @@ import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
         border-radius: 4px;
         border: none;
         background: none;
-        color: inherit;
+        color: var(--ui-cal-popover-text);
         cursor: pointer;
         font: inherit;
         font-size: 0.75rem;
@@ -66,7 +91,7 @@ import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
         transition: background-color 0.15s;
 
         &:hover {
-          background: color-mix(in srgb, currentColor 8%, transparent);
+          background: var(--ui-cal-popover-hover);
         }
       }
 
@@ -87,7 +112,7 @@ import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
       .popover-event-time {
         flex-shrink: 0;
         font-size: 0.65rem;
-        opacity: 0.6;
+        color: var(--ui-cal-popover-text-muted);
         margin-left: auto;
       }
     `,
