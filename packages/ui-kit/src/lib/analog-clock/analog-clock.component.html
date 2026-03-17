@@ -1,0 +1,72 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100"
+  [attr.width]="size()"
+  [attr.height]="size()"
+  [attr.aria-label]="ariaLabel()"
+  role="img"
+  class="clock-face"
+>
+  <!-- Outer rim -->
+  <circle cx="50" cy="50" r="49" class="clock-rim" />
+
+  <!-- Face background -->
+  <circle cx="50" cy="50" r="47" class="clock-bg" />
+
+  <!-- Tick marks -->
+  @if (showTickMarks()) {
+    @for (tick of tickMarks(); track $index) {
+      <line
+        [attr.x1]="tick.x1"
+        [attr.y1]="tick.y1"
+        [attr.x2]="tick.x2"
+        [attr.y2]="tick.y2"
+        [class.tick--hour]="tick.isHour"
+        [class.tick--minute]="!tick.isHour"
+        class="tick"
+      />
+    }
+  }
+
+  <!-- Hour numbers -->
+  @if (showNumbers()) {
+    @for (num of hourNumbers(); track num.hour) {
+      <text
+        [attr.x]="num.x"
+        [attr.y]="num.y"
+        class="hour-number"
+        text-anchor="middle"
+        dominant-baseline="central"
+      >{{ num.hour }}</text>
+    }
+  }
+
+  <!-- Hour hand -->
+  <line
+    x1="50" y1="50"
+    x2="50" y2="24"
+    class="hand hand--hour"
+    [style.transform]="'rotate(' + hourAngle() + 'deg)'"
+  />
+
+  <!-- Minute hand -->
+  <line
+    x1="50" y1="50"
+    x2="50" y2="16"
+    class="hand hand--minute"
+    [style.transform]="'rotate(' + minuteAngle() + 'deg)'"
+  />
+
+  <!-- Second hand -->
+  @if (showSeconds()) {
+    <line
+      x1="50" y1="55"
+      x2="50" y2="12"
+      class="hand hand--second"
+      [style.transform]="'rotate(' + secondAngle() + 'deg)'"
+    />
+  }
+
+  <!-- Center cap -->
+  <circle cx="50" cy="50" r="2" class="center-cap" />
+</svg>
