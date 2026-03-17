@@ -53,8 +53,20 @@ export class UITableHeader {
     return this.columnWidths()[key] ?? null;
   }
 
-  onCellClick(col: UITableViewColumn): void {
+  onCellClick(event: Event, col: UITableViewColumn): void {
     if (!col.sortable()) return;
+
+    // Ignore clicks near the right edge of the cell — that's the
+    // resize-handle zone and also where post-drag click events land.
+    if (event instanceof MouseEvent) {
+      const cell = (event.target as HTMLElement).closest(
+        ".table-header-cell",
+      ) as HTMLElement | null;
+      if (cell) {
+        const rect = cell.getBoundingClientRect();
+        if (event.clientX >= rect.right - 2) return;
+      }
+    }
     const current = this.sortState();
     let next: SortState | null;
     if (current?.key === col.key()) {
