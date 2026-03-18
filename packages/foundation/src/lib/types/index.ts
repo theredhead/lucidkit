@@ -1,3 +1,4 @@
+export type { Predicate } from "@angular/core";
 export { Emitter } from "./emitter";
 export { SortDirection, type SortExpression } from "./sort";
 export { type FilterExpression } from "./filter";

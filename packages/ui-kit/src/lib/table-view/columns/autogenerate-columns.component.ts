@@ -8,34 +8,11 @@ import {
   ViewChild,
 } from "@angular/core";
 
+import { humanizeKey } from "../../filter/infer-filter-fields";
 import {
   UITableViewCellContext,
   UITableViewColumn,
 } from "./table-column.directive";
-
-/**
- * Converts a camelCase or snake_case property name into a human-readable label.
- *
- * @example
- * humanizeKey('firstName')    // 'First Name'
- * humanizeKey('first_name')   // 'First Name'
- * humanizeKey('id')           // 'Id'
- *
- * @internal
- */
-export function humanizeKey(key: string): string {
-  return (
-    key
-      // Convert camelCase to spaces: firstName → First Name
-      .replace(/([a-z])([A-Z])/g, "$1 $2")
-      // Convert snake_case to spaces: first_name → first name
-      .replace(/_/g, " ")
-      // Title case each word
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ")
-  );
-}
 
 /**
  * Internal text column component used by UIAutogenerateColumns.

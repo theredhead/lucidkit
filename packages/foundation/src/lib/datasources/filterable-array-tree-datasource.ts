@@ -78,9 +78,12 @@ export class FilterableArrayTreeDatasource<T = unknown>
    * @param expression - The predicate function, or null/undefined to clear filtering.
    */
   public filterBy(expression: unknown): void {
-    const predicate = (expression as unknown) as Predicate<T> | null | undefined;
+    const predicate = expression as unknown as Predicate<T> | null | undefined;
     if (!predicate) {
-      this._filteredRoots = this.deepCopyNodes(this._allRoots, this._childrenProperty);
+      this._filteredRoots = this.deepCopyNodes(
+        this._allRoots,
+        this._childrenProperty,
+      );
       return;
     }
 

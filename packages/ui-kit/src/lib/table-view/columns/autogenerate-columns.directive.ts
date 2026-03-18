@@ -110,7 +110,8 @@ export class UIAutogenerateColumnsDirective {
       componentRef.setInput("excludeKeys", config?.excludeKeys ?? []);
 
       componentRef.changeDetectorRef.markForCheck();
-      this.currentViewRef = componentRef.hostView;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.currentViewRef = componentRef.hostView as any;
     });
   }
 }

@@ -296,7 +296,7 @@ export class UITableView implements OnInit, AfterViewInit {
         const datasource = this.datasource().datasource;
         const predicate = this.filterPredicate();
         if (isFilterableDataSource(datasource)) {
-          datasource.applyPredicate(predicate);
+          datasource.filterBy(predicate);
         }
       }
     });
@@ -444,7 +444,7 @@ export class UITableView implements OnInit, AfterViewInit {
     if (this.supportsSorting()) {
       const datasource = this.datasource().datasource;
       if (isSortableDataSource(datasource)) {
-        datasource.applyComparator(toComparator(state));
+        datasource.sortBy(toComparator(state));
       }
     }
   }
