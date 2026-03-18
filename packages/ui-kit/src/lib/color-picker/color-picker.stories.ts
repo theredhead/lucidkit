@@ -103,6 +103,38 @@ export const Default: Story = {
     disabled: false,
     ariaLabel: "Pick a colour",
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-color-picker
+  [(value)]="colour"
+  initialMode="theme"
+  ariaLabel="Pick a colour"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIColorPicker } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIColorPicker],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  public readonly colour = signal('#0061a4');
+}
+
+// ── SCSS ──
+/* No custom styles required — the picker is self-contained. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -115,6 +147,38 @@ export const RgbaMode: Story = {
     template: `<ui-color-picker [value]="value" initialMode="rgba" />`,
   }),
   args: { value: "#e53935" },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-color-picker
+  [(value)]="colour"
+  initialMode="rgba"
+  ariaLabel="Pick a colour (RGBA)"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIColorPicker } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-rgba-example',
+  standalone: true,
+  imports: [UIColorPicker],
+  templateUrl: './rgba-example.component.html',
+})
+export class RgbaExampleComponent {
+  public readonly colour = signal('#e53935');
+}
+
+// ── SCSS ──
+/* No custom styles required. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -127,6 +191,38 @@ export const HslaMode: Story = {
     template: `<ui-color-picker [value]="value" initialMode="hsla" />`,
   }),
   args: { value: "#43a047" },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-color-picker
+  [(value)]="colour"
+  initialMode="hsla"
+  ariaLabel="Pick a colour (HSLA)"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIColorPicker } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-hsla-example',
+  standalone: true,
+  imports: [UIColorPicker],
+  templateUrl: './hsla-example.component.html',
+})
+export class HslaExampleComponent {
+  public readonly colour = signal('#43a047');
+}
+
+// ── SCSS ──
+/* No custom styles required. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -139,6 +235,38 @@ export const GridMode: Story = {
     template: `<ui-color-picker [value]="value" initialMode="grid" />`,
   }),
   args: { value: "#1565c0" },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-color-picker
+  [(value)]="colour"
+  initialMode="grid"
+  ariaLabel="Pick a colour (Grid)"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIColorPicker } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-grid-example',
+  standalone: true,
+  imports: [UIColorPicker],
+  templateUrl: './grid-example.component.html',
+})
+export class GridExampleComponent {
+  public readonly colour = signal('#1565c0');
+}
+
+// ── SCSS ──
+/* No custom styles required. */
+`,
+      },
+    },
+  },
 };
 
 /** Disabled state — the button is visible but non-interactive. */
@@ -146,6 +274,38 @@ export const Disabled: Story = {
   render: () => ({
     template: `<ui-color-picker value="#9c27b0" [disabled]="true" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-color-picker
+  [(value)]="colour"
+  [disabled]="true"
+  ariaLabel="Disabled colour picker"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIColorPicker } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-disabled-example',
+  standalone: true,
+  imports: [UIColorPicker],
+  templateUrl: './disabled-example.component.html',
+})
+export class DisabledExampleComponent {
+  public readonly colour = signal('#9c27b0');
+}
+
+// ── SCSS ──
+/* No custom styles required. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -157,4 +317,65 @@ export const Interactive: Story = {
   render: () => ({
     template: `<ui-story-color-picker-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div class="colour-demo">
+  <div class="colour-demo__row">
+    <ui-color-picker [(value)]="colour" ariaLabel="Pick a colour" />
+    <span class="colour-demo__hex">{{ colour() }}</span>
+  </div>
+  <div
+    class="colour-demo__preview"
+    [style.background-color]="colour()"
+  ></div>
+</div>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIColorPicker } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-interactive-example',
+  standalone: true,
+  imports: [UIColorPicker],
+  templateUrl: './interactive-example.component.html',
+  styleUrl: './interactive-example.component.scss',
+})
+export class InteractiveExampleComponent {
+  public readonly colour = signal('#0061a4');
+}
+
+// ── SCSS ──
+.colour-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__hex {
+    font-family: monospace;
+    font-size: 14px;
+  }
+
+  &__preview {
+    width: 100%;
+    height: 64px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+}
+`,
+      },
+    },
+  },
 };

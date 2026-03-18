@@ -123,6 +123,31 @@ export const Default: Story = {
     placeholder: "Type here…",
     ariaLabel: "Rich text editor",
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="html"
+  placeholder="Type here…"
+  ariaLabel="Rich text editor"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+// standalone: true, imports: [UIRichTextEditor]
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed — the component uses
+   built-in design tokens. Override via --ui-*
+   custom properties if desired. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -144,6 +169,40 @@ export const WithPlaceholders: Story = {
   }),
   args: {
     placeholder: "Compose your email template…",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [placeholders]="placeholders"
+  placeholder="Compose your email template…"
+  (placeholderInserted)="onPlaceholder($event)"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly placeholders: RichTextPlaceholder[] = [
+    { key: 'firstName', label: 'First Name', category: 'Contact' },
+    { key: 'lastName',  label: 'Last Name',  category: 'Contact' },
+    { key: 'email',     label: 'Email',       category: 'Contact' },
+    { key: 'company',   label: 'Company',     category: 'Account' },
+  ];
+
+  onPlaceholder(p: RichTextPlaceholder): void {
+    console.log('Inserted placeholder:', p.key);
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
   },
 };
 
@@ -168,6 +227,39 @@ export const WithInitialContent: Story = {
       />
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [(value)]="emailBody"
+  [placeholders]="placeholders"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly emailBody = signal(
+    '<p>Dear {{firstName}},</p>' +
+    '<p>Thank you for contacting <b>{{company}}</b>.</p>'
+  );
+
+  readonly placeholders: RichTextPlaceholder[] = [
+    { key: 'firstName', label: 'First Name', category: 'Contact' },
+    { key: 'company',   label: 'Company',    category: 'Account' },
+  ];
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -188,6 +280,31 @@ export const Disabled: Story = {
       />
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [(value)]="content"
+  [disabled]="true"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly content = signal('<p>This editor is <b>disabled</b>.</p>');
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -210,6 +327,33 @@ export const ReadOnly: Story = {
       />
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [(value)]="content"
+  [readonly]="true"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly content = signal(
+    '<p>This editor is <i>read-only</i>. Content is visible but not editable.</p>'
+  );
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -231,6 +375,30 @@ export const MinimalToolbar: Story = {
       />
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [toolbarActions]="toolbarActions"
+  placeholder="Basic formatting only…"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly toolbarActions = ['bold', 'italic', 'underline'];
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -253,6 +421,29 @@ export const Markdown: Story = {
     mode: "markdown",
     placeholder: "Write Markdown here…",
     ariaLabel: "Markdown editor",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="markdown"
+  placeholder="Write Markdown here…"
+  ariaLabel="Markdown editor"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+// standalone: true, imports: [UIRichTextEditor]
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
   },
 };
 
@@ -280,6 +471,41 @@ export const MarkdownWithPlaceholders: Story = {
   args: {
     mode: "markdown",
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="markdown"
+  [(value)]="template"
+  [placeholders]="placeholders"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly template = signal(
+    'Dear {{firstName}},\n\n' +
+    'Thank you for contacting **{{company}}**.\n\n' +
+    'Best regards'
+  );
+
+  readonly placeholders: RichTextPlaceholder[] = [
+    { key: 'firstName', label: 'First Name', category: 'Contact' },
+    { key: 'company',   label: 'Company',    category: 'Account' },
+  ];
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -304,6 +530,36 @@ export const MarkdownWithInitialContent: Story = {
   args: {
     mode: "markdown",
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="markdown"
+  [(value)]="content"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly content = signal(
+    '# Welcome\n\n' +
+    'This is a **bold** and *italic* demo.\n\n' +
+    '- Item one\n- Item two\n- Item three\n\n' +
+    '> A blockquote for emphasis.'
+  );
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -325,6 +581,30 @@ export const WithMaxLength: Story = {
   args: {
     maxLength: 200,
     placeholder: "Limited to 200 characters…",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [maxLength]="200"
+  placeholder="Limited to 200 characters…"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+// standalone: true, imports: [UIRichTextEditor]
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. The counter changes
+   colour automatically when the limit is
+   approached or exceeded. */
+`,
+      },
+    },
   },
 };
 
@@ -350,6 +630,35 @@ export const MaxLengthExceeded: Story = {
   }),
   args: {
     maxLength: 40,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [(value)]="content"
+  [maxLength]="40"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly content = signal(
+    '<p>This text exceeds the 40-character limit ' +
+    'to demonstrate the over-limit indicator.</p>'
+  );
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. The counter turns
+   red automatically when the limit is exceeded. */
+`,
+      },
+    },
   },
 };
 
@@ -380,6 +689,45 @@ export const FullFeatured: Story = {
     maxLength: 500,
     placeholder: "Compose your email template…",
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [(value)]="emailBody"
+  [placeholders]="placeholders"
+  [maxLength]="500"
+  placeholder="Compose your email template…"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly emailBody = signal(
+    '<p>Dear {{firstName}},</p>' +
+    '<p>Thank you for reaching out to <b>{{company}}</b>.</p>' +
+    '<p>We look forward to hearing from you.</p>'
+  );
+
+  readonly placeholders: RichTextPlaceholder[] = [
+    { key: 'firstName', label: 'First Name', category: 'Contact' },
+    { key: 'lastName',  label: 'Last Name',  category: 'Contact' },
+    { key: 'email',     label: 'Email',       category: 'Contact' },
+    { key: 'company',   label: 'Company',     category: 'Account' },
+    { key: 'todayDate', label: "Today's Date", category: 'System' },
+  ];
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -404,6 +752,35 @@ export const MarkdownMaxLength: Story = {
   args: {
     mode: "markdown",
     maxLength: 150,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="markdown"
+  [(value)]="content"
+  [maxLength]="150"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly content = signal(
+    '# Hello\n\n' +
+    'Some **bold** text with a [link](https://example.com).'
+  );
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
   },
 };
 
@@ -445,6 +822,36 @@ export const WithImageHandler: Story = {
   args: {
     placeholder: "Paste an image here…",
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  [imageHandler]="handleImage"
+  placeholder="Paste an image here…"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor, type RichTextImageHandler } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly handleImage: RichTextImageHandler = async (file: File) => {
+    const form = new FormData();
+    form.append('image', file);
+    const res = await fetch('/api/upload', { method: 'POST', body: form });
+    const { url } = await res.json();
+    return url; // inserted as <img src="…">
+  };
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -468,5 +875,29 @@ export const ImageBase64Fallback: Story = {
   }),
   args: {
     placeholder: "Paste an image — it will embed as base64…",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  placeholder="Paste an image — it will embed as base64…"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor } from '@theredhead/ui-kit';
+
+// No imageHandler provided — pasted images are
+// automatically embedded as inline base64 data URIs.
+
+// standalone: true, imports: [UIRichTextEditor]
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
   },
 };

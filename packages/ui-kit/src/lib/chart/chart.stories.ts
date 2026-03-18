@@ -1376,6 +1376,105 @@ export const SideBySideComparison: Story = {
   render: () => ({
     template: `<ui-chart-comparison-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `// ── HTML ──
+<div class="chart-grid">
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="barStrategy"
+      [showLegend]="false"
+      [width]="280"
+      [height]="200"
+    />
+    <span>Bar</span>
+  </div>
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="lineStrategy"
+      [showLegend]="false"
+      [width]="280"
+      [height]="200"
+    />
+    <span>Line</span>
+  </div>
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="scatterStrategy"
+      [showLegend]="false"
+      [width]="280"
+      [height]="200"
+    />
+    <span>Scatter</span>
+  </div>
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="pieStrategy"
+      [showLegend]="false"
+      [width]="200"
+      [height]="200"
+    />
+    <span>Pie</span>
+  </div>
+</div>
+
+// ── TypeScript ──
+import { UIChart } from '@theredhead/ui-kit';
+import {
+  BarGraphStrategy,
+  LineGraphStrategy,
+  ScatterPlotStrategy,
+  PieChartStrategy,
+} from '@theredhead/ui-kit';
+
+readonly salesData = [
+  { month: 'Jan', revenue: 12400 },
+  { month: 'Feb', revenue: 18200 },
+  { month: 'Mar', revenue: 15600 },
+  { month: 'Apr', revenue: 22100 },
+  { month: 'May', revenue: 19800 },
+  { month: 'Jun', revenue: 25400 },
+];
+
+readonly barStrategy = new BarGraphStrategy();
+readonly lineStrategy = new LineGraphStrategy();
+readonly scatterStrategy = new ScatterPlotStrategy();
+readonly pieStrategy = new PieChartStrategy();
+
+// ── SCSS ──
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.chart-cell {
+  text-align: center;
+}
+.chart-cell span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  opacity: 0.55;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**

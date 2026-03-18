@@ -240,12 +240,115 @@ export const FreeCrop: Story = {
   render: () => ({
     template: `<ui-cropper-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-image-cropper
+  #cropper
+  [src]="imageSrc"
+  (regionChange)="onRegionChange($event)"
+/>
+
+<button (click)="onCrop()">Export crop</button>
+<button (click)="onReset()">Reset</button>
+
+@if (previewUrl()) {
+  <img [src]="previewUrl()" alt="Cropped preview" />
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal, viewChild } from '@angular/core';
+import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+
+@Component({ /* ... */ })
+export class MyImageCropperExample {
+  protected readonly imageSrc = 'assets/photo.png';
+  protected readonly previewUrl = signal('');
+
+  private readonly cropper = viewChild<UIImageCropper>('cropper');
+
+  protected onRegionChange(region: CropRegion): void {
+    console.log('Region:', region);
+  }
+
+  protected async onCrop(): Promise<void> {
+    const blob = await this.cropper()!.crop();
+    this.previewUrl.set(URL.createObjectURL(blob));
+  }
+
+  protected onReset(): void {
+    this.cropper()?.reset();
+    this.previewUrl.set('');
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+// No custom styles needed — the cropper fills its container.
+`,
+      },
+    },
+  },
 };
 
 export const Square: Story = {
   render: () => ({
     template: `<ui-cropper-demo [aspectRatio]="1" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-image-cropper
+  #cropper
+  [src]="imageSrc"
+  [aspectRatio]="1"
+  (regionChange)="onRegionChange($event)"
+/>
+
+<button (click)="onCrop()">Export crop</button>
+<button (click)="onReset()">Reset</button>
+
+@if (previewUrl()) {
+  <img [src]="previewUrl()" alt="Cropped preview" />
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal, viewChild } from '@angular/core';
+import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+
+@Component({ /* ... */ })
+export class MySquareCropExample {
+  protected readonly imageSrc = 'assets/photo.png';
+  protected readonly previewUrl = signal('');
+
+  private readonly cropper = viewChild<UIImageCropper>('cropper');
+
+  protected onRegionChange(region: CropRegion): void {
+    console.log('Region:', region);
+  }
+
+  protected async onCrop(): Promise<void> {
+    const blob = await this.cropper()!.crop();
+    this.previewUrl.set(URL.createObjectURL(blob));
+  }
+
+  protected onReset(): void {
+    this.cropper()?.reset();
+    this.previewUrl.set('');
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+// No custom styles needed — the cropper fills its container.
+`,
+      },
+    },
+  },
 };
 
 export const Widescreen: Story = {
@@ -253,6 +356,58 @@ export const Widescreen: Story = {
     props: { ratio: 16 / 9 },
     template: `<ui-cropper-demo [aspectRatio]="ratio" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-image-cropper
+  #cropper
+  [src]="imageSrc"
+  [aspectRatio]="16 / 9"
+  (regionChange)="onRegionChange($event)"
+/>
+
+<button (click)="onCrop()">Export crop</button>
+<button (click)="onReset()">Reset</button>
+
+@if (previewUrl()) {
+  <img [src]="previewUrl()" alt="Cropped preview" />
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal, viewChild } from '@angular/core';
+import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+
+@Component({ /* ... */ })
+export class MyWidescreenCropExample {
+  protected readonly imageSrc = 'assets/photo.png';
+  protected readonly previewUrl = signal('');
+
+  private readonly cropper = viewChild<UIImageCropper>('cropper');
+
+  protected onRegionChange(region: CropRegion): void {
+    console.log('Region:', region);
+  }
+
+  protected async onCrop(): Promise<void> {
+    const blob = await this.cropper()!.crop();
+    this.previewUrl.set(URL.createObjectURL(blob));
+  }
+
+  protected onReset(): void {
+    this.cropper()?.reset();
+    this.previewUrl.set('');
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+// No custom styles needed — the cropper fills its container.
+`,
+      },
+    },
+  },
 };
 
 export const Portrait: Story = {
@@ -260,22 +415,240 @@ export const Portrait: Story = {
     props: { ratio: 3 / 4 },
     template: `<ui-cropper-demo [aspectRatio]="ratio" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-image-cropper
+  #cropper
+  [src]="imageSrc"
+  [aspectRatio]="3 / 4"
+  (regionChange)="onRegionChange($event)"
+/>
+
+<button (click)="onCrop()">Export crop</button>
+<button (click)="onReset()">Reset</button>
+
+@if (previewUrl()) {
+  <img [src]="previewUrl()" alt="Cropped preview" />
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal, viewChild } from '@angular/core';
+import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+
+@Component({ /* ... */ })
+export class MyPortraitCropExample {
+  protected readonly imageSrc = 'assets/photo.png';
+  protected readonly previewUrl = signal('');
+
+  private readonly cropper = viewChild<UIImageCropper>('cropper');
+
+  protected onRegionChange(region: CropRegion): void {
+    console.log('Region:', region);
+  }
+
+  protected async onCrop(): Promise<void> {
+    const blob = await this.cropper()!.crop();
+    this.previewUrl.set(URL.createObjectURL(blob));
+  }
+
+  protected onReset(): void {
+    this.cropper()?.reset();
+    this.previewUrl.set('');
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+// No custom styles needed — the cropper fills its container.
+`,
+      },
+    },
+  },
 };
 
 export const JpegExport: Story = {
   render: () => ({
     template: `<ui-cropper-demo outputFormat="image/jpeg" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-image-cropper
+  #cropper
+  [src]="imageSrc"
+  outputFormat="image/jpeg"
+  (regionChange)="onRegionChange($event)"
+/>
+
+<button (click)="onCrop()">Export crop</button>
+<button (click)="onReset()">Reset</button>
+
+@if (previewUrl()) {
+  <img [src]="previewUrl()" alt="Cropped preview" />
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal, viewChild } from '@angular/core';
+import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+
+@Component({ /* ... */ })
+export class MyJpegCropExample {
+  protected readonly imageSrc = 'assets/photo.png';
+  protected readonly previewUrl = signal('');
+
+  private readonly cropper = viewChild<UIImageCropper>('cropper');
+
+  protected onRegionChange(region: CropRegion): void {
+    console.log('Region:', region);
+  }
+
+  protected async onCrop(): Promise<void> {
+    const blob = await this.cropper()!.crop();
+    this.previewUrl.set(URL.createObjectURL(blob));
+  }
+
+  protected onReset(): void {
+    this.cropper()?.reset();
+    this.previewUrl.set('');
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+// No custom styles needed — the cropper fills its container.
+`,
+      },
+    },
+  },
 };
 
 export const ProgrammaticImageData: Story = {
   render: () => ({
     template: `<ui-cropper-imagedata-demo />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-image-cropper
+  #cropper
+  (regionChange)="onRegionChange($event)"
+/>
+
+<button (click)="onCropToImageData()">Export as ImageData</button>
+<button (click)="onReset()">Reset</button>
+
+@if (croppedInfo()) {
+  <p>{{ croppedInfo() }}</p>
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { AfterViewInit, Component, signal, viewChild } from '@angular/core';
+import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+
+@Component({ /* ... */ })
+export class MyImageDataCropExample implements AfterViewInit {
+  protected readonly croppedInfo = signal('');
+
+  private readonly cropper = viewChild.required<UIImageCropper>('cropper');
+
+  ngAfterViewInit(): void {
+    // Load pixel data from a canvas, WebGL context, etc.
+    const imageData = myCanvas.getContext('2d')!.getImageData(0, 0, 800, 600);
+    this.cropper().loadImageData(imageData);
+  }
+
+  protected onRegionChange(region: CropRegion): void {
+    console.log('Region:', region);
+  }
+
+  protected onCropToImageData(): void {
+    const data = this.cropper().cropToImageData();
+    this.croppedInfo.set(
+      \`Cropped: \${data.width}×\${data.height} (\${data.data.length} bytes)\`
+    );
+  }
+
+  protected onReset(): void {
+    this.cropper().reset();
+    this.croppedInfo.set('');
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+// No custom styles needed — the cropper fills its container.
+`,
+      },
+    },
+  },
 };
 
 export const ImageDataWithAspectRatio: Story = {
   render: () => ({
     template: `<ui-cropper-imagedata-demo [aspectRatio]="1" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-image-cropper
+  #cropper
+  [aspectRatio]="1"
+  (regionChange)="onRegionChange($event)"
+/>
+
+<button (click)="onCropToImageData()">Export as ImageData</button>
+<button (click)="onReset()">Reset</button>
+
+@if (croppedInfo()) {
+  <p>{{ croppedInfo() }}</p>
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { AfterViewInit, Component, signal, viewChild } from '@angular/core';
+import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+
+@Component({ /* ... */ })
+export class MyImageDataSquareCropExample implements AfterViewInit {
+  protected readonly croppedInfo = signal('');
+
+  private readonly cropper = viewChild.required<UIImageCropper>('cropper');
+
+  ngAfterViewInit(): void {
+    const imageData = myCanvas.getContext('2d')!.getImageData(0, 0, 800, 600);
+    this.cropper().loadImageData(imageData);
+  }
+
+  protected onRegionChange(region: CropRegion): void {
+    console.log('Region:', region);
+  }
+
+  protected onCropToImageData(): void {
+    const data = this.cropper().cropToImageData();
+    this.croppedInfo.set(
+      \`Cropped: \${data.width}×\${data.height} (\${data.data.length} bytes)\`
+    );
+  }
+
+  protected onReset(): void {
+    this.cropper().reset();
+    this.croppedInfo.set('');
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+// No custom styles needed — the cropper fills its container.
+`,
+      },
+    },
+  },
 };

@@ -101,6 +101,31 @@ export const PreSelected: Story = {
       </ui-radio-group>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          "<ui-radio-group [name]=\"'color'\" [value]=\"'green'\">",
+          "  <ui-radio-button [value]=\"'red'\">Red</ui-radio-button>",
+          "  <ui-radio-button [value]=\"'green'\">Green</ui-radio-button>",
+          "  <ui-radio-button [value]=\"'blue'\">Blue</ui-radio-button>",
+          "</ui-radio-group>",
+          "",
+          "// ── TypeScript ──",
+          'import { UIRadioGroup, UIRadioButton } from "@theredhead/ui-kit";',
+          "",
+          "@Component({",
+          "  imports: [UIRadioGroup, UIRadioButton],",
+          "})",
+          "",
+          "// ── SCSS ──",
+          "// No custom styles required.",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -117,6 +142,31 @@ export const DisabledItem: Story = {
       </ui-radio-group>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          "<ui-radio-group [name]=\"'plan'\">",
+          "  <ui-radio-button [value]=\"'free'\">Free</ui-radio-button>",
+          "  <ui-radio-button [value]=\"'pro'\">Pro</ui-radio-button>",
+          '  <ui-radio-button [value]="\'enterprise\'" [disabled]="true">Enterprise (contact us)</ui-radio-button>',
+          "</ui-radio-group>",
+          "",
+          "// ── TypeScript ──",
+          'import { UIRadioGroup, UIRadioButton } from "@theredhead/ui-kit";',
+          "",
+          "@Component({",
+          "  imports: [UIRadioGroup, UIRadioButton],",
+          "})",
+          "",
+          "// ── SCSS ──",
+          "// No custom styles required.",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -134,4 +184,29 @@ export const DisabledGroup: Story = {
       </ui-radio-group>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          '<ui-radio-group [name]="\'size\'" [value]="\'md\'" [disabled]="true">',
+          "  <ui-radio-button [value]=\"'sm'\">Small</ui-radio-button>",
+          "  <ui-radio-button [value]=\"'md'\">Medium</ui-radio-button>",
+          "  <ui-radio-button [value]=\"'lg'\">Large</ui-radio-button>",
+          "</ui-radio-group>",
+          "",
+          "// ── TypeScript ──",
+          'import { UIRadioGroup, UIRadioButton } from "@theredhead/ui-kit";',
+          "",
+          "@Component({",
+          "  imports: [UIRadioGroup, UIRadioButton],",
+          "})",
+          "",
+          "// ── SCSS ──",
+          "// No custom styles required.",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };

@@ -76,6 +76,34 @@ export const Count: Story = {
     template: `<ui-badge [count]="count" [color]="color" [maxCount]="maxCount" />`,
   }),
   args: { count: 5, color: "danger", maxCount: 99 },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-badge [count]="unreadCount" color="danger" [maxCount]="99" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIBadge } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIBadge],
+  template: \`<ui-badge [count]="unreadCount" color="danger" />\`,
+})
+export class ExampleComponent {
+  public readonly unreadCount = 5;
+}
+
+// ── SCSS ──
+/* No custom styles needed — badge tokens handle theming. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -86,6 +114,35 @@ export const Overflow: Story = {
   render: () => ({
     template: `<ui-badge [count]="150" [maxCount]="99" color="danger" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-badge [count]="totalItems" [maxCount]="99" color="danger" />
+<!-- Renders "99+" when totalItems exceeds maxCount -->
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIBadge } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIBadge],
+  template: \`<ui-badge [count]="totalItems" [maxCount]="99" color="danger" />\`,
+})
+export class ExampleComponent {
+  public readonly totalItems = 150;
+}
+
+// ── SCSS ──
+/* No custom styles needed — overflow display is automatic. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -98,6 +155,32 @@ export const Dot: Story = {
     template: `<ui-badge variant="dot" [color]="color" />`,
   }),
   args: { color: "success" },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-badge variant="dot" color="success" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIBadge } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIBadge],
+  template: \`<ui-badge variant="dot" color="success" />\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — dot size and colour use badge tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -108,6 +191,32 @@ export const Label: Story = {
   render: () => ({
     template: `<ui-badge variant="label" color="primary">New</ui-badge>`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-badge variant="label" color="primary">New</ui-badge>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIBadge } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIBadge],
+  template: \`<ui-badge variant="label" color="primary">New</ui-badge>\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — label text inherits badge token colours. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -127,6 +236,44 @@ export const AllColors: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div class="badge-row">
+  <ui-badge [count]="3"  color="primary" />
+  <ui-badge [count]="7"  color="success" />
+  <ui-badge [count]="12" color="warning" />
+  <ui-badge [count]="99" color="danger"  />
+  <ui-badge [count]="42" color="neutral" />
+</div>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIBadge } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIBadge],
+  templateUrl: './example.component.html',
+  styleUrl: './example.component.scss',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+.badge-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -144,4 +291,40 @@ export const AllVariants: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div class="badge-row">
+  <ui-badge [count]="5" color="danger" />
+  <ui-badge variant="dot" color="success" />
+  <ui-badge variant="label" color="primary">Beta</ui-badge>
+</div>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIBadge } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIBadge],
+  templateUrl: './example.component.html',
+  styleUrl: './example.component.scss',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+.badge-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+`,
+      },
+    },
+  },
 };

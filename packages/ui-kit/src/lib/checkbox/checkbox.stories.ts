@@ -74,6 +74,32 @@ export const Default: Story = {
     checked: false,
     disabled: false,
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-checkbox [(checked)]="accepted">Accept terms</ui-checkbox>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UICheckbox } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UICheckbox],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly accepted = signal(false);
+}
+
+// ── SCSS ──
+/* No custom styles needed — uses library defaults. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -83,6 +109,32 @@ export const Checked: Story = {
   render: () => ({
     template: `<ui-checkbox [checked]="true">This is checked</ui-checkbox>`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-checkbox [(checked)]="isChecked">This is checked</ui-checkbox>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UICheckbox } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UICheckbox],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly isChecked = signal(true);
+}
+
+// ── SCSS ──
+/* No custom styles needed — uses library defaults. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -94,6 +146,41 @@ export const Indeterminate: Story = {
   render: () => ({
     template: `<ui-checkbox [indeterminate]="true">Select all</ui-checkbox>`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-checkbox
+  [indeterminate]="isIndeterminate()"
+  [(checked)]="allSelected"
+>Select all</ui-checkbox>
+
+// ── TypeScript ──
+import { Component, computed, signal } from '@angular/core';
+import { UICheckbox } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UICheckbox],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly allSelected = signal(false);
+  protected readonly selectedCount = signal(2);
+  protected readonly totalCount = signal(5);
+
+  protected readonly isIndeterminate = computed(
+    () => this.selectedCount() > 0 && this.selectedCount() < this.totalCount(),
+  );
+}
+
+// ── SCSS ──
+/* No custom styles needed — uses library defaults. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -106,6 +193,32 @@ export const Switch: Story = {
     template: `<ui-checkbox variant="switch" [checked]="checked">Dark mode</ui-checkbox>`,
   }),
   args: { checked: false },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-checkbox variant="switch" [(checked)]="darkMode">Dark mode</ui-checkbox>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UICheckbox } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UICheckbox],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly darkMode = signal(false);
+}
+
+// ── SCSS ──
+/* No custom styles needed — uses library defaults. */
+`,
+      },
+    },
+  },
 };
 
 /** Switch checked. */
@@ -113,6 +226,32 @@ export const SwitchChecked: Story = {
   render: () => ({
     template: `<ui-checkbox variant="switch" [checked]="true">Notifications enabled</ui-checkbox>`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-checkbox variant="switch" [(checked)]="notifications">Notifications enabled</ui-checkbox>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UICheckbox } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UICheckbox],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly notifications = signal(true);
+}
+
+// ── SCSS ──
+/* No custom styles needed — uses library defaults. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -131,6 +270,33 @@ export const Disabled: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-checkbox [disabled]="true">Disabled unchecked</ui-checkbox>
+<ui-checkbox [disabled]="true" [checked]="true">Disabled checked</ui-checkbox>
+<ui-checkbox variant="switch" [disabled]="true">Disabled switch</ui-checkbox>
+<ui-checkbox variant="switch" [disabled]="true" [checked]="true">Disabled switch on</ui-checkbox>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UICheckbox } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UICheckbox],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — uses library defaults. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -149,4 +315,38 @@ export const AllVariants: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-checkbox [(checked)]="unchecked">Unchecked</ui-checkbox>
+<ui-checkbox [(checked)]="checked">Checked</ui-checkbox>
+<ui-checkbox [indeterminate]="true" [(checked)]="indeterminate">Indeterminate</ui-checkbox>
+<ui-checkbox variant="switch" [(checked)]="switchOff">Switch off</ui-checkbox>
+<ui-checkbox variant="switch" [(checked)]="switchOn">Switch on</ui-checkbox>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UICheckbox } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UICheckbox],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly unchecked = signal(false);
+  protected readonly checked = signal(true);
+  protected readonly indeterminate = signal(false);
+  protected readonly switchOff = signal(false);
+  protected readonly switchOn = signal(true);
+}
+
+// ── SCSS ──
+/* No custom styles needed — uses library defaults. */
+`,
+      },
+    },
+  },
 };

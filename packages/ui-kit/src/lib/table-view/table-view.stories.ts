@@ -595,6 +595,47 @@ export const DensityPlayground: Story = {
             </ui-table-view>
         `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `// ── HTML ──
+<ui-table-view
+  [uiDensity]="density"
+  caption="Density Playground"
+  tableId="density-table"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-number-column key="userId" headerText="User ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="title" headerText="Title"
+    [truncate]="true" [sortable]="true" />
+  <ui-badge-column key="userId" headerText="Owner"
+    variant="neutral" />
+</ui-table-view>
+
+// ── TypeScript ──
+import {
+  UITableView,
+  UINumberColumn,
+  UITextColumn,
+  UIBadgeColumn,
+  DatasourceAdapter,
+  type UIDensity,
+} from '@theredhead/ui-kit';
+
+density: UIDensity = 'comfortable'; // 'small' | 'compact' | 'comfortable' | 'generous'
+adapter = new DatasourceAdapter(myDatasource, 25);
+
+// ── SCSS ──
+/* No custom styles needed — density is controlled via the uiDensity directive. */`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -661,6 +702,45 @@ export const WithoutBuiltInPaginator: Story = {
             </ui-table-view>
         `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `// ── HTML ──
+<ui-table-view
+  uiDensity="comfortable"
+  caption="Posts"
+  tableId="no-paginator-table"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="false"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-number-column key="userId" headerText="User ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="title" headerText="Title"
+    [truncate]="true" [sortable]="true" />
+  <ui-badge-column key="userId" headerText="Owner"
+    variant="neutral" />
+</ui-table-view>
+
+// ── TypeScript ──
+import {
+  UITableView,
+  UINumberColumn,
+  UITextColumn,
+  UIBadgeColumn,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+adapter = new DatasourceAdapter(myDatasource, 25);
+
+// ── SCSS ──
+/* No custom styles needed. Provide your own pagination UI externally. */`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**

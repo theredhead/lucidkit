@@ -68,6 +68,41 @@ export const Default: Story = {
     `,
   }),
   args: { tooltipPosition: "top" },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<button
+  uiTooltip="This is a tooltip"
+  tooltipPosition="top"
+  class="my-button"
+>
+  Hover me
+</button>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITooltip } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-tooltip-demo',
+  standalone: true,
+  imports: [UITooltip],
+  templateUrl: './tooltip-demo.component.html',
+  styleUrl: './tooltip-demo.component.scss',
+})
+export class TooltipDemoComponent {}
+
+// ── SCSS ──
+.my-button {
+  padding: 8px 16px;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -85,4 +120,46 @@ export const AllPositions: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div class="tooltip-grid">
+  <button uiTooltip="Top tooltip" tooltipPosition="top">Top</button>
+  <button uiTooltip="Bottom tooltip" tooltipPosition="bottom">Bottom</button>
+  <button uiTooltip="Left tooltip" tooltipPosition="left">Left</button>
+  <button uiTooltip="Right tooltip" tooltipPosition="right">Right</button>
+</div>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITooltip } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-all-positions-demo',
+  standalone: true,
+  imports: [UITooltip],
+  templateUrl: './all-positions-demo.component.html',
+  styleUrl: './all-positions-demo.component.scss',
+})
+export class AllPositionsDemoComponent {}
+
+// ── SCSS ──
+.tooltip-grid {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  padding: 80px;
+  flex-wrap: wrap;
+
+  button {
+    padding: 8px 16px;
+  }
+}
+`,
+      },
+    },
+  },
 };
