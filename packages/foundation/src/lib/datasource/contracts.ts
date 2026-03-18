@@ -100,15 +100,23 @@ export interface IPageableDataSource {
  *
  * @example
  * ```ts
+ * import { toPredicate } from '@theredhead/ui-kit';
+ * // or use a custom compilation function for your datasource type
+ *
  * class FilterableArrayDataSource<T>
  *   implements IDataSource<T>, IFilterableDataSource<T> {
  *   private items: T[] = [];
  *   private filteredItems: T[] = [];
+ *   private fields: FilterFieldDefinition<T>[] = [];
  *
- *   public filterBy(expression: FilterExpression<T>): void {
- *     this.filteredItems = this.items.filter(item =>
- *       expression.evaluate(item)
- *     );
+ *   public filterBy(expression: unknown): void {
+ *     // Compile expression to a reusable predicate function.
+ *     // toPredicate is a free function that converts FilterDescriptor
+ *     // (JSON-like) to a Predicate function.
+ *     const predicate = toPredicate(expression as FilterDescriptor<T>, this.fields);
+ *     this.filteredItems = predicate
+ *       ? this.items.filter(predicate)
+ *       : [...this.items];
  *   }
  *
  *   public getNumberOfItems(): number {
@@ -144,15 +152,22 @@ export interface IFilterableDataSource<_T> {
  *
  * @example
  * ```ts
+ * // Implement a free function to compile your sort expression to a comparator
+ * function compileSortExpression<T>(
+ *   expr: unknown
+ * ): (a: T, b: T) => number {
+ *   // ... build comparator from expression ...
+ * }
+ *
  * class SortableArrayDataSource<T>
  *   implements IDataSource<T>, ISortableDataSource<T> {
  *   private items: T[] = [];
  *   private sortedItems: T[] = [];
  *
- *   public sortBy(expression: SortExpression<T>): void {
- *     this.sortedItems = [...this.items].sort((a, b) =>
- *       expression.compare(a, b)
- *     );
+ *   public sortBy(expression: unknown): void {
+ *     // Compile expression to a reusable comparator function
+ *     const comparator = compileSortExpression<T>(expression);
+ *     this.sortedItems = [...this.items].sort(comparator);
  *   }
  *
  *   public getNumberOfItems(): number {
@@ -247,11 +262,23 @@ export interface ITreeDataSource<_T> {
  *
  * @example
  * ```ts
+ * import { toPredicate } from '@theredhead/ui-kit';
+ *
  * class FilterableArrayTreeDataSource<T>
  *   extends ArrayTreeDataSource<T>
  *   implements IFilterableTreeDataSource<T> {
- *   public filterBy(expression: FilterExpression<T>): void {
- *     // Apply filter to tree; update internal state
+ *   private fields: FilterFieldDefinition<T>[] = [];
+ *
+ *   public filterBy(expression: unknown): void {
+ *     // Compile expression to a reusable predicate
+ *     const predicate = toPredicate(expression as FilterDescriptor<T>, this.fields);
+ *     if (predicate) {
+ *       // Apply predicate to tree structure, updating internal state
+ *       this.applyTreeFilter(predicate);
+ *     } else {
+ *       // No rules; show all nodes
+ *       this.clearTreeFilter();
+ *     }
  *   }
  * }
  * ```
