@@ -35,6 +35,7 @@ import type {
   ISortableDataSource,
   ITreeDataSource,
   IFilterableTreeDataSource,
+  ISortableTreeDataSource,
 } from "./contracts";
 
 /**
@@ -132,4 +133,25 @@ export function isFilterableTreeDataSource<T>(
   }
   const obj = datasource as Record<string, unknown>;
   return typeof obj.filterBy === "function";
+}
+
+/**
+ * Check if a tree datasource supports sorting.
+ *
+ * Note: This guard checks for both tree behavior and sorting capability.
+ * You typically want to use `isTreeDataSource()` first to establish that it's a tree,
+ * then separately check `isSortableDataSource()` if you need sorting.
+ *
+ * @template T The item type (used for type narrowing).
+ * @param datasource The datasource to check.
+ * @returns True if datasource implements both `ITreeDataSource<T>` and sorting; false otherwise.
+ */
+export function isSortableTreeDataSource<T>(
+  datasource: unknown,
+): datasource is ISortableTreeDataSource<T> {
+  if (!isTreeDataSource<T>(datasource)) {
+    return false;
+  }
+  const obj = datasource as Record<string, unknown>;
+  return typeof obj.applyComparator === "function";
 }

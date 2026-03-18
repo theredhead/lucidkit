@@ -18,3 +18,4 @@ export { SortableArrayDatasource } from "./sortable-array-datasource";
 export { RestDatasource } from "./rest-datasource";
 export { ArrayTreeDatasource } from "./array-tree-datasource";
 export { FilterableArrayTreeDatasource } from "./filterable-array-tree-datasource";
+export { SortableArrayTreeDatasource } from "./sortable-array-tree-datasource";

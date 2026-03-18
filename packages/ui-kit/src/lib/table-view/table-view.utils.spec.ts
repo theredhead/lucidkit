@@ -86,11 +86,7 @@ describe("table-view.utils", () => {
       const state: SortState = { key: "score", direction: "asc" };
       const cmp = toComparator(state)!;
 
-      const items: TestItem[] = [
-        { score: 30 },
-        { score: 10 },
-        { score: 20 },
-      ];
+      const items: TestItem[] = [{ score: 30 }, { score: 10 }, { score: 20 }];
 
       items.sort(cmp);
 
@@ -101,11 +97,7 @@ describe("table-view.utils", () => {
       const state: SortState = { key: "score", direction: "desc" };
       const cmp = toComparator(state)!;
 
-      const items: TestItem[] = [
-        { score: 30 },
-        { score: 10 },
-        { score: 20 },
-      ];
+      const items: TestItem[] = [{ score: 30 }, { score: 10 }, { score: 20 }];
 
       items.sort(cmp);
 

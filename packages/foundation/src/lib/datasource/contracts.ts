@@ -294,3 +294,40 @@ export interface IFilterableTreeDataSource<_T> extends ITreeDataSource<_T> {
    */
   filterBy(expression: unknown): void; // TODO: Replace `unknown` with FilterExpression<_T> once available from foundation
 }
+
+/**
+ * Optional tree sorting capability.
+ *
+ * Implement this interface alongside `ITreeDataSource` when the datasource supports
+ * sorting hierarchical data at all levels (root nodes and their descendants).
+ *
+ * @template _T The type of items in the tree.
+ *
+ * @example
+ * ```ts
+ * import { toComparator } from '@theredhead/ui-kit';
+ *
+ * class SortableArrayTreeDataSource<T>
+ *   extends ArrayTreeDataSource<T>
+ *   implements ISortableTreeDataSource<T> {
+ *
+ *   public applyComparator(comparator: (a: TreeNode<T>, b: TreeNode<T>) => number): void {
+ *     // Recursively sort root nodes and all descendants
+ *     this.sortedRoots = this.sortNodes(this.allRoots, comparator);
+ *   }
+ * }
+ * ```
+ */
+export interface ISortableTreeDataSource<_T> extends ITreeDataSource<_T> {
+  /**
+   * Apply a comparator function to sort the tree.
+   *
+   * The comparator should sort nodes at all levels recursively (roots and all descendants).
+   * This should update the internal state to reflect the sorted tree structure.
+   * Subsequent calls to `getRootNodes()` and `getChildren()` should return sorted data.
+   *
+   * @param comparator - The comparator function to sort TreeNode<_T> pairs.
+   */
+  applyComparator(comparator: (a: unknown, b: unknown) => number): void;
+}
+

@@ -1,35 +1,41 @@
 # Phase 3: UITableView Control Refactoring ✅ COMPLETE
 
 ## Summary
+
 Successfully refactored UITableView to delegate sorting and filtering to datasources that support these capabilities, with graceful degradation for legacy datasources.
 
 ## Deliverables
 
 ### 1. toComparator() Utility Function ✅
+
 **File:** `packages/ui-kit/src/lib/table-view/table-view.utils.ts`  
 **Tests:** 10/10 passing
 
 **Purpose:** Compiles a `SortState` (key and direction) into a comparator function for use with `ISortableDataSource.applyComparator()`.
 
 **Features:**
+
 - Locale-aware string comparison using `localeCompare()`
 - Handles missing/null properties by treating as empty strings
 - Supports both ascending and descending order
 - Returns `null` for null/undefined input states
 
 **Usage:**
-```typescript
-import { toComparator } from '@theredhead/ui-kit';
 
-const state = { key: 'name', direction: 'asc' };
+```typescript
+import { toComparator } from "@theredhead/ui-kit";
+
+const state = { key: "name", direction: "asc" };
 const comparator = toComparator(state);
 datasource.applyComparator(comparator);
 ```
 
 ### 2. UITableView Sorting Delegation ✅
+
 **Commit:** 5a69b57
 
 **Changes:**
+
 - Added `isSortableDataSource` import from foundation
 - Added `supportsSorting` computed signal to detect `ISortableDataSource` capability
 - Updated `sortedRows` computed to skip in-component sorting when datasource supports sorting
@@ -37,6 +43,7 @@ datasource.applyComparator(comparator);
 - Falls back to in-component sorting for datasources without `ISortableDataSource`
 
 **Pattern:**
+
 ```typescript
 protected readonly supportsSorting = computed(() => {
   return isSortableDataSource(this.datasource().datasource);
@@ -44,7 +51,7 @@ protected readonly supportsSorting = computed(() => {
 
 protected onSortChange(state: SortState | null): void {
   this.sortState.set(state);
-  
+
   if (this.supportsSorting()) {
     const datasource = this.datasource().datasource;
     if (isSortableDataSource(datasource)) {
@@ -55,9 +62,11 @@ protected onSortChange(state: SortState | null): void {
 ```
 
 ### 3. UITableView Filtering Delegation ✅
+
 **Commit:** 0787a59
 
 **Changes:**
+
 - Added `filterPredicate` signal for programmatic filter control
 - Added `isFilterableDataSource` import from foundation
 - Added `supportsFiltering` computed signal to detect `IFilterableDataSource` capability
@@ -65,6 +74,7 @@ protected onSortChange(state: SortState | null): void {
 - Delegates to `datasource.applyPredicate()` when available
 
 **Pattern:**
+
 ```typescript
 protected readonly filterPredicate = signal<Predicate<unknown> | null>(null);
 
@@ -74,7 +84,7 @@ protected readonly supportsFiltering = computed(() => {
 
 constructor() {
   // ... other effects ...
-  
+
   effect(() => {
     if (this.supportsFiltering()) {
       const datasource = this.datasource().datasource;
@@ -88,6 +98,7 @@ constructor() {
 ```
 
 ## Test Results
+
 - **toComparator tests:** 10/10 passing ✅
 - **UITableView component tests:** 18/18 passing ✅
 - **UITableView full suite:** 138/138 passing ✅
@@ -99,27 +110,34 @@ constructor() {
 UITableView now works seamlessly with:
 
 ### With Capability Support
+
 - **SortableArrayDatasource** → Sorting delegated to datasource
 - **FilterableArrayDatasource** → Filtering delegated to datasource
 - **FilterableArrayTreeDatasource** → Tree filtering delegated to datasource
 
 ### With Legacy Datasources
+
 - **ArrayDatasource** → Sorting falls back to in-component (filtering not available)
 - **RestDatasource** → Sorting falls back to in-component (filtering not available)
 
 ## Graceful Degradation
+
 UITableView gracefully handles datasources without capabilities:
+
 - **Sorting:** Falls back to built-in in-component sorting if datasource doesn't support `ISortableDataSource`
 - **Filtering:** Filtering feature is simply not available if datasource doesn't support `IFilterableDataSource`
 
 No errors or exceptions are thrown; the component adapts to the datasource's capabilities.
 
 ## Commits
+
 - **5a69b57**: feat(table-view): Phase 3 - add sorting delegation to sortable datasources
 - **0787a59**: feat(table-view): add filtering delegation to filterable datasources
 
 ## Pattern Established
+
 The phase 3 refactoring establishes a clear pattern for capability delegation:
+
 1. Import type guard from foundation (`isSortableDataSource`, `isFilterableDataSource`)
 2. Create a computed signal to detect capability
 3. Use the computed signal to conditionally delegate or fall back
