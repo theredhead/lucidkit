@@ -14,7 +14,11 @@ import {
   signal,
 } from "@angular/core";
 
-import { isSortableDataSource } from "@theredhead/foundation";
+import {
+  type Predicate,
+  isFilterableDataSource,
+  isSortableDataSource,
+} from "@theredhead/foundation";
 
 import { ColumnResizeService } from "./column-resize.service";
 import { UITableViewColumn } from "./columns/table-column.directive";
@@ -142,6 +146,7 @@ export class UITableView implements OnInit, AfterViewInit {
 
   protected readonly resolvedRows = signal<unknown[]>([]);
   protected readonly sortState = signal<SortState | null>(null);
+  protected readonly filterPredicate = signal<Predicate<unknown> | null>(null);
   protected readonly captionAriaLabelledBy = computed(() =>
     this.caption().trim() ? this.captionId : null,
   );
@@ -205,6 +210,15 @@ export class UITableView implements OnInit, AfterViewInit {
    */
   protected readonly supportsSorting = computed(() => {
     return isSortableDataSource(this.datasource().datasource);
+  });
+
+  /**
+   * Whether the underlying datasource supports filtering via {@link IFilterableDataSource}.
+   * When true, filtering is delegated to the datasource; otherwise, filtering
+   * is not available.
+   */
+  protected readonly supportsFiltering = computed(() => {
+    return isFilterableDataSource(this.datasource().datasource);
   });
 
   protected readonly sortedRows = computed(() => {
@@ -274,6 +288,17 @@ export class UITableView implements OnInit, AfterViewInit {
     effect(() => {
       const rows = this.selection().selected();
       this.selectionChange.emit(rows);
+    });
+
+    // Apply filter predicate when it changes (if datasource supports filtering)
+    effect(() => {
+      if (this.supportsFiltering()) {
+        const datasource = this.datasource().datasource;
+        const predicate = this.filterPredicate();
+        if (isFilterableDataSource(datasource)) {
+          datasource.applyPredicate(predicate);
+        }
+      }
     });
   }
 
