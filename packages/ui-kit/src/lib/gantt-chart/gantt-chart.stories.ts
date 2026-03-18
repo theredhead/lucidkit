@@ -640,6 +640,69 @@ type Story = StoryObj<UIGanttChart>;
  */
 export const Default: Story = {
   render: () => ({ template: `<ui-gantt-default-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-gantt-chart
+  [datasource]="datasource"
+  viewMode="day"
+  [showToday]="true"
+  [rowHeight]="36"
+  (taskClicked)="onTask($event)"
+/>
+
+@if (clickedTask()) {
+  <p>Clicked: <strong>{{ clickedTask() }}</strong></p>
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import {
+  UIGanttChart, GanttArrayDatasource, GanttTask,
+} from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly datasource = new GanttArrayDatasource([
+    {
+      id: 'design',
+      title: 'Design Phase',
+      start: new Date('2026-03-01'),
+      end: new Date('2026-03-10'),
+      progress: 100,
+      style: { color: '#4285f4' },
+    },
+    {
+      id: 'build',
+      title: 'Build Phase',
+      start: new Date('2026-03-11'),
+      end: new Date('2026-03-25'),
+      progress: 35,
+      dependencies: ['design'],
+      style: { color: '#34a853' },
+    },
+    {
+      id: 'launch',
+      title: 'Launch',
+      start: new Date('2026-03-26'),
+      end: new Date('2026-03-26'),
+      milestone: true,
+      dependencies: ['build'],
+    },
+  ]);
+
+  readonly clickedTask = signal<string | null>(null);
+
+  onTask(task: GanttTask): void {
+    this.clickedTask.set(task.title);
+  }
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -648,6 +711,28 @@ export const Default: Story = {
  */
 export const WeekView: Story = {
   render: () => ({ template: `<ui-gantt-week-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-gantt-chart
+  [datasource]="datasource"
+  viewMode="week"
+  [showToday]="true"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIGanttChart, GanttArrayDatasource } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly datasource = new GanttArrayDatasource(myTasks);
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -656,6 +741,55 @@ export const WeekView: Story = {
  */
 export const MonthView: Story = {
   render: () => ({ template: `<ui-gantt-month-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-gantt-chart
+  [datasource]="datasource"
+  viewMode="month"
+  [showToday]="true"
+  [paddingDays]="7"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIGanttChart, GanttArrayDatasource } from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly datasource = new GanttArrayDatasource([
+    {
+      id: 'q1',
+      title: 'Q1 — Research',
+      start: new Date('2026-01-05'),
+      end: new Date('2026-03-15'),
+      progress: 100,
+      style: { color: '#4285f4' },
+    },
+    {
+      id: 'q2',
+      title: 'Q2 — Development',
+      start: new Date('2026-03-16'),
+      end: new Date('2026-06-15'),
+      progress: 40,
+      dependencies: ['q1'],
+      style: { color: '#34a853' },
+    },
+    {
+      id: 'mvp',
+      title: 'MVP',
+      start: new Date('2026-06-15'),
+      end: new Date('2026-06-15'),
+      milestone: true,
+      dependencies: ['q2'],
+    },
+  ]);
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -664,6 +798,66 @@ export const MonthView: Story = {
  */
 export const ViewModeSwitcher: Story = {
   render: () => ({ template: `<ui-gantt-switcher-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<div class="controls">
+  @for (mode of modes; track mode) {
+    <button
+      [class.active]="viewMode() === mode"
+      (click)="viewMode.set(mode)"
+    >
+      {{ mode | titlecase }}
+    </button>
+  }
+</div>
+
+<ui-gantt-chart
+  [datasource]="datasource"
+  [viewMode]="viewMode()"
+  [showToday]="true"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal } from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
+import {
+  UIGanttChart, GanttArrayDatasource, GanttViewMode,
+} from '@theredhead/ui-kit';
+
+export class MyComponent {
+  readonly modes: GanttViewMode[] = ['day', 'week', 'month'];
+  readonly viewMode = signal<GanttViewMode>('day');
+  readonly datasource = new GanttArrayDatasource(myTasks);
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.controls button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--ui-border, #d1d5db);
+  border-radius: 4px;
+  background: var(--ui-surface, #f3f4f6);
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.controls button.active {
+  background: var(--theredhead-primary, #3b82f6);
+  color: #fff;
+  border-color: var(--theredhead-primary, #3b82f6);
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -673,4 +867,84 @@ export const ViewModeSwitcher: Story = {
  */
 export const TaskPopover: Story = {
   render: () => ({ template: `<ui-gantt-popover-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-gantt-chart
+  [datasource]="datasource"
+  viewMode="day"
+  [showToday]="true"
+  (taskClicked)="openPopover($event)"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { ElementRef, inject } from '@angular/core';
+import {
+  UIGanttChart, GanttArrayDatasource, GanttTask,
+  PopoverService,
+} from '@theredhead/ui-kit';
+
+export class MyComponent {
+  private readonly popover = inject(PopoverService);
+  private readonly el = inject(ElementRef<HTMLElement>);
+  readonly datasource = new GanttArrayDatasource(myTasks);
+
+  openPopover(task: GanttTask): void {
+    // Anchor to the clicked bar via data-task-id attribute
+    const anchor = this.el.nativeElement.querySelector(
+      \`[data-task-id="\${task.id}"]\`,
+    );
+    if (!anchor) return;
+
+    this.popover.openPopover({
+      component: TaskDetailPopover,
+      anchor,
+      verticalAxisAlignment: 'auto',
+      horizontalAxisAlignment: 'auto',
+      verticalOffset: 4,
+      ariaLabel: \`Details for \${task.title}\`,
+      inputs: {
+        title: task.title,
+        start: task.start,
+        end: task.end,
+        progress: task.progress ?? null,
+      },
+    });
+  }
+}
+
+// ── Popover content component ─────────────────────────────────
+@Component({ ... })
+export class TaskDetailPopover implements UIPopoverContent {
+  readonly popoverRef = inject(PopoverRef);
+  readonly title = input('');
+  readonly start = input<Date | null>(null);
+  readonly end = input<Date | null>(null);
+  readonly progress = input<number | null>(null);
+}
+
+// ── SCSS (popover content) ────────────────────────────────────
+:host {
+  display: block;
+  padding: 0.75rem 1rem;
+  min-width: 16rem;
+  font-size: 0.8125rem;
+}
+.task-title {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.75rem;
+  margin: 0 0 0.5rem;
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
