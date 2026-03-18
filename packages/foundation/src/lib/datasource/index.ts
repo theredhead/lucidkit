@@ -60,6 +60,7 @@ export type {
   ISortableDataSource,
   ITreeDataSource,
   IFilterableTreeDataSource,
+  ISortableTreeDataSource,
 } from "./contracts";
 
 export {
@@ -68,4 +69,5 @@ export {
   isSortableDataSource,
   isTreeDataSource,
   isFilterableTreeDataSource,
+  isSortableTreeDataSource,
 } from "./type-guards";
