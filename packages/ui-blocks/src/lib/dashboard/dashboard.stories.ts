@@ -478,6 +478,80 @@ type Story = StoryObj<UIDashboard>;
  */
 export const Default: Story = {
   render: () => ({ template: `<ui-dashboard-default-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-dashboard [columns]="3" [gap]="16">
+  <ui-dashboard-panel [config]="panels[0]">
+    <div class="kpi-row">
+      <div class="kpi-item">
+        <div class="kpi-value">$42.5k</div>
+        <div class="kpi-label">Revenue</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value">1,284</div>
+        <div class="kpi-label">Orders</div>
+      </div>
+    </div>
+  </ui-dashboard-panel>
+
+  <ui-dashboard-panel [config]="panels[1]">
+    <my-chart-widget />
+  </ui-dashboard-panel>
+
+  <ui-dashboard-panel [config]="panels[2]">
+    <ul class="activity-list">
+      <li>Alice deployed v2.4.1</li>
+      <li>Bob merged PR #312</li>
+    </ul>
+  </ui-dashboard-panel>
+</ui-dashboard>
+
+// ── TypeScript ────────────────────────────────────────────────
+import {
+  UIDashboard, UIDashboardPanel,
+  DashboardPanelConfig,
+} from '@theredhead/ui-blocks';
+
+export class MyDashboard {
+  readonly panels: DashboardPanelConfig[] = [
+    {
+      id: 'kpi',
+      title: 'KPI Overview',
+      placement: { colSpan: 2 },
+      collapsible: true,
+    },
+    { id: 'revenue', title: 'Revenue', collapsible: true },
+    { id: 'activity', title: 'Activity Feed' },
+  ];
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+.kpi-row {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+}
+.kpi-item { text-align: center; }
+.kpi-value { font-size: 1.8rem; font-weight: 700; }
+.kpi-label { font-size: 0.75rem; opacity: 0.55; }
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.activity-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  font-size: 0.8rem;
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -487,6 +561,41 @@ export const Default: Story = {
  */
 export const AutoFill: Story = {
   render: () => ({ template: `<ui-dashboard-auto-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-dashboard columns="auto" [gap]="20" [minColumnWidth]="240">
+  @for (panel of panels; track panel.id) {
+    <ui-dashboard-panel
+      [config]="panel"
+    >
+      <my-widget [data]="panel" />
+    </ui-dashboard-panel>
+  }
+</ui-dashboard>
+
+// ── TypeScript ────────────────────────────────────────────────
+import {
+  UIDashboard, UIDashboardPanel,
+  DashboardPanelConfig,
+} from '@theredhead/ui-blocks';
+
+export class MyDashboard {
+  // columns="auto" uses CSS auto-fill with minColumnWidth.
+  // Panels reflow automatically as the viewport resizes.
+  readonly panels: DashboardPanelConfig[] = [
+    { id: 'a', title: 'Panel A', collapsible: true, removable: true },
+    { id: 'b', title: 'Panel B', collapsible: true, removable: true },
+    { id: 'c', title: 'Panel C', collapsible: true, removable: true },
+  ];
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -496,6 +605,57 @@ export const AutoFill: Story = {
  */
 export const RemovableWithRestore: Story = {
   render: () => ({ template: `<ui-dashboard-restore-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<button (click)="dashboard().restoreAll()">
+  Restore all panels
+</button>
+
+<ui-dashboard
+  [columns]="3"
+  [gap]="16"
+  (panelRemoved)="onRemoved($event)"
+>
+  @for (cfg of configs; track cfg.id) {
+    <ui-dashboard-panel [config]="cfg">
+      <p>{{ cfg.title }} content</p>
+    </ui-dashboard-panel>
+  }
+</ui-dashboard>
+
+@if (lastRemoved()) {
+  <p>Last removed: <strong>{{ lastRemoved() }}</strong></p>
+}
+
+// ── TypeScript ────────────────────────────────────────────────
+import { signal, viewChild } from '@angular/core';
+import {
+  UIDashboard, UIDashboardPanel,
+  DashboardPanelConfig,
+} from '@theredhead/ui-blocks';
+
+export class MyDashboard {
+  readonly dashboard = viewChild.required(UIDashboard);
+  readonly lastRemoved = signal<string | null>(null);
+
+  readonly configs: DashboardPanelConfig[] = [
+    { id: 'a', title: 'Panel A', removable: true, collapsible: true },
+    { id: 'b', title: 'Panel B', removable: true, collapsible: true },
+    { id: 'c', title: 'Panel C', removable: true, collapsible: true },
+  ];
+
+  onRemoved(id: string): void {
+    this.lastRemoved.set(id);
+  }
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -505,4 +665,74 @@ export const RemovableWithRestore: Story = {
  */
 export const SpanningLayout: Story = {
   render: () => ({ template: `<ui-dashboard-spanning-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-dashboard [columns]="4" [gap]="12">
+  <!-- Full-width hero spanning all 4 columns -->
+  <ui-dashboard-panel
+    [config]="{
+      id: 'hero',
+      title: 'Hero Banner',
+      placement: { colSpan: 4 },
+    }"
+  >
+    <div class="hero">Full-width content</div>
+  </ui-dashboard-panel>
+
+  <!-- Tall sidebar spanning 2 rows -->
+  <ui-dashboard-panel
+    [config]="{
+      id: 'sidebar',
+      title: 'Sidebar',
+      placement: { rowSpan: 2 },
+    }"
+  >
+    <div class="sidebar">Tall sidebar</div>
+  </ui-dashboard-panel>
+
+  <!-- Wide main area spanning 2 columns -->
+  <ui-dashboard-panel
+    [config]="{
+      id: 'main',
+      title: 'Main Content',
+      placement: { colSpan: 2 },
+    }"
+  >
+    <div>Wide content area</div>
+  </ui-dashboard-panel>
+
+  <!-- Standard single-cell panel -->
+  <ui-dashboard-panel
+    [config]="{ id: 'aside', title: 'Aside' }"
+  >
+    <div>Standard cell</div>
+  </ui-dashboard-panel>
+</ui-dashboard>
+
+// ── TypeScript ────────────────────────────────────────────────
+import {
+  UIDashboard, UIDashboardPanel,
+} from '@theredhead/ui-blocks';
+
+// Use placement.colSpan and placement.rowSpan in the
+// DashboardPanelConfig to create complex grid layouts.
+
+// ── SCSS ──────────────────────────────────────────────────────
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+}
+.sidebar {
+  height: 260px;
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
