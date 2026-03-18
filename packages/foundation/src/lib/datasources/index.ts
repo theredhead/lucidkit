@@ -14,5 +14,7 @@ export {
 // ── Base implementations ────────────────────────────────────────────
 export { ArrayDatasource } from "./array-datasource";
 export { FilterableArrayDatasource } from "./filterable-array-datasource";
+export { SortableArrayDatasource } from "./sortable-array-datasource";
 export { RestDatasource } from "./rest-datasource";
 export { ArrayTreeDatasource } from "./array-tree-datasource";
+export { FilterableArrayTreeDatasource } from "./filterable-array-tree-datasource";
