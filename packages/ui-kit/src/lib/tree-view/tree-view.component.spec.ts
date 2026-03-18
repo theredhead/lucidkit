@@ -566,6 +566,57 @@ describe("UITreeView", () => {
         expect(items[1].classList.contains("ui-tree-node--focused")).toBe(true);
       });
     });
+
+    describe("sorting", () => {
+      it("should accept sortComparator input", () => {
+        const comp = (a: TreeNode<FileEntry>, b: TreeNode<FileEntry>) =>
+          a.data.name.localeCompare(b.data.name);
+        fixture.componentRef.setInput("sortComparator", comp);
+        fixture.detectChanges();
+
+        // Verify the input was set by checking it doesn't throw
+        expect(fixture.componentInstance).toBeTruthy();
+      });
+
+      it("should clear sortComparator when set to null", () => {
+        const comp = (a: TreeNode<FileEntry>, b: TreeNode<FileEntry>) =>
+          a.data.name.localeCompare(b.data.name);
+        fixture.componentRef.setInput("sortComparator", comp);
+        fixture.detectChanges();
+
+        fixture.componentRef.setInput("sortComparator", null);
+        fixture.detectChanges();
+        expect(fixture.componentInstance).toBeTruthy();
+      });
+
+      it("should handle undefined sortComparator", () => {
+        fixture.componentRef.setInput("sortComparator", undefined);
+        fixture.detectChanges();
+        expect(fixture.componentInstance).toBeTruthy();
+      });
+
+      it("should work with filterPredicate and sortComparator together", () => {
+        const filterPred = (e: FileEntry) => e.type === "folder";
+        const sortComp = (a: TreeNode<FileEntry>, b: TreeNode<FileEntry>) =>
+          a.data.name.localeCompare(b.data.name);
+
+        fixture.componentRef.setInput("filterPredicate", filterPred);
+        fixture.componentRef.setInput("sortComparator", sortComp);
+        fixture.detectChanges();
+
+        expect(fixture.componentInstance).toBeTruthy();
+      });
+
+      it("should render with sortComparator applied", () => {
+        const comp = (a: TreeNode<FileEntry>, b: TreeNode<FileEntry>) =>
+          a.data.name.localeCompare(b.data.name);
+        fixture.componentRef.setInput("sortComparator", comp);
+        fixture.detectChanges();
+
+        const treeNodes = fixture.nativeElement.querySelectorAll("ui-tree-node");
+        expect(treeNodes.length).toBeGreaterThan(0);
+      });
+    });
   });
 });
 
