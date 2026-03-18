@@ -12,6 +12,8 @@ import {
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIButton } from "../button/button.component";
+import { UIIcon } from "../icon/icon.component";
+import { UIIcons } from "../icon/lucide-icons.generated";
 import { PopoverService } from "./popover.service";
 import { PopoverRef, type UIPopoverContent } from "./popover.types";
 
@@ -134,6 +136,7 @@ class StoryContextMenu implements UIPopoverContent<string> {
 @Component({
   selector: "ui-story-action-menu",
   standalone: true,
+  imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -167,20 +170,21 @@ class StoryContextMenu implements UIPopoverContent<string> {
   ],
   template: `
     <button class="action-btn" (click)="pick('share')">
-      <span class="action-icon">🔗</span> Share Link
+      <ui-icon [svg]="icons.Account.Link" [size]="16" /> Share Link
     </button>
     <button class="action-btn" (click)="pick('duplicate')">
-      <span class="action-icon">📋</span> Duplicate
+      <ui-icon [svg]="icons.Text.Copy" [size]="16" /> Duplicate
     </button>
     <button class="action-btn" (click)="pick('archive')">
-      <span class="action-icon">📦</span> Archive
+      <ui-icon [svg]="icons.Files.Archive" [size]="16" /> Archive
     </button>
     <button class="action-btn" (click)="pick('delete')">
-      <span class="action-icon">🗑️</span> Delete
+      <ui-icon [svg]="icons.Files.Trash2" [size]="16" /> Delete
     </button>
   `,
 })
 class StoryActionMenu implements UIPopoverContent<string> {
+  protected readonly icons = UIIcons.Lucide;
   readonly popoverRef = inject(PopoverRef<string>);
 
   pick(action: string): void {
@@ -209,11 +213,11 @@ const DEMO_STYLES = `
   selector: "ui-popover-tooltip-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIButton],
+  imports: [UIButton, UIIcon],
   styles: [DEMO_STYLES],
   template: `
     <ui-button #anchor variant="outlined" (click)="open()">
-      Hover info ℹ️
+      Hover info <ui-icon [svg]="icons.Accessibility.Info" [size]="16" />
     </ui-button>
     <p style="margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;">
       Click the button to show a rich tooltip popover.
@@ -221,6 +225,7 @@ const DEMO_STYLES = `
   `,
 })
 class TooltipDemo {
+  protected readonly icons = UIIcons.Lucide;
   private readonly popover = inject(PopoverService);
   private readonly anchorRef = viewChild.required("anchor", {
     read: ElementRef,

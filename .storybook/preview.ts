@@ -10,6 +10,7 @@ const preview: Preview = {
       providers: [provideAnimationsAsync()],
     }),
   ],
+  tags: ["autodocs"],
   parameters: {
     options: {
       storySort: {
