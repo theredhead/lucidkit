@@ -106,6 +106,25 @@ export class UITreeView<T = unknown> implements TreeKeyboardDelegate {
     undefined,
   );
 
+  /**
+   * Optional comparator for sorting tree nodes at all levels.
+   *
+   * When set, nodes are sorted at the root level and all descendants
+   * are recursively sorted using this comparator. The comparator receives
+   * two TreeNode<T> values and should return a negative, zero, or positive number
+   * indicating their sort order.
+   *
+   * Pass `undefined` or `null` to clear the sort and restore insertion order.
+   *
+   * @example
+   * ```ts
+   * sortComparator: (a, b) => a.data.name.localeCompare(b.data.name)
+   * ```
+   */
+  public readonly sortComparator = input<
+    ((a: TreeNode<T>, b: TreeNode<T>) => number) | null | undefined
+  >(undefined);
+
   // ── Model ───────────────────────────────────────────────────────────
 
   /**
@@ -157,17 +176,24 @@ export class UITreeView<T = unknown> implements TreeKeyboardDelegate {
 
   // ── Computed ────────────────────────────────────────────────────────
 
-  /** The root nodes from the datasource (filtered when a predicate is set). @internal */
+  /** The root nodes from the datasource (filtered and sorted when predicates/comparators are set). @internal */
   protected readonly rootNodes = computed<TreeNode<T>[]>(() => {
     const ds = this.datasource();
-    const roots = ds.getRootNodes();
+    let roots = ds.getRootNodes();
     // Only synchronous for now — async support can be added later
     if (!Array.isArray(roots)) return [];
 
     const predicate = this.filterPredicate();
-    if (!predicate) return roots;
+    if (predicate) {
+      roots = this.filterTree(roots, predicate, ds);
+    }
 
-    return this.filterTree(roots, predicate, ds);
+    const comparator = this.sortComparator();
+    if (comparator) {
+      roots = this.sortTree(roots, comparator);
+    }
+
+    return roots;
   });
 
   // ── Public methods ──────────────────────────────────────────────────
@@ -494,5 +520,32 @@ export class UITreeView<T = unknown> implements TreeKeyboardDelegate {
     }
 
     return result;
+  }
+
+  /**
+   * Recursively sorts a tree, applying the comparator at each level
+   * (root nodes and all descendants).
+   *
+   * @internal
+   */
+  private sortTree(
+    nodes: TreeNode<T>[],
+    comparator: (a: TreeNode<T>, b: TreeNode<T>) => number,
+  ): TreeNode<T>[] {
+    const result: TreeNode<T>[] = [];
+
+    for (const node of nodes) {
+      const clone: TreeNode<T> = { ...node };
+
+      // Recursively sort children if they exist
+      if (node.children && node.children.length > 0) {
+        clone.children = this.sortTree(node.children, comparator);
+      }
+
+      result.push(clone);
+    }
+
+    // Sort at this level
+    return result.sort(comparator);
   }
 }
