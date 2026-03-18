@@ -309,7 +309,8 @@ class TreeViewSortingDemo {
     <div style="margin-bottom: 0.75rem; font-size: 0.85rem;">
       <p><strong>Filtering and sorting together:</strong></p>
       <p style="opacity: 0.7; margin-top: 0.25rem;">
-        Showing only folders (filtered), sorted alphabetically. Files are hidden.
+        Showing only folders (filtered), sorted alphabetically. Files are
+        hidden.
       </p>
     </div>
     <ui-tree-view

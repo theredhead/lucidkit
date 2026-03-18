@@ -20,7 +20,7 @@ import type { RepeaterItemContext } from "./repeater.types";
  *
  * Accepts the same {@link IDatasource} implementations used by
  * `<ui-table-view>` (e.g. `ArrayDatasource`, `FilterableArrayDatasource`,
- * `SortableArrayDatasource`, `RestDatasource`), wrapping them in a 
+ * `SortableArrayDatasource`, `RestDatasource`), wrapping them in a
  * {@link DatasourceAdapter} internally.
  *
  * The host element imposes **no layout constraints** — the consumer

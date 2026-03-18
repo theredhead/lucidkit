@@ -77,7 +77,10 @@ export class SortableArrayTreeDatasource<T = unknown>
     comparator: ((a: TreeNode<T>, b: TreeNode<T>) => number) | null | undefined,
   ): void {
     if (!comparator) {
-      this._sortedRoots = this.deepCopyNodes(this._allRoots, this.childrenProperty);
+      this._sortedRoots = this.deepCopyNodes(
+        this._allRoots,
+        this.childrenProperty,
+      );
       return;
     }
 
@@ -104,7 +107,10 @@ export class SortableArrayTreeDatasource<T = unknown>
       const children = (node[childrenProp] as TreeNode<T>[] | undefined) ?? [];
       if (children.length > 0) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (copy[childrenProp] as any) = this.deepCopyNodes(children, childrenProp);
+        (copy[childrenProp] as any) = this.deepCopyNodes(
+          children,
+          childrenProp,
+        );
       }
       return copy;
     });

@@ -195,8 +195,8 @@ describe("UIRepeater", () => {
     it("should render sorted items when using SortableArrayDatasource", async () => {
       const sortable = new SortableArrayDatasource(TEST_DATA);
       // Sort by name in reverse order
-      sortable.applyComparator(
-        (a: TestItem, b: TestItem) => b.name.localeCompare(a.name),
+      sortable.applyComparator((a: TestItem, b: TestItem) =>
+        b.name.localeCompare(a.name),
       );
       host.ds.set(sortable);
       fixture.detectChanges();

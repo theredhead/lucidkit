@@ -219,8 +219,10 @@ describe("SortableArrayTreeDatasource", () => {
     const ds = new SortableArrayTreeDatasource(roots);
 
     // First sort: alphabetical
-    const alphabeticComparator = (a: TreeNode<TestData>, b: TreeNode<TestData>) =>
-      a.data.name.localeCompare(b.data.name);
+    const alphabeticComparator = (
+      a: TreeNode<TestData>,
+      b: TreeNode<TestData>,
+    ) => a.data.name.localeCompare(b.data.name);
     ds.applyComparator(alphabeticComparator);
     expect(ds.getRootNodes()[0].data.name).toBe("Apple");
 

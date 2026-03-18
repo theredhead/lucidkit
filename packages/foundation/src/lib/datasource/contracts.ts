@@ -330,4 +330,3 @@ export interface ISortableTreeDataSource<_T> extends ITreeDataSource<_T> {
    */
   applyComparator(comparator: (a: unknown, b: unknown) => number): void;
 }
-
