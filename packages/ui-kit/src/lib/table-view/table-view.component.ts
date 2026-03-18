@@ -14,6 +14,8 @@ import {
   signal,
 } from "@angular/core";
 
+import { isSortableDataSource } from "@theredhead/foundation";
+
 import { ColumnResizeService } from "./column-resize.service";
 import { UITableViewColumn } from "./columns/table-column.directive";
 import { DatasourceAdapter } from "./datasources/datasource-adapter";
@@ -29,6 +31,7 @@ import {
   SortState,
   UITableHeader,
 } from "./table-view-header/table-view-header.component";
+import { toComparator } from "./table-view.utils";
 import { type SelectionMode, SelectionModel } from "../core/selection-model";
 
 @Component({
@@ -195,9 +198,25 @@ export class UITableView implements OnInit, AfterViewInit {
   /** Generation counter to discard stale promise resolutions after page changes. */
   private resolveGeneration = 0;
 
+  /**
+   * Whether the underlying datasource supports sorting via {@link ISortableDataSource}.
+   * When true, sorting is delegated to the datasource; otherwise, rows are sorted
+   * in-component.
+   */
+  protected readonly supportsSorting = computed(() => {
+    return isSortableDataSource(this.datasource().datasource);
+  });
+
   protected readonly sortedRows = computed(() => {
     const rows = this.resolvedRows();
     const sort = this.sortState();
+
+    // If the underlying datasource handles sorting, don't sort in-component
+    if (this.supportsSorting()) {
+      return rows;
+    }
+
+    // Fallback: sort in-component (legacy behavior)
     if (!sort) return rows;
     return [...rows].sort((a, b) => {
       // Keep loading placeholders (null) in place – don't try to sort them
@@ -395,6 +414,14 @@ export class UITableView implements OnInit, AfterViewInit {
 
   protected onSortChange(state: SortState | null): void {
     this.sortState.set(state);
+
+    // If the datasource supports sorting, delegate to it
+    if (this.supportsSorting()) {
+      const datasource = this.datasource().datasource;
+      if (isSortableDataSource(datasource)) {
+        datasource.applyComparator(toComparator(state));
+      }
+    }
   }
 
   protected onPageChange(page: number): void {

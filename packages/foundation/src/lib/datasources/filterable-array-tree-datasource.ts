@@ -108,7 +108,11 @@ export class FilterableArrayTreeDatasource<T = unknown>
 
     for (const node of nodes) {
       const children = (node[childrenProp] as TreeNode<T>[] | undefined) ?? [];
-      const filteredChildren = this.filterNodes(children, predicate, childrenProp);
+      const filteredChildren = this.filterNodes(
+        children,
+        predicate,
+        childrenProp,
+      );
       const nodeMatches = predicate(node.data);
 
       // Keep node if it matches OR if any descendant matches
