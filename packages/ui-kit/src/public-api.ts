@@ -40,3 +40,4 @@ export * from "./lib/image-cropper";
 export * from "./lib/chart";
 export * from "./lib/analog-clock/analog-clock.component";
 export * from "./lib/calendar";
+export * from "./lib/gantt-chart";

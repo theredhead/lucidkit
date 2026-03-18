@@ -1,0 +1,297 @@
+// ── Light defaults ───────────────────────────────────────────────
+:host {
+  --ui-gantt-bg: #ffffff;
+  --ui-gantt-text: #1d232b;
+  --ui-gantt-text-muted: #6b7280;
+  --ui-gantt-border: #e5e7eb;
+  --ui-gantt-header-bg: #f6f7f8;
+  --ui-gantt-row-hover: #f3f4f6;
+  --ui-gantt-row-alt: #fafbfc;
+  --ui-gantt-today: #3b82f6;
+  --ui-gantt-bar-text: #ffffff;
+  --ui-gantt-bar-progress: rgba(0, 0, 0, 0.18);
+  --ui-gantt-milestone-bg: #f59e0b;
+
+  display: block;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+// ── Explicit dark class ──────────────────────────────────────────
+:host-context(html.dark-theme) {
+  --ui-gantt-bg: #1f2937;
+  --ui-gantt-text: #f2f6fb;
+  --ui-gantt-text-muted: #9ca3af;
+  --ui-gantt-border: #374151;
+  --ui-gantt-header-bg: #1a1f28;
+  --ui-gantt-row-hover: #2a3040;
+  --ui-gantt-row-alt: #242b33;
+  --ui-gantt-today: #60a5fa;
+  --ui-gantt-bar-text: #ffffff;
+  --ui-gantt-bar-progress: rgba(0, 0, 0, 0.3);
+  --ui-gantt-milestone-bg: #fbbf24;
+}
+
+// ── System preference fallback ───────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-gantt-bg: #1f2937;
+    --ui-gantt-text: #f2f6fb;
+    --ui-gantt-text-muted: #9ca3af;
+    --ui-gantt-border: #374151;
+    --ui-gantt-header-bg: #1a1f28;
+    --ui-gantt-row-hover: #2a3040;
+    --ui-gantt-row-alt: #242b33;
+    --ui-gantt-today: #60a5fa;
+    --ui-gantt-bar-text: #ffffff;
+    --ui-gantt-bar-progress: rgba(0, 0, 0, 0.3);
+    --ui-gantt-milestone-bg: #fbbf24;
+  }
+}
+
+// ── Container ────────────────────────────────────────────────────
+
+.gantt-container {
+  display: flex;
+  background: var(--ui-gantt-bg);
+  color: var(--ui-gantt-text);
+  border: 1px solid var(--ui-gantt-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+// ── Task list sidebar ────────────────────────────────────────────
+
+.gantt-task-list {
+  flex-shrink: 0;
+  border-right: 1px solid var(--ui-gantt-border);
+  overflow: hidden;
+}
+
+.gantt-task-list__header {
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  height: 56px; // matches two header rows (28px each)
+  background: var(--ui-gantt-header-bg);
+  border-bottom: 1px solid var(--ui-gantt-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ui-gantt-text-muted);
+}
+
+.gantt-task-list__body {
+  overflow-y: auto;
+}
+
+.gantt-task-list__row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--ui-gantt-border);
+  transition: background-color 0.1s;
+
+  &:nth-child(even) {
+    background: var(--ui-gantt-row-alt);
+  }
+
+  &:hover {
+    background: var(--ui-gantt-row-hover);
+  }
+}
+
+.gantt-task-list__label {
+  font-size: 0.78rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+// ── Timeline area ────────────────────────────────────────────────
+
+.gantt-timeline {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// ── Header ───────────────────────────────────────────────────────
+
+.gantt-header {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--ui-gantt-border);
+  background: var(--ui-gantt-header-bg);
+  // min-width ensures columns don't collapse
+  min-width: max-content;
+}
+
+.gantt-header__groups,
+.gantt-header__columns {
+  display: grid;
+}
+
+.gantt-header__group-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ui-gantt-text);
+  border-right: 1px solid var(--ui-gantt-border);
+  border-bottom: 1px solid var(--ui-gantt-border);
+  white-space: nowrap;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.gantt-header__col-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  font-size: 0.68rem;
+  color: var(--ui-gantt-text-muted);
+  border-right: 1px solid var(--ui-gantt-border);
+  white-space: nowrap;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+// ── Body ─────────────────────────────────────────────────────────
+
+.gantt-body {
+  flex: 1;
+  overflow: auto;
+}
+
+.gantt-body__canvas {
+  position: relative;
+  min-width: max-content;
+  // Ensure the canvas matches the header width
+  min-height: 100%;
+}
+
+// ── Rows ─────────────────────────────────────────────────────────
+
+.gantt-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--ui-gantt-border);
+
+  &:nth-child(even) {
+    background: var(--ui-gantt-row-alt);
+  }
+
+  &:hover {
+    background: var(--ui-gantt-row-hover);
+  }
+}
+
+// ── Task bar ─────────────────────────────────────────────────────
+
+.gantt-bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0;
+  font: inherit;
+  transition:
+    filter 0.15s,
+    box-shadow 0.15s;
+
+  &:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-gantt-today);
+    outline-offset: 2px;
+  }
+}
+
+.gantt-bar__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--ui-gantt-bar-progress);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.gantt-bar__label {
+  position: relative;
+  z-index: 1;
+  padding: 0 6px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--ui-gantt-bar-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+// ── Milestone ────────────────────────────────────────────────────
+
+.gantt-milestone {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-gantt-today);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+}
+
+.gantt-milestone__diamond {
+  display: block;
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+// ── Today marker ─────────────────────────────────────────────────
+
+.gantt-today-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ui-gantt-today);
+  opacity: 0.6;
+  z-index: 2;
+  pointer-events: none;
+}

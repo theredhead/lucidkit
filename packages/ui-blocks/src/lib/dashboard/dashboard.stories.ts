@@ -8,6 +8,7 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIDashboard } from "./dashboard.component";
 import { UIDashboardPanel } from "./dashboard-panel.component";
 import type { DashboardPanelConfig } from "./dashboard.types";
+import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 
 // ── Shared fixtures ──────────────────────────────────────────────
 
@@ -40,7 +41,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
 @Component({
   selector: "ui-dashboard-default-demo",
   standalone: true,
-  imports: [UIDashboard, UIDashboardPanel],
+  imports: [UIDashboard, UIDashboardPanel, UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -116,14 +117,38 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
       </ui-dashboard-panel>
 
       <ui-dashboard-panel [config]="panels[1]">
-        <div class="demo-chart-placeholder">📊 Revenue chart goes here</div>
+        <div class="demo-chart-placeholder">
+          <ui-icon [svg]="icons.Charts.ChartBar" [size]="16" /> Revenue chart
+          goes here
+        </div>
       </ui-dashboard-panel>
 
       <ui-dashboard-panel [config]="panels[2]">
         <ul class="demo-list">
-          <li>🟢 142 active now</li>
-          <li>🔵 1,847 today</li>
-          <li>⚪ 12,409 this week</li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.CircleDot"
+              [size]="14"
+              style="color: #22c55e"
+            />
+            142 active now
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.CircleDot"
+              [size]="14"
+              style="color: #3b82f6"
+            />
+            1,847 today
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.Circle"
+              [size]="14"
+              style="color: #9ca3af"
+            />
+            12,409 this week
+          </li>
         </ul>
       </ui-dashboard-panel>
 
@@ -139,15 +164,37 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
 
       <ui-dashboard-panel [config]="panels[4]">
         <ul class="demo-list">
-          <li>✅ Review calendar component</li>
-          <li>⬜ Update CI pipeline</li>
-          <li>⬜ Write dashboard docs</li>
+          <li>
+            <ui-icon
+              [svg]="icons.Notifications.CircleCheck"
+              [size]="14"
+              style="color: #22c55e"
+            />
+            Review calendar component
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.Square"
+              [size]="14"
+              style="color: #9ca3af"
+            />
+            Update CI pipeline
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.Square"
+              [size]="14"
+              style="color: #9ca3af"
+            />
+            Write dashboard docs
+          </li>
         </ul>
       </ui-dashboard-panel>
     </ui-dashboard>
   `,
 })
 class DashboardDefaultDemo {
+  protected readonly icons = UIIcons.Lucide;
   public readonly panels = SAMPLE_PANELS;
 }
 
