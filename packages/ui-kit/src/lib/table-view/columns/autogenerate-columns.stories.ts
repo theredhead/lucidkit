@@ -4,15 +4,6 @@ import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive
 import { Component, signal } from "@angular/core";
 import { ArrayDatasource } from "../datasources/array-datasource";
 
-const meta: Meta<UITableView> = {
-  title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
-  component: UITableView,
-  tags: ["autodocs"],
-};
-
-export default meta;
-type Story = StoryObj<UITableView>;
-
 @Component({
   selector: "ui-demo-autogenerate",
   standalone: true,
@@ -46,6 +37,15 @@ class DemoAutogenerateComponent {
   ]);
 }
 
+const meta: Meta<UITableView> = {
+  title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
+  component: UITableView,
+  tags: ["autodocs"],
+};
+
+export default meta;
+type Story = StoryObj<UITableView>;
+
 /**
  * Automatically generate table columns from the first row's properties.
  *
@@ -53,8 +53,9 @@ class DemoAutogenerateComponent {
  * the datasource and creates text columns with humanized headers.
  */
 export const Autogenerate: Story = {
-  render: () => ({
-    component: DemoAutogenerateComponent,
+  render: (args) => ({
+    props: args,
+    template: "<ui-demo-autogenerate></ui-demo-autogenerate>",
   }),
 };
 
@@ -109,8 +110,9 @@ class DemoAutogenerateCustomComponent {
  * Use `headerMap` to rename columns and `excludeKeys` to hide properties.
  */
 export const AutogenerateCustom: Story = {
-  render: () => ({
-    component: DemoAutogenerateCustomComponent,
+  render: (args) => ({
+    props: args,
+    template: "<ui-demo-autogenerate-custom></ui-demo-autogenerate-custom>",
   }),
 };
 
@@ -138,7 +140,8 @@ class DemoAutogenerateNoHumanizeComponent {
  * Disable header humanization to use property names as-is.
  */
 export const AutogenerateNoHumanize: Story = {
-  render: () => ({
-    component: DemoAutogenerateNoHumanizeComponent,
+  render: (args) => ({
+    props: args,
+    template: "<ui-demo-autogenerate-no-humanize></ui-demo-autogenerate-no-humanize>",
   }),
 };
