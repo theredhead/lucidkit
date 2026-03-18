@@ -20,18 +20,38 @@ import type { RepeaterItemContext } from "./repeater.types";
  *
  * Accepts the same {@link IDatasource} implementations used by
  * `<ui-table-view>` (e.g. `ArrayDatasource`, `FilterableArrayDatasource`,
- * `RestDatasource`), wrapping them in a {@link DatasourceAdapter} internally.
+ * `SortableArrayDatasource`, `RestDatasource`), wrapping them in a 
+ * {@link DatasourceAdapter} internally.
  *
  * The host element imposes **no layout constraints** — the consumer
  * controls all styling via the template and/or CSS on the host.
  *
  * @example
+ * Basic usage:
  * ```html
  * <ui-repeater [datasource]="kittens">
  *   <ng-template let-item let-i="index">
  *     <img [src]="item.url" [alt]="item.name" />
  *   </ng-template>
  * </ui-repeater>
+ * ```
+ *
+ * @example
+ * With filtering:
+ * ```ts
+ * import { FilterableArrayDatasource } from '@theredhead/foundation';
+ *
+ * const ds = new FilterableArrayDatasource(items);
+ * ds.applyPredicate(item => item.active);
+ * ```
+ *
+ * @example
+ * With sorting:
+ * ```ts
+ * import { SortableArrayDatasource } from '@theredhead/foundation';
+ *
+ * const ds = new SortableArrayDatasource(items);
+ * ds.applyComparator((a, b) => a.name.localeCompare(b.name));
  * ```
  */
 @Component({
