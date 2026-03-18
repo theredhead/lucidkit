@@ -255,6 +255,85 @@ class TreeViewExpandDemo {
   protected readonly displayWith = (data: FileEntry): string => data.name;
 }
 
+// ── Sorting demo ──────────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-tree-view-sorting-demo",
+  standalone: true,
+  imports: [UITreeView],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; gap: 2rem; align-items: flex-start;">
+      <ui-tree-view
+        [datasource]="ds"
+        [displayWith]="displayWith"
+        [sortComparator]="sortByName"
+        ariaLabel="Sorted file explorer"
+        style="flex: 1"
+      />
+      <div style="flex: 1; font-size: 0.85rem;">
+        <p><strong>Sorting:</strong></p>
+        <p style="font-size: 0.75rem; opacity: 0.7;">
+          Nodes are sorted alphabetically by name at all levels (root and
+          children). The comparator is applied recursively.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <strong>Sort order:</strong>
+        </p>
+        <ul style="margin: 0; padding-left: 1.5rem; font-size: 0.8rem;">
+          <li>Unsorted: src, node_modules (disabled), README.md</li>
+          <li>Sorted: README.md, node_modules (disabled), src</li>
+        </ul>
+      </div>
+    </div>
+  `,
+})
+class TreeViewSortingDemo {
+  protected readonly ds = new ArrayTreeDatasource(FILE_TREE);
+  protected readonly displayWith = (data: FileEntry): string => data.name;
+
+  protected readonly sortByName = (
+    a: TreeNode<FileEntry>,
+    b: TreeNode<FileEntry>,
+  ) => a.data.name.localeCompare(b.data.name);
+}
+
+// ── Sorting + Filtering demo ──────────────────────────────────────────
+
+@Component({
+  selector: "ui-tree-view-sort-filter-demo",
+  standalone: true,
+  imports: [UITreeView],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="margin-bottom: 0.75rem; font-size: 0.85rem;">
+      <p><strong>Filtering and sorting together:</strong></p>
+      <p style="opacity: 0.7; margin-top: 0.25rem;">
+        Showing only folders (filtered), sorted alphabetically. Files are hidden.
+      </p>
+    </div>
+    <ui-tree-view
+      [datasource]="ds"
+      [displayWith]="displayWith"
+      [filterPredicate]="onlyFolders"
+      [sortComparator]="sortByName"
+      ariaLabel="Sorted and filtered file explorer"
+    />
+  `,
+})
+class TreeViewSortFilterDemo {
+  protected readonly ds = new ArrayTreeDatasource(FILE_TREE);
+  protected readonly displayWith = (data: FileEntry): string => data.name;
+
+  protected readonly sortByName = (
+    a: TreeNode<FileEntry>,
+    b: TreeNode<FileEntry>,
+  ) => a.data.name.localeCompare(b.data.name);
+
+  protected readonly onlyFolders = (data: FileEntry): boolean =>
+    !data.name.includes(".");
+}
+
 // ── Meta ──────────────────────────────────────────────────────────────
 
 const meta: Meta<UITreeView> = {
@@ -314,6 +393,8 @@ const meta: Meta<UITreeView> = {
         TreeViewSelectionDemo,
         TreeViewOrgDemo,
         TreeViewExpandDemo,
+        TreeViewSortingDemo,
+        TreeViewSortFilterDemo,
       ],
     }),
   ],
@@ -413,6 +494,63 @@ export const ExpandCollapse: Story = {
   #tree
   [datasource]="ds"
   [displayWith]="displayWith"
+/>`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/**
+ * **Sorting** — Demonstrates alphabetical sorting of tree nodes. The
+ * `sortComparator` input accepts a comparison function that is applied
+ * recursively to all levels (root nodes and all descendants).
+ * Set to `null` or `undefined` to restore insertion order.
+ */
+export const Sorting: Story = {
+  render: () => ({
+    template: `<ui-tree-view-sorting-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `sortByName = (a: TreeNode<FileEntry>, b: TreeNode<FileEntry>) =>
+  a.data.name.localeCompare(b.data.name);
+
+<ui-tree-view
+  [datasource]="ds"
+  [displayWith]="displayWith"
+  [sortComparator]="sortByName"
+/>`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/**
+ * **Sorting + Filtering** — Demonstrates how filtering and sorting can be
+ * used together. Nodes are first filtered by the predicate, then sorted by
+ * the comparator at all levels. This combination is useful for building
+ * powerful tree exploration interfaces.
+ */
+export const SortingAndFiltering: Story = {
+  render: () => ({
+    template: `<ui-tree-view-sort-filter-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `onlyFolders = (data: FileEntry) => !data.name.includes('.');
+
+sortByName = (a: TreeNode<FileEntry>, b: TreeNode<FileEntry>) =>
+  a.data.name.localeCompare(b.data.name);
+
+<ui-tree-view
+  [datasource]="ds"
+  [displayWith]="displayWith"
+  [filterPredicate]="onlyFolders"
+  [sortComparator]="sortByName"
 />`,
         language: "html",
       },
