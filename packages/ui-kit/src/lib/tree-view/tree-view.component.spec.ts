@@ -613,7 +613,8 @@ describe("UITreeView", () => {
         fixture.componentRef.setInput("sortComparator", comp);
         fixture.detectChanges();
 
-        const treeNodes = fixture.nativeElement.querySelectorAll("ui-tree-node");
+        const treeNodes =
+          fixture.nativeElement.querySelectorAll("ui-tree-node");
         expect(treeNodes.length).toBeGreaterThan(0);
       });
     });

@@ -52,10 +52,10 @@ export function isPageableDataSource(
   }
   const obj = datasource as Record<string, unknown>;
   return (
-    typeof obj.getPageIndex === "function" &&
-    typeof obj.setPageIndex === "function" &&
-    typeof obj.getPageSize === "function" &&
-    typeof obj.setPageSize === "function"
+    typeof obj["getPageIndex"] === "function" &&
+    typeof obj["setPageIndex"] === "function" &&
+    typeof obj["getPageSize"] === "function" &&
+    typeof obj["setPageSize"] === "function"
   );
 }
 
@@ -73,7 +73,7 @@ export function isFilterableDataSource<T>(
     return false;
   }
   const obj = datasource as Record<string, unknown>;
-  return typeof obj.filterBy === "function";
+  return typeof obj["filterBy"] === "function";
 }
 
 /**
@@ -90,7 +90,7 @@ export function isSortableDataSource<T>(
     return false;
   }
   const obj = datasource as Record<string, unknown>;
-  return typeof obj.sortBy === "function";
+  return typeof obj["sortBy"] === "function";
 }
 
 /**
@@ -108,9 +108,9 @@ export function isTreeDataSource<T>(
   }
   const obj = datasource as Record<string, unknown>;
   return (
-    typeof obj.getRootNodes === "function" &&
-    typeof obj.getChildren === "function" &&
-    typeof obj.hasChildren === "function"
+    typeof obj["getRootNodes"] === "function" &&
+    typeof obj["getChildren"] === "function" &&
+    typeof obj["hasChildren"] === "function"
   );
 }
 
@@ -131,8 +131,9 @@ export function isFilterableTreeDataSource<T>(
   if (!isTreeDataSource<T>(datasource)) {
     return false;
   }
-  const obj = datasource as Record<string, unknown>;
-  return typeof obj.filterBy === "function";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const obj = datasource as any;
+  return typeof obj["filterBy"] === "function";
 }
 
 /**
@@ -152,6 +153,7 @@ export function isSortableTreeDataSource<T>(
   if (!isTreeDataSource<T>(datasource)) {
     return false;
   }
-  const obj = datasource as Record<string, unknown>;
-  return typeof obj.applyComparator === "function";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const obj = datasource as any;
+  return typeof obj["applyComparator"] === "function";
 }
