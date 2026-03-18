@@ -58,6 +58,34 @@ export const Default: Story = {
   args: {
     variant: "icon",
   },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-theme-toggle variant="icon" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIThemeToggle } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIThemeToggle],
+  template: \`<ui-theme-toggle variant="icon" />\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+:host {
+  display: inline-block;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -68,5 +96,33 @@ export const Default: Story = {
 export const ButtonVariant: Story = {
   args: {
     variant: "button",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-theme-toggle variant="button" ariaLabel="Switch theme" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIThemeToggle } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIThemeToggle],
+  template: \`<ui-theme-toggle variant="button" ariaLabel="Switch theme" />\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+:host {
+  display: inline-block;
+}
+`,
+      },
+    },
   },
 };

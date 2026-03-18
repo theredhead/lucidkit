@@ -70,6 +70,37 @@ export const Default: Story = {
     size: "md",
     disabled: false,
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-button variant="filled" size="md" [disabled]="disabled">
+  Click me
+</ui-button>
+
+// ── TypeScript ──
+import { UIButton } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UIButton],
+  template: \`
+    <ui-button variant="filled" size="md" [disabled]="disabled">
+      Click me
+    </ui-button>
+  \`,
+})
+export class MyComponent {
+  public disabled = false;
+}
+
+// ── SCSS ──
+/* No custom styles needed — UIButton ships with built-in variants. */
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -82,6 +113,31 @@ export const Outlined: Story = {
     template: `<ui-button variant="outlined" [size]="size">Outlined</ui-button>`,
   }),
   args: { size: "md" },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-button variant="outlined">Outlined</ui-button>
+
+// ── TypeScript ──
+import { UIButton } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UIButton],
+  template: \`
+    <ui-button variant="outlined">Outlined</ui-button>
+  \`,
+})
+export class MyComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — UIButton ships with built-in variants. */
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -95,6 +151,31 @@ export const Ghost: Story = {
     template: `<ui-button variant="ghost" [size]="size">Ghost</ui-button>`,
   }),
   args: { size: "md" },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-button variant="ghost">Ghost</ui-button>
+
+// ── TypeScript ──
+import { UIButton } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UIButton],
+  template: \`
+    <ui-button variant="ghost">Ghost</ui-button>
+  \`,
+})
+export class MyComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — UIButton ships with built-in variants. */
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /** Disabled button state. */
@@ -102,6 +183,31 @@ export const Disabled: Story = {
   render: () => ({
     template: `<ui-button variant="filled" [disabled]="true">Disabled</ui-button>`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-button variant="filled" [disabled]="true">Disabled</ui-button>
+
+// ── TypeScript ──
+import { UIButton } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UIButton],
+  template: \`
+    <ui-button variant="filled" [disabled]="true">Disabled</ui-button>
+  \`,
+})
+export class MyComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — disabled state is handled automatically. */
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -118,6 +224,39 @@ export const AllVariants: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-button variant="filled">Filled</ui-button>
+<ui-button variant="outlined">Outlined</ui-button>
+<ui-button variant="ghost">Ghost</ui-button>
+
+// ── TypeScript ──
+import { UIButton } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UIButton],
+  template: \`
+    <ui-button variant="filled">Filled</ui-button>
+    <ui-button variant="outlined">Outlined</ui-button>
+    <ui-button variant="ghost">Ghost</ui-button>
+  \`,
+})
+export class MyComponent {}
+
+// ── SCSS ──
+:host {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -135,4 +274,37 @@ export const AllSizes: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-button variant="filled" size="sm">Small</ui-button>
+<ui-button variant="filled" size="md">Medium</ui-button>
+<ui-button variant="filled" size="lg">Large</ui-button>
+
+// ── TypeScript ──
+import { UIButton } from '@theredhead/ui-kit';
+
+@Component({
+  imports: [UIButton],
+  template: \`
+    <ui-button variant="filled" size="sm">Small</ui-button>
+    <ui-button variant="filled" size="md">Medium</ui-button>
+    <ui-button variant="filled" size="lg">Large</ui-button>
+  \`,
+})
+export class MyComponent {}
+
+// ── SCSS ──
+:host {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+`,
+        language: "html",
+      },
+    },
+  },
 };

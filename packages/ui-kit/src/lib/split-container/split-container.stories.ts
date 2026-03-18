@@ -268,6 +268,55 @@ type Story = StoryObj<UISplitContainer>;
  */
 export const Default: Story = {
   render: () => ({ template: `<ui-split-default-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-split-container>
+  <div first class="sidebar">
+    <h4>Left Panel</h4>
+    <p>Drag the divider to resize.</p>
+  </div>
+  <div second class="main">
+    <h4>Right Panel</h4>
+    <p>This is the second panel.</p>
+  </div>
+</ui-split-container>
+
+// ── TypeScript ──
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { UISplitContainer } from "@theredhead/ui-kit";
+
+@Component({
+  selector: "app-split-demo",
+  standalone: true,
+  imports: [UISplitContainer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: "./split-demo.component.html",
+  styleUrl: "./split-demo.component.scss",
+})
+export class SplitDemo {}
+
+// ── SCSS ──
+:host {
+  display: block;
+  height: 300px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.sidebar,
+.main {
+  padding: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -276,6 +325,55 @@ export const Default: Story = {
  */
 export const Vertical: Story = {
   render: () => ({ template: `<ui-split-vertical-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-split-container orientation="vertical" [initialSizes]="[30, 70]">
+  <div first class="top-panel">
+    <h4>Top Panel</h4>
+    <p>30 % initial height.</p>
+  </div>
+  <div second class="bottom-panel">
+    <h4>Bottom Panel</h4>
+    <p>70 % initial height.</p>
+  </div>
+</ui-split-container>
+
+// ── TypeScript ──
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { UISplitContainer } from "@theredhead/ui-kit";
+
+@Component({
+  selector: "app-vertical-split-demo",
+  standalone: true,
+  imports: [UISplitContainer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: "./vertical-split-demo.component.html",
+  styleUrl: "./vertical-split-demo.component.scss",
+})
+export class VerticalSplitDemo {}
+
+// ── SCSS ──
+:host {
+  display: block;
+  height: 300px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.top-panel,
+.bottom-panel {
+  padding: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -285,6 +383,58 @@ export const Vertical: Story = {
  */
 export const Constrained: Story = {
   render: () => ({ template: `<ui-split-constrained-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-split-container
+  [firstConstraints]="{ min: 150, max: 400 }"
+  [secondConstraints]="{ min: 200 }"
+>
+  <div first class="sidebar">
+    <h4>Sidebar</h4>
+    <p>Min 150 px, max 400 px.</p>
+  </div>
+  <div second class="main">
+    <h4>Main</h4>
+    <p>Min 200 px.</p>
+  </div>
+</ui-split-container>
+
+// ── TypeScript ──
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { UISplitContainer } from "@theredhead/ui-kit";
+
+@Component({
+  selector: "app-constrained-split-demo",
+  standalone: true,
+  imports: [UISplitContainer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: "./constrained-split-demo.component.html",
+  styleUrl: "./constrained-split-demo.component.scss",
+})
+export class ConstrainedSplitDemo {}
+
+// ── SCSS ──
+:host {
+  display: block;
+  height: 300px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.sidebar,
+.main {
+  padding: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -294,6 +444,66 @@ export const Constrained: Story = {
  */
 export const DoubleClickCollapse: Story = {
   render: () => ({ template: `<ui-split-collapse-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-split-container
+  collapseTarget="first"
+  [initialSizes]="[25, 75]"
+  (resized)="onResized($event)"
+>
+  <div first class="sidebar">
+    <h4>Sidebar</h4>
+    <p>Double-click the divider to collapse this panel.</p>
+  </div>
+  <div second class="main">
+    <h4>Main Content</h4>
+    <p>Last resize: {{ lastResize() }}</p>
+  </div>
+</ui-split-container>
+
+// ── TypeScript ──
+import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
+import { UISplitContainer, SplitResizeEvent } from "@theredhead/ui-kit";
+
+@Component({
+  selector: "app-collapse-split-demo",
+  standalone: true,
+  imports: [UISplitContainer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: "./collapse-split-demo.component.html",
+  styleUrl: "./collapse-split-demo.component.scss",
+})
+export class CollapseSplitDemo {
+  protected readonly lastResize = signal("—");
+
+  protected onResized(event: SplitResizeEvent): void {
+    const [a, b] = event.sizes;
+    this.lastResize.set(a.toFixed(1) + "% / " + b.toFixed(1) + "%");
+  }
+}
+
+// ── SCSS ──
+:host {
+  display: block;
+  height: 300px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.sidebar,
+.main {
+  padding: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -304,6 +514,55 @@ export const DoubleClickCollapse: Story = {
  */
 export const Persistent: Story = {
   render: () => ({ template: `<ui-split-persistent-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-split-container name="my-app-sidebar" [initialSizes]="[35, 65]">
+  <div first class="sidebar">
+    <h4>Persistent Sidebar</h4>
+    <p>Resize and reload — sizes are saved to localStorage.</p>
+  </div>
+  <div second class="main">
+    <h4>Main</h4>
+    <p>Stored under <code>ui-split-container:my-app-sidebar</code>.</p>
+  </div>
+</ui-split-container>
+
+// ── TypeScript ──
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { UISplitContainer } from "@theredhead/ui-kit";
+
+@Component({
+  selector: "app-persistent-split-demo",
+  standalone: true,
+  imports: [UISplitContainer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: "./persistent-split-demo.component.html",
+  styleUrl: "./persistent-split-demo.component.scss",
+})
+export class PersistentSplitDemo {}
+
+// ── SCSS ──
+:host {
+  display: block;
+  height: 300px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.sidebar,
+.main {
+  padding: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -313,4 +572,52 @@ export const Persistent: Story = {
  */
 export const CustomDividerWidth: Story = {
   render: () => ({ template: `<ui-split-divider-width-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-split-container [dividerWidth]="12">
+  <div first class="left">
+    <h4>Left</h4>
+    <p>12 px wide divider for touch-friendly interfaces.</p>
+  </div>
+  <div second class="right">
+    <h4>Right</h4>
+  </div>
+</ui-split-container>
+
+// ── TypeScript ──
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { UISplitContainer } from "@theredhead/ui-kit";
+
+@Component({
+  selector: "app-divider-width-demo",
+  standalone: true,
+  imports: [UISplitContainer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: "./divider-width-demo.component.html",
+  styleUrl: "./divider-width-demo.component.scss",
+})
+export class DividerWidthDemo {}
+
+// ── SCSS ──
+:host {
+  display: block;
+  height: 300px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.left,
+.right {
+  padding: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+`,
+      },
+    },
+  },
 };

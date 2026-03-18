@@ -230,6 +230,31 @@ export const Default: Story = {
     size: 24,
     ariaLabel: "",
   },
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          '<ui-icon [svg]="boldIcon" [size]="24" ariaLabel="Bold" />',
+          "",
+          "// ── TypeScript ──",
+          "import { UIIcon, UIIcons } from '@theredhead/ui-kit';",
+          "",
+          "@Component({",
+          "  imports: [UIIcon],",
+          '  template: `<ui-icon [svg]="boldIcon" [size]="24" ariaLabel="Bold" />`,',
+          "})",
+          "export class MyComponent {",
+          "  readonly boldIcon = UIIcons.Lucide.Text.Bold;",
+          "}",
+          "",
+          "// ── SCSS ──",
+          "// No custom styles needed — UIIcon inherits the parent's color.",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -254,6 +279,40 @@ export const Sizes: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          '<ui-icon [svg]="icon" [size]="12" />',
+          '<ui-icon [svg]="icon" [size]="16" />',
+          '<ui-icon [svg]="icon" [size]="20" />',
+          '<ui-icon [svg]="icon" [size]="24" />',
+          '<ui-icon [svg]="icon" [size]="32" />',
+          '<ui-icon [svg]="icon" [size]="48" />',
+          "",
+          "// ── TypeScript ──",
+          "import { UIIcon, UIIcons } from '@theredhead/ui-kit';",
+          "",
+          "@Component({",
+          "  imports: [UIIcon],",
+          "  template: `",
+          '    <ui-icon [svg]="icon" [size]="12" />',
+          '    <ui-icon [svg]="icon" [size]="24" />',
+          '    <ui-icon [svg]="icon" [size]="48" />',
+          "  `,",
+          "})",
+          "export class MyComponent {",
+          "  readonly icon = UIIcons.Lucide.Text.Bold;",
+          "}",
+          "",
+          "// ── SCSS ──",
+          "// No custom styles needed — the size input controls the icon dimensions.",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -289,6 +348,47 @@ export const TextEditing: Story = {
       </div>
     `,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          '<div class="toolbar">',
+          '  <ui-icon [svg]="boldIcon"   [size]="20" ariaLabel="Bold" />',
+          '  <ui-icon [svg]="italicIcon" [size]="20" ariaLabel="Italic" />',
+          '  <ui-icon [svg]="codeIcon"   [size]="20" ariaLabel="Code" />',
+          "</div>",
+          "",
+          "// ── TypeScript ──",
+          "import { UIIcon, UIIcons } from '@theredhead/ui-kit';",
+          "",
+          "@Component({",
+          "  imports: [UIIcon],",
+          "  template: `",
+          '    <div class="toolbar">',
+          '      <ui-icon [svg]="boldIcon"   [size]="20" ariaLabel="Bold" />',
+          '      <ui-icon [svg]="italicIcon" [size]="20" ariaLabel="Italic" />',
+          '      <ui-icon [svg]="codeIcon"   [size]="20" ariaLabel="Code" />',
+          "    </div>",
+          "  `,",
+          "})",
+          "export class MyToolbar {",
+          "  readonly boldIcon   = UIIcons.Lucide.Text.Bold;",
+          "  readonly italicIcon = UIIcons.Lucide.Text.Italic;",
+          "  readonly codeIcon   = UIIcons.Lucide.Development.Code;",
+          "}",
+          "",
+          "// ── SCSS ──",
+          ".toolbar {",
+          "  display: flex;",
+          "  gap: 8px;",
+          "  align-items: center;",
+          "}",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /**

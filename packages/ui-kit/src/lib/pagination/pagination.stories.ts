@@ -114,6 +114,35 @@ export const SmallDataset: Story = {
   render: () => ({
     template: `<ui-pagination [totalItems]="30" [pageSize]="10" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          "<ui-pagination",
+          '  [totalItems]="30"',
+          '  [pageSize]="10"',
+          "/>",
+          "",
+          "// ── TypeScript ──",
+          "import { Component } from '@angular/core';",
+          "import { UIPagination } from '@theredhead/ui-kit';",
+          "",
+          "@Component({",
+          "  selector: 'app-example',",
+          "  standalone: true,",
+          "  imports: [UIPagination],",
+          "  templateUrl: './example.component.html',",
+          "})",
+          "export class ExampleComponent {}",
+          "",
+          "// ── SCSS ──",
+          "/* No custom styles needed */",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -124,6 +153,35 @@ export const LargeDataset: Story = {
   render: () => ({
     template: `<ui-pagination [totalItems]="1000" [pageSize]="25" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          "<ui-pagination",
+          '  [totalItems]="1000"',
+          '  [pageSize]="25"',
+          "/>",
+          "",
+          "// ── TypeScript ──",
+          "import { Component } from '@angular/core';",
+          "import { UIPagination } from '@theredhead/ui-kit';",
+          "",
+          "@Component({",
+          "  selector: 'app-example',",
+          "  standalone: true,",
+          "  imports: [UIPagination],",
+          "  templateUrl: './example.component.html',",
+          "})",
+          "export class ExampleComponent {}",
+          "",
+          "// ── SCSS ──",
+          "/* No custom styles needed */",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /** No page size selector. */
@@ -131,6 +189,36 @@ export const NoPageSizeSelector: Story = {
   render: () => ({
     template: `<ui-pagination [totalItems]="100" [pageSize]="10" [pageSizeOptions]="[]" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          "<ui-pagination",
+          '  [totalItems]="100"',
+          '  [pageSize]="10"',
+          '  [pageSizeOptions]="[]"',
+          "/>",
+          "",
+          "// ── TypeScript ──",
+          "import { Component } from '@angular/core';",
+          "import { UIPagination } from '@theredhead/ui-kit';",
+          "",
+          "@Component({",
+          "  selector: 'app-example',",
+          "  standalone: true,",
+          "  imports: [UIPagination],",
+          "  templateUrl: './example.component.html',",
+          "})",
+          "export class ExampleComponent {}",
+          "",
+          "// ── SCSS ──",
+          "/* No custom styles needed */",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
 
 /**
@@ -141,4 +229,34 @@ export const Disabled: Story = {
   render: () => ({
     template: `<ui-pagination [totalItems]="100" [pageSize]="10" [disabled]="true" />`,
   }),
+  parameters: {
+    docs: {
+      source: {
+        code: [
+          "// ── HTML ──",
+          "<ui-pagination",
+          '  [totalItems]="100"',
+          '  [pageSize]="10"',
+          '  [disabled]="true"',
+          "/>",
+          "",
+          "// ── TypeScript ──",
+          "import { Component } from '@angular/core';",
+          "import { UIPagination } from '@theredhead/ui-kit';",
+          "",
+          "@Component({",
+          "  selector: 'app-example',",
+          "  standalone: true,",
+          "  imports: [UIPagination],",
+          "  templateUrl: './example.component.html',",
+          "})",
+          "export class ExampleComponent {}",
+          "",
+          "// ── SCSS ──",
+          "/* No custom styles needed */",
+        ].join("\n"),
+        language: "html",
+      },
+    },
+  },
 };
