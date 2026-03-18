@@ -1,6 +1,7 @@
 import type { Predicate } from "@angular/core";
 
-import type { IFilterableTreeDatasource, TreeNode } from "./datasource";
+import type { IFilterableTreeDataSource } from "../datasource/contracts";
+import type { TreeNode } from "./datasource";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
 
 /**
@@ -27,13 +28,16 @@ import { ArrayTreeDatasource } from "./array-tree-datasource";
  */
 export class FilterableArrayTreeDatasource<T = unknown>
   extends ArrayTreeDatasource<T>
-  implements IFilterableTreeDatasource<T>
+  implements IFilterableTreeDataSource<T>
 {
   /** The full, unfiltered tree. */
   private readonly _allRoots: TreeNode<T>[];
 
   /** The currently filtered tree. */
   private _filteredRoots: TreeNode<T>[];
+
+  /** Cached children property key for accessing child arrays. */
+  private readonly _childrenProperty: keyof TreeNode<T>;
 
   /**
    * The full, unfiltered root nodes.
@@ -52,6 +56,7 @@ export class FilterableArrayTreeDatasource<T = unknown>
     super(roots, childrenProperty);
     this._allRoots = this.deepCopyNodes(roots, childrenProperty);
     this._filteredRoots = [...this._allRoots];
+    this._childrenProperty = childrenProperty;
   }
 
   // ── ITreeDatasource overrides ─────────────────────────────────────
@@ -63,25 +68,36 @@ export class FilterableArrayTreeDatasource<T = unknown>
   // ── IFilterableTreeDataSource ────────────────────────────────────
 
   /**
-   * Apply a predicate to filter the tree.
+   * Apply a filter expression to the tree.
    *
+   * If a Predicate<T> is provided, nodes that match are kept.
    * Nodes that don't match the predicate are excluded, along with their
    * descendants. Pass `null` or `undefined` to clear the filter and show
    * all nodes.
    *
-   * @param predicate - The predicate function, or null/undefined to clear filtering.
+   * @param expression - The predicate function, or null/undefined to clear filtering.
    */
-  public applyPredicate(predicate: Predicate<T> | null | undefined): void {
+  public filterBy(expression: unknown): void {
+    const predicate = (expression as unknown) as Predicate<T> | null | undefined;
     if (!predicate) {
-      this._filteredRoots = this.deepCopyNodes(this._allRoots, "children");
+      this._filteredRoots = this.deepCopyNodes(this._allRoots, this._childrenProperty);
       return;
     }
 
     this._filteredRoots = this.filterNodes(
       this._allRoots,
       predicate,
-      "children",
+      this._childrenProperty,
     );
+  }
+
+  /**
+   * Convenience method to apply a typed Predicate<T>.
+   *
+   * @param predicate - The predicate function to filter nodes.
+   */
+  public applyPredicate(predicate: Predicate<T> | null | undefined): void {
+    this.filterBy(predicate);
   }
 
   // ── Private helpers ───────────────────────────────────────────────

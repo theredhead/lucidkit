@@ -1,4 +1,5 @@
-import type { ISortableTreeDatasource, TreeNode } from "./datasource";
+import type { ISortableTreeDataSource } from "../datasource/contracts";
+import type { TreeNode } from "./datasource";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
 
 /**
@@ -25,7 +26,7 @@ import { ArrayTreeDatasource } from "./array-tree-datasource";
  */
 export class SortableArrayTreeDatasource<T = unknown>
   extends ArrayTreeDatasource<T>
-  implements ISortableTreeDatasource<T>
+  implements ISortableTreeDataSource<T>
 {
   /** The full, unsorted tree. */
   private readonly _allRoots: TreeNode<T>[];
@@ -33,8 +34,8 @@ export class SortableArrayTreeDatasource<T = unknown>
   /** The currently sorted tree. */
   private _sortedRoots: TreeNode<T>[];
 
-  /** The children property key for accessing child arrays. */
-  private readonly childrenProperty: keyof TreeNode<T>;
+  /** Cached children property key for accessing child arrays. */
+  private readonly _childrenProperty: keyof TreeNode<T>;
 
   /**
    * The full, unsorted root nodes.
@@ -53,7 +54,7 @@ export class SortableArrayTreeDatasource<T = unknown>
     super(roots, childrenProperty);
     this._allRoots = this.deepCopyNodes(roots, childrenProperty);
     this._sortedRoots = [...this._allRoots];
-    this.childrenProperty = childrenProperty;
+    this._childrenProperty = childrenProperty;
   }
 
   // ── ITreeDatasource overrides ─────────────────────────────────────
@@ -79,7 +80,7 @@ export class SortableArrayTreeDatasource<T = unknown>
     if (!comparator) {
       this._sortedRoots = this.deepCopyNodes(
         this._allRoots,
-        this.childrenProperty,
+        this._childrenProperty,
       );
       return;
     }
@@ -87,7 +88,7 @@ export class SortableArrayTreeDatasource<T = unknown>
     this._sortedRoots = this.sortNodes(
       this._allRoots,
       comparator,
-      this.childrenProperty,
+      this._childrenProperty,
     );
   }
 
