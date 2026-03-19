@@ -5,34 +5,34 @@
       <ui-sidebar-nav [ariaLabel]="ariaLabel()">
         <ng-content select="ui-sidebar-item" />
 
-        @for (page of topLevelPages(); track page.id) {
-          <ui-sidebar-item
-            [label]="page.label"
-            [icon]="page.icon ?? ''"
-            [badge]="page.badge ?? ''"
-            [active]="currentPage()?.id === page.id"
-            [disabled]="page.disabled ?? false"
-            (activated)="navigate(page)"
-          />
-        }
-
-        @for (group of resolvedGroups(); track group.id) {
-          <ui-sidebar-group
-            [label]="group.label"
-            [icon]="group.icon ?? ''"
-            [expanded]="group.expanded ?? true"
-          >
-            @for (page of group.children; track page.id) {
-              <ui-sidebar-item
-                [label]="page.label"
-                [icon]="page.icon ?? ''"
-                [badge]="page.badge ?? ''"
-                [active]="currentPage()?.id === page.id"
-                [disabled]="page.disabled ?? false"
-                (activated)="navigate(page)"
-              />
-            }
-          </ui-sidebar-group>
+        @for (node of rootNodes(); track node.id) {
+          @if (node.children?.length) {
+            <ui-sidebar-group
+              [label]="node.data.label"
+              [icon]="node.icon ?? ''"
+              [expanded]="node.expanded ?? true"
+            >
+              @for (child of node.children; track child.id) {
+                <ui-sidebar-item
+                  [label]="child.data.label"
+                  [icon]="child.icon ?? ''"
+                  [badge]="child.data.badge ?? ''"
+                  [active]="currentPage()?.id === child.id"
+                  [disabled]="child.disabled ?? false"
+                  (activated)="navigate(child)"
+                />
+              }
+            </ui-sidebar-group>
+          } @else {
+            <ui-sidebar-item
+              [label]="node.data.label"
+              [icon]="node.icon ?? ''"
+              [badge]="node.data.badge ?? ''"
+              [active]="currentPage()?.id === node.id"
+              [disabled]="node.disabled ?? false"
+              (activated)="navigate(node)"
+            />
+          }
         }
       </ui-sidebar-nav>
     </aside>
@@ -46,34 +46,34 @@
       <ui-sidebar-nav [ariaLabel]="ariaLabel()">
         <ng-content select="ui-sidebar-item" />
 
-        @for (page of topLevelPages(); track page.id) {
-          <ui-sidebar-item
-            [label]="page.label"
-            [icon]="page.icon ?? ''"
-            [badge]="page.badge ?? ''"
-            [active]="currentPage()?.id === page.id"
-            [disabled]="page.disabled ?? false"
-            (activated)="navigate(page)"
-          />
-        }
-
-        @for (group of resolvedGroups(); track group.id) {
-          <ui-sidebar-group
-            [label]="group.label"
-            [icon]="group.icon ?? ''"
-            [expanded]="group.expanded ?? true"
-          >
-            @for (page of group.children; track page.id) {
-              <ui-sidebar-item
-                [label]="page.label"
-                [icon]="page.icon ?? ''"
-                [badge]="page.badge ?? ''"
-                [active]="currentPage()?.id === page.id"
-                [disabled]="page.disabled ?? false"
-                (activated)="navigate(page)"
-              />
-            }
-          </ui-sidebar-group>
+        @for (node of rootNodes(); track node.id) {
+          @if (node.children?.length) {
+            <ui-sidebar-group
+              [label]="node.data.label"
+              [icon]="node.icon ?? ''"
+              [expanded]="node.expanded ?? true"
+            >
+              @for (child of node.children; track child.id) {
+                <ui-sidebar-item
+                  [label]="child.data.label"
+                  [icon]="child.icon ?? ''"
+                  [badge]="child.data.badge ?? ''"
+                  [active]="currentPage()?.id === child.id"
+                  [disabled]="child.disabled ?? false"
+                  (activated)="navigate(child)"
+                />
+              }
+            </ui-sidebar-group>
+          } @else {
+            <ui-sidebar-item
+              [label]="node.data.label"
+              [icon]="node.icon ?? ''"
+              [badge]="node.data.badge ?? ''"
+              [active]="currentPage()?.id === node.id"
+              [disabled]="node.disabled ?? false"
+              (activated)="navigate(node)"
+            />
+          }
         }
       </ui-sidebar-nav>
     </ui-drawer>

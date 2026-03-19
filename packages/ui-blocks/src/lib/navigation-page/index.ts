@@ -1,6 +1,13 @@
 export {
   UINavigationPage,
-  type NavigationPageItem,
-  type NavigationGroupDef,
+  type NavigationNodeData,
   type NavigationPageContext,
 } from "./navigation-page.component";
+
+export {
+  type NavigationNode,
+  navItem,
+  navGroup,
+  type NavigationRouteConfig,
+  routesToNavigation,
+} from "./navigation-page.utils";
