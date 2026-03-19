@@ -1,0 +1,161 @@
+:host {
+  display: block;
+  position: relative;
+  overflow: hidden;
+
+  --ui-accent: #3584e4;
+  --ui-accent-hover: #2b6fc4;
+  --ui-surface: #ffffff;
+  --ui-text: #1d232b;
+  --ui-border: #d7dce2;
+  --ui-indicator: #bbc3cc;
+  --ui-indicator-active: #3584e4;
+  --ui-btn-bg: rgba(255, 255, 255, 0.85);
+  --ui-btn-hover: rgba(255, 255, 255, 1);
+  --ui-btn-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+:host-context(html.dark-theme) {
+  --ui-accent: #7ab0ff;
+  --ui-accent-hover: #5a9aef;
+  --ui-surface: #1e2228;
+  --ui-text: #f2f6fb;
+  --ui-border: #3a3f47;
+  --ui-indicator: #505d6d;
+  --ui-indicator-active: #7ab0ff;
+  --ui-btn-bg: rgba(30, 34, 40, 0.85);
+  --ui-btn-hover: rgba(30, 34, 40, 1);
+  --ui-btn-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-accent: #7ab0ff;
+    --ui-accent-hover: #5a9aef;
+    --ui-surface: #1e2228;
+    --ui-text: #f2f6fb;
+    --ui-border: #3a3f47;
+    --ui-indicator: #505d6d;
+    --ui-indicator-active: #7ab0ff;
+    --ui-btn-bg: rgba(30, 34, 40, 0.85);
+    --ui-btn-hover: rgba(30, 34, 40, 1);
+    --ui-btn-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ── Viewport & track ── */
+
+.cr-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.cr-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* ── Items ── */
+
+.cr-item {
+  position: absolute;
+  flex-shrink: 0;
+  cursor: pointer;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+.cr-item--active {
+  cursor: default;
+}
+
+/* ── Navigation buttons ── */
+
+.cr-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--ui-border);
+  border-radius: 50%;
+  background: var(--ui-btn-bg);
+  color: var(--ui-text);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--ui-btn-shadow);
+  transition:
+    background 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.cr-btn:hover:not(:disabled) {
+  background: var(--ui-btn-hover);
+}
+
+.cr-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.cr-btn--prev {
+  left: 0.5rem;
+}
+
+.cr-btn--next {
+  right: 0.5rem;
+}
+
+/* ── Dot indicators ── */
+
+.cr-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0 0.25rem;
+}
+
+.cr-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: var(--ui-indicator);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cr-dot:hover {
+  transform: scale(1.3);
+}
+
+.cr-dot--active {
+  background: var(--ui-indicator-active);
+  transform: scale(1.25);
+}
+
+/* ── Focus ── */
+
+:host:focus-visible {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
