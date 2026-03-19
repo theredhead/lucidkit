@@ -41,3 +41,8 @@ export * from "./lib/chart";
 export * from "./lib/analog-clock/analog-clock.component";
 export * from "./lib/calendar";
 export * from "./lib/gantt-chart";
+export * from "./lib/card";
+export * from "./lib/toast";
+export * from "./lib/drawer";
+export * from "./lib/dropdown-menu";
+export * from "./lib/sidebar-nav";

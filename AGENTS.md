@@ -397,6 +397,55 @@ export const Default: Story = {
 };
 ```
 
+### Source Code Examples (mandatory)
+
+**Every story must include a `parameters.docs.source` block** so consumers can
+copy-paste real usage code directly from the docs page. Use the three-section
+format (`// ── HTML ──`, `// ── TypeScript ──`, `// ── SCSS ──`):
+
+```ts
+export const Default: Story = {
+  render: (args) => ({
+    /* … */
+  }),
+  args: { variant: "filled" },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-button variant="filled">Click me</ui-button>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIButton } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIButton],
+  template: \\\`<ui-button variant="filled">Click me</ui-button>\\\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — button tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+```
+
+Key rules:
+
+- **Imports** must reference the published package name (`@theredhead/ui-kit`),
+  never relative paths.
+- Show realistic, minimal usage — enough for a consumer to copy-paste.
+- When the story wraps a demo component, the source block should show the
+  **consumer-facing** API, not the internal wrapper.
+
 ### Storybook Cache Issues
 
 When stories fail to load (ChunkLoadError), clear all caches:

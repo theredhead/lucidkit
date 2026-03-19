@@ -1,0 +1,9 @@
+<span class="sidebar-item-inner">
+  @if (icon()) {
+    <ui-icon class="sidebar-item-icon" [svg]="icon()" [size]="18" aria-hidden="true" />
+  }
+  <span class="sidebar-item-label">{{ label() }}</span>
+  @if (badge()) {
+    <span class="sidebar-item-badge">{{ badge() }}</span>
+  }
+</span>

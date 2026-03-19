@@ -1,0 +1,23 @@
+<div
+  class="sidebar-group-header"
+  (click)="toggle()"
+  (keydown)="onKeyDown($event)"
+  role="button"
+  [attr.aria-expanded]="expanded()"
+  tabindex="0"
+>
+  @if (icon()) {
+    <ui-icon class="sidebar-group-icon" [svg]="icon()" [size]="18" aria-hidden="true" />
+  }
+  <span class="sidebar-group-label">{{ label() }}</span>
+  <span class="sidebar-group-chevron" aria-hidden="true">
+    <svg viewBox="0 0 16 16" fill="currentColor">
+      <path d="M6.22 4.22a.75.75 0 011.06 0l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 01-1.06-1.06L9.44 8 6.22 4.78a.75.75 0 010-1.06z" />
+    </svg>
+  </span>
+</div>
+@if (expanded()) {
+  <div class="sidebar-group-content" role="group">
+    <ng-content />
+  </div>
+}
