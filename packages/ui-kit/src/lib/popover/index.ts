@@ -1,4 +1,4 @@
-export { PopoverService } from "./popover.service";
+export { PopoverService, type PopoverArrowSide } from "./popover.service";
 export {
   PopoverRef,
   type UIPopoverContent,
