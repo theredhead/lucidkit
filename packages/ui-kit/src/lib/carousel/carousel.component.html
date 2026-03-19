@@ -1,0 +1,58 @@
+<div class="cr-viewport">
+  <div class="cr-track" [ngStyle]="trackStyle()">
+    @for (item of items(); track $index) {
+      <div
+        class="cr-item"
+        [class.cr-item--active]="$index === activeIndex()"
+        [ngStyle]="toStyleMap(itemStyles()[$index])"
+        (click)="goTo($index)"
+        (keydown.enter)="goTo($index)"
+        role="group"
+        [attr.aria-roledescription]="'slide'"
+        [attr.aria-label]="'Item ' + ($index + 1) + ' of ' + items().length"
+      >
+        <ng-container
+          [ngTemplateOutlet]="itemTemplate()"
+          [ngTemplateOutletContext]="buildContext(item, $index)"
+        />
+      </div>
+    }
+  </div>
+</div>
+
+@if (showControls() && items().length > 1) {
+  <button
+    class="cr-btn cr-btn--prev"
+    [disabled]="!hasPrev()"
+    (click)="prev()"
+    aria-label="Previous item"
+    type="button"
+  >
+    ‹
+  </button>
+  <button
+    class="cr-btn cr-btn--next"
+    [disabled]="!hasNext()"
+    (click)="next()"
+    aria-label="Next item"
+    type="button"
+  >
+    ›
+  </button>
+}
+
+@if (showIndicators() && items().length > 1) {
+  <div class="cr-indicators" role="tablist" aria-label="Carousel indicators">
+    @for (item of items(); track $index) {
+      <button
+        class="cr-dot"
+        [class.cr-dot--active]="$index === activeIndex()"
+        (click)="goTo($index)"
+        role="tab"
+        [attr.aria-selected]="$index === activeIndex()"
+        [attr.aria-label]="'Go to item ' + ($index + 1)"
+        type="button"
+      ></button>
+    }
+  </div>
+}
