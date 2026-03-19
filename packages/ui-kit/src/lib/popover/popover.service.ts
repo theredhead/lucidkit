@@ -58,6 +58,10 @@ html.dark-theme .ui-popover {
 
 /* ── arrow ──────────────────────────────────────────────── */
 
+.ui-popover[data-arrow-side] {
+  overflow: visible;
+}
+
 .ui-popover[data-arrow-side]::after {
   content: '';
   position: absolute;
@@ -218,13 +222,10 @@ function computePosition(
       ? resolveHorizontalAuto(anchorRect, popoverRect, vw)
       : hAlign;
 
-  // When auto-resolved, make offset always push AWAY from the
-  // anchor so the gap is consistent regardless of which side
-  // was chosen.
-  const effectiveVOffset =
-    vAlign === "auto" && resolvedV === "top" ? -Math.abs(vOffset) : vOffset;
-  const effectiveHOffset =
-    hAlign === "auto" && resolvedH === "start" ? -Math.abs(hOffset) : hOffset;
+  // Always push AWAY from the anchor so the gap is consistent
+  // regardless of which side was chosen (auto-resolved or explicit).
+  const effectiveVOffset = resolvedV === "top" ? -Math.abs(vOffset) : vOffset;
+  const effectiveHOffset = resolvedH === "start" ? -Math.abs(hOffset) : hOffset;
 
   let top = 0;
   let left = 0;
