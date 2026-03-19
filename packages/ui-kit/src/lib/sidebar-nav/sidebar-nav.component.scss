@@ -1,0 +1,44 @@
+/* ── Light defaults ── */
+
+:host {
+  display: block;
+
+  --ui-sidebar-text: #1d232b;
+  --ui-sidebar-muted: #5a6470;
+  --ui-sidebar-accent: #3584e4;
+  --ui-sidebar-hover: rgba(128, 128, 128, 0.08);
+  --ui-sidebar-active-bg: rgba(53, 132, 228, 0.12);
+  --ui-sidebar-badge-bg: #5a6470;
+  --ui-sidebar-badge-text: #ffffff;
+}
+
+/* ── Dark mode ── */
+
+:host-context(html.dark-theme) {
+  --ui-sidebar-text: #f2f6fb;
+  --ui-sidebar-muted: #b0b7c0;
+  --ui-sidebar-accent: #7ab0ff;
+  --ui-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --ui-sidebar-active-bg: rgba(122, 176, 255, 0.15);
+  --ui-sidebar-badge-bg: #617184;
+  --ui-sidebar-badge-text: #f2f6fb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-sidebar-text: #f2f6fb;
+    --ui-sidebar-muted: #b0b7c0;
+    --ui-sidebar-accent: #7ab0ff;
+    --ui-sidebar-hover: rgba(255, 255, 255, 0.06);
+    --ui-sidebar-active-bg: rgba(122, 176, 255, 0.15);
+    --ui-sidebar-badge-bg: #617184;
+    --ui-sidebar-badge-text: #f2f6fb;
+  }
+}
+
+.sidebar-nav-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem;
+}

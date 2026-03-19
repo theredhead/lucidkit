@@ -1,7 +1,15 @@
 // ──────────────────────────────────────────────────────────────────────
 // AUTO-GENERATED — do not edit manually.
 // Re-generate with: node scripts/generate-icon-registry.mjs
-// Source: resources/icons/lucide/ (Lucide v0.577.0, ISC licence)
+// Source: resources/icons/lucide/ (Lucide v0.577.0)
+//
+// Lucide Icons — https://lucide.dev
+// Copyright (c) Lucide Contributors — ISC Licence
+// Created by Cole Bemis (https://github.com/colebemis) as a fork of
+// Feather Icons, now maintained by Eric Fennis (https://github.com/ericfennis)
+// and the Lucide community.
+// Repository: https://github.com/lucide-icons/lucide
+// Licence:    https://github.com/lucide-icons/lucide/blob/main/LICENSE
 // ──────────────────────────────────────────────────────────────────────
 
 /**
@@ -11,6 +19,14 @@
  * etc.) — the `<ui-icon>` component wraps it in the outer `<svg>` tag.
  *
  * Icons may appear in more than one category.
+ *
+ * The Lucide icon set is created by the
+ * {@link https://github.com/lucide-icons/lucide | Lucide Contributors},
+ * originally forked from {@link https://github.com/feathericons/feather | Feather Icons}
+ * by Cole Bemis. Licensed under the
+ * {@link https://github.com/lucide-icons/lucide/blob/main/LICENSE | ISC Licence}.
+ *
+ * @see {@link https://lucide.dev} — Official Lucide website
  *
  * @example
  * ```html

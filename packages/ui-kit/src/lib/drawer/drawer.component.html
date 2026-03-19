@@ -1,0 +1,18 @@
+@if (open()) {
+  <div
+    class="drawer-backdrop"
+    (click)="onBackdropClick()"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="drawer-panel"
+    [style.width]="resolvedWidth()"
+    [attr.aria-label]="ariaLabel()"
+    role="dialog"
+    aria-modal="true"
+    tabindex="-1"
+    (keydown)="onKeyDown($event)"
+  >
+    <ng-content />
+  </div>
+}
