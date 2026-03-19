@@ -366,10 +366,11 @@ export class PopoverService {
     const popoverRef = new PopoverRef<R>();
     const vAlign = config.verticalAxisAlignment ?? "auto";
     const hAlign = config.horizontalAxisAlignment ?? "auto";
-    const vOffset = config.verticalOffset ?? 4;
-    const hOffset = config.horizontalOffset ?? 0;
-    const useAutoPopover = config.closeOnOutsideClick !== false;
     const showArrow = config.showArrow ?? false;
+    const arrowGap = config.arrowGap ?? 16;
+    const vOffset = config.verticalOffset ?? (showArrow ? arrowGap : 4);
+    const hOffset = config.horizontalOffset ?? (showArrow ? arrowGap : 0);
+    const useAutoPopover = config.closeOnOutsideClick !== false;
 
     // ── Create the popover host element ─────────────────────
 

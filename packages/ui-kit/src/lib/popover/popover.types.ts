@@ -130,13 +130,21 @@ export interface OpenPopoverConfig<T> {
    * Pixel offset on the vertical axis (positive = down).
    * Applied after alignment — e.g. a small gap between anchor
    * and popover.
-   * @default 4
+   *
+   * When {@link showArrow} is `true` and this is not set, the
+   * offset defaults to {@link arrowGap} (16 px) instead of 4 px.
+   *
+   * @default 4  (or arrowGap when showArrow is true)
    */
   readonly verticalOffset?: number;
 
   /**
    * Pixel offset on the horizontal axis (positive = right).
-   * @default 0
+   *
+   * When {@link showArrow} is `true` and this is not set, the
+   * offset defaults to {@link arrowGap} (16 px) instead of 0 px.
+   *
+   * @default 0  (or arrowGap when showArrow is true)
    */
   readonly horizontalOffset?: number;
 
@@ -173,7 +181,23 @@ export interface OpenPopoverConfig<T> {
    * The arrow side is determined automatically from the resolved
    * vertical/horizontal alignment.
    *
+   * When enabled, `verticalOffset` and `horizontalOffset` are
+   * automatically raised to at least {@link arrowGap} so the
+   * arrow has room to render between the anchor and the popover.
+   *
    * @default false
    */
   readonly showArrow?: boolean;
+
+  /**
+   * Minimum pixel gap between the anchor and popover when
+   * {@link showArrow} is `true`.  If the configured
+   * `verticalOffset` / `horizontalOffset` is smaller than this
+   * value, the gap is raised automatically.
+   *
+   * Ignored when `showArrow` is `false`.
+   *
+   * @default 16
+   */
+  readonly arrowGap?: number;
 }
