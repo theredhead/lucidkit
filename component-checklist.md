@@ -72,7 +72,7 @@
 
 ### Form Controls
 
-- [ ] Toggle / Switch — on/off toggle (distinct from checkbox)
+- [x] Toggle / Switch — on/off toggle (distinct from checkbox)
 - [ ] Textarea — multi-line text input
 - [ ] Number Input / Stepper Input — numeric input with +/− buttons
 - [ ] Rating — star/icon-based rating selector

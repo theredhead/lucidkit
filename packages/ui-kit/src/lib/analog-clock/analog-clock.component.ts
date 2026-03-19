@@ -8,7 +8,9 @@ import {
   OnInit,
   signal,
 } from "@angular/core";
+import { DomSanitizer } from "@angular/platform-browser";
 import { LoggerFactory } from "@theredhead/foundation";
+import { UIIcons } from "../icon";
 
 /**
  * Represents the three hand positions of a clock.
@@ -51,6 +53,7 @@ interface ClockTime {
   styleUrl: "./analog-clock.component.scss",
   host: {
     class: "ui-analog-clock",
+    "[class.ui-analog-clock--night]": "isNight()",
     "[style.width.px]": "size()",
     "[style.height.px]": "size()",
   },
@@ -79,10 +82,42 @@ export class UIAnalogClock implements OnInit {
   /** Accessible label for the clock region. */
   public readonly ariaLabel = input<string>("Analog clock");
 
+  /**
+   * SVG inner content for the daytime indicator icon.
+   * Accepts any valid SVG inner markup on a 24 × 24 grid.
+   * Defaults to `UIIcons.Lucide.Weather.Sun`.
+   */
+  public readonly dayIcon = input<string>(UIIcons.Lucide.Weather.Sun);
+
+  /**
+   * SVG inner content for the nighttime indicator icon.
+   * Accepts any valid SVG inner markup on a 24 × 24 grid.
+   * Defaults to `UIIcons.Lucide.Weather.MoonStar`.
+   */
+  public readonly nightIcon = input<string>(UIIcons.Lucide.Weather.MoonStar);
+
+  /**
+   * Stroke colour for the daytime indicator icon.
+   * Defaults to a warm amber (`#f59e0b`).
+   */
+  public readonly dayIconColor = input<string>("#f59e0b");
+
+  /**
+   * Stroke colour for the nighttime indicator icon.
+   * Defaults to a soft gold (`#e8e0c0`).
+   */
+  public readonly nightIconColor = input<string>("#e8e0c0");
+
   // ── Computed ─────────────────────────────────────────────────────────
 
   /** Whether the clock is ticking on its own (no fixed `time` provided). */
   protected readonly isLive = computed(() => this.time() === null);
+
+  /** Whether the current clock time represents nighttime (6 PM – 6 AM). */
+  protected readonly isNight = computed(() => {
+    const h = this.clockTime().hours;
+    return h >= 18 || h < 6;
+  });
 
   /**
    * Current clock-hand positions resolved from the `time` input or the
@@ -141,11 +176,23 @@ export class UIAnalogClock implements OnInit {
     }),
   );
 
+  /** Sanitised SVG inner content of the currently active day/night icon. */
+  protected readonly indicatorSvg = computed(() => {
+    const raw = this.isNight() ? this.nightIcon() : this.dayIcon();
+    return this.sanitizer.bypassSecurityTrustHtml(raw);
+  });
+
+  /** Stroke colour of the currently active day/night icon. */
+  protected readonly indicatorColor = computed(() =>
+    this.isNight() ? this.nightIconColor() : this.dayIconColor(),
+  );
+
   // ── Private fields ──────────────────────────────────────────────────
 
   private readonly liveDate = signal<Date>(new Date());
   private readonly destroyRef = inject(DestroyRef);
   private readonly log = inject(LoggerFactory).createLogger("UIAnalogClock");
+  private readonly sanitizer = inject(DomSanitizer);
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   // ── Lifecycle ───────────────────────────────────────────────────────

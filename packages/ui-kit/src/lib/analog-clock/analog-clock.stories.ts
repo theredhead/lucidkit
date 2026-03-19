@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIAnalogClock } from "./analog-clock.component";
+import { UIIcons } from "../icon";
 
 // ── Demo: Live (default) ─────────────────────────────────────────
 
@@ -71,6 +78,56 @@ class ClockSmallDemo {}
   template: `<ui-analog-clock [size]="400" />`,
 })
 class ClockLargeDemo {}
+
+// ── Demo: Day vs Night ───────────────────────────────────────────
+
+@Component({
+  selector: "ui-clock-day-night-demo",
+  standalone: true,
+  imports: [UIAnalogClock],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .day-night {
+        display: flex;
+        gap: 2rem;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .day-night-item {
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--ui-clock-text, #374151);
+      }
+    `,
+  ],
+  template: `
+    <div class="day-night">
+      <div class="day-night-item">
+        <ui-analog-clock [size]="180" [time]="morning" />
+        <div style="margin-top: 0.5rem">8:00 AM</div>
+      </div>
+      <div class="day-night-item">
+        <ui-analog-clock [size]="180" [time]="afternoon" />
+        <div style="margin-top: 0.5rem">2:30 PM</div>
+      </div>
+      <div class="day-night-item">
+        <ui-analog-clock [size]="180" [time]="evening" />
+        <div style="margin-top: 0.5rem">9:15 PM</div>
+      </div>
+      <div class="day-night-item">
+        <ui-analog-clock [size]="180" [time]="lateNight" />
+        <div style="margin-top: 0.5rem">3:45 AM</div>
+      </div>
+    </div>
+  `,
+})
+class ClockDayNightDemo {
+  public readonly morning = new Date(2025, 0, 1, 8, 0, 0);
+  public readonly afternoon = new Date(2025, 0, 1, 14, 30, 0);
+  public readonly evening = new Date(2025, 0, 1, 21, 15, 0);
+  public readonly lateNight = new Date(2025, 0, 1, 3, 45, 0);
+}
 
 // ── Demo: Size gallery ───────────────────────────────────────────
 
@@ -158,7 +215,7 @@ class ClockSizesDemo {
 })
 class ClockComparisonDemo {}
 
-// ── Demo: World clocks ───────────────────────────────────────────
+// ── Demo: World clocks (live-ticking) ────────────────────────────
 
 @Component({
   selector: "ui-clock-world-demo",
@@ -175,44 +232,129 @@ class ClockComparisonDemo {}
       }
       .world-clock {
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         color: var(--ui-clock-text, #374151);
       }
       .city-name {
         margin-top: 0.5rem;
         font-weight: 600;
       }
+      .tz-offset {
+        font-size: 0.75rem;
+        opacity: 0.6;
+      }
     `,
   ],
   template: `
     <div class="world-clocks">
-      @for (city of cities; track city.label) {
+      @for (city of zones; track city.label) {
         <div class="world-clock">
           <ui-analog-clock
-            [size]="140"
-            [time]="city.time"
+            [size]="160"
+            [time]="city.time()"
             [showSeconds]="false"
             [ariaLabel]="'Time in ' + city.label"
           />
           <div class="city-name">{{ city.label }}</div>
+          <div class="tz-offset">
+            UTC{{ city.offset >= 0 ? "+" : "" }}{{ city.offset }}
+          </div>
         </div>
       }
     </div>
   `,
 })
-class ClockWorldDemo {
-  public readonly cities = [
-    { label: "London", time: this.offsetTime(0) },
-    { label: "New York", time: this.offsetTime(-5) },
-    { label: "Tokyo", time: this.offsetTime(9) },
-    { label: "Sydney", time: this.offsetTime(11) },
+class ClockWorldDemo implements OnInit, OnDestroy {
+  public readonly zones = [
+    { label: "London", offset: 0, time: signal(this.offsetTime(0)) },
+    { label: "New York", offset: -5, time: signal(this.offsetTime(-5)) },
+    { label: "Tokyo", offset: 9, time: signal(this.offsetTime(9)) },
+    { label: "Sydney", offset: 11, time: signal(this.offsetTime(11)) },
   ];
+
+  private intervalId: ReturnType<typeof setInterval> | null = null;
+
+  public ngOnInit(): void {
+    this.intervalId = setInterval(() => {
+      for (const z of this.zones) {
+        z.time.set(this.offsetTime(z.offset));
+      }
+    }, 1000);
+  }
+
+  public ngOnDestroy(): void {
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId);
+    }
+  }
 
   private offsetTime(hoursOffset: number): Date {
     const now = new Date();
     const utc = now.getTime() + now.getTimezoneOffset() * 60_000;
     return new Date(utc + hoursOffset * 3_600_000);
   }
+}
+
+// ── Demo: Custom icons ──────────────────────────────────────────
+
+@Component({
+  selector: "ui-clock-custom-icons-demo",
+  standalone: true,
+  imports: [UIAnalogClock],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .custom-icons {
+        display: flex;
+        gap: 2rem;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .custom-icons-item {
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--ui-clock-text, #374151);
+      }
+    `,
+  ],
+  template: `
+    <div class="custom-icons">
+      <div class="custom-icons-item">
+        <ui-analog-clock
+          [size]="180"
+          [time]="dayTime"
+          [dayIcon]="sparkles"
+          dayIconColor="#ec4899"
+        />
+        <div style="margin-top: 0.5rem">Sparkles (day)</div>
+      </div>
+      <div class="custom-icons-item">
+        <ui-analog-clock
+          [size]="180"
+          [time]="nightTime"
+          [nightIcon]="star"
+          nightIconColor="#fbbf24"
+        />
+        <div style="margin-top: 0.5rem">Star (night)</div>
+      </div>
+      <div class="custom-icons-item">
+        <ui-analog-clock
+          [size]="180"
+          [time]="nightTime"
+          [nightIcon]="flame"
+          nightIconColor="#ef4444"
+        />
+        <div style="margin-top: 0.5rem">Flame (night)</div>
+      </div>
+    </div>
+  `,
+})
+class ClockCustomIconsDemo {
+  public readonly dayTime = new Date(2025, 0, 1, 10, 0, 0);
+  public readonly nightTime = new Date(2025, 0, 1, 22, 0, 0);
+  public readonly sparkles = UIIcons.Lucide.Weather.Sparkles;
+  public readonly star = UIIcons.Lucide.Weather.Star;
+  public readonly flame = UIIcons.Lucide.Weather.Flame;
 }
 
 // ── Meta ─────────────────────────────────────────────────────────
@@ -234,6 +376,7 @@ const meta: Meta<UIAnalogClock> = {
           "- **Configurable** — toggle second hand, hour numbers, and tick marks",
           "- **Scalable** — set any `[size]` in pixels; the SVG scales cleanly",
           "- **Dark-mode ready** — three-tier CSS custom property theming",
+          "- **Day/night indicator** — sun icon during the day, moon & stars at night, with tinted face colors",
           '- **Accessible** — `role="img"` with configurable `ariaLabel`',
           "",
           "## Inputs",
@@ -246,6 +389,10 @@ const meta: Meta<UIAnalogClock> = {
           "| `showNumbers` | `boolean` | `true` | Show 1–12 hour numbers |",
           "| `showTickMarks` | `boolean` | `true` | Show minute/hour tick marks |",
           '| `ariaLabel` | `string` | `"Analog clock"` | Accessible label |',
+          "| `dayIcon` | `string` | Sun (Lucide) | SVG inner content for the day indicator |",
+          "| `nightIcon` | `string` | MoonStar (Lucide) | SVG inner content for the night indicator |",
+          '| `dayIconColor` | `string` | `"#f59e0b"` | Stroke colour for the day icon |',
+          '| `nightIconColor` | `string` | `"#e8e0c0"` | Stroke colour for the night icon |',
         ].join("\n"),
       },
     },
@@ -267,6 +414,14 @@ const meta: Meta<UIAnalogClock> = {
       control: "boolean",
       description: "Whether to show tick marks around the rim",
     },
+    dayIconColor: {
+      control: "color",
+      description: "Stroke colour for the daytime indicator icon",
+    },
+    nightIconColor: {
+      control: "color",
+      description: "Stroke colour for the nighttime indicator icon",
+    },
   },
   decorators: [
     moduleMetadata({
@@ -280,6 +435,8 @@ const meta: Meta<UIAnalogClock> = {
         ClockSizesDemo,
         ClockComparisonDemo,
         ClockWorldDemo,
+        ClockDayNightDemo,
+        ClockCustomIconsDemo,
       ],
     }),
   ],
@@ -291,13 +448,49 @@ type Story = StoryObj<UIAnalogClock>;
 
 /**
  * **Live clock** — The default configuration. The clock ticks in real time
- * with second, minute, and hour hands. No `time` input needed.
+ * with second, minute, and hour hands. Use the controls panel to resize
+ * the clock and toggle features interactively.
  */
 export const Default: Story = {
-  render: () => ({ template: `<ui-clock-live-demo />` }),
+  render: (args) => ({
+    props: args,
+    template: `<ui-analog-clock
+      [size]="size"
+      [showSeconds]="showSeconds"
+      [showNumbers]="showNumbers"
+      [showTickMarks]="showTickMarks"
+    />`,
+  }),
+  args: {
+    size: 200,
+    showSeconds: true,
+    showNumbers: true,
+    showTickMarks: true,
+  },
   parameters: {
     docs: {
-      source: { code: `<ui-analog-clock />` },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`<ui-analog-clock />\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — clock tokens handle theming. */
+`,
+      },
     },
   },
 };
@@ -311,7 +504,28 @@ export const FixedTime: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<ui-analog-clock [time]="new Date(2025, 0, 1, 10, 10, 30)" />`,
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock [time]="fixedTime" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`<ui-analog-clock [time]="fixedTime" />\`,
+})
+export class ExampleComponent {
+  fixedTime = new Date(2025, 0, 1, 10, 10, 30);
+}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
       },
     },
   },
@@ -324,7 +538,28 @@ export const NoSeconds: Story = {
   render: () => ({ template: `<ui-clock-no-seconds-demo />` }),
   parameters: {
     docs: {
-      source: { code: `<ui-analog-clock [showSeconds]="false" />` },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock [showSeconds]="false" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`<ui-analog-clock [showSeconds]="false" />\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
+      },
     },
   },
 };
@@ -338,7 +573,28 @@ export const Minimal: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<ui-analog-clock [showNumbers]="false" [showTickMarks]="false" />`,
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock [showNumbers]="false" [showTickMarks]="false" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`
+    <ui-analog-clock [showNumbers]="false" [showTickMarks]="false" />
+  \`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
       },
     },
   },
@@ -352,7 +608,28 @@ export const Small: Story = {
   render: () => ({ template: `<ui-clock-small-demo />` }),
   parameters: {
     docs: {
-      source: { code: `<ui-analog-clock [size]="80" />` },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock [size]="80" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`<ui-analog-clock [size]="80" />\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
+      },
     },
   },
 };
@@ -364,7 +641,73 @@ export const Large: Story = {
   render: () => ({ template: `<ui-clock-large-demo />` }),
   parameters: {
     docs: {
-      source: { code: `<ui-analog-clock [size]="400" />` },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock [size]="400" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`<ui-analog-clock [size]="400" />\`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Day vs Night** — The clock automatically detects whether the displayed
+ * time is day (6 AM–6 PM) or night (6 PM–6 AM). Daytime shows a sun icon;
+ * nighttime shows a moon crescent with stars and a deep blue face.
+ */
+export const DayVsNight: Story = {
+  render: () => ({ template: `<ui-clock-day-night-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- Day (sun indicator, light face) -->
+<ui-analog-clock [time]="morningTime" />
+
+<!-- Night (moon + stars, deep blue face) -->
+<ui-analog-clock [time]="nightTime" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`
+    <ui-analog-clock [time]="morningTime" />
+    <ui-analog-clock [time]="nightTime" />
+  \`,
+})
+export class ExampleComponent {
+  morningTime = new Date(2025, 0, 1, 8, 0, 0);
+  nightTime = new Date(2025, 0, 1, 22, 0, 0);
+}
+
+// ── SCSS ──
+/* Day/night theming is automatic — no custom styles needed. */
+`,
+      },
     },
   },
 };
@@ -378,9 +721,34 @@ export const SizeGallery: Story = {
   parameters: {
     docs: {
       source: {
-        code: `@for (s of [60, 100, 160, 240]; track s) {
+        language: "html",
+        code: `
+// ── HTML ──
+@for (s of sizes; track s) {
   <ui-analog-clock [size]="s" />
-}`,
+}
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`
+    @for (s of sizes; track s) {
+      <ui-analog-clock [size]="s" />
+    }
+  \`,
+})
+export class ExampleComponent {
+  sizes = [60, 100, 160, 240];
+}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
       },
     },
   },
@@ -392,23 +760,154 @@ export const SizeGallery: Story = {
  */
 export const Comparison: Story = {
   render: () => ({ template: `<ui-clock-comparison-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock [size]="160" />
+<ui-analog-clock [size]="160" [showSeconds]="false" />
+<ui-analog-clock [size]="160" [showNumbers]="false" />
+<ui-analog-clock [size]="160" [showNumbers]="false" [showTickMarks]="false" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \`
+    <ui-analog-clock [size]="160" />
+    <ui-analog-clock [size]="160" [showSeconds]="false" />
+    <ui-analog-clock [size]="160" [showNumbers]="false" />
+    <ui-analog-clock [size]="160" [showNumbers]="false" [showTickMarks]="false" />
+  \`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**
- * **World clocks** — Four fixed-time clocks representing different
- * time zones, with city labels beneath each one.
+ * **World clocks** — Four live-ticking clocks showing London, New York,
+ * Tokyo, and Sydney. Each clock displays the correct day/night indicator
+ * based on the local time in that city. UTC offset labels appear beneath.
  */
 export const WorldClocks: Story = {
   render: () => ({ template: `<ui-clock-world-demo />` }),
   parameters: {
     docs: {
       source: {
-        code: `<ui-analog-clock
-  [size]="140"
-  [time]="londonTime"
-  [showSeconds]="false"
-  ariaLabel="Time in London"
-/>`,
+        language: "html",
+        code: `
+// ── HTML ──
+@for (city of zones; track city.label) {
+  <ui-analog-clock
+    [size]="160"
+    [time]="city.time()"
+    [showSeconds]="false"
+    [ariaLabel]="'Time in ' + city.label"
+  />
+}
+
+// ── TypeScript ──
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { UIAnalogClock } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-world-clocks',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \\\`…\\\`,
+})
+export class WorldClocksComponent implements OnInit, OnDestroy {
+  zones = [
+    { label: 'London',   offset:  0, time: signal(this.offset(0)) },
+    { label: 'New York', offset: -5, time: signal(this.offset(-5)) },
+    { label: 'Tokyo',    offset:  9, time: signal(this.offset(9)) },
+    { label: 'Sydney',   offset: 11, time: signal(this.offset(11)) },
+  ];
+
+  private id: ReturnType<typeof setInterval> | null = null;
+
+  ngOnInit() {
+    this.id = setInterval(() => {
+      for (const z of this.zones) z.time.set(this.offset(z.offset));
+    }, 1000);
+  }
+
+  ngOnDestroy() {
+    if (this.id) clearInterval(this.id);
+  }
+
+  private offset(h: number): Date {
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60_000;
+    return new Date(utc + h * 3_600_000);
+  }
+}
+
+// ── SCSS ──
+/* No custom styles needed — day/night theming is automatic. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Custom icons** — The `dayIcon` / `nightIcon` inputs accept any Lucide
+ * icon SVG string (or your own 24 × 24 SVG inner content). Combine with
+ * `dayIconColor` / `nightIconColor` to fully customise the indicator.
+ */
+export const CustomIcons: Story = {
+  render: () => ({ template: `<ui-clock-custom-icons-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-analog-clock
+  [dayIcon]="sparkles"
+  dayIconColor="#ec4899"
+  [nightIcon]="star"
+  nightIconColor="#fbbf24"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIAnalogClock, UIIcons } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIAnalogClock],
+  template: \\\`
+    <ui-analog-clock
+      [dayIcon]="sparkles"
+      dayIconColor="#ec4899"
+      [nightIcon]="star"
+      nightIconColor="#fbbf24"
+    />
+  \\\`,
+})
+export class ExampleComponent {
+  sparkles = UIIcons.Lucide.Weather.Sparkles;
+  star = UIIcons.Lucide.Weather.Star;
+}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
       },
     },
   },
