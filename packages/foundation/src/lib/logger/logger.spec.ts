@@ -10,18 +10,19 @@ import {
 
 describe("Logger", () => {
   const createSpy = (): ILoggingStrategy => ({
-    log: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
     warn: vi.fn(),
     error: vi.fn(),
   });
 
-  it("should forward log() to the strategy with context", () => {
+  it("should forward info() to the strategy with context", () => {
     const spy = createSpy();
     const log = new Logger(spy, "TestCtx");
 
-    log.log("hello", [42]);
+    log.info("hello", [42]);
 
-    expect(spy.log).toHaveBeenCalledWith("TestCtx", "hello", [42]);
+    expect(spy.info).toHaveBeenCalledWith("TestCtx", "hello", [42]);
   });
 
   it("should forward warn() to the strategy with context", () => {
@@ -46,9 +47,9 @@ describe("Logger", () => {
     const spy = createSpy();
     const log = new Logger(spy, "X");
 
-    log.log("msg");
+    log.info("msg");
 
-    expect(spy.log).toHaveBeenCalledWith("X", "msg", []);
+    expect(spy.info).toHaveBeenCalledWith("X", "msg", []);
   });
 });
 
@@ -59,7 +60,7 @@ describe("ConsoleLoggingStrategy", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const strategy = new ConsoleLoggingStrategy();
 
-    strategy.log("Ctx", "hello", [1, 2]);
+    strategy.info("Ctx", "hello", [1, 2]);
 
     expect(spy).toHaveBeenCalledWith("Ctx: hello", 1, 2);
     spy.mockRestore();

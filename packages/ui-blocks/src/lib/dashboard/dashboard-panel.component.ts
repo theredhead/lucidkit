@@ -95,7 +95,7 @@ export class UIDashboardPanel {
     if (!this.isCollapsible()) return;
     this.collapsed.update((v) => !v);
     this.collapsedChange.emit(this.collapsed());
-    this.log.log("Panel collapse toggled", [
+    this.log.debug("Panel collapse toggled", [
       this.config().id,
       this.collapsed(),
     ]);
@@ -106,12 +106,12 @@ export class UIDashboardPanel {
     if (!this.isRemovable()) return;
     this.removed.set(true);
     this.panelRemoved.emit(this.config().id);
-    this.log.log("Panel removed", [this.config().id]);
+    this.log.debug("Panel removed", [this.config().id]);
   }
 
   /** Restore a previously removed panel. */
   public restore(): void {
     this.removed.set(false);
-    this.log.log("Panel restored", [this.config().id]);
+    this.log.debug("Panel restored", [this.config().id]);
   }
 }

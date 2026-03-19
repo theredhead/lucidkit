@@ -1,9 +1,7 @@
-import type { FilterExpression } from "../types/filter";
 import type {
   RowChangedNotification,
   RowRangeChangedNotification,
 } from "../types/notifications";
-import type { SortExpression } from "../types/sort";
 import { Emitter } from "../types/emitter";
 
 /**
@@ -42,9 +40,9 @@ export interface ISortableDatasource<T = unknown> extends IDatasource<T> {
   /**
    * Applies the given sort expression to the datasource.
    *
-   * @param expression - One or more sort criteria in priority order.
+   * @param expression - One or more sort criteria in priority order, or a custom expression format.
    */
-  sortBy(expression: SortExpression<T>): void;
+  sortBy(expression: unknown): void;
 }
 
 /**
@@ -56,9 +54,9 @@ export interface IFilterableDatasource<T = unknown> extends IDatasource<T> {
   /**
    * Applies the given filter expression to the datasource.
    *
-   * @param expression - The filter criteria to apply.
+   * @param expression - The filter criteria to apply (format is datasource-specific).
    */
-  filterBy(expression: FilterExpression<T>): void;
+  filterBy(expression: unknown): void;
 }
 
 /**
@@ -176,3 +174,48 @@ export interface ITreeDatasource<T = unknown> {
  * - `'multiple'` — Checkbox-style multi-select (toggle on click/Space).
  */
 export type TreeSelectionMode = "none" | "single" | "path" | "multiple";
+
+/**
+ * Optional tree filtering capability.
+ *
+ * Implement this interface alongside `ITreeDatasource` when the datasource supports
+ * filtering hierarchical data. This is commonly used by `UIMasterDetailView` in tree mode.
+ *
+ * @typeParam T - The data payload type.
+ */
+export interface IFilterableTreeDatasource<
+  T = unknown,
+> extends ITreeDatasource<T> {
+  /**
+   * Apply a filter expression to the tree datasource.
+   *
+   * This should update the internal state to reflect filtered tree structure.
+   * Subsequent calls to `getRootNodes()` and `getChildren()` should return filtered data.
+   *
+   * @param expression - The filter expression to apply.
+   */
+  filterBy(expression: unknown): void;
+}
+
+/**
+ * Optional tree sorting capability.
+ *
+ * Implement this interface alongside `ITreeDatasource` when the datasource supports
+ * sorting hierarchical data at all levels (root nodes and their descendants).
+ *
+ * @typeParam T - The data payload type.
+ */
+export interface ISortableTreeDatasource<
+  T = unknown,
+> extends ITreeDatasource<T> {
+  /**
+   * Apply a comparator function to sort the tree.
+   *
+   * The comparator should sort nodes at all levels recursively (roots and all descendants).
+   * This should update the internal state to reflect the sorted tree structure.
+   * Subsequent calls to `getRootNodes()` and `getChildren()` should return sorted data.
+   *
+   * @param comparator - The comparator function to sort items.
+   */
+  applyComparator<N = TreeNode<T>>(comparator: (a: N, b: N) => number): void;
+}

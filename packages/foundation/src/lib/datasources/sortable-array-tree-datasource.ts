@@ -1,5 +1,4 @@
-import type { ISortableTreeDataSource } from "../datasource/contracts";
-import type { TreeNode } from "./datasource";
+import type { ISortableTreeDatasource, TreeNode } from "./datasource";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
 
 /**
@@ -26,7 +25,7 @@ import { ArrayTreeDatasource } from "./array-tree-datasource";
  */
 export class SortableArrayTreeDatasource<T = unknown>
   extends ArrayTreeDatasource<T>
-  implements ISortableTreeDataSource<T>
+  implements ISortableTreeDatasource<T>
 {
   /** The full, unsorted tree. */
   private readonly _allRoots: TreeNode<T>[];
@@ -74,8 +73,8 @@ export class SortableArrayTreeDatasource<T = unknown>
    *
    * @param comparator - The comparator function, or null/undefined to clear sorting.
    */
-  public applyComparator(
-    comparator: ((a: TreeNode<T>, b: TreeNode<T>) => number) | null | undefined,
+  public applyComparator<U = TreeNode<T>>(
+    comparator: ((a: U, b: U) => number) | null | undefined,
   ): void {
     if (!comparator) {
       this._sortedRoots = this.deepCopyNodes(
@@ -87,7 +86,7 @@ export class SortableArrayTreeDatasource<T = unknown>
 
     this._sortedRoots = this.sortNodes(
       this._allRoots,
-      comparator,
+      comparator as (a: TreeNode<T>, b: TreeNode<T>) => number,
       this._childrenProperty,
     );
   }

@@ -7,8 +7,10 @@
  * browser console.
  */
 export interface ILoggingStrategy {
+  /** Emit an debug message. */
+  debug(context: string, message: string, args: unknown[]): void;
   /** Emit an informational message. */
-  log(context: string, message: string, args: unknown[]): void;
+  info(context: string, message: string, args: unknown[]): void;
   /** Emit a warning. */
   warn(context: string, message: string, args: unknown[]): void;
   /** Emit an error. */
@@ -37,8 +39,13 @@ export class Logger {
   ) {}
 
   /** Log an informational message. */
-  public log(message: string, args: unknown[] = []): void {
-    this.strategy.log(this.context, message, args);
+  public debug(message: string, args: unknown[] = []): void {
+    this.strategy.debug(this.context, message, args);
+  }
+
+  /** Log an informational message. */
+  public info(message: string, args: unknown[] = []): void {
+    this.strategy.info(this.context, message, args);
   }
 
   /** Log a warning. */
@@ -61,7 +68,12 @@ export class Logger {
  */
 export class ConsoleLoggingStrategy implements ILoggingStrategy {
   /** @inheritdoc */
-  public log(context: string, message: string, args: unknown[]): void {
+  public debug(context: string, message: string, args: unknown[]): void {
+    console.debug(`${context}: ${message}`, ...args);
+  }
+
+  /** @inheritdoc */
+  public info(context: string, message: string, args: unknown[]): void {
     console.log(`${context}: ${message}`, ...args);
   }
 

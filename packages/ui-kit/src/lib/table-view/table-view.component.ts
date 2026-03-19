@@ -16,8 +16,8 @@ import {
 
 import {
   type Predicate,
-  isFilterableDataSource,
-  isSortableDataSource,
+  isFilterableDatasource,
+  isSortableDatasource,
 } from "@theredhead/foundation";
 
 import { ColumnResizeService } from "./column-resize.service";
@@ -204,21 +204,21 @@ export class UITableView implements OnInit, AfterViewInit {
   private resolveGeneration = 0;
 
   /**
-   * Whether the underlying datasource supports sorting via {@link ISortableDataSource}.
+   * Whether the underlying datasource supports sorting via {@link ISortableDatasource}.
    * When true, sorting is delegated to the datasource; otherwise, rows are sorted
    * in-component.
    */
   protected readonly supportsSorting = computed(() => {
-    return isSortableDataSource(this.datasource().datasource);
+    return isSortableDatasource(this.datasource().datasource);
   });
 
   /**
-   * Whether the underlying datasource supports filtering via {@link IFilterableDataSource}.
+   * Whether the underlying datasource supports filtering via {@link IFilterableDatasource}.
    * When true, filtering is delegated to the datasource; otherwise, filtering
    * is not available.
    */
   protected readonly supportsFiltering = computed(() => {
-    return isFilterableDataSource(this.datasource().datasource);
+    return isFilterableDatasource(this.datasource().datasource);
   });
 
   protected readonly sortedRows = computed(() => {
@@ -295,7 +295,7 @@ export class UITableView implements OnInit, AfterViewInit {
       if (this.supportsFiltering()) {
         const datasource = this.datasource().datasource;
         const predicate = this.filterPredicate();
-        if (isFilterableDataSource(datasource)) {
+        if (isFilterableDatasource(datasource)) {
           datasource.filterBy(predicate);
         }
       }
@@ -443,7 +443,7 @@ export class UITableView implements OnInit, AfterViewInit {
     // If the datasource supports sorting, delegate to it
     if (this.supportsSorting()) {
       const datasource = this.datasource().datasource;
-      if (isSortableDataSource(datasource)) {
+      if (isSortableDatasource(datasource)) {
         datasource.sortBy(toComparator(state));
       }
     }

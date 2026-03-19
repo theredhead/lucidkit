@@ -21,14 +21,15 @@ describe("LoggerFactory", () => {
 
     // Verify it actually works end-to-end
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    logger.log("hello");
+    logger.info("hello");
     expect(spy).toHaveBeenCalledWith("Test: hello");
     spy.mockRestore();
   });
 
   it("should create a Logger with a custom strategy", () => {
     const custom: ILoggingStrategy = {
-      log: vi.fn(),
+      debug: vi.fn(),
+      info: vi.fn(),
       warn: vi.fn(),
       error: vi.fn(),
     };

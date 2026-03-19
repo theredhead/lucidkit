@@ -1,0 +1,17 @@
+{
+  "entryPoints": [
+    "packages/foundation/src/public-api.ts",
+    "packages/ui-kit/src/public-api.ts",
+    "packages/ui-blocks/src/public-api.ts",
+    "packages/ui-theme/src/public-api.ts"
+  ],
+  "out": "dev-docs",
+  "theme": "default",
+  "includeVersion": true,
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "readme": "README.md",
+  "name": "@theredhead — Frontend Library",
+  "logLevel": "Warn"
+}

@@ -54,7 +54,7 @@ describe("UIAutogenerateColumnsDirective", () => {
   });
 
   it("should handle empty datasource", () => {
-    const emptyData: Record<string, unknown>[] = [];
+    const emptyData: { id: number; name: string; email: string }[] = [];
     component.datasource.set(
       new DatasourceAdapter(new ArrayDatasource(emptyData), 1),
     );

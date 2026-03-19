@@ -199,7 +199,7 @@ export class UIChart<T> {
 
     const allPoints = sd.flatMap((s) => s.points);
     if (allPoints.length === 0) {
-      this.log.log("No data points to render");
+      this.log.debug("No data points to render");
       return;
     }
 

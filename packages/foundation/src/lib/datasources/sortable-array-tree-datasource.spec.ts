@@ -90,28 +90,24 @@ describe("SortableArrayTreeDatasource", () => {
   });
 
   it("should sort by numeric values", () => {
-    const roots: TreeNode<{ id: string; value: number }[]> = [
+    const roots: TreeNode<{ id: string; value: number }>[] = [
       {
         id: "1",
-        data: [{ id: "a", value: 30 }],
+        data: { id: "a", value: 30 },
         children: [
-          { id: "1.2", data: [{ id: "x", value: 2 }] },
-          { id: "1.1", data: [{ id: "y", value: 15 }] },
-          { id: "1.3", data: [{ id: "z", value: 5 }] },
+          { id: "1.2", data: { id: "x", value: 2 } },
+          { id: "1.1", data: { id: "y", value: 15 } },
+          { id: "1.3", data: { id: "z", value: 5 } },
         ],
       },
-    ] as unknown as TreeNode<{ id: string; value: number }[]>[];
+    ];
 
     const ds = new SortableArrayTreeDatasource(roots);
     const comparator = (
       a: TreeNode<{ id: string; value: number }>,
       b: TreeNode<{ id: string; value: number }>,
     ) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const aVal = Array.isArray(a.data) ? (a.data as any)[0]?.value : 0;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const bVal = Array.isArray(b.data) ? (b.data as any)[0]?.value : 0;
-      return aVal - bVal;
+      return a.data.value - b.data.value;
     };
 
     ds.applyComparator(comparator);
