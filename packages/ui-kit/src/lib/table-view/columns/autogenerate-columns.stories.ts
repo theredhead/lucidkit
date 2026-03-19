@@ -11,40 +11,47 @@ import { DatasourceAdapter } from "../datasources/datasource-adapter";
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: `
     <ui-table-view
-      [datasource]="datasource"
+      [datasource]="datasource()"
       uiAutogenerateColumns
     ></ui-table-view>
   `,
 })
 class DemoAutogenerateComponent {
-  public readonly datasource = new DatasourceAdapter(
-    new ArrayDatasource([
-      { id: 1, firstName: "John", lastName: "Doe", email: "john@example.com" },
-      {
-        id: 2,
-        firstName: "Jane",
-        lastName: "Smith",
-        email: "jane@example.com",
-      },
-      {
-        id: 3,
-        firstName: "Bob",
-        lastName: "Johnson",
-        email: "bob@example.com",
-      },
-      {
-        id: 4,
-        firstName: "Alice",
-        lastName: "Williams",
-        email: "alice@example.com",
-      },
-      {
-        id: 5,
-        firstName: "Charlie",
-        lastName: "Brown",
-        email: "charlie@example.com",
-      },
-    ]),
+  public readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource([
+        {
+          id: 1,
+          firstName: "John",
+          lastName: "Doe",
+          email: "john@example.com",
+        },
+        {
+          id: 2,
+          firstName: "Jane",
+          lastName: "Smith",
+          email: "jane@example.com",
+        },
+        {
+          id: 3,
+          firstName: "Bob",
+          lastName: "Johnson",
+          email: "bob@example.com",
+        },
+        {
+          id: 4,
+          firstName: "Alice",
+          lastName: "Williams",
+          email: "alice@example.com",
+        },
+        {
+          id: 5,
+          firstName: "Charlie",
+          lastName: "Brown",
+          email: "charlie@example.com",
+        },
+      ]),
+    ),
   );
 }
 
@@ -54,32 +61,36 @@ class DemoAutogenerateComponent {
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: `
     <ui-table-view
-      [datasource]="datasource"
+      [datasource]="datasource()"
       [uiAutogenerateColumns]="config()"
     ></ui-table-view>
   `,
 })
 class DemoAutogenerateCustomComponent {
-  public readonly datasource = new ArrayDatasource([
-    {
-      userId: 1,
-      userName: "john_doe",
-      userEmail: "john@example.com",
-      createdAt: "2024-01-15",
-    },
-    {
-      userId: 2,
-      userName: "jane_smith",
-      userEmail: "jane@example.com",
-      createdAt: "2024-02-20",
-    },
-    {
-      userId: 3,
-      userName: "bob_johnson",
-      userEmail: "bob@example.com",
-      createdAt: "2024-03-10",
-    },
-  ]);
+  public readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource([
+        {
+          userId: 1,
+          userName: "john_doe",
+          userEmail: "john@example.com",
+          createdAt: "2024-01-15",
+        },
+        {
+          userId: 2,
+          userName: "jane_smith",
+          userEmail: "jane@example.com",
+          createdAt: "2024-02-20",
+        },
+        {
+          userId: 3,
+          userName: "bob_johnson",
+          userEmail: "bob@example.com",
+          createdAt: "2024-03-10",
+        },
+      ]),
+    ),
+  );
 
   public readonly config = signal({
     excludeKeys: ["userId"],
@@ -97,16 +108,30 @@ class DemoAutogenerateCustomComponent {
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: `
     <ui-table-view
-      [datasource]="datasource"
+      [datasource]="datasource()"
       [uiAutogenerateColumns]="{ humanizeHeaders: false }"
     ></ui-table-view>
   `,
 })
 class DemoAutogenerateNoHumanizeComponent {
-  public readonly datasource = new ArrayDatasource([
-    { id: 1, firstName: "John", lastName: "Doe", email: "john@example.com" },
-    { id: 2, firstName: "Jane", lastName: "Smith", email: "jane@example.com" },
-  ]);
+  public readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource([
+        {
+          id: 1,
+          firstName: "John",
+          lastName: "Doe",
+          email: "john@example.com",
+        },
+        {
+          id: 2,
+          firstName: "Jane",
+          lastName: "Smith",
+          email: "jane@example.com",
+        },
+      ]),
+    ),
+  );
 }
 
 const meta: Meta<UITableView> = {

@@ -6,10 +6,13 @@ import {
   signal,
   ViewContainerRef,
   Injector,
-  EmbeddedViewRef,
+  ComponentRef,
+  DestroyRef,
 } from "@angular/core";
 import { UITableView } from "../table-view.component";
-import { UIAutogenerateColumns } from "./autogenerate-columns.component";
+import { UITextColumnGenerated } from "./autogenerate-columns.component";
+import { UITableViewColumn } from "./table-column.directive";
+import { humanizeKey } from "../../filter/infer-filter-fields";
 
 /**
  * Directive that automatically generates table columns based on the first row's properties.
@@ -47,71 +50,100 @@ export class UIAutogenerateColumnsDirective {
   private readonly table = inject(UITableView);
   private readonly viewContainer = inject(ViewContainerRef);
   private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
 
-  private currentViewRef: EmbeddedViewRef<unknown> | null = null;
+  private columnRefs: ComponentRef<UITextColumnGenerated>[] = [];
   private firstRowSignal = signal<Record<string, unknown> | null>(null);
 
   public constructor() {
     // Watch for datasource changes and extract first row
-    effect(
-      () => {
-        const adapter = this.table.datasource();
-        if (!adapter) {
-          this.firstRowSignal.set(null);
-          return;
-        }
+    effect(() => {
+      const adapter = this.table.datasource();
+      if (!adapter) {
+        this.firstRowSignal.set(null);
+        return;
+      }
 
-        const totalItems = adapter.totalItems();
-        if ((totalItems ?? 0) === 0) {
-          this.firstRowSignal.set(null);
-          return;
-        }
+      const totalItems = adapter.totalItems();
+      if (totalItems === null || totalItems === 0) {
+        this.firstRowSignal.set(null);
+        return;
+      }
 
-        try {
-          // Try to get the first row from the underlying datasource
-          const row = adapter.datasource.getObjectAtRowIndex(0);
-          if (row && typeof row === "object" && "kind" in row) {
-            // RowResult type — extract the actual value
-            this.firstRowSignal.set(row.value ?? null);
-          } else {
-            this.firstRowSignal.set(null);
-          }
-        } catch {
+      try {
+        const row = adapter.datasource.getObjectAtRowIndex(0);
+        if (row instanceof Promise) {
+          void row
+            .then((resolved) => {
+              this.firstRowSignal.set(resolved ?? null);
+            })
+            .catch(() => {
+              this.firstRowSignal.set(null);
+            });
+        } else if (row && typeof row === "object") {
+          this.firstRowSignal.set(row as Record<string, unknown>);
+        } else {
           this.firstRowSignal.set(null);
         }
-      },
-      { allowSignalWrites: true },
-    );
+      } catch {
+        this.firstRowSignal.set(null);
+      }
+    });
 
-    // Create and manage the autogenerate component
+    // Create column component instances and push them into the table
     effect(() => {
       const firstRow = this.firstRowSignal();
       const config = this.config();
 
-      // Clean up existing view
-      if (this.currentViewRef) {
-        this.currentViewRef.destroy();
-        this.currentViewRef = null;
-      }
+      // Destroy previous columns
+      this.destroyColumns();
 
-      // Only create component if we have a first row
-      if (!firstRow) {
+      if (!firstRow || typeof firstRow !== "object") {
+        this.table.dynamicColumns.set([]);
         return;
       }
 
-      const componentRef = this.viewContainer.createComponent(
-        UIAutogenerateColumns,
-        { injector: this.injector },
-      );
+      const exclude = new Set(config?.excludeKeys ?? []);
+      const headerMap = config?.headerMap ?? {};
+      const shouldHumanize = config?.humanizeHeaders ?? true;
 
-      componentRef.setInput("row", firstRow);
-      componentRef.setInput("humanizeHeaders", config?.humanizeHeaders ?? true);
-      componentRef.setInput("headerMap", config?.headerMap ?? {});
-      componentRef.setInput("excludeKeys", config?.excludeKeys ?? []);
+      const keys = Object.keys(firstRow)
+        .filter((key) => !exclude.has(key))
+        .sort();
 
-      componentRef.changeDetectorRef.markForCheck();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.currentViewRef = componentRef.hostView as any;
+      const columns: UITableViewColumn[] = [];
+
+      for (const key of keys) {
+        const headerText =
+          headerMap[key] || (shouldHumanize ? humanizeKey(key) : key);
+
+        const ref = this.viewContainer.createComponent(UITextColumnGenerated, {
+          injector: this.injector,
+        });
+
+        ref.setInput("key", key);
+        ref.setInput("headerText", headerText);
+        ref.changeDetectorRef.detectChanges();
+
+        this.columnRefs.push(ref);
+        columns.push(ref.instance);
+      }
+
+      // Push column instances into the table's dynamic columns signal
+      this.table.dynamicColumns.set(columns);
     });
+
+    // Clean up on destroy
+    this.destroyRef.onDestroy(() => {
+      this.destroyColumns();
+      this.table.dynamicColumns.set([]);
+    });
+  }
+
+  private destroyColumns(): void {
+    for (const ref of this.columnRefs) {
+      ref.destroy();
+    }
+    this.columnRefs = [];
   }
 }
