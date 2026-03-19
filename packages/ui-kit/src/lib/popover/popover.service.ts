@@ -56,6 +56,55 @@ html.dark-theme .ui-popover {
   }
 }
 
+/* ── arrow ──────────────────────────────────────────────── */
+
+.ui-popover[data-arrow-side]::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: inherit;
+  border: inherit;
+  border-radius: 0 0 2px 0;
+  pointer-events: none;
+}
+
+/* bottom arrow (popover above anchor) */
+.ui-popover[data-arrow-side="bottom"]::after {
+  bottom: -6px;
+  left: calc(var(--ui-popover-arrow-offset, 50%) - 5px);
+  transform: rotate(45deg);
+  border-top: none;
+  border-left: none;
+}
+
+/* top arrow (popover below anchor) */
+.ui-popover[data-arrow-side="top"]::after {
+  top: -6px;
+  left: calc(var(--ui-popover-arrow-offset, 50%) - 5px);
+  transform: rotate(-135deg);
+  border-top: none;
+  border-left: none;
+}
+
+/* right arrow (popover to the left of anchor) */
+.ui-popover[data-arrow-side="right"]::after {
+  right: -6px;
+  top: calc(var(--ui-popover-arrow-offset, 50%) - 5px);
+  transform: rotate(-45deg);
+  border-top: none;
+  border-left: none;
+}
+
+/* left arrow (popover to the right of anchor) */
+.ui-popover[data-arrow-side="left"]::after {
+  left: -6px;
+  top: calc(var(--ui-popover-arrow-offset, 50%) - 5px);
+  transform: rotate(135deg);
+  border-top: none;
+  border-left: none;
+}
+
 /* ── animation ──────────────────────────────────────────── */
 
 @keyframes ui-popover-enter {
@@ -72,10 +121,23 @@ html.dark-theme .ui-popover {
 
 // ── Positioning helper ─────────────────────────────────────────────
 
+/**
+ * The side of the popover that the arrow should appear on.
+ * Corresponds to the edge of the popover closest to the anchor.
+ *
+ * - `'top'`    — arrow on top edge (popover is below the anchor)
+ * - `'bottom'` — arrow on bottom edge (popover is above the anchor)
+ * - `'left'`   — arrow on left edge (popover is to the right of the anchor)
+ * - `'right'`  — arrow on right edge (popover is to the left of the anchor)
+ */
+export type PopoverArrowSide = "top" | "bottom" | "left" | "right";
+
 /** @internal */
 interface Position {
   top: number;
   left: number;
+  resolvedV: "top" | "center" | "bottom";
+  resolvedH: "start" | "center" | "end";
 }
 
 /**
@@ -207,7 +269,55 @@ function computePosition(
   if (top + popoverRect.height > vh - pad) top = vh - popoverRect.height - pad;
   if (top < pad) top = pad;
 
-  return { top, left };
+  return { top, left, resolvedV, resolvedH };
+}
+
+/**
+ * Derives the arrow side from the resolved alignment values.
+ *
+ * For side-anchored popovers (start / end) the arrow appears on
+ * the edge closest to the anchor. For top/bottom anchored
+ * popovers the arrow appears on the top or bottom edge.
+ *
+ * @internal
+ */
+function deriveArrowSide(
+  resolvedV: "top" | "center" | "bottom",
+  resolvedH: "start" | "center" | "end",
+): PopoverArrowSide {
+  // Side-anchored (horizontal placement)
+  if (resolvedH === "end" && resolvedV === "center") return "left";
+  if (resolvedH === "start" && resolvedV === "center") return "right";
+
+  // Vertical placement (most common)
+  if (resolvedV === "bottom") return "top";
+  if (resolvedV === "top") return "bottom";
+
+  // Fallback for center/center
+  return "top";
+}
+
+/**
+ * Computes the arrow offset so that the arrow points at the
+ * horizontal (or vertical) centre of the anchor element.
+ *
+ * Returns a pixel value relative to the popover's edge.
+ *
+ * @internal
+ */
+function computeArrowOffset(
+  anchorRect: DOMRect,
+  popoverRect: DOMRect,
+  arrowSide: PopoverArrowSide,
+): number {
+  if (arrowSide === "top" || arrowSide === "bottom") {
+    // Arrow on top/bottom → offset along horizontal axis
+    const anchorCenter = anchorRect.left + anchorRect.width / 2;
+    return anchorCenter - popoverRect.left;
+  }
+  // Arrow on left/right → offset along vertical axis
+  const anchorCenter = anchorRect.top + anchorRect.height / 2;
+  return anchorCenter - popoverRect.top;
 }
 
 // ── Service ────────────────────────────────────────────────────────
@@ -259,6 +369,7 @@ export class PopoverService {
     const vOffset = config.verticalOffset ?? 4;
     const hOffset = config.horizontalOffset ?? 0;
     const useAutoPopover = config.closeOnOutsideClick !== false;
+    const showArrow = config.showArrow ?? false;
 
     // ── Create the popover host element ─────────────────────
 
@@ -319,7 +430,15 @@ export class PopoverService {
     host.showPopover();
 
     // Position immediately with the dimensions we have now.
-    this.positionPopover(host, config.anchor, vAlign, hAlign, vOffset, hOffset);
+    this.positionPopover(
+      host,
+      config.anchor,
+      vAlign,
+      hAlign,
+      vOffset,
+      hOffset,
+      showArrow,
+    );
 
     // Re-position after the next frame in case the browser
     // needed an additional layout pass (e.g. async projections,
@@ -333,6 +452,7 @@ export class PopoverService {
           hAlign,
           vOffset,
           hOffset,
+          showArrow,
         );
       }
     });
@@ -371,6 +491,7 @@ export class PopoverService {
         hAlign,
         vOffset,
         hOffset,
+        showArrow,
       );
     };
     window.addEventListener("scroll", reposition, { passive: true });
@@ -393,6 +514,7 @@ export class PopoverService {
     hAlign: PopoverHorizontalAlignment,
     vOffset: number,
     hOffset: number,
+    showArrow = false,
   ): void {
     const anchorRect = anchor.getBoundingClientRect();
     const popoverRect = host.getBoundingClientRect();
@@ -406,6 +528,21 @@ export class PopoverService {
     );
     host.style.top = `${pos.top}px`;
     host.style.left = `${pos.left}px`;
+
+    if (showArrow) {
+      const arrowSide = deriveArrowSide(pos.resolvedV, pos.resolvedH);
+      host.setAttribute("data-arrow-side", arrowSide);
+
+      // Re-read the positioned rect for accurate arrow offset
+      const positionedRect = new DOMRect(
+        pos.left,
+        pos.top,
+        popoverRect.width,
+        popoverRect.height,
+      );
+      const offset = computeArrowOffset(anchorRect, positionedRect, arrowSide);
+      host.style.setProperty("--ui-popover-arrow-offset", `${offset}px`);
+    }
   }
 
   /** Injects the popover stylesheet into `<head>` once. */

@@ -908,4 +908,142 @@ describe("PopoverService", () => {
       ref.close();
     });
   });
+
+  describe("arrow", () => {
+    it("should not add data-arrow-side by default", () => {
+      const ref = service.openPopover({ component: TestPopover, anchor });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      expect(popover.hasAttribute("data-arrow-side")).toBe(false);
+
+      ref.close();
+    });
+
+    it("should not add data-arrow-side when showArrow is false", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        showArrow: false,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      expect(popover.hasAttribute("data-arrow-side")).toBe(false);
+
+      ref.close();
+    });
+
+    it("should add data-arrow-side='top' when popover is below anchor", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+        showArrow: true,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      expect(popover.getAttribute("data-arrow-side")).toBe("top");
+
+      ref.close();
+    });
+
+    it("should add data-arrow-side='bottom' when popover is above anchor", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "top",
+        horizontalAxisAlignment: "center",
+        showArrow: true,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      expect(popover.getAttribute("data-arrow-side")).toBe("bottom");
+
+      ref.close();
+    });
+
+    it("should add data-arrow-side='left' when popover is to the right of anchor", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "center",
+        horizontalAxisAlignment: "end",
+        showArrow: true,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      expect(popover.getAttribute("data-arrow-side")).toBe("left");
+
+      ref.close();
+    });
+
+    it("should add data-arrow-side='right' when popover is to the left of anchor", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "center",
+        horizontalAxisAlignment: "start",
+        showArrow: true,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      expect(popover.getAttribute("data-arrow-side")).toBe("right");
+
+      ref.close();
+    });
+
+    it("should set --ui-popover-arrow-offset custom property", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+        showArrow: true,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      const offset = popover.style.getPropertyValue(
+        "--ui-popover-arrow-offset",
+      );
+      expect(offset).toBeTruthy();
+      expect(offset).toContain("px");
+
+      ref.close();
+    });
+
+    it("should update arrow attributes on scroll reposition", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+        showArrow: true,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+
+      // Change anchor position
+      anchor.getBoundingClientRect = vi.fn(() => ({
+        top: 200,
+        left: 300,
+        bottom: 232,
+        right: 380,
+        width: 80,
+        height: 32,
+        x: 300,
+        y: 200,
+        toJSON: () => {},
+      }));
+
+      window.dispatchEvent(new Event("scroll"));
+
+      // Arrow should still be present
+      expect(popover.getAttribute("data-arrow-side")).toBe("top");
+      const offset = popover.style.getPropertyValue(
+        "--ui-popover-arrow-offset",
+      );
+      expect(offset).toBeTruthy();
+
+      ref.close();
+    });
+  });
 });
