@@ -27,32 +27,57 @@ export class ScrollCarouselStrategy implements CarouselStrategy {
    */
   private readonly itemWidth: number;
 
-  public constructor(options?: { gap?: number; itemWidth?: number }) {
+  /**
+   * Whether to progressively fade (reduce opacity of) non-active
+   * items. When `false` every item stays at full opacity.
+   * @default false
+   */
+  private readonly fade: boolean;
+
+  public constructor(options?: {
+    gap?: number;
+    itemWidth?: number;
+    fade?: boolean;
+  }) {
     this.gap = options?.gap ?? 16;
     this.itemWidth = options?.itemWidth ?? 280;
+    this.fade = options?.fade ?? false;
   }
 
   /** @inheritdoc */
   public getItemStyle(
     itemIndex: number,
     activeIndex: number,
-    _totalItems: number,
+    totalItems: number,
+    wrap = false,
   ): CarouselItemStyle {
-    const offset = itemIndex - activeIndex;
+    let offset = itemIndex - activeIndex;
+
+    if (wrap && totalItems > 0) {
+      if (offset > totalItems / 2) offset -= totalItems;
+      else if (offset < -totalItems / 2) offset += totalItems;
+    }
+
     const translateX = offset * (this.itemWidth + this.gap);
     const distance = Math.abs(offset);
 
     return {
       transform: `translateX(${translateX}px)`,
-      opacity: distance === 0 ? 1 : distance === 1 ? 0.7 : 0.4,
+      opacity: this.fade
+        ? distance === 0
+          ? 1
+          : distance === 1
+            ? 0.7
+            : 0.4
+        : 1,
       zIndex: 10 - distance,
       transition: "transform 0.4s ease, opacity 0.4s ease",
-      pointerEvents: distance === 0 ? "auto" : "none",
+      pointerEvents: "auto",
     };
   }
 
   /** @inheritdoc */
   public getTrackStyle(): Record<string, string> {
-    return { overflow: "hidden" };
+    return {};
   }
 }

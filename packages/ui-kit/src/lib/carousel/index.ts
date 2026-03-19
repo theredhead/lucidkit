@@ -5,4 +5,7 @@ export {
   type CarouselItemContext,
 } from "./carousel.types";
 export { ScrollCarouselStrategy } from "./scroll-strategy";
-export { CoverflowCarouselStrategy } from "./coverflow-strategy";
+export {
+  CoverflowCarouselStrategy,
+  type CoverflowOptions,
+} from "./coverflow-strategy";
