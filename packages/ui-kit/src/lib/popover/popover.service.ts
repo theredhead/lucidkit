@@ -65,18 +65,18 @@ html.dark-theme .ui-popover {
 .ui-popover[data-arrow-side]::after {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   background: inherit;
   border: inherit;
-  border-radius: 0 0 3px 0;
+  border-radius: 0 0 2px 0;
   pointer-events: none;
 }
 
 /* bottom arrow (popover above anchor) */
 .ui-popover[data-arrow-side="bottom"]::after {
-  bottom: -11px;
-  left: calc(var(--ui-popover-arrow-offset, 50%) - 10px);
+  bottom: -8px;
+  left: calc(var(--ui-popover-arrow-offset, 50%) - 7px);
   transform: rotate(45deg);
   border-top: none;
   border-left: none;
@@ -84,8 +84,8 @@ html.dark-theme .ui-popover {
 
 /* top arrow (popover below anchor) */
 .ui-popover[data-arrow-side="top"]::after {
-  top: -11px;
-  left: calc(var(--ui-popover-arrow-offset, 50%) - 10px);
+  top: -8px;
+  left: calc(var(--ui-popover-arrow-offset, 50%) - 7px);
   transform: rotate(-135deg);
   border-top: none;
   border-left: none;
@@ -93,8 +93,8 @@ html.dark-theme .ui-popover {
 
 /* right arrow (popover to the left of anchor) */
 .ui-popover[data-arrow-side="right"]::after {
-  right: -11px;
-  top: calc(var(--ui-popover-arrow-offset, 50%) - 10px);
+  right: -8px;
+  top: calc(var(--ui-popover-arrow-offset, 50%) - 7px);
   transform: rotate(-45deg);
   border-top: none;
   border-left: none;
@@ -102,8 +102,8 @@ html.dark-theme .ui-popover {
 
 /* left arrow (popover to the right of anchor) */
 .ui-popover[data-arrow-side="left"]::after {
-  left: -11px;
-  top: calc(var(--ui-popover-arrow-offset, 50%) - 10px);
+  left: -8px;
+  top: calc(var(--ui-popover-arrow-offset, 50%) - 7px);
   transform: rotate(135deg);
   border-top: none;
   border-left: none;
