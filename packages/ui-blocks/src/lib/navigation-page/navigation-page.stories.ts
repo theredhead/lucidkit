@@ -1,70 +1,50 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  signal,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIIcons, UIIcon } from "@theredhead/ui-kit";
 
+import { UINavigationPage } from "./navigation-page.component";
 import {
-  UINavigationPage,
-  type NavigationGroupDef,
-  type NavigationPageItem,
-} from "./navigation-page.component";
+  navItem,
+  navGroup,
+  routesToNavigation,
+  type NavigationNode,
+  type NavigationRouteConfig,
+} from "./navigation-page.utils";
 
 // ── Demo data ────────────────────────────────────────────────────────
 
-const PAGES: NavigationPageItem[] = [
-  {
-    id: "dashboard",
-    label: "Dashboard",
+const NAV_ITEMS: NavigationNode[] = [
+  navItem("dashboard", "Dashboard", {
     icon: UIIcons.Lucide.Layout.LayoutDashboard,
-  },
-  {
-    id: "projects",
-    label: "Projects",
+  }),
+  navItem("projects", "Projects", {
     icon: UIIcons.Lucide.Files.Folder,
     badge: "12",
-  },
-  {
-    id: "calendar",
-    label: "Calendar",
+  }),
+  navItem("calendar", "Calendar", {
     icon: UIIcons.Lucide.Time.Calendar,
-  },
-  {
-    id: "analytics",
-    label: "Analytics",
+  }),
+  navItem("analytics", "Analytics", {
     icon: UIIcons.Lucide.Charts.ChartLine,
-  },
-  {
-    id: "general",
-    label: "General",
-    icon: UIIcons.Lucide.Account.Settings,
-    group: "settings",
-  },
-  {
-    id: "security",
-    label: "Security",
-    icon: UIIcons.Lucide.Account.Shield,
-    group: "settings",
-  },
-  {
-    id: "team",
-    label: "Team Members",
-    icon: UIIcons.Lucide.Account.Users,
-    group: "settings",
-    badge: "3",
-  },
-];
-
-const GROUPS: NavigationGroupDef[] = [
-  {
-    id: "settings",
-    label: "Settings",
-    icon: UIIcons.Lucide.Account.Settings,
-    expanded: true,
-  },
+  }),
+  navGroup(
+    "settings",
+    "Settings",
+    [
+      navItem("general", "General", {
+        icon: UIIcons.Lucide.Account.Settings,
+      }),
+      navItem("security", "Security", {
+        icon: UIIcons.Lucide.Account.Shield,
+      }),
+      navItem("team", "Team Members", {
+        icon: UIIcons.Lucide.Account.Users,
+        badge: "3",
+      }),
+    ],
+    { icon: UIIcons.Lucide.Account.Settings },
+  ),
 ];
 
 const PAGE_CONTENT: Record<string, string> = {
@@ -90,6 +70,51 @@ const PAGE_CONTENT: Record<string, string> = {
     "Invite team members, assign roles, and manage permissions. " +
     "View who has access to each project.",
 };
+
+// ── Router config demo data ──────────────────────────────────────────
+
+const DEMO_ROUTES: NavigationRouteConfig[] = [
+  {
+    path: "dashboard",
+    data: {
+      navLabel: "Dashboard",
+      navIcon: UIIcons.Lucide.Layout.LayoutDashboard,
+    },
+  },
+  {
+    path: "projects",
+    data: {
+      navLabel: "Projects",
+      navIcon: UIIcons.Lucide.Files.Folder,
+      navBadge: "5",
+    },
+  },
+  {
+    path: "settings",
+    data: {
+      navLabel: "Settings",
+      navIcon: UIIcons.Lucide.Account.Settings,
+    },
+    children: [
+      {
+        path: "general",
+        data: {
+          navLabel: "General",
+          navIcon: UIIcons.Lucide.Account.Settings,
+        },
+      },
+      {
+        path: "security",
+        data: {
+          navLabel: "Security",
+          navIcon: UIIcons.Lucide.Account.Shield,
+        },
+      },
+    ],
+  },
+  { path: "login" }, // skipped — no navLabel
+  { path: "**" }, // skipped — no navLabel
+];
 
 // ── Demo components ──────────────────────────────────────────────────
 
@@ -135,33 +160,31 @@ const PAGE_CONTENT: Record<string, string> = {
   ],
   template: `
     <ui-navigation-page
-      [pages]="pages"
-      [groups]="groups"
+      [items]="items"
       [(activePage)]="activePage"
       (navigated)="onNavigated($event)"
     >
-      <ng-template #content let-page>
+      <ng-template #content let-node>
         <div class="page-header">
-          @if (page.icon) {
-            <ui-icon [svg]="page.icon" [size]="28" />
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
           }
-          <h2>{{ page.label }}</h2>
+          <h2>{{ node.data.label }}</h2>
         </div>
-        <p class="page-description">{{ contentFor(page.id) }}</p>
+        <p class="page-description">{{ contentFor(node.id) }}</p>
         <div class="page-card">
-          ✅ You navigated to <strong>"{{ page.label }}"</strong>.
-          Try clicking a different item in the sidebar.
+          ✅ You navigated to <strong>"{{ node.data.label }}"</strong>. Try
+          clicking a different item in the sidebar.
         </div>
       </ng-template>
     </ui-navigation-page>
   `,
 })
 class DemoNavPageDefaultComponent {
-  public readonly pages = PAGES;
-  public readonly groups = GROUPS;
+  public readonly items = NAV_ITEMS;
   public readonly activePage = signal("dashboard");
 
-  public onNavigated(_page: NavigationPageItem): void {
+  public onNavigated(_node: NavigationNode): void {
     // no-op for demo
   }
 
@@ -217,30 +240,28 @@ class DemoNavPageDefaultComponent {
   ],
   template: `
     <ui-navigation-page
-      [pages]="pages"
-      [groups]="groups"
+      [items]="items"
       [sidebarPinned]="false"
       [(activePage)]="activePage"
       [(drawerOpen)]="drawerOpen"
     >
-      <ng-template #content let-page>
+      <ng-template #content let-node>
         <button class="open-btn" (click)="drawerOpen.set(true)">
           ☰ Open Sidebar
         </button>
         <div class="page-header">
-          @if (page.icon) {
-            <ui-icon [svg]="page.icon" [size]="28" />
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
           }
-          <h2>{{ page.label }}</h2>
+          <h2>{{ node.data.label }}</h2>
         </div>
-        <p class="page-description">{{ contentFor(page.id) }}</p>
+        <p class="page-description">{{ contentFor(node.id) }}</p>
       </ng-template>
     </ui-navigation-page>
   `,
 })
 class DemoNavPageDrawerComponent {
-  public readonly pages = PAGES;
-  public readonly groups = GROUPS;
+  public readonly items = NAV_ITEMS;
   public readonly activePage = signal("dashboard");
   public readonly drawerOpen = signal(false);
 
@@ -284,31 +305,105 @@ class DemoNavPageDrawerComponent {
   ],
   template: `
     <ui-navigation-page
-      [pages]="pages"
-      [groups]="groups"
+      [items]="items"
       rootLabel="App"
       breadcrumbVariant="link"
       [(activePage)]="activePage"
     >
-      <ng-template #content let-page>
+      <ng-template #content let-node>
         <div class="page-header">
-          @if (page.icon) {
-            <ui-icon [svg]="page.icon" [size]="28" />
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
           }
-          <h2>{{ page.label }}</h2>
+          <h2>{{ node.data.label }}</h2>
         </div>
-        <p class="page-description">{{ contentFor(page.id) }}</p>
+        <p class="page-description">{{ contentFor(node.id) }}</p>
       </ng-template>
     </ui-navigation-page>
   `,
 })
 class DemoNavPageCustomRootComponent {
-  public readonly pages = PAGES;
-  public readonly groups = GROUPS;
+  public readonly items = NAV_ITEMS;
   public readonly activePage = signal("dashboard");
 
   public contentFor(id: string): string {
     return PAGE_CONTENT[id] ?? "";
+  }
+}
+
+@Component({
+  selector: "ui-demo-nav-page-router",
+  standalone: true,
+  imports: [UINavigationPage, UIIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 500px;
+        border: 1px solid #d7dce2;
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+      .page-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0 0 1rem;
+      }
+      .page-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      .route-badge {
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        background: rgba(53, 132, 228, 0.12);
+        border-radius: 0.375rem;
+        font-family: monospace;
+        font-size: 0.85rem;
+      }
+      .page-description {
+        margin-top: 0.75rem;
+        font-size: 0.9rem;
+        color: #5a6470;
+      }
+    `,
+  ],
+  template: `
+    <ui-navigation-page
+      [items]="items"
+      rootLabel="Router Demo"
+      [(activePage)]="activePage"
+      (navigated)="onNavigated($event)"
+    >
+      <ng-template #content let-node>
+        <div class="page-header">
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
+          }
+          <h2>{{ node.data.label }}</h2>
+        </div>
+        @if (node.data.route) {
+          <div class="route-badge">Route: /{{ node.data.route }}</div>
+        }
+        <p class="page-description">
+          Items generated from a route config via
+          <code>routesToNavigation()</code>.
+        </p>
+      </ng-template>
+    </ui-navigation-page>
+  `,
+})
+class DemoNavPageRouterComponent {
+  public readonly items = routesToNavigation(DEMO_ROUTES);
+  public readonly activePage = signal("dashboard");
+
+  public onNavigated(node: NavigationNode): void {
+    // In a real app: this.router.navigate([node.data.route])
+    void node;
   }
 }
 
@@ -324,6 +419,7 @@ const meta: Meta<UINavigationPage> = {
         DemoNavPageDefaultComponent,
         DemoNavPageDrawerComponent,
         DemoNavPageCustomRootComponent,
+        DemoNavPageRouterComponent,
       ],
     }),
   ],
@@ -336,15 +432,21 @@ const meta: Meta<UINavigationPage> = {
           "### Features\n" +
           "- Pinned sidebar (desktop) or drawer-based sidebar (mobile)\n" +
           "- Automatic breadcrumb trail with group hierarchy\n" +
-          "- Collapsible sidebar groups\n" +
+          "- Collapsible sidebar groups via tree nodes with children\n" +
           "- Icon and badge support on navigation items\n" +
           "- Two-way binding for active page and drawer state\n" +
-          "- Projected content template with page context\n\n" +
-          "### Inputs\n" +
+          "- Projected content template with node context\n" +
+          "- `routesToNavigation()` utility for Angular Router integration\n\n" +
+          "### Data sources\n" +
           "| Input | Type | Default | Purpose |\n" +
           "|-------|------|---------|--------|\n" +
-          "| `pages` | `NavigationPageItem[]` | *required* | Navigation items |\n" +
-          "| `groups` | `NavigationGroupDef[]` | `[]` | Collapsible group definitions |\n" +
+          "| `datasource` | `ITreeDatasource<NavigationNodeData>` | – | Dynamic tree data |\n" +
+          "| `items` | `NavigationNode[]` | `[]` | Static in-memory tree |\n\n" +
+          "When both are set, `datasource` takes precedence. Use `navItem()` / " +
+          "`navGroup()` factory helpers to build the tree ergonomically.\n\n" +
+          "### Other inputs\n" +
+          "| Input | Type | Default | Purpose |\n" +
+          "|-------|------|---------|--------|\n" +
           "| `rootLabel` | `string` | `'Home'` | First breadcrumb label |\n" +
           "| `sidebarPinned` | `boolean` | `true` | Pin sidebar vs drawer mode |\n" +
           "| `drawerPosition` | `DrawerPosition` | `'left'` | Drawer slide direction |\n" +
@@ -353,7 +455,7 @@ const meta: Meta<UINavigationPage> = {
           "### Two-way bindings\n" +
           "| Model | Type | Purpose |\n" +
           "|-------|------|--------|\n" +
-          "| `activePage` | `string` | Currently active page id |\n" +
+          "| `activePage` | `string` | Currently active node id |\n" +
           "| `drawerOpen` | `boolean` | Drawer open state (when not pinned) |",
       },
     },
@@ -377,14 +479,13 @@ export const Default: Story = {
         code: `
 // ── HTML ──
 <ui-navigation-page
-  [pages]="pages"
-  [groups]="groups"
+  [items]="navItems"
   [(activePage)]="activePage"
   (navigated)="onNavigated($event)"
 >
-  <ng-template #content let-page>
-    <h2>{{ page.label }}</h2>
-    <p>{{ page.description }}</p>
+  <ng-template #content let-node>
+    <h2>{{ node.data.label }}</h2>
+    <p>Page content here.</p>
   </ng-template>
 </ui-navigation-page>
 
@@ -392,8 +493,9 @@ export const Default: Story = {
 import { Component, signal } from '@angular/core';
 import {
   UINavigationPage,
-  type NavigationPageItem,
-  type NavigationGroupDef,
+  navItem,
+  navGroup,
+  type NavigationNode,
 } from '@theredhead/ui-blocks';
 
 @Component({
@@ -405,20 +507,18 @@ import {
 export class ExampleComponent {
   readonly activePage = signal('dashboard');
 
-  readonly pages: NavigationPageItem[] = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'projects', label: 'Projects', badge: '12' },
-    { id: 'calendar', label: 'Calendar' },
-    { id: 'general',  label: 'General',  group: 'settings' },
-    { id: 'security', label: 'Security', group: 'settings' },
+  readonly navItems = [
+    navItem('dashboard', 'Dashboard'),
+    navItem('projects', 'Projects', { badge: '12' }),
+    navItem('calendar', 'Calendar'),
+    navGroup('settings', 'Settings', [
+      navItem('general', 'General'),
+      navItem('security', 'Security'),
+    ]),
   ];
 
-  readonly groups: NavigationGroupDef[] = [
-    { id: 'settings', label: 'Settings', expanded: true },
-  ];
-
-  onNavigated(page: NavigationPageItem): void {
-    console.log('Navigated to', page.label);
+  onNavigated(node: NavigationNode): void {
+    console.log('Navigated to', node.data.label);
   }
 }
 
@@ -442,15 +542,14 @@ export const DrawerMode: Story = {
         code: `
 // ── HTML ──
 <ui-navigation-page
-  [pages]="pages"
-  [groups]="groups"
+  [items]="navItems"
   [sidebarPinned]="false"
   [(activePage)]="activePage"
   [(drawerOpen)]="drawerOpen"
 >
-  <ng-template #content let-page>
+  <ng-template #content let-node>
     <button (click)="drawerOpen.set(true)">☰ Open Sidebar</button>
-    <h2>{{ page.label }}</h2>
+    <h2>{{ node.data.label }}</h2>
   </ng-template>
 </ui-navigation-page>
 
@@ -458,8 +557,8 @@ export const DrawerMode: Story = {
 import { Component, signal } from '@angular/core';
 import {
   UINavigationPage,
-  type NavigationPageItem,
-  type NavigationGroupDef,
+  navItem,
+  navGroup,
 } from '@theredhead/ui-blocks';
 
 @Component({
@@ -472,14 +571,12 @@ export class ExampleComponent {
   readonly activePage = signal('dashboard');
   readonly drawerOpen = signal(false);
 
-  readonly pages: NavigationPageItem[] = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'general',  label: 'General', group: 'settings' },
-  ];
-
-  readonly groups: NavigationGroupDef[] = [
-    { id: 'settings', label: 'Settings' },
+  readonly navItems = [
+    navItem('dashboard', 'Dashboard'),
+    navItem('projects', 'Projects'),
+    navGroup('settings', 'Settings', [
+      navItem('general', 'General'),
+    ]),
   ];
 }
 
@@ -503,14 +600,13 @@ export const CustomBreadcrumb: Story = {
         code: `
 // ── HTML ──
 <ui-navigation-page
-  [pages]="pages"
-  [groups]="groups"
+  [items]="navItems"
   rootLabel="App"
   breadcrumbVariant="link"
   [(activePage)]="activePage"
 >
-  <ng-template #content let-page>
-    <h2>{{ page.label }}</h2>
+  <ng-template #content let-node>
+    <h2>{{ node.data.label }}</h2>
   </ng-template>
 </ui-navigation-page>
 
@@ -518,8 +614,8 @@ export const CustomBreadcrumb: Story = {
 import { Component, signal } from '@angular/core';
 import {
   UINavigationPage,
-  type NavigationPageItem,
-  type NavigationGroupDef,
+  navItem,
+  navGroup,
 } from '@theredhead/ui-blocks';
 
 @Component({
@@ -531,14 +627,12 @@ import {
 export class ExampleComponent {
   readonly activePage = signal('dashboard');
 
-  readonly pages: NavigationPageItem[] = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'general',  label: 'General',  group: 'settings' },
-    { id: 'security', label: 'Security', group: 'settings' },
-  ];
-
-  readonly groups: NavigationGroupDef[] = [
-    { id: 'settings', label: 'Settings' },
+  readonly navItems = [
+    navItem('dashboard', 'Dashboard'),
+    navGroup('settings', 'Settings', [
+      navItem('general', 'General'),
+      navItem('security', 'Security'),
+    ]),
   ];
 }
 
@@ -548,6 +642,73 @@ ui-navigation-page {
   --ui-nav-page-sidebar-width: 14rem;
   --ui-nav-page-sidebar-bg: #f8f9fb;
 }
+`,
+      },
+    },
+  },
+};
+
+/** Navigation items generated from an Angular Router config via routesToNavigation(). */
+export const RouterIntegration: Story = {
+  render: () => ({
+    template: `<ui-demo-nav-page-router />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-navigation-page
+  [items]="navItems"
+  [(activePage)]="activePage"
+  (navigated)="onNavigated($event)"
+>
+  <ng-template #content let-node>
+    <h2>{{ node.data.label }}</h2>
+    <p>Route: /{{ node.data.route }}</p>
+  </ng-template>
+</ui-navigation-page>
+
+// ── TypeScript ──
+import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+  UINavigationPage,
+  routesToNavigation,
+  type NavigationNode,
+} from '@theredhead/ui-blocks';
+
+@Component({
+  selector: 'app-shell',
+  standalone: true,
+  imports: [UINavigationPage],
+  templateUrl: './shell.component.html',
+})
+export class ShellComponent {
+  private readonly router = inject(Router);
+  readonly activePage = signal('dashboard');
+
+  // Automatically derive navigation from your route config.
+  // Routes with data: { navLabel: '…' } are included;
+  // the rest are silently skipped.
+  readonly navItems = routesToNavigation(this.router.config);
+
+  onNavigated(node: NavigationNode): void {
+    if (node.data.route) {
+      this.router.navigate([node.data.route]);
+    }
+  }
+}
+
+// In your route config:
+// { path: 'dashboard', data: { navLabel: 'Dashboard', navIcon: '…' }, … }
+// { path: 'settings', data: { navLabel: 'Settings' }, children: [
+//   { path: 'general', data: { navLabel: 'General' }, … },
+// ]}
+
+// ── SCSS ──
+/* No custom styles needed. */
 `,
       },
     },
