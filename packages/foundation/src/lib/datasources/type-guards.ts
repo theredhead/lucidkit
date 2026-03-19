@@ -32,6 +32,7 @@
 import type {
   IFilterableDatasource,
   ISortableDatasource,
+  ITreeDatasource,
   IFilterableTreeDatasource,
   ISortableTreeDatasource,
 } from "./datasource";
@@ -85,6 +86,31 @@ export function isFilterableTreeDatasource<T>(
   }
   const obj = datasource as Record<string, unknown>;
   return typeof obj["filterBy"] === "function";
+}
+
+/**
+ * Check if a datasource is a tree datasource.
+ *
+ * Tests for the presence of the three methods that define
+ * {@link ITreeDatasource}: `getRootNodes`, `getChildren`, and
+ * `hasChildren`.
+ *
+ * @template T The item type (used for type narrowing).
+ * @param datasource The datasource to check.
+ * @returns `true` if `datasource` implements `ITreeDatasource<T>`; `false` otherwise.
+ */
+export function isTreeDatasource<T>(
+  datasource: unknown,
+): datasource is ITreeDatasource<T> {
+  if (datasource === null || datasource === undefined) {
+    return false;
+  }
+  const obj = datasource as Record<string, unknown>;
+  return (
+    typeof obj["getRootNodes"] === "function" &&
+    typeof obj["getChildren"] === "function" &&
+    typeof obj["hasChildren"] === "function"
+  );
 }
 
 /**

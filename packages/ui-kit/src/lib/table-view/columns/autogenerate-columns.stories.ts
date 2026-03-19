@@ -1,9 +1,15 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { type Predicate } from "@angular/core";
+
 import { UITableView } from "../table-view.component";
 import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive";
-import { Component, signal } from "@angular/core";
 import { ArrayDatasource } from "../datasources/array-datasource";
+import { FilterableArrayDatasource } from "../datasources/filterable-array-datasource";
 import { DatasourceAdapter } from "../datasources/datasource-adapter";
+import { UIFilter } from "../../filter/filter.component";
+import { inferFilterFields } from "../../filter/infer-filter-fields";
+import { type FilterFieldDefinition } from "../../filter/filter.types";
 
 @Component({
   selector: "ui-demo-autogenerate",
@@ -134,6 +140,378 @@ class DemoAutogenerateNoHumanizeComponent {
   );
 }
 
+// ── Large data generators ───────────────────────────────────────────
+
+const firstNames = [
+  "James",
+  "Mary",
+  "Robert",
+  "Patricia",
+  "John",
+  "Jennifer",
+  "Michael",
+  "Linda",
+  "David",
+  "Elizabeth",
+  "William",
+  "Barbara",
+  "Richard",
+  "Susan",
+  "Joseph",
+  "Jessica",
+  "Thomas",
+  "Sarah",
+  "Charles",
+  "Karen",
+];
+
+const lastNames = [
+  "Smith",
+  "Johnson",
+  "Williams",
+  "Brown",
+  "Jones",
+  "Garcia",
+  "Miller",
+  "Davis",
+  "Rodriguez",
+  "Martinez",
+  "Hernandez",
+  "Lopez",
+  "Gonzalez",
+  "Wilson",
+  "Anderson",
+  "Thomas",
+  "Taylor",
+  "Moore",
+  "Jackson",
+  "Martin",
+];
+
+const departments = [
+  "Engineering",
+  "Marketing",
+  "Sales",
+  "HR",
+  "Finance",
+  "Legal",
+  "Design",
+  "Product",
+  "Operations",
+  "Support",
+];
+
+const cities = [
+  "New York",
+  "Los Angeles",
+  "Chicago",
+  "Houston",
+  "Phoenix",
+  "Philadelphia",
+  "San Antonio",
+  "San Diego",
+  "Dallas",
+  "San Jose",
+  "Austin",
+  "Jacksonville",
+  "Fort Worth",
+  "Columbus",
+  "Charlotte",
+];
+
+const statuses = ["Active", "On Leave", "Probation", "Contractor", "Remote"];
+
+function generateEmployees(count: number) {
+  return Array.from({ length: count }, (_, i) => {
+    const first = firstNames[i % firstNames.length];
+    const last = lastNames[(i * 7 + 3) % lastNames.length];
+    return {
+      employeeId: 1000 + i,
+      firstName: first,
+      lastName: last,
+      email: `${first.toLowerCase()}.${last.toLowerCase()}@acme.com`,
+      department: departments[i % departments.length],
+      salary: 45000 + ((i * 1337) % 85000),
+      startDate: `${2018 + (i % 8)}-${String((i % 12) + 1).padStart(2, "0")}-${String((i % 28) + 1).padStart(2, "0")}`,
+      status: statuses[i % statuses.length],
+    };
+  });
+}
+
+function generateProducts(count: number) {
+  const categories = [
+    "Electronics",
+    "Clothing",
+    "Home & Garden",
+    "Sports",
+    "Books",
+    "Toys",
+    "Food",
+    "Health",
+    "Automotive",
+    "Office",
+  ];
+  const adjectives = [
+    "Premium",
+    "Eco",
+    "Ultra",
+    "Classic",
+    "Smart",
+    "Pro",
+    "Mini",
+    "Deluxe",
+    "Basic",
+    "Advanced",
+  ];
+  const nouns = [
+    "Widget",
+    "Gadget",
+    "Device",
+    "Tool",
+    "Kit",
+    "Set",
+    "Pack",
+    "Unit",
+    "Module",
+    "System",
+  ];
+
+  return Array.from({ length: count }, (_, i) => ({
+    sku: `SKU-${String(i + 1).padStart(5, "0")}`,
+    productName: `${adjectives[i % adjectives.length]} ${nouns[(i * 3) % nouns.length]} ${i + 1}`,
+    category: categories[i % categories.length],
+    unitPrice: +(5 + ((i * 13.37) % 495)).toFixed(2),
+    stockQuantity: (i * 17) % 500,
+    reorderLevel: 10 + (i % 40),
+    supplierCode: `SUP-${String(((i * 7) % 50) + 1).padStart(3, "0")}`,
+    isDiscontinued: i % 13 === 0,
+  }));
+}
+
+function generateServerLogs(count: number) {
+  const levels = ["INFO", "WARN", "ERROR", "DEBUG", "TRACE"];
+  const services = [
+    "api-gateway",
+    "auth-service",
+    "user-service",
+    "payment-service",
+    "notification-service",
+    "search-service",
+    "cache-service",
+    "scheduler",
+  ];
+  const messages = [
+    "Request processed successfully",
+    "Connection timeout after 30s",
+    "Rate limit exceeded for client",
+    "Cache miss — fetching from DB",
+    "Health check passed",
+    "Retrying failed operation",
+    "Session expired for user",
+    "Index rebuild completed",
+    "Queue depth threshold exceeded",
+    "Certificate renewal scheduled",
+  ];
+
+  return Array.from({ length: count }, (_, i) => ({
+    timestamp: `2026-03-${String((i % 28) + 1).padStart(2, "0")}T${String(i % 24).padStart(2, "0")}:${String((i * 7) % 60).padStart(2, "0")}:${String((i * 13) % 60).padStart(2, "0")}Z`,
+    level: levels[i % levels.length],
+    service: services[i % services.length],
+    message: messages[i % messages.length],
+    responseTimeMs: 5 + ((i * 31) % 2000),
+    statusCode: [200, 201, 204, 400, 401, 403, 404, 500, 502, 503][i % 10],
+    requestId: `req-${crypto.randomUUID().slice(0, 8)}`,
+  }));
+}
+
+// ── Large-data demo components ──────────────────────────────────────
+
+@Component({
+  selector: "ui-demo-autogenerate-employees",
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: `
+    <ui-table-view
+      [datasource]="datasource()"
+      uiAutogenerateColumns
+    ></ui-table-view>
+  `,
+})
+class DemoAutogenerateEmployeesComponent {
+  public readonly datasource = signal(
+    new DatasourceAdapter(new ArrayDatasource(generateEmployees(200))),
+  );
+}
+
+@Component({
+  selector: "ui-demo-autogenerate-products",
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: `
+    <ui-table-view
+      [datasource]="datasource()"
+      [uiAutogenerateColumns]="config()"
+    ></ui-table-view>
+  `,
+})
+class DemoAutogenerateProductsComponent {
+  public readonly datasource = signal(
+    new DatasourceAdapter(new ArrayDatasource(generateProducts(500))),
+  );
+  public readonly config = signal({
+    excludeKeys: ["isDiscontinued"],
+    headerMap: {
+      sku: "SKU",
+      unitPrice: "Price ($)",
+      stockQuantity: "In Stock",
+      reorderLevel: "Reorder At",
+      supplierCode: "Supplier",
+    },
+  });
+}
+
+@Component({
+  selector: "ui-demo-autogenerate-logs",
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: `
+    <ui-table-view
+      [datasource]="datasource()"
+      uiAutogenerateColumns
+    ></ui-table-view>
+  `,
+})
+class DemoAutogenerateLogsComponent {
+  public readonly datasource = signal(
+    new DatasourceAdapter(new ArrayDatasource(generateServerLogs(1000))),
+  );
+}
+
+@Component({
+  selector: "ui-demo-autogenerate-employees-city",
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: `
+    <ui-table-view
+      [datasource]="datasource()"
+      [uiAutogenerateColumns]="config()"
+    ></ui-table-view>
+  `,
+})
+class DemoAutogenerateEmployeesCityComponent {
+  public readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource(
+        generateEmployees(150).map((e, i) => ({
+          ...e,
+          city: cities[i % cities.length],
+          floor: (i % 12) + 1,
+          extension: 2000 + i,
+        })),
+      ),
+    ),
+  );
+  public readonly config = signal({
+    excludeKeys: ["employeeId"],
+    headerMap: {
+      firstName: "First",
+      lastName: "Last",
+      startDate: "Hire Date",
+    },
+  });
+}
+
+// ── Filtered + autogenerate demo components ─────────────────────────
+
+const employeesForFilter = generateEmployees(200);
+const employeeFilterFields = inferFilterFields(employeesForFilter[0]);
+
+@Component({
+  selector: "ui-demo-autogenerate-filtered",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UITableView, UIAutogenerateColumnsDirective, UIFilter],
+  template: `
+    <ui-filter
+      [fields]="fields"
+      [allowJunction]="true"
+      (predicateChange)="onPredicateChange($event)"
+    />
+    <div style="margin-top: 0.75rem">
+      <ui-table-view
+        [datasource]="adapter()"
+        uiAutogenerateColumns
+      ></ui-table-view>
+    </div>
+  `,
+})
+class DemoAutogenerateFilteredComponent {
+  public readonly fields = employeeFilterFields;
+  private readonly datasource = new FilterableArrayDatasource(
+    employeesForFilter,
+  );
+  public readonly adapter = signal(new DatasourceAdapter(this.datasource));
+
+  public onPredicateChange(
+    predicate: Predicate<Record<string, unknown>> | undefined,
+  ): void {
+    this.datasource.applyPredicate(predicate ?? null);
+    this.adapter.set(new DatasourceAdapter(this.datasource));
+  }
+}
+
+const productsForFilter = generateProducts(500);
+const productFilterFields: FilterFieldDefinition[] = inferFilterFields(
+  productsForFilter[0],
+).filter((f) => f.key !== "isDiscontinued");
+
+@Component({
+  selector: "ui-demo-autogenerate-filtered-products",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UITableView, UIAutogenerateColumnsDirective, UIFilter],
+  template: `
+    <ui-filter
+      [fields]="fields"
+      [allowJunction]="true"
+      (predicateChange)="onPredicateChange($event)"
+    />
+    <div style="margin-top: 0.75rem">
+      <ui-table-view
+        [datasource]="adapter()"
+        [uiAutogenerateColumns]="columnConfig()"
+      ></ui-table-view>
+    </div>
+  `,
+})
+class DemoAutogenerateFilteredProductsComponent {
+  public readonly fields = productFilterFields;
+  public readonly columnConfig = signal({
+    excludeKeys: ["isDiscontinued"],
+    headerMap: {
+      sku: "SKU",
+      unitPrice: "Price ($)",
+      stockQuantity: "In Stock",
+      reorderLevel: "Reorder At",
+      supplierCode: "Supplier",
+    },
+  });
+
+  private readonly datasource = new FilterableArrayDatasource(
+    productsForFilter,
+  );
+  public readonly adapter = signal(new DatasourceAdapter(this.datasource));
+
+  public onPredicateChange(
+    predicate: Predicate<Record<string, unknown>> | undefined,
+  ): void {
+    this.datasource.applyPredicate(predicate ?? null);
+    this.adapter.set(new DatasourceAdapter(this.datasource));
+  }
+}
+
+// ── Meta ────────────────────────────────────────────────────────────
+
 const meta: Meta<UITableView> = {
   title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
   component: UITableView,
@@ -144,6 +522,12 @@ const meta: Meta<UITableView> = {
         DemoAutogenerateComponent,
         DemoAutogenerateCustomComponent,
         DemoAutogenerateNoHumanizeComponent,
+        DemoAutogenerateEmployeesComponent,
+        DemoAutogenerateProductsComponent,
+        DemoAutogenerateLogsComponent,
+        DemoAutogenerateEmployeesCityComponent,
+        DemoAutogenerateFilteredComponent,
+        DemoAutogenerateFilteredProductsComponent,
       ],
     }),
   ],
@@ -185,5 +569,92 @@ export const AutogenerateNoHumanize: Story = {
     props: args,
     template:
       "<ui-demo-autogenerate-no-humanize></ui-demo-autogenerate-no-humanize>",
+  }),
+};
+
+/**
+ * **200 employees** — An employee directory with 8 columns auto-generated
+ * from properties like `employeeId`, `firstName`, `lastName`, `email`,
+ * `department`, `salary`, `startDate`, and `status`.
+ *
+ * Demonstrates virtual scrolling with a moderately-sized dataset.
+ */
+export const Employees200: Story = {
+  render: (args) => ({
+    props: args,
+    template:
+      "<ui-demo-autogenerate-employees></ui-demo-autogenerate-employees>",
+  }),
+};
+
+/**
+ * **500 products** — A product catalog with custom header mapping and
+ * one excluded key (`isDiscontinued`). Shows how `headerMap` can provide
+ * concise column titles like "Price ($)" and "In Stock".
+ */
+export const Products500: Story = {
+  render: (args) => ({
+    props: args,
+    template: "<ui-demo-autogenerate-products></ui-demo-autogenerate-products>",
+  }),
+};
+
+/**
+ * **1 000 server logs** — A high-volume log viewer with 7 auto-generated
+ * columns including `timestamp`, `level`, `service`, `message`,
+ * `responseTimeMs`, `statusCode`, and `requestId`.
+ *
+ * Useful for verifying virtual scroll performance at scale.
+ */
+export const ServerLogs1000: Story = {
+  render: (args) => ({
+    props: args,
+    template: "<ui-demo-autogenerate-logs></ui-demo-autogenerate-logs>",
+  }),
+};
+
+/**
+ * **150 employees with extra columns** — Extended employee data with
+ * `city`, `floor`, and `extension` fields. Uses `excludeKeys` to hide
+ * the numeric ID and `headerMap` for compact column labels.
+ *
+ * This story has 10 columns to verify wider tables with autogeneration.
+ */
+export const EmployeesExtended150: Story = {
+  render: (args) => ({
+    props: args,
+    template:
+      "<ui-demo-autogenerate-employees-city></ui-demo-autogenerate-employees-city>",
+  }),
+};
+
+/**
+ * **200 employees + filter** — Combines `uiAutogenerateColumns` with
+ * `<ui-filter>`. Filter fields are auto-inferred from the first data row
+ * via `inferFilterFields()`, so neither the columns nor the filter fields
+ * need to be declared manually.
+ *
+ * Try filtering by `department`, `salary`, or `startDate`.
+ */
+export const FilteredEmployees200: Story = {
+  render: (args) => ({
+    props: args,
+    template: "<ui-demo-autogenerate-filtered></ui-demo-autogenerate-filtered>",
+  }),
+};
+
+/**
+ * **500 products + filter** — A filterable product catalog with
+ * auto-generated columns and custom header mapping. The `isDiscontinued`
+ * field is excluded from both the columns and the filter fields.
+ *
+ * Demonstrates how `inferFilterFields` and `uiAutogenerateColumns`
+ * work together for zero-config table + filter setups.
+ */
+export const FilteredProducts500: Story = {
+  render: (args) => ({
+    props: args,
+    template:
+      "<ui-demo-autogenerate-filtered-products></ui-demo-autogenerate-filtered-products>",
   }),
 };

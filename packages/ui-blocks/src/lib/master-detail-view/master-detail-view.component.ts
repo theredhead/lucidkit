@@ -14,8 +14,8 @@ import {
   type Predicate,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
+import { isTreeDatasource } from "@theredhead/foundation";
 import {
-  ArrayDatasource as _ArrayDatasource,
   DatasourceAdapter,
   FilterableArrayDatasource,
   SelectionModel,
@@ -67,7 +67,7 @@ export interface MasterDetailContext<T> {
  *
  * ### Tree mode
  * ```html
- * <ui-master-detail-view [treeDatasource]="treeDs" [displayWith]="labelFn">
+ * <ui-master-detail-view [datasource]="treeDs" [treeDisplayWith]="labelFn">
  *   <ng-template #detail let-object>
  *     <h3>{{ object.name }}</h3>
  *   </ng-template>
@@ -120,32 +120,25 @@ export class UIMasterDetailView<T = unknown> {
   public readonly title = input<string>("Items");
 
   /**
-   * The datasource adapter powering the table-view.
+   * The datasource powering the master list.
+   *
+   * Accepts either a {@link DatasourceAdapter} (for flat table mode)
+   * or an {@link ITreeDatasource} (for hierarchical tree mode).
+   * The component detects the type at runtime and renders the
+   * appropriate view.
    *
    * When provided, this takes precedence over the `data` input.
-   * The adapter should be pre-configured with a page size of 100.
    */
-  public readonly datasource = input<DatasourceAdapter<T> | undefined>(
-    undefined,
-  );
+  public readonly datasource = input<
+    DatasourceAdapter<T> | ITreeDatasource<T> | undefined
+  >(undefined);
 
   /**
    * Convenience: raw data array. When set, an internal
-   * `ArrayDatasource` is created automatically.
+   * `FilterableArrayDatasource` is created automatically.
    * Ignored when `datasource` is provided.
    */
   public readonly data = input<readonly T[]>([]);
-
-  /**
-   * Tree datasource for hierarchical master lists.
-   *
-   * When provided, the list panel renders a `<ui-tree-view>` instead
-   * of a `<ui-table-view>`. The `data`, `datasource`, and column
-   * inputs are ignored in tree mode.
-   */
-  public readonly treeDatasource = input<ITreeDatasource<T> | undefined>(
-    undefined,
-  );
 
   /**
    * Function that returns a display string for tree node data.
@@ -282,11 +275,23 @@ export class UIMasterDetailView<T = unknown> {
 
   /**
    * Whether the component is in tree mode.
-   * `true` when a `treeDatasource` is provided. @internal
+   * `true` when the `datasource` input is an `ITreeDatasource`. @internal
    */
-  protected readonly isTreeMode = computed(
-    () => this.treeDatasource() !== undefined,
+  protected readonly isTreeMode = computed(() =>
+    isTreeDatasource(this.datasource()),
   );
+
+  /**
+   * The tree datasource, extracted from the unified `datasource`
+   * input. Returns `undefined` when not in tree mode.
+   * @internal
+   */
+  protected readonly resolvedTreeDatasource = computed<
+    ITreeDatasource<T> | undefined
+  >(() => {
+    const ds = this.datasource();
+    return isTreeDatasource<T>(ds) ? ds : undefined;
+  });
 
   /**
    * The currently selected item, derived from the table selection
@@ -323,7 +328,7 @@ export class UIMasterDetailView<T = unknown> {
    */
   protected readonly resolvedDatasource = computed<DatasourceAdapter<T>>(() => {
     const explicit = this.datasource();
-    if (explicit) return explicit;
+    if (explicit && !isTreeDatasource(explicit)) return explicit;
     const data = this.data();
     return untracked(
       () =>
@@ -347,7 +352,7 @@ export class UIMasterDetailView<T = unknown> {
     if (explicit !== undefined) return explicit;
 
     // Tree mode: auto-show when a tree datasource is provided
-    if (this.treeDatasource() !== undefined) return false;
+    if (this.resolvedTreeDatasource() !== undefined) return false;
 
     // Auto-detect: unwrap the DatasourceAdapter to check the raw datasource
     const adapter = this.resolvedDatasource();
@@ -368,7 +373,7 @@ export class UIMasterDetailView<T = unknown> {
     if (explicit) return explicit;
 
     // ── Tree mode: infer from tree node data ──
-    const treeDs = this.treeDatasource();
+    const treeDs = this.resolvedTreeDatasource();
     if (treeDs) {
       const flatData = this.collectTreeData(treeDs);
       if (flatData.length === 0) return [];
@@ -425,7 +430,7 @@ export class UIMasterDetailView<T = unknown> {
    */
   protected readonly resolvedFilterData = computed<readonly T[]>(() => {
     // ── Tree mode: flatten all node data ──
-    const treeDs = this.treeDatasource();
+    const treeDs = this.resolvedTreeDatasource();
     if (treeDs) {
       const flatData = this.collectTreeData(treeDs);
       return flatData.length < 1000 ? flatData : [];

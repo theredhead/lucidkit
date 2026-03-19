@@ -57,7 +57,7 @@
     @if (isTreeMode()) {
       <div class="mdv-tree-wrapper">
         <ui-tree-view
-          [datasource]="treeDatasource()!"
+          [datasource]="resolvedTreeDatasource()!"
           [displayWith]="treeDisplayWith()"
           [filterPredicate]="treeFilterPredicate()"
           [(selected)]="selectedTreeNodes"

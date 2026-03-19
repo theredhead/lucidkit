@@ -48,14 +48,14 @@ export class UsersComponent {
 
 #### Key inputs
 
-| Input                   | Type                   | Default            | Description                            |
-| ----------------------- | ---------------------- | ------------------ | -------------------------------------- |
-| `datasource`            | `DatasourceAdapter<T>` | —                  | Data source for the master list/table  |
-| `treeDatasource`        | `ITreeDatasource<T>`   | —                  | Data source for tree mode              |
-| `masterTitle`           | `string`               | `'Items'`          | Title shown above the master pane      |
-| `detailPlaceholderText` | `string`               | `'Select an item'` | Placeholder when nothing is selected   |
-| `mode`                  | `'table' \| 'tree'`    | `'table'`          | Master pane display mode               |
-| `showFilter`            | `boolean`              | `false`            | Show a filter section above the master |
+| Input                   | Type                                         | Default            | Description                            |
+| ----------------------- | -------------------------------------------- | ------------------ | -------------------------------------- |
+| `datasource`            | `DatasourceAdapter<T> \| ITreeDatasource<T>` | —                  | Data source (flat table or tree mode)  |
+| `data`                  | `readonly T[]`                               | `[]`               | Convenience raw data array             |
+| `masterTitle`           | `string`                                     | `'Items'`          | Title shown above the master pane      |
+| `detailPlaceholderText` | `string`                                     | `'Select an item'` | Placeholder when nothing is selected   |
+| `mode`                  | `'table' \| 'tree'`                          | `'table'`          | Master pane display mode               |
+| `showFilter`            | `boolean`                                    | `false`            | Show a filter section above the master |
 
 #### Outputs
 
