@@ -6,7 +6,7 @@ import { ArrayDatasource } from "../table-view/datasources/array-datasource";
 
 /* ── demo data ────────────────────────────────────────────────── */
 
-interface Kitten {
+interface Photo {
   id: number;
   name: string;
   width: number;
@@ -14,7 +14,7 @@ interface Kitten {
   url: string;
 }
 
-const KITTEN_NAMES = [
+const PHOTO_NAMES = [
   "Whiskers",
   "Mittens",
   "Shadow",
@@ -29,21 +29,21 @@ const KITTEN_NAMES = [
   "Oliver",
 ];
 
-function buildKittens(count = 12): Kitten[] {
+function buildPhotos(count = 12): Photo[] {
   return Array.from({ length: count }, (_, i) => {
     const w = 200 + (i % 4) * 50;
     const h = 200 + ((i + 2) % 3) * 50;
     return {
       id: i + 1,
-      name: KITTEN_NAMES[i % KITTEN_NAMES.length],
+      name: PHOTO_NAMES[i % PHOTO_NAMES.length],
       width: w,
       height: h,
-      url: `https://picsum.photos/seed/kitten${i + 1}/${w}/${h}`,
+      url: `https://picsum.photos/seed/photo${i + 1}/${w}/${h}`,
     };
   });
 }
 
-const KITTENS = buildKittens();
+const PHOTOS = buildPhotos();
 
 /* ── wrapper components ───────────────────────────────────────── */
 
@@ -54,16 +54,16 @@ const KITTENS = buildKittens();
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-repeater [datasource]="ds">
-      <ng-template let-kitten let-i="index">
+      <ng-template let-photo let-i="index">
         <figure class="card">
           <img
-            [src]="kitten.url"
-            [alt]="kitten.name"
+            [src]="photo.url"
+            [alt]="photo.name"
             loading="lazy"
             width="200"
             height="200"
           />
-          <figcaption>#{{ i + 1 }} {{ kitten.name }}</figcaption>
+          <figcaption>#{{ i + 1 }} {{ photo.name }}</figcaption>
         </figure>
       </ng-template>
     </ui-repeater>
@@ -98,7 +98,7 @@ const KITTENS = buildKittens();
   `,
 })
 class RepeaterGridDemo {
-  public readonly ds = new ArrayDatasource(KITTENS);
+  public readonly ds = new ArrayDatasource(PHOTOS);
 }
 
 @Component({
@@ -108,16 +108,16 @@ class RepeaterGridDemo {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-repeater [datasource]="ds">
-      <ng-template let-kitten let-even="even">
+      <ng-template let-photo let-even="even">
         <div class="tile" [class.even]="even">
           <img
-            [src]="kitten.url"
-            [alt]="kitten.name"
+            [src]="photo.url"
+            [alt]="photo.name"
             loading="lazy"
             width="120"
             height="120"
           />
-          <span class="label">{{ kitten.name }}</span>
+          <span class="label">{{ photo.name }}</span>
         </div>
       </ng-template>
     </ui-repeater>
@@ -161,7 +161,7 @@ class RepeaterGridDemo {
   `,
 })
 class RepeaterFlexRowDemo {
-  public readonly ds = new ArrayDatasource(KITTENS);
+  public readonly ds = new ArrayDatasource(PHOTOS);
 }
 
 @Component({
@@ -171,18 +171,18 @@ class RepeaterFlexRowDemo {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-repeater [datasource]="ds" [limit]="6">
-      <ng-template let-kitten let-first="first" let-last="last">
+      <ng-template let-photo let-first="first" let-last="last">
         <div class="row" [class.first]="first" [class.last]="last">
           <img
-            [src]="kitten.url"
-            [alt]="kitten.name"
+            [src]="photo.url"
+            [alt]="photo.name"
             loading="lazy"
             width="64"
             height="64"
           />
           <div class="info">
-            <strong>{{ kitten.name }}</strong>
-            <span class="meta">{{ kitten.width }}×{{ kitten.height }}</span>
+            <strong>{{ photo.name }}</strong>
+            <span class="meta">{{ photo.width }}×{{ photo.height }}</span>
           </div>
         </div>
       </ng-template>
@@ -236,7 +236,7 @@ class RepeaterFlexRowDemo {
   `,
 })
 class RepeaterFlexColumnDemo {
-  public readonly ds = new ArrayDatasource(KITTENS);
+  public readonly ds = new ArrayDatasource(PHOTOS);
 }
 
 @Component({
@@ -246,10 +246,10 @@ class RepeaterFlexColumnDemo {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-repeater [datasource]="ds">
-      <ng-template let-kitten let-i="index" let-odd="odd">
+      <ng-template let-photo let-i="index" let-odd="odd">
         <div class="brick" [style.height.px]="180 + (i % 3) * 60">
-          <img [src]="kitten.url" [alt]="kitten.name" loading="lazy" />
-          <span class="overlay">{{ kitten.name }}</span>
+          <img [src]="photo.url" [alt]="photo.name" loading="lazy" />
+          <span class="overlay">{{ photo.name }}</span>
         </div>
       </ng-template>
     </ui-repeater>
@@ -288,7 +288,7 @@ class RepeaterFlexColumnDemo {
   `,
 })
 class RepeaterMasonryDemo {
-  public readonly ds = new ArrayDatasource(KITTENS);
+  public readonly ds = new ArrayDatasource(PHOTOS);
 }
 
 /* ── Storybook meta ───────────────────────────────────────────── */
@@ -346,7 +346,7 @@ export default meta;
 type Story = StoryObj<UIRepeater>;
 
 /**
- * **CSS Grid** — responsive auto-fill columns with kitten cards.
+ * **CSS Grid** — responsive auto-fill columns with photo cards.
  * Shows how the repeater adds zero layout constraints:
  * the grid is defined entirely by the host component.
  */
@@ -358,16 +358,16 @@ export const Grid: Story = {
     docs: {
       source: {
         code: `<ui-repeater [datasource]="ds">
-  <ng-template let-kitten let-i="index">
+  <ng-template let-photo let-i="index">
     <figure class="card">
-      <img [src]="kitten.url" [alt]="kitten.name" />
-      <figcaption>#{{ i + 1 }} {{ kitten.name }}</figcaption>
+      <img [src]="photo.url" [alt]="photo.name" />
+      <figcaption>#{{ i + 1 }} {{ photo.name }}</figcaption>
     </figure>
   </ng-template>
 </ui-repeater>
 
 <!-- Component class:
-readonly ds = new ArrayDatasource(kittens); -->`,
+readonly ds = new ArrayDatasource(photos); -->`,
         language: "html",
       },
     },
@@ -387,10 +387,10 @@ export const FlexRowWrap: Story = {
     docs: {
       source: {
         code: `<ui-repeater [datasource]="ds">
-  <ng-template let-kitten let-even="even">
+  <ng-template let-photo let-even="even">
     <div class="tile" [class.even]="even">
-      <img [src]="kitten.url" [alt]="kitten.name" />
-      <span>{{ kitten.name }}</span>
+      <img [src]="photo.url" [alt]="photo.name" />
+      <span>{{ photo.name }}</span>
     </div>
   </ng-template>
 </ui-repeater>`,
@@ -412,12 +412,12 @@ export const FlexColumn: Story = {
     docs: {
       source: {
         code: `<ui-repeater [datasource]="ds" [limit]="6">
-  <ng-template let-kitten let-first="first" let-last="last">
+  <ng-template let-photo let-first="first" let-last="last">
     <div class="row" [class.first]="first" [class.last]="last">
-      <img [src]="kitten.url" [alt]="kitten.name" />
+      <img [src]="photo.url" [alt]="photo.name" />
       <div class="info">
-        <strong>{{ kitten.name }}</strong>
-        <span>{{ kitten.width }}×{{ kitten.height }}</span>
+        <strong>{{ photo.name }}</strong>
+        <span>{{ photo.width }}×{{ photo.height }}</span>
       </div>
     </div>
   </ng-template>
@@ -440,10 +440,10 @@ export const Masonry: Story = {
     docs: {
       source: {
         code: `<ui-repeater [datasource]="ds">
-  <ng-template let-kitten let-i="index" let-odd="odd">
+  <ng-template let-photo let-i="index" let-odd="odd">
     <div class="brick" [style.height.px]="180 + (i % 3) * 60">
-      <img [src]="kitten.url" [alt]="kitten.name" />
-      <span class="overlay">{{ kitten.name }}</span>
+      <img [src]="photo.url" [alt]="photo.name" />
+      <span class="overlay">{{ photo.name }}</span>
     </div>
   </ng-template>
 </ui-repeater>`,

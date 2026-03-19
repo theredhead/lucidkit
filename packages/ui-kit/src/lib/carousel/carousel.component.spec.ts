@@ -15,6 +15,7 @@ import type { CarouselStrategy } from "./carousel.types";
       [strategy]="strategy()"
       [showControls]="showControls()"
       [showIndicators]="showIndicators()"
+      [wrap]="wrap()"
       [(activeIndex)]="activeIndex"
     >
       <ng-template let-item>
@@ -36,6 +37,7 @@ class TestHost {
   );
   public readonly showControls = signal(true);
   public readonly showIndicators = signal(true);
+  public readonly wrap = signal(false);
   public readonly activeIndex = signal(0);
 }
 
@@ -214,7 +216,7 @@ describe("UICarousel", () => {
       const carousel = fixture.debugElement.children[0]
         .componentInstance as UICarousel;
       const style = carousel["trackStyle"]();
-      expect(style["overflow"]).toBe("hidden");
+      expect(Object.keys(style).length).toBe(0);
     });
 
     it("should return coverflow strategy track style", () => {
@@ -223,7 +225,7 @@ describe("UICarousel", () => {
       const carousel = fixture.debugElement.children[0]
         .componentInstance as UICarousel;
       const style = carousel["trackStyle"]();
-      expect(style["perspective"]).toBe("1200px");
+      expect(style["perspective"]).toBe("800px");
       expect(style["overflow"]).toBe("visible");
     });
 
@@ -242,20 +244,21 @@ describe("UICarousel", () => {
   });
 
   describe("scroll strategy", () => {
-    it("should give active item full opacity", () => {
+    it("should give all items full opacity by default", () => {
       const strategy = new ScrollCarouselStrategy();
-      const style = strategy.getItemStyle(2, 2, 5);
-      expect(style.opacity).toBe(1);
+      expect(strategy.getItemStyle(2, 2, 5).opacity).toBe(1);
+      expect(strategy.getItemStyle(1, 2, 5).opacity).toBe(1);
+      expect(strategy.getItemStyle(0, 2, 5).opacity).toBe(1);
     });
 
-    it("should give adjacent items reduced opacity", () => {
-      const strategy = new ScrollCarouselStrategy();
+    it("should fade adjacent items when fade is enabled", () => {
+      const strategy = new ScrollCarouselStrategy({ fade: true });
       const style = strategy.getItemStyle(1, 2, 5);
       expect(style.opacity).toBe(0.7);
     });
 
-    it("should give distant items low opacity", () => {
-      const strategy = new ScrollCarouselStrategy();
+    it("should fade distant items more when fade is enabled", () => {
+      const strategy = new ScrollCarouselStrategy({ fade: true });
       const style = strategy.getItemStyle(0, 2, 5);
       expect(style.opacity).toBe(0.4);
     });
@@ -270,30 +273,67 @@ describe("UICarousel", () => {
       expect(style.zIndex).toBe(100);
     });
 
+    it("should give all items full opacity by default", () => {
+      const strategy = new CoverflowCarouselStrategy();
+      const side = strategy.getItemStyle(0, 2, 5);
+      expect(side.opacity).toBe(1);
+    });
+
+    it("should fade non-active items when fade is enabled", () => {
+      const strategy = new CoverflowCarouselStrategy({ fade: true });
+      const side = strategy.getItemStyle(0, 2, 5);
+      expect(side.opacity).toBeLessThan(1);
+    });
+
     it("should rotate left neighbours with positive Y", () => {
       const strategy = new CoverflowCarouselStrategy();
       const style = strategy.getItemStyle(1, 2, 5);
-      // Item is to the left → offset = -1 → direction = -1 → rotate = -(-1)*45 = 45
-      expect(style.transform).toContain("rotateY(45deg)");
+      // Item is to the left → offset = -1 → direction = -1 → rotate = -(-1)*72 = 72
+      expect(style.transform).toContain("rotateY(72deg)");
     });
 
     it("should rotate right neighbours with negative Y", () => {
       const strategy = new CoverflowCarouselStrategy();
       const style = strategy.getItemStyle(3, 2, 5);
-      // Item is to the right → offset = 1 → direction = 1 → rotate = -(1)*45 = -45
-      expect(style.transform).toContain("rotateY(-45deg)");
+      // Item is to the right → offset = 1 → direction = 1 → rotate = -(1)*72 = -72
+      expect(style.transform).toContain("rotateY(-72deg)");
     });
 
     it("should apply blur to non-active items", () => {
-      const strategy = new CoverflowCarouselStrategy();
+      const strategy = new CoverflowCarouselStrategy({ blur: true });
       const style = strategy.getItemStyle(0, 2, 5);
       expect(style.filter).toContain("blur");
     });
 
     it("should not blur the active item", () => {
-      const strategy = new CoverflowCarouselStrategy();
+      const strategy = new CoverflowCarouselStrategy({ blur: true });
       const style = strategy.getItemStyle(2, 2, 5);
       expect(style.filter).toBeUndefined();
+    });
+
+    it("should omit blur when blur option is false", () => {
+      const strategy = new CoverflowCarouselStrategy();
+      const style = strategy.getItemStyle(0, 2, 5);
+      expect(style.filter).toBeUndefined();
+    });
+
+    it("should use circular offset in wrap mode", () => {
+      const strategy = new CoverflowCarouselStrategy();
+      // 5 items, active=0 → item 4 is offset -1 (left neighbour) in wrap mode
+      // offset = 4 - 0 = 4, > 5/2 → offset = 4 - 5 = -1
+      // direction = -1, rotate = -(-1)*72 = 72
+      const style = strategy.getItemStyle(4, 0, 5, true);
+      expect(style.transform).toContain("rotateY(72deg)");
+      expect(style.zIndex).toBe(99);
+    });
+
+    it("should use linear offset without wrap", () => {
+      const strategy = new CoverflowCarouselStrategy();
+      // 5 items, active=0 → item 4 is offset +4 (far right) without wrap
+      // direction = 1, rotate = -(1)*72 = -72
+      const style = strategy.getItemStyle(4, 0, 5, false);
+      expect(style.transform).toContain("rotateY(-72deg)");
+      expect(style.zIndex).toBe(96);
     });
   });
 
@@ -314,6 +354,114 @@ describe("UICarousel", () => {
       );
       fixture.detectChanges();
       expect(host.activeIndex()).toBe(2);
+    });
+  });
+
+  describe("wrap mode", () => {
+    beforeEach(() => {
+      host.wrap.set(true);
+      fixture.detectChanges();
+    });
+
+    it("should wrap from first to last on prev", () => {
+      host.activeIndex.set(0);
+      fixture.detectChanges();
+      const carousel = fixture.debugElement.children[0]
+        .componentInstance as UICarousel;
+      carousel.prev();
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(4);
+    });
+
+    it("should wrap from last to first on next", () => {
+      host.activeIndex.set(4);
+      fixture.detectChanges();
+      const carousel = fixture.debugElement.children[0]
+        .componentInstance as UICarousel;
+      carousel.next();
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(0);
+    });
+
+    it("should not disable prev button at first item", () => {
+      host.activeIndex.set(0);
+      fixture.detectChanges();
+      const prevBtn = el.querySelector(".cr-btn--prev") as HTMLButtonElement;
+      expect(prevBtn.disabled).toBe(false);
+    });
+
+    it("should not disable next button at last item", () => {
+      host.activeIndex.set(4);
+      fixture.detectChanges();
+      const nextBtn = el.querySelector(".cr-btn--next") as HTMLButtonElement;
+      expect(nextBtn.disabled).toBe(false);
+    });
+
+    it("should wrap goTo with negative index", () => {
+      const carousel = fixture.debugElement.children[0]
+        .componentInstance as UICarousel;
+      carousel.goTo(-1);
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(4);
+    });
+
+    it("should wrap goTo past end", () => {
+      const carousel = fixture.debugElement.children[0]
+        .componentInstance as UICarousel;
+      carousel.goTo(7);
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(2);
+    });
+  });
+
+  describe("wheel navigation", () => {
+    function dispatchWheel(
+      target: HTMLElement,
+      deltaX: number,
+      deltaY = 0,
+    ): void {
+      const event = new WheelEvent("wheel", {
+        deltaX,
+        deltaY,
+        bubbles: true,
+        cancelable: true,
+      });
+      target.dispatchEvent(event);
+    }
+
+    it("should navigate next on positive deltaX", async () => {
+      dispatchWheel(el, 30);
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(1);
+    });
+
+    it("should navigate prev on negative deltaX", async () => {
+      host.activeIndex.set(2);
+      fixture.detectChanges();
+      dispatchWheel(el, -30);
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(1);
+    });
+
+    it("should use deltaY when deltaX is negligible", async () => {
+      dispatchWheel(el, 0, 30);
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(1);
+    });
+
+    it("should ignore tiny deltas (noise)", () => {
+      dispatchWheel(el, 2);
+      fixture.detectChanges();
+      expect(host.activeIndex()).toBe(0);
+    });
+
+    it("should throttle rapid wheel events", async () => {
+      dispatchWheel(el, 30);
+      dispatchWheel(el, 30);
+      dispatchWheel(el, 30);
+      fixture.detectChanges();
+      // Only the first should have fired — cooldown blocks the rest
+      expect(host.activeIndex()).toBe(1);
     });
   });
 });

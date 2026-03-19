@@ -40,6 +40,7 @@ export interface CarouselStrategy {
     itemIndex: number,
     activeIndex: number,
     totalItems: number,
+    wrap?: boolean,
   ): CarouselItemStyle;
 
   /**
