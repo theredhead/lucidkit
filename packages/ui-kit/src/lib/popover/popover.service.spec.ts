@@ -1045,5 +1045,77 @@ describe("PopoverService", () => {
 
       ref.close();
     });
+
+    it("should default to 16px gap when showArrow is true", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+        showArrow: true,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+
+      // anchor.bottom (132) + arrowGap default (16) = 148
+      expect(top).toBeGreaterThanOrEqual(148);
+
+      ref.close();
+    });
+
+    it("should use custom arrowGap value", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+        showArrow: true,
+        arrowGap: 24,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+
+      // anchor.bottom (132) + arrowGap (24) = 156
+      expect(top).toBeGreaterThanOrEqual(156);
+
+      ref.close();
+    });
+
+    it("should respect explicit verticalOffset even with showArrow", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+        showArrow: true,
+        verticalOffset: 32,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+
+      // anchor.bottom (132) + verticalOffset (32) = 164
+      expect(top).toBeGreaterThanOrEqual(164);
+
+      ref.close();
+    });
+
+    it("should still use 4px default gap when showArrow is false", () => {
+      const ref = service.openPopover({
+        component: TestPopover,
+        anchor,
+        verticalAxisAlignment: "bottom",
+        horizontalAxisAlignment: "center",
+        showArrow: false,
+      });
+      const popover = document.querySelector(".ui-popover") as HTMLElement;
+      const top = parseFloat(popover.style.top);
+
+      // anchor.bottom (132) + default offset (4) = 136
+      expect(top).toBeGreaterThanOrEqual(136);
+      // but NOT 148 (which would be the arrow gap)
+      expect(top).toBeLessThan(148);
+
+      ref.close();
+    });
   });
 });
