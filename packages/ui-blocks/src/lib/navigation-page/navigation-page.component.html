@@ -1,0 +1,103 @@
+<div class="nav-page-layout">
+  <!-- Sidebar (pinned or inside drawer) -->
+  @if (sidebarPinned()) {
+    <aside class="nav-page-sidebar">
+      <ui-sidebar-nav [ariaLabel]="ariaLabel()">
+        <ng-content select="ui-sidebar-item" />
+
+        @for (page of topLevelPages(); track page.id) {
+          <ui-sidebar-item
+            [label]="page.label"
+            [icon]="page.icon ?? ''"
+            [badge]="page.badge ?? ''"
+            [active]="currentPage()?.id === page.id"
+            [disabled]="page.disabled ?? false"
+            (activated)="navigate(page)"
+          />
+        }
+
+        @for (group of resolvedGroups(); track group.id) {
+          <ui-sidebar-group
+            [label]="group.label"
+            [icon]="group.icon ?? ''"
+            [expanded]="group.expanded ?? true"
+          >
+            @for (page of group.children; track page.id) {
+              <ui-sidebar-item
+                [label]="page.label"
+                [icon]="page.icon ?? ''"
+                [badge]="page.badge ?? ''"
+                [active]="currentPage()?.id === page.id"
+                [disabled]="page.disabled ?? false"
+                (activated)="navigate(page)"
+              />
+            }
+          </ui-sidebar-group>
+        }
+      </ui-sidebar-nav>
+    </aside>
+  } @else {
+    <ui-drawer
+      [(open)]="drawerOpen"
+      [position]="drawerPosition()"
+      [width]="drawerWidth()"
+      [ariaLabel]="ariaLabel()"
+    >
+      <ui-sidebar-nav [ariaLabel]="ariaLabel()">
+        <ng-content select="ui-sidebar-item" />
+
+        @for (page of topLevelPages(); track page.id) {
+          <ui-sidebar-item
+            [label]="page.label"
+            [icon]="page.icon ?? ''"
+            [badge]="page.badge ?? ''"
+            [active]="currentPage()?.id === page.id"
+            [disabled]="page.disabled ?? false"
+            (activated)="navigate(page)"
+          />
+        }
+
+        @for (group of resolvedGroups(); track group.id) {
+          <ui-sidebar-group
+            [label]="group.label"
+            [icon]="group.icon ?? ''"
+            [expanded]="group.expanded ?? true"
+          >
+            @for (page of group.children; track page.id) {
+              <ui-sidebar-item
+                [label]="page.label"
+                [icon]="page.icon ?? ''"
+                [badge]="page.badge ?? ''"
+                [active]="currentPage()?.id === page.id"
+                [disabled]="page.disabled ?? false"
+                (activated)="navigate(page)"
+              />
+            }
+          </ui-sidebar-group>
+        }
+      </ui-sidebar-nav>
+    </ui-drawer>
+  }
+
+  <!-- Main content area -->
+  <main class="nav-page-main">
+    <header class="nav-page-breadcrumb">
+      <ui-breadcrumb
+        [items]="breadcrumbItems()"
+        [variant]="breadcrumbVariant()"
+        ariaLabel="Page breadcrumb"
+        (itemClicked)="onBreadcrumbClick($event)"
+      />
+    </header>
+
+    <div class="nav-page-content">
+      @if (contentTemplate(); as tpl) {
+        <ng-container
+          *ngTemplateOutlet="tpl; context: { $implicit: currentPage(), page: currentPage() }"
+        />
+      } @else {
+        <ng-content />
+      }
+    </div>
+  </main>
+</div>
