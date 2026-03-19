@@ -138,8 +138,9 @@ export class UINavigationPage {
    *
    * Takes precedence over the `items` convenience input.
    */
-  public readonly datasource =
-    input<ITreeDatasource<NavigationNodeData> | undefined>(undefined);
+  public readonly datasource = input<
+    ITreeDatasource<NavigationNodeData> | undefined
+  >(undefined);
 
   /**
    * Convenience: static array of navigation tree nodes.

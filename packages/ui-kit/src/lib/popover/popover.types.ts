@@ -185,7 +185,7 @@ export interface OpenPopoverConfig<T> {
    * automatically raised to at least {@link arrowGap} so the
    * arrow has room to render between the anchor and the popover.
    *
-   * @default false
+   * @default true
    */
   readonly showArrow?: boolean;
 

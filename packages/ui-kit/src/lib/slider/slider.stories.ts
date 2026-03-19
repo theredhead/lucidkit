@@ -2,6 +2,7 @@ import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
 import { UISlider } from "./slider.component";
+import type { SliderTick } from "./slider.types";
 
 @Component({
   selector: "ui-slider-demo",
@@ -82,6 +83,63 @@ class SliderRangeDemo {
   public readonly ageRange = signal<readonly [number, number]>([25, 45]);
 }
 
+@Component({
+  selector: "ui-slider-ticks-demo",
+  standalone: true,
+  imports: [UISlider],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div
+      style="display: flex; flex-direction: column; gap: 40px; max-width: 400px"
+    >
+      <div>
+        <h4 style="margin: 0 0 8px">Auto ticks (step = 20)</h4>
+        <ui-slider
+          [(value)]="auto"
+          [step]="20"
+          [showTicks]="true"
+          [showValue]="true"
+          ariaLabel="Auto ticks"
+        />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Labelled ticks</h4>
+        <ui-slider
+          [(value)]="labelled"
+          [ticks]="labelledTicks"
+          [showValue]="true"
+          ariaLabel="Labelled"
+        />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Range with ticks</h4>
+        <ui-slider
+          mode="range"
+          [(value)]="range"
+          [min]="0"
+          [max]="100"
+          [step]="25"
+          [showTicks]="true"
+          [showValue]="true"
+          ariaLabel="Range ticks"
+        />
+      </div>
+    </div>
+  `,
+})
+class SliderTicksDemo {
+  public readonly auto = signal(40);
+  public readonly labelled = signal(50);
+  public readonly range = signal<readonly [number, number]>([25, 75]);
+  public readonly labelledTicks: readonly SliderTick[] = [
+    { value: 0, label: "Min" },
+    { value: 25, label: "Low" },
+    { value: 50, label: "Mid" },
+    { value: 75, label: "High" },
+    { value: 100, label: "Max" },
+  ];
+}
+
 const meta: Meta<UISlider> = {
   title: "@Theredhead/UI Kit/Slider",
   component: UISlider,
@@ -106,13 +164,15 @@ const meta: Meta<UISlider> = {
           "| `min` / `max` | `number` | `0` / `100` | Value bounds |\n" +
           "| `step` | `number` | `1` | Step increment |\n" +
           "| `showValue` | `boolean` | `false` | Show numeric label |\n" +
+          "| `showTicks` | `boolean` | `false` | Show tick marks at each step |\n" +
+          "| `ticks` | `SliderTick[]` | `[]` | Explicit tick definitions (overrides showTicks) |\n" +
           "| `disabled` | `boolean` | `false` | Disable interaction |",
       },
     },
   },
   decorators: [
     moduleMetadata({
-      imports: [SliderSingleDemo, SliderRangeDemo],
+      imports: [SliderSingleDemo, SliderRangeDemo, SliderTicksDemo],
     }),
   ],
 };
@@ -170,6 +230,58 @@ export const Range: Story = {
 <!-- Component class:
 readonly priceRange = signal<readonly [number, number]>([200, 800]); -->`,
         language: "html",
+      },
+    },
+  },
+};
+
+/**
+ * Sliders with tick marks along the track. Auto-generated ticks appear
+ * at each step interval. Explicit ticks support optional labels displayed
+ * below the track. Works in both single and range modes.
+ */
+export const Ticks: Story = {
+  render: () => ({
+    template: `<ui-slider-ticks-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- Auto ticks at step intervals -->
+<ui-slider [(value)]="auto" [step]="20" [showTicks]="true" [showValue]="true" ariaLabel="Auto" />
+
+<!-- Explicit labelled ticks -->
+<ui-slider [(value)]="labelled" [ticks]="ticks" [showValue]="true" ariaLabel="Labelled" />
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UISlider, type SliderTick } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UISlider],
+  template: \\\`
+    <ui-slider [(value)]="volume" [step]="20" [showTicks]="true" [showValue]="true" />
+    <ui-slider [(value)]="rating" [ticks]="ticks" [showValue]="true" />
+  \\\`,
+})
+export class ExampleComponent {
+  readonly volume = signal(40);
+  readonly rating = signal(50);
+  readonly ticks: readonly SliderTick[] = [
+    { value: 0, label: 'Min' },
+    { value: 50, label: 'Mid' },
+    { value: 100, label: 'Max' },
+  ];
+}
+
+// ── SCSS ──
+/* No custom styles needed — tick tokens follow the slider theme. */
+`,
       },
     },
   },
