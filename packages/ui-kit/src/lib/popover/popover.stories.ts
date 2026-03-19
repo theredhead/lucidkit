@@ -464,6 +464,83 @@ class ManualDismissDemo {
   }
 }
 
+@Component({
+  selector: "ui-popover-arrow-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIButton],
+  styles: [
+    `
+      :host {
+        display: block;
+        padding: 4rem 2rem;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        gap: 0.5rem;
+        justify-content: center;
+        align-items: center;
+        max-width: 460px;
+        margin: 0 auto;
+      }
+    `,
+  ],
+  template: `
+    <p
+      style="text-align: center; font-size: 0.8125rem; opacity: 0.7; margin-bottom: 1rem;"
+    >
+      Click each button to see a popover with an arrow pointing back towards the
+      trigger.
+    </p>
+    <div class="grid">
+      <!-- Row 1 -->
+      <span></span>
+      <ui-button variant="outlined" (click)="open($event, 'top', 'center')">
+        ↑ Top
+      </ui-button>
+      <span></span>
+
+      <!-- Row 2 -->
+      <ui-button variant="outlined" (click)="open($event, 'center', 'start')">
+        ← Left
+      </ui-button>
+      <ui-button variant="filled" (click)="open($event, 'bottom', 'center')">
+        ↓ Bottom
+      </ui-button>
+      <ui-button variant="outlined" (click)="open($event, 'center', 'end')">
+        Right →
+      </ui-button>
+
+      <!-- Row 3 -->
+      <span></span>
+      <ui-button variant="outlined" (click)="open($event, 'auto', 'auto')">
+        ✦ Auto
+      </ui-button>
+      <span></span>
+    </div>
+  `,
+})
+class ArrowDemo {
+  private readonly popover = inject(PopoverService);
+
+  open(event: Event, vAlign: string, hAlign: string): void {
+    const anchor = event.currentTarget as HTMLElement;
+    this.popover.openPopover({
+      component: StoryTooltipContent,
+      anchor,
+      verticalAxisAlignment: vAlign as "auto" | "top" | "center" | "bottom",
+      horizontalAxisAlignment: hAlign as "auto" | "start" | "center" | "end",
+      showArrow: true,
+      inputs: {
+        title: "Arrow Popover",
+        body: `Placement: vertical=${vAlign}, horizontal=${hAlign}`,
+      },
+      ariaLabel: `${vAlign} ${hAlign} arrow tooltip`,
+    });
+  }
+}
+
 // ── Storybook meta & stories ───────────────────────────────────────
 
 const meta: Meta = {
@@ -506,6 +583,7 @@ const meta: Meta = {
           '| `verticalAxisAlignment` | `"top" \\| "bottom" \\| "center" \\| "auto"` | `"auto"` | Vertical placement |',
           '| `horizontalAxisAlignment` | `"start" \\| "end" \\| "center" \\| "auto"` | `"auto"` | Horizontal placement |',
           "| `closeOnOutsideClick` | `boolean` | `true` | Whether clicking outside closes the popover |",
+          "| `showArrow` | `boolean` | `false` | Show a triangular arrow pointing towards the anchor |",
           "| `inputs` | `Record<string, any>` | — | Input bindings forwarded to the component |",
           "| `outputs` | `Record<string, Function>` | — | Output handlers wired to the component |",
           "| `ariaLabel` | `string` | — | Accessible label for the popover container |",
@@ -521,6 +599,7 @@ const meta: Meta = {
         ActionMenuDemo,
         PlacementDemo,
         ManualDismissDemo,
+        ArrowDemo,
       ],
     }),
   ],
@@ -667,6 +746,52 @@ export const ManualDismiss: Story = {
 // Dismiss programmatically:
 ref.close();`,
         language: "typescript",
+      },
+    },
+  },
+};
+
+/**
+ * **Arrow** — Popovers with a triangular arrow (caret) visually
+ * connecting them to the anchor element. The arrow side is
+ * determined automatically from the resolved placement.
+ *
+ * Set `showArrow: true` in the config to enable.
+ */
+export const Arrow: Story = {
+  render: () => ({
+    template: `<ui-popover-arrow-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── TypeScript ──
+import { Component, inject, ElementRef, viewChild } from '@angular/core';
+import { PopoverService } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  template: \`<button #trigger (click)="open()">Show tooltip</button>\`,
+})
+export class ExampleComponent {
+  private readonly popover = inject(PopoverService);
+  private readonly trigger = viewChild.required('trigger', { read: ElementRef });
+
+  open(): void {
+    this.popover.openPopover({
+      component: TooltipContent,
+      anchor: this.trigger().nativeElement,
+      verticalAxisAlignment: 'bottom',
+      horizontalAxisAlignment: 'center',
+      showArrow: true,
+      ariaLabel: 'Tooltip with arrow',
+    });
+  }
+}
+`,
       },
     },
   },

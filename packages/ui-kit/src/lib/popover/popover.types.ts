@@ -165,4 +165,15 @@ export interface OpenPopoverConfig<T> {
    * @default true
    */
   readonly closeOnOutsideClick?: boolean;
+
+  /**
+   * Whether to show a triangular arrow (caret) pointing from the
+   * popover towards its anchor element.
+   *
+   * The arrow side is determined automatically from the resolved
+   * vertical/horizontal alignment.
+   *
+   * @default false
+   */
+  readonly showArrow?: boolean;
 }
