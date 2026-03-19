@@ -415,7 +415,7 @@ const TREE_DATA: TreeNode<Department>[] = [
   imports: [UIMasterDetailView],
   template: `
     <ui-master-detail-view
-      [treeDatasource]="treeDatasource()"
+      [datasource]="treeDatasource()"
       [treeDisplayWith]="displayWith"
       title="Departments"
       placeholder="Select a department"

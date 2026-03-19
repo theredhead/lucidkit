@@ -26,6 +26,7 @@ export { SortableArrayTreeDatasource } from "./sortable-array-tree-datasource";
 export {
   isFilterableDatasource,
   isSortableDatasource,
+  isTreeDatasource,
   isFilterableTreeDatasource,
   isSortableTreeDatasource,
 } from "./type-guards";

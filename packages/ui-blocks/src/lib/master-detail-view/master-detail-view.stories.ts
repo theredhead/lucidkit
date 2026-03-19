@@ -581,7 +581,7 @@ const ORG_TREE: TreeNode<OrgNode>[] = [
   ],
   template: `
     <ui-master-detail-view
-      [treeDatasource]="treeDatasource"
+      [datasource]="treeDatasource"
       [treeDisplayWith]="displayWith"
       [showFilter]="true"
       title="Organization"
@@ -629,7 +629,7 @@ const meta: Meta = {
           "## Key Features",
           "",
           "- **Table mode** (default) — content-project `<ui-text-column>`, `<ui-number-column>`, `<ui-template-column>`, etc. as list columns",
-          "- **Tree mode** — pass a `treeDatasource` and optional `#nodeTemplate` for hierarchical navigation",
+          "- **Tree mode** — pass an `ITreeDatasource` as `[datasource]` and optional `#nodeTemplate` for hierarchical navigation",
           "- **Detail template** — project a `#detail` ng-template; the selected item is available as `$implicit`",
           '- **Built-in filter** — set `[showFilter]="true"` for auto-inferred filtering, or project a custom `#filter` template',
           "- **Single selection** — row-click-to-select with automatic detail pane update",
@@ -639,8 +639,7 @@ const meta: Meta = {
           "| Input | Type | Default | Description |",
           "|-------|------|---------|-------------|",
           "| `data` | `T[]` | — | Array of items for the built-in table datasource |",
-          "| `datasource` | `DatasourceAdapter<T>` | — | External datasource (alternative to `data`) |",
-          "| `treeDatasource` | `TreeDatasource<T>` | — | Switches to tree-view mode |",
+          "| `datasource` | `DatasourceAdapter<T> \\| ITreeDatasource<T>` | — | External datasource (table or tree mode) |",
           "| `treeDisplayWith` | `(data: T) => string` | — | Display function for tree nodes |",
           "| `title` | `string` | — | Heading above the list panel |",
           "| `showFilter` | `boolean` | `false` | Show the collapsible filter bar |",
@@ -809,7 +808,7 @@ export const CustomFilterTemplate: Story = {
 
 /**
  * **Tree mode** — Switches from a table to a tree-view list panel by
- * passing a `treeDatasource`. A custom `#nodeTemplate` shows each
+ * passing a `datasource` with an `ITreeDatasource`. A custom `#nodeTemplate` shows each
  * person's name and title. Selecting a tree node updates the detail
  * panel on the right.
  */
@@ -819,7 +818,7 @@ export const TreeMode: Story = {
     docs: {
       source: {
         code: `<ui-master-detail-view
-  [treeDatasource]="treeDatasource"
+  [datasource]="treeDatasource"
   [treeDisplayWith]="displayWith"
   title="Organization"
 >
