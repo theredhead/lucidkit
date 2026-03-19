@@ -439,6 +439,7 @@ export const CustomIcons: Story = {
         {
           name: "Heart (filled)",
           svg: `<path fill="currentColor" stroke="none" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />`,
+          cssClass: "heart",
         },
         {
           name: "Waves",
@@ -447,6 +448,7 @@ export const CustomIcons: Story = {
       ],
     },
     template: `
+      <style>ui-icon.heart { color: #e74c3c; }</style>
       <div style="font-family: system-ui, sans-serif;">
         <p style="margin: 0 0 16px; color: #666; font-size: 14px;">
           These icons are <strong>not</strong> from the built-in Lucide registry —
@@ -455,7 +457,7 @@ export const CustomIcons: Story = {
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
           @for (icon of customIcons; track icon.name) {
             <div style="text-align: center; min-width: 80px;">
-              <ui-icon [svg]="icon.svg" [size]="32" />
+              <ui-icon [svg]="icon.svg" [size]="32" [class]="icon.cssClass || ''" />
               <div style="font-size: 11px; color: #888; margin-top: 6px;">{{ icon.name }}</div>
             </div>
           }
