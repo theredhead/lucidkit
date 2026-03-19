@@ -29,7 +29,7 @@ UITableView (container)
 ```ts
 @Directive({ standalone: true })
 export abstract class UITableViewColumn {
-  headerText = input<string>('');
+  headerText = input<string>("");
   key = input.required<string>();
   sortable = input<boolean>(false);
   abstract readonly cellTemplate: TemplateRef<UITableViewCellContext>;

@@ -193,21 +193,21 @@ export class UICalendarMonthView {
   public previousMonth(): void {
     this.displayMonth.update((d) => addMonths(d, -1));
     this.monthChanged.emit(this.displayMonth());
-    this.log.log("Navigated to previous month");
+    this.log.debug("Navigated to previous month");
   }
 
   /** Navigate to the next month. */
   public nextMonth(): void {
     this.displayMonth.update((d) => addMonths(d, 1));
     this.monthChanged.emit(this.displayMonth());
-    this.log.log("Navigated to next month");
+    this.log.debug("Navigated to next month");
   }
 
   /** Navigate to today's month. */
   public goToToday(): void {
     this.displayMonth.set(startOfMonth(new Date()));
     this.monthChanged.emit(this.displayMonth());
-    this.log.log("Navigated to today");
+    this.log.debug("Navigated to today");
   }
 
   /** Navigate to a specific month. */

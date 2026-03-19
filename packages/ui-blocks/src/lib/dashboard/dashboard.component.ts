@@ -165,7 +165,7 @@ export class UIDashboard {
     const panel = this.panels().find((p) => p.config().id === panelId);
     if (panel) {
       panel.restore();
-      this.log.log("Panel restored via host", [panelId]);
+      this.log.debug("Panel restored via host", [panelId]);
       return true;
     }
     return false;
@@ -180,6 +180,6 @@ export class UIDashboard {
         panel.restore();
       }
     }
-    this.log.log("All panels restored");
+    this.log.debug("All panels restored");
   }
 }

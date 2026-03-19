@@ -1,7 +1,6 @@
 import type { Predicate } from "@angular/core";
 
-import type { IFilterableTreeDataSource } from "../datasource/contracts";
-import type { TreeNode } from "./datasource";
+import type { IFilterableTreeDatasource, TreeNode } from "./datasource";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
 
 /**
@@ -28,7 +27,7 @@ import { ArrayTreeDatasource } from "./array-tree-datasource";
  */
 export class FilterableArrayTreeDatasource<T = unknown>
   extends ArrayTreeDatasource<T>
-  implements IFilterableTreeDataSource<T>
+  implements IFilterableTreeDatasource<T>
 {
   /** The full, unfiltered tree. */
   private readonly _allRoots: TreeNode<T>[];

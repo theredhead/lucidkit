@@ -1048,12 +1048,15 @@ const EMPLOYEE_FIELDS: FilterFieldDefinition<Employee>[] = [
 class UITableViewFilteredDemo {
   readonly fields = EMPLOYEE_FIELDS;
   readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
-  adapter = new DatasourceAdapter(this.datasource);
+  adapter = new DatasourceAdapter(this.datasource, EMPLOYEES.length);
 
   onPredicateChange(predicate: Predicate<Employee> | undefined): void {
     this.datasource.applyPredicate(predicate ?? null);
     // Rebuild the adapter so the table picks up the new row count.
-    this.adapter = new DatasourceAdapter(this.datasource);
+    this.adapter = new DatasourceAdapter(
+      this.datasource,
+      this.datasource.getNumberOfItems() as number,
+    );
   }
 }
 

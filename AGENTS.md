@@ -124,7 +124,7 @@ export class UIMyComponent {
   private readonly log = inject(LoggerFactory).createLogger("UIMyComponent");
 
   public save(): void {
-    this.log.log("saving");
+    this.log.debug("saving");
     this.log.warn("field missing", [fieldName]);
     this.log.error("save failed", [err]);
   }
@@ -204,7 +204,7 @@ export class UIExample {
     this.state.set(false);
   }
   private logMessage(msg: string): void {
-    this.log.log(msg);
+    this.log.debug(msg);
   }
 }
 ```

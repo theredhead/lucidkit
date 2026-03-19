@@ -14,6 +14,9 @@ yarn-error.log
 # Caches
 .cache/
 
+# Documentation
+/dev-docs
+
 # IDEs and editors
 .idea/
 .project

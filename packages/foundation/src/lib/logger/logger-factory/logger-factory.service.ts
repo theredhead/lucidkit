@@ -20,7 +20,7 @@ import {
  *   private readonly log = inject(LoggerFactory).createLogger("MyComponent");
  *
  *   public ngOnInit(): void {
- *     this.log.log("component initialised");
+ *     this.log.debug("component initialised");
  *   }
  * }
  * ```

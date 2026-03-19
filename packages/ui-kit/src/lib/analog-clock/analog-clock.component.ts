@@ -168,7 +168,7 @@ export class UIAnalogClock implements OnInit {
     this.intervalId = setInterval(() => {
       this.liveDate.set(new Date());
     }, 1000);
-    this.log.log("Live ticking started");
+    this.log.debug("Live ticking started");
   }
 
   /** Stop the interval timer. */
@@ -176,7 +176,7 @@ export class UIAnalogClock implements OnInit {
     if (this.intervalId !== null) {
       clearInterval(this.intervalId);
       this.intervalId = null;
-      this.log.log("Live ticking stopped");
+      this.log.debug("Live ticking stopped");
     }
   }
 }

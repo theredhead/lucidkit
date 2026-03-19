@@ -1,8 +1,9 @@
-import { Meta, StoryObj } from "@storybook/angular";
+import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { UITableView } from "../table-view.component";
 import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive";
 import { Component, signal } from "@angular/core";
 import { ArrayDatasource } from "../datasources/array-datasource";
+import { DatasourceAdapter } from "../datasources/datasource-adapter";
 
 @Component({
   selector: "ui-demo-autogenerate",
@@ -12,52 +13,40 @@ import { ArrayDatasource } from "../datasources/array-datasource";
     <ui-table-view
       [datasource]="datasource"
       uiAutogenerateColumns
-      [pageable]="true"
-      [pageSize]="5"
     ></ui-table-view>
   `,
 })
 class DemoAutogenerateComponent {
-  public readonly datasource = new ArrayDatasource([
-    { id: 1, firstName: "John", lastName: "Doe", email: "john@example.com" },
-    { id: 2, firstName: "Jane", lastName: "Smith", email: "jane@example.com" },
-    { id: 3, firstName: "Bob", lastName: "Johnson", email: "bob@example.com" },
-    {
-      id: 4,
-      firstName: "Alice",
-      lastName: "Williams",
-      email: "alice@example.com",
-    },
-    {
-      id: 5,
-      firstName: "Charlie",
-      lastName: "Brown",
-      email: "charlie@example.com",
-    },
-  ]);
+  public readonly datasource = new DatasourceAdapter(
+    new ArrayDatasource([
+      { id: 1, firstName: "John", lastName: "Doe", email: "john@example.com" },
+      {
+        id: 2,
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane@example.com",
+      },
+      {
+        id: 3,
+        firstName: "Bob",
+        lastName: "Johnson",
+        email: "bob@example.com",
+      },
+      {
+        id: 4,
+        firstName: "Alice",
+        lastName: "Williams",
+        email: "alice@example.com",
+      },
+      {
+        id: 5,
+        firstName: "Charlie",
+        lastName: "Brown",
+        email: "charlie@example.com",
+      },
+    ]),
+  );
 }
-
-const meta: Meta<UITableView> = {
-  title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
-  component: UITableView,
-  tags: ["autodocs"],
-};
-
-export default meta;
-type Story = StoryObj<UITableView>;
-
-/**
- * Automatically generate table columns from the first row's properties.
- *
- * No need to manually declare each column — the directive introspects
- * the datasource and creates text columns with humanized headers.
- */
-export const Autogenerate: Story = {
-  render: (args) => ({
-    props: args,
-    template: "<ui-demo-autogenerate></ui-demo-autogenerate>",
-  }),
-};
 
 @Component({
   selector: "ui-demo-autogenerate-custom",
@@ -67,8 +56,6 @@ export const Autogenerate: Story = {
     <ui-table-view
       [datasource]="datasource"
       [uiAutogenerateColumns]="config()"
-      [pageable]="true"
-      [pageSize]="5"
     ></ui-table-view>
   `,
 })
@@ -104,6 +91,55 @@ class DemoAutogenerateCustomComponent {
   });
 }
 
+@Component({
+  selector: "ui-demo-autogenerate-no-humanize",
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: `
+    <ui-table-view
+      [datasource]="datasource"
+      [uiAutogenerateColumns]="{ humanizeHeaders: false }"
+    ></ui-table-view>
+  `,
+})
+class DemoAutogenerateNoHumanizeComponent {
+  public readonly datasource = new ArrayDatasource([
+    { id: 1, firstName: "John", lastName: "Doe", email: "john@example.com" },
+    { id: 2, firstName: "Jane", lastName: "Smith", email: "jane@example.com" },
+  ]);
+}
+
+const meta: Meta<UITableView> = {
+  title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
+  component: UITableView,
+  tags: ["autodocs"],
+  decorators: [
+    moduleMetadata({
+      imports: [
+        DemoAutogenerateComponent,
+        DemoAutogenerateCustomComponent,
+        DemoAutogenerateNoHumanizeComponent,
+      ],
+    }),
+  ],
+};
+
+export default meta;
+type Story = StoryObj<UITableView>;
+
+/**
+ * Automatically generate table columns from the first row's properties.
+ *
+ * No need to manually declare each column — the directive introspects
+ * the datasource and creates text columns with humanized headers.
+ */
+export const Autogenerate: Story = {
+  render: (args) => ({
+    props: args,
+    template: "<ui-demo-autogenerate></ui-demo-autogenerate>",
+  }),
+};
+
 /**
  * Customize column generation with header mapping and excluded keys.
  *
@@ -116,32 +152,13 @@ export const AutogenerateCustom: Story = {
   }),
 };
 
-@Component({
-  selector: "ui-demo-autogenerate-no-humanize",
-  standalone: true,
-  imports: [UITableView, UIAutogenerateColumnsDirective],
-  template: `
-    <ui-table-view
-      [datasource]="datasource"
-      [uiAutogenerateColumns]="{ humanizeHeaders: false }"
-      [pageable]="true"
-      [pageSize]="5"
-    ></ui-table-view>
-  `,
-})
-class DemoAutogenerateNoHumanizeComponent {
-  public readonly datasource = new ArrayDatasource([
-    { id: 1, firstName: "John", lastName: "Doe", email: "john@example.com" },
-    { id: 2, firstName: "Jane", lastName: "Smith", email: "jane@example.com" },
-  ]);
-}
-
 /**
  * Disable header humanization to use property names as-is.
  */
 export const AutogenerateNoHumanize: Story = {
   render: (args) => ({
     props: args,
-    template: "<ui-demo-autogenerate-no-humanize></ui-demo-autogenerate-no-humanize>",
+    template:
+      "<ui-demo-autogenerate-no-humanize></ui-demo-autogenerate-no-humanize>",
   }),
 };
