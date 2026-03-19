@@ -41,6 +41,19 @@
     }
   }
 
+  <!-- Day/night indicator (Lucide icon, scaled from 24×24 into clock face) -->
+  <g
+    class="day-night-indicator"
+    transform="translate(45, 63) scale(0.417)"
+    [attr.stroke]="indicatorColor()"
+    fill="none"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <g [innerHTML]="indicatorSvg()"></g>
+  </g>
+
   <!-- Hour hand -->
   <line
     x1="50" y1="50"

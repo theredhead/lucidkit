@@ -102,3 +102,53 @@
 .center-cap {
   fill: var(--ui-clock-center);
 }
+
+// ── Day/night indicator ──────────────────────────────────────────
+
+.day-night-indicator {
+  pointer-events: none;
+}
+
+// ── Night face (light theme) ─────────────────────────────────────
+
+:host(.ui-analog-clock--night) {
+  --ui-clock-bg: #1a1f3a;
+  --ui-clock-rim: #2d3561;
+  --ui-clock-text: #c4cae0;
+  --ui-clock-tick: #4a5280;
+  --ui-clock-tick-hour: #8890b5;
+  --ui-clock-hand-hour: #e0e4f0;
+  --ui-clock-hand-minute: #b8bdd5;
+  --ui-clock-hand-second: #ef4444;
+  --ui-clock-center: #e0e4f0;
+}
+
+// ── Night face (explicit dark theme) ─────────────────────────────
+
+:host-context(html.dark-theme):host(.ui-analog-clock--night) {
+  --ui-clock-bg: #0f1229;
+  --ui-clock-rim: #1e2248;
+  --ui-clock-text: #9098c0;
+  --ui-clock-tick: #3a4070;
+  --ui-clock-tick-hour: #6870a0;
+  --ui-clock-hand-hour: #c4cae0;
+  --ui-clock-hand-minute: #9098c0;
+  --ui-clock-center: #c4cae0;
+}
+
+// ── Night face (system dark preference) ──────────────────────────
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)):host(
+    .ui-analog-clock--night
+  ) {
+    --ui-clock-bg: #0f1229;
+    --ui-clock-rim: #1e2248;
+    --ui-clock-text: #9098c0;
+    --ui-clock-tick: #3a4070;
+    --ui-clock-tick-hour: #6870a0;
+    --ui-clock-hand-hour: #c4cae0;
+    --ui-clock-hand-minute: #9098c0;
+    --ui-clock-center: #c4cae0;
+  }
+}

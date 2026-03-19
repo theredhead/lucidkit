@@ -46,3 +46,4 @@ export * from "./lib/toast";
 export * from "./lib/drawer";
 export * from "./lib/dropdown-menu";
 export * from "./lib/sidebar-nav";
+export * from "./lib/toggle";
