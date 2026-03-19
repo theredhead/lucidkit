@@ -121,16 +121,31 @@ export class UITableView implements OnInit, AfterViewInit {
   externalColumns = input<readonly UITableViewColumn[]>([]);
 
   columns = contentChildren(UITableViewColumn);
+
+  /**
+   * Columns injected programmatically by directives such as
+   * {@link UIAutogenerateColumnsDirective}. Unlike `externalColumns`
+   * (which is an input meant for parent templates), this writable
+   * signal lets directives on the same host element push columns
+   * into the table at runtime.
+   *
+   * @internal
+   */
+  readonly dynamicColumns = signal<readonly UITableViewColumn[]>([]);
+
   protected readonly captionId = `ui-table-caption-${UITableView.nextCaptionId++}`;
 
   /**
-   * The effective column list. Prefers the explicit `externalColumns` input;
-   * falls back to the projected `contentChildren`.
+   * The effective column list. Prefers the explicit `externalColumns` input,
+   * then `dynamicColumns`, then falls back to the projected `contentChildren`.
    * @internal
    */
   protected readonly resolvedColumns = computed(() => {
     const ext = this.externalColumns();
-    return ext.length > 0 ? ext : this.columns();
+    if (ext.length > 0) return ext;
+    const dyn = this.dynamicColumns();
+    if (dyn.length > 0) return dyn;
+    return this.columns();
   });
 
   /**
@@ -317,38 +332,24 @@ export class UITableView implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.measureScrollbarWidth();
     this.setupHorizontalScrollSync();
   }
 
   /**
-   * Measures the platform scrollbar width using an off-screen probe element.
-   * Unlike measuring the live viewport (which may not have a scrollbar yet
-   * because data loads asynchronously), this technique gives the correct
-   * width immediately regardless of content or timing.
-   */
-  private measureScrollbarWidth(): void {
-    const probe = document.createElement("div");
-    probe.style.cssText =
-      "position:absolute;top:-9999px;left:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden;";
-    document.body.appendChild(probe);
-    const scrollbarW = probe.offsetWidth - probe.clientWidth;
-    document.body.removeChild(probe);
-
-    this.elRef.nativeElement.style.setProperty(
-      "--ui-scrollbar-width",
-      `${scrollbarW}px`,
-    );
-  }
-
-  /**
-   * Keeps the header in horizontal-scroll sync with the CDK viewport.
+   * Keeps the header aligned and in sync with the CDK virtual-scroll
+   * viewport.
    *
-   * Uses a ResizeObserver on the viewport's content wrapper to detect
-   * whenever the body's scrollable width changes (column resize, data load,
-   * natural content overflow, etc.). When the body overflows, we set
-   * --ui-header-scroll-width on the header element so its inner row
-   * expands to match and scrollLeft works correctly.
+   * Two things are synchronised:
+   * 1. **Vertical scrollbar spacer** — the header trailing spacer is set
+   *    to the viewport's actual scrollbar width (0 when no scrollbar is
+   *    visible) so header and body columns stay pixel-aligned.
+   * 2. **Horizontal scroll** — when the body overflows horizontally,
+   *    `--ui-header-scroll-width` widens the header row to match, and
+   *    `scrollLeft` is mirrored on every scroll event.
+   *
+   * A {@link ResizeObserver} on the viewport's content wrapper re-runs
+   * the sync whenever the body's scrollable area changes (data load,
+   * column resize, window resize, etc.).
    */
   private setupHorizontalScrollSync(): void {
     const root = this.elRef.nativeElement;
@@ -359,17 +360,28 @@ export class UITableView implements OnInit, AfterViewInit {
     if (!viewport || !header) return;
 
     const syncHeaderWidth = () => {
+      // ── Vertical scrollbar compensation ──
+      // Only reserve header-spacer width when the viewport actually
+      // displays a scrollbar. The previous probe-based approach always
+      // set the platform scrollbar width, even when the content was
+      // shorter than the viewport and no scrollbar was visible.
+      const verticalSbW = viewport.offsetWidth - viewport.clientWidth;
+      root.style.setProperty("--ui-scrollbar-width", `${verticalSbW}px`);
+
+      // ── Horizontal overflow ──
       const sw = viewport.scrollWidth;
       const cw = viewport.clientWidth;
       if (sw > cw) {
         // Body overflows – widen the header row to match.
-        // Add the vertical-scrollbar width so header cells stay aligned.
         const sbW = viewport.offsetWidth - cw;
         header.style.setProperty("--ui-header-scroll-width", `${sw + sbW}px`);
       } else {
         header.style.removeProperty("--ui-header-scroll-width");
       }
     };
+
+    // Initial sync so the spacer is correct before data loads.
+    syncHeaderWidth();
 
     const onScroll = () => {
       syncHeaderWidth();

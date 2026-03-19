@@ -30,6 +30,7 @@ import {
     },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { style: "display: none" },
   template: `<ng-template #cell let-row>{{ getValue(row) }}</ng-template>`,
 })
 export class UITextColumnGenerated extends UITableViewColumn {
