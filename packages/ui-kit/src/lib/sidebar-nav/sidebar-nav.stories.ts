@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from "@angular/core";
 import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
 
 import { UIIcons } from "../icon/lucide-icons.generated";
+import { UIIcon } from "../icon/icon.component";
 import {
   UISidebarGroup,
   UISidebarItem,
@@ -160,6 +166,203 @@ class DemoSidebarBadgesComponent {
   };
 }
 
+// ── Demo: Navigation with content ────────────────────────────────
+
+interface NavPage {
+  readonly id: string;
+  readonly label: string;
+  readonly icon: string;
+  readonly description: string;
+  readonly badge?: string;
+}
+
+@Component({
+  selector: "ui-demo-sidebar-navigation",
+  standalone: true,
+  imports: [UISidebarNav, UISidebarItem, UISidebarGroup, UIIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .shell {
+        display: flex;
+        border: 1px solid var(--ui-sidebar-text, #d7dce2);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        height: 28rem;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+      .sidebar {
+        width: 15rem;
+        flex-shrink: 0;
+        border-right: 1px solid var(--ui-sidebar-text, #d7dce2);
+        border-color: color-mix(in srgb, currentColor 15%, transparent);
+        overflow-y: auto;
+      }
+      .content {
+        flex: 1;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow-y: auto;
+        background: var(--ui-sidebar-hover, rgba(128, 128, 128, 0.04));
+      }
+      .content-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .content h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--ui-sidebar-text, #1d232b);
+      }
+      .content p {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--ui-sidebar-muted, #5a6470);
+        max-width: 36rem;
+      }
+      .breadcrumb {
+        font-size: 0.75rem;
+        color: var(--ui-sidebar-muted, #5a6470);
+      }
+      .breadcrumb strong {
+        color: var(--ui-sidebar-accent, #3584e4);
+      }
+      .content-card {
+        padding: 1.25rem;
+        background: var(--ui-sidebar-active-bg, rgba(53, 132, 228, 0.08));
+        border-radius: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--ui-sidebar-text, #1d232b);
+      }
+    `,
+  ],
+  template: `
+    <div class="shell">
+      <div class="sidebar">
+        <ui-sidebar-nav ariaLabel="App navigation">
+          @for (page of topPages; track page.id) {
+            <ui-sidebar-item
+              [label]="page.label"
+              [icon]="page.icon"
+              [badge]="page.badge ?? ''"
+              [active]="active() === page.id"
+              (activated)="active.set(page.id)"
+            />
+          }
+          <ui-sidebar-group label="Settings" [icon]="settingsIcon">
+            @for (page of settingsPages; track page.id) {
+              <ui-sidebar-item
+                [label]="page.label"
+                [icon]="page.icon"
+                [active]="active() === page.id"
+                (activated)="active.set(page.id)"
+              />
+            }
+          </ui-sidebar-group>
+        </ui-sidebar-nav>
+      </div>
+      <div class="content">
+        <div class="breadcrumb">
+          Navigation / <strong>{{ currentPage().label }}</strong>
+        </div>
+        <div class="content-header">
+          <ui-icon [svg]="currentPage().icon" [size]="28" />
+          <h2>{{ currentPage().label }}</h2>
+        </div>
+        <p>{{ currentPage().description }}</p>
+        <div class="content-card">
+          ✅ You navigated here by clicking
+          <strong>"{{ currentPage().label }}"</strong>
+          in the sidebar. Try selecting a different item to see the content
+          change.
+        </div>
+      </div>
+    </div>
+  `,
+})
+class DemoSidebarNavigationComponent {
+  public readonly settingsIcon = UIIcons.Lucide.Account.Settings;
+
+  public readonly topPages: NavPage[] = [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: UIIcons.Lucide.Layout.LayoutDashboard,
+      description:
+        "Your personal dashboard with an overview of recent activity, " +
+        "key metrics, and quick-access shortcuts to the most used features.",
+    },
+    {
+      id: "projects",
+      label: "Projects",
+      icon: UIIcons.Lucide.Files.Folder,
+      description:
+        "Browse and manage all your projects. Create new ones, archive " +
+        "completed work, and track progress across your team.",
+      badge: "5",
+    },
+    {
+      id: "calendar",
+      label: "Calendar",
+      icon: UIIcons.Lucide.Time.Calendar,
+      description:
+        "View upcoming meetings, deadlines, and events. Drag-and-drop " +
+        "to reschedule and sync with external calendars.",
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      icon: UIIcons.Lucide.Charts.ChartLine,
+      description:
+        "Dive into detailed analytics and reports. Visualise trends, " +
+        "compare periods, and export data for presentations.",
+    },
+  ];
+
+  public readonly settingsPages: NavPage[] = [
+    {
+      id: "general",
+      label: "General",
+      icon: UIIcons.Lucide.Account.Settings,
+      description:
+        "General application settings — language, timezone, default views, " +
+        "and notification preferences.",
+    },
+    {
+      id: "security",
+      label: "Security",
+      icon: UIIcons.Lucide.Account.Shield,
+      description:
+        "Manage your security settings. Enable two-factor authentication, " +
+        "review active sessions, and update your password.",
+    },
+    {
+      id: "team",
+      label: "Team Members",
+      icon: UIIcons.Lucide.Account.Users,
+      description:
+        "Invite team members, assign roles, and manage permissions. " +
+        "View who has access to each project.",
+      badge: "3",
+    },
+  ];
+
+  public readonly active = signal("dashboard");
+
+  public readonly currentPage = computed(() => {
+    const all = [...this.topPages, ...this.settingsPages];
+    return all.find((p) => p.id === this.active()) ?? this.topPages[0];
+  });
+}
+
 const meta: Meta<UISidebarNav> = {
   title: "@Theredhead/UI Kit/Sidebar Nav",
   component: UISidebarNav,
@@ -170,6 +373,7 @@ const meta: Meta<UISidebarNav> = {
         DemoSidebarBasicComponent,
         DemoSidebarCollapsedComponent,
         DemoSidebarBadgesComponent,
+        DemoSidebarNavigationComponent,
       ],
     }),
   ],
@@ -355,6 +559,112 @@ export class MailboxComponent {
 
 // ── SCSS ──
 /* No custom styles needed — badges are built into sidebar items. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Navigation** — A realistic app-shell layout where clicking sidebar items
+ * updates the main content area. Demonstrates the `(activated)` output for
+ * driving navigation, collapsible settings group, active-item tracking,
+ * badges, and how the sidebar integrates into a full page layout.
+ */
+export const Navigation: Story = {
+  render: () => ({
+    template: `<ui-demo-sidebar-navigation />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div class="app-shell">
+  <aside class="sidebar">
+    <ui-sidebar-nav ariaLabel="App navigation">
+      <ui-sidebar-item
+        label="Dashboard" [icon]="dashboardIcon"
+        [active]="active() === 'dashboard'"
+        (activated)="navigate('dashboard')" />
+      <ui-sidebar-item
+        label="Projects" [icon]="folderIcon" badge="5"
+        [active]="active() === 'projects'"
+        (activated)="navigate('projects')" />
+      <ui-sidebar-group label="Settings" [icon]="settingsIcon">
+        <ui-sidebar-item
+          label="General" [icon]="settingsIcon"
+          [active]="active() === 'general'"
+          (activated)="navigate('general')" />
+        <ui-sidebar-item
+          label="Security" [icon]="shieldIcon"
+          [active]="active() === 'security'"
+          (activated)="navigate('security')" />
+      </ui-sidebar-group>
+    </ui-sidebar-nav>
+  </aside>
+  <main class="content">
+    <h2>{{ activeLabel() }}</h2>
+    <p>Page content for {{ activeLabel() }}.</p>
+  </main>
+</div>
+
+// ── TypeScript ──
+import { Component, signal, computed } from '@angular/core';
+import {
+  UISidebarNav, UISidebarItem, UISidebarGroup, UIIcons,
+} from '@theredhead/ui-kit';
+
+interface NavPage {
+  id: string;
+  label: string;
+}
+
+@Component({
+  selector: 'app-shell',
+  standalone: true,
+  imports: [UISidebarNav, UISidebarItem, UISidebarGroup],
+  templateUrl: './shell.component.html',
+  styleUrl: './shell.component.scss',
+})
+export class ShellComponent {
+  readonly pages: NavPage[] = [
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'projects',  label: 'Projects' },
+    { id: 'general',   label: 'General' },
+    { id: 'security',  label: 'Security' },
+  ];
+
+  readonly active = signal('dashboard');
+
+  readonly activeLabel = computed(() =>
+    this.pages.find(p => p.id === this.active())?.label ?? '',
+  );
+
+  readonly dashboardIcon = UIIcons.Lucide.Layout.LayoutDashboard;
+  readonly folderIcon    = UIIcons.Lucide.Files.Folder;
+  readonly settingsIcon  = UIIcons.Lucide.Account.Settings;
+  readonly shieldIcon    = UIIcons.Lucide.Account.Shield;
+
+  navigate(id: string): void {
+    this.active.set(id);
+  }
+}
+
+// ── SCSS ──
+.app-shell {
+  display: flex;
+  height: 100vh;
+}
+.sidebar {
+  width: 15rem;
+  border-right: 1px solid #e5e7eb;
+}
+.content {
+  flex: 1;
+  padding: 2rem;
+}
 `,
       },
     },
