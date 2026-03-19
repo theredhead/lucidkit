@@ -131,7 +131,7 @@ export class UIMasterDetailView<T = unknown> {
 
   /**
    * Convenience: raw data array. When set, an internal
-   * {@link ArrayDatasource} is created automatically.
+   * `ArrayDatasource` is created automatically.
    * Ignored when `datasource` is provided.
    */
   public readonly data = input<readonly T[]>([]);

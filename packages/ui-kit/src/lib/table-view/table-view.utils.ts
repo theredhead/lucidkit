@@ -2,7 +2,7 @@ import type { SortState } from "./table-view-header/table-view-header.component"
 
 /**
  * Compiles a {@link SortState} into a comparator function for use with
- * {@link ISortableDatasource.applyComparator()}.
+ * {@link ISortableDatasource.sortBy | ISortableDatasource.sortBy()}.
  *
  * The comparator performs locale-aware string comparison by default, treating
  * all values as strings. Numeric and date comparisons are not supported — if
