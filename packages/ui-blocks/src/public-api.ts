@@ -8,3 +8,5 @@ export {
 } from "./lib/master-detail-view/master-detail-view.component";
 
 export * from "./lib/dashboard";
+
+export * from "./lib/navigation-page";
