@@ -583,7 +583,7 @@ const meta: Meta = {
           '| `verticalAxisAlignment` | `"top" \\| "bottom" \\| "center" \\| "auto"` | `"auto"` | Vertical placement |',
           '| `horizontalAxisAlignment` | `"start" \\| "end" \\| "center" \\| "auto"` | `"auto"` | Horizontal placement |',
           "| `closeOnOutsideClick` | `boolean` | `true` | Whether clicking outside closes the popover |",
-          "| `showArrow` | `boolean` | `false` | Show a triangular arrow pointing towards the anchor |",
+          "| `showArrow` | `boolean` | `true` | Show a triangular arrow pointing towards the anchor |",
           "| `inputs` | `Record<string, any>` | — | Input bindings forwarded to the component |",
           "| `outputs` | `Record<string, Function>` | — | Output handlers wired to the component |",
           "| `ariaLabel` | `string` | — | Accessible label for the popover container |",

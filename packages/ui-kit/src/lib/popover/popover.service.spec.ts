@@ -910,11 +910,11 @@ describe("PopoverService", () => {
   });
 
   describe("arrow", () => {
-    it("should not add data-arrow-side by default", () => {
+    it("should add data-arrow-side by default", () => {
       const ref = service.openPopover({ component: TestPopover, anchor });
       const popover = document.querySelector(".ui-popover") as HTMLElement;
 
-      expect(popover.hasAttribute("data-arrow-side")).toBe(false);
+      expect(popover.hasAttribute("data-arrow-side")).toBe(true);
 
       ref.close();
     });

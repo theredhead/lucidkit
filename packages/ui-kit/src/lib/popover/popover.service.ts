@@ -367,7 +367,7 @@ export class PopoverService {
     const popoverRef = new PopoverRef<R>();
     const vAlign = config.verticalAxisAlignment ?? "auto";
     const hAlign = config.horizontalAxisAlignment ?? "auto";
-    const showArrow = config.showArrow ?? false;
+    const showArrow = config.showArrow ?? true;
     const arrowGap = config.arrowGap ?? 16;
     const vOffset = config.verticalOffset ?? (showArrow ? arrowGap : 4);
     const hOffset = config.horizontalOffset ?? (showArrow ? arrowGap : 0);

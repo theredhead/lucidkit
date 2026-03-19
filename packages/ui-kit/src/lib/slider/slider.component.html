@@ -14,6 +14,18 @@
       [attr.aria-label]="ariaLabel()"
       (input)="onSingleInput($event)"
     />
+    @if (tickMarks().length) {
+      <div class="sl-ticks" [class.sl-ticks--labelled]="tickMarks()[0].label">
+        @for (tick of tickMarks(); track tick.percent) {
+          <div class="sl-tick" [style.left.%]="tick.percent">
+            <div class="sl-tick-mark"></div>
+            @if (tick.label) {
+              <span class="sl-tick-label">{{ tick.label }}</span>
+            }
+          </div>
+        }
+      </div>
+    }
   </div>
   @if (showValue()) {
     <span class="sl-value">{{ singleValue() }}</span>
@@ -45,6 +57,18 @@
       [attr.aria-label]="ariaLabel() + ' maximum'"
       (input)="onRangeHighInput($event)"
     />
+    @if (tickMarks().length) {
+      <div class="sl-ticks" [class.sl-ticks--labelled]="tickMarks()[0].label">
+        @for (tick of tickMarks(); track tick.percent) {
+          <div class="sl-tick" [style.left.%]="tick.percent">
+            <div class="sl-tick-mark"></div>
+            @if (tick.label) {
+              <span class="sl-tick-label">{{ tick.label }}</span>
+            }
+          </div>
+        }
+      </div>
+    }
   </div>
   @if (showValue()) {
     <span class="sl-value">{{ rangeLow() }} – {{ rangeHigh() }}</span>

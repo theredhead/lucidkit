@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component, signal } from "@angular/core";
 
 import { UISlider } from "./slider.component";
-import type { SliderValue } from "./slider.types";
+import type { SliderTick, SliderValue } from "./slider.types";
 
 @Component({
   standalone: true,
@@ -16,6 +16,8 @@ import type { SliderValue } from "./slider.types";
       [step]="step()"
       [disabled]="disabled()"
       [showValue]="showValue()"
+      [showTicks]="showTicks()"
+      [ticks]="ticks()"
     />
   `,
 })
@@ -27,6 +29,8 @@ class TestHost {
   public readonly step = signal(1);
   public readonly disabled = signal(false);
   public readonly showValue = signal(false);
+  public readonly showTicks = signal(false);
+  public readonly ticks = signal<readonly SliderTick[]>([]);
 }
 
 describe("UISlider", () => {
@@ -199,6 +203,91 @@ describe("UISlider", () => {
     it("should have aria-label on input", () => {
       const input = fixture.nativeElement.querySelector("input[type=range]");
       expect(input.getAttribute("aria-label")).toBe("Slider");
+    });
+  });
+
+  describe("tick marks", () => {
+    it("should not render ticks by default", () => {
+      const ticks = fixture.nativeElement.querySelector(".sl-ticks");
+      expect(ticks).toBeNull();
+    });
+
+    it("should render auto-generated ticks when showTicks is true", () => {
+      host.step.set(25);
+      host.showTicks.set(true);
+      fixture.detectChanges();
+      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      // 0, 25, 50, 75, 100 → 5 ticks
+      expect(marks.length).toBe(5);
+    });
+
+    it("should position auto-generated ticks as percentages", () => {
+      host.step.set(50);
+      host.showTicks.set(true);
+      fixture.detectChanges();
+      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      // 0%, 50%, 100%
+      expect(marks[0].style.left).toBe("0%");
+      expect(marks[1].style.left).toBe("50%");
+      expect(marks[2].style.left).toBe("100%");
+    });
+
+    it("should not render labels for auto-generated ticks", () => {
+      host.step.set(50);
+      host.showTicks.set(true);
+      fixture.detectChanges();
+      const labels = fixture.nativeElement.querySelectorAll(".sl-tick-label");
+      expect(labels.length).toBe(0);
+    });
+
+    it("should render explicit ticks with labels", () => {
+      host.ticks.set([
+        { value: 0, label: "Low" },
+        { value: 50, label: "Mid" },
+        { value: 100, label: "High" },
+      ]);
+      fixture.detectChanges();
+      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      expect(marks.length).toBe(3);
+      const labels = fixture.nativeElement.querySelectorAll(".sl-tick-label");
+      expect(labels.length).toBe(3);
+      expect(labels[0].textContent.trim()).toBe("Low");
+      expect(labels[1].textContent.trim()).toBe("Mid");
+      expect(labels[2].textContent.trim()).toBe("High");
+    });
+
+    it("should filter out ticks outside min/max range", () => {
+      host.min.set(10);
+      host.max.set(90);
+      host.ticks.set([
+        { value: 0, label: "Out" },
+        { value: 50, label: "In" },
+        { value: 100, label: "Out" },
+      ]);
+      fixture.detectChanges();
+      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      expect(marks.length).toBe(1);
+      const label = fixture.nativeElement.querySelector(".sl-tick-label");
+      expect(label.textContent.trim()).toBe("In");
+    });
+
+    it("should render ticks in range mode", () => {
+      host.mode.set("range");
+      host.value.set([20, 80] as readonly [number, number]);
+      host.step.set(50);
+      host.showTicks.set(true);
+      fixture.detectChanges();
+      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      expect(marks.length).toBe(3);
+    });
+
+    it("should render explicit ticks without labels when label is omitted", () => {
+      host.ticks.set([{ value: 0 }, { value: 50 }, { value: 100 }]);
+      fixture.detectChanges();
+      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      expect(marks.length).toBe(3);
+      const labels = fixture.nativeElement.querySelectorAll(".sl-tick-label");
+      expect(labels.length).toBe(0);
     });
   });
 });

@@ -7,7 +7,7 @@ import {
   output,
 } from "@angular/core";
 
-import type { SliderMode, SliderValue } from "./slider.types";
+import type { SliderMode, SliderTick, SliderValue } from "./slider.types";
 
 /**
  * A range slider with single-thumb and dual-thumb (range) modes.
@@ -59,6 +59,24 @@ export class UISlider {
 
   /** Accessible label. */
   public readonly ariaLabel = input<string>("Slider");
+
+  /**
+   * Whether to show tick marks along the track.
+   *
+   * When `true` and no explicit `ticks` array is provided, tick marks
+   * are generated automatically at each `step` interval.
+   */
+  public readonly showTicks = input(false);
+
+  /**
+   * Explicit tick mark definitions.
+   *
+   * When provided, these override the auto-generated step-based ticks.
+   * Each entry may include an optional `label` rendered below the mark.
+   * Setting this implicitly enables tick display (even if `showTicks`
+   * is `false`).
+   */
+  public readonly ticks = input<readonly SliderTick[]>([]);
 
   /** Emitted when the value changes. */
   public readonly valueChange = output<SliderValue>();
@@ -112,6 +130,55 @@ export class UISlider {
       return 100;
     }
     return ((this.rangeHigh() - min) / range) * 100;
+  });
+
+  /**
+   * @internal — resolved tick marks with percentage positions.
+   *
+   * If an explicit `ticks` array is provided it takes precedence.
+   * Otherwise, if `showTicks` is `true`, ticks are auto-generated
+   * at every `step` interval between `min` and `max` (inclusive).
+   */
+  protected readonly tickMarks = computed<
+    readonly { percent: number; label?: string }[]
+  >(() => {
+    const explicit = this.ticks();
+    const min = this.min();
+    const max = this.max();
+    const range = max - min;
+    if (range <= 0) {
+      return [];
+    }
+
+    // Explicit ticks provided — use them directly
+    if (explicit.length > 0) {
+      return explicit
+        .filter((t) => t.value >= min && t.value <= max)
+        .map((t) => ({
+          percent: ((t.value - min) / range) * 100,
+          label: t.label,
+        }));
+    }
+
+    // Auto-generate from step if showTicks is on
+    if (!this.showTicks()) {
+      return [];
+    }
+
+    const step = this.step();
+    if (step <= 0) {
+      return [];
+    }
+
+    const marks: { percent: number }[] = [];
+    for (let v = min; v <= max; v += step) {
+      marks.push({ percent: ((v - min) / range) * 100 });
+    }
+    // Ensure the max endpoint is always included
+    if (marks.length === 0 || marks[marks.length - 1].percent < 100) {
+      marks.push({ percent: 100 });
+    }
+    return marks;
   });
 
   /** @internal — handle single input change. */
