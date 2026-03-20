@@ -307,22 +307,34 @@ class MediaPlayerCustomProviderDemo {
   imports: [UIMediaPlayer],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div style="max-width: 640px">
-      <h4 style="margin: 0 0 8px">Error state — broken video URL</h4>
-      <p style="font-size: 0.875rem; opacity: 0.7; margin: 0 0 12px">
-        The player gracefully displays an error overlay when the source cannot
-        be loaded. Try switching to audio mode to see the error banner variant.
-      </p>
-      <ui-media-player
-        [type]="type()"
-        [source]="source"
-        ariaLabel="Broken video"
-      />
+    <div style="display: flex; flex-direction: column; gap: 24px; max-width: 640px">
+      <div>
+        <h4 style="margin: 0 0 8px">Video error — overlay</h4>
+        <p style="font-size: 0.875rem; opacity: 0.7; margin: 0 0 12px">
+          When a video source cannot be loaded the player shows a
+          full-viewport error overlay with the theme's error colour.
+        </p>
+        <ui-media-player
+          type="video"
+          [source]="source"
+          ariaLabel="Broken video"
+        />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Audio error — banner</h4>
+        <p style="font-size: 0.875rem; opacity: 0.7; margin: 0 0 12px">
+          Audio mode renders a compact error banner above the controls.
+        </p>
+        <ui-media-player
+          type="audio"
+          [source]="source"
+          ariaLabel="Broken audio"
+        />
+      </div>
     </div>
   `,
 })
 class MediaPlayerErrorDemo {
-  public readonly type = signal<"video" | "audio">("video");
   public readonly source: MediaSource = {
     url: "/media/this-video-does-not-exist.mp4",
     type: "video/mp4",
@@ -1039,9 +1051,8 @@ export class ExampleComponent {
 };
 
 /**
- * Demonstrates the error state when a media source cannot be loaded.
- * The player shows an error overlay (video) or error banner (audio)
- * with a human-readable message and adds the `--error` host class.
+ * Demonstrates both error-state variants: the full-viewport overlay
+ * for video and the compact inline banner for audio.
  */
 export const ErrorState: Story = {
   render: () => ({
@@ -1053,11 +1064,18 @@ export const ErrorState: Story = {
         language: "html",
         code: `
 // ── HTML ──
-<!-- The player displays a graceful error overlay when the source fails. -->
+<!-- Video: full-viewport error overlay -->
 <ui-media-player
   type="video"
   [source]="brokenSource"
   ariaLabel="Broken video"
+/>
+
+<!-- Audio: compact error banner -->
+<ui-media-player
+  type="audio"
+  [source]="brokenSource"
+  ariaLabel="Broken audio"
 />
 
 // ── TypeScript ──
@@ -1069,15 +1087,11 @@ import { UIMediaPlayer, MediaSource } from '@theredhead/ui-kit';
   standalone: true,
   imports: [UIMediaPlayer],
   template: \\\`
-    <ui-media-player
-      type="video"
-      [source]="brokenSource"
-      ariaLabel="Broken video"
-    />
+    <ui-media-player type="video" [source]="brokenSource" ariaLabel="Broken video" />
+    <ui-media-player type="audio" [source]="brokenSource" ariaLabel="Broken audio" />
   \\\`,
 })
 export class ExampleComponent {
-  // This URL intentionally does not exist.
   readonly brokenSource: MediaSource = {
     url: '/assets/does-not-exist.mp4',
     type: 'video/mp4',
@@ -1085,8 +1099,7 @@ export class ExampleComponent {
 }
 
 // ── SCSS ──
-/* The error overlay is styled automatically. You can override tokens:
-   --ui-text, --ui-surface, --ui-border to customise. */
+/* Error styling is automatic via --theredhead-error theme token. */
 `,
       },
     },
