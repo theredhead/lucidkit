@@ -344,7 +344,8 @@ const meta: Meta<UITreeView> = {
   parameters: {
     docs: {
       description: {
-        component: "`UITreeView` renders hierarchical data as an expandable / collapsible tree.",
+        component:
+          "`UITreeView` renders hierarchical data as an expandable / collapsible tree.",
       },
     },
   },

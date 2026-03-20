@@ -229,7 +229,8 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: "`UITimePicker` is a keyboard-driven time input with separate hour and minute fields. It supports 12-hour (AM/PM) and 24-hour modes, minute stepping, and min/max time constraints.",
+        component:
+          "`UITimePicker` is a keyboard-driven time input with separate hour and minute fields. It supports 12-hour (AM/PM) and 24-hour modes, minute stepping, and min/max time constraints.",
       },
     },
   },

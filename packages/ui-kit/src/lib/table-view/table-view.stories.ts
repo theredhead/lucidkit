@@ -344,7 +344,8 @@ const meta: Meta<object> = {
     layout: "fullscreen",
     docs: {
       description: {
-        component: "`UITableView` is a full-featured data table with pluggable datasources, declarative columns, sorting, pagination, row selection, and density control.",
+        component:
+          "`UITableView` is a full-featured data table with pluggable datasources, declarative columns, sorting, pagination, row selection, and density control.",
       },
     },
   },

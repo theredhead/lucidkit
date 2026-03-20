@@ -380,7 +380,8 @@ const meta: Meta<UISidebarNav> = {
   parameters: {
     docs: {
       description: {
-        component: "A vertical sidebar navigation component with collapsible groups.",
+        component:
+          "A vertical sidebar navigation component with collapsible groups.",
       },
     },
   },

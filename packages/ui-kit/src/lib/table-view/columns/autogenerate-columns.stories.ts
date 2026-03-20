@@ -516,6 +516,15 @@ const meta: Meta<UITableView> = {
   title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
   component: UITableView,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A structural directive that automatically generates table columns " +
+          "by introspecting the first row of a `UITableView` datasource.",
+      },
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -547,6 +556,75 @@ export const Autogenerate: Story = {
     props: args,
     template: "<ui-demo-autogenerate></ui-demo-autogenerate>",
   }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "### Key Features\n\n" +
+          "- **Zero-config columns** \u2014 attach `uiAutogenerateColumns` and the directive creates a `UITextColumn` for every property in the first data row\n" +
+          "- **Header humanization** \u2014 `camelCase` and `snake_case` keys are converted to title-cased labels (e.g. `firstName` \u2192 \"First Name\")\n" +
+          "- **Custom header mapping** \u2014 override individual headers via `headerMap`\n" +
+          "- **Exclude keys** \u2014 hide properties via `excludeKeys`\n" +
+          "- **Reactive** \u2014 columns regenerate when the datasource or config signal changes\n" +
+          "- **Works with `UIFilter`** \u2014 combine with `inferFilterFields()` for fully auto-generated table + filter UIs\n\n" +
+          "### Configuration\n\n" +
+          "| Property | Type | Default | Description |\n" +
+          "|----------|------|---------|-------------|\n" +
+          "| `humanizeHeaders` | `boolean` | `true` | Convert camelCase/snake_case keys to title-cased labels |\n" +
+          "| `headerMap` | `Record<string, string>` | `{}` | Explicit header text overrides per key |\n" +
+          "| `excludeKeys` | `string[]` | `[]` | Property keys to omit from the generated columns |\n\n" +
+          "### Usage Modes\n\n" +
+          "| Mode | Syntax |\n" +
+          "|------|--------|\n" +
+          "| No config (defaults) | `uiAutogenerateColumns` |\n" +
+          "| With config object | `[uiAutogenerateColumns]=\"config\"` |",
+      },
+      source: {
+        language: "html",
+        code: `
+// \u2500\u2500 HTML \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+<ui-table-view
+  [datasource]="datasource()"
+  uiAutogenerateColumns
+/>
+
+// \u2500\u2500 TypeScript \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+import { Component, signal } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  ArrayDatasource,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: \`
+    <ui-table-view
+      [datasource]="datasource()"
+      uiAutogenerateColumns
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource([
+        { id: 1, firstName: 'Alice', email: 'alice@example.com' },
+        { id: 2, firstName: 'Bob',   email: 'bob@example.com' },
+      ]),
+    ),
+  );
+}
+
+// \u2500\u2500 SCSS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+/* No custom styles needed \u2014 inherits table-view tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -559,6 +637,58 @@ export const AutogenerateCustom: Story = {
     props: args,
     template: "<ui-demo-autogenerate-custom></ui-demo-autogenerate-custom>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// \u2500\u2500 HTML \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+<ui-table-view
+  [datasource]="datasource()"
+  [uiAutogenerateColumns]="columnConfig()"
+/>
+
+// \u2500\u2500 TypeScript \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+import { Component, signal } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  ArrayDatasource,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: \`
+    <ui-table-view
+      [datasource]="datasource()"
+      [uiAutogenerateColumns]="columnConfig()"
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly datasource = signal(
+    new DatasourceAdapter(new ArrayDatasource(myData)),
+  );
+
+  readonly columnConfig = signal({
+    excludeKeys: ['userId'],
+    headerMap: {
+      userName: 'Username',
+      userEmail: 'Email Address',
+      createdAt: 'Joined',
+    },
+  });
+}
+
+// \u2500\u2500 SCSS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+/* No custom styles needed \u2014 inherits table-view tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -570,6 +700,49 @@ export const AutogenerateNoHumanize: Story = {
     template:
       "<ui-demo-autogenerate-no-humanize></ui-demo-autogenerate-no-humanize>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// \u2500\u2500 HTML \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+<ui-table-view
+  [datasource]="datasource()"
+  [uiAutogenerateColumns]="{ humanizeHeaders: false }"
+/>
+
+// \u2500\u2500 TypeScript \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+import { Component, signal } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  ArrayDatasource,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: \`
+    <ui-table-view
+      [datasource]="datasource()"
+      [uiAutogenerateColumns]="{ humanizeHeaders: false }"
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly datasource = signal(
+    new DatasourceAdapter(new ArrayDatasource(myData)),
+  );
+}
+
+// \u2500\u2500 SCSS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+/* No custom styles needed \u2014 inherits table-view tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -641,6 +814,68 @@ export const FilteredEmployees200: Story = {
     props: args,
     template: "<ui-demo-autogenerate-filtered></ui-demo-autogenerate-filtered>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// \u2500\u2500 HTML \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+<ui-filter
+  [fields]="filterFields"
+  [allowJunction]="true"
+  (predicateChange)="onPredicateChange($event)"
+/>
+
+<ui-table-view
+  [datasource]="adapter()"
+  uiAutogenerateColumns
+/>
+
+// \u2500\u2500 TypeScript \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+import { Component, signal } from '@angular/core';
+import type { Predicate } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  UIFilter,
+  FilterableArrayDatasource,
+  DatasourceAdapter,
+  inferFilterFields,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective, UIFilter],
+  template: \`
+    <ui-filter
+      [fields]="filterFields"
+      [allowJunction]="true"
+      (predicateChange)="onPredicateChange($event)"
+    />
+    <ui-table-view
+      [datasource]="adapter()"
+      uiAutogenerateColumns
+    />
+  \`,
+})
+export class ExampleComponent {
+  private readonly datasource = new FilterableArrayDatasource(myData);
+  readonly adapter = signal(new DatasourceAdapter(this.datasource));
+  readonly filterFields = inferFilterFields(myData[0]);
+
+  onPredicateChange(predicate: Predicate<Record<string, unknown>> | undefined): void {
+    this.datasource.applyPredicate(predicate ?? null);
+    this.adapter.set(new DatasourceAdapter(this.datasource));
+  }
+}
+
+// \u2500\u2500 SCSS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
 
 /**

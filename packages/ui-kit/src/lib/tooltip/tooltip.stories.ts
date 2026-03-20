@@ -15,7 +15,8 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: "A directive that displays a floating text tooltip on hover/focus.",
+        component:
+          "A directive that displays a floating text tooltip on hover/focus.",
       },
     },
   },
