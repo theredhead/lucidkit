@@ -32,6 +32,10 @@ export default defineConfig({
         root,
         "packages/ui-blocks/src/public-api.ts",
       ),
+      "@theredhead/ui-forms": resolve(
+        root,
+        "packages/ui-forms/src/public-api.ts",
+      ),
       "@theredhead/ui-theme": resolve(
         root,
         "packages/ui-theme/src/public-api.ts",

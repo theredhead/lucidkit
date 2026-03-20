@@ -307,12 +307,14 @@ class MediaPlayerCustomProviderDemo {
   imports: [UIMediaPlayer],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div style="display: flex; flex-direction: column; gap: 24px; max-width: 640px">
+    <div
+      style="display: flex; flex-direction: column; gap: 24px; max-width: 640px"
+    >
       <div>
         <h4 style="margin: 0 0 8px">Video error — overlay</h4>
         <p style="font-size: 0.875rem; opacity: 0.7; margin: 0 0 12px">
-          When a video source cannot be loaded the player shows a
-          full-viewport error overlay with the theme's error colour.
+          When a video source cannot be loaded the player shows a full-viewport
+          error overlay with the theme's error colour.
         </p>
         <ui-media-player
           type="video"

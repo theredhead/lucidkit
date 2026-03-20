@@ -21,6 +21,12 @@
       "sourceRoot": "packages/ui-theme/src",
       "architect": {}
     },
+    "ui-forms": {
+      "projectType": "library",
+      "root": "packages/ui-forms",
+      "sourceRoot": "packages/ui-forms/src",
+      "architect": {}
+    },
     "foundation": {
       "projectType": "library",
       "root": "packages/foundation",
