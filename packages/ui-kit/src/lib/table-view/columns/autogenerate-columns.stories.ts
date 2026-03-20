@@ -758,6 +758,56 @@ export const Employees200: Story = {
     template:
       "<ui-demo-autogenerate-employees></ui-demo-autogenerate-employees>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-table-view
+  [datasource]="datasource()"
+  uiAutogenerateColumns
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  ArrayDatasource,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: \`
+    <ui-table-view
+      [datasource]="datasource()"
+      uiAutogenerateColumns
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource([
+        { employeeId: 1, firstName: 'Alice', lastName: 'Smith',
+          email: 'alice@acme.com', department: 'Engineering',
+          salary: 95000, startDate: '2021-03-15', status: 'Active' },
+        // … more rows
+      ]),
+    ),
+  );
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed — inherits table-view tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -770,6 +820,60 @@ export const Products500: Story = {
     props: args,
     template: "<ui-demo-autogenerate-products></ui-demo-autogenerate-products>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-table-view
+  [datasource]="datasource()"
+  [uiAutogenerateColumns]="columnConfig()"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  ArrayDatasource,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: \`
+    <ui-table-view
+      [datasource]="datasource()"
+      [uiAutogenerateColumns]="columnConfig()"
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly datasource = signal(
+    new DatasourceAdapter(new ArrayDatasource(products)),
+  );
+
+  readonly columnConfig = signal({
+    excludeKeys: ['isDiscontinued'],
+    headerMap: {
+      sku: 'SKU',
+      unitPrice: 'Price ($)',
+      stockQuantity: 'In Stock',
+      reorderLevel: 'Reorder At',
+      supplierCode: 'Supplier',
+    },
+  });
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed — inherits table-view tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -784,6 +888,57 @@ export const ServerLogs1000: Story = {
     props: args,
     template: "<ui-demo-autogenerate-logs></ui-demo-autogenerate-logs>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-table-view
+  [datasource]="datasource()"
+  uiAutogenerateColumns
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  ArrayDatasource,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: \`
+    <ui-table-view
+      [datasource]="datasource()"
+      uiAutogenerateColumns
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource([
+        { timestamp: '2026-03-01T08:14:26Z', level: 'INFO',
+          service: 'api-gateway', message: 'Request processed',
+          responseTimeMs: 42, statusCode: 200,
+          requestId: 'req-a1b2c3d4' },
+        // … more rows
+      ]),
+    ),
+  );
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed — inherits table-view tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -799,6 +954,66 @@ export const EmployeesExtended150: Story = {
     template:
       "<ui-demo-autogenerate-employees-city></ui-demo-autogenerate-employees-city>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-table-view
+  [datasource]="datasource()"
+  [uiAutogenerateColumns]="columnConfig()"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  ArrayDatasource,
+  DatasourceAdapter,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective],
+  template: \`
+    <ui-table-view
+      [datasource]="datasource()"
+      [uiAutogenerateColumns]="columnConfig()"
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly datasource = signal(
+    new DatasourceAdapter(
+      new ArrayDatasource([
+        { employeeId: 1, firstName: 'Alice', lastName: 'Smith',
+          email: 'alice@acme.com', department: 'Engineering',
+          salary: 95000, startDate: '2021-03-15', status: 'Active',
+          city: 'New York', floor: 3, extension: 2001 },
+        // … more rows
+      ]),
+    ),
+  );
+
+  readonly columnConfig = signal({
+    excludeKeys: ['employeeId'],
+    headerMap: {
+      firstName: 'First',
+      lastName: 'Last',
+      startDate: 'Hire Date',
+    },
+  });
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed — inherits table-view tokens. */
+`,
+      },
+    },
+  },
 };
 
 /**
@@ -892,4 +1107,78 @@ export const FilteredProducts500: Story = {
     template:
       "<ui-demo-autogenerate-filtered-products></ui-demo-autogenerate-filtered-products>",
   }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-filter
+  [fields]="filterFields"
+  [allowJunction]="true"
+  (predicateChange)="onPredicateChange($event)"
+/>
+
+<ui-table-view
+  [datasource]="adapter()"
+  [uiAutogenerateColumns]="columnConfig()"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal } from '@angular/core';
+import type { Predicate } from '@angular/core';
+import {
+  UITableView,
+  UIAutogenerateColumnsDirective,
+  UIFilter,
+  FilterableArrayDatasource,
+  DatasourceAdapter,
+  inferFilterFields,
+  type FilterFieldDefinition,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITableView, UIAutogenerateColumnsDirective, UIFilter],
+  template: \`
+    <ui-filter
+      [fields]="filterFields"
+      [allowJunction]="true"
+      (predicateChange)="onPredicateChange($event)"
+    />
+    <ui-table-view
+      [datasource]="adapter()"
+      [uiAutogenerateColumns]="columnConfig()"
+    />
+  \`,
+})
+export class ExampleComponent {
+  private readonly datasource = new FilterableArrayDatasource(products);
+  readonly adapter = signal(new DatasourceAdapter(this.datasource));
+
+  readonly filterFields: FilterFieldDefinition[] =
+    inferFilterFields(products[0]).filter(f => f.key !== 'isDiscontinued');
+
+  readonly columnConfig = signal({
+    excludeKeys: ['isDiscontinued'],
+    headerMap: {
+      sku: 'SKU',
+      unitPrice: 'Price ($)',
+      stockQuantity: 'In Stock',
+    },
+  });
+
+  onPredicateChange(predicate: Predicate<Record<string, unknown>> | undefined): void {
+    this.datasource.applyPredicate(predicate ?? null);
+    this.adapter.set(new DatasourceAdapter(this.datasource));
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
 };
