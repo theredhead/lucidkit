@@ -261,7 +261,7 @@ export const FreeCrop: Story = {
           "- **PNG / JPEG export** — `crop()` returns a `Blob`; `cropToImageData()` returns raw `ImageData`\n" +
           "- **URL or programmatic source** — bind a URL via `[src]`, or call `loadImageData()` with raw pixels\n" +
           "- **Responsive** — canvas resizes with its container via `ResizeObserver`\n" +
-          "- **Accessible** — `role=\"img\"` with configurable `ariaLabel`\n\n" +
+          '- **Accessible** — `role="img"` with configurable `ariaLabel`\n\n' +
           "### Inputs\n\n" +
           "| Input | Type | Default | Description |\n" +
           "|-------|------|---------|-------------|\n" +

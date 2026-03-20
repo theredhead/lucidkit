@@ -211,7 +211,8 @@ const meta: Meta<UISplitContainer> = {
   parameters: {
     docs: {
       description: {
-        component: "`UISplitContainer` is a resizable split-pane layout with a draggable divider. Project two child elements with `first` and `second` attributes to fill each panel.",
+        component:
+          "`UISplitContainer` is a resizable split-pane layout with a draggable divider. Project two child elements with `first` and `second` attributes to fill each panel.",
       },
     },
   },
