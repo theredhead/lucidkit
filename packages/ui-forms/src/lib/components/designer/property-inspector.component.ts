@@ -14,6 +14,8 @@ import type {
   MutableFieldDefinition,
 } from "./designer-engine";
 
+import { type ConfigPropertySchema, getConfigSchema } from "./config-schema";
+
 import type {
   ValidationRule,
   ValidationRuleType,
@@ -179,18 +181,6 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
               </label>
 
               <label class="pi-label">
-                Column Span (1–12)
-                <input
-                  class="pi-input"
-                  type="number"
-                  min="1"
-                  max="12"
-                  [value]="field.colSpan() ?? ''"
-                  (input)="onColSpanChange(field, $event)"
-                />
-              </label>
-
-              <label class="pi-label">
                 Default Value
                 <input
                   class="pi-input"
@@ -308,19 +298,92 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
               </button>
             </div>
 
-            <!-- Config (raw JSON) -->
-            <h4 class="pi-subheading">Config (JSON)</h4>
-            <div class="pi-section">
-              <textarea
-                class="pi-textarea pi-textarea--mono"
-                rows="4"
-                [value]="configJSON(field)"
-                (change)="onConfigChange(field, $event)"
-              ></textarea>
-              @if (configError()) {
-                <p class="pi-error">{{ configError() }}</p>
-              }
-            </div>
+            <!-- Config -->
+            @if (configSchemaFor(field).length > 0) {
+              <h4 class="pi-subheading">Config</h4>
+              <div class="pi-section">
+                @for (prop of configSchemaFor(field); track prop.key) {
+                  @switch (prop.editor) {
+                    @case ("text") {
+                      <label class="pi-label">
+                        {{ prop.label }}
+                        <input
+                          class="pi-input"
+                          [placeholder]="prop.placeholder ?? ''"
+                          [value]="configValue(field, prop.key) ?? ''"
+                          (input)="
+                            setConfigValue(field, prop.key, inputValue($event))
+                          "
+                        />
+                      </label>
+                    }
+
+                    @case ("number") {
+                      <label class="pi-label">
+                        {{ prop.label }}
+                        <input
+                          class="pi-input"
+                          type="number"
+                          [placeholder]="prop.placeholder ?? ''"
+                          [value]="configValue(field, prop.key) ?? ''"
+                          (input)="
+                            setConfigNumber(field, prop.key, inputValue($event))
+                          "
+                        />
+                      </label>
+                    }
+
+                    @case ("boolean") {
+                      <label class="pi-label pi-label--row">
+                        <input
+                          type="checkbox"
+                          [checked]="!!configValue(field, prop.key)"
+                          (change)="setConfigBoolean(field, prop.key, $event)"
+                        />
+                        {{ prop.label }}
+                      </label>
+                    }
+
+                    @case ("select") {
+                      <label class="pi-label">
+                        {{ prop.label }}
+                        <select
+                          class="pi-select"
+                          [value]="configValue(field, prop.key) ?? ''"
+                          (change)="
+                            setConfigValue(field, prop.key, inputValue($event))
+                          "
+                        >
+                          <option value="">—</option>
+                          @for (
+                            opt of configSelectOptions(prop);
+                            track opt.value
+                          ) {
+                            <option [value]="opt.value">{{ opt.label }}</option>
+                          }
+                        </select>
+                      </label>
+                    }
+                  }
+                }
+              </div>
+            }
+
+            <!-- Extra config (raw JSON, for properties not in the schema) -->
+            @if (hasExtraConfig(field)) {
+              <h4 class="pi-subheading">Extra Config (JSON)</h4>
+              <div class="pi-section">
+                <textarea
+                  class="pi-textarea pi-textarea--mono"
+                  rows="3"
+                  [value]="extraConfigJSON(field)"
+                  (change)="onExtraConfigChange(field, $event)"
+                ></textarea>
+                @if (configError()) {
+                  <p class="pi-error">{{ configError() }}</p>
+                }
+              </div>
+            }
           }
         }
       }
@@ -375,6 +438,13 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
       font-size: 0.75rem;
       font-weight: 600;
       color: var(--ui-text, #1d232b);
+    }
+
+    .pi-label--row {
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
     }
 
     .pi-input,
@@ -599,13 +669,6 @@ export class UIPropertyInspector {
     return comp === "select" || comp === "radio" || comp === "autocomplete";
   }
 
-  /** @internal */
-  protected onColSpanChange(field: MutableFieldDefinition, event: Event): void {
-    const v = (event.target as HTMLInputElement).value;
-    const n = parseInt(v, 10);
-    field.colSpan.set(isNaN(n) || n < 1 ? null : Math.min(n, 12));
-  }
-
   // ── Options ───────────────────────────────────────────────────────
 
   /** @internal */
@@ -728,22 +791,126 @@ export class UIPropertyInspector {
     });
   }
 
-  // ── Config JSON ───────────────────────────────────────────────────
+  // ── Structured Config ─────────────────────────────────────────────
 
-  /** @internal */
-  protected configJSON(field: MutableFieldDefinition): string {
-    const cfg = field.config();
-    return Object.keys(cfg).length > 0 ? JSON.stringify(cfg, null, 2) : "";
+  /** @internal Returns the config property schemas for the field's component. */
+  protected configSchemaFor(
+    field: MutableFieldDefinition,
+  ): readonly ConfigPropertySchema[] {
+    return getConfigSchema(field.component());
   }
 
-  /** @internal */
-  protected onConfigChange(field: MutableFieldDefinition, event: Event): void {
+  /** @internal Read a single config value. */
+  protected configValue(field: MutableFieldDefinition, key: string): unknown {
+    return field.config()[key] ?? null;
+  }
+
+  /** @internal Set a string config value (removes key if empty). */
+  protected setConfigValue(
+    field: MutableFieldDefinition,
+    key: string,
+    value: string,
+  ): void {
+    field.config.update((cfg) => {
+      const copy = { ...cfg };
+      if (value === "") {
+        delete copy[key];
+      } else {
+        copy[key] = value;
+      }
+      return copy;
+    });
+  }
+
+  /** @internal Set a numeric config value (removes key if empty/NaN). */
+  protected setConfigNumber(
+    field: MutableFieldDefinition,
+    key: string,
+    raw: string,
+  ): void {
+    field.config.update((cfg) => {
+      const copy = { ...cfg };
+      const n = parseFloat(raw);
+      if (raw === "" || isNaN(n)) {
+        delete copy[key];
+      } else {
+        copy[key] = n;
+      }
+      return copy;
+    });
+  }
+
+  /** @internal Set a boolean config value from a checkbox event. */
+  protected setConfigBoolean(
+    field: MutableFieldDefinition,
+    key: string,
+    event: Event,
+  ): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    field.config.update((cfg) => {
+      const copy = { ...cfg };
+      if (!checked) {
+        delete copy[key];
+      } else {
+        copy[key] = true;
+      }
+      return copy;
+    });
+  }
+
+  /** @internal Normalize select options to { label, value } pairs. */
+  protected configSelectOptions(
+    prop: ConfigPropertySchema,
+  ): readonly { label: string; value: string }[] {
+    return (prop.options ?? []).map((o) =>
+      typeof o === "string" ? { label: o, value: o } : o,
+    );
+  }
+
+  // ── Extra Config (raw JSON for unknown keys) ──────────────────────
+
+  /** @internal Whether the field has config keys not covered by the schema. */
+  protected hasExtraConfig(field: MutableFieldDefinition): boolean {
+    const schemaKeys = new Set(
+      getConfigSchema(field.component()).map((p) => p.key),
+    );
+    return Object.keys(field.config()).some((k) => !schemaKeys.has(k));
+  }
+
+  /** @internal JSON string of config keys NOT in the structured schema. */
+  protected extraConfigJSON(field: MutableFieldDefinition): string {
+    const schemaKeys = new Set(
+      getConfigSchema(field.component()).map((p) => p.key),
+    );
+    const extra: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(field.config())) {
+      if (!schemaKeys.has(k)) extra[k] = v;
+    }
+    return Object.keys(extra).length > 0 ? JSON.stringify(extra, null, 2) : "";
+  }
+
+  /** @internal Parse and merge extra config JSON back into the field. */
+  protected onExtraConfigChange(
+    field: MutableFieldDefinition,
+    event: Event,
+  ): void {
     const raw = (event.target as HTMLTextAreaElement).value.trim();
+    const schemaKeys = new Set(
+      getConfigSchema(field.component()).map((p) => p.key),
+    );
+
+    // Keep all schema-managed keys, replace extra keys
+    const managed: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(field.config())) {
+      if (schemaKeys.has(k)) managed[k] = v;
+    }
+
     if (!raw) {
-      field.config.set({});
+      field.config.set(managed);
       this.configError.set("");
       return;
     }
+
     try {
       const parsed = JSON.parse(raw);
       if (
@@ -751,7 +918,7 @@ export class UIPropertyInspector {
         parsed !== null &&
         !Array.isArray(parsed)
       ) {
-        field.config.set(parsed);
+        field.config.set({ ...managed, ...parsed });
         this.configError.set("");
       } else {
         this.configError.set("Config must be a JSON object.");

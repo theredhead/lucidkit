@@ -88,12 +88,6 @@ export interface FormFieldDefinition {
 
   /** Default value used when the form is first created. */
   readonly defaultValue?: unknown;
-
-  /**
-   * Span within a CSS grid layout (1–12). Defaults to full width.
-   * Used by the form renderer for multi-column layouts.
-   */
-  readonly colSpan?: number;
 }
 
 /**

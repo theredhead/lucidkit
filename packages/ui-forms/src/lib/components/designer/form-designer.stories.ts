@@ -10,6 +10,7 @@ import {
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   signal,
 } from "@angular/core";
@@ -18,6 +19,11 @@ import { JsonPipe } from "@angular/common";
 
 import { provideBuiltInFormFields } from "../../registry/built-in-fields";
 import type { FormSchema } from "../../types/form-schema.types";
+import type { ExportResult, ExportStrategy } from "../../export";
+import {
+  JsonExportStrategy,
+  AngularComponentExportStrategy,
+} from "../../export";
 import { UIFormDesigner } from "./form-designer.component";
 
 // ── Demo wrapper ────────────────────────────────────────────────────
@@ -32,6 +38,7 @@ import { UIFormDesigner } from "./form-designer.component";
       <ui-form-designer
         [schema]="initialSchema()"
         (schemaChange)="onExport($event)"
+        (exported)="onExported($event)"
       />
     </div>
 
@@ -50,15 +57,92 @@ import { UIFormDesigner } from "./form-designer.component";
         >
       </div>
     }
+
+    @if (lastExport()) {
+      <div
+        style="color: #1d232b; background: #f0f4e8; margin-top: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
+      >
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
+        >
+          <h4
+            style="color: #1d232b; margin: 0; font-size: 0.875rem; font-weight: 700"
+          >
+            Export Result
+          </h4>
+          <span
+            style="color: #4a6620; font-size: 0.75rem; font-family: monospace"
+          >
+            {{ lastExport()!.fileName }} ({{ lastExport()!.mimeType }})
+          </span>
+        </div>
+        <pre
+          style="color: #1d232b; font-size: 0.75rem; margin: 0; white-space: pre-wrap; word-break: break-word; max-height: 400px; overflow: auto"
+          >{{ lastExport()!.content }}</pre
+        >
+      </div>
+    }
   `,
 })
 class StoryDesignerDemo {
   public readonly initialSchema = input<FormSchema | null>(null);
   protected readonly exportedSchema = signal<FormSchema | null>(null);
+  protected readonly lastExport = signal<ExportResult | null>(null);
 
   protected onExport(schema: FormSchema): void {
     this.exportedSchema.set(schema);
   }
+
+  protected onExported(result: ExportResult): void {
+    this.lastExport.set(result);
+  }
+}
+
+// ── Export preview wrapper ──────────────────────────────────────────
+
+@Component({
+  selector: "ui-story-export-preview",
+  standalone: true,
+  imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    @for (result of results(); track result.fileName) {
+      <div
+        style="color: #1d232b; background: #f0f4e8; margin-bottom: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
+      >
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
+        >
+          <h4
+            style="color: #1d232b; margin: 0; font-size: 0.875rem; font-weight: 700"
+          >
+            {{ result.fileName }}
+          </h4>
+          <span
+            style="color: #4a6620; font-size: 0.75rem; font-family: monospace"
+          >
+            {{ result.mimeType }}
+          </span>
+        </div>
+        <pre
+          style="color: #1d232b; background: #fafdf5; font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow: auto; border: 1px solid #d5e3b5"
+          >{{ result.content }}</pre
+        >
+      </div>
+    }
+  `,
+})
+class StoryExportPreview {
+  public readonly schema = input.required<FormSchema>();
+
+  private readonly strategies: readonly ExportStrategy[] = [
+    new AngularComponentExportStrategy(),
+    new JsonExportStrategy(),
+  ];
+
+  protected readonly results = computed(() =>
+    this.strategies.map((s) => s.export(this.schema())),
+  );
 }
 
 // ── Pre-built demo schema ───────────────────────────────────────────
@@ -79,14 +163,12 @@ const CONTACT_FORM_SCHEMA: FormSchema = {
           validation: [
             { type: "required", message: "First name is required." },
           ],
-          colSpan: 6,
         },
         {
           id: "lastName",
           title: "Last Name",
           component: "text",
           validation: [{ type: "required", message: "Last name is required." }],
-          colSpan: 6,
         },
         {
           id: "email",
@@ -147,7 +229,7 @@ const meta: Meta<UIFormDesigner> = {
       providers: [provideBuiltInFormFields()],
     }),
     moduleMetadata({
-      imports: [StoryDesignerDemo],
+      imports: [StoryDesignerDemo, StoryExportPreview],
     }),
   ],
   parameters: {
@@ -287,3 +369,30 @@ export class ExampleComponent {
 
 // Give the StoryDesignerDemo an input for pre-loading
 // (We use a simple property binding in the template above)
+
+export const ExportPreview: Story = {
+  name: "Export Preview",
+  render: () => ({
+    props: { schema: CONTACT_FORM_SCHEMA },
+    template: `<ui-story-export-preview [schema]="schema" />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "typescript",
+        code: `
+// Use export strategies programmatically:
+import { AngularComponentExportStrategy, JsonExportStrategy } from '@theredhead/ui-forms';
+import type { FormSchema, ExportResult } from '@theredhead/ui-forms';
+
+const schema: FormSchema = { /* your schema */ };
+const strategy = new AngularComponentExportStrategy();
+const result: ExportResult = strategy.export(schema);
+
+console.log(result.fileName);  // "contact-form.component.ts"
+console.log(result.content);   // Generated component source code
+`,
+      },
+    },
+  },
+};

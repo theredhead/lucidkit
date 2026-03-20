@@ -46,6 +46,13 @@ export {
 } from "./lib/registry";
 export { BUILT_IN_FIELDS, provideBuiltInFormFields } from "./lib/registry";
 
+// ── Export strategies ────────────────────────────────────────────────
+export type { ExportResult, ExportStrategy } from "./lib/export";
+export {
+  JsonExportStrategy,
+  AngularComponentExportStrategy,
+} from "./lib/export";
+
 // ── Components ───────────────────────────────────────────────────────
 export { UIFormField } from "./lib/components";
 export { UIFormGroup } from "./lib/components";

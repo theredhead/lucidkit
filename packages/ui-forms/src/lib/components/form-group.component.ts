@@ -65,13 +65,9 @@ import { UIFormField } from "./form-field/form-field.component";
     }
 
     .fg-fields {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
+      display: flex;
+      flex-direction: column;
       gap: 16px;
-    }
-
-    .fg-fields ::ng-deep ui-form-field {
-      grid-column: 1 / -1;
     }
 
     :host-context(html.dark-theme) {

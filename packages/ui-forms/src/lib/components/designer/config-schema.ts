@@ -1,0 +1,339 @@
+// ── Component config schemas ────────────────────────────────────────
+
+/**
+ * Describes a single config property that the property inspector
+ * renders as a structured form control.
+ */
+export interface ConfigPropertySchema {
+  /** The config key name (e.g. `"type"`, `"multiline"`). */
+  readonly key: string;
+
+  /** Human-readable label shown in the inspector. */
+  readonly label: string;
+
+  /** The editor to use. */
+  readonly editor: "text" | "number" | "boolean" | "select";
+
+  /**
+   * For `"select"` editors — the list of allowed values.
+   * Each entry is either a plain string (used as both label and value)
+   * or a `{ label, value }` pair.
+   */
+  readonly options?: readonly (string | { label: string; value: string })[];
+
+  /** Default value when the property is not set. */
+  readonly defaultValue?: unknown;
+
+  /** Optional short hint shown as placeholder text. */
+  readonly placeholder?: string;
+}
+
+/**
+ * Map from component key (e.g. `"text"`, `"slider"`) to an ordered
+ * list of config property schemas.
+ *
+ * Properties that are not in this map for a given component are
+ * still stored in `config` but are only editable via the raw
+ * JSON fallback textarea.
+ */
+export const COMPONENT_CONFIG_SCHEMAS: Readonly<
+  Record<string, readonly ConfigPropertySchema[]>
+> = {
+  text: [
+    {
+      key: "type",
+      label: "Input type",
+      editor: "select",
+      options: ["text", "email", "password", "url", "tel", "search"],
+      defaultValue: "text",
+    },
+    {
+      key: "placeholder",
+      label: "Placeholder",
+      editor: "text",
+      placeholder: "e.g. Enter your name…",
+    },
+    {
+      key: "multiline",
+      label: "Multiline (textarea)",
+      editor: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "rows",
+      label: "Visible rows",
+      editor: "number",
+      defaultValue: 3,
+      placeholder: "3",
+    },
+  ],
+
+  select: [
+    {
+      key: "placeholder",
+      label: "Placeholder",
+      editor: "text",
+      placeholder: "e.g. Choose…",
+    },
+  ],
+
+  checkbox: [
+    {
+      key: "variant",
+      label: "Variant",
+      editor: "select",
+      options: ["checkbox", "switch"],
+      defaultValue: "checkbox",
+    },
+    {
+      key: "indeterminate",
+      label: "Indeterminate",
+      editor: "boolean",
+      defaultValue: false,
+    },
+  ],
+
+  toggle: [
+    {
+      key: "onLabel",
+      label: "On label",
+      editor: "text",
+      placeholder: "e.g. Enabled",
+    },
+    {
+      key: "offLabel",
+      label: "Off label",
+      editor: "text",
+      placeholder: "e.g. Disabled",
+    },
+    {
+      key: "size",
+      label: "Size",
+      editor: "select",
+      options: ["sm", "md", "lg"],
+      defaultValue: "md",
+    },
+  ],
+
+  radio: [],
+
+  autocomplete: [
+    {
+      key: "placeholder",
+      label: "Placeholder",
+      editor: "text",
+      placeholder: "e.g. Search…",
+    },
+    {
+      key: "minQueryLength",
+      label: "Min query length",
+      editor: "number",
+      defaultValue: 1,
+    },
+    {
+      key: "multi",
+      label: "Multi-select",
+      editor: "boolean",
+      defaultValue: false,
+    },
+  ],
+
+  date: [
+    {
+      key: "format",
+      label: "Date format",
+      editor: "select",
+      options: [
+        "yyyy-MM-dd",
+        "dd/MM/yyyy",
+        "MM/dd/yyyy",
+        "dd.MM.yyyy",
+        "dd-MM-yyyy",
+        "yyyy/MM/dd",
+      ],
+      defaultValue: "yyyy-MM-dd",
+    },
+    {
+      key: "placeholder",
+      label: "Placeholder",
+      editor: "text",
+      placeholder: "e.g. Select date",
+    },
+    {
+      key: "firstDayOfWeek",
+      label: "First day of week",
+      editor: "select",
+      options: [
+        { label: "Sunday", value: "0" },
+        { label: "Monday", value: "1" },
+        { label: "Tuesday", value: "2" },
+        { label: "Wednesday", value: "3" },
+        { label: "Thursday", value: "4" },
+        { label: "Friday", value: "5" },
+        { label: "Saturday", value: "6" },
+      ],
+      defaultValue: 1,
+    },
+  ],
+
+  time: [
+    {
+      key: "clockMode",
+      label: "Clock mode",
+      editor: "select",
+      options: [
+        { label: "24-hour", value: "24" },
+        { label: "12-hour", value: "12" },
+      ],
+      defaultValue: 24,
+    },
+    {
+      key: "minuteStep",
+      label: "Minute step",
+      editor: "number",
+      defaultValue: 1,
+    },
+  ],
+
+  datetime: [
+    {
+      key: "dateFormat",
+      label: "Date format",
+      editor: "select",
+      options: [
+        "yyyy-MM-dd",
+        "dd/MM/yyyy",
+        "MM/dd/yyyy",
+        "dd.MM.yyyy",
+        "dd-MM-yyyy",
+        "yyyy/MM/dd",
+      ],
+      defaultValue: "yyyy-MM-dd",
+    },
+    {
+      key: "clockMode",
+      label: "Clock mode",
+      editor: "select",
+      options: [
+        { label: "24-hour", value: "24" },
+        { label: "12-hour", value: "12" },
+      ],
+      defaultValue: 24,
+    },
+    {
+      key: "minuteStep",
+      label: "Minute step",
+      editor: "number",
+      defaultValue: 1,
+    },
+  ],
+
+  color: [
+    {
+      key: "defaultMode",
+      label: "Default mode",
+      editor: "select",
+      options: ["theme", "grid", "rgba", "hsla"],
+      defaultValue: "theme",
+    },
+  ],
+
+  slider: [
+    {
+      key: "mode",
+      label: "Mode",
+      editor: "select",
+      options: ["single", "range"],
+      defaultValue: "single",
+    },
+    {
+      key: "min",
+      label: "Min value",
+      editor: "number",
+      defaultValue: 0,
+    },
+    {
+      key: "max",
+      label: "Max value",
+      editor: "number",
+      defaultValue: 100,
+    },
+    {
+      key: "step",
+      label: "Step",
+      editor: "number",
+      defaultValue: 1,
+    },
+    {
+      key: "showValue",
+      label: "Show value label",
+      editor: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "showTicks",
+      label: "Show tick marks",
+      editor: "boolean",
+      defaultValue: false,
+    },
+  ],
+
+  richtext: [
+    {
+      key: "mode",
+      label: "Mode",
+      editor: "select",
+      options: ["html", "markdown"],
+      defaultValue: "html",
+    },
+    {
+      key: "placeholder",
+      label: "Placeholder",
+      editor: "text",
+      placeholder: "e.g. Type here…",
+    },
+    {
+      key: "sanitize",
+      label: "Sanitize HTML",
+      editor: "boolean",
+      defaultValue: true,
+    },
+    {
+      key: "maxLength",
+      label: "Max length",
+      editor: "number",
+      placeholder: "0 = unlimited",
+    },
+  ],
+
+  file: [
+    {
+      key: "accept",
+      label: "Accepted types",
+      editor: "text",
+      placeholder: "e.g. image/*,.pdf",
+    },
+    {
+      key: "multiple",
+      label: "Multiple files",
+      editor: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "maxFileSize",
+      label: "Max file size (bytes)",
+      editor: "number",
+      placeholder: "e.g. 5242880",
+    },
+  ],
+};
+
+/**
+ * Returns the config property schemas for a given component key.
+ * Returns an empty array for unknown components.
+ */
+export function getConfigSchema(
+  component: string,
+): readonly ConfigPropertySchema[] {
+  return COMPONENT_CONFIG_SCHEMAS[component] ?? [];
+}

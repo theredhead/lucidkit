@@ -13,6 +13,11 @@ import {
 import { JsonPipe } from "@angular/common";
 
 import type { FormSchema } from "../../types/form-schema.types";
+import type { ExportResult, ExportStrategy } from "../../export";
+import {
+  JsonExportStrategy,
+  AngularComponentExportStrategy,
+} from "../../export";
 import { FormEngine } from "../../engine/form-engine";
 import { UIForm } from "../form.component";
 import { FormDesignerEngine } from "./designer-engine";
@@ -79,9 +84,20 @@ import { UIPropertyInspector } from "./property-inspector.component";
         </button>
       </div>
 
-      <button type="button" class="fd-toolbar-export" (click)="onExport()">
-        Export Schema
-      </button>
+      <div class="fd-toolbar-export-group">
+        <select class="fd-export-select" (change)="onStrategyChange($event)">
+          @for (
+            strategy of allStrategies();
+            track strategy.label;
+            let i = $index
+          ) {
+            <option [value]="i">{{ strategy.label }}</option>
+          }
+        </select>
+        <button type="button" class="fd-toolbar-export" (click)="onExport()">
+          Export
+        </button>
+      </div>
     </header>
 
     <!-- Content area -->
@@ -209,6 +225,22 @@ import { UIPropertyInspector } from "./property-inspector.component";
       color: var(--theredhead-on-primary, #ffffff);
     }
 
+    .fd-toolbar-export-group {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .fd-export-select {
+      border: 1px solid var(--ui-border, #d7dce2);
+      background: var(--ui-surface-alt, #ffffff);
+      color: var(--ui-text, #1d232b);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      cursor: pointer;
+    }
+
     /* Body */
 
     .fd-body {
@@ -295,6 +327,11 @@ import { UIPropertyInspector } from "./property-inspector.component";
         background: var(--theredhead-primary, #a8c8ff);
         color: var(--theredhead-on-primary, #003062);
       }
+      .fd-export-select {
+        background: var(--ui-surface-alt, #2a2e36);
+        border-color: var(--ui-border, #3a3f47);
+        color: var(--ui-text, #f2f6fb);
+      }
       .fd-json-pre {
         color: var(--ui-text, #f2f6fb);
       }
@@ -330,6 +367,11 @@ import { UIPropertyInspector } from "./property-inspector.component";
           background: var(--theredhead-primary, #a8c8ff);
           color: var(--theredhead-on-primary, #003062);
         }
+        .fd-export-select {
+          background: var(--ui-surface-alt, #2a2e36);
+          border-color: var(--ui-border, #3a3f47);
+          color: var(--ui-text, #f2f6fb);
+        }
         .fd-json-pre {
           color: var(--ui-text, #f2f6fb);
         }
@@ -344,8 +386,35 @@ export class UIFormDesigner {
    */
   public readonly schema = input<FormSchema | null>(null);
 
-  /** Emitted when the user clicks "Export Schema". */
+  /** Emitted when the user clicks "Export" — always emits the raw schema. */
   public readonly schemaChange = output<FormSchema>();
+
+  /**
+   * Additional export strategies provided by the consumer.
+   * Merged with the built-in JSON and Angular Component strategies.
+   */
+  public readonly exportStrategies = input<readonly ExportStrategy[]>([]);
+
+  /** Emitted with the {@link ExportResult} produced by the selected strategy. */
+  public readonly exported = output<ExportResult>();
+
+  /**
+   * @internal Built-in export strategies.
+   * Consumers can add more via the `exportStrategies` input.
+   */
+  private readonly builtInStrategies: readonly ExportStrategy[] = [
+    new JsonExportStrategy(),
+    new AngularComponentExportStrategy(),
+  ];
+
+  /** @internal All available strategies (built-in + consumer-provided). */
+  protected readonly allStrategies = computed(() => [
+    ...this.builtInStrategies,
+    ...this.exportStrategies(),
+  ]);
+
+  /** @internal Index of the currently selected export strategy. */
+  protected readonly selectedStrategyIndex = signal(0);
 
   /** @internal Active tab: design, preview, or json. */
   protected readonly activeTab = signal<"design" | "preview" | "json">(
@@ -405,8 +474,43 @@ export class UIFormDesigner {
     this.lastGroupUid = groupUid;
   }
 
-  /** @internal Export the current schema. */
+  /** @internal Handle export format selection change. */
+  protected onStrategyChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.selectedStrategyIndex.set(Number(select.value));
+  }
+
+  /**
+   * @internal Export the current schema using the selected strategy.
+   * Triggers a browser file download and emits both `schemaChange`
+   * (raw schema) and `exported` (formatted result).
+   */
   protected onExport(): void {
-    this.schemaChange.emit(this.designerEngine.schema());
+    const schema = this.designerEngine.schema();
+    this.schemaChange.emit(schema);
+
+    const strategy = this.allStrategies()[this.selectedStrategyIndex()];
+    if (strategy) {
+      const result = strategy.export(schema);
+      this.exported.emit(result);
+      this.downloadFile(result.content, result.fileName, result.mimeType);
+    }
+  }
+
+  /**
+   * @internal Trigger a browser download for the given content.
+   */
+  private downloadFile(
+    content: string,
+    fileName: string,
+    mimeType: string,
+  ): void {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = fileName;
+    anchor.click();
+    URL.revokeObjectURL(url);
   }
 }

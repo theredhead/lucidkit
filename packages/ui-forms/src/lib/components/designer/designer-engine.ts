@@ -36,7 +36,6 @@ export interface MutableFieldDefinition {
   readonly visibleWhen: WritableSignal<Condition | null>;
   readonly enabledWhen: WritableSignal<Condition | null>;
   readonly defaultValue: WritableSignal<unknown>;
-  readonly colSpan: WritableSignal<number | null>;
 }
 
 /**
@@ -290,7 +289,6 @@ export class FormDesignerEngine {
     copy.visibleWhen.set(original.visibleWhen());
     copy.enabledWhen.set(original.enabledWhen());
     copy.defaultValue.set(original.defaultValue());
-    copy.colSpan.set(original.colSpan());
 
     const idx = fields.findIndex((f) => f.uid === fieldUid);
     group.fields.update((fs) => {
@@ -353,7 +351,6 @@ export class FormDesignerEngine {
         mf.visibleWhen.set(fDef.visibleWhen ?? null);
         mf.enabledWhen.set(fDef.enabledWhen ?? null);
         mf.defaultValue.set(fDef.defaultValue ?? null);
-        mf.colSpan.set(fDef.colSpan ?? null);
         return mf;
       });
 
@@ -396,7 +393,6 @@ export class FormDesignerEngine {
       visibleWhen: signal(null),
       enabledWhen: signal(null),
       defaultValue: signal(null),
-      colSpan: signal(null),
     };
   }
 
@@ -431,7 +427,6 @@ export class FormDesignerEngine {
         if (f.visibleWhen()) def["visibleWhen"] = f.visibleWhen();
         if (f.enabledWhen()) def["enabledWhen"] = f.enabledWhen();
         if (f.defaultValue() !== null) def["defaultValue"] = f.defaultValue();
-        if (f.colSpan() !== null) def["colSpan"] = f.colSpan();
         return def as unknown as FormFieldDefinition;
       });
 

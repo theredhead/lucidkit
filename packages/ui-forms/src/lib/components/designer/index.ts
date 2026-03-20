@@ -14,3 +14,4 @@ export {
 export { UIDesignerCanvas } from "./designer-canvas.component";
 export { UIPropertyInspector } from "./property-inspector.component";
 export { UIFormDesigner } from "./form-designer.component";
+export { type ConfigPropertySchema, getConfigSchema } from "./config-schema";
