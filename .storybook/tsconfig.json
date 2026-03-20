@@ -11,6 +11,8 @@
     "../packages/ui-kit/src/**/*.component.ts",
     "../packages/ui-blocks/src/**/*.stories.*",
     "../packages/ui-blocks/src/**/*.component.ts",
+    "../packages/ui-forms/src/**/*.stories.*",
+    "../packages/ui-forms/src/**/*.ts",
     "../packages/ui-theme/src/**/*.ts",
     "./preview.ts"
   ],

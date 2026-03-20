@@ -2,7 +2,8 @@
   display: inline-flex;
 }
 
-input {
+input,
+textarea {
   font-family: var(--ui-font, inherit);
   font-size: var(--ui-font-body, 0.875rem);
   color: var(--ui-text, #1d232b);
@@ -32,4 +33,9 @@ input {
   &::placeholder {
     color: var(--ui-muted, #5a6470);
   }
+}
+
+textarea {
+  resize: vertical;
+  line-height: 1.5;
 }

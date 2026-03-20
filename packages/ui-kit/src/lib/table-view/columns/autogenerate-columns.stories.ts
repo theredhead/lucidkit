@@ -562,7 +562,7 @@ export const Autogenerate: Story = {
         story:
           "### Key Features\n\n" +
           "- **Zero-config columns** \u2014 attach `uiAutogenerateColumns` and the directive creates a `UITextColumn` for every property in the first data row\n" +
-          "- **Header humanization** \u2014 `camelCase` and `snake_case` keys are converted to title-cased labels (e.g. `firstName` \u2192 \"First Name\")\n" +
+          '- **Header humanization** \u2014 `camelCase` and `snake_case` keys are converted to title-cased labels (e.g. `firstName` \u2192 "First Name")\n' +
           "- **Custom header mapping** \u2014 override individual headers via `headerMap`\n" +
           "- **Exclude keys** \u2014 hide properties via `excludeKeys`\n" +
           "- **Reactive** \u2014 columns regenerate when the datasource or config signal changes\n" +
@@ -577,7 +577,7 @@ export const Autogenerate: Story = {
           "| Mode | Syntax |\n" +
           "|------|--------|\n" +
           "| No config (defaults) | `uiAutogenerateColumns` |\n" +
-          "| With config object | `[uiAutogenerateColumns]=\"config\"` |",
+          '| With config object | `[uiAutogenerateColumns]="config"` |',
       },
       source: {
         language: "html",

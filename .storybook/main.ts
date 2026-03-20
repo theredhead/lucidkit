@@ -17,6 +17,8 @@ const config: StorybookConfig = {
     "../packages/ui-kit/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../packages/ui-blocks/src/**/*.mdx",
     "../packages/ui-blocks/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../packages/ui-forms/src/**/*.mdx",
+    "../packages/ui-forms/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   addons: [
     getAbsolutePath("@storybook/addon-a11y"),

@@ -1,8 +1,18 @@
-<input
-  [type]="type()"
-  [disabled]="disabled()"
-  [placeholder]="placeholder()"
-  [value]="value()"
-  [attr.aria-label]="ariaLabel()"
-  (input)="onInput($event)"
-/>
+@if (multiline()) {
+  <textarea
+    [disabled]="disabled()"
+    [placeholder]="placeholder()"
+    [rows]="rows()"
+    [attr.aria-label]="ariaLabel()"
+    (input)="onInput($event)"
+  >{{ value() }}</textarea>
+} @else {
+  <input
+    [type]="type()"
+    [disabled]="disabled()"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    [attr.aria-label]="ariaLabel()"
+    (input)="onInput($event)"
+  />
+}
