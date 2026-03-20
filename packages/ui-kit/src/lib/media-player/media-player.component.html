@@ -1,0 +1,221 @@
+@if (isEmbed()) {
+  <!-- Embed mode — third-party player via iframe -->
+  <div class="mp-viewport mp-viewport--embed" [style.aspect-ratio]="embedAspectRatio()">
+    <iframe
+      class="mp-embed-iframe"
+      [src]="embedIframeSrc()"
+      allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+      allowfullscreen
+      frameborder="0"
+      [attr.aria-label]="ariaLabel()"
+      [attr.title]="resolvedEmbed()?.providerName + ' player'"
+    ></iframe>
+  </div>
+} @else if (type() === 'video') {
+  <div class="mp-viewport" [style.--mp-fit]="fit()">
+    <video
+      #videoEl
+      class="mp-media"
+      [attr.crossorigin]="crossOrigin()"
+      [attr.poster]="hasPoster() ? resolvedPoster() : null"
+      [attr.preload]="preload()"
+      [attr.loop]="loop() || null"
+      [attr.autoplay]="autoplay() || null"
+      [attr.aria-label]="ariaLabel()"
+      (play)="onMediaEvent('play')"
+      (pause)="onMediaEvent('pause')"
+      (ended)="onMediaEvent('ended')"
+      (timeupdate)="onMediaEvent('timeupdate')"
+      (loadedmetadata)="onMediaEvent('loadedmetadata')"
+      (loadeddata)="onMediaEvent('loadeddata')"
+      (volumechange)="onMediaEvent('volumechange')"
+      (progress)="onMediaEvent('progress')"
+      (error)="onMediaEvent('error')"
+    >
+      @for (entry of sourceEntries(); track entry.src) {
+        <source [src]="entry.src" [attr.type]="entry.type" (error)="onMediaEvent('error')" />
+      }
+      @for (track of tracks(); track track.src) {
+        <track
+          [attr.kind]="track.kind"
+          [attr.src]="track.src"
+          [attr.srclang]="track.srcLang"
+          [attr.label]="track.label"
+          [attr.default]="track.default || null"
+        />
+      }
+    </video>
+
+    @if (hasError()) {
+      <div class="mp-error-overlay" role="alert">
+        <ui-icon [svg]="errorIcon" [size]="48" ariaLabel="Error" />
+        <span class="mp-error-message">{{ errorMessage() }}</span>
+      </div>
+    } @else if (!hasPoster() && !state().playing) {
+      <div class="mp-poster-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="currentColor" class="mp-poster-icon">
+          <rect x="6" y="10" width="36" height="28" rx="3" fill="none" stroke="currentColor" stroke-width="2.5" />
+          <polygon points="20,17 33,24 20,31" />
+        </svg>
+      </div>
+    }
+  </div>
+} @else {
+  <audio
+    #audioEl
+    class="mp-media"
+    [attr.crossorigin]="crossOrigin()"
+    [attr.preload]="preload()"
+    [attr.loop]="loop() || null"
+    [attr.autoplay]="autoplay() || null"
+    [attr.aria-label]="ariaLabel()"
+    (play)="onMediaEvent('play')"
+    (pause)="onMediaEvent('pause')"
+    (ended)="onMediaEvent('ended')"
+    (timeupdate)="onMediaEvent('timeupdate')"
+    (loadedmetadata)="onMediaEvent('loadedmetadata')"
+    (volumechange)="onMediaEvent('volumechange')"
+    (progress)="onMediaEvent('progress')"
+    (error)="onMediaEvent('error')"
+  >
+    @for (entry of sourceEntries(); track entry.src) {
+      <source [src]="entry.src" [attr.type]="entry.type" (error)="onMediaEvent('error')" />
+    }
+  </audio>
+}
+
+@if (hasError() && type() === 'audio') {
+  <div class="mp-error-banner" role="alert">
+    <ui-icon [svg]="errorIcon" [size]="18" ariaLabel="Error" />
+    <span class="mp-error-banner-text">{{ errorMessage() }}</span>
+  </div>
+}
+
+@if (controls() && hasSource() && !isEmbed()) {
+  <div class="mp-controls" role="toolbar" [attr.aria-label]="'Media controls'">
+    <!-- Play / Pause -->
+    <button
+      type="button"
+      class="mp-btn mp-btn--play"
+      [attr.aria-label]="state().playing ? 'Pause' : 'Play'"
+      (click)="togglePlay()"
+    >
+      @if (state().playing) {
+        <svg viewBox="0 0 24 24" fill="currentColor" class="mp-icon">
+          <rect x="6" y="4" width="4" height="16" rx="1" />
+          <rect x="14" y="4" width="4" height="16" rx="1" />
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" fill="currentColor" class="mp-icon">
+          <polygon points="6,4 20,12 6,20" />
+        </svg>
+      }
+    </button>
+
+    <!-- Time display -->
+    <span class="mp-time">
+      {{ currentTimeFormatted() }} / {{ durationFormatted() }}
+    </span>
+
+    <!-- Progress bar -->
+    <div
+      class="mp-progress"
+      role="slider"
+      [attr.aria-label]="'Seek'"
+      [attr.aria-valuemin]="0"
+      [attr.aria-valuemax]="state().duration || 0"
+      [attr.aria-valuenow]="state().currentTime"
+      tabindex="0"
+      (click)="onProgressClick($event)"
+      (keydown.arrowRight)="seekTo(state().currentTime + 5)"
+      (keydown.arrowLeft)="seekTo(state().currentTime - 5)"
+    >
+      <div class="mp-progress-buffered" [style.width.%]="bufferedPercent()"></div>
+      <div class="mp-progress-fill" [style.width.%]="progressPercent()"></div>
+      <div class="mp-progress-thumb" [style.left.%]="progressPercent()"></div>
+    </div>
+
+    <!-- Volume -->
+    <button
+      type="button"
+      class="mp-btn mp-btn--mute"
+      [attr.aria-label]="state().muted ? 'Unmute' : 'Mute'"
+      (click)="toggleMute()"
+    >
+      @if (state().muted || state().volume === 0) {
+        <svg viewBox="0 0 24 24" fill="currentColor" class="mp-icon">
+          <polygon points="3,9 7,9 11,5 11,19 7,15 3,15" />
+          <line x1="15" y1="9" x2="21" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <line x1="21" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      } @else if (state().volume < 0.5) {
+        <svg viewBox="0 0 24 24" fill="currentColor" class="mp-icon">
+          <polygon points="3,9 7,9 11,5 11,19 7,15 3,15" />
+          <path d="M15,9.5 Q18,12 15,14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" fill="currentColor" class="mp-icon">
+          <polygon points="3,9 7,9 11,5 11,19 7,15 3,15" />
+          <path d="M15,9.5 Q18,12 15,14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M17,7 Q22,12 17,17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      }
+    </button>
+
+    <input
+      type="range"
+      class="mp-volume-slider"
+      min="0"
+      max="1"
+      step="0.01"
+      [value]="state().muted ? 0 : state().volume"
+      aria-label="Volume"
+      (input)="onVolumeInput($event)"
+    />
+
+    <!-- Playback rate -->
+    <div class="mp-rate-wrapper">
+      <button
+        type="button"
+        class="mp-btn mp-btn--rate"
+        aria-label="Playback speed"
+        (click)="toggleRatePicker()"
+      >
+        {{ state().playbackRate }}×
+      </button>
+      @if (ratePickerOpen()) {
+        <div class="mp-rate-picker" role="listbox" aria-label="Select playback speed">
+          @for (rate of playbackRates(); track rate) {
+            <button
+              type="button"
+              class="mp-rate-option"
+              role="option"
+              [attr.aria-selected]="state().playbackRate === rate"
+              [class.mp-rate-option--active]="state().playbackRate === rate"
+              (click)="onRateSelect(rate)"
+            >
+              {{ rate }}×
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Fullscreen (video only) -->
+    @if (type() === 'video') {
+      <button
+        type="button"
+        class="mp-btn mp-btn--fullscreen"
+        aria-label="Fullscreen"
+        (click)="requestFullscreen()"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="mp-icon">
+          <polyline points="4,14 4,20 10,20" />
+          <polyline points="20,10 20,4 14,4" />
+          <polyline points="14,20 20,20 20,14" />
+          <polyline points="4,10 4,4 10,4" />
+        </svg>
+      </button>
+    }
+  </div>
+}

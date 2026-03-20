@@ -48,3 +48,4 @@ export * from "./lib/dropdown-menu";
 export * from "./lib/sidebar-nav";
 export * from "./lib/toggle";
 export * from "./lib/carousel";
+export * from "./lib/media-player";
