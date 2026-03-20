@@ -57,27 +57,40 @@ import { UIPropertyInspector } from "./property-inspector.component";
     <header class="fd-toolbar">
       <span class="fd-toolbar-title">Form Designer</span>
 
-      <div class="fd-toolbar-actions">
+      <div
+        class="fd-toolbar-actions"
+        role="tablist"
+        aria-label="Designer views"
+      >
         <button
           type="button"
+          role="tab"
           class="fd-toolbar-btn"
           [class.fd-toolbar-btn--active]="activeTab() === 'design'"
+          [attr.aria-selected]="activeTab() === 'design'"
+          aria-controls="fd-tabpanel"
           (click)="activeTab.set('design')"
         >
           Design
         </button>
         <button
           type="button"
+          role="tab"
           class="fd-toolbar-btn"
           [class.fd-toolbar-btn--active]="activeTab() === 'preview'"
+          [attr.aria-selected]="activeTab() === 'preview'"
+          aria-controls="fd-tabpanel"
           (click)="activeTab.set('preview')"
         >
           Preview
         </button>
         <button
           type="button"
+          role="tab"
           class="fd-toolbar-btn"
           [class.fd-toolbar-btn--active]="activeTab() === 'json'"
+          [attr.aria-selected]="activeTab() === 'json'"
+          aria-controls="fd-tabpanel"
           (click)="activeTab.set('json')"
         >
           JSON
@@ -85,7 +98,11 @@ import { UIPropertyInspector } from "./property-inspector.component";
       </div>
 
       <div class="fd-toolbar-export-group">
-        <select class="fd-export-select" (change)="onStrategyChange($event)">
+        <select
+          class="fd-export-select"
+          aria-label="Export format"
+          (change)="onStrategyChange($event)"
+        >
           @for (
             strategy of allStrategies();
             track strategy.label;
@@ -94,14 +111,24 @@ import { UIPropertyInspector } from "./property-inspector.component";
             <option [value]="i">{{ strategy.label }}</option>
           }
         </select>
-        <button type="button" class="fd-toolbar-export" (click)="onExport()">
+        <button
+          type="button"
+          class="fd-toolbar-export"
+          aria-label="Export form schema"
+          (click)="onExport()"
+        >
           Export
         </button>
       </div>
     </header>
 
     <!-- Content area -->
-    <div class="fd-body">
+    <div
+      class="fd-body"
+      id="fd-tabpanel"
+      role="tabpanel"
+      [attr.aria-label]="activeTab() + ' view'"
+    >
       @switch (activeTab()) {
         @case ("design") {
           <ui-field-palette
@@ -144,6 +171,8 @@ import { UIPropertyInspector } from "./property-inspector.component";
   `,
   styles: `
     :host {
+      --ui-surface-card: #f7f8fa;
+      --ui-text-card: #1d232b;
       display: flex;
       flex-direction: column;
       height: 100%;
@@ -262,7 +291,6 @@ import { UIPropertyInspector } from "./property-inspector.component";
     }
 
     /* Preview */
-
     .fd-preview {
       flex: 1;
       padding: 24px;
@@ -270,13 +298,19 @@ import { UIPropertyInspector } from "./property-inspector.component";
       max-width: 720px;
       margin: 0 auto;
       width: 100%;
+      background: var(--ui-surface-card, #f7f8fa);
+      color: var(--ui-text-card, #1d232b);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+      border: 1.5px dashed var(--ui-border, #d7dce2);
     }
 
     .fd-preview-empty {
       text-align: center;
       font-size: 0.9375rem;
-      opacity: 0.5;
       padding: 48px 16px;
+      color: var(--ui-text-card, #1d232b);
+      font-weight: 500;
     }
 
     /* JSON */
@@ -296,9 +330,10 @@ import { UIPropertyInspector } from "./property-inspector.component";
       color: var(--ui-text, #1d232b);
     }
 
-    /* Dark mode */
-
+    /* Dark mode — explicit class */
     :host-context(html.dark-theme) {
+      --ui-surface-card: #1a1d23;
+      --ui-text-card: #f2f6fb;
       background: var(--ui-surface-alt, #2a2e36);
       border-color: var(--ui-border, #3a3f47);
 
@@ -318,6 +353,13 @@ import { UIPropertyInspector } from "./property-inspector.component";
       }
       .fd-toolbar-btn:hover {
         background: rgba(255, 255, 255, 0.08);
+      }
+      .fd-toolbar-btn--active {
+        background: var(--theredhead-primary-container, #004787);
+        color: var(--theredhead-on-primary-container, #d6e3ff);
+      }
+      .fd-toolbar-btn--active:hover {
+        opacity: 0.9;
       }
       .fd-toolbar-export {
         border-color: var(--theredhead-primary, #a8c8ff);
@@ -339,6 +381,8 @@ import { UIPropertyInspector } from "./property-inspector.component";
 
     @media (prefers-color-scheme: dark) {
       :host-context(html:not(.light-theme):not(.dark-theme)) {
+        --ui-surface-card: #1a1d23;
+        --ui-text-card: #f2f6fb;
         background: var(--ui-surface-alt, #2a2e36);
         border-color: var(--ui-border, #3a3f47);
 
@@ -358,6 +402,13 @@ import { UIPropertyInspector } from "./property-inspector.component";
         }
         .fd-toolbar-btn:hover {
           background: rgba(255, 255, 255, 0.08);
+        }
+        .fd-toolbar-btn--active {
+          background: var(--theredhead-primary-container, #004787);
+          color: var(--theredhead-on-primary-container, #d6e3ff);
+        }
+        .fd-toolbar-btn--active:hover {
+          opacity: 0.9;
         }
         .fd-toolbar-export {
           border-color: var(--theredhead-primary, #a8c8ff);
@@ -482,8 +533,7 @@ export class UIFormDesigner {
 
   /**
    * @internal Export the current schema using the selected strategy.
-   * Triggers a browser file download and emits both `schemaChange`
-   * (raw schema) and `exported` (formatted result).
+   * Emits both `schemaChange` (raw schema) and `exported` (formatted result).
    */
   protected onExport(): void {
     const schema = this.designerEngine.schema();
@@ -493,24 +543,6 @@ export class UIFormDesigner {
     if (strategy) {
       const result = strategy.export(schema);
       this.exported.emit(result);
-      this.downloadFile(result.content, result.fileName, result.mimeType);
     }
-  }
-
-  /**
-   * @internal Trigger a browser download for the given content.
-   */
-  private downloadFile(
-    content: string,
-    fileName: string,
-    mimeType: string,
-  ): void {
-    const blob = new Blob([content], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = fileName;
-    anchor.click();
-    URL.revokeObjectURL(url);
   }
 }

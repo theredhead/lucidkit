@@ -116,22 +116,27 @@ const PALETTE_FIELDS: readonly PaletteFieldType[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-field-palette" },
   template: `
-    <h3 class="fp-heading">Fields</h3>
-    <div class="fp-list">
+    <h3 class="fp-heading" id="fp-heading">Fields</h3>
+    <nav class="fp-list" aria-labelledby="fp-heading">
       @for (ft of fieldTypes; track ft.key) {
         <button
           type="button"
           class="fp-item"
-          [title]="ft.description"
+          [attr.aria-label]="'Add ' + ft.label + ' field: ' + ft.description"
           (click)="fieldRequested.emit(ft.key)"
           draggable="true"
           (dragstart)="onDragStart($event, ft.key)"
         >
-          <ui-icon class="fp-icon" [svg]="ft.icon" [size]="16" />
+          <ui-icon
+            class="fp-icon"
+            [svg]="ft.icon"
+            [size]="16"
+            aria-hidden="true"
+          />
           <span class="fp-label">{{ ft.label }}</span>
         </button>
       }
-    </div>
+    </nav>
   `,
   styles: `
     :host {
