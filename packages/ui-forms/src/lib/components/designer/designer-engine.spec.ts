@@ -252,7 +252,6 @@ describe("FormDesignerEngine", () => {
       expect(field.visibleWhen).toBeUndefined();
       expect(field.enabledWhen).toBeUndefined();
       expect(field.defaultValue).toBeUndefined();
-      expect(field.colSpan).toBeUndefined();
     });
 
     it("should include config when set", () => {
@@ -295,7 +294,6 @@ describe("FormDesignerEngine", () => {
               title: "Name",
               component: "text",
               validation: [{ type: "required", message: "Required" }],
-              colSpan: 6,
             },
             {
               id: "agree",
@@ -350,7 +348,6 @@ describe("FormDesignerEngine", () => {
       const nameField = engine.groups()[0].fields()[0];
       expect(nameField.component()).toBe("text");
       expect(nameField.validation()).toHaveLength(1);
-      expect(nameField.colSpan()).toBe(6);
     });
 
     it("should import options", () => {

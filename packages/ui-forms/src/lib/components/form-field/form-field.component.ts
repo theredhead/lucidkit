@@ -39,7 +39,6 @@ import { FormFieldRegistry } from "../../registry/field-registry";
     "[class.ui-form-field--invalid]": "showErrors()",
     "[class.ui-form-field--disabled]": "!state().enabled()",
     "[class.ui-form-field--hidden]": "!state().visible()",
-    "[style.grid-column]": "gridColumn()",
   },
   template: `
     @if (state().visible()) {
@@ -162,12 +161,6 @@ export class UIFormField {
       (r) => r.type === "required",
     ),
   );
-
-  /** @internal CSS grid-column value from colSpan. */
-  protected readonly gridColumn = computed(() => {
-    const span = this.state().definition.colSpan;
-    return span ? `span ${span}` : null;
-  });
 
   public constructor() {
     // Create the component once the view is ready

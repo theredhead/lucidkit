@@ -35,14 +35,12 @@ const contactSchema: FormSchema = {
           id: "firstName",
           title: "First Name",
           component: "text",
-          colSpan: 6,
           validation: [{ type: "required" }],
         },
         {
           id: "lastName",
           title: "Last Name",
           component: "text",
-          colSpan: 6,
           validation: [{ type: "required" }],
         },
         {
@@ -814,9 +812,9 @@ const schema: FormSchema = {
       id: 'personal',
       title: 'Personal Information',
       fields: [
-        { id: 'firstName', title: 'First Name', component: 'text', colSpan: 6,
+        { id: 'firstName', title: 'First Name', component: 'text',
           validation: [{ type: 'required' }] },
-        { id: 'lastName', title: 'Last Name', component: 'text', colSpan: 6,
+        { id: 'lastName', title: 'Last Name', component: 'text',
           validation: [{ type: 'required' }] },
         { id: 'email', title: 'E-mail', component: 'text',
           description: "We'll never share your email with anyone.",
@@ -911,9 +909,9 @@ const schema: FormSchema = {
       id: 'personal',
       title: 'Personal Information',
       fields: [
-        { id: 'firstName', title: 'First Name', component: 'text', colSpan: 6,
+        { id: 'firstName', title: 'First Name', component: 'text',
           validation: [{ type: 'required' }] },
-        { id: 'lastName', title: 'Last Name', component: 'text', colSpan: 6,
+        { id: 'lastName', title: 'Last Name', component: 'text',
           validation: [{ type: 'required' }] },
         { id: 'email', title: 'E-mail', component: 'text',
           description: "We'll never share your email with anyone.",
