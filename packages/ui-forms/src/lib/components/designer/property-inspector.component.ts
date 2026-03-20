@@ -215,10 +215,10 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
                     <button
                       type="button"
                       class="pi-icon-btn pi-icon-btn--danger"
-                      title="Remove option"
+                      aria-label="Remove option"
                       (click)="removeOption(field, i)"
                     >
-                      <ui-icon [svg]="iconX" [size]="12" />
+                      <ui-icon [svg]="iconX" [size]="12" aria-hidden="true" />
                     </button>
                   </div>
                 }
@@ -282,10 +282,10 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
                   <button
                     type="button"
                     class="pi-icon-btn pi-icon-btn--danger"
-                    title="Remove rule"
+                    aria-label="Remove validation rule"
                     (click)="removeValidationRule(field, i)"
                   >
-                    <ui-icon [svg]="iconX" [size]="12" />
+                    <ui-icon [svg]="iconX" [size]="12" aria-hidden="true" />
                   </button>
                 </div>
               }
@@ -376,11 +376,16 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
                 <textarea
                   class="pi-textarea pi-textarea--mono"
                   rows="3"
+                  aria-label="Extra configuration JSON"
+                  aria-describedby="pi-config-error"
+                  [attr.aria-invalid]="configError() ? 'true' : null"
                   [value]="extraConfigJSON(field)"
                   (change)="onExtraConfigChange(field, $event)"
                 ></textarea>
                 @if (configError()) {
-                  <p class="pi-error">{{ configError() }}</p>
+                  <p class="pi-error" id="pi-config-error" role="alert">
+                    {{ configError() }}
+                  </p>
                 }
               </div>
             }
@@ -555,7 +560,7 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
       justify-content: center;
       text-align: center;
       font-size: 0.8125rem;
-      opacity: 0.5;
+      color: var(--ui-text-muted, #5a6270);
       padding: 24px;
     }
 
@@ -597,6 +602,9 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
       .pi-error {
         color: var(--theredhead-error, #ffb4ab);
       }
+      .pi-empty {
+        color: var(--ui-text-muted, #a0a8b4);
+      }
     }
 
     @media (prefers-color-scheme: dark) {
@@ -635,6 +643,9 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
 
         .pi-error {
           color: var(--theredhead-error, #ffb4ab);
+        }
+        .pi-empty {
+          color: var(--ui-text-muted, #a0a8b4);
         }
       }
     }

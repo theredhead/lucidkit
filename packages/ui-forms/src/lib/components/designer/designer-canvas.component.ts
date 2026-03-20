@@ -36,6 +36,8 @@ import type {
       type="button"
       class="dc-form-header"
       [class.dc-form-header--selected]="engine().selection()?.kind === 'form'"
+      [attr.aria-pressed]="engine().selection()?.kind === 'form'"
+      aria-label="Select form properties"
       (click)="engine().selectForm()"
     >
       <span class="dc-form-title">
@@ -50,6 +52,8 @@ import type {
     @for (group of engine().groups(); track group.uid; let gi = $index) {
       <section
         class="dc-group"
+        role="region"
+        [attr.aria-label]="group.title() || 'Group ' + (gi + 1)"
         [class.dc-group--selected]="
           engine().selection()?.kind === 'group' &&
           engine().selection()?.groupUid === group.uid
@@ -58,42 +62,48 @@ import type {
         (dragover)="onDragOver($event)"
       >
         <!-- Group header -->
-        <div
-          class="dc-group-header"
-          tabindex="0"
-          role="button"
-          (click)="engine().selectGroup(group.uid)"
-          (keydown.enter)="engine().selectGroup(group.uid)"
-        >
-          <span class="dc-group-title">{{
-            group.title() || "Group " + (gi + 1)
-          }}</span>
+        <div class="dc-group-header">
+          <span
+            class="dc-group-title"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="
+              'Select group: ' + (group.title() || 'Group ' + (gi + 1))
+            "
+            (click)="engine().selectGroup(group.uid)"
+            (keydown.enter)="engine().selectGroup(group.uid)"
+            >{{ group.title() || "Group " + (gi + 1) }}</span
+          >
           <div class="dc-group-actions">
             <button
               type="button"
               class="dc-icon-btn"
-              title="Move up"
+              aria-label="Move group up"
               [disabled]="gi === 0"
               (click)="moveGroupUp($event, group.uid, gi)"
             >
-              <ui-icon [svg]="icons.ChevronUp" [size]="14" />
+              <ui-icon [svg]="icons.ChevronUp" [size]="14" aria-hidden="true" />
             </button>
             <button
               type="button"
               class="dc-icon-btn"
-              title="Move down"
+              aria-label="Move group down"
               [disabled]="gi === engine().groups().length - 1"
               (click)="moveGroupDown($event, group.uid, gi)"
             >
-              <ui-icon [svg]="icons.ChevronDown" [size]="14" />
+              <ui-icon
+                [svg]="icons.ChevronDown"
+                [size]="14"
+                aria-hidden="true"
+              />
             </button>
             <button
               type="button"
               class="dc-icon-btn dc-icon-btn--danger"
-              title="Remove group"
+              aria-label="Remove group"
               (click)="removeGroup($event, group.uid)"
             >
-              <ui-icon [svg]="icons.X" [size]="14" />
+              <ui-icon [svg]="icons.X" [size]="14" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -106,50 +116,69 @@ import type {
               [class.dc-field--selected]="
                 engine().selection()?.fieldUid === field.uid
               "
-              tabindex="0"
-              role="button"
-              (click)="engine().selectField(group.uid, field.uid)"
-              (keydown.enter)="engine().selectField(group.uid, field.uid)"
             >
-              <div class="dc-field-info">
-                <span class="dc-field-component">{{ field.component() }}</span>
+              <div
+                class="dc-field-info"
+                tabindex="0"
+                role="button"
+                [attr.aria-label]="'Select field: ' + field.title()"
+                (click)="engine().selectField(group.uid, field.uid)"
+                (keydown.enter)="engine().selectField(group.uid, field.uid)"
+              >
+                <span class="dc-field-component" aria-hidden="true">{{
+                  field.component()
+                }}</span>
                 <span class="dc-field-title">{{ field.title() }}</span>
-                <span class="dc-field-id">{{ field.id() }}</span>
+                <span class="dc-field-id" aria-hidden="true">{{
+                  field.id()
+                }}</span>
               </div>
-              <div class="dc-field-actions">
+              <div
+                class="dc-field-actions"
+                role="toolbar"
+                [attr.aria-label]="'Actions for ' + field.title()"
+              >
                 <button
                   type="button"
                   class="dc-icon-btn"
-                  title="Move up"
+                  aria-label="Move field up"
                   [disabled]="fi === 0"
                   (click)="moveFieldUp($event, group.uid, field.uid, fi)"
                 >
-                  <ui-icon [svg]="icons.ChevronUp" [size]="14" />
+                  <ui-icon
+                    [svg]="icons.ChevronUp"
+                    [size]="14"
+                    aria-hidden="true"
+                  />
                 </button>
                 <button
                   type="button"
                   class="dc-icon-btn"
-                  title="Move down"
+                  aria-label="Move field down"
                   [disabled]="fi === group.fields().length - 1"
                   (click)="moveFieldDown($event, group.uid, field.uid, fi)"
                 >
-                  <ui-icon [svg]="icons.ChevronDown" [size]="14" />
+                  <ui-icon
+                    [svg]="icons.ChevronDown"
+                    [size]="14"
+                    aria-hidden="true"
+                  />
                 </button>
                 <button
                   type="button"
                   class="dc-icon-btn"
-                  title="Duplicate"
+                  aria-label="Duplicate field"
                   (click)="duplicateField($event, group.uid, field.uid)"
                 >
-                  <ui-icon [svg]="icons.Copy" [size]="14" />
+                  <ui-icon [svg]="icons.Copy" [size]="14" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
                   class="dc-icon-btn dc-icon-btn--danger"
-                  title="Remove field"
+                  aria-label="Remove field"
                   (click)="removeField($event, group.uid, field.uid)"
                 >
-                  <ui-icon [svg]="icons.X" [size]="14" />
+                  <ui-icon [svg]="icons.X" [size]="14" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -222,7 +251,7 @@ import type {
     .dc-form-desc {
       display: block;
       font-size: 0.8125rem;
-      opacity: 0.65;
+      color: var(--ui-text-muted, #5a6270);
       margin-top: 2px;
     }
 
@@ -254,6 +283,19 @@ import type {
       font-weight: 600;
       font-size: 0.875rem;
       color: var(--ui-text, #1d232b);
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 2px 4px;
+      margin: -2px -4px;
+    }
+
+    .dc-group-title:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .dc-group-title:focus-visible {
+      outline: 2px solid var(--theredhead-primary, #3584e4);
+      outline-offset: 2px;
     }
 
     .dc-group-actions {
@@ -278,7 +320,6 @@ import type {
       padding: 8px 10px;
       border: 1px solid var(--ui-border, #d7dce2);
       border-radius: 6px;
-      cursor: pointer;
       background: var(--ui-surface-alt, #ffffff);
       transition:
         border-color 0.12s ease,
@@ -299,6 +340,16 @@ import type {
       align-items: center;
       gap: 8px;
       min-width: 0;
+      flex: 1;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 2px;
+      margin: -2px;
+    }
+
+    .dc-field-info:focus-visible {
+      outline: 2px solid var(--theredhead-primary, #3584e4);
+      outline-offset: 2px;
     }
 
     .dc-field-component {
@@ -324,7 +375,7 @@ import type {
 
     .dc-field-id {
       font-size: 0.75rem;
-      opacity: 0.5;
+      color: var(--ui-text-muted, #5a6270);
       font-family: monospace;
     }
 
@@ -439,6 +490,9 @@ import type {
       .dc-form-title {
         color: var(--ui-text, #f2f6fb);
       }
+      .dc-form-desc {
+        color: var(--ui-text-muted, #a0a8b4);
+      }
 
       .dc-group {
         background: var(--ui-surface-alt, #2a2e36);
@@ -461,6 +515,14 @@ import type {
       }
       .dc-field-title {
         color: var(--ui-text, #f2f6fb);
+      }
+      .dc-field-id {
+        color: var(--ui-text-muted, #a0a8b4);
+      }
+
+      .dc-field-component {
+        background: var(--theredhead-primary-container, #004787);
+        color: var(--theredhead-on-primary-container, #d6e3ff);
       }
 
       .dc-icon-btn {
@@ -501,6 +563,9 @@ import type {
         .dc-form-title {
           color: var(--ui-text, #f2f6fb);
         }
+        .dc-form-desc {
+          color: var(--ui-text-muted, #a0a8b4);
+        }
 
         .dc-group {
           background: var(--ui-surface-alt, #2a2e36);
@@ -523,6 +588,14 @@ import type {
         }
         .dc-field-title {
           color: var(--ui-text, #f2f6fb);
+        }
+        .dc-field-id {
+          color: var(--ui-text-muted, #a0a8b4);
+        }
+
+        .dc-field-component {
+          background: var(--theredhead-primary-container, #004787);
+          color: var(--theredhead-on-primary-container, #d6e3ff);
         }
 
         .dc-icon-btn {
