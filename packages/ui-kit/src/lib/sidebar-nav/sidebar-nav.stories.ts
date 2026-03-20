@@ -380,8 +380,23 @@ const meta: Meta<UISidebarNav> = {
   parameters: {
     docs: {
       description: {
-        component:
-          "A vertical sidebar navigation component with collapsible groups.\n\n" +
+        component: "A vertical sidebar navigation component with collapsible groups.",
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<UISidebarNav>;
+
+export const Default: Story = {
+  render: () => ({
+    template: `<ui-demo-sidebar-basic />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
           "### Sub-components\n" +
           "| Component | Purpose |\n" +
           "|-----------|--------|\n" +
@@ -397,19 +412,6 @@ const meta: Meta<UISidebarNav> = {
           "- Keyboard accessible (Enter, Space)\n" +
           "- Full dark-mode support",
       },
-    },
-  },
-};
-
-export default meta;
-type Story = StoryObj<UISidebarNav>;
-
-export const Default: Story = {
-  render: () => ({
-    template: `<ui-demo-sidebar-basic />`,
-  }),
-  parameters: {
-    docs: {
       source: {
         language: "html",
         code: `

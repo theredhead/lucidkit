@@ -200,9 +200,37 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: [
+        component:
           "`UIFileUpload` provides a drag-and-drop zone with a click-to-browse fallback for selecting files. It supports file-type filtering, size limits, single or multi-file selection, and a two-way `files` model.",
-          "",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        DefaultDemo,
+        ImagesDemo,
+        SizeLimitDemo,
+        DisabledDemo,
+        DocumentsDemo,
+      ],
+    }),
+  ],
+};
+export default meta;
+type Story = StoryObj;
+
+/**
+ * **Default** — A single-file upload zone with event logging. Drop a file
+ * or click to browse. The log below shows `fileAdded` and `fileRemoved`
+ * events as they fire.
+ */
+export const Default: Story = {
+  render: () => ({ template: `<ui-file-upload-default-demo />` }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Drag & drop** — visually highlights when files are dragged over the zone",
@@ -240,32 +268,6 @@ const meta: Meta = {
           "`--ui-border`, `--ui-accent`, `--ui-bg`, `--ui-surface`, `--ui-text`, `--ui-text-muted`",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        DefaultDemo,
-        ImagesDemo,
-        SizeLimitDemo,
-        DisabledDemo,
-        DocumentsDemo,
-      ],
-    }),
-  ],
-};
-export default meta;
-type Story = StoryObj;
-
-/**
- * **Default** — A single-file upload zone with event logging. Drop a file
- * or click to browse. The log below shows `fileAdded` and `fileRemoved`
- * events as they fire.
- */
-export const Default: Story = {
-  render: () => ({ template: `<ui-file-upload-default-demo />` }),
-  parameters: {
-    docs: {
       source: {
         code: `<ui-file-upload
   [(files)]="files"

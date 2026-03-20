@@ -10,22 +10,7 @@ const meta: Meta<UIThemeToggle> = {
     docs: {
       description: {
         component:
-          "A button that cycles between light, dark, and system theme modes.\n\n" +
-          "### How it works\n" +
-          "Clicking the toggle cycles through three states: **light → dark → " +
-          "system → light**. It works in concert with `ThemeService` from " +
-          "`@theredhead/ui-theme` to apply the correct CSS class (`light-theme` " +
-          "or `dark-theme`) on the `<html>` element and persist the choice in " +
-          "`localStorage`.\n\n" +
-          "### Variants\n" +
-          "| Variant | Appearance |\n" +
-          "|---------|------------|\n" +
-          "| `icon` | Icon-only button (sun/moon/auto glyph) |\n" +
-          "| `button` | Icon + text label showing current mode |\n\n" +
-          "### Usage\n" +
-          "```html\n" +
-          '<ui-theme-toggle variant="button" />\n' +
-          "```",
+          "A button that cycles between light, dark, and system theme modes.",
       },
     },
   },
@@ -60,6 +45,24 @@ export const Default: Story = {
   },
   parameters: {
     docs: {
+      description: {
+        story:
+          "### How it works\n" +
+          "Clicking the toggle cycles through three states: **light → dark → " +
+          "system → light**. It works in concert with `ThemeService` from " +
+          "`@theredhead/ui-theme` to apply the correct CSS class (`light-theme` " +
+          "or `dark-theme`) on the `<html>` element and persist the choice in " +
+          "`localStorage`.\n\n" +
+          "### Variants\n" +
+          "| Variant | Appearance |\n" +
+          "|---------|------------|\n" +
+          "| `icon` | Icon-only button (sun/moon/auto glyph) |\n" +
+          "| `button` | Icon + text label showing current mode |\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-theme-toggle variant="button" />\n' +
+          "```",
+      },
       source: {
         language: "html",
         code: `

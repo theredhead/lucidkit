@@ -549,9 +549,39 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: [
+        component:
           '`PopoverService` provides an imperative API for opening floating popover panels anchored to any DOM element. It uses the native Popover API (`popover="auto"` or `popover="manual"`) for stacking and light-dismiss behaviour.',
-          "",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        TooltipDemo,
+        ContextMenuDemo,
+        ActionMenuDemo,
+        PlacementDemo,
+        ManualDismissDemo,
+        ArrowDemo,
+      ],
+    }),
+  ],
+};
+export default meta;
+type Story = StoryObj;
+
+/**
+ * **Rich tooltip** — A popover used as an enhanced tooltip with a title
+ * and body text. Opens on button click and auto-dismisses on outside click.
+ */
+export const RichTooltip: Story = {
+  render: () => ({
+    template: `<ui-popover-tooltip-demo />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Anchored positioning** — popovers attach to a trigger element with configurable vertical and horizontal alignment",
@@ -589,34 +619,6 @@ const meta: Meta = {
           "| `ariaLabel` | `string` | — | Accessible label for the popover container |",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        TooltipDemo,
-        ContextMenuDemo,
-        ActionMenuDemo,
-        PlacementDemo,
-        ManualDismissDemo,
-        ArrowDemo,
-      ],
-    }),
-  ],
-};
-export default meta;
-type Story = StoryObj;
-
-/**
- * **Rich tooltip** — A popover used as an enhanced tooltip with a title
- * and body text. Opens on button click and auto-dismisses on outside click.
- */
-export const RichTooltip: Story = {
-  render: () => ({
-    template: `<ui-popover-tooltip-demo />`,
-  }),
-  parameters: {
-    docs: {
       source: {
         code: `private readonly popover = inject(PopoverService);
 

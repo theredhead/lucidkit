@@ -98,15 +98,7 @@ const meta: Meta<UIDrawer> = {
     docs: {
       description: {
         component:
-          "A slide-in side panel for navigation, detail views, or form sidebars.\n\n" +
-          "### Features\n" +
-          "- Slides in from `left` or `right` edge\n" +
-          "- Three width presets: `narrow` (16rem), `medium` (24rem), `wide` (36rem)\n" +
-          "- Custom CSS width values supported (e.g. `400px`, `30vw`)\n" +
-          "- Overlay backdrop with click-to-close\n" +
-          "- Escape key to close\n" +
-          "- Two-way `[(open)]` binding\n" +
-          "- Full dark-mode support",
+          "A slide-in side panel for navigation, detail views, or form sidebars.",
       },
     },
   },
@@ -121,6 +113,17 @@ export const Left: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- Slides in from `left` or `right` edge\n" +
+          "- Three width presets: `narrow` (16rem), `medium` (24rem), `wide` (36rem)\n" +
+          "- Custom CSS width values supported (e.g. `400px`, `30vw`)\n" +
+          "- Overlay backdrop with click-to-close\n" +
+          "- Escape key to close\n" +
+          "- Two-way `[(open)]` binding\n" +
+          "- Full dark-mode support",
+      },
       source: {
         language: "html",
         code: `

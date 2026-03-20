@@ -343,10 +343,41 @@ const meta: Meta<UICalendarMonthView> = {
   parameters: {
     docs: {
       description: {
-        component: [
-          "`UICalendarMonthView` renders a classic month-grid calendar",
+        component:
+          "`UICalendarMonthView` renders a classic month-grid calendar " +
           "populated with events from a `CalendarDatasource`.",
-          "",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        CalendarEmptyDemo,
+        CalendarEventsDemo,
+        CalendarOverflowDemo,
+        CalendarWeekNumbersDemo,
+        CalendarPaletteDemo,
+        CalendarDynamicDemo,
+        CalendarMultiDayDemo,
+      ],
+    }),
+  ],
+};
+export default meta;
+type Story = StoryObj<UICalendarMonthView>;
+
+// ── Stories ──────────────────────────────────────────────────────
+
+/**
+ * **Empty calendar** — A month grid with no events, showing the basic
+ * structure with day numbers, weekday headers, and navigation controls.
+ */
+export const Default: Story = {
+  render: () => ({ template: `<ui-cal-empty-demo />` }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Datasource-driven** — plug in any `CalendarDatasource` implementation",
@@ -379,35 +410,6 @@ const meta: Meta<UICalendarMonthView> = {
           "| `monthChanged` | `Date` | Emitted when the displayed month changes |",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        CalendarEmptyDemo,
-        CalendarEventsDemo,
-        CalendarOverflowDemo,
-        CalendarWeekNumbersDemo,
-        CalendarPaletteDemo,
-        CalendarDynamicDemo,
-        CalendarMultiDayDemo,
-      ],
-    }),
-  ],
-};
-export default meta;
-type Story = StoryObj<UICalendarMonthView>;
-
-// ── Stories ──────────────────────────────────────────────────────
-
-/**
- * **Empty calendar** — A month grid with no events, showing the basic
- * structure with day numbers, weekday headers, and navigation controls.
- */
-export const Default: Story = {
-  render: () => ({ template: `<ui-cal-empty-demo />` }),
-  parameters: {
-    docs: {
       source: {
         code: `const ds = new ArrayCalendarDatasource([]);
 

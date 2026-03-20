@@ -11,18 +11,7 @@ const meta: Meta<UICheckbox> = {
       description: {
         component:
           "A dual-purpose boolean input that renders as either a traditional " +
-          "checkbox or a toggle switch.\n\n" +
-          "### Features\n" +
-          "- **Two-way binding** via the `checked` model signal — `[(checked)]`\n" +
-          '- **Switch variant** — set `variant="switch"` for iOS / Material-style toggles\n' +
-          '- **Indeterminate state** — visual third state for "select all" patterns\n' +
-          "- **Label projection** — text content is projected as the label\n" +
-          '- **Accessible** — renders a native `<input type="checkbox">` with proper ARIA\n\n' +
-          "### Usage\n" +
-          "```html\n" +
-          '<ui-checkbox [(checked)]="agreeToTerms">I accept the terms</ui-checkbox>\n' +
-          '<ui-checkbox variant="switch" [(checked)]="darkMode">Dark mode</ui-checkbox>\n' +
-          "```",
+          "checkbox or a toggle switch.",
       },
     },
   },
@@ -76,6 +65,20 @@ export const Default: Story = {
   },
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- **Two-way binding** via the `checked` model signal — `[(checked)]`\n" +
+          '- **Switch variant** — set `variant="switch"` for iOS / Material-style toggles\n' +
+          '- **Indeterminate state** — visual third state for "select all" patterns\n' +
+          "- **Label projection** — text content is projected as the label\n" +
+          '- **Accessible** — renders a native `<input type="checkbox">` with proper ARIA\n\n' +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-checkbox [(checked)]="agreeToTerms">I accept the terms</ui-checkbox>\n' +
+          '<ui-checkbox variant="switch" [(checked)]="darkMode">Dark mode</ui-checkbox>\n' +
+          "```",
+      },
       source: {
         language: "html",
         code: `

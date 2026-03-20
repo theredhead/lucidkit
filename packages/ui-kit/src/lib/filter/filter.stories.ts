@@ -64,9 +64,33 @@ const meta: Meta<UIFilterStoryDemo> = {
   parameters: {
     docs: {
       description: {
-        component: [
+        component:
           "`UIFilter` is a dynamic filter-builder component that lets users construct query predicates by selecting a **field**, an **operator**, and a **value** — similar to the filter UI found in spreadsheets or database query builders.",
-          "",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [UIFilter],
+    }),
+  ],
+};
+
+export default meta;
+type Story = StoryObj<UIFilterStoryDemo>;
+
+/**
+ * **Default** — A basic filter builder with five typed columns (Name, Email,
+ * Age, Salary, Hire Date). Users can add rules, choose fields and operators,
+ * and enter values. All rules are combined with AND logic. The live JSON
+ * output below shows the `FilterDescriptor` that can be serialised or sent
+ * to an API.
+ */
+export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Field definitions** — pass an array of `FilterFieldDefinition` objects that describe available columns with their types (`string`, `number`, `date`)",
@@ -105,28 +129,6 @@ const meta: Meta<UIFilterStoryDemo> = {
           "```",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [UIFilter],
-    }),
-  ],
-};
-
-export default meta;
-type Story = StoryObj<UIFilterStoryDemo>;
-
-/**
- * **Default** — A basic filter builder with five typed columns (Name, Email,
- * Age, Salary, Hire Date). Users can add rules, choose fields and operators,
- * and enter values. All rules are combined with AND logic. The live JSON
- * output below shows the `FilterDescriptor` that can be serialised or sent
- * to an API.
- */
-export const Default: Story = {
-  parameters: {
-    docs: {
       source: {
         code: `<ui-filter
   [fields]="fields"

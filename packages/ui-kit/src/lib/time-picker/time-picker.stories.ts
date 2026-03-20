@@ -229,9 +229,41 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: [
-          "`UITimePicker` is a keyboard-driven time input with separate hour and minute fields. It supports 12-hour (AM/PM) and 24-hour modes, minute stepping, and min/max time constraints.",
-          "",
+        component: "`UITimePicker` is a keyboard-driven time input with separate hour and minute fields. It supports 12-hour (AM/PM) and 24-hour modes, minute stepping, and min/max time constraints.",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        UITimePicker,
+        TwentyFourHourDemo,
+        TwelveHourDemo,
+        StepDemo,
+        MinMaxDemo,
+        DisabledDemo,
+        ReadonlyDemo,
+      ],
+    }),
+  ],
+};
+
+export default meta;
+type Story = StoryObj;
+
+// ── Stories ─────────────────────────────────────────────────────────
+
+/**
+ * **24-hour mode** — The default mode. Hours range from 00 to 23 with no
+ * AM/PM toggle. Pre-populated with 14:30 to demonstrate afternoon times.
+ * Use arrow keys in each field to increment/decrement.
+ */
+export const TwentyFourHour: Story = {
+  render: () => ({ template: `<ui-tp-24h-demo />` }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           '- **12- or 24-hour mode** — set `[mode]="12"` for AM/PM toggle or `[mode]="24"` for military time',
@@ -265,37 +297,6 @@ const meta: Meta = {
           "| `timeChange` | `string` | Emitted when the time value changes |",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        UITimePicker,
-        TwentyFourHourDemo,
-        TwelveHourDemo,
-        StepDemo,
-        MinMaxDemo,
-        DisabledDemo,
-        ReadonlyDemo,
-      ],
-    }),
-  ],
-};
-
-export default meta;
-type Story = StoryObj;
-
-// ── Stories ─────────────────────────────────────────────────────────
-
-/**
- * **24-hour mode** — The default mode. Hours range from 00 to 23 with no
- * AM/PM toggle. Pre-populated with 14:30 to demonstrate afternoon times.
- * Use arrow keys in each field to increment/decrement.
- */
-export const TwentyFourHour: Story = {
-  render: () => ({ template: `<ui-tp-24h-demo />` }),
-  parameters: {
-    docs: {
       source: {
         code: `<ui-time-picker
   [(value)]="selected"

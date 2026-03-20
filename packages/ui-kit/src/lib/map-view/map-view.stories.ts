@@ -378,9 +378,25 @@ const meta: Meta<object> = {
     layout: "fullscreen",
     docs: {
       description: {
-        component: [
+        component:
           "`UIMapView` is a lightweight static map component that renders OpenStreetMap tiles centred on a given location with optional SVG overlays. It has **zero external dependencies** — all tile math and rendering uses native browser APIs.",
-          "",
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<object>;
+
+/**
+ * **Basic** — A simple map centred on Amsterdam at zoom level 13.
+ * No overlays — just the OpenStreetMap tile layer.
+ */
+export const Basic: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Tile rendering** — fetches and positions OpenStreetMap raster tiles based on `center` and `zoom`",
@@ -403,20 +419,6 @@ const meta: Meta<object> = {
           '| `ariaLabel` | `string` | `"Map"` | Accessible label |',
         ].join("\n"),
       },
-    },
-  },
-};
-
-export default meta;
-type Story = StoryObj<object>;
-
-/**
- * **Basic** — A simple map centred on Amsterdam at zoom level 13.
- * No overlays — just the OpenStreetMap tile layer.
- */
-export const Basic: Story = {
-  parameters: {
-    docs: {
       source: {
         code: `<ui-map-view
   [center]="{ lat: 52.3676, lng: 4.9041 }"

@@ -18,18 +18,7 @@ const meta: Meta<UICard> = {
       description: {
         component:
           "A versatile content container with optional header, body, and footer " +
-          "projection slots.\n\n" +
-          "### Variants\n" +
-          "| Variant | Visual treatment |\n" +
-          "|---------|-----------------|\n" +
-          "| `elevated` | Drop shadow, no border |\n" +
-          "| `outlined` | 1px border, no shadow |\n" +
-          "| `filled` | Solid background, no border or shadow |\n\n" +
-          "### Sub-components\n" +
-          "- `<ui-card-header>` — Title area (bold, top padding)\n" +
-          "- `<ui-card-body>` — Main content area\n" +
-          "- `<ui-card-footer>` — Action area (flex row)\n\n" +
-          "All three are optional — you can also project content directly into `<ui-card>`.",
+          "projection slots.",
       },
     },
   },
@@ -73,6 +62,20 @@ export const Elevated: Story = {
   args: { variant: "elevated", interactive: false },
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Variants\n" +
+          "| Variant | Visual treatment |\n" +
+          "|---------|--------------------|\n" +
+          "| `elevated` | Drop shadow, no border |\n" +
+          "| `outlined` | 1px border, no shadow |\n" +
+          "| `filled` | Solid background, no border or shadow |\n\n" +
+          "### Sub-components\n" +
+          "- `<ui-card-header>` — Title area (bold, top padding)\n" +
+          "- `<ui-card-body>` — Main content area\n" +
+          "- `<ui-card-footer>` — Action area (flex row)\n\n" +
+          "All three are optional — you can also project content directly into `<ui-card>`.",
+      },
       source: {
         language: "html",
         code: `

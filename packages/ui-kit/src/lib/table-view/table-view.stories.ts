@@ -344,9 +344,26 @@ const meta: Meta<object> = {
     layout: "fullscreen",
     docs: {
       description: {
-        component: [
-          "`UITableView` is a full-featured data table with pluggable datasources, declarative columns, sorting, pagination, row selection, and density control.",
-          "",
+        component: "`UITableView` is a full-featured data table with pluggable datasources, declarative columns, sorting, pagination, row selection, and density control.",
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<object>;
+
+/**
+ * **JSONPlaceholder Posts** — The default demo fetching 25 posts from the
+ * JSONPlaceholder API. Demonstrates number columns (ID, User ID), a
+ * truncated text column (Title), and a badge column (Owner). Sorting,
+ * pagination, and row-index indicators are all enabled.
+ */
+export const JsonPlaceholderPosts: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Datasource-driven** — any object implementing `TableViewDatasource<T>` can feed the table; ships with `DatasourceAdapter`, `FilterableArrayDatasource`, and JSONPlaceholder demo sources",
@@ -382,22 +399,6 @@ const meta: Meta<object> = {
           "| `<ui-template-column>` | Fully custom `<ng-template let-row>` |",
         ].join("\n"),
       },
-    },
-  },
-};
-
-export default meta;
-type Story = StoryObj<object>;
-
-/**
- * **JSONPlaceholder Posts** — The default demo fetching 25 posts from the
- * JSONPlaceholder API. Demonstrates number columns (ID, User ID), a
- * truncated text column (Title), and a badge column (Owner). Sorting,
- * pagination, and row-index indicators are all enabled.
- */
-export const JsonPlaceholderPosts: Story = {
-  parameters: {
-    docs: {
       source: {
         code: `<ui-table-view
   uiDensity="comfortable"

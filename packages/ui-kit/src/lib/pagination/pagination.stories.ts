@@ -31,24 +31,7 @@ const meta: Meta<UIPagination> = {
       description: {
         component:
           "A pagination control for navigating paged datasets. Displays " +
-          "page buttons, prev/next navigation, and an optional page-size selector.\n\n" +
-          "### Features\n" +
-          "- **Two-way binding** — `[(pageIndex)]` model signal for the current page\n" +
-          "- **Page-size selector** — configurable via `pageSizeOptions`; set to `[]` to hide\n" +
-          "- **Ellipsis compression** — large page counts are collapsed with … markers\n" +
-          '- **Disabled state** — greyed out when `[disabled]="true"`\n\n' +
-          "### Inputs\n" +
-          "| Input | Type | Default | Description |\n" +
-          "|-------|------|---------|-------------|\n" +
-          "| `totalItems` | `number` | `0` | Total item count |\n" +
-          "| `pageSize` | `number` | `10` | Items per page |\n" +
-          "| `pageIndex` | `number` | `0` | Current 0-based page (model) |\n" +
-          "| `pageSizeOptions` | `number[]` | `[10, 25, 50, 100]` | Dropdown options |\n" +
-          "| `disabled` | `boolean` | `false` | Disable all controls |\n\n" +
-          "### Output\n" +
-          "| Output | Payload | Description |\n" +
-          "|--------|---------|-------------|\n" +
-          "| `pageChange` | `PageChangeEvent` | Emitted on page or size change |",
+          "page buttons, prev/next navigation, and an optional page-size selector.",
       },
     },
   },
@@ -91,6 +74,26 @@ export const Default: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- **Two-way binding** — `[(pageIndex)]` model signal for the current page\n" +
+          "- **Page-size selector** — configurable via `pageSizeOptions`; set to `[]` to hide\n" +
+          "- **Ellipsis compression** — large page counts are collapsed with … markers\n" +
+          '- **Disabled state** — greyed out when `[disabled]="true"`\n\n' +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `totalItems` | `number` | `0` | Total item count |\n" +
+          "| `pageSize` | `number` | `10` | Items per page |\n" +
+          "| `pageIndex` | `number` | `0` | Current 0-based page (model) |\n" +
+          "| `pageSizeOptions` | `number[]` | `[10, 25, 50, 100]` | Dropdown options |\n" +
+          "| `disabled` | `boolean` | `false` | Disable all controls |\n\n" +
+          "### Output\n" +
+          "| Output | Payload | Description |\n" +
+          "|--------|---------|-------------|\n" +
+          "| `pageChange` | `PageChangeEvent` | Emitted on page or size change |",
+      },
       source: {
         code: `<ui-pagination
   [totalItems]="250"

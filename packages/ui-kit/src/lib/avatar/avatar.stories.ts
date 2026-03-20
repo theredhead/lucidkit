@@ -117,22 +117,8 @@ const meta: Meta<UIAvatar> = {
     docs: {
       description: {
         component:
-          "Displays a user avatar with automatic resolution fallback:\n" +
-          "`src` image → Gravatar (email) → initials → generic placeholder.\n\n" +
-          "### Features\n" +
-          "- **Five sizes** — `xs` (24 px), `sm` (32 px), `md` (40 px), `lg` (56 px), `xl` (80 px)\n" +
-          "- **Gravatar integration** — pass an `email` and the component fetches " +
-          "the Gravatar image via SHA-256 hash\n" +
-          "- **Initials fallback** — extracts up to two initials from `name` when no image is available\n" +
-          "- **Colour generation** — initials background colour is deterministically " +
-          "derived from the name string\n\n" +
-          "### Inputs\n" +
-          "| Input | Type | Default | Description |\n" +
-          "|-------|------|---------|-------------|\n" +
-          "| `src` | `string?` | — | Explicit image URL |\n" +
-          "| `email` | `string?` | — | Email for Gravatar lookup |\n" +
-          "| `name` | `string` | `''` | User name (used for initials & alt text) |\n" +
-          "| `size` | `AvatarSize` | `'md'` | Size preset |",
+          "Displays a user avatar with automatic resolution fallback: " +
+          "`src` image → Gravatar (email) → initials → generic placeholder.",
       },
     },
   },
@@ -157,6 +143,23 @@ export const Default: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- **Five sizes** — `xs` (24 px), `sm` (32 px), `md` (40 px), `lg` (56 px), `xl` (80 px)\n" +
+          "- **Gravatar integration** — pass an `email` and the component fetches " +
+          "the Gravatar image via SHA-256 hash\n" +
+          "- **Initials fallback** — extracts up to two initials from `name` when no image is available\n" +
+          "- **Colour generation** — initials background colour is deterministically " +
+          "derived from the name string\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `src` | `string?` | — | Explicit image URL |\n" +
+          "| `email` | `string?` | — | Email for Gravatar lookup |\n" +
+          "| `name` | `string` | `''` | User name (used for initials & alt text) |\n" +
+          "| `size` | `AvatarSize` | `'md'` | Size preset |",
+      },
       source: {
         code: `<!-- With image -->
 <ui-avatar src="https://example.com/photo.jpg" name="Alice" size="md" />

@@ -1029,9 +1029,50 @@ const meta: Meta<UIChart<unknown>> = {
   parameters: {
     docs: {
       description: {
-        component: [
-          "`UIChart` is a generic data-chart component that delegates all rendering to a **`GraphPresentationStrategy`**. Pass an array of typed objects and tell the component which properties hold the label and value — the strategy does the rest.",
-          "",
+        component:
+          "`UIChart` is a generic data-chart component that delegates all rendering to a `GraphPresentationStrategy`.",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        ChartBarDemo,
+        ChartBarCustomDemo,
+        ChartLineDemo,
+        ChartScatterDemo,
+        ChartScatterCustomDemo,
+        ChartPieDemo,
+        ChartDonutDemo,
+        ChartPaletteDemo,
+        ChartNoLegendDemo,
+        ChartSmallDemo,
+        ChartSwitcherDemo,
+        ChartComparisonDemo,
+        ChartMultiLineDemo,
+        ChartGroupedBarDemo,
+        ChartMultiScatterDemo,
+        ChartYoyDemo,
+      ],
+    }),
+  ],
+};
+export default meta;
+
+type Story = StoryObj<UIChart<unknown>>;
+
+/**
+ * **Bar** — Vertical bar chart with monthly sales data. Each bar
+ * has configurable width ratio and border radius.
+ */
+export const Bar: Story = {
+  render: () => ({
+    template: `<ui-chart-bar-demo />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Generic `<T>`** — works with any data shape; extract labels and values via `labelProperty` / `valueProperty`",
@@ -1091,45 +1132,6 @@ const meta: Meta<UIChart<unknown>> = {
           "Each layer falls back to the component-level `source` and `valueProperty` when not overridden. The legend automatically switches to one entry per series in multi-layer mode.",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        ChartBarDemo,
-        ChartBarCustomDemo,
-        ChartLineDemo,
-        ChartScatterDemo,
-        ChartScatterCustomDemo,
-        ChartPieDemo,
-        ChartDonutDemo,
-        ChartPaletteDemo,
-        ChartNoLegendDemo,
-        ChartSmallDemo,
-        ChartSwitcherDemo,
-        ChartComparisonDemo,
-        ChartMultiLineDemo,
-        ChartGroupedBarDemo,
-        ChartMultiScatterDemo,
-        ChartYoyDemo,
-      ],
-    }),
-  ],
-};
-export default meta;
-
-type Story = StoryObj<UIChart<unknown>>;
-
-/**
- * **Bar** — Vertical bar chart with monthly sales data. Each bar
- * has configurable width ratio and border radius.
- */
-export const Bar: Story = {
-  render: () => ({
-    template: `<ui-chart-bar-demo />`,
-  }),
-  parameters: {
-    docs: {
       source: {
         code: `<ui-chart
   [source]="salesData"

@@ -285,9 +285,43 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: [
-          "`UIAutocomplete` is a type-ahead search input that queries a pluggable **datasource** as the user types and presents matching suggestions in a dropdown panel.",
-          "",
+        component:
+          "`UIAutocomplete` is a type-ahead search input that queries a pluggable datasource as the user types and presents matching suggestions in a dropdown panel.",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        UIAutocomplete,
+        BasicDemo,
+        MultiDemo,
+        TemplateDemo,
+        DisabledDemo,
+      ],
+    }),
+  ],
+};
+
+export default meta;
+type Story = StoryObj;
+
+// ── Stories ─────────────────────────────────────────────────────────
+
+/**
+ * **Basic (single-select)** — The simplest usage: a plain-string datasource
+ * with prefix matching. Type a letter to see matching fruits appear in the
+ * dropdown. Selecting an item replaces the input text and adds it to the
+ * `value` array.
+ */
+export const Basic: Story = {
+  render: () => ({
+    template: `<ui-ac-basic-demo />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Datasource-driven** — supply any object implementing `AutocompleteDatasource<T>` to control suggestions",
@@ -331,38 +365,6 @@ const meta: Meta = {
           "```",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        UIAutocomplete,
-        BasicDemo,
-        MultiDemo,
-        TemplateDemo,
-        DisabledDemo,
-      ],
-    }),
-  ],
-};
-
-export default meta;
-type Story = StoryObj;
-
-// ── Stories ─────────────────────────────────────────────────────────
-
-/**
- * **Basic (single-select)** — The simplest usage: a plain-string datasource
- * with prefix matching. Type a letter to see matching fruits appear in the
- * dropdown. Selecting an item replaces the input text and adds it to the
- * `value` array.
- */
-export const Basic: Story = {
-  render: () => ({
-    template: `<ui-ac-basic-demo />`,
-  }),
-  parameters: {
-    docs: {
       source: {
         code: `<ui-autocomplete
   [datasource]="ds"

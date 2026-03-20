@@ -85,7 +85,23 @@ const meta: Meta<UIDropdownMenu> = {
     docs: {
       description: {
         component:
-          "A dropdown action menu triggered by a button or custom element.\n\n" +
+          "A dropdown action menu triggered by a button or custom element.",
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<UIDropdownMenu>;
+
+export const Basic: Story = {
+  render: () => ({
+    template: `<ui-demo-dropdown-basic />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
           "### Usage\n" +
           "```html\n" +
           "<ui-dropdown-menu>\n" +
@@ -103,19 +119,6 @@ const meta: Meta<UIDropdownMenu> = {
           "- Keyboard navigation (Enter, Space, Escape)\n" +
           "- Full dark-mode support",
       },
-    },
-  },
-};
-
-export default meta;
-type Story = StoryObj<UIDropdownMenu>;
-
-export const Basic: Story = {
-  render: () => ({
-    template: `<ui-demo-dropdown-basic />`,
-  }),
-  parameters: {
-    docs: {
       source: {
         language: "html",
         code: `
