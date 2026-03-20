@@ -1,7 +1,7 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
-import type { StorybookConfig } from '@storybook/angular';
+import type { StorybookConfig } from "@storybook/angular";
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -13,23 +13,24 @@ function getAbsolutePath(value: string): string {
 
 const config: StorybookConfig = {
   stories: [
-    '../packages/ui-kit/src/**/*.mdx',
-    '../packages/ui-kit/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/ui-blocks/src/**/*.mdx',
-    '../packages/ui-blocks/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    "../packages/ui-kit/src/**/*.mdx",
+    "../packages/ui-kit/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../packages/ui-blocks/src/**/*.mdx",
+    "../packages/ui-blocks/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   addons: [
-    getAbsolutePath('@storybook/addon-a11y'),
-    getAbsolutePath('@storybook/addon-docs'),
+    getAbsolutePath("@storybook/addon-a11y"),
+    getAbsolutePath("@storybook/addon-docs"),
   ],
   framework: {
-    name: getAbsolutePath('@storybook/angular'),
+    name: getAbsolutePath("@storybook/angular"),
     options: {
       builder: {
         useSWC: true,
       },
     },
   },
+  staticDirs: ["../public"],
   core: {
     disableTelemetry: true,
   },
