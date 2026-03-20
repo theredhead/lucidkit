@@ -145,6 +145,98 @@ Key rules:
 
 ---
 
+## Icons — No Emoji or Unicode Glyphs
+
+**Never use emoji (🔍, 📅, 🎨 …) or Unicode symbol characters (↑, ↓, ✕, ◉,
+☑ …) as visual icons in component templates.** Use the `UIIcon` component with
+SVG content from the `UIIcons` registry instead.
+
+```ts
+import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+
+@Component({
+  imports: [UIIcon],
+  template: `
+    <ui-icon [svg]="UIIcons.Lucide.Arrows.ChevronUp" [size]="14" />
+    <ui-icon [svg]="UIIcons.Lucide.Time.Calendar" [size]="16" />
+  `,
+})
+export class UIMyComponent {
+  protected readonly UIIcons = UIIcons;
+}
+```
+
+Key rules:
+
+- **Import** `UIIcon` (component) and `UIIcons` (registry) from
+  `@theredhead/ui-kit`.
+- Add `UIIcon` to the component `imports` array.
+- Reference icons via the categorised registry:
+  `UIIcons.Lucide.<Category>.<IconName>`.
+- If the template needs many icons, expose a helper object on the class
+  (e.g. `protected readonly icons = { ... } as const;`) to keep templates
+  short.
+- The built-in registry is generated from Lucide SVG sources. Browse
+  available icons at <https://lucide.dev>.
+- **Custom icons** are allowed — pass any SVG inner-content string to the
+  `[svg]` input. Design on a 24 × 24 grid with stroked paths.
+- Emoji in **documentation prose** (README, JSDoc descriptions) is fine —
+  this rule applies to rendered UI only.
+
+---
+
+## Colour Pairing — Always Set Both Foreground and Background
+
+**Whenever you set a `color` (foreground) you _must_ also set a `background`
+(or `background-color`), and vice-versa.** The two values must provide enough
+contrast for the text to be legible (aim for WCAG AA — at least 4.5 : 1 for
+normal text, 3 : 1 for large text).
+
+This rule applies everywhere colours are declared:
+
+- Component SCSS (`:host`, inner selectors, dark-mode overrides)
+- Inline `style` attributes in templates and Storybook stories
+- CSS custom-property fallback values (the fallback pair must be legible)
+
+### Good
+
+```scss
+.banner {
+  color: #1d232b;
+  background: #f7f8fa;
+}
+```
+
+```html
+<div style="color: #1d232b; background: #f7f8fa; padding: 16px">…</div>
+```
+
+### Bad
+
+```scss
+// ❌ background without foreground — text may be invisible in some themes
+.banner {
+  background: #f7f8fa;
+}
+```
+
+```html
+<!-- ❌ sets background only -->
+<div style="background: #f7f8fa">…</div>
+```
+
+When using CSS custom properties with fallbacks, ensure the fallback pair is
+legible on its own:
+
+```scss
+.card {
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #f7f8fa);
+}
+```
+
+---
+
 ## Class Member Ordering
 
 These rules apply to **all** TypeScript classes — components, services,

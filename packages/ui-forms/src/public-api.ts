@@ -51,3 +51,16 @@ export { UIFormField } from "./lib/components";
 export { UIFormGroup } from "./lib/components";
 export { UIForm } from "./lib/components";
 export { UIFormWizard } from "./lib/components";
+// ── Designer ─────────────────────────────────────────────────────
+export {
+  FormDesignerEngine,
+  type MutableFieldDefinition,
+  type MutableGroupDefinition,
+  type DesignerSelection,
+  type DesignerSelectionKind,
+  UIFieldPalette,
+  type PaletteFieldType,
+  UIDesignerCanvas,
+  UIPropertyInspector,
+  UIFormDesigner,
+} from "./lib/components";
