@@ -428,7 +428,26 @@ const meta: Meta<UINavigationPage> = {
       description: {
         component:
           "A full-page navigation layout that combines a sidebar " +
-          "navigation, an automatic breadcrumb trail, and a content area.\n\n" +
+          "navigation, an automatic breadcrumb trail, and a content area.",
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<UINavigationPage>;
+
+// ── Stories ──────────────────────────────────────────────────────────
+
+/** Pinned sidebar with navigation groups, breadcrumb trail, and dynamic content. */
+export const Default: Story = {
+  render: () => ({
+    template: `<ui-demo-nav-page-default />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
           "### Features\n" +
           "- Pinned sidebar (desktop) or drawer-based sidebar (mobile)\n" +
           "- Automatic breadcrumb trail with group hierarchy\n" +
@@ -458,22 +477,6 @@ const meta: Meta<UINavigationPage> = {
           "| `activePage` | `string` | Currently active node id |\n" +
           "| `drawerOpen` | `boolean` | Drawer open state (when not pinned) |",
       },
-    },
-  },
-};
-
-export default meta;
-type Story = StoryObj<UINavigationPage>;
-
-// ── Stories ──────────────────────────────────────────────────────────
-
-/** Pinned sidebar with navigation groups, breadcrumb trail, and dynamic content. */
-export const Default: Story = {
-  render: () => ({
-    template: `<ui-demo-nav-page-default />`,
-  }),
-  parameters: {
-    docs: {
       source: {
         language: "html",
         code: `

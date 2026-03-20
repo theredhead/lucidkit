@@ -11,18 +11,7 @@ const meta: Meta<UIBadge> = {
       description: {
         component:
           "A small status indicator that conveys a numeric count, a presence dot, " +
-          "or a short text label.\n\n" +
-          "### Variants\n" +
-          "| Variant | Purpose | Example |\n" +
-          "|---------|---------|---------|\n" +
-          "| `count` | Numeric notification badge | Unread messages (5) |\n" +
-          "| `dot` | Presence / status indicator | Online status |\n" +
-          '| `label` | Short text tag | "New", "Beta" |\n\n' +
-          "### Colors\n" +
-          "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
-          "### Overflow\n" +
-          "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
-          '(e.g. "99+").',
+          "or a short text label.",
       },
     },
   },
@@ -78,6 +67,20 @@ export const Count: Story = {
   args: { count: 5, color: "danger", maxCount: 99 },
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Variants\n" +
+          "| Variant | Purpose | Example |\n" +
+          "|---------|---------|---------|\n" +
+          "| `count` | Numeric notification badge | Unread messages (5) |\n" +
+          "| `dot` | Presence / status indicator | Online status |\n" +
+          '| `label` | Short text tag | "New", "Beta" |\n\n' +
+          "### Colors\n" +
+          "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
+          "### Overflow\n" +
+          "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
+          '(e.g. "99+").',
+      },
       source: {
         language: "html",
         code: `

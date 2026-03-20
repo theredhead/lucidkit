@@ -289,9 +289,43 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: [
-          "`UIDateTimePicker` combines `UIDatePicker` and `UITimePicker` into a single cohesive control for selecting a full date-and-time value. It inherits all configuration options from both sub-components.",
-          "",
+        component:
+          "`UIDateTimePicker` combines `UIDatePicker` and `UITimePicker` into a single cohesive control for selecting a full date-and-time value.",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        UIDateTimePicker,
+        Iso24Demo,
+        Eu12Demo,
+        Us12Demo,
+        ConstrainedDemo,
+        StepDemo,
+        DisabledDemo,
+        ReadonlyDemo,
+      ],
+    }),
+  ],
+};
+
+export default meta;
+type Story = StoryObj;
+
+// ── Stories ─────────────────────────────────────────────────────────
+
+/**
+ * **ISO + 24-hour** — The default configuration: ISO date format `yyyy-MM-dd`
+ * with 24-hour time (no AM/PM). Best for applications that communicate with
+ * APIs expecting ISO 8601 date-time strings.
+ */
+export const ISO24Hour: Story = {
+  render: () => ({ template: `<ui-dtp-iso24-demo />` }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Unified `Date` model** — a single two-way bound `Date` object carries both date and time",
@@ -332,38 +366,6 @@ const meta: Meta = {
           "| `timeChange` | `string` | Emitted when only the time portion changes |",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        UIDateTimePicker,
-        Iso24Demo,
-        Eu12Demo,
-        Us12Demo,
-        ConstrainedDemo,
-        StepDemo,
-        DisabledDemo,
-        ReadonlyDemo,
-      ],
-    }),
-  ],
-};
-
-export default meta;
-type Story = StoryObj;
-
-// ── Stories ─────────────────────────────────────────────────────────
-
-/**
- * **ISO + 24-hour** — The default configuration: ISO date format `yyyy-MM-dd`
- * with 24-hour time (no AM/PM). Best for applications that communicate with
- * APIs expecting ISO 8601 date-time strings.
- */
-export const ISO24Hour: Story = {
-  render: () => ({ template: `<ui-dtp-iso24-demo />` }),
-  parameters: {
-    docs: {
       source: {
         code: `<ui-date-time-picker
   [(value)]="selected"

@@ -184,7 +184,39 @@ const meta: Meta<UIIcon> = {
           "Renders an inline SVG icon from a raw SVG string. The library ships " +
           "a categorised icon registry (`UIIcons.Lucide`) generated from the " +
           "[Lucide](https://lucide.dev) icon set, but you can also create and use " +
-          "**your own custom icons**.\n\n" +
+          "**your own custom icons**.",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [StoryIconGallery],
+    }),
+  ],
+};
+export default meta;
+type Story = StoryObj<UIIcon>;
+
+/**
+ * A single icon with Storybook controls for `size` and `ariaLabel`.
+ * The default SVG is the Bold icon from the Text category.
+ */
+export const Default: Story = {
+  render: (args) => ({
+    props: {
+      ...args,
+      svg: args.svg || UIIcons.Lucide.Text.Bold,
+    },
+    template: `<ui-icon [svg]="svg" [size]="size" [ariaLabel]="ariaLabel" />`,
+  }),
+  args: {
+    size: 24,
+    ariaLabel: "",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
           "> **Lucide Icons** — Created by [Cole Bemis](https://github.com/colebemis) " +
           "as a fork of [Feather Icons](https://feathericons.com), now maintained by " +
           "[Eric Fennis](https://github.com/ericfennis) and the " +
@@ -223,35 +255,6 @@ const meta: Meta<UIIcon> = {
           "```\n\n" +
           "See the **Custom Icons** story for a full working example.",
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [StoryIconGallery],
-    }),
-  ],
-};
-export default meta;
-type Story = StoryObj<UIIcon>;
-
-/**
- * A single icon with Storybook controls for `size` and `ariaLabel`.
- * The default SVG is the Bold icon from the Text category.
- */
-export const Default: Story = {
-  render: (args) => ({
-    props: {
-      ...args,
-      svg: args.svg || UIIcons.Lucide.Text.Bold,
-    },
-    template: `<ui-icon [svg]="svg" [size]="size" [ariaLabel]="ariaLabel" />`,
-  }),
-  args: {
-    size: 24,
-    ariaLabel: "",
-  },
-  parameters: {
-    docs: {
       source: {
         code: [
           "// ── HTML ──",

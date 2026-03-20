@@ -13,22 +13,7 @@ const meta: Meta<UITabGroup> = {
       description: {
         component:
           "A tabbed content container. Each `<ui-tab>` defines a panel " +
-          "with a label; only the active panel is rendered.\n\n" +
-          "### Composition\n" +
-          "`UITabGroup` wraps `UITab` children. Tabs are activated by " +
-          "clicking their label or pressing arrow keys.\n\n" +
-          "### Features\n" +
-          '- **Declarative** — project `<ui-tab label="...">` children directly\n' +
-          "- **Initial selection** — set `[selectedIndex]` to start on a specific tab\n" +
-          "- **Disabled tabs** — individual tabs can be disabled\n" +
-          "- **Keyboard navigation** — left/right arrow keys cycle through tabs\n\n" +
-          "### Usage\n" +
-          "```html\n" +
-          "<ui-tab-group>\n" +
-          '  <ui-tab label="Overview">Content here.</ui-tab>\n' +
-          '  <ui-tab label="Details">More content.</ui-tab>\n' +
-          "</ui-tab-group>\n" +
-          "```",
+          "with a label; only the active panel is rendered.",
       },
     },
   },
@@ -64,6 +49,24 @@ export const Default: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Composition\n" +
+          "`UITabGroup` wraps `UITab` children. Tabs are activated by " +
+          "clicking their label or pressing arrow keys.\n\n" +
+          "### Features\n" +
+          '- **Declarative** — project `<ui-tab label="...">` children directly\n' +
+          "- **Initial selection** — set `[selectedIndex]` to start on a specific tab\n" +
+          "- **Disabled tabs** — individual tabs can be disabled\n" +
+          "- **Keyboard navigation** — left/right arrow keys cycle through tabs\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          "<ui-tab-group>\n" +
+          '  <ui-tab label="Overview">Content here.</ui-tab>\n' +
+          '  <ui-tab label="Details">More content.</ui-tab>\n' +
+          "</ui-tab-group>\n" +
+          "```",
+      },
       source: {
         language: "html",
         code: `

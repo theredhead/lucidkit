@@ -14,16 +14,7 @@ const meta: Meta<UIButton> = {
     docs: {
       description: {
         component:
-          "A general-purpose button component with three visual variants and three sizes.\n\n" +
-          "### Features\n" +
-          "- **Variants** — `filled` (primary CTA), `outlined` (secondary), `ghost` (tertiary / inline)\n" +
-          "- **Sizes** — `sm`, `md` (default), `lg`\n" +
-          "- **Accessible** — forwards `ariaLabel`, renders a native `<button>` element\n" +
-          "- **Button type** — defaults to `button`, can be set to `submit` or `reset` for forms\n\n" +
-          "### Usage\n" +
-          "```html\n" +
-          '<ui-button variant="outlined" size="lg">Save</ui-button>\n' +
-          "```",
+          "A general-purpose button component with three visual variants and three sizes.",
       },
     },
   },
@@ -72,6 +63,18 @@ export const Default: Story = {
   },
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- **Variants** — `filled` (primary CTA), `outlined` (secondary), `ghost` (tertiary / inline)\n" +
+          "- **Sizes** — `sm`, `md` (default), `lg`\n" +
+          "- **Accessible** — forwards `ariaLabel`, renders a native `<button>` element\n" +
+          "- **Button type** — defaults to `button`, can be set to `submit` or `reset` for forms\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-button variant="outlined" size="lg">Save</ui-button>\n' +
+          "```",
+      },
       source: {
         code: `
 // ── HTML ──

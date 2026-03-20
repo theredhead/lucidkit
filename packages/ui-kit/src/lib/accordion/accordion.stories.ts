@@ -82,23 +82,7 @@ const meta: Meta<UIAccordion> = {
       description: {
         component:
           "A collapsible content container for organising related sections " +
-          "under expandable headers.\n\n" +
-          "### Composition\n" +
-          "`UIAccordion` wraps `UIAccordionItem` children. Each item has a " +
-          "`label` and projects its body content.\n\n" +
-          "### Modes\n" +
-          "| Mode | Behaviour |\n" +
-          "|------|-----------|\n" +
-          "| `single` | Only one panel open at a time (default) |\n" +
-          "| `multi` | Any number of panels can be open simultaneously |\n\n" +
-          "### Key Inputs\n" +
-          "| Input | Component | Description |\n" +
-          "|-------|-----------|-------------|\n" +
-          "| `mode` | `UIAccordion` | `'single'` or `'multi'` |\n" +
-          "| `requireOpen` | `UIAccordion` | If `false`, all panels can be collapsed (single mode) |\n" +
-          "| `label` | `UIAccordionItem` | Panel header text (required) |\n" +
-          "| `expanded` | `UIAccordionItem` | Two-way model for open state |\n" +
-          "| `disabled` | `UIAccordionItem` | Prevents expanding/collapsing |",
+          "under expandable headers.",
       },
     },
   },
@@ -126,6 +110,25 @@ export const SingleMode: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Composition\n" +
+          "`UIAccordion` wraps `UIAccordionItem` children. Each item has a " +
+          "`label` and projects its body content.\n\n" +
+          "### Modes\n" +
+          "| Mode | Behaviour |\n" +
+          "|------|-----------|\n" +
+          "| `single` | Only one panel open at a time (default) |\n" +
+          "| `multi` | Any number of panels can be open simultaneously |\n\n" +
+          "### Key Inputs\n" +
+          "| Input | Component | Description |\n" +
+          "|-------|-----------|-------------|\n" +
+          "| `mode` | `UIAccordion` | `'single'` or `'multi'` |\n" +
+          "| `requireOpen` | `UIAccordion` | If `false`, all panels can be collapsed (single mode) |\n" +
+          "| `label` | `UIAccordionItem` | Panel header text (required) |\n" +
+          "| `expanded` | `UIAccordionItem` | Two-way model for open state |\n" +
+          "| `disabled` | `UIAccordionItem` | Prevents expanding/collapsing |",
+      },
       source: {
         code: `<ui-accordion mode="single">
   <ui-accordion-item label="Getting Started">

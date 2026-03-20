@@ -580,7 +580,39 @@ const meta: Meta<UIGanttChart> = {
           "`IGanttDatasource`. It renders a scrollable timeline with task bars,",
           'progress overlays, milestones, a "today" marker, and hierarchical',
           "task indentation.",
-          "",
+        ].join("\n"),
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        GanttDefaultDemo,
+        GanttWeekDemo,
+        GanttMonthDemo,
+        GanttSwitcherDemo,
+        GanttPopoverDemo,
+        StoryTaskDetailPopover,
+      ],
+    }),
+  ],
+};
+export default meta;
+type Story = StoryObj<UIGanttChart>;
+
+// ── Stories ──────────────────────────────────────────────────────────
+
+/**
+ * **Default (Day View)** — A software project timeline with tasks,
+ * sub-tasks, milestones, and dependency chains. The "today" marker
+ * shows the current date.
+ */
+export const Default: Story = {
+  render: () => ({ template: `<ui-gantt-default-demo />` }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           "- **Datasource-driven** — `GanttArrayDatasource` for in-memory data",
@@ -613,35 +645,6 @@ const meta: Meta<UIGanttChart> = {
           "| `taskClicked` | `GanttTask<T>` | Emitted when a bar or milestone is clicked |",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        GanttDefaultDemo,
-        GanttWeekDemo,
-        GanttMonthDemo,
-        GanttSwitcherDemo,
-        GanttPopoverDemo,
-        StoryTaskDetailPopover,
-      ],
-    }),
-  ],
-};
-export default meta;
-type Story = StoryObj<UIGanttChart>;
-
-// ── Stories ──────────────────────────────────────────────────────────
-
-/**
- * **Default (Day View)** — A software project timeline with tasks,
- * sub-tasks, milestones, and dependency chains. The "today" marker
- * shows the current date.
- */
-export const Default: Story = {
-  render: () => ({ template: `<ui-gantt-default-demo />` }),
-  parameters: {
-    docs: {
       source: {
         code: `
 // ── HTML ──────────────────────────────────────────────────────

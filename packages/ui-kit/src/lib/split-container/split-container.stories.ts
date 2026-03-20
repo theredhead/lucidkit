@@ -211,9 +211,37 @@ const meta: Meta<UISplitContainer> = {
   parameters: {
     docs: {
       description: {
-        component: [
-          "`UISplitContainer` is a resizable split-pane layout with a draggable divider. Project two child elements with `first` and `second` attributes to fill each panel.",
-          "",
+        component: "`UISplitContainer` is a resizable split-pane layout with a draggable divider. Project two child elements with `first` and `second` attributes to fill each panel.",
+      },
+    },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [
+        SplitDefaultDemo,
+        SplitVerticalDemo,
+        SplitConstrainedDemo,
+        SplitCollapseDemo,
+        SplitPersistentDemo,
+        SplitDividerWidthDemo,
+      ],
+    }),
+  ],
+};
+export default meta;
+type Story = StoryObj<UISplitContainer>;
+
+/**
+ * **Default (horizontal)** — The simplest configuration: two panels side by
+ * side with a draggable divider in the middle. Drag left/right to resize.
+ * Both panels scroll independently.
+ */
+export const Default: Story = {
+  render: () => ({ template: `<ui-split-default-demo />` }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
           "## Key Features",
           "",
           '- **Orientation** — `"horizontal"` (side-by-side, default) or `"vertical"` (stacked)',
@@ -243,33 +271,6 @@ const meta: Meta<UISplitContainer> = {
           "| `resized` | `SplitResizeEvent` | Emitted after a drag ends with the new sizes |",
         ].join("\n"),
       },
-    },
-  },
-  decorators: [
-    moduleMetadata({
-      imports: [
-        SplitDefaultDemo,
-        SplitVerticalDemo,
-        SplitConstrainedDemo,
-        SplitCollapseDemo,
-        SplitPersistentDemo,
-        SplitDividerWidthDemo,
-      ],
-    }),
-  ],
-};
-export default meta;
-type Story = StoryObj<UISplitContainer>;
-
-/**
- * **Default (horizontal)** — The simplest configuration: two panels side by
- * side with a draggable divider in the middle. Drag left/right to resize.
- * Both panels scroll independently.
- */
-export const Default: Story = {
-  render: () => ({ template: `<ui-split-default-demo />` }),
-  parameters: {
-    docs: {
       source: {
         language: "html",
         code: `

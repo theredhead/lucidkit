@@ -133,19 +133,7 @@ const meta: Meta<UIToastContainer> = {
   parameters: {
     docs: {
       description: {
-        component:
-          "Auto-dismissing notification toasts.\n\n" +
-          "### Setup\n" +
-          "Place `<ui-toast-container />` in your root template. " +
-          "Inject `ToastService` anywhere and call `info()`, `success()`, " +
-          "`warning()`, or `error()`.\n\n" +
-          "### Features\n" +
-          "- Four severity levels with distinct icons and colors\n" +
-          "- Six position options (top/bottom × left/center/right)\n" +
-          "- Optional title, action button, and custom duration\n" +
-          "- `duration: 0` for persistent toasts\n" +
-          "- Slide-in/slide-out animations\n" +
-          "- Full dark-mode support",
+        component: "Auto-dismissing notification toasts.",
       },
     },
   },
@@ -160,6 +148,20 @@ export const AllSeverities: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Setup\n" +
+          "Place `<ui-toast-container />` in your root template. " +
+          "Inject `ToastService` anywhere and call `info()`, `success()`, " +
+          "`warning()`, or `error()`.\n\n" +
+          "### Features\n" +
+          "- Four severity levels with distinct icons and colors\n" +
+          "- Six position options (top/bottom × left/center/right)\n" +
+          "- Optional title, action button, and custom duration\n" +
+          "- `duration: 0` for persistent toasts\n" +
+          "- Slide-in/slide-out animations\n" +
+          "- Full dark-mode support",
+      },
       source: {
         language: "html",
         code: `

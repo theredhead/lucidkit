@@ -66,20 +66,7 @@ const meta: Meta<UIChip> = {
     docs: {
       description: {
         component:
-          "A compact element for displaying tags, labels, or filter tokens.\n\n" +
-          "### Features\n" +
-          "- **Five colour presets** — `neutral`, `primary`, `success`, `warning`, `danger`\n" +
-          '- **Removable** — set `[removable]="true"` to show a dismiss button; listen to `(removed)`\n' +
-          "- **Disabled** — greys out and blocks interaction\n" +
-          "- **Content projection** — the chip label is projected content\n\n" +
-          "Chips are used inside `UIAutocomplete` for multi-select tokens, but " +
-          "can also be used standalone for tag lists or filter displays.\n\n" +
-          "### Usage\n" +
-          "```html\n" +
-          '<ui-chip color="primary" [removable]="true" (removed)="remove(tag)">\n' +
-          "  {{ tag }}\n" +
-          "</ui-chip>\n" +
-          "```",
+          "A compact element for displaying tags, labels, or filter tokens.",
       },
     },
   },
@@ -103,6 +90,22 @@ export const Default: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- **Five colour presets** — `neutral`, `primary`, `success`, `warning`, `danger`\n" +
+          '- **Removable** — set `[removable]="true"` to show a dismiss button; listen to `(removed)`\n' +
+          "- **Disabled** — greys out and blocks interaction\n" +
+          "- **Content projection** — the chip label is projected content\n\n" +
+          "Chips are used inside `UIAutocomplete` for multi-select tokens, but " +
+          "can also be used standalone for tag lists or filter displays.\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-chip color="primary" [removable]="true" (removed)="remove(tag)">\n' +
+          "  {{ tag }}\n" +
+          "</ui-chip>\n" +
+          "```",
+      },
       source: {
         code: `<!-- Color variants -->
 <ui-chip color="neutral">Neutral</ui-chip>

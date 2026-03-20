@@ -149,24 +149,7 @@ const meta: Meta<UISlider> = {
       description: {
         component:
           "A range-input component that supports both single-value and " +
-          "dual-thumb range selection.\n\n" +
-          "### Features\n" +
-          "- **Single mode** — one draggable thumb for scalar values (e.g. volume)\n" +
-          "- **Range mode** — two thumbs for selecting a min/max interval (e.g. price range)\n" +
-          "- **Step snapping** — constrain values to discrete increments\n" +
-          "- **Value display** — optional current-value label above the thumb\n" +
-          "- **Two-way binding** — `[(value)]` model signal\n\n" +
-          "### Inputs\n" +
-          "| Input | Type | Default | Description |\n" +
-          "|-------|------|---------|-------------|\n" +
-          "| `mode` | `'single' \\| 'range'` | `'single'` | Selection mode |\n" +
-          "| `value` | `number \\| [number, number]` | `0` | Current value (model) |\n" +
-          "| `min` / `max` | `number` | `0` / `100` | Value bounds |\n" +
-          "| `step` | `number` | `1` | Step increment |\n" +
-          "| `showValue` | `boolean` | `false` | Show numeric label |\n" +
-          "| `showTicks` | `boolean` | `false` | Show tick marks at each step |\n" +
-          "| `ticks` | `SliderTick[]` | `[]` | Explicit tick definitions (overrides showTicks) |\n" +
-          "| `disabled` | `boolean` | `false` | Disable interaction |",
+          "dual-thumb range selection.",
       },
     },
   },
@@ -190,6 +173,26 @@ export const Single: Story = {
   }),
   parameters: {
     docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- **Single mode** — one draggable thumb for scalar values (e.g. volume)\n" +
+          "- **Range mode** — two thumbs for selecting a min/max interval (e.g. price range)\n" +
+          "- **Step snapping** — constrain values to discrete increments\n" +
+          "- **Value display** — optional current-value label above the thumb\n" +
+          "- **Two-way binding** — `[(value)]` model signal\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `mode` | `'single' \\| 'range'` | `'single'` | Selection mode |\n" +
+          "| `value` | `number \\| [number, number]` | `0` | Current value (model) |\n" +
+          "| `min` / `max` | `number` | `0` / `100` | Value bounds |\n" +
+          "| `step` | `number` | `1` | Step increment |\n" +
+          "| `showValue` | `boolean` | `false` | Show numeric label |\n" +
+          "| `showTicks` | `boolean` | `false` | Show tick marks at each step |\n" +
+          "| `ticks` | `SliderTick[]` | `[]` | Explicit tick definitions (overrides showTicks) |\n" +
+          "| `disabled` | `boolean` | `false` | Disable interaction |",
+      },
       source: {
         code: `<ui-slider [(value)]="volume" [showValue]="true" ariaLabel="Volume" />
 
