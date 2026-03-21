@@ -37,24 +37,38 @@ import { UIFormDesigner } from "./form-designer.component";
     <div style="height: 700px">
       <ui-form-designer
         [schema]="initialSchema()"
-        (schemaChange)="onExport($event)"
-        (exported)="onExported($event)"
+        (schemaChange)="onSchemaChange($event)"
       />
     </div>
 
-    @if (exportedSchema()) {
+    @if (latestSchema()) {
       <div
         style="color: #1d232b; background: #f7f8fa; margin-top: 16px; padding: 16px; border: 1px solid #d7dce2; border-radius: 8px"
       >
-        <h4
-          style="color: #1d232b; margin: 0 0 8px; font-size: 0.875rem; font-weight: 700"
+        <div
+          style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px"
         >
-          Exported Schema
-        </h4>
-        <pre
-          style="color: #1d232b; font-size: 0.75rem; margin: 0; white-space: pre-wrap; word-break: break-word"
-          >{{ exportedSchema() | json }}</pre
-        >
+          <h4
+            style="color: #1d232b; margin: 0; font-size: 0.875rem; font-weight: 700"
+          >
+            Export
+          </h4>
+          <select
+            style="color: #1d232b; background: #ffffff; border: 1px solid #d7dce2; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem"
+            (change)="onStrategyChange($event)"
+          >
+            @for (s of allStrategies; track s.label; let i = $index) {
+              <option [value]="i">{{ s.label }}</option>
+            }
+          </select>
+          <button
+            type="button"
+            style="color: #3584e4; background: transparent; border: 1px solid #3584e4; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer"
+            (click)="onExport()"
+          >
+            Export
+          </button>
+        </div>
       </div>
     }
 
@@ -86,15 +100,33 @@ import { UIFormDesigner } from "./form-designer.component";
 })
 class StoryDesignerDemo {
   public readonly initialSchema = input<FormSchema | null>(null);
-  protected readonly exportedSchema = signal<FormSchema | null>(null);
-  protected readonly lastExport = signal<ExportResult | null>(null);
 
-  protected onExport(schema: FormSchema): void {
-    this.exportedSchema.set(schema);
+  protected readonly allStrategies: readonly ExportStrategy[] = [
+    new JsonExportStrategy(),
+    new AngularComponentExportStrategy(),
+  ];
+
+  protected readonly latestSchema = signal<FormSchema | null>(null);
+  protected readonly lastExport = signal<ExportResult | null>(null);
+  protected selectedStrategyIndex = 0;
+
+  protected onSchemaChange(schema: FormSchema): void {
+    this.latestSchema.set(schema);
   }
 
-  protected onExported(result: ExportResult): void {
-    this.lastExport.set(result);
+  protected onStrategyChange(event: Event): void {
+    this.selectedStrategyIndex = Number(
+      (event.target as HTMLSelectElement).value,
+    );
+  }
+
+  protected onExport(): void {
+    const schema = this.latestSchema();
+    if (!schema) return;
+    const strategy = this.allStrategies[this.selectedStrategyIndex];
+    if (strategy) {
+      this.lastExport.set(strategy.export(schema));
+    }
   }
 }
 
@@ -232,6 +264,22 @@ const meta: Meta<UIFormDesigner> = {
       imports: [StoryDesignerDemo, StoryExportPreview],
     }),
   ],
+  argTypes: {
+    schema: {
+      description:
+        "Optional initial `FormSchema` to load into the designer. " +
+        "Pass an existing schema to resume editing.",
+      control: { type: "object" },
+      table: { category: "Inputs" },
+    },
+    schemaChange: {
+      description:
+        "Emits the current `FormSchema` whenever the user modifies the form. " +
+        "Use two-way binding `[(schema)]` or listen via `(schemaChange)`.",
+      action: "schemaChange",
+      table: { category: "Outputs" },
+    },
+  },
   parameters: {
     layout: "fullscreen",
     docs: {
@@ -240,17 +288,26 @@ const meta: Meta<UIFormDesigner> = {
 **UIFormDesigner** — a visual form builder that produces a \`FormSchema\` JSON object.
 
 ### Features
-- **Palette** — drag or click field types to add them to the canvas
+- **Palette** — click field types to add them to the canvas
 - **Canvas** — displays all groups and fields; supports reorder, duplicate, and delete
 - **Inspector** — edit field ID, title, component type, validation rules, options, config, and more
 - **Live Preview** — switch to the Preview tab to see the form rendered live
-- **JSON View** — see the raw schema JSON in real time
-- **Export** — click "Export Schema" to emit the schema via \`schemaChange\`
+- **JSON View** — see the raw schema JSON in real time, with a copy-to-clipboard button
 - **Import** — pass an existing \`FormSchema\` via the \`[schema]\` input to load it into the designer
 
+### Inputs / Outputs
+| Name | Type | Description |
+|------|------|-------------|
+| \`[schema]\` | \`FormSchema or null\` | Optional initial schema to pre-load |
+| \`(schemaChange)\` | \`FormSchema\` | Emitted whenever the schema is modified |
+
 ### Layout
-The designer uses a three-panel layout (palette | canvas | inspector) in design mode,
+The designer uses a three-panel layout (palette / canvas / inspector) in design mode,
 or a single panel in preview/JSON mode. It fills its container height.
+
+### Export Strategies
+Export strategies (\`JsonExportStrategy\`, \`AngularComponentExportStrategy\`) are available
+programmatically via \`@theredhead/ui-forms\` — see the **Export Preview** story.
         `,
       },
     },
@@ -263,9 +320,20 @@ type Story = StoryObj<UIFormDesigner>;
 
 export const EmptyDesigner: Story = {
   name: "Empty Designer",
-  render: () => ({
-    template: `<ui-story-designer-demo />`,
+  render: (args) => ({
+    props: args,
+    template: `
+      <div style="height: 700px">
+        <ui-form-designer
+          [schema]="schema"
+          (schemaChange)="schemaChange($event)"
+        />
+      </div>
+    `,
   }),
+  args: {
+    schema: null,
+  },
   parameters: {
     docs: {
       source: {
@@ -305,10 +373,20 @@ export class ExampleComponent {
 
 export const WithExistingSchema: Story = {
   name: "Pre-loaded Schema",
-  render: () => ({
-    props: { initialSchema: CONTACT_FORM_SCHEMA },
-    template: `<ui-story-designer-demo [initialSchema]="initialSchema" />`,
+  render: (args) => ({
+    props: args,
+    template: `
+      <div style="height: 700px">
+        <ui-form-designer
+          [schema]="schema"
+          (schemaChange)="schemaChange($event)"
+        />
+      </div>
+    `,
   }),
+  args: {
+    schema: CONTACT_FORM_SCHEMA as FormSchema,
+  },
   parameters: {
     docs: {
       source: {
@@ -366,9 +444,6 @@ export class ExampleComponent {
     },
   },
 };
-
-// Give the StoryDesignerDemo an input for pre-loading
-// (We use a simple property binding in the template above)
 
 export const ExportPreview: Story = {
   name: "Export Preview",

@@ -12,12 +12,9 @@ import {
 
 import { JsonPipe } from "@angular/common";
 
+import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+
 import type { FormSchema } from "../../types/form-schema.types";
-import type { ExportResult, ExportStrategy } from "../../export";
-import {
-  JsonExportStrategy,
-  AngularComponentExportStrategy,
-} from "../../export";
 import { FormEngine } from "../../engine/form-engine";
 import { UIForm } from "../form.component";
 import { FormDesignerEngine } from "./designer-engine";
@@ -45,6 +42,7 @@ import { UIPropertyInspector } from "./property-inspector.component";
   standalone: true,
   imports: [
     JsonPipe,
+    UIIcon,
     UIFieldPalette,
     UIDesignerCanvas,
     UIPropertyInspector,
@@ -96,30 +94,6 @@ import { UIPropertyInspector } from "./property-inspector.component";
           JSON
         </button>
       </div>
-
-      <div class="fd-toolbar-export-group">
-        <select
-          class="fd-export-select"
-          aria-label="Export format"
-          (change)="onStrategyChange($event)"
-        >
-          @for (
-            strategy of allStrategies();
-            track strategy.label;
-            let i = $index
-          ) {
-            <option [value]="i">{{ strategy.label }}</option>
-          }
-        </select>
-        <button
-          type="button"
-          class="fd-toolbar-export"
-          aria-label="Export form schema"
-          (click)="onExport()"
-        >
-          Export
-        </button>
-      </div>
     </header>
 
     <!-- Content area -->
@@ -163,6 +137,16 @@ import { UIPropertyInspector } from "./property-inspector.component";
 
         @case ("json") {
           <div class="fd-json">
+            <div class="fd-json-header">
+              <button
+                type="button"
+                class="fd-copy-btn"
+                aria-label="Copy JSON to clipboard"
+                (click)="onCopyJson()"
+              >
+                <ui-icon [svg]="copyIcon" [size]="14" />
+              </button>
+            </div>
             <pre class="fd-json-pre">{{ designerEngine.schema() | json }}</pre>
           </div>
         }
@@ -236,40 +220,6 @@ import { UIPropertyInspector } from "./property-inspector.component";
       opacity: 0.9;
     }
 
-    .fd-toolbar-export {
-      appearance: none;
-      border: 1px solid var(--theredhead-primary, #3584e4);
-      background: transparent;
-      color: var(--theredhead-primary, #3584e4);
-      padding: 5px 14px;
-      border-radius: 6px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.12s ease;
-    }
-
-    .fd-toolbar-export:hover {
-      background: var(--theredhead-primary, #3584e4);
-      color: var(--theredhead-on-primary, #ffffff);
-    }
-
-    .fd-toolbar-export-group {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .fd-export-select {
-      border: 1px solid var(--ui-border, #d7dce2);
-      background: var(--ui-surface-alt, #ffffff);
-      color: var(--ui-text, #1d232b);
-      padding: 5px 8px;
-      border-radius: 6px;
-      font-size: 0.8125rem;
-      cursor: pointer;
-    }
-
     /* Body */
 
     .fd-body {
@@ -321,6 +271,30 @@ import { UIPropertyInspector } from "./property-inspector.component";
       overflow: auto;
     }
 
+    .fd-json-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .fd-copy-btn {
+      appearance: none;
+      border: 1px solid var(--ui-border, #d7dce2);
+      background: var(--ui-surface-alt, #ffffff);
+      color: var(--ui-text, #1d232b);
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.12s ease;
+    }
+
+    .fd-copy-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
     .fd-json-pre {
       font-family: monospace;
       font-size: 0.8125rem;
@@ -361,18 +335,13 @@ import { UIPropertyInspector } from "./property-inspector.component";
       .fd-toolbar-btn--active:hover {
         opacity: 0.9;
       }
-      .fd-toolbar-export {
-        border-color: var(--theredhead-primary, #a8c8ff);
-        color: var(--theredhead-primary, #a8c8ff);
-      }
-      .fd-toolbar-export:hover {
-        background: var(--theredhead-primary, #a8c8ff);
-        color: var(--theredhead-on-primary, #003062);
-      }
-      .fd-export-select {
+      .fd-copy-btn {
         background: var(--ui-surface-alt, #2a2e36);
         border-color: var(--ui-border, #3a3f47);
         color: var(--ui-text, #f2f6fb);
+      }
+      .fd-copy-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
       }
       .fd-json-pre {
         color: var(--ui-text, #f2f6fb);
@@ -410,18 +379,13 @@ import { UIPropertyInspector } from "./property-inspector.component";
         .fd-toolbar-btn--active:hover {
           opacity: 0.9;
         }
-        .fd-toolbar-export {
-          border-color: var(--theredhead-primary, #a8c8ff);
-          color: var(--theredhead-primary, #a8c8ff);
-        }
-        .fd-toolbar-export:hover {
-          background: var(--theredhead-primary, #a8c8ff);
-          color: var(--theredhead-on-primary, #003062);
-        }
-        .fd-export-select {
+        .fd-copy-btn {
           background: var(--ui-surface-alt, #2a2e36);
           border-color: var(--ui-border, #3a3f47);
           color: var(--ui-text, #f2f6fb);
+        }
+        .fd-copy-btn:hover {
+          background: rgba(255, 255, 255, 0.08);
         }
         .fd-json-pre {
           color: var(--ui-text, #f2f6fb);
@@ -440,32 +404,8 @@ export class UIFormDesigner {
   /** Emitted when the user clicks "Export" — always emits the raw schema. */
   public readonly schemaChange = output<FormSchema>();
 
-  /**
-   * Additional export strategies provided by the consumer.
-   * Merged with the built-in JSON and Angular Component strategies.
-   */
-  public readonly exportStrategies = input<readonly ExportStrategy[]>([]);
-
-  /** Emitted with the {@link ExportResult} produced by the selected strategy. */
-  public readonly exported = output<ExportResult>();
-
-  /**
-   * @internal Built-in export strategies.
-   * Consumers can add more via the `exportStrategies` input.
-   */
-  private readonly builtInStrategies: readonly ExportStrategy[] = [
-    new JsonExportStrategy(),
-    new AngularComponentExportStrategy(),
-  ];
-
-  /** @internal All available strategies (built-in + consumer-provided). */
-  protected readonly allStrategies = computed(() => [
-    ...this.builtInStrategies,
-    ...this.exportStrategies(),
-  ]);
-
-  /** @internal Index of the currently selected export strategy. */
-  protected readonly selectedStrategyIndex = signal(0);
+  /** @internal Icon SVG for the copy button. */
+  protected readonly copyIcon = UIIcons.Lucide.Text.Copy;
 
   /** @internal Active tab: design, preview, or json. */
   protected readonly activeTab = signal<"design" | "preview" | "json">(
@@ -525,24 +465,9 @@ export class UIFormDesigner {
     this.lastGroupUid = groupUid;
   }
 
-  /** @internal Handle export format selection change. */
-  protected onStrategyChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.selectedStrategyIndex.set(Number(select.value));
-  }
-
-  /**
-   * @internal Export the current schema using the selected strategy.
-   * Emits both `schemaChange` (raw schema) and `exported` (formatted result).
-   */
-  protected onExport(): void {
-    const schema = this.designerEngine.schema();
-    this.schemaChange.emit(schema);
-
-    const strategy = this.allStrategies()[this.selectedStrategyIndex()];
-    if (strategy) {
-      const result = strategy.export(schema);
-      this.exported.emit(result);
-    }
+  /** @internal Copy the current JSON schema to the clipboard. */
+  protected onCopyJson(): void {
+    const json = JSON.stringify(this.designerEngine.schema(), null, 2);
+    navigator.clipboard.writeText(json);
   }
 }
