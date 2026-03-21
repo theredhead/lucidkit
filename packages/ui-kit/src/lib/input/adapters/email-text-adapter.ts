@@ -12,6 +12,7 @@ const EMAIL_PATTERN =
  * that opens a `mailto:` link when clicked.
  */
 export class EmailTextAdapter implements TextAdapter {
+  public readonly inputType = "email";
   public readonly prefixIcon = UIIcons.Lucide.Text.AtSign;
 
   public toValue(text: string): string {

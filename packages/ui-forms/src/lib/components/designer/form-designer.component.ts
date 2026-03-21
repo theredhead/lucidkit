@@ -441,11 +441,12 @@ export class UIFormDesigner {
 
   /** @internal Handle palette field click — add to first or last-used group. */
   protected onFieldRequested(componentKey: string): void {
-    const groups = this.designerEngine.groups();
+    let groups = this.designerEngine.groups();
 
     // If there are no groups, create one first
     if (groups.length === 0) {
       this.lastGroupUid = this.designerEngine.addGroup();
+      groups = this.designerEngine.groups();
     }
 
     // Find the target group

@@ -13,6 +13,7 @@ const URL_PATTERN =
  * the URL in a new tab.
  */
 export class UrlTextAdapter implements TextAdapter {
+  public readonly inputType = "url";
   public readonly prefixIcon = UIIcons.Lucide.Navigation.Globe;
   public readonly suffixIcon = UIIcons.Lucide.Arrows.ExternalLink;
 

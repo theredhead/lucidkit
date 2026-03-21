@@ -21,6 +21,7 @@ const PHONE_PATTERN = /^\+?[\d\s()./-]{7,20}$/;
  * ```
  */
 export class PhoneTextAdapter implements TextAdapter {
+  public readonly inputType = "tel";
   public readonly prefixIcon = UIIcons.Lucide.Communication.Phone;
 
   public toValue(text: string): string {

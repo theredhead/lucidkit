@@ -665,9 +665,7 @@ class CronAdapterDemo {
       style="display: flex; flex-direction: column; gap: 16px; max-width: 360px;"
     >
       @for (entry of entries; track entry.label) {
-        <div
-          style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;"
-        >
+        <div style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;">
           <span>{{ entry.label }}</span>
           <ui-input
             [type]="entry.type"

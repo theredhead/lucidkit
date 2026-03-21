@@ -116,6 +116,15 @@ export class UIInput {
       "nativeInput",
     );
 
+  /**
+   * Effective input type: adapter's {@link TextAdapter.inputType}
+   * takes precedence over the {@link type} input.
+   * @internal
+   */
+  protected readonly effectiveType = computed(
+    () => this.adapter()?.inputType ?? this.type(),
+  );
+
   /** @internal Prefix icon SVG from adapter. */
   protected readonly prefixIcon = computed(() => this.adapter()?.prefixIcon);
 

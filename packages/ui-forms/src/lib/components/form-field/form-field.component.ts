@@ -237,12 +237,24 @@ export class UIFormField {
       };
 
       for (const [key, val] of Object.entries(config)) {
-        try {
-          ref.setInput(key, val);
-        } catch {
-          this.log.debug(`Input "${key}" not found on component`, [
-            fieldState.definition.component,
-          ]);
+        const transform = reg.configTransforms?.[key];
+        if (transform) {
+          try {
+            ref.setInput(transform.inputKey, transform.transform(val));
+          } catch {
+            this.log.debug(
+              `Input "${transform.inputKey}" not found on component`,
+              [fieldState.definition.component],
+            );
+          }
+        } else {
+          try {
+            ref.setInput(key, val);
+          } catch {
+            this.log.debug(`Input "${key}" not found on component`, [
+              fieldState.definition.component,
+            ]);
+          }
         }
       }
 

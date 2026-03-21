@@ -26,6 +26,12 @@ export interface ConfigPropertySchema {
 
   /** Optional short hint shown as placeholder text. */
   readonly placeholder?: string;
+
+  /**
+   * When provided, the property is only shown in the inspector if this
+   * predicate returns `true` for the current config values.
+   */
+  readonly visibleWhen?: (config: Record<string, unknown>) => boolean;
 }
 
 /**
@@ -46,6 +52,33 @@ export const COMPONENT_CONFIG_SCHEMAS: Readonly<
       editor: "select",
       options: ["text", "email", "password", "url", "tel", "search"],
       defaultValue: "text",
+      visibleWhen: (cfg) => !cfg["textAdapter"],
+    },
+    {
+      key: "textAdapter",
+      label: "Text adapter",
+      editor: "select",
+      options: [
+        { label: "(none)", value: "" },
+        { label: "Email", value: "email" },
+        { label: "URL", value: "url" },
+        { label: "IP Address", value: "ip" },
+        { label: "Phone", value: "phone" },
+        { label: "Credit Card", value: "creditCard" },
+        { label: "Money", value: "money" },
+        { label: "Integer", value: "integer" },
+        { label: "Float", value: "float" },
+        { label: "Decimal", value: "decimal" },
+        { label: "Hexadecimal", value: "hexadecimal" },
+        { label: "Percentage", value: "percentage" },
+        { label: "Date", value: "date" },
+        { label: "Time", value: "time" },
+        { label: "Colour", value: "color" },
+        { label: "Slug", value: "slug" },
+        { label: "UUID", value: "uuid" },
+        { label: "Cron", value: "cron" },
+      ],
+      defaultValue: "",
     },
     {
       key: "placeholder",
