@@ -1,18 +1,39 @@
 @if (multiline()) {
   <textarea
+    #nativeInput
     [disabled]="disabled()"
     [placeholder]="placeholder()"
     [rows]="rows()"
     [attr.aria-label]="ariaLabel()"
     (input)="onInput($event)"
-  >{{ value() }}</textarea>
+  ></textarea>
 } @else {
+  @if (prefixIcon(); as icon) {
+    <button
+      type="button"
+      class="ui-input__icon ui-input__icon--prefix"
+      [attr.aria-label]="'Prefix action'"
+      (click)="onPrefixClick()"
+    >
+      <ui-icon [svg]="icon" [size]="16" />
+    </button>
+  }
   <input
+    #nativeInput
     [type]="type()"
     [disabled]="disabled()"
     [placeholder]="placeholder()"
-    [value]="value()"
     [attr.aria-label]="ariaLabel()"
     (input)="onInput($event)"
   />
+  @if (suffixIcon(); as icon) {
+    <button
+      type="button"
+      class="ui-input__icon ui-input__icon--suffix"
+      [attr.aria-label]="'Suffix action'"
+      (click)="onSuffixClick()"
+    >
+      <ui-icon [svg]="icon" [size]="16" />
+    </button>
+  }
 }
