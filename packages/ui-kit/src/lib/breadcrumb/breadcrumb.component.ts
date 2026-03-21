@@ -39,9 +39,13 @@ export type BreadcrumbVariant = "link" | "button";
   host: {
     class: "ui-breadcrumb",
     "[class.ui-breadcrumb--button]": "variant() === 'button'",
+    "[class.ui-breadcrumb--disabled]": "disabled()",
   },
 })
 export class UIBreadcrumb {
+  /** Whether the breadcrumb is disabled. */
+  public readonly disabled = input<boolean>(false);
+
   /** The breadcrumb items to display. */
   public readonly items = input.required<readonly BreadcrumbItem[]>();
 

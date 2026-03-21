@@ -51,6 +51,7 @@ import type {
 
 import { HtmlEditingStrategy } from "./strategies/html-editing.strategy";
 import { MarkdownEditingStrategy } from "./strategies/markdown-editing.strategy";
+import { MARKDOWN_PARSER, type MarkdownParser } from "./markdown-parser";
 
 /**
  * The CSS class applied to placeholder chips inside the editable area.
@@ -116,6 +117,17 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly popoverService = inject(PopoverService);
   private readonly log = inject(LoggerFactory).createLogger("UIRichTextEditor");
+
+  /**
+   * Optional external Markdown parser injected via
+   * {@link MARKDOWN_PARSER}.  When provided, the
+   * {@link MarkdownEditingStrategy} delegates its Markdown → HTML
+   * conversion to this parser instead of using the built-in
+   * lightweight converter.
+   */
+  private readonly markdownParser = inject(MARKDOWN_PARSER, {
+    optional: true,
+  }) as MarkdownParser | null;
 
   // ── View queries ───────────────────────────────────────────
 
@@ -256,7 +268,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected readonly strategy = computed<RichTextEditorStrategy>(() => {
     const m = this.mode();
     if (m === "markdown") {
-      return new MarkdownEditingStrategy();
+      return new MarkdownEditingStrategy(this.markdownParser);
     }
     return new HtmlEditingStrategy();
   });

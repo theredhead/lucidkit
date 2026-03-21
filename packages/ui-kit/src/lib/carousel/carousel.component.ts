@@ -59,10 +59,14 @@ import { CoverflowCarouselStrategy } from "./coverflow-strategy";
     role: "region",
     "[attr.aria-label]": "ariaLabel()",
     "[attr.aria-roledescription]": "'carousel'",
+    "[class.ui-carousel--disabled]": "disabled()",
   },
 })
 export class UICarousel<T = unknown> {
   // ── Inputs ──────────────────────────────────────────────────────────
+
+  /** Whether the carousel is disabled. */
+  public readonly disabled = input<boolean>(false);
 
   /** Data items to display. */
   public readonly items = input.required<readonly T[]>();

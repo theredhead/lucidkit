@@ -71,11 +71,15 @@ export interface TreeNodeContext<T = unknown> {
     tabindex: "0",
     "[attr.aria-label]": "ariaLabel()",
     "aria-multiselectable": "true",
+    "[class.ui-tree-view--disabled]": "disabled()",
     "(keydown)": "onKeydown($event)",
   },
 })
 export class UITreeView<T = unknown> implements TreeKeyboardDelegate {
   // ── Inputs ──────────────────────────────────────────────────────────
+
+  /** Whether the tree view is disabled. */
+  public readonly disabled = input<boolean>(false);
 
   /** The datasource providing the tree structure. */
   public readonly datasource = input.required<ITreeDatasource<T>>();

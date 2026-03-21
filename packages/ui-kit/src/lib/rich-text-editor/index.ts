@@ -12,3 +12,9 @@ export {
 } from "./rich-text-editor.strategy";
 export { HtmlEditingStrategy } from "./strategies/html-editing.strategy";
 export { MarkdownEditingStrategy } from "./strategies/markdown-editing.strategy";
+export {
+  type MarkdownParser,
+  MARKDOWN_PARSER,
+  createMarkedParser,
+  createMarkdownItParser,
+} from "./markdown-parser";

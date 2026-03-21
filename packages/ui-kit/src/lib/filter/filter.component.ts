@@ -64,11 +64,15 @@ const JUNCTION_OPTIONS: SelectOption[] = [
     "aria-label": "Filter builder",
     "[class.ui-filter--simple]": "mode() === 'simple'",
     "[class.ui-filter--advanced]": "mode() === 'advanced'",
+    "[class.ui-filter--disabled]": "disabled()",
   },
 })
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class UIFilter<T = any> {
   // ── Inputs ──────────────────────────────────────────────────────────
+
+  /** Whether the filter is disabled. */
+  readonly disabled = input<boolean>(false);
 
   /** Filterable field definitions. */
   readonly fields = input.required<FilterFieldDefinition<T>[]>();

@@ -71,11 +71,15 @@ const STORAGE_PREFIX = "ui-split-container:";
     "[class.ui-split-container--horizontal]": "orientation() === 'horizontal'",
     "[class.ui-split-container--vertical]": "orientation() === 'vertical'",
     "[class.ui-split-container--dragging]": "dragging()",
+    "[class.ui-split-container--disabled]": "disabled()",
     "[style.--ui-divider-width]": "dividerWidth() + 'px'",
   },
 })
 export class UISplitContainer implements AfterViewInit {
   // ── Inputs ──────────────────────────────────────────────────────────
+
+  /** Whether the split container is disabled. */
+  public readonly disabled = input<boolean>(false);
 
   /** Layout orientation. Defaults to `'horizontal'` (side-by-side). */
   public readonly orientation = input<SplitOrientation>("horizontal");
