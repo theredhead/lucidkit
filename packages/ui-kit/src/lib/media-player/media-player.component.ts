@@ -92,10 +92,14 @@ import type {
     "[class.ui-media-player--no-controls]": "!controls()",
     "[class.ui-media-player--error]": "hasError()",
     "[class.ui-media-player--embed]": "isEmbed()",
+    "[class.ui-media-player--disabled]": "disabled()",
   },
 })
 export class UIMediaPlayer {
   // ── Inputs ──────────────────────────────────────────────────────────
+
+  /** Whether the media player is disabled. */
+  public readonly disabled = input<boolean>(false);
 
   /** The type of media element to render. */
   public readonly type = input<MediaType>("video");

@@ -60,10 +60,14 @@ import {
   styleUrl: "./image-cropper.component.scss",
   host: {
     class: "ui-image-cropper",
+    "[class.ui-image-cropper--disabled]": "disabled()",
   },
 })
 export class UIImageCropper implements AfterViewInit {
   // ── Inputs ────────────────────────────────────────────────────────
+
+  /** Whether the image cropper is disabled. */
+  public readonly disabled = input<boolean>(false);
 
   /**
    * Image source — URL, data URL, or object URL.

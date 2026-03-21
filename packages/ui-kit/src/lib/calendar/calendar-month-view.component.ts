@@ -55,10 +55,14 @@ import type { PopoverRef } from "../popover/popover.types";
   styleUrl: "./calendar-month-view.component.scss",
   host: {
     class: "ui-calendar-month-view",
+    "[class.ui-calendar-month-view--disabled]": "disabled()",
   },
 })
 export class UICalendarMonthView {
   // ── Inputs ──────────────────────────────────────────────────────────
+
+  /** Whether the calendar month view is disabled. */
+  public readonly disabled = input<boolean>(false);
 
   /** The datasource providing calendar events. */
   public readonly datasource = input.required<CalendarDatasource>();

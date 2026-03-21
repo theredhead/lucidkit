@@ -36,6 +36,7 @@ export type AccordionMode = "single" | "multi";
   providers: [{ provide: ACCORDION_CONTROLLER, useExisting: UIAccordion }],
   host: {
     class: "ui-accordion",
+    "[class.ui-accordion--disabled]": "disabled()",
   },
   styles: [
     `
@@ -59,6 +60,9 @@ export type AccordionMode = "single" | "multi";
   ],
 })
 export class UIAccordion implements AccordionController {
+  /** Whether the accordion is disabled. */
+  public readonly disabled = input<boolean>(false);
+
   /** Expansion mode: `single` collapses siblings, `multi` allows any combination. */
   public readonly mode = input<AccordionMode>("single");
 

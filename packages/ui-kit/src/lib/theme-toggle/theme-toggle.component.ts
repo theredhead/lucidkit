@@ -41,10 +41,14 @@ const MOON_ICON =
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-theme-toggle",
+    "[class.ui-theme-toggle--disabled]": "disabled()",
   },
 })
 export class UIThemeToggle {
   protected readonly themeService = inject(ThemeService);
+
+  /** Whether the toggle is disabled. */
+  public readonly disabled = input<boolean>(false);
 
   /** Visual style of the toggle. */
   public readonly variant = input<ThemeToggleVariant>("icon");

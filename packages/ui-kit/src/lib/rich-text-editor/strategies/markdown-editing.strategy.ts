@@ -7,6 +7,7 @@ import type {
   RichTextEditorContext,
   RichTextEditorStrategy,
 } from "../rich-text-editor.strategy";
+import type { MarkdownParser } from "../markdown-parser";
 
 /**
  * CSS class applied to placeholder chips inside the preview area.
@@ -354,6 +355,23 @@ export class MarkdownEditingStrategy implements RichTextEditorStrategy {
    */
   public textareaEl: HTMLTextAreaElement | null = null;
 
+  /**
+   * Optional external Markdown parser.  When provided, its
+   * `toHtml()` method is used instead of the built-in converter
+   * for the live preview and deserialisation.
+   */
+  private readonly parser: MarkdownParser | null;
+
+  /**
+   * @param parser - Optional {@link MarkdownParser} implementation.
+   *   When `null` or omitted the built-in lightweight converter is
+   *   used.  Consumers can supply a `marked`- or `markdown-it`-
+   *   backed parser via the {@link MARKDOWN_PARSER} injection token.
+   */
+  public constructor(parser?: MarkdownParser | null) {
+    this.parser = parser ?? null;
+  }
+
   // ── Formatting ────────────────────────────────────────────
 
   public execAction(
@@ -439,7 +457,11 @@ export class MarkdownEditingStrategy implements RichTextEditorStrategy {
   public deserialiseContent(value: string, ctx: RichTextEditorContext): string {
     // Convert Markdown → HTML first, then expand {{key}} tokens
     // into placeholder chip elements in the HTML output.
-    const html = markdownToHtml(value);
+    // When an external parser is provided, delegate to it;
+    // otherwise fall back to the built-in lightweight converter.
+    const html = this.parser
+      ? this.parser.toHtml(value)
+      : markdownToHtml(value);
     return this.expandPlaceholderTokens(html, ctx);
   }
 

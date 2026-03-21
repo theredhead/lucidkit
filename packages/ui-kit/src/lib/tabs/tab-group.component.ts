@@ -33,9 +33,13 @@ import { UITab } from "./tab.component";
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-tab-group",
+    "[class.ui-tab-group--disabled]": "disabled()",
   },
 })
 export class UITabGroup {
+  /** Whether the tab group is disabled. */
+  public readonly disabled = input<boolean>(false);
+
   /** Index of the initially selected tab. */
   public readonly selectedIndex = input(0);
 

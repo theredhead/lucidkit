@@ -46,6 +46,8 @@ import { type SelectionMode, SelectionModel } from "../core/selection-model";
   templateUrl: "./table-view.component.html",
   styleUrl: "./table-view.component.scss",
   host: {
+    class: "ui-table-view",
+    "[class.ui-table-view--disabled]": "disabled()",
     tabindex: "0",
     "(keydown)": "onKeydown($event)",
   },
@@ -55,6 +57,10 @@ export class UITableView implements OnInit, AfterViewInit {
   private readonly resizeService = inject(ColumnResizeService);
   private readonly elRef = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
+
+  /** Whether the table view is disabled. */
+   
+  disabled = input<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   datasource = input.required<DatasourceAdapter<any>>();
