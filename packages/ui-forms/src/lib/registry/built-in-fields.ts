@@ -22,6 +22,7 @@ import {
   provideFormFields,
   type FormFieldRegistration,
 } from "./field-registry";
+import { resolveTextAdapter } from "./text-adapter-resolver";
 
 /**
  * Built-in field registrations that map common component keys
@@ -45,7 +46,16 @@ import {
  */
 export const BUILT_IN_FIELDS: Readonly<Record<string, FormFieldRegistration>> =
   {
-    text: { component: UIInput, modelProperty: "value" },
+    text: {
+      component: UIInput,
+      modelProperty: "value",
+      configTransforms: {
+        textAdapter: {
+          inputKey: "adapter",
+          transform: resolveTextAdapter,
+        },
+      },
+    },
     select: { component: UISelect, modelProperty: "value" },
     checkbox: { component: UICheckbox, modelProperty: "checked" },
     toggle: { component: UIToggle, modelProperty: "value" },

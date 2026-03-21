@@ -303,66 +303,82 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
               <h4 class="pi-subheading">Config</h4>
               <div class="pi-section">
                 @for (prop of configSchemaFor(field); track prop.key) {
-                  @switch (prop.editor) {
-                    @case ("text") {
-                      <label class="pi-label">
-                        {{ prop.label }}
-                        <input
-                          class="pi-input"
-                          [placeholder]="prop.placeholder ?? ''"
-                          [value]="configValue(field, prop.key) ?? ''"
-                          (input)="
-                            setConfigValue(field, prop.key, inputValue($event))
-                          "
-                        />
-                      </label>
-                    }
+                  @if (!prop.visibleWhen || prop.visibleWhen(field.config())) {
+                    @switch (prop.editor) {
+                      @case ("text") {
+                        <label class="pi-label">
+                          {{ prop.label }}
+                          <input
+                            class="pi-input"
+                            [placeholder]="prop.placeholder ?? ''"
+                            [value]="configValue(field, prop.key) ?? ''"
+                            (input)="
+                              setConfigValue(
+                                field,
+                                prop.key,
+                                inputValue($event)
+                              )
+                            "
+                          />
+                        </label>
+                      }
 
-                    @case ("number") {
-                      <label class="pi-label">
-                        {{ prop.label }}
-                        <input
-                          class="pi-input"
-                          type="number"
-                          [placeholder]="prop.placeholder ?? ''"
-                          [value]="configValue(field, prop.key) ?? ''"
-                          (input)="
-                            setConfigNumber(field, prop.key, inputValue($event))
-                          "
-                        />
-                      </label>
-                    }
+                      @case ("number") {
+                        <label class="pi-label">
+                          {{ prop.label }}
+                          <input
+                            class="pi-input"
+                            type="number"
+                            [placeholder]="prop.placeholder ?? ''"
+                            [value]="configValue(field, prop.key) ?? ''"
+                            (input)="
+                              setConfigNumber(
+                                field,
+                                prop.key,
+                                inputValue($event)
+                              )
+                            "
+                          />
+                        </label>
+                      }
 
-                    @case ("boolean") {
-                      <label class="pi-label pi-label--row">
-                        <input
-                          type="checkbox"
-                          [checked]="!!configValue(field, prop.key)"
-                          (change)="setConfigBoolean(field, prop.key, $event)"
-                        />
-                        {{ prop.label }}
-                      </label>
-                    }
+                      @case ("boolean") {
+                        <label class="pi-label pi-label--row">
+                          <input
+                            type="checkbox"
+                            [checked]="!!configValue(field, prop.key)"
+                            (change)="setConfigBoolean(field, prop.key, $event)"
+                          />
+                          {{ prop.label }}
+                        </label>
+                      }
 
-                    @case ("select") {
-                      <label class="pi-label">
-                        {{ prop.label }}
-                        <select
-                          class="pi-select"
-                          [value]="configValue(field, prop.key) ?? ''"
-                          (change)="
-                            setConfigValue(field, prop.key, inputValue($event))
-                          "
-                        >
-                          <option value="">—</option>
-                          @for (
-                            opt of configSelectOptions(prop);
-                            track opt.value
-                          ) {
-                            <option [value]="opt.value">{{ opt.label }}</option>
-                          }
-                        </select>
-                      </label>
+                      @case ("select") {
+                        <label class="pi-label">
+                          {{ prop.label }}
+                          <select
+                            class="pi-select"
+                            [value]="configValue(field, prop.key) ?? ''"
+                            (change)="
+                              setConfigValue(
+                                field,
+                                prop.key,
+                                inputValue($event)
+                              )
+                            "
+                          >
+                            <option value="">—</option>
+                            @for (
+                              opt of configSelectOptions(prop);
+                              track opt.value
+                            ) {
+                              <option [value]="opt.value">
+                                {{ opt.label }}
+                              </option>
+                            }
+                          </select>
+                        </label>
+                      }
                     }
                   }
                 }

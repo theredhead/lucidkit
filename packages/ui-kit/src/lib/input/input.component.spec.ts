@@ -308,11 +308,11 @@ describe("UIInput", () => {
 
       const input: HTMLInputElement =
         fixture.nativeElement.querySelector("input");
-      input.value = "  Hello@Example.COM  ";
+      input.value = "Hello@Example.COM";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      expect(component.text()).toBe("  Hello@Example.COM  ");
+      expect(component.text()).toBe("Hello@Example.COM");
       expect(component.value()).toBe("hello@example.com");
     });
 
@@ -400,6 +400,54 @@ describe("UIInput", () => {
       expect(
         fixture.nativeElement.classList.contains("ui-input--has-suffix"),
       ).toBe(true);
+    });
+  });
+
+  describe("adapter inputType", () => {
+    it('should default to "text" when no adapter is set', () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      expect(input.type).toBe("text");
+    });
+
+    it('should set type to "email" with EmailTextAdapter', () => {
+      fixture.componentRef.setInput("adapter", new EmailTextAdapter());
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      expect(input.type).toBe("email");
+    });
+
+    it('should set type to "tel" with PhoneTextAdapter', () => {
+      fixture.componentRef.setInput("adapter", new PhoneTextAdapter());
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      expect(input.type).toBe("tel");
+    });
+
+    it('should set type to "url" with UrlTextAdapter', () => {
+      fixture.componentRef.setInput("adapter", new UrlTextAdapter());
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      expect(input.type).toBe("url");
+    });
+
+    it("should fall back to type input when adapter has no inputType", () => {
+      const adapter: TextAdapter = {
+        toValue: (t: string) => t,
+      };
+      fixture.componentRef.setInput("adapter", adapter);
+      fixture.componentRef.setInput("type", "number");
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      expect(input.type).toBe("number");
     });
   });
 

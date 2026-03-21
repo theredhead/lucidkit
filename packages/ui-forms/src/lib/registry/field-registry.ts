@@ -11,6 +11,21 @@ import {
 } from "@angular/core";
 
 /**
+ * Transforms a raw config value (typically a JSON-serializable string
+ * or number) into the runtime value expected by the component input.
+ *
+ * Used by {@link FormFieldRegistration.configTransforms} to bridge
+ * JSON-friendly config keys to complex runtime objects.
+ */
+export interface ConfigTransform {
+  /** The actual component input name to set. */
+  readonly inputKey: string;
+
+  /** Convert the raw config value to the runtime input value. */
+  readonly transform: (value: unknown) => unknown;
+}
+
+/**
  * Describes how a component is integrated into the form system.
  */
 export interface FormFieldRegistration {
@@ -34,6 +49,25 @@ export interface FormFieldRegistration {
    * Merged with (overridden by) the field definition's `config`.
    */
   readonly defaultConfig?: Readonly<Record<string, unknown>>;
+
+  /**
+   * Optional map from config keys to {@link ConfigTransform} entries.
+   *
+   * When a config key appears in this map, the raw JSON value is
+   * passed through the transform and set on the component input
+   * specified by `inputKey` instead of the config key itself.
+   *
+   * @example
+   * ```ts
+   * configTransforms: {
+   *   textAdapter: {
+   *     inputKey: 'adapter',
+   *     transform: (key) => resolveTextAdapter(key as string),
+   *   },
+   * }
+   * ```
+   */
+  readonly configTransforms?: Readonly<Record<string, ConfigTransform>>;
 }
 
 /**

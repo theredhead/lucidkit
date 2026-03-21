@@ -77,4 +77,13 @@ export interface TextAdapter {
    * @param text Current raw text value.
    */
   onSuffixClick?(text: string): void;
+
+  /**
+   * Optional HTML input `type` attribute value.
+   *
+   * When set, this overrides the `type` input on `UIInput` so the
+   * adapter can request the semantically correct native input type
+   * (e.g. `"email"`, `"tel"`, `"url"`).
+   */
+  inputType?: string;
 }

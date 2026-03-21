@@ -39,12 +39,14 @@ export { FormEngine, type FieldState, type GroupState } from "./lib/engine";
 
 // ── Registry ─────────────────────────────────────────────────────────
 export {
+  type ConfigTransform,
   type FormFieldRegistration,
   FORM_FIELD_REGISTRATIONS,
   provideFormFields,
   FormFieldRegistry,
 } from "./lib/registry";
 export { BUILT_IN_FIELDS, provideBuiltInFormFields } from "./lib/registry";
+export { resolveTextAdapter, TEXT_ADAPTER_KEYS } from "./lib/registry";
 
 // ── Export strategies ────────────────────────────────────────────────
 export type { ExportResult, ExportStrategy } from "./lib/export";
