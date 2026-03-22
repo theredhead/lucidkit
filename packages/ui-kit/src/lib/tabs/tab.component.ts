@@ -22,7 +22,7 @@ import {
 @Component({
   selector: "ui-tab",
   standalone: true,
-  template: `<ng-template #content><ng-content /></ng-template>`,
+  templateUrl: "./tab.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UITab {

@@ -33,32 +33,8 @@ export type DropdownAlign = "start" | "end";
     "(keydown.enter)": "onClick()",
     "(keydown.space)": "onClick(); $event.preventDefault()",
   },
-  template: `<ng-content />`,
-  styles: `
-    :host {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      cursor: pointer;
-      font-size: 0.875rem;
-      line-height: 1.4;
-      border-radius: 0.25rem;
-      white-space: nowrap;
-      transition: background-color 100ms ease;
-    }
-
-    :host(:hover:not(.ui-dropdown-item--disabled)),
-    :host(:focus-visible) {
-      background: rgba(128, 128, 128, 0.12);
-      outline: none;
-    }
-
-    :host(.ui-dropdown-item--disabled) {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-  `,
+  templateUrl: "./dropdown-item.component.html",
+  styleUrl: "./dropdown-item.component.scss",
 })
 export class UIDropdownItem {
   /** Whether this item is disabled. */
@@ -91,15 +67,8 @@ export class UIDropdownItem {
     class: "ui-dropdown-divider",
     role: "separator",
   },
-  template: "",
-  styles: `
-    :host {
-      display: block;
-      height: 1px;
-      margin: 0.25rem 0;
-      background: var(--ui-dropdown-border, #d7dce2);
-    }
-  `,
+  templateUrl: "./dropdown-divider.component.html",
+  styleUrl: "./dropdown-divider.component.scss",
 })
 export class UIDropdownDivider {}
 

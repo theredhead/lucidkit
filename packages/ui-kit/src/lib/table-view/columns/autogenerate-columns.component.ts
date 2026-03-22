@@ -5,7 +5,7 @@ import {
   forwardRef,
   input,
   TemplateRef,
-  ViewChild,
+  viewChild,
 } from "@angular/core";
 
 import { humanizeKey } from "../../filter/infer-filter-fields";
@@ -31,11 +31,15 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { style: "display: none" },
-  template: `<ng-template #cell let-row>{{ getValue(row) }}</ng-template>`,
+  templateUrl: "./text-column-generated.component.html",
 })
 export class UITextColumnGenerated extends UITableViewColumn {
-  @ViewChild("cell", { static: true })
-  public readonly cellTemplate!: TemplateRef<UITableViewCellContext>;
+  private readonly _cellTemplate =
+    viewChild.required<TemplateRef<UITableViewCellContext>>("cell");
+
+  public override get cellTemplate(): TemplateRef<UITableViewCellContext> {
+    return this._cellTemplate();
+  }
 
   public override getValue(row: unknown): string {
     return String(super.getValue(row) ?? "");
@@ -69,11 +73,7 @@ export class UITextColumnGenerated extends UITableViewColumn {
   standalone: true,
   imports: [UITextColumnGenerated],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    @for (col of generatedColumns(); track col.key) {
-      <ui-text-column-generated [key]="col.key" [headerText]="col.headerText" />
-    }
-  `,
+  templateUrl: "./autogenerate-columns.component.html",
 })
 export class UIAutogenerateColumns {
   /**

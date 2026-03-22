@@ -1,0 +1,36 @@
+@if (engine().schema.title) {
+  <h2 class="f-title">{{ engine().schema.title }}</h2>
+}
+@if (engine().schema.description) {
+  <p class="f-description">{{ engine().schema.description }}</p>
+}
+
+@for (group of engine().groups; track group.definition.id) {
+  <ui-form-group [state]="group" />
+}
+
+@if (showSubmit()) {
+  @if (!isValid() && validationSummary().length) {
+    <div class="f-validation-summary" role="alert">
+      <strong>Please fix the following issues:</strong>
+      <ul>
+        @for (item of validationSummary(); track item.fieldId) {
+          <li>
+            <strong>{{ item.title }}:</strong>
+            {{ item.errors[0] }}
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  <div class="f-actions">
+    <button
+      type="button"
+      class="f-submit"
+      [disabled]="!engine().valid()"
+      (click)="onSubmit()"
+    >
+      {{ submitLabel() }}
+    </button>
+  </div>
+}

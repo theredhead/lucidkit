@@ -23,7 +23,7 @@ import {
   host: {
     class: "ui-rich-text-view",
   },
-  template: `<div class="rtv-content" [innerHTML]="content()"></div>`,
+  templateUrl: "./rich-text-view.component.html",
   styleUrl: "./rich-text-view.component.scss",
 })
 export class UIRichTextView {

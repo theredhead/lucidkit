@@ -1,0 +1,118 @@
+<!-- Toolbar -->
+<header class="fd-toolbar">
+  <span class="fd-toolbar-title">Form Designer</span>
+
+  <div
+    class="fd-toolbar-actions"
+    role="tablist"
+    aria-label="Designer views"
+  >
+    <button
+      type="button"
+      role="tab"
+      class="fd-toolbar-btn"
+      [class.fd-toolbar-btn--active]="activeTab() === 'design'"
+      [attr.aria-selected]="activeTab() === 'design'"
+      aria-controls="fd-tabpanel"
+      (click)="activeTab.set('design')"
+    >
+      Design
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="fd-toolbar-btn"
+      [class.fd-toolbar-btn--active]="activeTab() === 'preview'"
+      [attr.aria-selected]="activeTab() === 'preview'"
+      aria-controls="fd-tabpanel"
+      (click)="activeTab.set('preview')"
+    >
+      Preview
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="fd-toolbar-btn"
+      [class.fd-toolbar-btn--active]="activeTab() === 'json'"
+      [attr.aria-selected]="activeTab() === 'json'"
+      aria-controls="fd-tabpanel"
+      (click)="activeTab.set('json')"
+    >
+      JSON
+    </button>
+  </div>
+</header>
+
+<!-- Content area -->
+<div
+  class="fd-body"
+  id="fd-tabpanel"
+  role="tabpanel"
+  [attr.aria-label]="activeTab() + ' view'"
+>
+  @switch (activeTab()) {
+    @case ("design") {
+      <ui-field-palette
+        class="fd-palette"
+        (fieldRequested)="onFieldRequested($event)"
+      />
+      <ui-designer-canvas
+        class="fd-canvas"
+        [engine]="designerEngine"
+        (addFieldRequest)="onAddFieldToGroup($event)"
+      />
+      <ui-property-inspector
+        class="fd-inspector"
+        [engine]="designerEngine"
+      />
+    }
+
+    @case ("preview") {
+      <div class="fd-preview">
+        @if (previewEngine()) {
+          <ui-form
+            [engine]="previewEngine()!"
+            submitLabel="Submit (Preview)"
+            (formSubmit)="onPreviewSubmit($event)"
+          />
+          <div class="fd-preview-live">
+            <h4 class="fd-preview-live-heading">
+              Live output
+              <span
+                class="fd-preview-live-badge"
+                [class.fd-preview-live-badge--valid]="
+                  previewEngine()!.valid()
+                "
+              >
+                {{ previewEngine()!.valid() ? "✓ valid" : "✗ invalid" }}
+              </span>
+            </h4>
+            <pre class="fd-preview-live-json">{{
+              previewOutput() | json
+            }}</pre>
+          </div>
+        } @else {
+          <p class="fd-preview-empty">
+            Add some fields to see the preview.
+          </p>
+        }
+      </div>
+    }
+
+    @case ("json") {
+      <div class="fd-json">
+        <div class="fd-json-header">
+          <button
+            type="button"
+            class="fd-copy-btn"
+            aria-label="Copy JSON to clipboard"
+            (click)="onCopyJson()"
+          >
+            <ui-icon [svg]="copyIcon" [size]="14" />
+          </button>
+        </div>
+        <pre class="fd-json-pre">{{ designerEngine.schema() | json }}</pre>
+      </div>
+    }
+  }
+</div>

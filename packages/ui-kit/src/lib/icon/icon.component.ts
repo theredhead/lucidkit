@@ -95,32 +95,8 @@ import { DomSanitizer } from "@angular/platform-browser";
     "[attr.aria-label]": "ariaLabel() || null",
     "[attr.aria-hidden]": "!ariaLabel()",
   },
-  template: `
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      [attr.width]="size()"
-      [attr.height]="size()"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      [innerHTML]="safeSvg()"
-    ></svg>
-  `,
-  styles: `
-    :host {
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      line-height: 0;
-    }
-
-    svg {
-      display: block;
-    }
-  `,
+  templateUrl: "./icon.component.html",
+  styleUrl: "./icon.component.scss",
 })
 export class UIIcon {
   /**
@@ -140,13 +116,13 @@ export class UIIcon {
    * readonly customIcon = '<circle cx="12" cy="12" r="10" /><path d="M12 8v8" />';
    * ```
    */
-  readonly svg = input.required<string>();
+  public readonly svg = input.required<string>();
 
   /** Icon size in pixels (width & height). Defaults to 24. */
-  readonly size = input<number>(24);
+  public readonly size = input<number>(24);
 
   /** Accessible label. When provided, `aria-hidden` is removed. */
-  readonly ariaLabel = input<string>("");
+  public readonly ariaLabel = input<string>("");
 
   private readonly sanitizer = inject(DomSanitizer);
 

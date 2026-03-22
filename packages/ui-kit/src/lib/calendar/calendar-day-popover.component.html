@@ -1,0 +1,14 @@
+<div class="popover-header">
+  <span class="popover-title">{{ dateLabel() }}</span>
+</div>
+<div class="popover-events">
+  @for (evt of day().events; track evt.id) {
+    <button type="button" class="popover-event" (click)="onEventClick(evt)">
+      <span class="popover-dot" [style.background-color]="evt.color"></span>
+      <span class="popover-event-title">{{ evt.title }}</span>
+      @if (!evt.allDay) {
+        <span class="popover-event-time">{{ formatTime(evt.start) }}</span>
+      }
+    </button>
+  }
+</div>
