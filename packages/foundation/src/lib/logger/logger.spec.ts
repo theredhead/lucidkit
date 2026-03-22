@@ -62,7 +62,13 @@ describe("ConsoleLoggingStrategy", () => {
 
     strategy.info("Ctx", "hello", [1, 2]);
 
-    expect(spy).toHaveBeenCalledWith("Ctx: hello", 1, 2);
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] Ctx: hello$/,
+      ),
+      1,
+      2,
+    );
     spy.mockRestore();
   });
 
@@ -72,7 +78,11 @@ describe("ConsoleLoggingStrategy", () => {
 
     strategy.warn("Ctx", "caution", []);
 
-    expect(spy).toHaveBeenCalledWith("Ctx: caution");
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] Ctx: caution$/,
+      ),
+    );
     spy.mockRestore();
   });
 
@@ -82,7 +92,12 @@ describe("ConsoleLoggingStrategy", () => {
 
     strategy.error("Ctx", "boom", ["extra"]);
 
-    expect(spy).toHaveBeenCalledWith("Ctx: boom", "extra");
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] Ctx: boom$/,
+      ),
+      "extra",
+    );
     spy.mockRestore();
   });
 });

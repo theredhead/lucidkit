@@ -28,8 +28,8 @@ export interface ILoggingStrategy {
  * @example
  * ```ts
  * const log = new Logger(new ConsoleLoggingStrategy(), "MyService");
- * log.log("initialised");        // → "MyService: initialised"
- * log.warn("deprecation", [api]); // → "MyService: deprecation" [api]
+ * log.info("initialised");        // → "[2026-03-23T12:00:00.000Z] MyService: initialised"
+ * log.warn("deprecation", [api]); // → "[2026-03-23T12:00:00.000Z] MyService: deprecation" [api]
  * ```
  */
 export class Logger {
@@ -63,27 +63,40 @@ export class Logger {
  * Default {@link ILoggingStrategy} that delegates to the browser
  * `console`.
  *
- * Messages are formatted as `"<context>: <message>"` followed by any
+ * Messages are formatted as
+ * `"[<ISO-timestamp>] <context>: <message>"` followed by any
  * additional arguments spread into the console call.
  */
 export class ConsoleLoggingStrategy implements ILoggingStrategy {
   /** @inheritdoc */
   public debug(context: string, message: string, args: unknown[]): void {
-    console.debug(`${context}: ${message}`, ...args);
+    console.debug(
+      `[${new Date().toISOString()}] ${context}: ${message}`,
+      ...args,
+    );
   }
 
   /** @inheritdoc */
   public info(context: string, message: string, args: unknown[]): void {
-    console.log(`${context}: ${message}`, ...args);
+    console.log(
+      `[${new Date().toISOString()}] ${context}: ${message}`,
+      ...args,
+    );
   }
 
   /** @inheritdoc */
   public warn(context: string, message: string, args: unknown[]): void {
-    console.warn(`${context}: ${message}`, ...args);
+    console.warn(
+      `[${new Date().toISOString()}] ${context}: ${message}`,
+      ...args,
+    );
   }
 
   /** @inheritdoc */
   public error(context: string, message: string, args: unknown[]): void {
-    console.error(`${context}: ${message}`, ...args);
+    console.error(
+      `[${new Date().toISOString()}] ${context}: ${message}`,
+      ...args,
+    );
   }
 }
