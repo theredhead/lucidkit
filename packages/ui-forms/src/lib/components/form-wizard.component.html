@@ -1,0 +1,62 @@
+@if (engine().schema.title) {
+  <h2 class="fw-title">{{ engine().schema.title }}</h2>
+}
+@if (engine().schema.description) {
+  <p class="fw-description">{{ engine().schema.description }}</p>
+}
+
+<!-- Step indicator -->
+<nav class="fw-steps" aria-label="Form steps">
+  @for (step of visibleGroups(); track step.definition.id; let i = $index) {
+    <button
+      type="button"
+      class="fw-step"
+      [class.fw-step--active]="i === currentIndex()"
+      [class.fw-step--completed]="i < currentIndex()"
+      [disabled]="i > currentIndex()"
+      (click)="goTo(i)"
+      [attr.aria-current]="i === currentIndex() ? 'step' : null"
+    >
+      <span class="fw-step-number">{{ i + 1 }}</span>
+      @if (step.definition.title) {
+        <span class="fw-step-label">{{ step.definition.title }}</span>
+      }
+    </button>
+  }
+</nav>
+
+<!-- Current group -->
+@if (currentGroup(); as group) {
+  <ui-form-group [state]="group" />
+}
+
+<!-- Navigation -->
+<div class="fw-actions">
+  @if (currentIndex() > 0) {
+    <button type="button" class="fw-btn fw-btn--prev" (click)="prev()">
+      {{ prevLabel() }}
+    </button>
+  }
+
+  <div class="fw-spacer"></div>
+
+  @if (isLastStep()) {
+    <button
+      type="button"
+      class="fw-btn fw-btn--submit"
+      [disabled]="!engine().valid()"
+      (click)="onSubmit()"
+    >
+      {{ submitLabel() }}
+    </button>
+  } @else {
+    <button
+      type="button"
+      class="fw-btn fw-btn--next"
+      [disabled]="!currentStepValid()"
+      (click)="next()"
+    >
+      {{ nextLabel() }}
+    </button>
+  }
+</div>

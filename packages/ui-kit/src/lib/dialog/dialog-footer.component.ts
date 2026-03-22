@@ -19,17 +19,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-dialog-footer" },
-  template: "<ng-content />",
-  styles: [
-    `
-      :host {
-        display: flex;
-        padding: 0.75rem 1.25rem 1rem;
-        border-top: 1px solid var(--ui-border, #d7dce2);
-        justify-content: flex-end;
-        gap: 1rem;
-      }
-    `,
-  ],
+  templateUrl: "./dialog-footer.component.html",
+  styleUrl: "./dialog-footer.component.scss",
 })
 export class UIDialogFooter {}

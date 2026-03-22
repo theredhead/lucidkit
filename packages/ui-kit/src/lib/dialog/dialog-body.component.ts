@@ -18,19 +18,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-dialog-body" },
-  template: "<ng-content />",
-  styles: [
-    `
-      :host {
-        display: block;
-        padding: 1rem 1.25rem;
-        overflow-y: auto;
-        flex: 1 1 auto;
-        max-height: 80vh;
-        font-size: 0.875rem;
-        line-height: 1.5;
-      }
-    `,
-  ],
+  templateUrl: "./dialog-body.component.html",
+  styleUrl: "./dialog-body.component.scss",
 })
 export class UIDialogBody {}

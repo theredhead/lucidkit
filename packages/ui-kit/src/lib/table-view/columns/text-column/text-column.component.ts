@@ -1,39 +1,43 @@
 import {
-    Component,
-    forwardRef,
-    input,
-    TemplateRef,
-    ViewChild,
-} from '@angular/core';
+  Component,
+  forwardRef,
+  input,
+  TemplateRef,
+  viewChild,
+} from "@angular/core";
 
 import {
-    UITableViewCellContext,
-    UITableViewColumn,
-} from '../table-column.directive';
+  UITableViewCellContext,
+  UITableViewColumn,
+} from "../table-column.directive";
 
 @Component({
-    selector: 'ui-text-column',
-    standalone: true,
-    providers: [
-        {
-            provide: UITableViewColumn,
-            useExisting: forwardRef(() => UITextColumn),
-        },
-    ],
-    templateUrl: './text-column.component.html',
-    styleUrl: './text-column.component.scss',
+  selector: "ui-text-column",
+  standalone: true,
+  providers: [
+    {
+      provide: UITableViewColumn,
+      useExisting: forwardRef(() => UITextColumn),
+    },
+  ],
+  templateUrl: "./text-column.component.html",
+  styleUrl: "./text-column.component.scss",
 })
 export class UITextColumn extends UITableViewColumn {
-    public truncate = input<boolean>(false);
+  public truncate = input<boolean>(false);
 
-    @ViewChild('cell', { static: true })
-    public readonly cellTemplate!: TemplateRef<UITableViewCellContext>;
+  private readonly _cellTemplate =
+    viewChild.required<TemplateRef<UITableViewCellContext>>("cell");
 
-    protected getCellValue(row: unknown): unknown {
-        return this.getValue(row);
-    }
+  public override get cellTemplate(): TemplateRef<UITableViewCellContext> {
+    return this._cellTemplate();
+  }
 
-    protected stringValue(row: unknown): string {
-        return String(this.getCellValue(row) ?? '');
-    }
+  protected getCellValue(row: unknown): unknown {
+    return this.getValue(row);
+  }
+
+  protected stringValue(row: unknown): string {
+    return String(this.getCellValue(row) ?? "");
+  }
 }

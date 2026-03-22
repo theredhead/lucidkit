@@ -1,0 +1,176 @@
+<!-- Form header (click to select form-level props) -->
+<button
+  type="button"
+  class="dc-form-header"
+  [class.dc-form-header--selected]="engine().selection()?.kind === 'form'"
+  [attr.aria-pressed]="engine().selection()?.kind === 'form'"
+  aria-label="Select form properties"
+  (click)="engine().selectForm()"
+>
+  <span class="dc-form-title">
+    {{ engine().formTitle() || "Untitled Form" }}
+  </span>
+  @if (engine().formDescription()) {
+    <span class="dc-form-desc">{{ engine().formDescription() }}</span>
+  }
+</button>
+
+<!-- Groups -->
+@for (group of engine().groups(); track group.uid; let gi = $index) {
+  <section
+    class="dc-group"
+    role="region"
+    [attr.aria-label]="group.title() || 'Group ' + (gi + 1)"
+    [class.dc-group--selected]="
+      engine().selection()?.kind === 'group' &&
+      engine().selection()?.groupUid === group.uid
+    "
+    (drop)="onDropField($event, group)"
+    (dragover)="onDragOver($event)"
+  >
+    <!-- Group header -->
+    <div class="dc-group-header">
+      <span
+        class="dc-group-title"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="
+          'Select group: ' + (group.title() || 'Group ' + (gi + 1))
+        "
+        (click)="engine().selectGroup(group.uid)"
+        (keydown.enter)="engine().selectGroup(group.uid)"
+        >{{ group.title() || "Group " + (gi + 1) }}</span
+      >
+      <div class="dc-group-actions">
+        <button
+          type="button"
+          class="dc-icon-btn"
+          aria-label="Move group up"
+          [disabled]="gi === 0"
+          (click)="moveGroupUp($event, group.uid, gi)"
+        >
+          <ui-icon [svg]="icons.ChevronUp" [size]="14" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          class="dc-icon-btn"
+          aria-label="Move group down"
+          [disabled]="gi === engine().groups().length - 1"
+          (click)="moveGroupDown($event, group.uid, gi)"
+        >
+          <ui-icon
+            [svg]="icons.ChevronDown"
+            [size]="14"
+            aria-hidden="true"
+          />
+        </button>
+        <button
+          type="button"
+          class="dc-icon-btn dc-icon-btn--danger"
+          aria-label="Remove group"
+          (click)="removeGroup($event, group.uid)"
+        >
+          <ui-icon [svg]="icons.X" [size]="14" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Fields -->
+    <div class="dc-fields">
+      @for (field of group.fields(); track field.uid; let fi = $index) {
+        <div
+          class="dc-field"
+          [class.dc-field--selected]="
+            engine().selection()?.fieldUid === field.uid
+          "
+          [class.dc-field--flair]="isFlair(field.component())"
+        >
+          <div
+            class="dc-field-info"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="'Select field: ' + field.title()"
+            (click)="engine().selectField(group.uid, field.uid)"
+            (keydown.enter)="engine().selectField(group.uid, field.uid)"
+          >
+            <span class="dc-field-component" aria-hidden="true">{{
+              field.component()
+            }}</span>
+            <span class="dc-field-title">{{ field.title() }}</span>
+            <span class="dc-field-id" aria-hidden="true">{{
+              field.id()
+            }}</span>
+          </div>
+          <div
+            class="dc-field-actions"
+            role="toolbar"
+            [attr.aria-label]="'Actions for ' + field.title()"
+          >
+            <button
+              type="button"
+              class="dc-icon-btn"
+              aria-label="Move field up"
+              [disabled]="fi === 0"
+              (click)="moveFieldUp($event, group.uid, field.uid, fi)"
+            >
+              <ui-icon
+                [svg]="icons.ChevronUp"
+                [size]="14"
+                aria-hidden="true"
+              />
+            </button>
+            <button
+              type="button"
+              class="dc-icon-btn"
+              aria-label="Move field down"
+              [disabled]="fi === group.fields().length - 1"
+              (click)="moveFieldDown($event, group.uid, field.uid, fi)"
+            >
+              <ui-icon
+                [svg]="icons.ChevronDown"
+                [size]="14"
+                aria-hidden="true"
+              />
+            </button>
+            <button
+              type="button"
+              class="dc-icon-btn"
+              aria-label="Duplicate field"
+              (click)="duplicateField($event, group.uid, field.uid)"
+            >
+              <ui-icon [svg]="icons.Copy" [size]="14" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              class="dc-icon-btn dc-icon-btn--danger"
+              aria-label="Remove field"
+              (click)="removeField($event, group.uid, field.uid)"
+            >
+              <ui-icon [svg]="icons.X" [size]="14" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (group.fields().length === 0) {
+        <div class="dc-empty">
+          Drop or click a field type to add it here
+        </div>
+      }
+    </div>
+
+    <!-- Add field button -->
+    <button
+      type="button"
+      class="dc-add-field"
+      (click)="addFieldRequest.emit(group.uid)"
+    >
+      + Add field
+    </button>
+  </section>
+}
+
+<!-- Add group button -->
+<button type="button" class="dc-add-group" (click)="engine().addGroup()">
+  + Add group
+</button>

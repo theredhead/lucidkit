@@ -66,7 +66,7 @@ export class UICard {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-card-header" },
-  template: `<ng-content />`,
+  templateUrl: "./card-header.component.html",
 })
 export class UICardHeader {}
 
@@ -85,7 +85,7 @@ export class UICardHeader {}
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-card-body" },
-  template: `<ng-content />`,
+  templateUrl: "./card-body.component.html",
 })
 export class UICardBody {}
 
@@ -105,6 +105,6 @@ export class UICardBody {}
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-card-footer" },
-  template: `<ng-content />`,
+  templateUrl: "./card-footer.component.html",
 })
 export class UICardFooter {}

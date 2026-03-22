@@ -31,33 +31,14 @@ export type AccordionMode = "single" | "multi";
 @Component({
   selector: "ui-accordion",
   standalone: true,
-  template: `<ng-content />`,
+  templateUrl: "./accordion.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: ACCORDION_CONTROLLER, useExisting: UIAccordion }],
   host: {
     class: "ui-accordion",
     "[class.ui-accordion--disabled]": "disabled()",
   },
-  styles: [
-    `
-      :host {
-        display: block;
-        border: 1px solid var(--ui-border, #d7dce2);
-        border-radius: 0.5rem;
-        overflow: hidden;
-      }
-
-      :host-context(html.dark-theme) {
-        border-color: var(--ui-border, #3a3f47);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :host-context(html:not(.light-theme):not(.dark-theme)) {
-          border-color: var(--ui-border, #3a3f47);
-        }
-      }
-    `,
-  ],
+  styleUrl: "./accordion.component.scss",
 })
 export class UIAccordion implements AccordionController {
   /** Whether the accordion is disabled. */

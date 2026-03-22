@@ -16,18 +16,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-dialog-header" },
-  template: "<ng-content />",
-  styles: [
-    `
-      :host {
-        display: block;
-        padding: 1rem 1.25rem 0.75rem;
-        font:
-          600 1.125rem/1.4 system-ui,
-          sans-serif;
-        border-bottom: 1px solid var(--ui-border, #d7dce2);
-      }
-    `,
-  ],
+  templateUrl: "./dialog-header.component.html",
+  styleUrl: "./dialog-header.component.scss",
 })
 export class UIDialogHeader {}
