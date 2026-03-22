@@ -11,7 +11,6 @@ import { moduleMetadata } from "@storybook/angular";
 
 import { UIFilter } from "../filter/filter.component";
 import type { FilterFieldDefinition } from "../filter/filter.types";
-import { UIThemeToggle } from "../theme-toggle/theme-toggle.component";
 import { UIDensity, UIDensityDirective } from "../ui-density";
 import { UIBadgeColumn } from "./columns/badge-column/badge-column.component";
 import { UINumberColumn } from "./columns/number-column/number-column.component";
@@ -37,12 +36,8 @@ import { SelectionModel } from "../core/selection-model";
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UIThemeToggle,
   ],
   template: `
-    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-    </div>
     <ui-table-view
       uiDensity="comfortable"
       caption="JSONPlaceholder Posts"
@@ -89,12 +84,8 @@ class UITableViewStoryDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UIThemeToggle,
   ],
   template: `
-    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-    </div>
     <ui-table-view
       uiDensity="compact"
       caption="JSONPlaceholder Comments"
@@ -141,12 +132,8 @@ class UITableViewCommentsStoryDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UIThemeToggle,
   ],
   template: `
-    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-    </div>
     <ui-table-view
       uiDensity="generous"
       caption="JSONPlaceholder Photos"
@@ -197,12 +184,8 @@ class UITableViewPhotosStoryDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UIThemeToggle,
   ],
   template: `
-    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-    </div>
     <ui-table-view
       uiDensity="comfortable"
       caption="Single Selection"
@@ -266,12 +249,8 @@ class UITableViewSingleSelectDemo {
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UIThemeToggle,
   ],
   template: `
-    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-    </div>
     <ui-table-view
       uiDensity="comfortable"
       caption="Multiple Selection"
@@ -473,7 +452,6 @@ export const DensityPlayground: Story = {
         UITextColumn,
         UIBadgeColumn,
         UIDensityDirective,
-        UIThemeToggle,
       ],
     }),
   ],
@@ -523,10 +501,7 @@ export const DensityPlayground: Story = {
       ),
     },
     template: `
-            <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-                <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-            </div>
-            <ui-table-view
+                        <ui-table-view
                 [uiDensity]="density"
                 caption="Density Playground"
                 tableId="story-density"
@@ -618,7 +593,6 @@ export const WithoutBuiltInPaginator: Story = {
         UITextColumn,
         UIBadgeColumn,
         UIDensityDirective,
-        UIThemeToggle,
       ],
     }),
   ],
@@ -630,10 +604,7 @@ export const WithoutBuiltInPaginator: Story = {
       ),
     },
     template: `
-            <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-                <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-            </div>
-            <ui-table-view
+                        <ui-table-view
                 uiDensity="comfortable"
                 caption="Without Built-in Paginator"
                 tableId="story-no-paginator"
@@ -956,13 +927,9 @@ const EMPLOYEE_FIELDS: FilterFieldDefinition<Employee>[] = [
     UITextColumn,
     UIBadgeColumn,
     UIDensityDirective,
-    UIThemeToggle,
     UIFilter,
   ],
   template: `
-    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-    </div>
     <ui-filter
       [fields]="fields"
       [allowJunction]="true"
@@ -1093,12 +1060,8 @@ onPredicateChange(predicate: Predicate<Employee> | undefined): void {
     UITextColumn,
     UITemplateColumn,
     UIDensityDirective,
-    UIThemeToggle,
   ],
   template: `
-    <div style="display:flex;justify-content:flex-end;margin:0 0 0.75rem;">
-      <ui-theme-toggle variant="button" ariaLabel="Toggle table theme" />
-    </div>
     <ui-table-view
       uiDensity="comfortable"
       caption="Template Column Demo"

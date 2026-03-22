@@ -426,7 +426,7 @@ const meta: Meta<UIMediaPlayer> = {
     },
     crossOrigin: {
       control: "inline-radio",
-      options: ["anonymous", "use-credentials", ""],
+      options: ["anonymous", "use-credentials"],
       description:
         "CORS setting for the underlying media element. " +
         "Defaults to `anonymous` for cross-origin poster-frame generation.",

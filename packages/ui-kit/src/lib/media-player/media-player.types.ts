@@ -13,7 +13,6 @@ export type MediaType = "audio" | "video";
  *
  * - `'anonymous'`       — send a CORS request without credentials
  * - `'use-credentials'` — send a CORS request with credentials
- * - `''`                — equivalent to `'anonymous'`
  *
  * Setting this to `'anonymous'` (the default) is required for the
  * automatic poster-frame capture to work on cross-origin videos,
@@ -21,7 +20,7 @@ export type MediaType = "audio" | "video";
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
  */
-export type MediaCrossOrigin = "anonymous" | "use-credentials" | "";
+export type MediaCrossOrigin = "anonymous" | "use-credentials";
 
 /**
  * Describes how the video should be fitted within its viewport.
