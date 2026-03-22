@@ -6,8 +6,14 @@
   --ui-panel-border: #e5e7eb;
   --ui-panel-header-bg: #f6f7f8;
   --ui-panel-radius: 8px;
-  --ui-panel-shadow: 0 1px 3px rgba(18, 24, 33, 0.06);
+  --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
   --ui-panel-action-hover: #e5e7eb;
+  --ui-panel-notify-accent: var(--theredhead-secondary, #625b71);
+  --ui-panel-notify-glow: color-mix(
+    in srgb,
+    var(--theredhead-secondary, #625b71) 22%,
+    transparent
+  );
 
   display: flex;
   flex-direction: column;
@@ -31,8 +37,14 @@
   --ui-panel-text-muted: #a0aab6;
   --ui-panel-border: #3a3f47;
   --ui-panel-header-bg: #1f242a;
-  --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+  --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
   --ui-panel-action-hover: #3a3f47;
+  --ui-panel-notify-accent: var(--theredhead-secondary, #ccc2dc);
+  --ui-panel-notify-glow: color-mix(
+    in srgb,
+    var(--theredhead-secondary, #ccc2dc) 26%,
+    transparent
+  );
 }
 
 // ── System preference fallback ───────────────────────────────────
@@ -43,8 +55,14 @@
     --ui-panel-text-muted: #a0aab6;
     --ui-panel-border: #3a3f47;
     --ui-panel-header-bg: #1f242a;
-    --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+    --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
     --ui-panel-action-hover: #3a3f47;
+    --ui-panel-notify-accent: var(--theredhead-secondary, #ccc2dc);
+    --ui-panel-notify-glow: color-mix(
+      in srgb,
+      var(--theredhead-secondary, #ccc2dc) 26%,
+      transparent
+    );
   }
 }
 
@@ -58,6 +76,18 @@
   background: var(--ui-panel-header-bg);
   border-bottom: 1px solid var(--ui-panel-border);
   flex-shrink: 0;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.panel-icon {
+  flex-shrink: 0;
+  color: var(--ui-panel-text-muted);
 }
 
 .panel-title {
@@ -126,7 +156,48 @@
 // ── Collapsed state ──────────────────────────────────────────────
 
 :host(.ui-dashboard-panel--collapsed) {
+  display: none;
+}
+
+// ── Notified state ───────────────────────────────────────────────
+
+:host(.ui-dashboard-panel--notified) {
+  border-color: var(--ui-panel-notify-accent);
+  box-shadow:
+    0 0 0 1px var(--ui-panel-notify-accent),
+    0 0 8px var(--ui-panel-notify-glow);
+  animation: ui-panel-pulse 2s ease-in-out infinite;
+
   .panel-header {
-    border-bottom: none;
+    border-bottom-color: var(--ui-panel-notify-accent);
+  }
+
+  .panel-icon {
+    color: var(--ui-panel-notify-accent);
+    animation: ui-icon-pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes ui-panel-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px var(--ui-panel-notify-accent),
+      0 0 8px var(--ui-panel-notify-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2px var(--ui-panel-notify-accent),
+      0 0 14px var(--ui-panel-notify-glow);
+  }
+}
+
+@keyframes ui-icon-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }

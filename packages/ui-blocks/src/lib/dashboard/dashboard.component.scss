@@ -2,6 +2,18 @@
 :host {
   --ui-dashboard-bg: transparent;
   --ui-dashboard-text: #1d232b;
+  --ui-dock-bg: #f0f1f3;
+  --ui-dock-chip-bg: #ffffff;
+  --ui-dock-chip-text: #1d232b;
+  --ui-dock-chip-border: #d7dce2;
+  --ui-dock-chip-hover-bg: #e5e7eb;
+  --ui-dock-chip-shadow: 0 1px 2px rgba(18, 24, 33, 0.06);
+  --ui-dock-notify-accent: var(--theredhead-secondary, #625b71);
+  --ui-dock-notify-glow: color-mix(
+    in srgb,
+    var(--theredhead-secondary, #625b71) 22%,
+    transparent
+  );
 
   display: block;
   color: var(--ui-dashboard-text);
@@ -14,12 +26,36 @@
 // ── Explicit dark class ──────────────────────────────────────────
 :host-context(html.dark-theme) {
   --ui-dashboard-text: #f2f6fb;
+  --ui-dock-bg: #1a1f25;
+  --ui-dock-chip-bg: #242b33;
+  --ui-dock-chip-text: #f2f6fb;
+  --ui-dock-chip-border: #3a3f47;
+  --ui-dock-chip-hover-bg: #3a3f47;
+  --ui-dock-chip-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --ui-dock-notify-accent: var(--theredhead-secondary, #ccc2dc);
+  --ui-dock-notify-glow: color-mix(
+    in srgb,
+    var(--theredhead-secondary, #ccc2dc) 26%,
+    transparent
+  );
 }
 
 // ── System preference fallback ───────────────────────────────────
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
     --ui-dashboard-text: #f2f6fb;
+    --ui-dock-bg: #1a1f25;
+    --ui-dock-chip-bg: #242b33;
+    --ui-dock-chip-text: #f2f6fb;
+    --ui-dock-chip-border: #3a3f47;
+    --ui-dock-chip-hover-bg: #3a3f47;
+    --ui-dock-chip-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
+    --ui-dock-notify-accent: var(--theredhead-secondary, #ccc2dc);
+    --ui-dock-notify-glow: color-mix(
+      in srgb,
+      var(--theredhead-secondary, #ccc2dc) 26%,
+      transparent
+    );
   }
 }
 
@@ -28,4 +64,219 @@
 .dashboard-grid {
   display: grid;
   grid-auto-rows: minmax(120px, auto);
+}
+
+// ── Dock ─────────────────────────────────────────────────────────
+
+.dashboard-dock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--ui-dock-bg);
+  border-radius: 8px;
+  margin-top: 12px;
+
+  &:first-child {
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+}
+
+.dock-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--ui-dock-chip-border);
+  border-radius: 6px;
+  background: var(--ui-dock-chip-bg);
+  color: var(--ui-dock-chip-text);
+  box-shadow: var(--ui-dock-chip-shadow);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s,
+    box-shadow 0.15s;
+
+  &:hover {
+    background: var(--ui-dock-chip-hover-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-dock-chip-border);
+    outline-offset: 2px;
+  }
+}
+
+.dock-chip-label {
+  line-height: 1;
+}
+
+.dock-chip--notified {
+  border-color: var(--ui-dock-notify-accent);
+  box-shadow:
+    0 0 0 1px var(--ui-dock-notify-accent),
+    0 0 6px var(--ui-dock-notify-glow);
+  animation: ui-dock-chip-pulse 2s ease-in-out infinite;
+
+  ui-icon {
+    color: var(--ui-dock-notify-accent);
+    animation: ui-dock-icon-pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes ui-dock-chip-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px var(--ui-dock-notify-accent),
+      0 0 6px var(--ui-dock-notify-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2px var(--ui-dock-notify-accent),
+      0 0 12px var(--ui-dock-notify-glow);
+  }
+}
+
+@keyframes ui-dock-icon-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.dock-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--ui-dock-chip-text);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--ui-dock-chip-hover-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-dock-chip-border);
+    outline-offset: 2px;
+  }
+}
+
+.dock-separator {
+  width: 1px;
+  height: 20px;
+  background: var(--ui-dock-chip-border);
+  flex-shrink: 0;
+}
+
+// ── Dock menu popup ──────────────────────────────────────────────
+
+.dock-menu-anchor {
+  position: relative;
+}
+
+.dock-menu-btn--active {
+  background: var(--ui-dock-chip-hover-bg);
+}
+
+.dock-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 100;
+  min-width: 200px;
+  padding: 4px;
+  background: var(--ui-dock-chip-bg);
+  border: 1px solid var(--ui-dock-chip-border);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.12),
+    0 1px 4px rgba(0, 0, 0, 0.08);
+  color: var(--ui-dock-chip-text);
+
+  &--above {
+    top: auto;
+    bottom: calc(100% + 6px);
+  }
+}
+
+.dock-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--ui-dock-chip-text);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: left;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background: var(--ui-dock-chip-hover-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-dock-chip-border);
+    outline-offset: -2px;
+  }
+
+  &--hidden {
+    opacity: 0.5;
+  }
+}
+
+.dock-menu-item-icon {
+  flex-shrink: 0;
+}
+
+.dock-menu-item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dock-menu-item-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--ui-dock-chip-hover-bg);
+  color: var(--ui-dock-chip-text);
+  opacity: 0.7;
+}
+
+.dock-menu hr {
+  border: none;
+  height: 1px;
+  background: var(--ui-dock-chip-border);
+  margin: 4px 0;
+}
+
+.dock-menu-item--disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
 }

@@ -1,5 +1,10 @@
 <header class="panel-header">
-  <h3 class="panel-title">{{ config().title }}</h3>
+  <div class="panel-heading">
+    @if (config().icon) {
+      <ui-icon [svg]="config().icon!" [size]="14" class="panel-icon" />
+    }
+    <h3 class="panel-title">{{ config().title }}</h3>
+  </div>
 
   <div class="panel-actions">
     @if (isCollapsible()) {
@@ -10,7 +15,7 @@
         [attr.aria-expanded]="!collapsed()"
         (click)="toggleCollapse()"
       >
-        {{ collapsed() ? '▶' : '▼' }}
+        <ui-icon [svg]="collapseIcon()" [size]="14" />
       </button>
     }
     @if (isRemovable()) {
@@ -19,7 +24,9 @@
         class="panel-action-btn panel-action-btn--remove"
         aria-label="Remove panel"
         (click)="remove()"
-      >✕</button>
+      >
+        <ui-icon [svg]="removeIcon" [size]="14" />
+      </button>
     }
   </div>
 </header>

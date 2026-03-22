@@ -2,12 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   input,
   output,
   signal,
 } from "@angular/core";
 import { LoggerFactory } from "@theredhead/foundation";
+import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 import type { DashboardPanelConfig } from "./dashboard.types";
 
 /**
@@ -26,6 +28,7 @@ import type { DashboardPanelConfig } from "./dashboard.types";
 @Component({
   selector: "ui-dashboard-panel",
   standalone: true,
+  imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./dashboard-panel.component.html",
   styleUrl: "./dashboard-panel.component.scss",
@@ -33,6 +36,7 @@ import type { DashboardPanelConfig } from "./dashboard.types";
     class: "ui-dashboard-panel",
     "[class.ui-dashboard-panel--collapsed]": "collapsed()",
     "[class.ui-dashboard-panel--removed]": "removed()",
+    "[class.ui-dashboard-panel--notified]": "notified()",
     "[style.grid-column]": "gridColumn()",
     "[style.grid-row]": "gridRow()",
     "[attr.data-panel-id]": "config().id",
@@ -76,6 +80,16 @@ export class UIDashboardPanel {
     () => this.config().removable === true,
   );
 
+  /** SVG icon for the collapse toggle button. */
+  protected readonly collapseIcon = computed(() =>
+    this.collapsed()
+      ? UIIcons.Lucide.Arrows.ChevronRight
+      : UIIcons.Lucide.Arrows.ChevronDown,
+  );
+
+  /** SVG icon for the remove button. */
+  protected readonly removeIcon = UIIcons.Lucide.Math.X;
+
   // ── Public fields ───────────────────────────────────────────────
 
   /** Whether the panel body is currently collapsed. */
@@ -84,17 +98,61 @@ export class UIDashboardPanel {
   /** Whether the panel has been removed (hidden) by the user. */
   public readonly removed = signal(false);
 
+  /** Whether the panel currently has an active notification. */
+  public readonly notified = signal(false);
+
   // ── Private fields ──────────────────────────────────────────────
 
   private readonly log = inject(LoggerFactory).createLogger("UIDashboardPanel");
+  private readonly destroyRef = inject(DestroyRef);
+  private notificationTimer: ReturnType<typeof setTimeout> | null = null;
 
   // ── Public methods ──────────────────────────────────────────────
+
+  public constructor() {
+    this.destroyRef.onDestroy(() => this.clearNotificationTimer());
+  }
+
+  // ── Public methods ──────────────────────────────────────────────
+
+  /**
+   * Activate a notification on this panel.
+   *
+   * The notification accent remains visible until the panel is
+   * focused (expanded) or the optional `timeoutMs` elapses.
+   *
+   * @param timeoutMs - Auto-clear delay in milliseconds. When `0`
+   *   or omitted the notification persists until manually cleared.
+   */
+  public notify(timeoutMs = 0): void {
+    this.clearNotificationTimer();
+    this.notified.set(true);
+    this.log.debug("Panel notified", [this.config().id, timeoutMs]);
+
+    if (timeoutMs > 0) {
+      this.notificationTimer = setTimeout(() => {
+        this.clearNotification();
+      }, timeoutMs);
+    }
+  }
+
+  /** Clear the active notification. */
+  public clearNotification(): void {
+    this.clearNotificationTimer();
+    this.notified.set(false);
+  }
 
   /** Toggle the collapsed state. */
   public toggleCollapse(): void {
     if (!this.isCollapsible()) return;
     this.collapsed.update((v) => !v);
     this.collapsedChange.emit(this.collapsed());
+
+    // Expanding a panel clears its notification
+    if (!this.collapsed()) {
+      this.clearNotification();
+    }
+
     this.log.debug("Panel collapse toggled", [
       this.config().id,
       this.collapsed(),
@@ -113,5 +171,14 @@ export class UIDashboardPanel {
   public restore(): void {
     this.removed.set(false);
     this.log.debug("Panel restored", [this.config().id]);
+  }
+
+  // ── Private methods ─────────────────────────────────────────────
+
+  private clearNotificationTimer(): void {
+    if (this.notificationTimer !== null) {
+      clearTimeout(this.notificationTimer);
+      this.notificationTimer = null;
+    }
   }
 }

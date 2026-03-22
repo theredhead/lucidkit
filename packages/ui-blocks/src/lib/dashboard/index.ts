@@ -4,4 +4,5 @@ export {
   type DashboardPanelConfig,
   type DashboardGridPlacement,
   type DashboardColumns,
+  type DashboardDockPosition,
 } from "./dashboard.types";
