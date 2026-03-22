@@ -85,6 +85,9 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
       case "alignRight":
         document.execCommand("justifyRight");
         break;
+      case "alignJustify":
+        document.execCommand("justifyFull");
+        break;
       case "horizontalRule":
         document.execCommand("insertHorizontalRule");
         break;
@@ -317,6 +320,7 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
       ["alignLeft", "justifyLeft"],
       ["alignCenter", "justifyCenter"],
       ["alignRight", "justifyRight"],
+      ["alignJustify", "justifyFull"],
     ];
     for (const [action, cmd] of alignChecks) {
       try {

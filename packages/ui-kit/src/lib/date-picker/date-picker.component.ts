@@ -16,9 +16,12 @@ import type {
   CalendarDay,
   WeekdayLabel,
 } from "./date-picker.types";
+import { UI_DATE_PICKER_DEFAULTS } from "./date-picker.types";
 import {
   buildCalendarGrid,
   formatDate,
+  getLocaleFirstDayOfWeek,
+  getLocaleFormat,
   getPlaceholder,
   getWeekdayLabels,
   parseDate,
@@ -55,13 +58,19 @@ import {
 export class UIDatePicker {
   private static _nextId = 0;
 
+  private readonly defaults = inject(UI_DATE_PICKER_DEFAULTS, {
+    optional: true,
+  });
+
   // ── Inputs ─────────────────────────────────────────────────
 
   /**
    * Date format used for display and parsing.
-   * Defaults to `'yyyy-MM-dd'` (ISO 8601).
+   * Resolved order: explicit input → app-wide defaults → locale detection.
    */
-  readonly format = input<DateFormat>("yyyy-MM-dd");
+  readonly format = input<DateFormat>(
+    this.defaults?.format ?? getLocaleFormat(),
+  );
 
   /** Placeholder text shown when empty. Defaults to the format string. */
   readonly placeholder = input<string | undefined>(undefined);
@@ -80,9 +89,12 @@ export class UIDatePicker {
 
   /**
    * First day of the week.
-   * `0` = Sunday, `1` = Monday (default), …, `6` = Saturday.
+   * `0` = Sunday, `1` = Monday, …, `6` = Saturday.
+   * Resolved order: explicit input → app-wide defaults → locale detection.
    */
-  readonly firstDayOfWeek = input<number>(1);
+  readonly firstDayOfWeek = input<number>(
+    this.defaults?.firstDayOfWeek ?? getLocaleFirstDayOfWeek(),
+  );
 
   /** Accessible label forwarded to the native `<input>`. */
   readonly ariaLabel = input<string>("Date");

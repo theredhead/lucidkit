@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 // 1. Light defaults
 :host {
   --ui-chart-text: #555;
@@ -10,8 +12,7 @@
   font-family: inherit;
 }
 
-// 2. Explicit dark class
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-chart-text: #bbb;
   --ui-chart-grid: #3a3f47;
   --ui-chart-bg: #1e1e1e;
@@ -19,18 +20,7 @@
   --ui-chart-legend-value: #999;
 }
 
-// 3. System preference fallback
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-chart-text: #bbb;
-    --ui-chart-grid: #3a3f47;
-    --ui-chart-bg: #1e1e1e;
-    --ui-chart-legend-text: #ddd;
-    --ui-chart-legend-value: #999;
-  }
-}
-
-.chart-viewport {
+.viewport {
   overflow: hidden;
   line-height: 0;
 
@@ -42,7 +32,7 @@
   }
 }
 
-.chart-legend {
+.legend {
   display: flex;
   flex-wrap: wrap;
   gap: 12px 20px;
@@ -51,7 +41,7 @@
   padding: 0;
 }
 
-.chart-legend__item {
+.legend__item {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -59,7 +49,7 @@
   color: var(--ui-chart-legend-text);
 }
 
-.chart-legend__swatch {
+.legend__swatch {
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -67,11 +57,11 @@
   flex-shrink: 0;
 }
 
-.chart-legend__label {
+.legend__label {
   white-space: nowrap;
 }
 
-.chart-legend__value {
+.legend__value {
   color: var(--ui-chart-legend-value);
   font-variant-numeric: tabular-nums;
 }

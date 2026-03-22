@@ -46,7 +46,7 @@ describe("UIChip", () => {
   });
 
   it("should render projected content", () => {
-    const label = fixture.nativeElement.querySelector(".ch-label");
+    const label = fixture.nativeElement.querySelector(".label");
     expect(label.textContent.trim()).toBe("Test Chip");
   });
 
@@ -78,19 +78,19 @@ describe("UIChip", () => {
 
   describe("removable", () => {
     it("should not show dismiss button by default", () => {
-      expect(fixture.nativeElement.querySelector(".ch-dismiss")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".dismiss")).toBeNull();
     });
 
     it("should show dismiss button when removable", () => {
       host.removable.set(true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ch-dismiss")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".dismiss")).toBeTruthy();
     });
 
     it("should emit removed event on dismiss click", () => {
       host.removable.set(true);
       fixture.detectChanges();
-      fixture.nativeElement.querySelector(".ch-dismiss").click();
+      fixture.nativeElement.querySelector(".dismiss").click();
       expect(host.removed).toBe(true);
     });
   });
@@ -108,7 +108,7 @@ describe("UIChip", () => {
       host.removable.set(true);
       host.disabled.set(true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ch-dismiss")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".dismiss")).toBeNull();
     });
   });
 });

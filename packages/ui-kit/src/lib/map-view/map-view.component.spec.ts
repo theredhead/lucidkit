@@ -120,7 +120,7 @@ describe("UIMapView", () => {
     it("should render tile images", () => {
       const { fixture } = createComponent();
       const tiles: HTMLImageElement[] = Array.from(
-        fixture.nativeElement.querySelectorAll(".mv-tile"),
+        fixture.nativeElement.querySelectorAll(".tile"),
       );
       expect(tiles.length).toBeGreaterThan(0);
     });
@@ -128,7 +128,7 @@ describe("UIMapView", () => {
     it("should set tile src from the URL template", () => {
       const { fixture } = createComponent();
       const tile: HTMLImageElement =
-        fixture.nativeElement.querySelector(".mv-tile");
+        fixture.nativeElement.querySelector(".tile");
       expect(tile.src).toContain("tile.openstreetmap.org");
       expect(tile.src).toContain("/10/");
     });
@@ -155,14 +155,14 @@ describe("UIMapView", () => {
       fixture.detectChanges();
 
       const tile: HTMLImageElement =
-        fixture.nativeElement.querySelector(".mv-tile");
+        fixture.nativeElement.querySelector(".tile");
       expect(tile.src).toContain("custom.tiles");
     });
 
     it("should position tiles absolutely", () => {
       const { fixture } = createComponent();
       const tile: HTMLImageElement =
-        fixture.nativeElement.querySelector(".mv-tile");
+        fixture.nativeElement.querySelector(".tile");
       expect(tile.style.left).toBeTruthy();
       expect(tile.style.top).toBeTruthy();
     });
@@ -181,7 +181,7 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("markers", testMarkers);
       fixture.detectChanges();
 
-      const markers = fixture.nativeElement.querySelectorAll(".mv-marker");
+      const markers = fixture.nativeElement.querySelectorAll(".marker");
       expect(markers.length).toBe(2);
     });
 
@@ -190,9 +190,9 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("markers", [testMarkers[0]]);
       fixture.detectChanges();
 
-      const svg = fixture.nativeElement.querySelector(".mv-marker svg");
+      const svg = fixture.nativeElement.querySelector(".marker svg");
       expect(svg).toBeTruthy();
-      const pinPath = svg.querySelector(".mv-pin-body");
+      const pinPath = svg.querySelector(".pin-body");
       expect(pinPath).toBeTruthy();
     });
 
@@ -211,7 +211,7 @@ describe("UIMapView", () => {
       fixture.detectChanges();
 
       const img: HTMLImageElement =
-        fixture.nativeElement.querySelector(".mv-marker img");
+        fixture.nativeElement.querySelector(".marker img");
       expect(img).toBeTruthy();
       expect(img.src).toContain("data:image/svg+xml,");
     });
@@ -224,7 +224,7 @@ describe("UIMapView", () => {
       fixture.detectChanges();
 
       const pinBody: SVGPathElement =
-        fixture.nativeElement.querySelector(".mv-pin-body");
+        fixture.nativeElement.querySelector(".pin-body");
       // jsdom preserves the raw value, not a computed rgb()
       expect(pinBody.style.fill).toBe("#ff0000");
     });
@@ -248,7 +248,7 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("polylines", [route]);
       fixture.detectChanges();
 
-      const svg = fixture.nativeElement.querySelector(".mv-vectors");
+      const svg = fixture.nativeElement.querySelector(".vectors");
       expect(svg).toBeTruthy();
     });
 
@@ -257,7 +257,7 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("polylines", [route]);
       fixture.detectChanges();
 
-      const paths = fixture.nativeElement.querySelectorAll(".mv-vectors path");
+      const paths = fixture.nativeElement.querySelectorAll(".vectors path");
       expect(paths.length).toBe(1);
       expect(paths[0].getAttribute("d")).toContain("M");
       expect(paths[0].getAttribute("d")).toContain("L");
@@ -275,7 +275,7 @@ describe("UIMapView", () => {
       ]);
       fixture.detectChanges();
 
-      const path = fixture.nativeElement.querySelector(".mv-vectors path");
+      const path = fixture.nativeElement.querySelector(".vectors path");
       expect(path.getAttribute("stroke")).toBe("#gold");
       expect(path.getAttribute("stroke-width")).toBe("5");
     });
@@ -300,7 +300,7 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("polygons", [region]);
       fixture.detectChanges();
 
-      const paths = fixture.nativeElement.querySelectorAll(".mv-vectors path");
+      const paths = fixture.nativeElement.querySelectorAll(".vectors path");
       expect(paths.length).toBe(1);
       expect(paths[0].getAttribute("d")).toContain("Z");
     });
@@ -310,7 +310,7 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("polygons", [region]);
       fixture.detectChanges();
 
-      const path = fixture.nativeElement.querySelector(".mv-vectors path");
+      const path = fixture.nativeElement.querySelector(".vectors path");
       expect(path.getAttribute("fill")).toBe("#3584e4");
       expect(path.getAttribute("stroke")).toBe("#3584e4");
     });
@@ -329,7 +329,7 @@ describe("UIMapView", () => {
       ]);
       fixture.detectChanges();
 
-      const path = fixture.nativeElement.querySelector(".mv-vectors path");
+      const path = fixture.nativeElement.querySelector(".vectors path");
       expect(path.getAttribute("fill")).toBe("#ffd700");
       expect(path.getAttribute("fill-opacity")).toBe("0.5");
       expect(path.getAttribute("stroke")).toBe("#ffd700");
@@ -340,19 +340,19 @@ describe("UIMapView", () => {
   // ── Dark mode tiles ───────────────────────────────────────────────
 
   describe("dark mode tiles", () => {
-    it("should add mv-dark-tiles class when darkModeTiles is true", () => {
+    it("should add dark-tiles class when darkModeTiles is true", () => {
       const { fixture } = createComponent();
-      const viewport = fixture.nativeElement.querySelector(".mv-viewport");
-      expect(viewport.classList.contains("mv-dark-tiles")).toBe(true);
+      const viewport = fixture.nativeElement.querySelector(".viewport");
+      expect(viewport.classList.contains("dark-tiles")).toBe(true);
     });
 
-    it("should remove mv-dark-tiles class when darkModeTiles is false", () => {
+    it("should remove dark-tiles class when darkModeTiles is false", () => {
       const { fixture } = createComponent();
       fixture.componentRef.setInput("darkModeTiles", false);
       fixture.detectChanges();
 
-      const viewport = fixture.nativeElement.querySelector(".mv-viewport");
-      expect(viewport.classList.contains("mv-dark-tiles")).toBe(false);
+      const viewport = fixture.nativeElement.querySelector(".viewport");
+      expect(viewport.classList.contains("dark-tiles")).toBe(false);
     });
   });
 
@@ -362,7 +362,7 @@ describe("UIMapView", () => {
     it("should render default OSM attribution", () => {
       const { fixture } = createComponent();
       const attr: HTMLElement =
-        fixture.nativeElement.querySelector(".mv-attribution");
+        fixture.nativeElement.querySelector(".attribution");
       expect(attr).toBeTruthy();
       expect(attr.textContent).toContain("OpenStreetMap");
     });
@@ -373,7 +373,7 @@ describe("UIMapView", () => {
       fixture.detectChanges();
 
       const attr: HTMLElement =
-        fixture.nativeElement.querySelector(".mv-attribution");
+        fixture.nativeElement.querySelector(".attribution");
       expect(attr.textContent).toContain("Acme");
     });
 
@@ -382,7 +382,7 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("attribution", "");
       fixture.detectChanges();
 
-      const attr = fixture.nativeElement.querySelector(".mv-attribution");
+      const attr = fixture.nativeElement.querySelector(".attribution");
       expect(attr).toBeNull();
     });
   });
@@ -407,13 +407,13 @@ describe("UIMapView", () => {
   describe("accessibility", () => {
     it('should set role="img" on the viewport', () => {
       const { fixture } = createComponent();
-      const viewport = fixture.nativeElement.querySelector(".mv-viewport");
+      const viewport = fixture.nativeElement.querySelector(".viewport");
       expect(viewport.getAttribute("role")).toBe("img");
     });
 
     it('should set aria-label="Map" by default', () => {
       const { fixture } = createComponent();
-      const viewport = fixture.nativeElement.querySelector(".mv-viewport");
+      const viewport = fixture.nativeElement.querySelector(".viewport");
       expect(viewport.getAttribute("aria-label")).toBe("Map");
     });
 
@@ -422,7 +422,7 @@ describe("UIMapView", () => {
       fixture.componentRef.setInput("ariaLabel", "City overview");
       fixture.detectChanges();
 
-      const viewport = fixture.nativeElement.querySelector(".mv-viewport");
+      const viewport = fixture.nativeElement.querySelector(".viewport");
       expect(viewport.getAttribute("aria-label")).toBe("City overview");
     });
 
@@ -433,7 +433,7 @@ describe("UIMapView", () => {
       ]);
       fixture.detectChanges();
 
-      const marker = fixture.nativeElement.querySelector(".mv-marker");
+      const marker = fixture.nativeElement.querySelector(".marker");
       expect(marker.getAttribute("aria-label")).toBe("Amsterdam");
       expect(marker.getAttribute("role")).toBe("img");
     });
@@ -445,7 +445,7 @@ describe("UIMapView", () => {
       ]);
       fixture.detectChanges();
 
-      const marker = fixture.nativeElement.querySelector(".mv-marker");
+      const marker = fixture.nativeElement.querySelector(".marker");
       expect(marker.getAttribute("role")).toBeNull();
     });
 
@@ -456,7 +456,7 @@ describe("UIMapView", () => {
       ]);
       fixture.detectChanges();
 
-      const svg = fixture.nativeElement.querySelector(".mv-marker svg");
+      const svg = fixture.nativeElement.querySelector(".marker svg");
       expect(svg.getAttribute("aria-hidden")).toBe("true");
     });
   });
@@ -466,7 +466,7 @@ describe("UIMapView", () => {
   describe("no overlays", () => {
     it("should not render SVG overlay when no vectors", () => {
       const { fixture } = createComponent();
-      const svg = fixture.nativeElement.querySelector(".mv-vectors");
+      const svg = fixture.nativeElement.querySelector(".vectors");
       expect(svg).toBeNull();
     });
   });

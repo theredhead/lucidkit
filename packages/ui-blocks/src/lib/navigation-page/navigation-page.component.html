@@ -1,7 +1,7 @@
-<div class="nav-page-layout">
+<div class="layout">
   <!-- Sidebar (pinned or inside drawer) -->
   @if (sidebarPinned()) {
-    <aside class="nav-page-sidebar">
+    <aside class="sidebar">
       <ui-sidebar-nav [ariaLabel]="ariaLabel()">
         <ng-content select="ui-sidebar-item" />
 
@@ -80,8 +80,8 @@
   }
 
   <!-- Main content area -->
-  <main class="nav-page-main">
-    <header class="nav-page-breadcrumb">
+  <main class="main">
+    <header class="breadcrumb">
       <ui-breadcrumb
         [items]="breadcrumbItems()"
         [variant]="breadcrumbVariant()"
@@ -90,7 +90,7 @@
       />
     </header>
 
-    <div class="nav-page-content">
+    <div class="content">
       @if (contentTemplate(); as tpl) {
         <ng-container
           *ngTemplateOutlet="tpl; context: { $implicit: currentPage(), page: currentPage() }"

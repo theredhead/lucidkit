@@ -1,8 +1,10 @@
+@use "mixins" as mix;
+
 :host {
   display: inline-block;
 }
 
-.tt-btn {
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -19,54 +21,44 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-accent, #3584e4);
+    outline: 2px solid var(--ui-focus-ring);
     outline-offset: -2px;
   }
 }
 
-.tt-btn--icon {
+.btn--icon {
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
 }
 
-.tt-btn--text {
+.btn--text {
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-.tt-icon {
+.icon {
   width: 1.25rem;
   height: 1.25rem;
   flex-shrink: 0;
   transition: transform 0.2s ease-in-out;
 
-  .tt-btn:hover & {
+  .btn:hover & {
     transform: rotate(15deg);
   }
 }
 
-.tt-label {
+.label {
   font-family: inherit;
 }
 
 /* ── Dark overrides ── */
 
-:host-context(html.dark-theme) .tt-btn {
+@include mix.dark-mode(".btn") {
   color: var(--ui-text, #f2f6fb);
 
   &:hover {
     background: var(--ui-hover-bg, rgba(255, 255, 255, 0.08));
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) .tt-btn {
-    color: var(--ui-text, #f2f6fb);
-
-    &:hover {
-      background: var(--ui-hover-bg, rgba(255, 255, 255, 0.08));
-    }
   }
 }

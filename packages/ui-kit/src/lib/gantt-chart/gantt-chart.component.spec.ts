@@ -114,40 +114,40 @@ describe("UIGanttChart", () => {
 
   describe("rendering", () => {
     it("should render the gantt container", () => {
-      expect(el.querySelector(".gantt-container")).toBeTruthy();
+      expect(el.querySelector(".container")).toBeTruthy();
     });
 
     it("should render task list sidebar", () => {
-      expect(el.querySelector(".gantt-task-list")).toBeTruthy();
+      expect(el.querySelector(".task-list")).toBeTruthy();
     });
 
     it("should render timeline header with groups", () => {
-      const groups = el.querySelectorAll(".gantt-header__group-cell");
+      const groups = el.querySelectorAll(".header__group-cell");
       expect(groups.length).toBeGreaterThan(0);
     });
 
     it("should render timeline header with columns", () => {
-      const cols = el.querySelectorAll(".gantt-header__col-cell");
+      const cols = el.querySelectorAll(".header__col-cell");
       expect(cols.length).toBeGreaterThan(0);
     });
 
     it("should render task rows", () => {
-      const rows = el.querySelectorAll(".gantt-row");
+      const rows = el.querySelectorAll(".row");
       expect(rows.length).toBe(4); // 4 test tasks
     });
 
     it("should render task bars for non-milestone tasks", () => {
-      const bars = el.querySelectorAll(".gantt-bar");
+      const bars = el.querySelectorAll(".bar");
       expect(bars.length).toBe(3); // design, build, child
     });
 
     it("should render milestone diamonds", () => {
-      const milestones = el.querySelectorAll(".gantt-milestone");
+      const milestones = el.querySelectorAll(".milestone");
       expect(milestones.length).toBe(1);
     });
 
     it("should render progress overlays for tasks with progress", () => {
-      const progress = el.querySelectorAll(".gantt-bar__progress");
+      const progress = el.querySelectorAll(".bar__progress");
       expect(progress.length).toBe(2); // design (100%) and build (60%)
     });
   });
@@ -156,7 +156,7 @@ describe("UIGanttChart", () => {
 
   describe("task list", () => {
     it("should display task titles", () => {
-      const labels = el.querySelectorAll(".gantt-task-list__label");
+      const labels = el.querySelectorAll(".task-list__label");
       const texts = Array.from(labels).map((l) => l.textContent?.trim());
       expect(texts).toContain("Design Phase");
       expect(texts).toContain("Build Phase");
@@ -164,7 +164,7 @@ describe("UIGanttChart", () => {
     });
 
     it("should indent child tasks", () => {
-      const rows = el.querySelectorAll(".gantt-task-list__row");
+      const rows = el.querySelectorAll(".task-list__row");
       // child task (index 3) should have more padding than top-level (index 0)
       const topLevelPadding =
         (rows[0] as HTMLElement).style.paddingLeft || "12px";
@@ -175,7 +175,7 @@ describe("UIGanttChart", () => {
     it("should hide when showTaskList is false", () => {
       host.showTaskList.set(false);
       fixture.detectChanges();
-      expect(el.querySelector(".gantt-task-list")).toBeNull();
+      expect(el.querySelector(".task-list")).toBeNull();
     });
   });
 
@@ -183,22 +183,22 @@ describe("UIGanttChart", () => {
 
   describe("accessibility", () => {
     it("should have role=region on the container", () => {
-      const container = el.querySelector(".gantt-container");
+      const container = el.querySelector(".container");
       expect(container!.getAttribute("role")).toBe("region");
     });
 
     it("should set aria-label on the container", () => {
-      const container = el.querySelector(".gantt-container");
+      const container = el.querySelector(".container");
       expect(container!.getAttribute("aria-label")).toBe("Test Gantt");
     });
 
     it("should set aria-label on task bars", () => {
-      const bar = el.querySelector(".gantt-bar");
+      const bar = el.querySelector(".bar");
       expect(bar!.getAttribute("aria-label")).toBeTruthy();
     });
 
     it("should set aria-label on milestones", () => {
-      const milestone = el.querySelector(".gantt-milestone");
+      const milestone = el.querySelector(".milestone");
       expect(milestone!.getAttribute("aria-label")).toContain("Milestone");
     });
   });
@@ -207,14 +207,14 @@ describe("UIGanttChart", () => {
 
   describe("interactions", () => {
     it("should emit taskClicked when a bar is clicked", () => {
-      const bar = el.querySelector(".gantt-bar") as HTMLElement;
+      const bar = el.querySelector(".bar") as HTMLElement;
       bar.click();
       expect(host.lastClicked).toBeTruthy();
       expect(host.lastClicked!.id).toBe("design");
     });
 
     it("should emit taskClicked when a milestone is clicked", () => {
-      const milestone = el.querySelector(".gantt-milestone") as HTMLElement;
+      const milestone = el.querySelector(".milestone") as HTMLElement;
       milestone.click();
       expect(host.lastClicked).toBeTruthy();
       expect(host.lastClicked!.id).toBe("milestone");
@@ -225,13 +225,13 @@ describe("UIGanttChart", () => {
 
   describe("view modes", () => {
     it("should update columns when viewMode changes to week", () => {
-      const dayColCount = el.querySelectorAll(".gantt-header__col-cell").length;
+      const dayColCount = el.querySelectorAll(".header__col-cell").length;
 
       host.viewMode.set("week");
       fixture.detectChanges();
 
       const weekColCount = el.querySelectorAll(
-        ".gantt-header__col-cell",
+        ".header__col-cell",
       ).length;
       // Week mode should have fewer columns than day mode
       expect(weekColCount).toBeLessThan(dayColCount);
@@ -242,7 +242,7 @@ describe("UIGanttChart", () => {
       fixture.detectChanges();
 
       const monthColCount = el.querySelectorAll(
-        ".gantt-header__col-cell",
+        ".header__col-cell",
       ).length;
       // Month mode should have very few columns
       expect(monthColCount).toBeLessThanOrEqual(3);
@@ -266,7 +266,7 @@ describe("UIGanttChart", () => {
       host.rowHeight.set(48);
       fixture.detectChanges();
 
-      const row = el.querySelector(".gantt-row") as HTMLElement;
+      const row = el.querySelector(".row") as HTMLElement;
       expect(row.style.height).toBe("48px");
     });
   });

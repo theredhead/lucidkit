@@ -106,14 +106,14 @@ describe("UIPagination", () => {
   describe("summary display", () => {
     it("should show 1–10 of 100 for first page", () => {
       fixture.detectChanges();
-      const summary = fixture.nativeElement.querySelector(".pg-summary");
+      const summary = fixture.nativeElement.querySelector(".summary");
       expect(summary.textContent.trim()).toBe("1–10 of 100");
     });
 
     it("should show 11–20 of 100 for second page", () => {
       component.goToNext();
       fixture.detectChanges();
-      const summary = fixture.nativeElement.querySelector(".pg-summary");
+      const summary = fixture.nativeElement.querySelector(".summary");
       expect(summary.textContent.trim()).toBe("11–20 of 100");
     });
   });
@@ -121,7 +121,7 @@ describe("UIPagination", () => {
   describe("button states", () => {
     it("should disable first/prev on first page", () => {
       fixture.detectChanges();
-      const buttons = fixture.nativeElement.querySelectorAll(".pg-btn");
+      const buttons = fixture.nativeElement.querySelectorAll(".btn");
       expect(buttons[0].disabled).toBe(true); // first
       expect(buttons[1].disabled).toBe(true); // prev
     });
@@ -130,7 +130,7 @@ describe("UIPagination", () => {
       component.goToLast();
       fixture.detectChanges();
       const buttons = fixture.nativeElement.querySelectorAll(
-        ".pg-btn:not(.pg-btn--page)",
+        ".btn:not(.btn--page)",
       );
       const allButtons = Array.from(buttons) as HTMLButtonElement[];
       const lastBtn = allButtons[allButtons.length - 1];
@@ -143,7 +143,7 @@ describe("UIPagination", () => {
   describe("page buttons", () => {
     it("should mark current page as active", () => {
       fixture.detectChanges();
-      const activeBtn = fixture.nativeElement.querySelector(".pg-btn--active");
+      const activeBtn = fixture.nativeElement.querySelector(".btn--active");
       expect(activeBtn).toBeTruthy();
       expect(activeBtn.textContent.trim()).toBe("1");
     });
@@ -151,7 +151,7 @@ describe("UIPagination", () => {
     it("should navigate on page button click", () => {
       fixture.detectChanges();
       const pageButtons =
-        fixture.nativeElement.querySelectorAll(".pg-btn--page");
+        fixture.nativeElement.querySelectorAll(".btn--page");
       // Click page 2
       if (pageButtons.length > 1) {
         pageButtons[1].click();
@@ -165,7 +165,7 @@ describe("UIPagination", () => {
     it("should render page size options", () => {
       fixture.detectChanges();
       const options = fixture.nativeElement.querySelectorAll(
-        ".pg-size-select option",
+        ".size-select option",
       );
       expect(options.length).toBe(4); // 10, 25, 50, 100
     });
@@ -173,7 +173,7 @@ describe("UIPagination", () => {
     it("should hide selector when pageSizeOptions is empty", () => {
       fixture.componentRef.setInput("pageSizeOptions", []);
       fixture.detectChanges();
-      const selector = fixture.nativeElement.querySelector(".pg-size");
+      const selector = fixture.nativeElement.querySelector(".size");
       expect(selector).toBeFalsy();
     });
   });
@@ -187,7 +187,7 @@ describe("UIPagination", () => {
 
     it("should set aria-current on active page", () => {
       fixture.detectChanges();
-      const activeBtn = fixture.nativeElement.querySelector(".pg-btn--active");
+      const activeBtn = fixture.nativeElement.querySelector(".btn--active");
       expect(activeBtn.getAttribute("aria-current")).toBe("page");
     });
 

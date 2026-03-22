@@ -4,6 +4,72 @@ import type {
   WeekdayLabel,
 } from "./date-picker.types";
 
+// ── Locale detection ───────────────────────────────────────────────
+
+/**
+ * Detect the user's preferred date format from their locale.
+ *
+ * Uses `Intl.DateTimeFormat` to inspect the part ordering and separator,
+ * then maps the result to the closest supported `DateFormat` string.
+ *
+ * @param locale - BCP 47 tag (e.g. `'de-DE'`). Omit or pass `undefined`
+ *   to use the browser / runtime default.
+ */
+export function getLocaleFormat(locale?: string): DateFormat {
+  try {
+    const formatter = new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    const parts = formatter.formatToParts(new Date(2026, 11, 31));
+    const order = parts.filter((p) => p.type !== "literal").map((p) => p.type);
+    const sep = parts.find((p) => p.type === "literal")?.value ?? "/";
+
+    if (order[0] === "year") {
+      return sep === "/" ? "yyyy/MM/dd" : "yyyy-MM-dd";
+    }
+    if (order[0] === "month") {
+      return "MM/dd/yyyy";
+    }
+    // day-first
+    if (sep === ".") return "dd.MM.yyyy";
+    if (sep === "-") return "dd-MM-yyyy";
+    return "dd/MM/yyyy";
+  } catch {
+    return "yyyy-MM-dd";
+  }
+}
+
+/**
+ * Detect the locale's first day of the week via `Intl.Locale`.
+ *
+ * Returns `0` for Sunday, `1` for Monday, etc.  Falls back to `1`
+ * (Monday) when the runtime doesn't support `getWeekInfo()`.
+ *
+ * @param locale - BCP 47 tag. Omit to use the browser default.
+ */
+export function getLocaleFirstDayOfWeek(locale?: string): number {
+  try {
+    const tag =
+      locale ??
+      (typeof navigator !== "undefined" ? navigator.language : undefined) ??
+      "en";
+    const loc = new Intl.Locale(tag);
+    // getWeekInfo() is the standard; weekInfo is the older Safari property
+    const weekInfo: { firstDay?: number } | undefined =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (loc as any).getWeekInfo?.() ?? (loc as any).weekInfo;
+    if (weekInfo?.firstDay !== undefined) {
+      // Intl uses 7 for Sunday; our component API uses 0
+      return weekInfo.firstDay === 7 ? 0 : weekInfo.firstDay;
+    }
+  } catch {
+    /* fallback below */
+  }
+  return 1;
+}
+
 // ── Separator helpers ──────────────────────────────────────────────
 
 /** Extract the separator character from a format string. */

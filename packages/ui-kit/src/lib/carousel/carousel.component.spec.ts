@@ -71,7 +71,7 @@ describe("UICarousel", () => {
 
   describe("items", () => {
     it("should render all items", () => {
-      const items = el.querySelectorAll(".cr-item");
+      const items = el.querySelectorAll(".item");
       expect(items.length).toBe(5);
     });
 
@@ -82,23 +82,23 @@ describe("UICarousel", () => {
     });
 
     it("should mark the active item", () => {
-      const items = el.querySelectorAll(".cr-item");
-      expect(items[0].classList).toContain("cr-item--active");
-      expect(items[1].classList).not.toContain("cr-item--active");
+      const items = el.querySelectorAll(".item");
+      expect(items[0].classList).toContain("item--active");
+      expect(items[1].classList).not.toContain("item--active");
     });
 
     it("should update active item when activeIndex changes", () => {
       host.activeIndex.set(2);
       fixture.detectChanges();
-      const items = el.querySelectorAll(".cr-item");
-      expect(items[2].classList).toContain("cr-item--active");
-      expect(items[0].classList).not.toContain("cr-item--active");
+      const items = el.querySelectorAll(".item");
+      expect(items[2].classList).toContain("item--active");
+      expect(items[0].classList).not.toContain("item--active");
     });
   });
 
   describe("navigation", () => {
     it("should navigate to next on next button click", () => {
-      const nextBtn = el.querySelector(".cr-btn--next") as HTMLButtonElement;
+      const nextBtn = el.querySelector(".btn--next") as HTMLButtonElement;
       nextBtn.click();
       fixture.detectChanges();
       expect(host.activeIndex()).toBe(1);
@@ -107,21 +107,21 @@ describe("UICarousel", () => {
     it("should navigate to prev on prev button click", () => {
       host.activeIndex.set(3);
       fixture.detectChanges();
-      const prevBtn = el.querySelector(".cr-btn--prev") as HTMLButtonElement;
+      const prevBtn = el.querySelector(".btn--prev") as HTMLButtonElement;
       prevBtn.click();
       fixture.detectChanges();
       expect(host.activeIndex()).toBe(2);
     });
 
     it("should disable prev button at first item", () => {
-      const prevBtn = el.querySelector(".cr-btn--prev") as HTMLButtonElement;
+      const prevBtn = el.querySelector(".btn--prev") as HTMLButtonElement;
       expect(prevBtn.disabled).toBe(true);
     });
 
     it("should disable next button at last item", () => {
       host.activeIndex.set(4);
       fixture.detectChanges();
-      const nextBtn = el.querySelector(".cr-btn--next") as HTMLButtonElement;
+      const nextBtn = el.querySelector(".btn--next") as HTMLButtonElement;
       expect(nextBtn.disabled).toBe(true);
     });
 
@@ -166,18 +166,18 @@ describe("UICarousel", () => {
 
   describe("dot indicators", () => {
     it("should render dot indicators", () => {
-      const dots = el.querySelectorAll(".cr-dot");
+      const dots = el.querySelectorAll(".dot");
       expect(dots.length).toBe(5);
     });
 
     it("should mark active dot", () => {
-      const dots = el.querySelectorAll(".cr-dot");
-      expect(dots[0].classList).toContain("cr-dot--active");
+      const dots = el.querySelectorAll(".dot");
+      expect(dots[0].classList).toContain("dot--active");
     });
 
     it("should navigate on dot click", () => {
       const dots = el.querySelectorAll(
-        ".cr-dot",
+        ".dot",
       ) as NodeListOf<HTMLButtonElement>;
       dots[3].click();
       fixture.detectChanges();
@@ -187,7 +187,7 @@ describe("UICarousel", () => {
     it("should hide indicators when showIndicators is false", () => {
       host.showIndicators.set(false);
       fixture.detectChanges();
-      expect(el.querySelector(".cr-indicators")).toBeNull();
+      expect(el.querySelector(".indicators")).toBeNull();
     });
   });
 
@@ -195,19 +195,19 @@ describe("UICarousel", () => {
     it("should hide controls when showControls is false", () => {
       host.showControls.set(false);
       fixture.detectChanges();
-      expect(el.querySelector(".cr-btn")).toBeNull();
+      expect(el.querySelector(".btn")).toBeNull();
     });
 
     it("should hide controls with single item", () => {
       host.items.set(["Only"]);
       fixture.detectChanges();
-      expect(el.querySelector(".cr-btn")).toBeNull();
+      expect(el.querySelector(".btn")).toBeNull();
     });
 
     it("should hide indicators with single item", () => {
       host.items.set(["Only"]);
       fixture.detectChanges();
-      expect(el.querySelector(".cr-indicators")).toBeNull();
+      expect(el.querySelector(".indicators")).toBeNull();
     });
   });
 
@@ -386,14 +386,14 @@ describe("UICarousel", () => {
     it("should not disable prev button at first item", () => {
       host.activeIndex.set(0);
       fixture.detectChanges();
-      const prevBtn = el.querySelector(".cr-btn--prev") as HTMLButtonElement;
+      const prevBtn = el.querySelector(".btn--prev") as HTMLButtonElement;
       expect(prevBtn.disabled).toBe(false);
     });
 
     it("should not disable next button at last item", () => {
       host.activeIndex.set(4);
       fixture.detectChanges();
-      const nextBtn = el.querySelector(".cr-btn--next") as HTMLButtonElement;
+      const nextBtn = el.querySelector(".btn--next") as HTMLButtonElement;
       expect(nextBtn.disabled).toBe(false);
     });
 

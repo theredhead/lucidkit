@@ -1,11 +1,11 @@
-<div class="tg-header" role="tablist" [attr.aria-label]="ariaLabel()">
+<div class="header" role="tablist" [attr.aria-label]="ariaLabel()">
   @for (tab of tabs(); track tab; let i = $index) {
     <button
-      class="tg-tab"
+      class="tab"
       role="tab"
       type="button"
-      [class.tg-tab--active]="i === activeIndex()"
-      [class.tg-tab--disabled]="tab.disabled()"
+      [class.tab--active]="i === activeIndex()"
+      [class.tab--disabled]="tab.disabled()"
       [attr.aria-selected]="i === activeIndex()"
       [attr.aria-disabled]="tab.disabled() || undefined"
       [attr.tabindex]="i === activeIndex() ? 0 : -1"
@@ -20,7 +20,7 @@
 </div>
 
 <div
-  class="tg-panel"
+  class="panel"
   role="tabpanel"
   [attr.id]="'panel-' + activeIndex()"
   [attr.aria-labelledby]="'tab-' + activeIndex()"

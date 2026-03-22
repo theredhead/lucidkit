@@ -1,3 +1,5 @@
+@use "mixins" as mix;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -9,7 +11,7 @@
   max-width: 320px;
 }
 
-.pi-heading {
+.heading {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -19,7 +21,7 @@
   opacity: 0.6;
 }
 
-.pi-subheading {
+.subheading {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -29,13 +31,13 @@
   opacity: 0.5;
 }
 
-.pi-section {
+.section {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.pi-label {
+.label {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -44,16 +46,16 @@
   color: var(--ui-text, #1d232b);
 }
 
-.pi-label--row {
+.label--row {
   flex-direction: row;
   align-items: center;
   gap: 6px;
   cursor: pointer;
 }
 
-.pi-input,
-.pi-textarea,
-.pi-select {
+.input,
+.textarea,
+.select {
   appearance: none;
   border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 5px;
@@ -64,49 +66,49 @@
   font-family: inherit;
 }
 
-.pi-input:focus,
-.pi-textarea:focus,
-.pi-select:focus {
-  outline: 2px solid var(--theredhead-primary, #3584e4);
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: 2px solid var(--ui-focus-ring);
   outline-offset: -1px;
 }
 
-.pi-input--sm {
+.input--sm {
   padding: 4px 6px;
   font-size: 0.75rem;
 }
 
-.pi-select--sm {
+.select--sm {
   padding: 4px 6px;
   font-size: 0.75rem;
 }
 
-.pi-textarea--mono {
+.textarea--mono {
   font-family: monospace;
   font-size: 0.75rem;
 }
 
 .pi-option-row,
-.pi-validation-row {
+.validation-row {
   display: flex;
   gap: 4px;
   align-items: center;
 }
 
-.pi-option-row .pi-input {
+.pi-option-row .input {
   flex: 1;
 }
 
-.pi-validation-row > * {
+.validation-row > * {
   flex: 1;
   min-width: 0;
 }
 
-.pi-validation-row .pi-icon-btn {
+.validation-row .icon-btn {
   flex: 0 0 auto;
 }
 
-.pi-icon-btn {
+.icon-btn {
   appearance: none;
   border: none;
   background: transparent;
@@ -121,16 +123,16 @@
   color: var(--ui-text, #1d232b);
 }
 
-.pi-icon-btn:hover {
+.icon-btn:hover {
   background: rgba(0, 0, 0, 0.08);
 }
 
-.pi-icon-btn--danger:hover {
-  background: var(--theredhead-error, #ba1a1a);
+.icon-btn--danger:hover {
+  background: var(--ui-error);
   color: #ffffff;
 }
 
-.pi-add-btn {
+.add-btn {
   appearance: none;
   border: 1px dashed var(--ui-border, #d7dce2);
   background: transparent;
@@ -138,21 +140,21 @@
   padding: 5px 8px;
   cursor: pointer;
   font-size: 0.75rem;
-  color: var(--theredhead-primary, #3584e4);
+  color: var(--ui-accent);
   font-weight: 500;
 }
 
-.pi-add-btn:hover {
-  background: var(--theredhead-primary-container, #d6e3ff);
+.add-btn:hover {
+  background: var(--ui-primary-container);
 }
 
-.pi-error {
+.error {
   font-size: 0.75rem;
-  color: var(--theredhead-error, #ba1a1a);
+  color: var(--ui-error);
   margin: 2px 0 0;
 }
 
-.pi-empty {
+.empty {
   flex: 1;
   display: flex;
   align-items: center;
@@ -165,92 +167,46 @@
 
 /* Dark mode */
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   background: var(--ui-surface, #1e2128);
   border-left-color: var(--ui-border, #3a3f47);
 
-  .pi-heading,
-  .pi-subheading,
-  .pi-label {
+  .heading,
+  .subheading,
+  .label {
     color: var(--ui-text, #f2f6fb);
   }
 
-  .pi-input,
-  .pi-textarea,
-  .pi-select {
+  .input,
+  .textarea,
+  .select {
     background: var(--ui-surface-alt, #2a2e36);
     border-color: var(--ui-border, #3a3f47);
     color: var(--ui-text, #f2f6fb);
   }
 
-  .pi-icon-btn {
+  .icon-btn {
     color: var(--ui-text, #f2f6fb);
   }
 
-  .pi-icon-btn:hover {
+  .icon-btn:hover {
     background: rgba(255, 255, 255, 0.1);
   }
 
-  .pi-add-btn {
+  .add-btn {
     border-color: var(--ui-border, #3a3f47);
-    color: var(--theredhead-primary, #a8c8ff);
+    color: var(--ui-accent);
   }
 
-  .pi-add-btn:hover {
-    background: var(--theredhead-primary-container, #004787);
+  .add-btn:hover {
+    background: var(--ui-primary-container);
   }
 
-  .pi-error {
-    color: var(--theredhead-error, #ffb4ab);
+  .error {
+    color: var(--ui-error);
   }
 
-  .pi-empty {
+  .empty {
     color: var(--ui-text-muted, #a0a8b4);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    background: var(--ui-surface, #1e2128);
-    border-left-color: var(--ui-border, #3a3f47);
-
-    .pi-heading,
-    .pi-subheading,
-    .pi-label {
-      color: var(--ui-text, #f2f6fb);
-    }
-
-    .pi-input,
-    .pi-textarea,
-    .pi-select {
-      background: var(--ui-surface-alt, #2a2e36);
-      border-color: var(--ui-border, #3a3f47);
-      color: var(--ui-text, #f2f6fb);
-    }
-
-    .pi-icon-btn {
-      color: var(--ui-text, #f2f6fb);
-    }
-
-    .pi-icon-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .pi-add-btn {
-      border-color: var(--ui-border, #3a3f47);
-      color: var(--theredhead-primary, #a8c8ff);
-    }
-
-    .pi-add-btn:hover {
-      background: var(--theredhead-primary-container, #004787);
-    }
-
-    .pi-error {
-      color: var(--theredhead-error, #ffb4ab);
-    }
-
-    .pi-empty {
-      color: var(--ui-text-muted, #a0a8b4);
-    }
   }
 }

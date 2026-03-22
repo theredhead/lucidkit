@@ -130,7 +130,7 @@ describe("UINavigationPage", () => {
 
   describe("sidebar (pinned)", () => {
     it("should render a pinned sidebar when sidebarPinned is true", () => {
-      const sidebar = fixture.nativeElement.querySelector(".nav-page-sidebar");
+      const sidebar = fixture.nativeElement.querySelector(".sidebar");
       expect(sidebar).toBeTruthy();
     });
 
@@ -141,7 +141,7 @@ describe("UINavigationPage", () => {
 
     it("should render all sidebar items (top-level and grouped)", () => {
       const items = fixture.nativeElement.querySelectorAll(
-        ".nav-page-sidebar ui-sidebar-item",
+        ".sidebar ui-sidebar-item",
       );
       // 4 top-level (dashboard, projects, calendar, disabled) + 2 inside settings group = 6
       expect(items.length).toBe(6);
@@ -149,14 +149,14 @@ describe("UINavigationPage", () => {
 
     it("should render sidebar groups", () => {
       const groups = fixture.nativeElement.querySelectorAll(
-        ".nav-page-sidebar ui-sidebar-group",
+        ".sidebar ui-sidebar-group",
       );
       expect(groups.length).toBe(1);
     });
 
     it("should render items inside groups", () => {
       const groupItems = fixture.nativeElement.querySelectorAll(
-        ".nav-page-sidebar ui-sidebar-group ui-sidebar-item",
+        ".sidebar ui-sidebar-group ui-sidebar-item",
       );
       // general + security = 2
       expect(groupItems.length).toBe(2);
@@ -164,7 +164,7 @@ describe("UINavigationPage", () => {
 
     it("should mark the active item", () => {
       const activeItem = fixture.nativeElement.querySelector(
-        ".nav-page-sidebar ui-sidebar-item.ui-sidebar-item--active",
+        ".sidebar ui-sidebar-item.ui-sidebar-item--active",
       );
       expect(activeItem).toBeTruthy();
     });
@@ -184,7 +184,7 @@ describe("UINavigationPage", () => {
     });
 
     it("should not render pinned sidebar when sidebarPinned is false", () => {
-      const sidebar = fixture.nativeElement.querySelector(".nav-page-sidebar");
+      const sidebar = fixture.nativeElement.querySelector(".sidebar");
       expect(sidebar).toBeFalsy();
     });
   });
@@ -199,7 +199,7 @@ describe("UINavigationPage", () => {
 
     it("should show root label and current page in breadcrumb", () => {
       const bcItems = fixture.nativeElement.querySelectorAll(
-        "ui-breadcrumb .bc-item",
+        "ui-breadcrumb .item",
       );
       // Home > Dashboard = 2 items
       expect(bcItems.length).toBe(2);
@@ -211,7 +211,7 @@ describe("UINavigationPage", () => {
       fixture.detectChanges();
 
       const bcItems = fixture.nativeElement.querySelectorAll(
-        "ui-breadcrumb .bc-item",
+        "ui-breadcrumb .item",
       );
       // Home > Settings > General = 3 items
       expect(bcItems.length).toBe(3);
@@ -223,7 +223,7 @@ describe("UINavigationPage", () => {
   describe("content area", () => {
     it("should render the content template with current page", () => {
       const title = fixture.nativeElement.querySelector(
-        ".nav-page-content .test-title",
+        ".content .test-title",
       );
       expect(title).toBeTruthy();
       expect(title.textContent).toContain("Dashboard");
@@ -234,7 +234,7 @@ describe("UINavigationPage", () => {
       fixture.detectChanges();
 
       const title = fixture.nativeElement.querySelector(
-        ".nav-page-content .test-title",
+        ".content .test-title",
       );
       expect(title.textContent).toContain("Projects");
     });

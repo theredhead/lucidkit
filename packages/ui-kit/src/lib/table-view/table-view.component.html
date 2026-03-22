@@ -1,10 +1,10 @@
-<div class="columns-slot">
+<div class="slot">
     <ng-content />
 </div>
 
-<section class="table-view-root" role="table" [attr.aria-labelledby]="captionAriaLabelledBy()">
+<section class="root" role="table" [attr.aria-labelledby]="captionAriaLabelledBy()">
     @if (caption()) {
-    <div class="table-caption" [id]="captionId">{{ caption() }}</div>
+    <div class="caption" [id]="captionId">{{ caption() }}</div>
     }
     <ui-table-header [columns]="resolvedColumns()" [showRowIndexIndicator]="showRowIndexIndicator()"
         [rowIndexHeaderText]="rowIndexHeaderText()" [resizable]="isResizable()" [columnWidths]="columnWidths()"

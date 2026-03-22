@@ -1,14 +1,14 @@
 @if (mode() === 'single') {
   @if (showMinMax()) {
-    <span class="sl-min">{{ min() }}</span>
+    <span class="min">{{ min() }}</span>
   }
-  <div class="sl-track-wrapper">
-    <div class="sl-track">
-      <div class="sl-fill" [style.width.%]="fillPercent()"></div>
+  <div class="track-wrapper">
+    <div class="track">
+      <div class="fill" [style.width.%]="fillPercent()"></div>
     </div>
     <input
       type="range"
-      class="sl-input"
+      class="input"
       [attr.min]="min()"
       [attr.max]="max()"
       [attr.step]="step()"
@@ -18,12 +18,12 @@
       (input)="onSingleInput($event)"
     />
     @if (tickMarks().length) {
-      <div class="sl-ticks" [class.sl-ticks--labelled]="tickMarks()[0].label">
+      <div class="ticks" [class.ticks--labelled]="tickMarks()[0].label">
         @for (tick of tickMarks(); track tick.percent) {
-          <div class="sl-tick" [style.left.%]="tick.percent">
-            <div class="sl-tick-mark"></div>
+          <div class="tick" [style.left.%]="tick.percent">
+            <div class="tick-mark"></div>
             @if (tick.label) {
-              <span class="sl-tick-label">{{ tick.label }}</span>
+              <span class="tick-label">{{ tick.label }}</span>
             }
           </div>
         }
@@ -31,22 +31,22 @@
     }
   </div>
   @if (showMinMax()) {
-    <span class="sl-max">{{ max() }}</span>
+    <span class="max">{{ max() }}</span>
   }
   @if (showValue()) {
-    <span class="sl-value">{{ singleValue() }}</span>
+    <span class="value">{{ singleValue() }}</span>
   }
 } @else {
   @if (showMinMax()) {
-    <span class="sl-min">{{ min() }}</span>
+    <span class="min">{{ min() }}</span>
   }
-  <div class="sl-track-wrapper sl-track-wrapper--range">
-    <div class="sl-track">
-      <div class="sl-fill" [style.left.%]="fillStart()" [style.width.%]="fillEnd() - fillStart()"></div>
+  <div class="track-wrapper track-wrapper--range">
+    <div class="track">
+      <div class="fill" [style.left.%]="fillStart()" [style.width.%]="fillEnd() - fillStart()"></div>
     </div>
     <input
       type="range"
-      class="sl-input sl-input--low"
+      class="input input--low"
       [attr.min]="min()"
       [attr.max]="max()"
       [attr.step]="step()"
@@ -57,7 +57,7 @@
     />
     <input
       type="range"
-      class="sl-input sl-input--high"
+      class="input input--high"
       [attr.min]="min()"
       [attr.max]="max()"
       [attr.step]="step()"
@@ -67,12 +67,12 @@
       (input)="onRangeHighInput($event)"
     />
     @if (tickMarks().length) {
-      <div class="sl-ticks" [class.sl-ticks--labelled]="tickMarks()[0].label">
+      <div class="ticks" [class.ticks--labelled]="tickMarks()[0].label">
         @for (tick of tickMarks(); track tick.percent) {
-          <div class="sl-tick" [style.left.%]="tick.percent">
-            <div class="sl-tick-mark"></div>
+          <div class="tick" [style.left.%]="tick.percent">
+            <div class="tick-mark"></div>
             @if (tick.label) {
-              <span class="sl-tick-label">{{ tick.label }}</span>
+              <span class="tick-label">{{ tick.label }}</span>
             }
           </div>
         }
@@ -80,9 +80,9 @@
     }
   </div>
   @if (showMinMax()) {
-    <span class="sl-max">{{ max() }}</span>
+    <span class="max">{{ max() }}</span>
   }
   @if (showValue()) {
-    <span class="sl-value">{{ rangeLow() }} – {{ rangeHigh() }}</span>
+    <span class="value">{{ rangeLow() }} – {{ rangeHigh() }}</span>
   }
 }

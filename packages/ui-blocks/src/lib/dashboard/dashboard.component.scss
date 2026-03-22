@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 // ── Light defaults ───────────────────────────────────────────────
 :host {
   --ui-dashboard-bg: transparent;
@@ -8,10 +11,10 @@
   --ui-dock-chip-border: #d7dce2;
   --ui-dock-chip-hover-bg: #e5e7eb;
   --ui-dock-chip-shadow: 0 1px 2px rgba(18, 24, 33, 0.06);
-  --ui-dock-notify-accent: var(--theredhead-secondary, #625b71);
+  --ui-dock-notify-accent: var(--ui-secondary);
   --ui-dock-notify-glow: color-mix(
     in srgb,
-    var(--theredhead-secondary, #625b71) 22%,
+    var(--ui-secondary) 22%,
     transparent
   );
 
@@ -23,8 +26,7 @@
     sans-serif;
 }
 
-// ── Explicit dark class ──────────────────────────────────────────
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-dashboard-text: #f2f6fb;
   --ui-dock-bg: #1a1f25;
   --ui-dock-chip-bg: #242b33;
@@ -32,43 +34,24 @@
   --ui-dock-chip-border: #3a3f47;
   --ui-dock-chip-hover-bg: #3a3f47;
   --ui-dock-chip-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
-  --ui-dock-notify-accent: var(--theredhead-secondary, #ccc2dc);
+  --ui-dock-notify-accent: var(--ui-secondary);
   --ui-dock-notify-glow: color-mix(
     in srgb,
-    var(--theredhead-secondary, #ccc2dc) 26%,
+    var(--ui-secondary) 26%,
     transparent
   );
 }
 
-// ── System preference fallback ───────────────────────────────────
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-dashboard-text: #f2f6fb;
-    --ui-dock-bg: #1a1f25;
-    --ui-dock-chip-bg: #242b33;
-    --ui-dock-chip-text: #f2f6fb;
-    --ui-dock-chip-border: #3a3f47;
-    --ui-dock-chip-hover-bg: #3a3f47;
-    --ui-dock-chip-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
-    --ui-dock-notify-accent: var(--theredhead-secondary, #ccc2dc);
-    --ui-dock-notify-glow: color-mix(
-      in srgb,
-      var(--theredhead-secondary, #ccc2dc) 26%,
-      transparent
-    );
-  }
-}
-
 // ── Grid ─────────────────────────────────────────────────────────
 
-.dashboard-grid {
+.grid {
   display: grid;
   grid-auto-rows: minmax(120px, auto);
 }
 
 // ── Dock ─────────────────────────────────────────────────────────
 
-.dashboard-dock {
+.dock {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -83,7 +66,8 @@
   }
 }
 
-.dock-chip {
+.chip {
+  @include mix.control-reset;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -93,38 +77,34 @@
   background: var(--ui-dock-chip-bg);
   color: var(--ui-dock-chip-text);
   box-shadow: var(--ui-dock-chip-shadow);
-  cursor: pointer;
   font-size: 0.78rem;
   font-weight: 500;
   white-space: nowrap;
   transition:
-    background-color 0.15s,
-    box-shadow 0.15s;
+    background-color anim.$duration-medium,
+    box-shadow anim.$duration-medium;
 
   &:hover {
     background: var(--ui-dock-chip-hover-bg);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--ui-dock-chip-border);
-    outline-offset: 2px;
-  }
+  @include mix.focus-ring(2px, var(--ui-dock-chip-border));
 }
 
-.dock-chip-label {
+.chip-label {
   line-height: 1;
 }
 
-.dock-chip--notified {
+.chip--notified {
   border-color: var(--ui-dock-notify-accent);
   box-shadow:
     0 0 0 1px var(--ui-dock-notify-accent),
     0 0 6px var(--ui-dock-notify-glow);
-  animation: ui-dock-chip-pulse 2s ease-in-out infinite;
+  animation: ui-dock-chip-pulse 2s anim.$easing-in-out infinite;
 
   ui-icon {
     color: var(--ui-dock-notify-accent);
-    animation: ui-dock-icon-pulse 2s ease-in-out infinite;
+    animation: ui-dock-icon-pulse 2s anim.$easing-in-out infinite;
   }
 }
 
@@ -152,48 +132,43 @@
   }
 }
 
-.dock-menu-btn {
+.menu-btn {
+  @include mix.control-reset;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 6px;
-  border: none;
   border-radius: 6px;
-  background: none;
   color: var(--ui-dock-chip-text);
-  cursor: pointer;
   transition:
-    background-color 0.15s,
-    color 0.15s;
+    background-color anim.$duration-medium,
+    color anim.$duration-medium;
 
   &:hover {
     background: var(--ui-dock-chip-hover-bg);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--ui-dock-chip-border);
-    outline-offset: 2px;
-  }
+  @include mix.focus-ring(2px, var(--ui-dock-chip-border));
 }
 
-.dock-separator {
+.separator {
   width: 1px;
   height: 20px;
   background: var(--ui-dock-chip-border);
   flex-shrink: 0;
 }
 
-// ── Dock menu popup ──────────────────────────────────────────────
+// ── Menu popup ───────────────────────────────────────────────────
 
-.dock-menu-anchor {
+.anchor {
   position: relative;
 }
 
-.dock-menu-btn--active {
+.menu-btn--active {
   background: var(--ui-dock-chip-hover-bg);
 }
 
-.dock-menu {
+.menu {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
@@ -203,60 +178,66 @@
   background: var(--ui-dock-chip-bg);
   border: 1px solid var(--ui-dock-chip-border);
   border-radius: 8px;
-  box-shadow:
+  box-shadow: var(
+    --ui-shadow-dropdown,
     0 4px 16px rgba(0, 0, 0, 0.12),
-    0 1px 4px rgba(0, 0, 0, 0.08);
+    0 1px 4px rgba(0, 0, 0, 0.08)
+  );
   color: var(--ui-dock-chip-text);
 
   &--above {
     top: auto;
     bottom: calc(100% + 6px);
   }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--ui-dock-chip-border);
+    margin: 4px 0;
+  }
 }
 
-.dock-menu-item {
+.item {
+  @include mix.control-reset;
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
   padding: 8px 10px;
-  border: none;
   border-radius: 6px;
-  background: none;
   color: var(--ui-dock-chip-text);
-  cursor: pointer;
   font-size: 0.8rem;
   font-weight: 500;
   white-space: nowrap;
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color anim.$duration-medium;
 
   &:hover {
     background: var(--ui-dock-chip-hover-bg);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--ui-dock-chip-border);
-    outline-offset: -2px;
-  }
+  @include mix.focus-ring(-2px, var(--ui-dock-chip-border));
 
   &--hidden {
     opacity: 0.5;
   }
+
+  &--disabled {
+    @include mix.disabled(0.4, true);
+  }
 }
 
-.dock-menu-item-icon {
+.item-icon {
   flex-shrink: 0;
 }
 
-.dock-menu-item-label {
+.item-label {
   flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include mix.truncate;
 }
 
-.dock-menu-item-badge {
+.item-badge {
   font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -266,17 +247,4 @@
   background: var(--ui-dock-chip-hover-bg);
   color: var(--ui-dock-chip-text);
   opacity: 0.7;
-}
-
-.dock-menu hr {
-  border: none;
-  height: 1px;
-  background: var(--ui-dock-chip-border);
-  margin: 4px 0;
-}
-
-.dock-menu-item--disabled {
-  opacity: 0.4;
-  cursor: default;
-  pointer-events: none;
 }

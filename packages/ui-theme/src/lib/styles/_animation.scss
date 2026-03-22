@@ -1,0 +1,40 @@
+// theredhead UI Theme — Animation & Transition Tokens
+// =============================================================================
+//
+// Centralised timing values and easing functions so components share a
+// consistent micro-interaction vocabulary.
+//
+// Usage:
+//
+//   @use "@theredhead/ui-theme/styles/animation" as anim;
+//
+//   button { transition: background-color anim.$duration-normal anim.$easing-default; }
+// =============================================================================
+
+// ── Duration scale ─────────────────────────────────────────────────
+
+/// Fastest response — subtle hover feedback, icon pulses.
+$duration-fast: 80ms !default;
+
+/// Standard interactive element transition (buttons, inputs, toggles).
+$duration-normal: 120ms !default;
+
+/// Slightly more visible transitions (box-shadow, transforms).
+$duration-medium: 150ms !default;
+
+/// Modals, drawers, complex multi-property animations.
+$duration-slow: 200ms !default;
+
+// ── Easing functions ───────────────────────────────────────────────
+
+/// Default for property transitions.
+$easing-default: ease !default;
+
+/// Enter / appear animations.
+$easing-out: ease-out !default;
+
+/// Exit / dismiss animations.
+$easing-in: ease-in !default;
+
+/// Symmetric (pulse, breathing, toggle).
+$easing-in-out: ease-in-out !default;

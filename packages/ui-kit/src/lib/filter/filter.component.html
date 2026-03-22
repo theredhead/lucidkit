@@ -1,6 +1,6 @@
 @if (mode() === 'simple') {
   <!-- ── Simple mode: single search textbox ── -->
-  <div class="ui-filter__simple">
+  <div class="filter__simple">
     <ui-input
       type="text"
       ariaLabel="Search all fields"
@@ -19,7 +19,7 @@
   </div>
 } @else {
   <!-- ── Advanced mode: full predicate builder ── -->
-  <div class="ui-filter__header" role="group" aria-label="Filter junction">
+  <div class="filter__header" role="group" aria-label="Filter junction">
     @if (allowJunction()) {
       <span id="filter-junction-label">Match</span>
       <ui-select
@@ -34,7 +34,7 @@
     }
     @if (showModeToggle()) {
       <ui-button
-        class="ui-filter__mode-toggle"
+        class="filter__mode-toggle"
         variant="ghost"
         size="sm"
         ariaLabel="Switch to simple search"
@@ -43,7 +43,7 @@
     }
   </div>
 
-  <div class="ui-filter__rules" role="list" aria-label="Filter rules" aria-live="polite">
+  <div class="filter__rules" role="list" aria-label="Filter rules" aria-live="polite">
     @for (rule of rules(); track rule.id; let idx = $index) {
       <ui-filter-row
         role="listitem"
@@ -56,7 +56,7 @@
     }
   </div>
 
-  <div class="ui-filter__actions">
+  <div class="filter__actions">
     <ui-button variant="ghost" size="sm" ariaLabel="Add filter rule" (click)="addRule()">+ Add Rule</ui-button>
   </div>
 }

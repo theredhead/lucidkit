@@ -1,27 +1,27 @@
 <!-- Form header (click to select form-level props) -->
 <button
   type="button"
-  class="dc-form-header"
-  [class.dc-form-header--selected]="engine().selection()?.kind === 'form'"
+  class="form-header"
+  [class.form-header--selected]="engine().selection()?.kind === 'form'"
   [attr.aria-pressed]="engine().selection()?.kind === 'form'"
   aria-label="Select form properties"
   (click)="engine().selectForm()"
 >
-  <span class="dc-form-title">
+  <span class="form-title">
     {{ engine().formTitle() || "Untitled Form" }}
   </span>
   @if (engine().formDescription()) {
-    <span class="dc-form-desc">{{ engine().formDescription() }}</span>
+    <span class="form-desc">{{ engine().formDescription() }}</span>
   }
 </button>
 
 <!-- Groups -->
 @for (group of engine().groups(); track group.uid; let gi = $index) {
   <section
-    class="dc-group"
+    class="group"
     role="region"
     [attr.aria-label]="group.title() || 'Group ' + (gi + 1)"
-    [class.dc-group--selected]="
+    [class.group--selected]="
       engine().selection()?.kind === 'group' &&
       engine().selection()?.groupUid === group.uid
     "
@@ -29,9 +29,9 @@
     (dragover)="onDragOver($event)"
   >
     <!-- Group header -->
-    <div class="dc-group-header">
+    <div class="group-header">
       <span
-        class="dc-group-title"
+        class="group-title"
         tabindex="0"
         role="button"
         [attr.aria-label]="
@@ -41,7 +41,7 @@
         (keydown.enter)="engine().selectGroup(group.uid)"
         >{{ group.title() || "Group " + (gi + 1) }}</span
       >
-      <div class="dc-group-actions">
+      <div class="group-actions">
         <button
           type="button"
           class="dc-icon-btn"
@@ -76,33 +76,33 @@
     </div>
 
     <!-- Fields -->
-    <div class="dc-fields">
+    <div class="fields">
       @for (field of group.fields(); track field.uid; let fi = $index) {
         <div
-          class="dc-field"
-          [class.dc-field--selected]="
+          class="field"
+          [class.field--selected]="
             engine().selection()?.fieldUid === field.uid
           "
-          [class.dc-field--flair]="isFlair(field.component())"
+          [class.field--flair]="isFlair(field.component())"
         >
           <div
-            class="dc-field-info"
+            class="field-info"
             tabindex="0"
             role="button"
             [attr.aria-label]="'Select field: ' + field.title()"
             (click)="engine().selectField(group.uid, field.uid)"
             (keydown.enter)="engine().selectField(group.uid, field.uid)"
           >
-            <span class="dc-field-component" aria-hidden="true">{{
+            <span class="field-component" aria-hidden="true">{{
               field.component()
             }}</span>
-            <span class="dc-field-title">{{ field.title() }}</span>
-            <span class="dc-field-id" aria-hidden="true">{{
+            <span class="field-title">{{ field.title() }}</span>
+            <span class="field-id" aria-hidden="true">{{
               field.id()
             }}</span>
           </div>
           <div
-            class="dc-field-actions"
+            class="field-actions"
             role="toolbar"
             [attr.aria-label]="'Actions for ' + field.title()"
           >

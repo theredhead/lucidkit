@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 /* ── Light defaults ───────────────────────────────────────── */
 
 :host {
@@ -18,9 +21,7 @@
   font-size: var(--ui-font-body);
 }
 
-/* ── Dark mode (explicit class) ──────────────────────────── */
-
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-text: #f2f6fb;
   --ui-text-muted: #9ba4ae;
   --ui-surface: #1e2128;
@@ -31,24 +32,9 @@
   --ui-accent-contrast: #1e2128;
 }
 
-/* ── Dark mode (system preference fallback) ──────────────── */
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-text: #f2f6fb;
-    --ui-text-muted: #9ba4ae;
-    --ui-surface: #1e2128;
-    --ui-surface-2: #2a2e35;
-    --ui-border: #3a3f47;
-    --ui-border-strong: #4a5058;
-    --ui-accent: #62a0ea;
-    --ui-accent-contrast: #1e2128;
-  }
-}
-
 /* ── Input row ───────────────────────────────────────────── */
 
-.dp-input-wrapper {
+.input-wrapper {
   display: flex;
   align-items: center;
   border: 1px solid var(--ui-border);
@@ -63,12 +49,12 @@
   }
 
   &:focus-within {
-    outline: 2px solid var(--ui-accent);
+    outline: 2px solid var(--ui-focus-ring);
     outline-offset: -1px;
   }
 }
 
-.dp-input {
+.input {
   flex: 1;
   min-width: 0;
   border: none;
@@ -89,7 +75,7 @@
   }
 }
 
-.dp-toggle {
+.toggle {
   appearance: none;
   border: none;
   background: none;
@@ -114,7 +100,7 @@
 
 /* ── Calendar popup ──────────────────────────────────────── */
 
-.dp-calendar {
+.calendar {
   position: absolute;
   z-index: 100;
   left: 0;
@@ -130,14 +116,14 @@
 
 /* Header with nav buttons + month/year title */
 
-.dp-cal-header {
+.cal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.25rem;
 }
 
-.dp-cal-nav {
+.cal-nav {
   appearance: none;
   border: none;
   background: none;
@@ -158,7 +144,7 @@
   }
 }
 
-.dp-cal-title {
+.cal-title {
   font-weight: 600;
   font-size: 0.8125rem;
   color: var(--ui-text);
@@ -168,13 +154,13 @@
 
 /* Weekday labels */
 
-.dp-cal-weekdays {
+.cal-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: 0.125rem;
 }
 
-.dp-cal-weekday {
+.cal-weekday {
   text-align: center;
   font-size: 0.6875rem;
   font-weight: 600;
@@ -185,13 +171,13 @@
 
 /* Day grid */
 
-.dp-cal-grid {
+.cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 1px;
 }
 
-.dp-cal-day {
+.cal-day {
   appearance: none;
   border: none;
   background: none;
@@ -210,27 +196,27 @@
     color 80ms ease;
   margin: auto;
 
-  &:hover:not(:disabled):not(.dp-cal-day--selected) {
+  &:hover:not(:disabled):not(.cal-day--selected) {
     background: var(--ui-surface-2);
   }
 
-  &.dp-cal-day--outside {
+  &.cal-day--outside {
     color: var(--ui-text-muted);
     opacity: 0.5;
   }
 
-  &.dp-cal-day--today {
+  &.cal-day--today {
     font-weight: 700;
     box-shadow: inset 0 0 0 1px var(--ui-accent);
   }
 
-  &.dp-cal-day--selected {
+  &.cal-day--selected {
     background: var(--ui-accent);
     color: var(--ui-accent-contrast);
     font-weight: 600;
   }
 
-  &.dp-cal-day--disabled {
+  &.cal-day--disabled {
     opacity: 0.35;
     cursor: not-allowed;
   }
@@ -238,7 +224,7 @@
 
 /* Footer */
 
-.dp-cal-footer {
+.cal-footer {
   display: flex;
   justify-content: center;
   margin-top: 0.375rem;
@@ -246,7 +232,7 @@
   border-top: 1px solid var(--ui-border);
 }
 
-.dp-cal-today {
+.cal-today {
   appearance: none;
   border: none;
   background: none;

@@ -93,9 +93,9 @@ describe("UIAnalogClock", () => {
     });
 
     it("should render the clock structural circles (rim, bg, center cap)", () => {
-      const rim = fixture.nativeElement.querySelector("svg .clock-rim");
-      const bg = fixture.nativeElement.querySelector("svg .clock-bg");
-      const cap = fixture.nativeElement.querySelector("svg .center-cap");
+      const rim = fixture.nativeElement.querySelector("svg .rim");
+      const bg = fixture.nativeElement.querySelector("svg .bg");
+      const cap = fixture.nativeElement.querySelector("svg .cap");
       expect(rim).toBeTruthy();
       expect(bg).toBeTruthy();
       expect(cap).toBeTruthy();
@@ -120,7 +120,7 @@ describe("UIAnalogClock", () => {
 
     it("should render 12 hour numbers", () => {
       const numbers =
-        fixture.nativeElement.querySelectorAll("svg .hour-number");
+        fixture.nativeElement.querySelectorAll("svg .number");
       expect(numbers.length).toBe(12);
     });
 
@@ -130,7 +130,7 @@ describe("UIAnalogClock", () => {
     });
 
     it("should render a center cap circle", () => {
-      const cap = fixture.nativeElement.querySelector("svg .center-cap");
+      const cap = fixture.nativeElement.querySelector("svg .cap");
       expect(cap).toBeTruthy();
     });
   });
@@ -167,7 +167,7 @@ describe("UIAnalogClock", () => {
       host.showNumbers.set(false);
       fixture.detectChanges();
       const numbers =
-        fixture.nativeElement.querySelectorAll("svg .hour-number");
+        fixture.nativeElement.querySelectorAll("svg .number");
       expect(numbers.length).toBe(0);
     });
 
@@ -281,7 +281,7 @@ describe("UIAnalogClock", () => {
   describe("day/night indicator", () => {
     it("should render the indicator group", () => {
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group).toBeTruthy();
     });
@@ -289,14 +289,14 @@ describe("UIAnalogClock", () => {
     it("should render SVG content inside the indicator", () => {
       // Default test time is 10:10 (day) → renders Sun paths
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group.innerHTML).toContain("<");
     });
 
     it("should apply day icon stroke colour during the day", () => {
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group.getAttribute("stroke")).toBe("#f59e0b");
     });
@@ -306,7 +306,7 @@ describe("UIAnalogClock", () => {
       fixture.detectChanges();
 
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group.getAttribute("stroke")).toBe("#e8e0c0");
     });
@@ -330,7 +330,7 @@ describe("UIAnalogClock", () => {
       fixture.detectChanges();
 
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group.innerHTML).toContain('r="10"');
     });
@@ -342,7 +342,7 @@ describe("UIAnalogClock", () => {
       fixture.detectChanges();
 
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group.innerHTML).toContain('width="24"');
     });
@@ -352,7 +352,7 @@ describe("UIAnalogClock", () => {
       fixture.detectChanges();
 
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group.getAttribute("stroke")).toBe("#ff0000");
     });
@@ -363,7 +363,7 @@ describe("UIAnalogClock", () => {
       fixture.detectChanges();
 
       const group = fixture.nativeElement.querySelector(
-        "svg .day-night-indicator",
+        "svg .indicator",
       );
       expect(group.getAttribute("stroke")).toBe("#00ff00");
     });

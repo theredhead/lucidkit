@@ -80,13 +80,13 @@ describe("UITimePicker", () => {
     });
 
     it("should render a colon separator", () => {
-      const sep = fixture.nativeElement.querySelector(".tp-separator");
+      const sep = fixture.nativeElement.querySelector(".separator");
       expect(sep).toBeTruthy();
       expect(sep.textContent.trim()).toBe(":");
     });
 
     it("should not show AM/PM in 24-hour mode", () => {
-      const meridiem = fixture.nativeElement.querySelector(".tp-meridiem");
+      const meridiem = fixture.nativeElement.querySelector(".meridiem");
       expect(meridiem).toBeNull();
     });
 
@@ -94,7 +94,7 @@ describe("UITimePicker", () => {
       fixture.componentRef.setInput("mode", 12);
       fixture.detectChanges();
 
-      const meridiem = fixture.nativeElement.querySelector(".tp-meridiem");
+      const meridiem = fixture.nativeElement.querySelector(".meridiem");
       expect(meridiem).toBeTruthy();
     });
 
@@ -163,7 +163,7 @@ describe("UITimePicker", () => {
         fixture.nativeElement.querySelector(".tp-hour");
       expect(hour.value).toBe("2");
 
-      const meridiem = fixture.nativeElement.querySelector(".tp-meridiem");
+      const meridiem = fixture.nativeElement.querySelector(".meridiem");
       expect(meridiem.textContent.trim()).toBe("PM");
     });
 
@@ -175,7 +175,7 @@ describe("UITimePicker", () => {
         fixture.nativeElement.querySelector(".tp-hour");
       expect(hour.value).toBe("12");
 
-      const meridiem = fixture.nativeElement.querySelector(".tp-meridiem");
+      const meridiem = fixture.nativeElement.querySelector(".meridiem");
       expect(meridiem.textContent.trim()).toBe("PM");
     });
 
@@ -187,7 +187,7 @@ describe("UITimePicker", () => {
         fixture.nativeElement.querySelector(".tp-hour");
       expect(hour.value).toBe("12");
 
-      const meridiem = fixture.nativeElement.querySelector(".tp-meridiem");
+      const meridiem = fixture.nativeElement.querySelector(".meridiem");
       expect(meridiem.textContent.trim()).toBe("AM");
     });
 
@@ -196,7 +196,7 @@ describe("UITimePicker", () => {
       fixture.detectChanges();
 
       const meridiemBtn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".tp-meridiem");
+        fixture.nativeElement.querySelector(".meridiem");
       expect(meridiemBtn.textContent.trim()).toBe("AM");
 
       meridiemBtn.click();
@@ -327,7 +327,7 @@ describe("UITimePicker", () => {
 
   describe("accessibility", () => {
     it("should have group role on wrapper", () => {
-      const wrapper = fixture.nativeElement.querySelector(".tp-wrapper");
+      const wrapper = fixture.nativeElement.querySelector(".wrapper");
       expect(wrapper.getAttribute("role")).toBe("group");
     });
 
@@ -335,7 +335,7 @@ describe("UITimePicker", () => {
       fixture.componentRef.setInput("ariaLabel", "Meeting time");
       fixture.detectChanges();
 
-      const wrapper = fixture.nativeElement.querySelector(".tp-wrapper");
+      const wrapper = fixture.nativeElement.querySelector(".wrapper");
       expect(wrapper.getAttribute("aria-label")).toBe("Meeting time");
     });
 
@@ -353,7 +353,7 @@ describe("UITimePicker", () => {
       fixture.componentRef.setInput("mode", 12);
       fixture.detectChanges();
 
-      const btn = fixture.nativeElement.querySelector(".tp-meridiem");
+      const btn = fixture.nativeElement.querySelector(".meridiem");
       expect(btn.getAttribute("aria-label")).toBe("Toggle AM/PM");
     });
   });

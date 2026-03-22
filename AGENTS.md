@@ -192,11 +192,16 @@ Key rules:
 contrast for the text to be legible (aim for WCAG AA — at least 4.5 : 1 for
 normal text, 3 : 1 for large text).
 
-This rule applies everywhere colours are declared:
+This rule applies _everywhere_ colours are declared. Including but not limited to:
 
 - Component SCSS (`:host`, inner selectors, dark-mode overrides)
-- Inline `style` attributes in templates and Storybook stories
+- Inline `style` attributes in Storybook stories
 - CSS custom-property fallback values (the fallback pair must be legible)
+
+### Some more CSS rules
+
+- Inline `style` attributes in templates are forbidden except in Storybook stories
+- Never ever under any circumstances ever use BEM style css class names
 
 ### Good
 
@@ -208,6 +213,7 @@ This rule applies everywhere colours are declared:
 ```
 
 ```html
+<!-- ONLY in storybook -->
 <div style="color: #1d232b; background: #f7f8fa; padding: 16px">…</div>
 ```
 

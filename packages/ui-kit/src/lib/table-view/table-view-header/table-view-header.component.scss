@@ -124,7 +124,7 @@
   opacity: 1;
 }
 
-:host-context(.tv-resizing) .resize-handle::after {
+:host-context(.resizing) .resize-handle::after {
   opacity: 1;
   background: var(--ui-accent);
 }

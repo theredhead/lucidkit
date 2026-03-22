@@ -1,0 +1,63 @@
+// theredhead UI Theme — Elevation & Shadow Scale
+// =============================================================================
+//
+// A consistent four-level shadow hierarchy used across cards, panels,
+// dropdowns, drawers, and dialogs. Each level has a light and dark variant.
+//
+// Usage:
+//
+//   @use "@theredhead/ui-theme/styles/elevation" as elev;
+//
+//   .card { box-shadow: elev.$shadow-sm-light; }
+//
+// The `ui-tokens-light` / `ui-tokens-dark` mixins (in _tokens.scss) emit
+// CSS custom properties `--ui-shadow-sm` … `--ui-shadow-xl` so components
+// can also use `var(--ui-shadow-sm)`.
+// =============================================================================
+
+// ── Small ──────────────────────────────────────────────────────────
+// Cards, panels at rest
+
+$shadow-sm-light:
+  0 1px 3px rgba(0, 0, 0, 0.08),
+  0 2px 8px rgba(0, 0, 0, 0.06) !default;
+
+$shadow-sm-dark:
+  0 1px 3px rgba(0, 0, 0, 0.3),
+  0 2px 8px rgba(0, 0, 0, 0.2) !default;
+
+// ── Medium ─────────────────────────────────────────────────────────
+// Hover states, card lift, dropdown panels
+
+$shadow-md-light:
+  0 4px 12px rgba(0, 0, 0, 0.12),
+  0 1px 3px rgba(0, 0, 0, 0.08) !default;
+
+$shadow-md-dark:
+  0 4px 12px rgba(0, 0, 0, 0.4),
+  0 1px 3px rgba(0, 0, 0, 0.3) !default;
+
+// ── Large ──────────────────────────────────────────────────────────
+// Popovers, drawers, global shadow
+
+$shadow-lg-light: 0 10px 24px rgba(18, 24, 33, 0.08) !default;
+
+$shadow-lg-dark: 0 10px 24px rgba(0, 0, 0, 0.38) !default;
+
+// ── Extra-large ────────────────────────────────────────────────────
+// Dialogs, modals
+
+$shadow-xl-light: 0 8px 32px rgba(0, 0, 0, 0.18) !default;
+
+$shadow-xl-dark: 0 8px 32px rgba(0, 0, 0, 0.5) !default;
+
+// ── Dropdown ───────────────────────────────────────────────────────
+// Dropdown menus & autocomplete panels (medium width, wider spread)
+
+$shadow-dropdown-light:
+  0 4px 16px rgba(0, 0, 0, 0.12),
+  0 1px 3px rgba(0, 0, 0, 0.08) !default;
+
+$shadow-dropdown-dark:
+  0 4px 16px rgba(0, 0, 0, 0.4),
+  0 1px 3px rgba(0, 0, 0, 0.3) !default;

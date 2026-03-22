@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 // ── Light defaults ───────────────────────────────────────────────────
 :host {
   --ui-toggle-track-bg: #d1d5db;
@@ -6,7 +9,8 @@
   --ui-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   --ui-toggle-label-color: #ffffff;
   --ui-toggle-text-color: var(--ui-text, #1d232b);
-  --ui-toggle-focus-ring: 0 0 0 2px rgba(59, 130, 246, 0.4);
+  --ui-toggle-focus-ring: 0 0 0 2px
+    color-mix(in srgb, var(--ui-focus-ring) 40%, transparent);
 
   display: inline-flex;
   align-items: center;
@@ -16,43 +20,29 @@
   vertical-align: middle;
 }
 
-// ── Dark: explicit class ────────────────────────────────────────────
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-toggle-track-bg: #4b5563;
   --ui-toggle-track-bg-on: var(--ui-accent, #60a5fa);
   --ui-toggle-thumb-bg: #f3f4f6;
   --ui-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   --ui-toggle-text-color: var(--ui-text, #f2f6fb);
-  --ui-toggle-focus-ring: 0 0 0 2px rgba(96, 165, 250, 0.4);
-}
-
-// ── Dark: system preference fallback ────────────────────────────────
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-toggle-track-bg: #4b5563;
-    --ui-toggle-track-bg-on: var(--ui-accent, #60a5fa);
-    --ui-toggle-thumb-bg: #f3f4f6;
-    --ui-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    --ui-toggle-text-color: var(--ui-text, #f2f6fb);
-    --ui-toggle-focus-ring: 0 0 0 2px rgba(96, 165, 250, 0.4);
-  }
+  --ui-toggle-focus-ring: 0 0 0 2px
+    color-mix(in srgb, var(--ui-focus-ring) 40%, transparent);
 }
 
 // ── Disabled ────────────────────────────────────────────────────────
 :host(.ui-toggle--disabled) {
-  opacity: 0.45;
-  cursor: not-allowed;
-  pointer-events: none;
+  @include mix.disabled(0.45);
 }
 
 // ── Track ───────────────────────────────────────────────────────────
-.toggle-track {
+.track {
   position: relative;
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
   background: var(--ui-toggle-track-bg);
-  transition: background-color 200ms ease;
+  transition: background-color anim.$duration-slow anim.$easing-default;
   outline: none;
   flex-shrink: 0;
   overflow: hidden;
@@ -63,50 +53,50 @@
 }
 
 // ── Thumb ───────────────────────────────────────────────────────────
-.toggle-thumb {
+.thumb {
   position: absolute;
   border-radius: 50%;
   background: var(--ui-toggle-thumb-bg);
   box-shadow: var(--ui-toggle-thumb-shadow);
-  transition: transform 200ms ease;
+  transition: transform anim.$duration-slow anim.$easing-default;
 }
 
 // ── Track labels ────────────────────────────────────────────────────
-.toggle-label {
+.label {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--ui-toggle-label-color);
   pointer-events: none;
-  transition: opacity 150ms ease;
+  transition: opacity anim.$duration-medium anim.$easing-default;
   white-space: nowrap;
 }
 
-.toggle-label--on {
+.label--on {
   opacity: 0;
 }
 
-.toggle-label--off {
+.label--off {
   opacity: 1;
 }
 
 // ── On state ────────────────────────────────────────────────────────
 :host(.ui-toggle--on) {
-  .toggle-track {
+  .track {
     background: var(--ui-toggle-track-bg-on);
   }
 
-  .toggle-label--on {
+  .label--on {
     opacity: 1;
   }
 
-  .toggle-label--off {
+  .label--off {
     opacity: 0;
   }
 }
 
 // ── Projected text label ────────────────────────────────────────────
-.toggle-text {
+.text {
   font-size: 0.875rem;
   color: var(--ui-toggle-text-color);
   line-height: 1.4;
@@ -120,39 +110,39 @@
 
 // Small
 :host(.ui-toggle--sm) {
-  .toggle-track {
+  .track {
     width: 2rem;
     height: 1.125rem;
   }
 
-  .toggle-thumb {
+  .thumb {
     width: 0.875rem;
     height: 0.875rem;
     top: 0.125rem;
     left: 0.125rem;
   }
 
-  &.ui-toggle--on .toggle-thumb {
+  &.ui-toggle--on .thumb {
     transform: translateX(0.875rem);
   }
 
   // labelled variant gets wider
-  &.ui-toggle--labelled .toggle-track {
+  &.ui-toggle--labelled .track {
     width: auto;
     padding: 0 0.375rem;
     gap: 0.75rem;
   }
 
-  &.ui-toggle--labelled .toggle-label {
+  &.ui-toggle--labelled .label {
     font-size: 0.5rem;
   }
 
-  &.ui-toggle--labelled .toggle-thumb {
+  &.ui-toggle--labelled .thumb {
     left: 0.125rem;
-    transition: left 200ms ease;
+    transition: left anim.$duration-slow anim.$easing-default;
   }
 
-  &.ui-toggle--labelled.ui-toggle--on .toggle-thumb {
+  &.ui-toggle--labelled.ui-toggle--on .thumb {
     transform: none;
     left: calc(100% - 1rem); // track - thumb(0.875) - inset(0.125)
   }
@@ -160,40 +150,40 @@
 
 // Medium (default)
 :host(.ui-toggle--md) {
-  .toggle-track {
+  .track {
     width: 2.75rem;
     height: 1.5rem;
   }
 
-  .toggle-thumb {
+  .thumb {
     width: 1.25rem;
     height: 1.25rem;
     top: 0.125rem;
     left: 0.125rem;
   }
 
-  &.ui-toggle--on .toggle-thumb {
+  &.ui-toggle--on .thumb {
     transform: translateX(1.25rem);
   }
 
   // labelled
-  &.ui-toggle--labelled .toggle-track {
+  &.ui-toggle--labelled .track {
     width: auto;
     min-width: 3.5rem;
     padding: 0 0.5rem;
     gap: 1rem;
   }
 
-  &.ui-toggle--labelled .toggle-label {
+  &.ui-toggle--labelled .label {
     font-size: 0.625rem;
   }
 
-  &.ui-toggle--labelled .toggle-thumb {
+  &.ui-toggle--labelled .thumb {
     left: 0.125rem;
-    transition: left 200ms ease;
+    transition: left anim.$duration-slow anim.$easing-default;
   }
 
-  &.ui-toggle--labelled.ui-toggle--on .toggle-thumb {
+  &.ui-toggle--labelled.ui-toggle--on .thumb {
     transform: none;
     left: calc(100% - 1.375rem); // track - thumb(1.25) - inset(0.125)
   }
@@ -201,40 +191,40 @@
 
 // Large
 :host(.ui-toggle--lg) {
-  .toggle-track {
+  .track {
     width: 3.5rem;
     height: 2rem;
   }
 
-  .toggle-thumb {
+  .thumb {
     width: 1.625rem;
     height: 1.625rem;
     top: 0.1875rem;
     left: 0.1875rem;
   }
 
-  &.ui-toggle--on .toggle-thumb {
+  &.ui-toggle--on .thumb {
     transform: translateX(1.5rem);
   }
 
   // labelled
-  &.ui-toggle--labelled .toggle-track {
+  &.ui-toggle--labelled .track {
     width: auto;
     min-width: 4.5rem;
     padding: 0 0.625rem;
     gap: 1.25rem;
   }
 
-  &.ui-toggle--labelled .toggle-label {
+  &.ui-toggle--labelled .label {
     font-size: 0.75rem;
   }
 
-  &.ui-toggle--labelled .toggle-thumb {
+  &.ui-toggle--labelled .thumb {
     left: 0.1875rem;
-    transition: left 200ms ease;
+    transition: left anim.$duration-slow anim.$easing-default;
   }
 
-  &.ui-toggle--labelled.ui-toggle--on .toggle-thumb {
+  &.ui-toggle--labelled.ui-toggle--on .thumb {
     transform: none;
     left: calc(100% - 1.8125rem); // track - thumb(1.625) - inset(0.1875)
   }

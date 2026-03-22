@@ -1,3 +1,5 @@
+@use "mixins" as mix;
+
 :host {
   display: inline-flex;
   align-items: center;
@@ -32,7 +34,7 @@
 
 /* ── Dark mode ── */
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   &.ui-badge--primary {
     --ui-badge-bg: #7ab0ff;
     --ui-badge-text: #1d232b;
@@ -55,34 +57,9 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    &.ui-badge--primary {
-      --ui-badge-bg: #7ab0ff;
-      --ui-badge-text: #1d232b;
-    }
-    &.ui-badge--success {
-      --ui-badge-bg: #57e389;
-      --ui-badge-text: #1d232b;
-    }
-    &.ui-badge--warning {
-      --ui-badge-bg: #f8e45c;
-      --ui-badge-text: #1d232b;
-    }
-    &.ui-badge--danger {
-      --ui-badge-bg: #ff6b6b;
-      --ui-badge-text: #1d232b;
-    }
-    &.ui-badge--neutral {
-      --ui-badge-bg: #8a919c;
-      --ui-badge-text: #1d232b;
-    }
-  }
-}
-
 /* ── Count / Label body ── */
 
-.badge-body {
+.body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -98,14 +75,14 @@
   white-space: nowrap;
 }
 
-.badge-body--label {
+.body--label {
   padding: 0.125rem 0.5rem;
   font-weight: 500;
 }
 
 /* ── Dot variant ── */
 
-.badge-dot {
+.dot {
   display: inline-block;
   width: 0.5rem;
   height: 0.5rem;

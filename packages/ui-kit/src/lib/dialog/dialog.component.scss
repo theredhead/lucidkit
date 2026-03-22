@@ -1,8 +1,11 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 :host {
   display: contents;
 }
 
-.dlg-dialog {
+.dialog {
   border: none;
   border-radius: var(--ui-radius, 0.75rem);
   padding: 0;
@@ -14,37 +17,27 @@
   background: var(--ui-surface);
   color: var(--ui-text);
   box-shadow: var(--ui-shadow);
-  animation: dlg-enter 180ms ease-out;
+  animation: ui-dlg-enter anim.$duration-medium anim.$easing-out;
 }
 
-.dlg-dialog::backdrop {
+.dialog::backdrop {
   background: rgba(0, 0, 0, 0.45);
-  animation: dlg-backdrop-enter 180ms ease-out;
+  animation: ui-dlg-backdrop-enter anim.$duration-medium anim.$easing-out;
 }
 
 /* ── Dark mode ── */
 
-:host-context(html.dark-theme) .dlg-dialog {
+@include mix.dark-mode(".dialog") {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-:host-context(html.dark-theme) .dlg-dialog::backdrop {
+@include mix.dark-mode(".dialog::backdrop") {
   background: rgba(0, 0, 0, 0.65);
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) .dlg-dialog {
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  }
-
-  :host-context(html:not(.light-theme):not(.dark-theme)) .dlg-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.65);
-  }
 }
 
 /* ── Animations ── */
 
-@keyframes dlg-enter {
+@keyframes ui-dlg-enter {
   from {
     opacity: 0;
     transform: scale(0.95) translateY(8px);
@@ -55,7 +48,7 @@
   }
 }
 
-@keyframes dlg-backdrop-enter {
+@keyframes ui-dlg-backdrop-enter {
   from {
     opacity: 0;
   }

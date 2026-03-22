@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 :host {
   display: inline-flex;
 
@@ -8,9 +11,7 @@
   --ui-accent: #3584e4;
 }
 
-/* ── Dark theme ── */
-
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-text: #f2f6fb;
   --ui-border: #505d6d;
   --ui-border-strong: #617184;
@@ -18,21 +19,8 @@
   --ui-accent: #7ab0ff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-text: #f2f6fb;
-    --ui-border: #505d6d;
-    --ui-border-strong: #617184;
-    --ui-muted: #d0d8e3;
-    --ui-accent: #7ab0ff;
-  }
-}
-
 button {
-  appearance: none;
-  border: none;
-  background: none;
-  cursor: pointer;
+  @include mix.control-reset;
   font-family: var(--ui-font, inherit);
   color: var(--ui-text, #1d232b);
 
@@ -43,19 +31,15 @@ button {
   border-radius: 0.25rem;
   font-weight: 500;
   transition:
-    background-color 120ms ease,
-    border-color 120ms ease,
-    opacity 120ms ease;
+    background-color anim.$duration-normal anim.$easing-default,
+    border-color anim.$duration-normal anim.$easing-default,
+    opacity anim.$duration-normal anim.$easing-default;
 
   &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    @include mix.disabled;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--ui-accent, #3584e4);
-    outline-offset: 2px;
-  }
+  @include mix.focus-ring(2px, var(--ui-accent, #3584e4));
 }
 
 /* ---------- sizes ---------- */

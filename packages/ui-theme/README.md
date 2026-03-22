@@ -122,12 +122,119 @@ precedence.
 
 ---
 
+## SCSS Modules
+
+The theme ships several SCSS modules that consuming libraries and components
+can import individually. The canonical import alias is shown in each heading.
+
+### Mixins (`@use 'mixins' as mix`)
+
+Reusable SCSS mixins available to every component:
+
+| Mixin                         | Description                                                 |
+| ----------------------------- | ----------------------------------------------------------- |
+| `dark-mode($selector?)`       | Three-tier dark-mode wrapper (host-context + media query)   |
+| `focus-ring($offset, $color)` | WCAG AA visible `:focus-visible` outline                    |
+| `control-reset`               | Strips default browser chrome from buttons                  |
+| `truncate`                    | Single-line text-overflow ellipsis                          |
+| `disabled($opacity, $block)`  | Reduced opacity + cursor/pointer-events toggle              |
+| `visually-hidden`             | Screen-reader-only hiding (a11y)                            |
+| `scrollable($axis)`           | `overflow` with momentum scroll and flex-shrink containment |
+
+```scss
+@use "mixins" as mix;
+
+:host {
+  --ui-text: #1d232b;
+  --ui-border: #d7dce2;
+}
+
+@include mix.dark-mode {
+  --ui-text: #f2f6fb;
+  --ui-border: #3a3f47;
+}
+
+button {
+  @include mix.control-reset;
+  @include mix.focus-ring;
+}
+
+.label {
+  @include mix.truncate;
+}
+```
+
+### Elevation (`@use 'elevation' as elev`)
+
+Shadow scale with paired light/dark variants. All variables are `!default`.
+
+| Variable                      | Use case                                 |
+| ----------------------------- | ---------------------------------------- |
+| `$shadow-sm-light/dark`       | Cards, panels at rest                    |
+| `$shadow-md-light/dark`       | Hover states, card lift, dropdown panels |
+| `$shadow-lg-light/dark`       | Popovers, drawers                        |
+| `$shadow-xl-light/dark`       | Dialogs, modals                          |
+| `$shadow-dropdown-light/dark` | Dropdown menus, autocomplete panels      |
+
+```scss
+@use "elevation" as elev;
+
+.card {
+  box-shadow: elev.$shadow-sm-light;
+}
+```
+
+Components can also reference the CSS custom properties emitted by
+`_tokens.scss`: `var(--ui-shadow-sm)`, `var(--ui-shadow-md)`, etc.
+
+### Animation (`@use 'animation' as anim`)
+
+Centralised timing and easing tokens. All variables are `!default`.
+
+| Variable           | Value         | Use case                            |
+| ------------------ | ------------- | ----------------------------------- |
+| `$duration-fast`   | `80ms`        | Subtle hover feedback, icon pulses  |
+| `$duration-normal` | `120ms`       | Button, input, toggle transitions   |
+| `$duration-medium` | `150ms`       | Box-shadow, transform transitions   |
+| `$duration-slow`   | `200ms`       | Modals, drawers, complex animations |
+| `$easing-default`  | `ease`        | Standard property transitions       |
+| `$easing-out`      | `ease-out`    | Enter / appear animations           |
+| `$easing-in`       | `ease-in`     | Exit / dismiss animations           |
+| `$easing-in-out`   | `ease-in-out` | Symmetric (pulse, toggle)           |
+
+```scss
+@use "animation" as anim;
+
+button {
+  transition: background-color anim.$duration-normal anim.$easing-default;
+}
+```
+
+---
+
+## `UI_TOKENS` — Programmatic Token Access
+
+The `ui-tokens.ts` module exports a `UI_TOKENS` constant that maps every
+`--ui-*` CSS custom property name to a typed string constant. This is useful
+for reading token values from TypeScript at runtime:
+
+```typescript
+import { UI_TOKENS } from "@theredhead/ui-theme";
+
+const accent = getComputedStyle(el).getPropertyValue(UI_TOKENS.accent);
+```
+
+---
+
 ## Architecture
 
 ```text
-_palettes.scss      ← standalone colour variables (light + dark)
-_typography.scss    ← font family, sizes, weights
+_palettes.scss      ← standalone colour variables (light + dark, Material 3)
+_typography.scss    ← font family, sizes, weights, line heights
 _tokens.scss        ← all --ui-* CSS custom property definitions
+_mixins.scss        ← dark-mode, focus-ring, control-reset, truncate, etc.
+_elevation.scss     ← shadow scale (sm / md / lg / xl / dropdown)
+_animation.scss     ← duration & easing tokens
 _theme.scss         ← theredhead-theme() mixin (wires everything together)
 _index.scss         ← barrel (@forward)
 
@@ -135,6 +242,7 @@ services/
   theme.service.ts  ← ThemeService (signals, localStorage, class toggling)
 
 tokens/
-  theme.tokens.ts   ← TypeScript constant mapping all --ui-* property names
-  colors.ts         ← colour-name constants
+  theme.tokens.ts   ← ThemeMode type, ThemeConfig, THEME_CONFIG DI token
+  ui-tokens.ts      ← UI_TOKENS constant mapping all --ui-* property names
+  colors.ts         ← RgbColor / HslColor utility classes
 ```

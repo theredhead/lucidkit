@@ -1,9 +1,9 @@
-<div class="cr-viewport">
-  <div class="cr-track" [ngStyle]="trackStyle()">
+<div class="viewport">
+  <div class="track" [ngStyle]="trackStyle()">
     @for (item of items(); track $index) {
       <div
-        class="cr-item"
-        [class.cr-item--active]="$index === activeIndex()"
+        class="item"
+        [class.item--active]="$index === activeIndex()"
         [ngStyle]="toStyleMap(itemStyles()[$index])"
         (click)="goTo($index)"
         (keydown.enter)="goTo($index)"
@@ -22,7 +22,7 @@
 
 @if (showControls() && items().length > 1) {
   <button
-    class="cr-btn cr-btn--prev"
+    class="btn btn--prev"
     [disabled]="!hasPrev()"
     (click)="prev()"
     aria-label="Previous item"
@@ -31,7 +31,7 @@
     ‹
   </button>
   <button
-    class="cr-btn cr-btn--next"
+    class="btn btn--next"
     [disabled]="!hasNext()"
     (click)="next()"
     aria-label="Next item"
@@ -42,11 +42,11 @@
 }
 
 @if (showIndicators() && items().length > 1) {
-  <div class="cr-indicators" role="tablist" aria-label="Carousel indicators">
+  <div class="indicators" role="tablist" aria-label="Carousel indicators">
     @for (item of items(); track $index) {
       <button
-        class="cr-dot"
-        [class.cr-dot--active]="$index === activeIndex()"
+        class="dot"
+        [class.dot--active]="$index === activeIndex()"
         (click)="goTo($index)"
         role="tab"
         [attr.aria-selected]="$index === activeIndex()"

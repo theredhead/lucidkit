@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 :host {
   --ui-font: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
   --ui-bg: #f6f7f8;
@@ -53,7 +55,7 @@
   color: var(--ui-text);
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-bg: #1f242a;
   --ui-surface: #242b33;
   --ui-surface-2: #2d3641;
@@ -79,35 +81,7 @@
   --ui-caption-text: #dbe5f1;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-bg: #1f242a;
-    --ui-surface: #242b33;
-    --ui-surface-2: #2d3641;
-    --ui-border: #505d6d;
-    --ui-border-strong: #617184;
-    --ui-text: #f2f6fb;
-    --ui-muted: #d0d8e3;
-    --ui-accent: #7ab0ff;
-    --ui-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
-    --ui-badge-neutral-fg: #d9e0e8;
-    --ui-badge-neutral-bg: #36424f;
-    --ui-badge-neutral-border: #4a5a6a;
-    --ui-badge-success-fg: #8be1ad;
-    --ui-badge-success-bg: #1e3a2b;
-    --ui-badge-success-border: #2f5a42;
-    --ui-badge-warning-fg: #ffd08a;
-    --ui-badge-warning-bg: #4f3719;
-    --ui-badge-warning-border: #6a4a22;
-    --ui-badge-danger-fg: #ffb4ba;
-    --ui-badge-danger-bg: #4f2329;
-    --ui-badge-danger-border: #6d333b;
-    --ui-caption-bg: #26303a;
-    --ui-caption-text: #dbe5f1;
-  }
-}
-
-.table-view-root {
+.root {
   border: 1px solid var(--ui-border);
   border-radius: 0;
   overflow: hidden;
@@ -116,12 +90,12 @@
 }
 
 /* Prevent text selection while resizing columns */
-.table-view-root.tv-resizing {
+.root.resizing {
   user-select: none;
   cursor: col-resize;
 }
 
-.table-caption {
+.caption {
   padding: calc(var(--ui-block-padding, 0.65rem) * 0.8)
     var(--ui-inline-padding, 0.85rem);
   border-bottom: 1px solid var(--ui-border);
@@ -133,7 +107,7 @@
 }
 
 :host:focus-visible {
-  outline: 2px solid var(--ui-accent);
+  outline: 2px solid var(--ui-focus-ring);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -142,6 +116,6 @@
   outline: none;
 }
 
-.columns-slot {
+.slot {
   display: none;
 }

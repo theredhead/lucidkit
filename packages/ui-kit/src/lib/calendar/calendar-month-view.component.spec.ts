@@ -74,42 +74,42 @@ describe("UICalendarMonthView", () => {
 
   describe("rendering", () => {
     it("should render the month label", () => {
-      const label = fixture.nativeElement.querySelector(".cal-month-label");
+      const label = fixture.nativeElement.querySelector(".month-label");
       expect(label.textContent.trim()).toBe("March 2025");
     });
 
     it("should render 7 weekday headers", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".cal-weekday");
+      const headers = fixture.nativeElement.querySelectorAll(".weekday");
       expect(headers.length).toBe(7);
       expect(headers[0].textContent.trim()).toBe("Mon");
       expect(headers[6].textContent.trim()).toBe("Sun");
     });
 
     it("should render 42 day cells (6 weeks × 7 days)", () => {
-      const days = fixture.nativeElement.querySelectorAll(".cal-day");
+      const days = fixture.nativeElement.querySelectorAll(".day");
       expect(days.length).toBe(42);
     });
 
     it("should render navigation buttons", () => {
-      const buttons = fixture.nativeElement.querySelectorAll(".cal-nav-btn");
+      const buttons = fixture.nativeElement.querySelectorAll(".nav-btn");
       expect(buttons.length).toBe(2);
     });
 
     it("should mark days outside the current month", () => {
       const outsideDays =
-        fixture.nativeElement.querySelectorAll(".cal-day--outside");
+        fixture.nativeElement.querySelectorAll(".day--outside");
       expect(outsideDays.length).toBeGreaterThan(0);
     });
   });
 
   describe("events", () => {
     it("should render event badges on days with events", () => {
-      const events = fixture.nativeElement.querySelectorAll(".cal-event");
+      const events = fixture.nativeElement.querySelectorAll(".event");
       expect(events.length).toBeGreaterThan(0);
     });
 
     it("should show event title in badge", () => {
-      const events = fixture.nativeElement.querySelectorAll(".cal-event");
+      const events = fixture.nativeElement.querySelectorAll(".event");
       const titles = Array.from(events).map((e: unknown) =>
         (e as HTMLElement).textContent?.trim(),
       );
@@ -117,7 +117,7 @@ describe("UICalendarMonthView", () => {
     });
 
     it("should apply custom event color", () => {
-      const events = fixture.nativeElement.querySelectorAll(".cal-event");
+      const events = fixture.nativeElement.querySelectorAll(".event");
       const lunchEvent = Array.from(events).find(
         (e: unknown) =>
           (e as HTMLElement).textContent?.trim() === "Lunch meeting",
@@ -138,7 +138,7 @@ describe("UICalendarMonthView", () => {
       fixture.detectChanges();
 
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
       expect(overflow).toBeTruthy();
       expect(overflow.textContent).toContain("more");
@@ -149,34 +149,34 @@ describe("UICalendarMonthView", () => {
     it("should navigate to next month", () => {
       host.calendar().nextMonth();
       fixture.detectChanges();
-      const label = fixture.nativeElement.querySelector(".cal-month-label");
+      const label = fixture.nativeElement.querySelector(".month-label");
       expect(label.textContent.trim()).toBe("April 2025");
     });
 
     it("should navigate to previous month", () => {
       host.calendar().previousMonth();
       fixture.detectChanges();
-      const label = fixture.nativeElement.querySelector(".cal-month-label");
+      const label = fixture.nativeElement.querySelector(".month-label");
       expect(label.textContent.trim()).toBe("February 2025");
     });
 
     it("should navigate via prev button click", () => {
       const prevBtn = fixture.nativeElement.querySelector(
-        '.cal-nav-btn[aria-label="Previous month"]',
+        '.nav-btn[aria-label="Previous month"]',
       );
       prevBtn.click();
       fixture.detectChanges();
-      const label = fixture.nativeElement.querySelector(".cal-month-label");
+      const label = fixture.nativeElement.querySelector(".month-label");
       expect(label.textContent.trim()).toBe("February 2025");
     });
 
     it("should navigate via next button click", () => {
       const nextBtn = fixture.nativeElement.querySelector(
-        '.cal-nav-btn[aria-label="Next month"]',
+        '.nav-btn[aria-label="Next month"]',
       );
       nextBtn.click();
       fixture.detectChanges();
-      const label = fixture.nativeElement.querySelector(".cal-month-label");
+      const label = fixture.nativeElement.querySelector(".month-label");
       expect(label.textContent.trim()).toBe("April 2025");
     });
 
@@ -191,18 +191,18 @@ describe("UICalendarMonthView", () => {
   describe("day selection", () => {
     it("should mark the selected day", () => {
       const selectedDay =
-        fixture.nativeElement.querySelector(".cal-day--selected");
+        fixture.nativeElement.querySelector(".day--selected");
       expect(selectedDay).toBeTruthy();
     });
 
     it("should emit dateSelected on day click", () => {
       const spy = vi.fn();
       host.calendar().dateSelected.subscribe(spy);
-      const days = fixture.nativeElement.querySelectorAll(".cal-day");
+      const days = fixture.nativeElement.querySelectorAll(".day");
       // Click a day that's in the current month
       const inMonthDay = Array.from(days).find(
         (d: unknown) =>
-          !(d as HTMLElement).classList.contains("cal-day--outside"),
+          !(d as HTMLElement).classList.contains("day--outside"),
       ) as HTMLElement;
       inMonthDay?.click();
       expect(spy).toHaveBeenCalledOnce();
@@ -210,7 +210,7 @@ describe("UICalendarMonthView", () => {
 
     it("should update selectedDate on day click", () => {
       const days = fixture.nativeElement.querySelectorAll(
-        ".cal-day:not(.cal-day--outside)",
+        ".day:not(.day--outside)",
       );
       if (days.length > 0) {
         (days[5] as HTMLElement).click();
@@ -228,10 +228,10 @@ describe("UICalendarMonthView", () => {
         mockRef as ReturnType<typeof popoverService.openPopover>,
       );
 
-      const eventBadge = fixture.nativeElement.querySelector(".cal-event");
+      const eventBadge = fixture.nativeElement.querySelector(".event");
       expect(eventBadge).toBeTruthy();
 
-      const dayCell = eventBadge.closest(".cal-day") as HTMLElement;
+      const dayCell = eventBadge.closest(".day") as HTMLElement;
 
       // First click selects the day — no popover
       dayCell.click();
@@ -247,34 +247,34 @@ describe("UICalendarMonthView", () => {
 
   describe("accessibility", () => {
     it("should have role=grid on the container", () => {
-      const grid = fixture.nativeElement.querySelector(".cal-container");
+      const grid = fixture.nativeElement.querySelector(".container");
       expect(grid.getAttribute("role")).toBe("grid");
     });
 
     it("should have aria-label on the container", () => {
-      const grid = fixture.nativeElement.querySelector(".cal-container");
+      const grid = fixture.nativeElement.querySelector(".container");
       expect(grid.getAttribute("aria-label")).toBe("Calendar month view");
     });
 
     it("should have role=columnheader on weekday labels", () => {
-      const header = fixture.nativeElement.querySelector(".cal-weekday");
+      const header = fixture.nativeElement.querySelector(".weekday");
       expect(header.getAttribute("role")).toBe("columnheader");
     });
 
     it("should have role=gridcell on day cells", () => {
-      const cell = fixture.nativeElement.querySelector(".cal-day");
+      const cell = fixture.nativeElement.querySelector(".day");
       expect(cell.getAttribute("role")).toBe("gridcell");
     });
 
     it("should have aria-label on day cells", () => {
-      const cell = fixture.nativeElement.querySelector(".cal-day");
+      const cell = fixture.nativeElement.querySelector(".day");
       expect(cell.getAttribute("aria-label")).toBeTruthy();
     });
 
     it("should support custom ariaLabel", () => {
       host.ariaLabel.set("My calendar");
       fixture.detectChanges();
-      const grid = fixture.nativeElement.querySelector(".cal-container");
+      const grid = fixture.nativeElement.querySelector(".container");
       expect(grid.getAttribute("aria-label")).toBe("My calendar");
     });
   });
@@ -284,12 +284,12 @@ describe("UICalendarMonthView", () => {
       // Conference is March 20–22
       // Find events on March 20, 21, 22
       const days = fixture.nativeElement.querySelectorAll(
-        ".cal-day:not(.cal-day--outside)",
+        ".day:not(.day--outside)",
       );
       // March 20 is the 20th day, 0-indexed from first in-month day
       let confDayCount = 0;
       days.forEach((day: HTMLElement) => {
-        const events = day.querySelectorAll(".cal-event");
+        const events = day.querySelectorAll(".event");
         events.forEach((evt: Element) => {
           if (evt.textContent?.trim() === "Conference") {
             confDayCount++;
@@ -303,12 +303,12 @@ describe("UICalendarMonthView", () => {
   describe("week numbers", () => {
     it("should not show week numbers by default", () => {
       const wkCells =
-        fixture.nativeElement.querySelectorAll(".cal-week-number");
+        fixture.nativeElement.querySelectorAll(".week-number");
       expect(wkCells.length).toBe(0);
     });
 
     it("should not show Wk header by default", () => {
-      const wkHeader = fixture.nativeElement.querySelector(".cal-weekday--wk");
+      const wkHeader = fixture.nativeElement.querySelector(".weekday--wk");
       expect(wkHeader).toBeNull();
     });
 
@@ -317,7 +317,7 @@ describe("UICalendarMonthView", () => {
       fixture.detectChanges();
 
       const wkCells =
-        fixture.nativeElement.querySelectorAll(".cal-week-number");
+        fixture.nativeElement.querySelectorAll(".week-number");
       expect(wkCells.length).toBe(6); // 6 week rows
     });
 
@@ -325,7 +325,7 @@ describe("UICalendarMonthView", () => {
       host.showWeekNumbers.set(true);
       fixture.detectChanges();
 
-      const wkHeader = fixture.nativeElement.querySelector(".cal-weekday--wk");
+      const wkHeader = fixture.nativeElement.querySelector(".weekday--wk");
       expect(wkHeader).toBeTruthy();
       expect(wkHeader.textContent.trim()).toBe("Wk");
     });
@@ -335,7 +335,7 @@ describe("UICalendarMonthView", () => {
       fixture.detectChanges();
 
       const wkCells =
-        fixture.nativeElement.querySelectorAll(".cal-week-number");
+        fixture.nativeElement.querySelectorAll(".week-number");
       const weekNums = Array.from(wkCells).map((c: unknown) =>
         parseInt((c as HTMLElement).textContent!.trim(), 10),
       );
@@ -348,15 +348,15 @@ describe("UICalendarMonthView", () => {
       host.showWeekNumbers.set(true);
       fixture.detectChanges();
 
-      const container = fixture.nativeElement.querySelector(".cal-container");
-      expect(container.classList).toContain("cal-container--week-numbers");
+      const container = fixture.nativeElement.querySelector(".container");
+      expect(container.classList).toContain("container--week-numbers");
     });
 
     it("should have role=rowheader on week number cells", () => {
       host.showWeekNumbers.set(true);
       fixture.detectChanges();
 
-      const wkCell = fixture.nativeElement.querySelector(".cal-week-number");
+      const wkCell = fixture.nativeElement.querySelector(".week-number");
       expect(wkCell.getAttribute("role")).toBe("rowheader");
     });
   });
@@ -388,7 +388,7 @@ describe("UICalendarMonthView", () => {
 
     it("should still show overflow indicator text", () => {
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
       expect(overflow).toBeTruthy();
       expect(overflow.textContent).toContain("more");
@@ -397,9 +397,9 @@ describe("UICalendarMonthView", () => {
     it("should open popover when clicking a day with overflow", () => {
       // Find the day cell that contains the overflow indicator (March 3)
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
-      const dayCell = overflow.closest(".cal-day") as HTMLElement;
+      const dayCell = overflow.closest(".day") as HTMLElement;
       expect(dayCell).toBeTruthy();
 
       dayCell.click();
@@ -410,9 +410,9 @@ describe("UICalendarMonthView", () => {
 
     it("should pass the day data as input to the popover", () => {
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
-      const dayCell = overflow.closest(".cal-day") as HTMLElement;
+      const dayCell = overflow.closest(".day") as HTMLElement;
       dayCell.click();
       fixture.detectChanges();
 
@@ -426,9 +426,9 @@ describe("UICalendarMonthView", () => {
 
     it("should set ariaLabel on the popover", () => {
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
-      const dayCell = overflow.closest(".cal-day") as HTMLElement;
+      const dayCell = overflow.closest(".day") as HTMLElement;
       dayCell.click();
       fixture.detectChanges();
 
@@ -439,10 +439,10 @@ describe("UICalendarMonthView", () => {
     it("should not open popover when clicking a day without events", () => {
       // Find a day cell that has no events at all
       const days = fixture.nativeElement.querySelectorAll(
-        ".cal-day:not(.cal-day--outside)",
+        ".day:not(.day--outside)",
       );
       const dayWithoutEvents = Array.from(days).find(
-        (d: unknown) => !(d as HTMLElement).querySelector(".cal-event"),
+        (d: unknown) => !(d as HTMLElement).querySelector(".event"),
       ) as HTMLElement;
       expect(dayWithoutEvents).toBeTruthy();
 
@@ -459,14 +459,14 @@ describe("UICalendarMonthView", () => {
     it("should open popover on second click of a day with events (even without overflow)", () => {
       // March 14 has 1 event (Sprint review) — no overflow with max 2
       const days = fixture.nativeElement.querySelectorAll(
-        ".cal-day:not(.cal-day--outside)",
+        ".day:not(.day--outside)",
       );
       const dayWithOneEvent = Array.from(days).find((d: unknown) => {
         const el = d as HTMLElement;
         const events = el.querySelectorAll(
-          ".cal-event:not(.cal-event--overflow)",
+          ".event:not(.event--overflow)",
         );
-        return events.length === 1 && !el.querySelector(".cal-event--overflow");
+        return events.length === 1 && !el.querySelector(".event--overflow");
       }) as HTMLElement;
       expect(dayWithOneEvent).toBeTruthy();
 
@@ -486,9 +486,9 @@ describe("UICalendarMonthView", () => {
       host.calendar().eventSelected.subscribe(spy);
 
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
-      const dayCell = overflow.closest(".cal-day") as HTMLElement;
+      const dayCell = overflow.closest(".day") as HTMLElement;
       dayCell.click();
       fixture.detectChanges();
 
@@ -511,9 +511,9 @@ describe("UICalendarMonthView", () => {
       host.calendar().eventSelected.subscribe(spy);
 
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
-      const dayCell = overflow.closest(".cal-day") as HTMLElement;
+      const dayCell = overflow.closest(".day") as HTMLElement;
       dayCell.click();
       fixture.detectChanges();
 
@@ -527,9 +527,9 @@ describe("UICalendarMonthView", () => {
       const closeSpy = vi.spyOn(mockRef, "close");
 
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
-      const dayCell = overflow.closest(".cal-day") as HTMLElement;
+      const dayCell = overflow.closest(".day") as HTMLElement;
 
       // First click opens popover
       dayCell.click();
@@ -552,9 +552,9 @@ describe("UICalendarMonthView", () => {
 
     it("should use the day cell as the popover anchor", () => {
       const overflow = fixture.nativeElement.querySelector(
-        ".cal-event--overflow",
+        ".event--overflow",
       );
-      const dayCell = overflow.closest(".cal-day") as HTMLElement;
+      const dayCell = overflow.closest(".day") as HTMLElement;
       dayCell.click();
       fixture.detectChanges();
 

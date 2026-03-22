@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 :host {
   display: inline-flex;
   align-items: center;
@@ -13,7 +16,7 @@
   --ui-surface: #ffffff;
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-text: #f2f6fb;
   --ui-border: #505d6d;
   --ui-border-strong: #617184;
@@ -22,34 +25,23 @@
   --ui-surface: #2a2f38;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-text: #f2f6fb;
-    --ui-border: #505d6d;
-    --ui-border-strong: #617184;
-    --ui-accent: #7ab0ff;
-    --ui-accent-hover: #5a9aef;
-    --ui-surface: #2a2f38;
-  }
-}
-
 :host(.ui-radio-button--disabled) {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.rb-control {
+.control {
   display: inline-flex;
   align-items: center;
   outline: none;
 
-  &:focus-visible .rb-circle {
-    outline: 2px solid var(--ui-accent);
+  &:focus-visible .circle {
+    outline: 2px solid var(--ui-focus-ring);
     outline-offset: 2px;
   }
 }
 
-.rb-circle {
+.circle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -64,22 +56,22 @@
   flex-shrink: 0;
 }
 
-:host(.ui-radio-button--checked) .rb-circle {
+:host(.ui-radio-button--checked) .circle {
   border-color: var(--ui-accent);
 }
 
-:host(:not(.ui-radio-button--disabled)) .rb-control:hover .rb-circle {
+:host(:not(.ui-radio-button--disabled)) .control:hover .circle {
   border-color: var(--ui-accent-hover);
 }
 
-.rb-dot {
+.dot {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
   background: var(--ui-accent);
 }
 
-.rb-label {
+.label {
   color: var(--ui-text);
   font-size: var(--ui-font-body, 0.875rem);
   cursor: inherit;

@@ -41,13 +41,13 @@ describe("UIProgress", () => {
 
   describe("linear determinate", () => {
     it("should render track and fill", () => {
-      expect(fixture.nativeElement.querySelector(".pg-track")).toBeTruthy();
-      expect(fixture.nativeElement.querySelector(".pg-fill")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".track")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".fill")).toBeTruthy();
     });
 
     it("should set fill width based on value", () => {
       const fill = fixture.nativeElement.querySelector(
-        ".pg-fill",
+        ".fill",
       ) as HTMLElement;
       expect(fill.style.width).toBe("50%");
     });
@@ -56,7 +56,7 @@ describe("UIProgress", () => {
       host.value.set(150);
       fixture.detectChanges();
       const fill = fixture.nativeElement.querySelector(
-        ".pg-fill",
+        ".fill",
       ) as HTMLElement;
       expect(fill.style.width).toBe("100%");
     });
@@ -81,7 +81,7 @@ describe("UIProgress", () => {
 
     it("should render indeterminate fill", () => {
       expect(
-        fixture.nativeElement.querySelector(".pg-fill--indeterminate"),
+        fixture.nativeElement.querySelector(".fill--indeterminate"),
       ).toBeTruthy();
     });
 
@@ -104,14 +104,14 @@ describe("UIProgress", () => {
     });
 
     it("should render SVG ring", () => {
-      expect(fixture.nativeElement.querySelector(".pg-ring")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".ring")).toBeTruthy();
     });
 
     it("should render track and fill circles", () => {
       expect(
-        fixture.nativeElement.querySelector(".pg-ring-track"),
+        fixture.nativeElement.querySelector(".ring-track"),
       ).toBeTruthy();
-      expect(fixture.nativeElement.querySelector(".pg-ring-fill")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".ring-fill")).toBeTruthy();
     });
 
     it("should apply circular class", () => {
@@ -130,7 +130,7 @@ describe("UIProgress", () => {
 
     it("should render indeterminate ring", () => {
       expect(
-        fixture.nativeElement.querySelector(".pg-ring-fill--indeterminate"),
+        fixture.nativeElement.querySelector(".ring-fill--indeterminate"),
       ).toBeTruthy();
     });
   });

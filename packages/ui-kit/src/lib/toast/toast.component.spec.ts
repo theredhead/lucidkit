@@ -71,7 +71,7 @@ describe("UIToastContainer", () => {
     it("should display toast message", () => {
       service.show({ message: "Test message", duration: 0 });
       fixture.detectChanges();
-      const msg = fixture.nativeElement.querySelector(".toast-message");
+      const msg = fixture.nativeElement.querySelector(".message");
       expect(msg.textContent.trim()).toBe("Test message");
     });
 
@@ -82,14 +82,14 @@ describe("UIToastContainer", () => {
         duration: 0,
       });
       fixture.detectChanges();
-      const title = fixture.nativeElement.querySelector(".toast-title");
+      const title = fixture.nativeElement.querySelector(".title");
       expect(title.textContent.trim()).toBe("Header");
     });
 
     it("should not render title element when empty", () => {
       service.show({ message: "No title", duration: 0 });
       fixture.detectChanges();
-      const title = fixture.nativeElement.querySelector(".toast-title");
+      const title = fixture.nativeElement.querySelector(".title");
       expect(title).toBeFalsy();
     });
 
@@ -107,7 +107,7 @@ describe("UIToastContainer", () => {
         actionLabel: "Undo",
       });
       fixture.detectChanges();
-      const action = fixture.nativeElement.querySelector(".toast-action");
+      const action = fixture.nativeElement.querySelector(".action");
       expect(action).toBeTruthy();
       expect(action.textContent.trim()).toBe("Undo");
     });
@@ -115,7 +115,7 @@ describe("UIToastContainer", () => {
     it("should not render action button without actionLabel", () => {
       service.show({ message: "Simple", duration: 0 });
       fixture.detectChanges();
-      const action = fixture.nativeElement.querySelector(".toast-action");
+      const action = fixture.nativeElement.querySelector(".action");
       expect(action).toBeFalsy();
     });
   });
@@ -125,7 +125,7 @@ describe("UIToastContainer", () => {
       service.show({ message: "Closeable", duration: 0 });
       fixture.detectChanges();
       const close = fixture.nativeElement.querySelector(
-        ".toast-close",
+        ".close",
       ) as HTMLButtonElement;
       close.click();
       fixture.detectChanges();
@@ -152,7 +152,7 @@ describe("UIToastContainer", () => {
     it("should have aria-label on close button", () => {
       service.show({ message: "X", duration: 0 });
       fixture.detectChanges();
-      const close = fixture.nativeElement.querySelector(".toast-close");
+      const close = fixture.nativeElement.querySelector(".close");
       expect(close.getAttribute("aria-label")).toBe("Dismiss notification");
     });
   });

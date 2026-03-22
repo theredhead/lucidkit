@@ -100,14 +100,14 @@ describe("UIRichTextEditor", () => {
 
   describe("toolbar", () => {
     it("should render a toolbar", () => {
-      const toolbar = fixture.nativeElement.querySelector(".rte-toolbar");
+      const toolbar = fixture.nativeElement.querySelector(".toolbar");
       expect(toolbar).toBeTruthy();
       expect(toolbar.getAttribute("role")).toBe("toolbar");
     });
 
     it("should render flat buttons for inline and misc groups", () => {
       const flatButtons = fixture.nativeElement.querySelectorAll(
-        ".rte-toolbar-btn:not(.rte-dropdown-trigger):not(.rte-toolbar-btn--source)",
+        ".toolbar-btn:not(.dropdown-trigger):not(.toolbar-btn--source)",
       );
       // 2 history (↩ ↪) + 4 inline (B, I, U, S) + 2 insert (― 🖼) + 1 link (🔗) + 1 misc (⌧) = 10
       expect(flatButtons.length).toBe(10);
@@ -115,7 +115,7 @@ describe("UIRichTextEditor", () => {
 
     it("should render dropdown triggers for grouped actions", () => {
       const triggers = fixture.nativeElement.querySelectorAll(
-        ".rte-dropdown-trigger",
+        ".dropdown-trigger",
       );
       // block (Headings), list (Lists), align (Alignment) = 3
       expect(triggers.length).toBe(3);
@@ -123,58 +123,58 @@ describe("UIRichTextEditor", () => {
 
     it("should show dropdown panel with actions on trigger click", () => {
       const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-dropdown-trigger",
+        ".dropdown-trigger",
       );
       trigger.click();
       fixture.detectChanges();
 
-      const panel = fixture.nativeElement.querySelector(".rte-dropdown-panel");
+      const panel = fixture.nativeElement.querySelector(".dropdown-panel");
       expect(panel).toBeTruthy();
 
-      const actions = panel.querySelectorAll(".rte-dropdown-action");
+      const actions = panel.querySelectorAll(".dropdown-action");
       expect(actions.length).toBeGreaterThan(0);
     });
 
     it("should close dropdown panel after executing an action", () => {
       const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-dropdown-trigger",
+        ".dropdown-trigger",
       );
       trigger.click();
       fixture.detectChanges();
 
       const action: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-dropdown-action",
+        ".dropdown-action",
       );
       action.click();
       fixture.detectChanges();
 
       expect(
-        fixture.nativeElement.querySelector(".rte-dropdown-panel"),
+        fixture.nativeElement.querySelector(".dropdown-panel"),
       ).toBeNull();
     });
 
     it("should close dropdown when a different dropdown is opened", () => {
       const triggers: HTMLButtonElement[] = Array.from(
-        fixture.nativeElement.querySelectorAll(".rte-dropdown-trigger"),
+        fixture.nativeElement.querySelectorAll(".dropdown-trigger"),
       );
       // Open first dropdown
       triggers[0].click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelectorAll(".rte-dropdown-panel").length,
+        fixture.nativeElement.querySelectorAll(".dropdown-panel").length,
       ).toBe(1);
 
       // Open second dropdown — first should close
       triggers[1].click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelectorAll(".rte-dropdown-panel").length,
+        fixture.nativeElement.querySelectorAll(".dropdown-panel").length,
       ).toBe(1);
     });
 
     it("should render correct labels on toolbar buttons", () => {
       const buttons: HTMLButtonElement[] = Array.from(
-        fixture.nativeElement.querySelectorAll(".rte-toolbar-btn"),
+        fixture.nativeElement.querySelectorAll(".toolbar-btn"),
       );
       for (const btn of buttons) {
         const label = btn.getAttribute("aria-label");
@@ -187,7 +187,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const buttons = fixture.nativeElement.querySelectorAll(
-        ".rte-toolbar-btn:not(.rte-dropdown-trigger):not(.rte-toolbar-btn--source)",
+        ".toolbar-btn:not(.dropdown-trigger):not(.toolbar-btn--source)",
       );
       expect(buttons.length).toBe(2);
       expect(buttons[0].getAttribute("aria-label")).toBe("Bold");
@@ -199,7 +199,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const buttons: HTMLButtonElement[] = Array.from(
-        fixture.nativeElement.querySelectorAll(".rte-toolbar-btn"),
+        fixture.nativeElement.querySelectorAll(".toolbar-btn"),
       );
       for (const btn of buttons) {
         expect(btn.disabled).toBe(true);
@@ -211,7 +211,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const buttons: HTMLButtonElement[] = Array.from(
-        fixture.nativeElement.querySelectorAll(".rte-toolbar-btn"),
+        fixture.nativeElement.querySelectorAll(".toolbar-btn"),
       );
       for (const btn of buttons) {
         expect(btn.disabled).toBe(true);
@@ -220,7 +220,7 @@ describe("UIRichTextEditor", () => {
 
     it("should render group separators between different groups", () => {
       const separators = fixture.nativeElement.querySelectorAll(
-        ".rte-toolbar-separator",
+        ".toolbar-separator",
       );
       expect(separators.length).toBeGreaterThan(0);
     });
@@ -228,18 +228,18 @@ describe("UIRichTextEditor", () => {
 
   describe("editor area", () => {
     it("should render a contenteditable div", () => {
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor).toBeTruthy();
       expect(editor.getAttribute("contenteditable")).toBe("true");
     });
 
     it("should have textbox role", () => {
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("role")).toBe("textbox");
     });
 
     it("should set aria-multiline to true", () => {
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("aria-multiline")).toBe("true");
     });
 
@@ -247,7 +247,7 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("ariaLabel", "Email body");
       fixture.detectChanges();
 
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("aria-label")).toBe("Email body");
     });
 
@@ -255,7 +255,7 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("placeholder", "Write something…");
       fixture.detectChanges();
 
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("data-placeholder")).toBe("Write something…");
     });
 
@@ -263,7 +263,7 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
 
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("contenteditable")).toBe("false");
     });
 
@@ -271,7 +271,7 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("readonly", true);
       fixture.detectChanges();
 
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("contenteditable")).toBe("false");
     });
   });
@@ -284,13 +284,13 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       expect(editor.innerHTML).toContain("Hello world");
     });
 
     it("should sync value when editor content changes", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = "<p>Updated content</p>";
       editor.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -400,7 +400,7 @@ describe("UIRichTextEditor", () => {
 
     it("should show placeholder picker button when placeholders are provided", () => {
       const btn = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       expect(btn).toBeTruthy();
     });
@@ -410,38 +410,38 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const btn = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       expect(btn).toBeNull();
     });
 
     it("should toggle dropdown on click", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
 
       btn.click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+        fixture.nativeElement.querySelector(".placeholder-dropdown"),
       ).toBeTruthy();
 
       btn.click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+        fixture.nativeElement.querySelector(".placeholder-dropdown"),
       ).toBeNull();
     });
 
     it("should render category headers", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       btn.click();
       fixture.detectChanges();
 
       const categories = fixture.nativeElement.querySelectorAll(
-        ".rte-placeholder-category",
+        ".placeholder-category",
       );
       expect(categories.length).toBe(2);
       expect(categories[0].textContent.trim()).toBe("Contact");
@@ -450,32 +450,32 @@ describe("UIRichTextEditor", () => {
 
     it("should render placeholder options", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       btn.click();
       fixture.detectChanges();
 
       const options = fixture.nativeElement.querySelectorAll(
-        ".rte-placeholder-option",
+        ".placeholder-option",
       );
       expect(options.length).toBe(3);
     });
 
     it("should close dropdown after inserting a placeholder", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       btn.click();
       fixture.detectChanges();
 
       const option = fixture.nativeElement.querySelector(
-        ".rte-placeholder-option",
+        ".placeholder-option",
       );
       option.click();
       fixture.detectChanges();
 
       expect(
-        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+        fixture.nativeElement.querySelector(".placeholder-dropdown"),
       ).toBeNull();
     });
 
@@ -484,13 +484,13 @@ describe("UIRichTextEditor", () => {
       component.placeholderInserted.subscribe(spy);
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       btn.click();
       fixture.detectChanges();
 
       const option = fixture.nativeElement.querySelector(
-        ".rte-placeholder-option",
+        ".placeholder-option",
       );
       option.click();
       fixture.detectChanges();
@@ -503,7 +503,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       expect(btn.disabled).toBe(true);
     });
@@ -512,7 +512,7 @@ describe("UIRichTextEditor", () => {
   describe("placeholder serialisation", () => {
     it("should serialise placeholder chips as {{key}} tokens", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML =
         'Hello <span class="rte-placeholder" contenteditable="false" data-placeholder-key="firstName">First Name</span>!';
       editor.dispatchEvent(new Event("input"));
@@ -531,7 +531,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const chip = editor.querySelector(".rte-placeholder");
       expect(chip).toBeTruthy();
       expect(chip!.getAttribute("data-placeholder-key")).toBe("firstName");
@@ -546,7 +546,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const chip = editor.querySelector(".rte-placeholder");
       expect(chip).toBeTruthy();
       expect(chip!.textContent).toContain("unknownKey");
@@ -566,7 +566,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const chips = editor.querySelectorAll(".rte-placeholder");
       expect(chips.length).toBe(3);
       expect(chips[0].getAttribute("data-placeholder-key")).toBe("first-name");
@@ -587,7 +587,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const chip = editor.querySelector(".rte-placeholder");
       expect(chip).toBeTruthy();
       expect(chip!.getAttribute("data-placeholder-key")).toBe("firstName");
@@ -698,7 +698,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       expect(editor.innerHTML).toContain("Safe");
       expect(editor.innerHTML).not.toContain("script");
       expect(editor.innerHTML).not.toContain("alert");
@@ -714,7 +714,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       expect(editor.innerHTML).toContain("onclick");
       expect(editor.innerHTML).toContain("style");
     });
@@ -727,7 +727,7 @@ describe("UIRichTextEditor", () => {
   describe("focus tracking", () => {
     it("should track focus state", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       expect(component["isFocused"]()).toBe(false);
 
       editor.dispatchEvent(new Event("focus"));
@@ -739,12 +739,12 @@ describe("UIRichTextEditor", () => {
 
     it("should add focused class to wrapper when focused", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
       const wrapper = fixture.nativeElement.querySelector(
-        ".rte-editor-wrapper--focused",
+        ".editor-wrapper--focused",
       );
       expect(wrapper).toBeTruthy();
     });
@@ -753,7 +753,7 @@ describe("UIRichTextEditor", () => {
   describe("source editing", () => {
     it("should render a source toggle button", () => {
       const btn = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       expect(btn).toBeTruthy();
       expect(btn.getAttribute("aria-label")).toBe("Edit HTML source");
@@ -762,14 +762,14 @@ describe("UIRichTextEditor", () => {
     it("should default to WYSIWYG mode (not source)", () => {
       expect(component["isSourceMode"]()).toBe(false);
       expect(
-        fixture.nativeElement.querySelector(".rte-source-editor"),
+        fixture.nativeElement.querySelector(".source-editor"),
       ).toBeNull();
-      expect(fixture.nativeElement.querySelector(".rte-editor")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".editor")).toBeTruthy();
     });
 
     it("should show textarea above WYSIWYG preview in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       btn.click();
       fixture.detectChanges();
@@ -777,61 +777,61 @@ describe("UIRichTextEditor", () => {
       expect(component["isSourceMode"]()).toBe(true);
       // Both textarea and editor present
       expect(
-        fixture.nativeElement.querySelector(".rte-source-editor"),
+        fixture.nativeElement.querySelector(".source-editor"),
       ).toBeTruthy();
-      expect(fixture.nativeElement.querySelector(".rte-editor")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".editor")).toBeTruthy();
     });
 
     it("should show a preview label in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       btn.click();
       fixture.detectChanges();
 
-      const label = fixture.nativeElement.querySelector(".rte-preview-label");
+      const label = fixture.nativeElement.querySelector(".preview-label");
       expect(label).toBeTruthy();
       expect(label.textContent.trim()).toBe("Preview");
     });
 
     it("should make WYSIWYG preview non-editable in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       btn.click();
       fixture.detectChanges();
 
-      const editor = fixture.nativeElement.querySelector(".rte-editor");
+      const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("contenteditable")).toBe("false");
     });
 
     it("should populate textarea with current value", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = "<p>Hello</p>";
       editor.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       btn.click();
       fixture.detectChanges();
 
       const textarea: HTMLTextAreaElement =
-        fixture.nativeElement.querySelector(".rte-source-editor");
+        fixture.nativeElement.querySelector(".source-editor");
       expect(textarea.value).toBe("<p>Hello</p>");
     });
 
     it("should sync value from textarea input", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       btn.click();
       fixture.detectChanges();
 
       const textarea: HTMLTextAreaElement =
-        fixture.nativeElement.querySelector(".rte-source-editor");
+        fixture.nativeElement.querySelector(".source-editor");
       textarea.value = "<p>Edited</p>";
       textarea.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -841,31 +841,31 @@ describe("UIRichTextEditor", () => {
 
     it("should live-update WYSIWYG preview as textarea changes", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       btn.click();
       fixture.detectChanges();
 
       const textarea: HTMLTextAreaElement =
-        fixture.nativeElement.querySelector(".rte-source-editor");
+        fixture.nativeElement.querySelector(".source-editor");
       textarea.value = "<p>Live preview</p>";
       textarea.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       expect(editor.innerHTML).toContain("Live preview");
     });
 
     it("should add active class to toggle when in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
-      expect(btn.classList.contains("rte-toolbar-btn--active")).toBe(false);
+      expect(btn.classList.contains("toolbar-btn--active")).toBe(false);
 
       btn.click();
       fixture.detectChanges();
-      expect(btn.classList.contains("rte-toolbar-btn--active")).toBe(true);
+      expect(btn.classList.contains("toolbar-btn--active")).toBe(true);
     });
 
     it("should not toggle source mode when disabled", () => {
@@ -873,7 +873,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       expect(btn.disabled).toBe(true);
     });
@@ -893,14 +893,14 @@ describe("UIRichTextEditor", () => {
       (document as any).queryCommandValue = vi.fn().mockReturnValue("");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
       const boldBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        '.rte-toolbar-btn[aria-label="Bold"]',
+        '.toolbar-btn[aria-label="Bold"]',
       );
-      expect(boldBtn.classList.contains("rte-toolbar-btn--active")).toBe(true);
+      expect(boldBtn.classList.contains("toolbar-btn--active")).toBe(true);
       expect(boldBtn.getAttribute("aria-pressed")).toBe("true");
     });
 
@@ -909,14 +909,14 @@ describe("UIRichTextEditor", () => {
       (document as any).queryCommandValue = vi.fn().mockReturnValue("");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
       const boldBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        '.rte-toolbar-btn[aria-label="Bold"]',
+        '.toolbar-btn[aria-label="Bold"]',
       );
-      expect(boldBtn.classList.contains("rte-toolbar-btn--active")).toBe(false);
+      expect(boldBtn.classList.contains("toolbar-btn--active")).toBe(false);
       expect(boldBtn.getAttribute("aria-pressed")).toBe("false");
     });
 
@@ -929,7 +929,7 @@ describe("UIRichTextEditor", () => {
         );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -942,7 +942,7 @@ describe("UIRichTextEditor", () => {
       (document as any).queryCommandValue = vi.fn().mockReturnValue("");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
       expect(component["activeFormats"]().size).toBeGreaterThan(0);
@@ -1040,7 +1040,7 @@ describe("UIRichTextEditor", () => {
 
     it("should insert a new link when popover returns a result", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = "Hello world";
       editor.focus();
 
@@ -1066,7 +1066,7 @@ describe("UIRichTextEditor", () => {
 
     it("should not modify content when popover is cancelled", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = "<p>Hello world</p>";
       editor.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -1084,7 +1084,7 @@ describe("UIRichTextEditor", () => {
 
     it("should pass editMode true when caret is inside an existing link", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML =
         '<p>Visit <a href="https://old.com">Old Link</a> now</p>';
       editor.focus();
@@ -1110,7 +1110,7 @@ describe("UIRichTextEditor", () => {
 
     it("should update an existing link when popover returns a result", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML =
         '<p>Visit <a href="https://old.com">Old Link</a> now</p>';
       editor.focus();
@@ -1185,7 +1185,7 @@ describe("UIRichTextEditor", () => {
       const preventSpy = vi.spyOn(event, "preventDefault");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       expect(preventSpy).toHaveBeenCalled();
@@ -1198,7 +1198,7 @@ describe("UIRichTextEditor", () => {
       );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       expect(execCommandSpy).toHaveBeenCalledWith(
@@ -1212,7 +1212,7 @@ describe("UIRichTextEditor", () => {
       const event = createPasteEvent(undefined, "Plain text");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       expect(execCommandSpy).toHaveBeenCalledWith(
@@ -1232,7 +1232,7 @@ describe("UIRichTextEditor", () => {
       );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       expect(execCommandSpy).toHaveBeenCalledWith(
@@ -1246,7 +1246,7 @@ describe("UIRichTextEditor", () => {
       const event = createPasteEvent(undefined, undefined);
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       expect(execCommandSpy).toHaveBeenCalledWith("insertText", false, "");
@@ -1256,7 +1256,7 @@ describe("UIRichTextEditor", () => {
   describe("keydown placeholder deletion", () => {
     it("should delete entire placeholder chip on Backspace", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const chip = document.createElement("span");
       chip.className = "rte-placeholder";
       chip.contentEditable = "false";
@@ -1294,7 +1294,7 @@ describe("UIRichTextEditor", () => {
 
     it("should not interfere with normal Backspace when no chip is adjacent", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = "Hello world";
 
       const textNode = editor.firstChild!;
@@ -1318,7 +1318,7 @@ describe("UIRichTextEditor", () => {
 
     it("should not interfere with non-collapsed selection on Backspace", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = "Select me";
 
       const textNode = editor.firstChild!;
@@ -1342,7 +1342,7 @@ describe("UIRichTextEditor", () => {
 
     it("should ignore non-Backspace/Delete keys", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = "Hello";
 
       const event = new KeyboardEvent("keydown", {
@@ -1484,7 +1484,7 @@ describe("UIRichTextEditor", () => {
         );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1499,7 +1499,7 @@ describe("UIRichTextEditor", () => {
         );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1514,7 +1514,7 @@ describe("UIRichTextEditor", () => {
         );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1529,7 +1529,7 @@ describe("UIRichTextEditor", () => {
         );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1544,7 +1544,7 @@ describe("UIRichTextEditor", () => {
         );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1559,7 +1559,7 @@ describe("UIRichTextEditor", () => {
         );
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1574,7 +1574,7 @@ describe("UIRichTextEditor", () => {
         .mockImplementation((cmd: string) => cmd === "underline");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1587,7 +1587,7 @@ describe("UIRichTextEditor", () => {
         .mockImplementation((cmd: string) => cmd === "strikeThrough");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1600,7 +1600,7 @@ describe("UIRichTextEditor", () => {
         .mockImplementation((cmd: string) => cmd === "insertUnorderedList");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1613,7 +1613,7 @@ describe("UIRichTextEditor", () => {
         .mockImplementation((cmd: string) => cmd === "insertOrderedList");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1626,7 +1626,7 @@ describe("UIRichTextEditor", () => {
         .mockImplementation((cmd: string) => cmd === "justifyLeft");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1639,7 +1639,7 @@ describe("UIRichTextEditor", () => {
         .mockImplementation((cmd: string) => cmd === "justifyCenter");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1652,7 +1652,7 @@ describe("UIRichTextEditor", () => {
         .mockImplementation((cmd: string) => cmd === "justifyRight");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
@@ -1665,7 +1665,7 @@ describe("UIRichTextEditor", () => {
       });
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       // Should not throw
       expect(() => {
         editor.dispatchEvent(new Event("focus"));
@@ -1682,7 +1682,7 @@ describe("UIRichTextEditor", () => {
       });
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       expect(() => {
         editor.dispatchEvent(new Event("focus"));
         fixture.detectChanges();
@@ -1691,7 +1691,7 @@ describe("UIRichTextEditor", () => {
 
     it("should detect link when caret is inside an anchor", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = '<p>Visit <a href="https://x.com">here</a> now</p>';
 
       // Position caret inside the anchor
@@ -1712,7 +1712,7 @@ describe("UIRichTextEditor", () => {
 
     it("should not detect link when caret is outside an anchor", () => {
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.innerHTML = '<p>Visit <a href="https://x.com">here</a> now</p>';
 
       // Position caret in "now" text
@@ -1739,17 +1739,17 @@ describe("UIRichTextEditor", () => {
 
       // Open placeholder picker
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       pickerBtn.click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+        fixture.nativeElement.querySelector(".placeholder-dropdown"),
       ).toBeTruthy();
 
       // Toggle source mode — picker should close
       const sourceBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       sourceBtn.click();
       fixture.detectChanges();
@@ -1760,7 +1760,7 @@ describe("UIRichTextEditor", () => {
     it("should close dropdown group when toggling source mode", () => {
       // Open a dropdown
       const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-dropdown-trigger",
+        ".dropdown-trigger",
       );
       trigger.click();
       fixture.detectChanges();
@@ -1768,7 +1768,7 @@ describe("UIRichTextEditor", () => {
 
       // Toggle source mode — dropdown should close
       const sourceBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--source",
+        ".toolbar-btn--source",
       );
       sourceBtn.click();
       fixture.detectChanges();
@@ -1877,7 +1877,7 @@ describe("UIRichTextEditor", () => {
   describe("keyboard shortcuts", () => {
     it("should execute bold on Ctrl+B", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "b",
@@ -1890,7 +1890,7 @@ describe("UIRichTextEditor", () => {
 
     it("should execute italic on Ctrl+I", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "i",
@@ -1903,7 +1903,7 @@ describe("UIRichTextEditor", () => {
 
     it("should execute underline on Ctrl+U", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "u",
@@ -1916,7 +1916,7 @@ describe("UIRichTextEditor", () => {
 
     it("should execute strikethrough on Ctrl+Shift+S", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "s",
@@ -1930,7 +1930,7 @@ describe("UIRichTextEditor", () => {
 
     it("should execute undo on Ctrl+Z", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "z",
@@ -1943,7 +1943,7 @@ describe("UIRichTextEditor", () => {
 
     it("should execute redo on Ctrl+Y", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "y",
@@ -1956,7 +1956,7 @@ describe("UIRichTextEditor", () => {
 
     it("should execute redo on Ctrl+Shift+Z", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "z",
@@ -1972,7 +1972,7 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", {
           key: "b",
@@ -1985,7 +1985,7 @@ describe("UIRichTextEditor", () => {
 
     it("should not trigger shortcut without modifier key", () => {
       const editor: HTMLElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(
         new KeyboardEvent("keydown", { key: "b", bubbles: true }),
       );
@@ -2080,19 +2080,19 @@ describe("UIRichTextEditor", () => {
   describe("outside click closes dropdowns", () => {
     it("should close dropdown group on outside click", () => {
       const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-dropdown-trigger",
+        ".dropdown-trigger",
       );
       trigger.click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".rte-dropdown-panel"),
+        fixture.nativeElement.querySelector(".dropdown-panel"),
       ).toBeTruthy();
 
       // Click outside the component
       document.body.click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".rte-dropdown-panel"),
+        fixture.nativeElement.querySelector(".dropdown-panel"),
       ).toBeFalsy();
     });
 
@@ -2103,18 +2103,18 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       pickerBtn.click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+        fixture.nativeElement.querySelector(".placeholder-dropdown"),
       ).toBeTruthy();
 
       document.body.click();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".rte-placeholder-dropdown"),
+        fixture.nativeElement.querySelector(".placeholder-dropdown"),
       ).toBeFalsy();
     });
   });
@@ -2152,27 +2152,27 @@ describe("UIRichTextEditor", () => {
 
     it("should render a search input in the placeholder dropdown", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       pickerBtn.click();
       fixture.detectChanges();
 
       const searchInput = fixture.nativeElement.querySelector(
-        ".rte-placeholder-search-input",
+        ".placeholder-search-input",
       );
       expect(searchInput).toBeTruthy();
     });
 
     it("should filter placeholders by search term", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       pickerBtn.click();
       fixture.detectChanges();
 
       // All 3 options visible
       let options = fixture.nativeElement.querySelectorAll(
-        ".rte-placeholder-option",
+        ".placeholder-option",
       );
       expect(options.length).toBe(3);
 
@@ -2181,7 +2181,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       options = fixture.nativeElement.querySelectorAll(
-        ".rte-placeholder-option",
+        ".placeholder-option",
       );
       expect(options.length).toBe(1);
       expect(options[0].textContent.trim()).toBe("First Name");
@@ -2189,7 +2189,7 @@ describe("UIRichTextEditor", () => {
 
     it("should show no matches message when search yields no results", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       pickerBtn.click();
       fixture.detectChanges();
@@ -2198,7 +2198,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const empty = fixture.nativeElement.querySelector(
-        ".rte-placeholder-empty",
+        ".placeholder-empty",
       );
       expect(empty).toBeTruthy();
       expect(empty.textContent.trim()).toBe("No matches");
@@ -2206,7 +2206,7 @@ describe("UIRichTextEditor", () => {
 
     it("should clear search term when picker is closed", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".rte-toolbar-btn--placeholder",
+        ".toolbar-btn--placeholder",
       );
       pickerBtn.click();
       fixture.detectChanges();
@@ -2224,16 +2224,16 @@ describe("UIRichTextEditor", () => {
 
   describe("character count / maxLength", () => {
     it("should not render footer when maxLength is not set", () => {
-      const footer = fixture.nativeElement.querySelector(".rte-footer");
+      const footer = fixture.nativeElement.querySelector(".footer");
       expect(footer).toBeFalsy();
     });
 
     it("should render footer with character count when maxLength is set", () => {
       fixture.componentRef.setInput("maxLength", 100);
       fixture.detectChanges();
-      const footer = fixture.nativeElement.querySelector(".rte-footer");
+      const footer = fixture.nativeElement.querySelector(".footer");
       expect(footer).toBeTruthy();
-      const count = footer.querySelector(".rte-char-count");
+      const count = footer.querySelector(".char-count");
       expect(count).toBeTruthy();
       expect(count.textContent).toContain("/ 100");
     });
@@ -2243,8 +2243,8 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("value", "Hello, World!");
       fixture.detectChanges();
 
-      const footer = fixture.nativeElement.querySelector(".rte-footer");
-      expect(footer.classList.contains("rte-footer--over")).toBe(true);
+      const footer = fixture.nativeElement.querySelector(".footer");
+      expect(footer.classList.contains("footer--over")).toBe(true);
     });
 
     it("should not add over class when character count is within maxLength", () => {
@@ -2252,8 +2252,8 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("value", "Hello");
       fixture.detectChanges();
 
-      const footer = fixture.nativeElement.querySelector(".rte-footer");
-      expect(footer.classList.contains("rte-footer--over")).toBe(false);
+      const footer = fixture.nativeElement.querySelector(".footer");
+      expect(footer.classList.contains("footer--over")).toBe(false);
     });
   });
 
@@ -2297,7 +2297,7 @@ describe("UIRichTextEditor", () => {
       const preventSpy = vi.spyOn(event, "preventDefault");
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       expect(preventSpy).toHaveBeenCalled();
@@ -2307,7 +2307,7 @@ describe("UIRichTextEditor", () => {
       const event = createImagePasteEvent();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       // FileReader is async — wait for it
@@ -2330,7 +2330,7 @@ describe("UIRichTextEditor", () => {
       const event = createImagePasteEvent();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       await new Promise((r) => setTimeout(r, 50));
@@ -2352,7 +2352,7 @@ describe("UIRichTextEditor", () => {
 
       const event = createImagePasteEvent();
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       await new Promise((r) => setTimeout(r, 50));
@@ -2380,7 +2380,7 @@ describe("UIRichTextEditor", () => {
       });
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       editor.dispatchEvent(event);
 
       // Should fall through to the normal paste handler
@@ -2402,7 +2402,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const img = editor.querySelector("img");
       expect(img).toBeTruthy();
       expect(img!.getAttribute("src")).toBe(dataUri);
@@ -2416,7 +2416,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const a = editor.querySelector("a");
       expect(a).toBeTruthy();
       expect(a!.getAttribute("href")).toBeNull();
@@ -2430,7 +2430,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".rte-editor");
+        fixture.nativeElement.querySelector(".editor");
       const img = editor.querySelector("img");
       expect(img).toBeTruthy();
       expect(img!.getAttribute("src")).toBeNull();

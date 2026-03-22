@@ -94,20 +94,20 @@ describe("UIChart", () => {
 
   describe("rendering", () => {
     it("should render an SVG into the chart container with bar strategy", () => {
-      const svg = fixture.nativeElement.querySelector(".chart-viewport svg");
+      const svg = fixture.nativeElement.querySelector(".viewport svg");
       expect(svg).toBeTruthy();
     });
 
     it("should render bar rects matching data length", () => {
       const rects = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg rect",
+        ".viewport svg rect",
       );
       expect(rects.length).toBe(testData.length);
     });
 
     it("should render legend entries matching data length", () => {
       const items = fixture.nativeElement.querySelectorAll(
-        ".chart-legend__item",
+        ".legend__item",
       );
       expect(items.length).toBe(testData.length);
     });
@@ -115,7 +115,7 @@ describe("UIChart", () => {
     it("should hide legend when showLegend is false", () => {
       host.showLegend.set(false);
       fixture.detectChanges();
-      const legend = fixture.nativeElement.querySelector(".chart-legend");
+      const legend = fixture.nativeElement.querySelector(".legend");
       expect(legend).toBeNull();
     });
   });
@@ -125,7 +125,7 @@ describe("UIChart", () => {
       host.strategy.set(new LineGraphStrategy());
       fixture.detectChanges();
       const paths = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg path",
+        ".viewport svg path",
       );
       expect(paths.length).toBeGreaterThanOrEqual(1);
     });
@@ -134,7 +134,7 @@ describe("UIChart", () => {
       host.strategy.set(new PieChartStrategy());
       fixture.detectChanges();
       const paths = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg path",
+        ".viewport svg path",
       );
       expect(paths.length).toBe(testData.length);
     });
@@ -143,7 +143,7 @@ describe("UIChart", () => {
       host.strategy.set(new ScatterPlotStrategy());
       fixture.detectChanges();
       const circles = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg circle",
+        ".viewport svg circle",
       );
       expect(circles.length).toBe(testData.length);
     });
@@ -157,7 +157,7 @@ describe("UIChart", () => {
       ]);
       fixture.detectChanges();
       const rects = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg rect",
+        ".viewport svg rect",
       );
       expect(rects.length).toBe(2);
     });
@@ -165,7 +165,7 @@ describe("UIChart", () => {
     it("should handle empty data", () => {
       host.source.set([]);
       fixture.detectChanges();
-      const container = fixture.nativeElement.querySelector(".chart-viewport");
+      const container = fixture.nativeElement.querySelector(".viewport");
       // Container is cleared — no children when data is empty
       expect(container.children.length).toBe(0);
     });
@@ -173,17 +173,17 @@ describe("UIChart", () => {
 
   describe("accessibility", () => {
     it("should have role=img on the chart viewport", () => {
-      const viewport = fixture.nativeElement.querySelector(".chart-viewport");
+      const viewport = fixture.nativeElement.querySelector(".viewport");
       expect(viewport.getAttribute("role")).toBe("img");
     });
 
     it("should apply aria-label to the chart viewport", () => {
-      const viewport = fixture.nativeElement.querySelector(".chart-viewport");
+      const viewport = fixture.nativeElement.querySelector(".viewport");
       expect(viewport.getAttribute("aria-label")).toBe("Data chart");
     });
 
     it("should have role=list on the legend", () => {
-      const legend = fixture.nativeElement.querySelector(".chart-legend");
+      const legend = fixture.nativeElement.querySelector(".legend");
       expect(legend.getAttribute("role")).toBe("list");
     });
   });
@@ -196,7 +196,7 @@ describe("UIChart", () => {
       ]);
       fixture.detectChanges();
       const rects = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg rect",
+        ".viewport svg rect",
       );
       // 3 data points × 2 layers = 6 bars
       expect(rects.length).toBe(6);
@@ -209,7 +209,7 @@ describe("UIChart", () => {
       ]);
       fixture.detectChanges();
       const items = fixture.nativeElement.querySelectorAll(
-        ".chart-legend__item",
+        ".legend__item",
       );
       // One legend entry per series
       expect(items.length).toBe(2);
@@ -219,7 +219,7 @@ describe("UIChart", () => {
       host.sources.set([]);
       fixture.detectChanges();
       const items = fixture.nativeElement.querySelectorAll(
-        ".chart-legend__item",
+        ".legend__item",
       );
       expect(items.length).toBe(testData.length);
     });
@@ -232,7 +232,7 @@ describe("UIChart", () => {
       ]);
       fixture.detectChanges();
       const paths = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg path",
+        ".viewport svg path",
       );
       // 2 series = 2 line paths
       expect(paths.length).toBe(2);
@@ -246,7 +246,7 @@ describe("UIChart", () => {
       ]);
       fixture.detectChanges();
       const circles = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg circle",
+        ".viewport svg circle",
       );
       // 3 data points × 2 layers = 6 circles
       expect(circles.length).toBe(6);
@@ -263,7 +263,7 @@ describe("UIChart", () => {
       ]);
       fixture.detectChanges();
       const rects = fixture.nativeElement.querySelectorAll(
-        ".chart-viewport svg rect",
+        ".viewport svg rect",
       );
       // 3 bars (original) + 2 bars (altData) = 5
       expect(rects.length).toBe(5);

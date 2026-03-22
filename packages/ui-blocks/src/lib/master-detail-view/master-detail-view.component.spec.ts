@@ -107,22 +107,22 @@ describe("UIMasterDetailView", () => {
 
   describe("layout", () => {
     it("should have a list panel", () => {
-      expect(el.querySelector(".mdv-list-panel")).toBeTruthy();
+      expect(el.querySelector(".list")).toBeTruthy();
     });
 
     it("should have a detail panel", () => {
-      expect(el.querySelector(".mdv-detail-panel")).toBeTruthy();
+      expect(el.querySelector(".detail")).toBeTruthy();
     });
 
     it("should display the title", () => {
-      const title = el.querySelector(".mdv-title");
+      const title = el.querySelector(".title");
       expect(title?.textContent?.trim()).toBe("Team");
     });
 
     it("should update the title", () => {
       host.title.set("Staff");
       fixture.detectChanges();
-      expect(el.querySelector(".mdv-title")?.textContent?.trim()).toBe("Staff");
+      expect(el.querySelector(".title")?.textContent?.trim()).toBe("Staff");
     });
   });
 
@@ -130,7 +130,7 @@ describe("UIMasterDetailView", () => {
 
   describe("placeholder", () => {
     it("should show placeholder when no item is selected", () => {
-      const placeholder = el.querySelector(".mdv-placeholder p");
+      const placeholder = el.querySelector(".placeholder p");
       expect(placeholder).toBeTruthy();
       expect(placeholder?.textContent?.trim()).toBe("Select a person");
     });
@@ -142,7 +142,7 @@ describe("UIMasterDetailView", () => {
       ).componentInstance as UIMasterDetailView<Person>;
       mdv.selectionModel.select(PEOPLE[0]);
       detectAndFlush();
-      expect(el.querySelector(".mdv-placeholder")).toBeNull();
+      expect(el.querySelector(".placeholder")).toBeNull();
     });
   });
 
@@ -188,7 +188,7 @@ describe("UIMasterDetailView", () => {
     });
 
     it("should not show row index column", () => {
-      expect(el.querySelector(".tv-row-index")).toBeNull();
+      expect(el.querySelector(".row-index")).toBeNull();
     });
   });
 
@@ -239,13 +239,13 @@ describe("UIMasterDetailView", () => {
 
   describe("filter", () => {
     it("should not show filter by default", () => {
-      expect(el.querySelector(".mdv-filter-bar")).toBeNull();
+      expect(el.querySelector(".filter-bar")).toBeNull();
     });
 
     it("should show filter bar when showFilter is true", () => {
       host.showFilter.set(true);
       fixture.detectChanges();
-      expect(el.querySelector(".mdv-filter-bar")).toBeTruthy();
+      expect(el.querySelector(".filter-bar")).toBeTruthy();
     });
 
     it("should show filter content when expanded", () => {
@@ -266,7 +266,7 @@ describe("UIMasterDetailView", () => {
       fixture.detectChanges();
 
       const toggle = el.querySelector(
-        ".mdv-filter-toggle",
+        ".filter-toggle",
       ) as HTMLButtonElement;
       expect(el.querySelector(".test-filter-content")).toBeTruthy();
 
@@ -283,7 +283,7 @@ describe("UIMasterDetailView", () => {
       host.showFilter.set(true);
       fixture.detectChanges();
 
-      const toggle = el.querySelector(".mdv-filter-toggle");
+      const toggle = el.querySelector(".filter-toggle");
       expect(toggle?.getAttribute("aria-expanded")).toBe("true");
 
       (toggle as HTMLButtonElement)?.click();
@@ -295,7 +295,7 @@ describe("UIMasterDetailView", () => {
       host.showFilter.set(true);
       host.filterModeLocked.set(true);
       fixture.detectChanges();
-      expect(el.querySelector(".mdv-filter-toggle")).toBeNull();
+      expect(el.querySelector(".filter-toggle")).toBeNull();
     });
 
     it("should always show filter content when mode-locked and expanded", () => {
@@ -304,7 +304,7 @@ describe("UIMasterDetailView", () => {
       host.filterModeLocked.set(true);
       fixture.detectChanges();
       expect(el.querySelector(".test-filter-content")).toBeTruthy();
-      expect(el.querySelector(".mdv-filter-toggle")).toBeNull();
+      expect(el.querySelector(".filter-toggle")).toBeNull();
     });
 
     it("should hide filter content when mode-locked and collapsed", () => {
@@ -313,7 +313,7 @@ describe("UIMasterDetailView", () => {
       host.filterModeLocked.set(true);
       fixture.detectChanges();
       expect(el.querySelector(".test-filter-content")).toBeNull();
-      expect(el.querySelector(".mdv-filter-toggle")).toBeNull();
+      expect(el.querySelector(".filter-toggle")).toBeNull();
     });
   });
 
@@ -473,19 +473,19 @@ describe("UIMasterDetailView (tree mode)", () => {
   });
 
   it("should display node labels using treeDisplayWith", () => {
-    const label = treeEl.querySelector(".tv-node-label");
+    const label = treeEl.querySelector(".node-label");
     expect(label?.textContent?.trim()).toBe("Engineering");
   });
 
   it("should show the placeholder when no node is selected", () => {
-    expect(treeEl.querySelector(".mdv-placeholder")).toBeTruthy();
+    expect(treeEl.querySelector(".placeholder")).toBeTruthy();
     expect(
-      treeEl.querySelector(".mdv-placeholder p")?.textContent?.trim(),
+      treeEl.querySelector(".placeholder p")?.textContent?.trim(),
     ).toBe("Select a department");
   });
 
   it("should show detail after selecting a tree node", () => {
-    const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+    const row = treeEl.querySelector(".node-row") as HTMLElement;
     row.click();
     detectAndFlushTree();
 
@@ -496,7 +496,7 @@ describe("UIMasterDetailView (tree mode)", () => {
   });
 
   it("should emit selectedChange with the node data", () => {
-    const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+    const row = treeEl.querySelector(".node-row") as HTMLElement;
     row.click();
     detectAndFlushTree();
 
@@ -505,7 +505,7 @@ describe("UIMasterDetailView (tree mode)", () => {
 
   it("should update detail when a different node is selected", () => {
     const rows = treeEl.querySelectorAll(
-      "ui-tree-view > ui-tree-node > .tv-node-row",
+      "ui-tree-view > ui-tree-node > .node-row",
     );
     (rows[2] as HTMLElement).click(); // HR
     detectAndFlushTree();
@@ -516,13 +516,13 @@ describe("UIMasterDetailView (tree mode)", () => {
   });
 
   it("should display the title", () => {
-    expect(treeEl.querySelector(".mdv-title")?.textContent?.trim()).toBe(
+    expect(treeEl.querySelector(".title")?.textContent?.trim()).toBe(
       "Departments",
     );
   });
 
   it("should use the tree wrapper class", () => {
-    expect(treeEl.querySelector(".mdv-tree-wrapper")).toBeTruthy();
-    expect(treeEl.querySelector(".mdv-table-wrapper")).toBeNull();
+    expect(treeEl.querySelector(".tree-wrapper")).toBeTruthy();
+    expect(treeEl.querySelector(".table-wrapper")).toBeNull();
   });
 });

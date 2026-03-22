@@ -1,5 +1,5 @@
 <div
-  class="toggle-track"
+  class="track"
   role="switch"
   tabindex="0"
   [attr.aria-checked]="value()"
@@ -9,11 +9,11 @@
   (keydown)="onKeyDown($event)"
 >
   @if (hasTrackLabels()) {
-    <span class="toggle-label toggle-label--on" aria-hidden="true">{{ onLabel() }}</span>
-    <span class="toggle-label toggle-label--off" aria-hidden="true">{{ offLabel() }}</span>
+    <span class="label label--on" aria-hidden="true">{{ onLabel() }}</span>
+    <span class="label label--off" aria-hidden="true">{{ offLabel() }}</span>
   }
-  <span class="toggle-thumb"></span>
+  <span class="thumb"></span>
 </div>
-<span class="toggle-text">
+<span class="text">
   <ng-content />
 </span>

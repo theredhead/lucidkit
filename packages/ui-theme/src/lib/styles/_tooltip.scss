@@ -1,0 +1,39 @@
+// theredhead UI Theme — Global Tooltip Styles
+// =============================================================================
+//
+// The UITooltip directive appends tooltip elements directly to `document.body`,
+// so they live outside Angular's view encapsulation.  This mixin emits the
+// required global rules and uses `--ui-*` tokens so the tooltip automatically
+// adapts to light/dark mode.
+
+/// Emit the global `.ui-tooltip` styles.
+///
+/// Called automatically by `theredhead-theme()`.  If you use a custom theme
+/// setup, include this mixin at the root level of your stylesheet.
+@mixin ui-tooltip-styles {
+  .ui-tooltip {
+    position: absolute;
+    z-index: 10000;
+    padding: 0.375rem 0.625rem;
+    border-radius: var(--ui-radius, 0.25rem);
+    background: var(--ui-text, #1d232b);
+    color: var(--ui-bg, #f6f7f8);
+    font-size: 0.75rem;
+    font-family: inherit;
+    line-height: 1.4;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: ui-tooltip-fade-in 120ms ease;
+  }
+
+  @keyframes ui-tooltip-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

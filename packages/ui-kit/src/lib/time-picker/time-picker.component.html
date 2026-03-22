@@ -1,12 +1,12 @@
 <div
-  class="tp-wrapper"
+  class="wrapper"
   role="group"
   [attr.aria-label]="ariaLabel()"
   [attr.aria-valuenow]="displayText()"
 >
   <!-- Hour -->
   <input
-    class="tp-segment tp-hour"
+    class="segment tp-hour"
     type="text"
     inputmode="numeric"
     maxlength="2"
@@ -21,11 +21,11 @@
     (keydown)="onHourKeydown($event)"
   />
 
-  <span class="tp-separator" aria-hidden="true">:</span>
+  <span class="separator" aria-hidden="true">:</span>
 
   <!-- Minute -->
   <input
-    class="tp-segment tp-minute"
+    class="segment tp-minute"
     type="text"
     inputmode="numeric"
     maxlength="2"
@@ -43,7 +43,7 @@
   <!-- AM/PM toggle (12-hour mode only) -->
   @if (show12Hr()) {
     <button
-      class="tp-meridiem"
+      class="meridiem"
       type="button"
       aria-label="Toggle AM/PM"
       [disabled]="disabled() || readonly()"

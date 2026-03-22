@@ -1,5 +1,5 @@
 <div
-  class="chart-viewport"
+  class="viewport"
   #chartContainer
   [style.width.px]="width()"
   [style.height.px]="height()"
@@ -8,15 +8,15 @@
 ></div>
 
 @if (showLegend() && legendEntries().length > 0) {
-  <ul class="chart-legend" role="list" aria-label="Chart legend">
+  <ul class="legend" role="list" aria-label="Chart legend">
     @for (entry of legendEntries(); track entry.label) {
-      <li class="chart-legend__item">
+      <li class="legend__item">
         <span
-          class="chart-legend__swatch"
+          class="legend__swatch"
           [style.background-color]="entry.color"
         ></span>
-        <span class="chart-legend__label">{{ entry.label }}</span>
-        <span class="chart-legend__value">{{ entry.value }}</span>
+        <span class="legend__label">{{ entry.label }}</span>
+        <span class="legend__value">{{ entry.value }}</span>
       </li>
     }
   </ul>

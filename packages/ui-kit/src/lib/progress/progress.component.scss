@@ -1,3 +1,6 @@
+@use 'mixins' as mix;
+@use 'animation' as anim;
+
 :host {
   display: inline-flex;
   align-items: center;
@@ -6,16 +9,9 @@
   --ui-track: #d7dce2;
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-accent: #7ab0ff;
   --ui-track: #505d6d;
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-accent: #7ab0ff;
-    --ui-track: #505d6d;
-  }
 }
 
 /* ── Linear ── */
@@ -24,7 +20,7 @@
   width: 100%;
 }
 
-.pg-track {
+.track {
   width: 100%;
   height: 4px;
   border-radius: 2px;
@@ -33,19 +29,19 @@
   position: relative;
 }
 
-.pg-fill {
+.fill {
   height: 100%;
   border-radius: 2px;
   background: var(--ui-accent);
   transition: width 250ms ease;
 }
 
-.pg-fill--indeterminate {
+.fill--indeterminate {
   width: 40%;
-  animation: pg-linear-indeterminate 1.6s ease-in-out infinite;
+  animation: ui-progress-linear 1.6s ease-in-out infinite;
 }
 
-@keyframes pg-linear-indeterminate {
+@keyframes ui-progress-linear {
   0% {
     transform: translateX(-100%);
   }
@@ -61,18 +57,18 @@
   height: 2.5rem;
 }
 
-.pg-ring {
+.ring {
   width: 100%;
   height: 100%;
 }
 
-.pg-ring-track {
+.ring-track {
   fill: none;
   stroke: var(--ui-track);
   stroke-width: 4;
 }
 
-.pg-ring-fill {
+.ring-fill {
   fill: none;
   stroke: var(--ui-accent);
   stroke-width: 4;
@@ -82,11 +78,11 @@
   transition: stroke-dashoffset 250ms ease;
 }
 
-.pg-ring-fill--indeterminate {
-  animation: pg-circular-indeterminate 1.4s linear infinite;
+.ring-fill--indeterminate {
+  animation: ui-progress-circular 1.4s linear infinite;
 }
 
-@keyframes pg-circular-indeterminate {
+@keyframes ui-progress-circular {
   0% {
     transform: rotate(-90deg);
   }

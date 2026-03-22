@@ -1,11 +1,11 @@
 <!-- Hidden slot: instantiates projected columns so contentChildren can discover them. -->
-<div class="mdv-columns-slot"><ng-content /></div>
+<div class="columns-slot"><ng-content /></div>
 
 @if (resolvedShowFilter()) {
-  <div class="mdv-filter-bar">
+  <div class="filter-bar">
     @if (!filterModeLocked()) {
       <button
-        class="mdv-filter-toggle"
+        class="filter-toggle"
         type="button"
         (click)="toggleFilter()"
         [attr.aria-expanded]="!filterCollapsed()"
@@ -19,7 +19,7 @@
       </button>
     }
     @if (!filterCollapsed()) {
-      <div class="mdv-filter-content" id="mdv-filter-content">
+      <div class="filter-content" id="mdv-filter-content">
         @if (filterTemplate(); as filterTpl) {
           <ng-container *ngTemplateOutlet="filterTpl" />
         } @else {
@@ -42,20 +42,20 @@
 }
 
 <ui-split-container
-  class="mdv-split"
+  class="split"
   [initialSizes]="splitSizes()"
   [name]="splitName()"
   [collapseTarget]="splitCollapseTarget()"
   [firstConstraints]="listConstraints()"
   ariaLabel="Resize list and detail panels"
 >
-  <aside first class="mdv-list-panel">
-    <header class="mdv-header">
-      <h2 class="mdv-title">{{ title() }}</h2>
+  <aside first class="list">
+    <header class="header">
+      <h2 class="title">{{ title() }}</h2>
     </header>
 
     @if (isTreeMode()) {
-      <div class="mdv-tree-wrapper">
+      <div class="tree-wrapper">
         <ui-tree-view
           [datasource]="resolvedTreeDatasource()!"
           [displayWith]="treeDisplayWith()"
@@ -71,7 +71,7 @@
         </ui-tree-view>
       </div>
     } @else {
-      <div class="mdv-table-wrapper">
+      <div class="table-wrapper">
         <ui-table-view
           [datasource]="resolvedDatasource()"
           [externalColumns]="columns()"
@@ -86,15 +86,15 @@
     }
   </aside>
 
-  <main second class="mdv-detail-panel">
+  <main second class="detail">
     @if (detailContext(); as ctx) {
       @if (detailTemplate(); as tpl) {
-        <section class="mdv-detail-content">
+        <section class="detail-content">
           <ng-container *ngTemplateOutlet="tpl; context: ctx" />
         </section>
       }
     } @else {
-      <div class="mdv-placeholder">
+      <div class="placeholder">
         <p>{{ placeholder() }}</p>
       </div>
     }

@@ -105,7 +105,7 @@ describe("UIMediaPlayer", () => {
     it("should show controls by default", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".mp-controls")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".controls")).toBeTruthy();
     });
 
     it("should hide controls when controls is false", () => {
@@ -119,40 +119,40 @@ describe("UIMediaPlayer", () => {
     it("should render play/pause button", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".mp-btn--play")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".btn--play")).toBeTruthy();
     });
 
     it("should render mute button", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".mp-btn--mute")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".btn--mute")).toBeTruthy();
     });
 
     it("should render volume slider", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".mp-volume-slider"),
+        fixture.nativeElement.querySelector(".volume-slider"),
       ).toBeTruthy();
     });
 
     it("should render progress bar", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".mp-progress")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".progress")).toBeTruthy();
     });
 
     it("should render rate button", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".mp-btn--rate")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".btn--rate")).toBeTruthy();
     });
 
     it("should render fullscreen button for video mode", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".mp-btn--fullscreen"),
+        fixture.nativeElement.querySelector(".btn--fullscreen"),
       ).toBeTruthy();
     });
 
@@ -161,7 +161,7 @@ describe("UIMediaPlayer", () => {
       host.source.set({ url: "test.mp3", type: "audio/mpeg" });
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".mp-btn--fullscreen"),
+        fixture.nativeElement.querySelector(".btn--fullscreen"),
       ).toBeFalsy();
     });
   });
@@ -232,7 +232,7 @@ describe("UIMediaPlayer", () => {
       host.poster.set("");
       fixture.detectChanges();
       const placeholder = fixture.nativeElement.querySelector(
-        ".mp-poster-placeholder",
+        ".poster-placeholder",
       );
       expect(placeholder).toBeTruthy();
     });
@@ -241,7 +241,7 @@ describe("UIMediaPlayer", () => {
       host.poster.set("poster.jpg");
       fixture.detectChanges();
       const placeholder = fixture.nativeElement.querySelector(
-        ".mp-poster-placeholder",
+        ".poster-placeholder",
       );
       expect(placeholder).toBeFalsy();
     });
@@ -251,7 +251,7 @@ describe("UIMediaPlayer", () => {
       host.poster.set("");
       fixture.detectChanges();
       const placeholder = fixture.nativeElement.querySelector(
-        ".mp-poster-placeholder",
+        ".poster-placeholder",
       );
       expect(placeholder).toBeFalsy();
     });
@@ -274,14 +274,14 @@ describe("UIMediaPlayer", () => {
     it("should have toolbar role on controls", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
-      const controls = fixture.nativeElement.querySelector(".mp-controls");
+      const controls = fixture.nativeElement.querySelector(".controls");
       expect(controls.getAttribute("role")).toBe("toolbar");
     });
 
     it("should have slider role on progress bar", () => {
       host.source.set({ url: "test.mp4", type: "video/mp4" });
       fixture.detectChanges();
-      const progress = fixture.nativeElement.querySelector(".mp-progress");
+      const progress = fixture.nativeElement.querySelector(".progress");
       expect(progress.getAttribute("role")).toBe("slider");
     });
   });
@@ -323,7 +323,7 @@ describe("UIMediaPlayer", () => {
       }));
       fixture.detectChanges();
 
-      const overlay = fixture.nativeElement.querySelector(".mp-error-overlay");
+      const overlay = fixture.nativeElement.querySelector(".error-overlay");
       expect(overlay).toBeTruthy();
       expect(overlay.getAttribute("role")).toBe("alert");
       expect(overlay.textContent).toContain("network error");
@@ -355,7 +355,7 @@ describe("UIMediaPlayer", () => {
       fixture.detectChanges();
 
       const placeholder = fixture.nativeElement.querySelector(
-        ".mp-poster-placeholder",
+        ".poster-placeholder",
       );
       expect(placeholder).toBeFalsy();
     });
@@ -372,7 +372,7 @@ describe("UIMediaPlayer", () => {
       }));
       fixture.detectChanges();
 
-      const banner = fixture.nativeElement.querySelector(".mp-error-banner");
+      const banner = fixture.nativeElement.querySelector(".error-banner");
       expect(banner).toBeTruthy();
       expect(banner.getAttribute("role")).toBe("alert");
       expect(banner.textContent).toContain("format is not supported");
@@ -390,17 +390,17 @@ describe("UIMediaPlayer", () => {
       }));
       fixture.detectChanges();
 
-      const overlay = fixture.nativeElement.querySelector(".mp-error-overlay");
+      const overlay = fixture.nativeElement.querySelector(".error-overlay");
       expect(overlay).toBeFalsy();
     });
 
     it("should not show error UI when no error", () => {
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.querySelector(".mp-error-overlay"),
+        fixture.nativeElement.querySelector(".error-overlay"),
       ).toBeFalsy();
       expect(
-        fixture.nativeElement.querySelector(".mp-error-banner"),
+        fixture.nativeElement.querySelector(".error-banner"),
       ).toBeFalsy();
     });
   });
@@ -456,7 +456,7 @@ describe("UIMediaPlayer — embed providers", () => {
       });
       fixture.detectChanges();
 
-      const iframe = fixture.nativeElement.querySelector(".mp-embed-iframe");
+      const iframe = fixture.nativeElement.querySelector(".embed-iframe");
       expect(iframe).toBeTruthy();
       expect(iframe.tagName).toBe("IFRAME");
     });
@@ -469,7 +469,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const iframe = fixture.nativeElement.querySelector(
-        ".mp-embed-iframe",
+        ".embed-iframe",
       ) as HTMLIFrameElement;
       expect(iframe.src).toContain("https://www.youtube.com/embed/dQw4w9WgXcQ");
     });
@@ -503,7 +503,7 @@ describe("UIMediaPlayer — embed providers", () => {
       host.controls.set(true);
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".mp-controls")).toBeFalsy();
+      expect(fixture.nativeElement.querySelector(".controls")).toBeFalsy();
     });
 
     it("should set allowfullscreen on iframe", () => {
@@ -514,7 +514,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const iframe = fixture.nativeElement.querySelector(
-        ".mp-embed-iframe",
+        ".embed-iframe",
       ) as HTMLIFrameElement;
       expect(iframe.allowFullscreen).toBe(true);
     });
@@ -528,7 +528,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const iframe = fixture.nativeElement.querySelector(
-        ".mp-embed-iframe",
+        ".embed-iframe",
       ) as HTMLIFrameElement;
       expect(iframe.getAttribute("aria-label")).toBe("YouTube video");
     });
@@ -541,7 +541,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const viewport = fixture.nativeElement.querySelector(
-        ".mp-viewport--embed",
+        ".viewport--embed",
       );
       expect(viewport).toBeTruthy();
     });
@@ -569,7 +569,7 @@ describe("UIMediaPlayer — embed providers", () => {
 
       expect(fixture.nativeElement.querySelector("video")).toBeTruthy();
       expect(
-        fixture.nativeElement.querySelector(".mp-embed-iframe"),
+        fixture.nativeElement.querySelector(".embed-iframe"),
       ).toBeFalsy();
     });
 
@@ -632,7 +632,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const iframe = fixture.nativeElement.querySelector(
-        ".mp-embed-iframe",
+        ".embed-iframe",
       ) as HTMLIFrameElement;
       expect(iframe).toBeTruthy();
       expect(iframe.src).toContain("https://testtube.example.com/embed/abc123");
@@ -646,7 +646,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const viewport = fixture.nativeElement.querySelector(
-        ".mp-viewport--embed",
+        ".viewport--embed",
       );
       expect(viewport.style.aspectRatio).toBe("4 / 3");
     });
@@ -660,7 +660,7 @@ describe("UIMediaPlayer — embed providers", () => {
 
       expect(fixture.nativeElement.querySelector("video")).toBeTruthy();
       expect(
-        fixture.nativeElement.querySelector(".mp-embed-iframe"),
+        fixture.nativeElement.querySelector(".embed-iframe"),
       ).toBeFalsy();
     });
 
@@ -672,7 +672,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const iframe = fixture.nativeElement.querySelector(
-        ".mp-embed-iframe",
+        ".embed-iframe",
       ) as HTMLIFrameElement;
       expect(iframe.title).toBe("TestTube player");
     });

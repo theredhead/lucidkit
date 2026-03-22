@@ -434,7 +434,8 @@ export class MarkdownEditingStrategy implements RichTextEditorStrategy {
     if (
       action === "alignLeft" ||
       action === "alignCenter" ||
-      action === "alignRight"
+      action === "alignRight" ||
+      action === "alignJustify"
     ) {
       return true;
     }

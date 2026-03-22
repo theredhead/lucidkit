@@ -90,7 +90,7 @@
 /* ── Active (keyboard-focused) row ── */
 
 .table-row--active {
-  outline: 2px solid var(--ui-accent);
+  outline: 2px solid var(--ui-focus-ring);
   outline-offset: -2px;
 }
 

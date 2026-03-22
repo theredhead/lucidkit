@@ -37,7 +37,7 @@ describe("UIRichTextView", () => {
       );
       fixture.detectChanges();
       const el: HTMLElement = fixture.nativeElement;
-      const contentDiv = el.querySelector(".rtv-content");
+      const contentDiv = el.querySelector(".content");
       expect(contentDiv).toBeTruthy();
       expect(contentDiv!.querySelector("p")).toBeTruthy();
       expect(contentDiv!.querySelector("strong")?.textContent).toBe("world");
@@ -47,11 +47,11 @@ describe("UIRichTextView", () => {
       fixture.componentRef.setInput("content", "<p>First</p>");
       fixture.detectChanges();
       const el: HTMLElement = fixture.nativeElement;
-      expect(el.querySelector(".rtv-content p")?.textContent).toBe("First");
+      expect(el.querySelector(".content p")?.textContent).toBe("First");
 
       fixture.componentRef.setInput("content", "<p>Second</p>");
       fixture.detectChanges();
-      expect(el.querySelector(".rtv-content p")?.textContent).toBe("Second");
+      expect(el.querySelector(".content p")?.textContent).toBe("Second");
     });
 
     it("should have the host class", () => {

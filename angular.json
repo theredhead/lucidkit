@@ -45,7 +45,10 @@
             "index": "",
             "browser": "",
             "tsConfig": ".storybook/tsconfig.json",
-            "styles": ["styles.scss"]
+            "styles": ["styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["packages/ui-theme/src/lib/styles"]
+            }
           }
         },
         "storybook": {

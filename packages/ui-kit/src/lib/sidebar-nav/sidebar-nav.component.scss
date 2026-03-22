@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 /* ── Light defaults ── */
 
 :host {
@@ -14,7 +16,7 @@
 
 /* ── Dark mode ── */
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-sidebar-text: #f2f6fb;
   --ui-sidebar-muted: #b0b7c0;
   --ui-sidebar-accent: #7ab0ff;
@@ -24,19 +26,7 @@
   --ui-sidebar-badge-text: #f2f6fb;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-sidebar-text: #f2f6fb;
-    --ui-sidebar-muted: #b0b7c0;
-    --ui-sidebar-accent: #7ab0ff;
-    --ui-sidebar-hover: rgba(255, 255, 255, 0.06);
-    --ui-sidebar-active-bg: rgba(122, 176, 255, 0.15);
-    --ui-sidebar-badge-bg: #617184;
-    --ui-sidebar-badge-text: #f2f6fb;
-  }
-}
-
-.sidebar-nav-inner {
+.inner {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;

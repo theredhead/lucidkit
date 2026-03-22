@@ -33,21 +33,21 @@
   user-select: none;
 
   &:hover {
-    border-color: var(--ui-accent);
+    border-color: var(--ui-focus-ring);
     background: var(--ui-hover-bg);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-accent);
+    outline: 2px solid var(--ui-focus-ring);
     outline-offset: 2px;
   }
 }
 
 // Active drag state
 :host(.ui-file-upload--dragging) .drop-zone {
-  border-color: var(--ui-accent);
+  border-color: var(--ui-focus-ring);
   border-style: solid;
-  background: color-mix(in srgb, var(--ui-accent) 8%, var(--ui-bg));
+  background: color-mix(in srgb, var(--ui-focus-ring) 8%, var(--ui-bg));
 }
 
 .drop-zone-icon {
@@ -122,7 +122,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-accent);
+    outline: 2px solid var(--ui-focus-ring);
     outline-offset: 1px;
   }
 }

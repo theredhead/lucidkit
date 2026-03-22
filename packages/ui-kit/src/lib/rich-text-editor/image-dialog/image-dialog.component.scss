@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 // Image dialog reuses the same visual design as the link dialog.
 // Shared classes are prefixed `ld-` (link-dialog) for consistency.
 
@@ -9,81 +12,67 @@
   font-size: 0.8125rem;
 }
 
-.ld-field {
+.field {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 
-  & + .ld-field {
+  & + .field {
     margin-top: 0.4rem;
   }
 }
 
-.ld-label {
+.label {
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--theredhead-on-surface-variant, #5a6470);
+  color: var(--ui-text-muted);
 }
 
-:host-context(html.dark-theme) .ld-label {
-  color: var(--theredhead-on-surface-variant, #d0d8e3);
+@include mix.dark-mode(".label") {
+  color: var(--ui-text-muted);
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) .ld-label {
-    color: var(--theredhead-on-surface-variant, #d0d8e3);
-  }
-}
-
-.ld-input {
+.input {
   appearance: none;
-  border: 1px solid var(--theredhead-outline-variant, #d7dce2);
+  border: 1px solid var(--ui-border);
   border-radius: 0.2rem;
   padding: 0.3rem 0.45rem;
-  background: var(--theredhead-surface, #fff);
-  color: var(--theredhead-on-surface, #1d232b);
+  background: var(--ui-surface);
+  color: var(--ui-text);
   font-family: inherit;
   font-size: 0.8125rem;
   outline: none;
   transition: border-color 120ms ease;
 
   &::placeholder {
-    color: var(--theredhead-on-surface-variant, #5a6470);
+    color: var(--ui-text-muted);
     opacity: 0.7;
   }
 
   &:focus {
-    border-color: var(--theredhead-primary, #3584e4);
-    box-shadow: 0 0 0 1px var(--theredhead-primary, #3584e4);
+    border-color: var(--ui-accent);
+    box-shadow: 0 0 0 1px var(--ui-accent);
   }
 }
 
-:host-context(html.dark-theme) .ld-input {
-  background: var(--theredhead-surface, #1e2228);
-  color: var(--theredhead-on-surface, #f2f6fb);
-  border-color: var(--theredhead-outline-variant, #3a3f47);
+@include mix.dark-mode(".input") {
+  background: var(--ui-surface);
+  color: var(--ui-text);
+  border-color: var(--ui-border);
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) .ld-input {
-    background: var(--theredhead-surface, #1e2228);
-    color: var(--theredhead-on-surface, #f2f6fb);
-    border-color: var(--theredhead-outline-variant, #3a3f47);
-  }
-}
-
-.ld-actions {
+.actions {
   display: flex;
   gap: 0.35rem;
   justify-content: flex-end;
   margin-top: 0.5rem;
 }
 
-.ld-btn {
+.btn {
   appearance: none;
-  border: 1px solid var(--theredhead-outline-variant, #d7dce2);
+  border: 1px solid var(--ui-border);
   border-radius: 0.2rem;
   padding: 0.3rem 0.6rem;
   font-family: inherit;
@@ -99,13 +88,13 @@
   white-space: nowrap;
 }
 
-.ld-btn--apply {
-  background: var(--theredhead-primary, #3584e4);
+.btn--apply {
+  background: var(--ui-accent);
   color: #fff;
-  border-color: var(--theredhead-primary, #3584e4);
+  border-color: var(--ui-accent);
 
   &:hover:not(:disabled) {
-    background: var(--theredhead-primary-hover, #2b71c7);
+    background: var(--ui-accent-hover);
   }
 
   &:disabled {
@@ -114,33 +103,19 @@
   }
 }
 
-.ld-btn--cancel {
+.btn--cancel {
   background: transparent;
-  color: var(--theredhead-on-surface, #1d232b);
+  color: var(--ui-text);
 
   &:hover {
-    background: var(--theredhead-surface-variant, #f0f2f5);
+    background: var(--ui-surface-variant);
   }
 }
 
-:host-context(html.dark-theme) {
-  .ld-btn--cancel {
-    color: var(--theredhead-on-surface, #f2f6fb);
+@include mix.dark-mode(".btn--cancel") {
+  color: var(--ui-text);
 
-    &:hover {
-      background: var(--theredhead-surface-variant, #2a2f38);
-    }
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    .ld-btn--cancel {
-      color: var(--theredhead-on-surface, #f2f6fb);
-
-      &:hover {
-        background: var(--theredhead-surface-variant, #2a2f38);
-      }
-    }
+  &:hover {
+    background: var(--ui-surface-variant);
   }
 }

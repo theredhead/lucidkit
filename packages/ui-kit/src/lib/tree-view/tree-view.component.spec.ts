@@ -154,7 +154,7 @@ describe("UITreeView", () => {
 
   describe("display", () => {
     it("should render labels using displayWith", () => {
-      const label = treeEl.querySelector(".tv-node-label")!;
+      const label = treeEl.querySelector(".node-label")!;
       expect(label.textContent?.trim()).toBe("src");
     });
   });
@@ -163,29 +163,29 @@ describe("UITreeView", () => {
 
   describe("expand/collapse", () => {
     it("should expand a node when toggle is clicked", () => {
-      const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+      const toggle = treeEl.querySelector(".toggle") as HTMLElement;
       toggle.click();
       fixture.detectChanges();
 
-      const children = treeEl.querySelector(".tv-children");
+      const children = treeEl.querySelector(".children");
       expect(children).toBeTruthy();
       const childNodes = children!.querySelectorAll(":scope > ui-tree-node");
       expect(childNodes.length).toBe(2); // app folder + index.html
     });
 
     it("should collapse an expanded node when toggle is clicked again", () => {
-      const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+      const toggle = treeEl.querySelector(".toggle") as HTMLElement;
       toggle.click();
       fixture.detectChanges();
-      expect(treeEl.querySelector(".tv-children")).toBeTruthy();
+      expect(treeEl.querySelector(".children")).toBeTruthy();
 
       toggle.click();
       fixture.detectChanges();
-      expect(treeEl.querySelector(".tv-children")).toBeFalsy();
+      expect(treeEl.querySelector(".children")).toBeFalsy();
     });
 
     it("should set aria-expanded to true when expanded", () => {
-      const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+      const toggle = treeEl.querySelector(".toggle") as HTMLElement;
       toggle.click();
       fixture.detectChanges();
 
@@ -194,7 +194,7 @@ describe("UITreeView", () => {
     });
 
     it("should render children with role=group wrapper", () => {
-      const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+      const toggle = treeEl.querySelector(".toggle") as HTMLElement;
       toggle.click();
       fixture.detectChanges();
 
@@ -203,24 +203,24 @@ describe("UITreeView", () => {
     });
 
     it("should set aria-level=2 on child nodes", () => {
-      const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+      const toggle = treeEl.querySelector(".toggle") as HTMLElement;
       toggle.click();
       fixture.detectChanges();
 
-      const children = treeEl.querySelectorAll(".tv-children > ui-tree-node");
+      const children = treeEl.querySelectorAll(".children > ui-tree-node");
       expect(children[0].getAttribute("aria-level")).toBe("2");
     });
 
     it("should not expand a disabled node", () => {
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
       const disabledToggle = items[2].querySelector(
-        ".tv-toggle",
+        ".toggle",
       ) as HTMLElement;
       if (disabledToggle) {
         disabledToggle.click();
         fixture.detectChanges();
       }
-      expect(items[2].querySelector(".tv-children")).toBeFalsy();
+      expect(items[2].querySelector(".children")).toBeFalsy();
     });
   });
 
@@ -228,7 +228,7 @@ describe("UITreeView", () => {
 
   describe("click selection", () => {
     it("should select a node when row is clicked", () => {
-      const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+      const row = treeEl.querySelector(".node-row") as HTMLElement;
       row.click();
       fixture.detectChanges();
       expect(host.selected.length).toBe(1);
@@ -236,7 +236,7 @@ describe("UITreeView", () => {
     });
 
     it("should apply selected host class", () => {
-      const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+      const row = treeEl.querySelector(".node-row") as HTMLElement;
       row.click();
       fixture.detectChanges();
 
@@ -246,7 +246,7 @@ describe("UITreeView", () => {
 
     it("should replace selection on plain click", () => {
       const rows = treeEl.querySelectorAll(
-        ":scope > ui-tree-node > .tv-node-row",
+        ":scope > ui-tree-node > .node-row",
       );
       (rows[0] as HTMLElement).click();
       fixture.detectChanges();
@@ -258,7 +258,7 @@ describe("UITreeView", () => {
 
     it("should add to selection on Ctrl+click", () => {
       const rows = treeEl.querySelectorAll(
-        ":scope > ui-tree-node > .tv-node-row",
+        ":scope > ui-tree-node > .node-row",
       );
       (rows[0] as HTMLElement).click();
       fixture.detectChanges();
@@ -274,7 +274,7 @@ describe("UITreeView", () => {
 
     it("should add to selection on Meta+click (⌘ on macOS)", () => {
       const rows = treeEl.querySelectorAll(
-        ":scope > ui-tree-node > .tv-node-row",
+        ":scope > ui-tree-node > .node-row",
       );
       (rows[0] as HTMLElement).click();
       fixture.detectChanges();
@@ -287,7 +287,7 @@ describe("UITreeView", () => {
     });
 
     it("should deselect a node on Ctrl+click when already selected", () => {
-      const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+      const row = treeEl.querySelector(".node-row") as HTMLElement;
       row.click();
       fixture.detectChanges();
       expect(host.selected.length).toBe(1);
@@ -301,14 +301,14 @@ describe("UITreeView", () => {
 
     it("should not select a disabled node", () => {
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
-      const row = items[2].querySelector(".tv-node-row") as HTMLElement;
+      const row = items[2].querySelector(".node-row") as HTMLElement;
       row.click();
       fixture.detectChanges();
       expect(host.selected.length).toBe(0);
     });
 
     it("should apply focused host class on the clicked node", () => {
-      const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+      const row = treeEl.querySelector(".node-row") as HTMLElement;
       row.click();
       fixture.detectChanges();
 
@@ -416,20 +416,20 @@ describe("UITreeView", () => {
     it("should expand a node with ArrowRight", () => {
       press("ArrowDown"); // cursor → src
       press("ArrowRight"); // expand src
-      expect(treeEl.querySelector(".tv-children")).toBeTruthy();
+      expect(treeEl.querySelector(".children")).toBeTruthy();
     });
 
     it("should collapse an expanded node with ArrowLeft", () => {
       press("ArrowDown"); // cursor → src
       press("ArrowRight"); // expand
-      expect(treeEl.querySelector(".tv-children")).toBeTruthy();
+      expect(treeEl.querySelector(".children")).toBeTruthy();
       press("ArrowLeft"); // collapse
-      expect(treeEl.querySelector(".tv-children")).toBeFalsy();
+      expect(treeEl.querySelector(".children")).toBeFalsy();
     });
 
     it("should move cursor to parent with ArrowLeft on a collapsed node", () => {
       // Expand src so children are visible
-      const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+      const toggle = treeEl.querySelector(".toggle") as HTMLElement;
       toggle.click();
       fixture.detectChanges();
 
@@ -526,7 +526,7 @@ describe("UITreeView", () => {
 
       it("should replace selection when arrow is pressed without Shift after extending", () => {
         // Expand src so there are more non-disabled nodes
-        const toggle = treeEl.querySelector(".tv-toggle") as HTMLElement;
+        const toggle = treeEl.querySelector(".toggle") as HTMLElement;
         toggle.click();
         fixture.detectChanges();
 
@@ -547,16 +547,16 @@ describe("UITreeView", () => {
       }
 
       it("should expand via ArrowRight after clicking a node row", () => {
-        const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+        const row = treeEl.querySelector(".node-row") as HTMLElement;
         row.click();
         fixture.detectChanges();
 
         pressOnRow(row, "ArrowRight");
-        expect(treeEl.querySelector(".tv-children")).toBeTruthy();
+        expect(treeEl.querySelector(".children")).toBeTruthy();
       });
 
       it("should navigate via ArrowDown after clicking a node row", () => {
-        const row = treeEl.querySelector(".tv-node-row") as HTMLElement;
+        const row = treeEl.querySelector(".node-row") as HTMLElement;
         row.click();
         fixture.detectChanges();
 

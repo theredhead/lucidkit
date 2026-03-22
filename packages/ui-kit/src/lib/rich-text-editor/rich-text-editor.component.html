@@ -1,16 +1,16 @@
 <!-- ── Toolbar ─────────────────────────────────────────────── -->
-<div class="rte-toolbar" role="toolbar" aria-label="Formatting">
+<div class="toolbar" role="toolbar" aria-label="Formatting">
   @for (group of groupedToolbarButtons(); track group.group) {
     @if (!$first) {
-      <span class="rte-toolbar-separator" aria-hidden="true"></span>
+      <span class="toolbar-separator" aria-hidden="true"></span>
     }
     @if (group.flat) {
       @for (btn of group.buttons; track btn.action) {
         <button
           #btnEl
           type="button"
-          class="rte-toolbar-btn"
-          [class.rte-toolbar-btn--active]="isActionActive(btn.action)"
+          class="toolbar-btn"
+          [class.toolbar-btn--active]="isActionActive(btn.action)"
           [attr.aria-label]="btn.label"
           [attr.title]="btn.label"
           [attr.aria-pressed]="isActionActive(btn.action)"
@@ -22,10 +22,10 @@
         </button>
       }
     } @else if (group.meta) {
-      <div class="rte-dropdown-group">
+      <div class="dropdown-group">
         <button
           type="button"
-          class="rte-toolbar-btn rte-dropdown-trigger"
+          class="toolbar-btn dropdown-trigger"
           [attr.aria-label]="group.meta.label"
           [attr.title]="group.meta.label"
           [attr.aria-expanded]="openDropdownGroup() === group.group"
@@ -34,24 +34,24 @@
           (click)="toggleDropdownGroup(group.group)"
         >
           <ui-icon [svg]="group.meta.icon" [size]="16" />
-          <span class="rte-dropdown-caret" aria-hidden="true">▾</span>
+          <span class="dropdown-caret" aria-hidden="true">▾</span>
         </button>
         @if (openDropdownGroup() === group.group) {
           <div
-            class="rte-dropdown-panel"
+            class="dropdown-panel"
             role="group"
             [attr.aria-label]="group.meta.label"
           >
             @for (btn of group.buttons; track btn.action) {
               <button
                 type="button"
-                class="rte-dropdown-action"
-                [class.rte-dropdown-action--active]="isActionActive(btn.action)"
+                class="dropdown-action"
+                [class.dropdown-action--active]="isActionActive(btn.action)"
                 [attr.aria-label]="btn.label"
                 (mousedown)="$event.preventDefault()"
                 (click)="execAction(btn.action)"
               >
-                <span class="rte-dropdown-action-icon"><ui-icon [svg]="btn.icon" [size]="16" /></span>
+                <span class="dropdown-action-icon"><ui-icon [svg]="btn.icon" [size]="16" /></span>
                 {{ btn.label }}
               </button>
             }
@@ -63,11 +63,11 @@
 
   <!-- Placeholder picker -->
   @if (placeholders().length > 0) {
-    <span class="rte-toolbar-separator" aria-hidden="true"></span>
-    <div class="rte-placeholder-picker">
+    <span class="toolbar-separator" aria-hidden="true"></span>
+    <div class="placeholder-picker">
       <button
         type="button"
-        class="rte-toolbar-btn rte-toolbar-btn--placeholder"
+        class="toolbar-btn toolbar-btn--placeholder"
         aria-label="Insert placeholder"
         title="Insert placeholder"
         [disabled]="disabled() || readonly()"
@@ -80,14 +80,14 @@
 
       @if (isPlaceholderPickerOpen()) {
         <div
-          class="rte-placeholder-dropdown"
+          class="placeholder-dropdown"
           role="listbox"
           aria-label="Available placeholders"
         >
-          <div class="rte-placeholder-search">
+          <div class="placeholder-search">
             <input
               type="text"
-              class="rte-placeholder-search-input"
+              class="placeholder-search-input"
               placeholder="Search placeholders…"
               aria-label="Filter placeholders"
               (input)="onPlaceholderSearch($event)"
@@ -96,12 +96,12 @@
           </div>
           @for (group of placeholdersByCategory(); track group.category) {
             @if (group.category) {
-              <div class="rte-placeholder-category">{{ group.category }}</div>
+              <div class="placeholder-category">{{ group.category }}</div>
             }
             @for (ph of group.items; track ph.key) {
               <button
                 type="button"
-                class="rte-placeholder-option"
+                class="placeholder-option"
                 role="option"
                 [attr.aria-selected]="false"
                 (mousedown)="$event.preventDefault()"
@@ -112,7 +112,7 @@
             }
           }
           @if (placeholdersByCategory().length === 0) {
-            <div class="rte-placeholder-empty">No matches</div>
+            <div class="placeholder-empty">No matches</div>
           }
         </div>
       }
@@ -121,11 +121,11 @@
 
   <!-- Source toggle -->
   @if (!isMarkdownMode()) {
-    <span class="rte-toolbar-separator" aria-hidden="true"></span>
+    <span class="toolbar-separator" aria-hidden="true"></span>
     <button
       type="button"
-      class="rte-toolbar-btn rte-toolbar-btn--source"
-      [class.rte-toolbar-btn--active]="isSourceMode()"
+      class="toolbar-btn toolbar-btn--source"
+      [class.toolbar-btn--active]="isSourceMode()"
       [attr.aria-label]="sourceToggleLabel()"
       [attr.title]="sourceToggleLabel()"
       [attr.aria-pressed]="isSourceMode()"
@@ -141,7 +141,7 @@
 <!-- ── HTML source textarea (HTML mode only) ──────────────── -->
 @if (!isMarkdownMode() && isSourceMode()) {
   <textarea
-    class="rte-source-editor"
+    class="source-editor"
     [attr.aria-label]="ariaLabel() + ' (HTML source)'"
     [value]="value()"
     [disabled]="disabled()"
@@ -151,14 +151,14 @@
     (blur)="onEditorBlur()"
     spellcheck="false"
   ></textarea>
-  <div class="rte-preview-label" aria-hidden="true">Preview</div>
+  <div class="preview-label" aria-hidden="true">Preview</div>
 }
 
 <!-- ── Markdown textarea (Markdown mode) ─────────────────── -->
 @if (isMarkdownMode()) {
   <textarea
     #mdTextarea
-    class="rte-source-editor rte-markdown-editor"
+    class="source-editor markdown-editor"
     [attr.aria-label]="ariaLabel()"
     [value]="value()"
     [disabled]="disabled()"
@@ -172,18 +172,18 @@
     (keydown)="onEditorKeydown($event)"
     spellcheck="true"
   ></textarea>
-  <div class="rte-preview-label" aria-hidden="true">Preview</div>
+  <div class="preview-label" aria-hidden="true">Preview</div>
 }
 
 <!-- ── WYSIWYG editor / preview ──────────────────────────── -->
 <div
-  class="rte-editor-wrapper"
-  [class.rte-editor-wrapper--focused]="isFocused() && !isSourceMode() && !isMarkdownMode()"
-  [class.rte-editor-wrapper--preview]="isSourceMode() || isMarkdownMode()"
+  class="editor-wrapper"
+  [class.editor-wrapper--focused]="isFocused() && !isSourceMode() && !isMarkdownMode()"
+  [class.editor-wrapper--preview]="isSourceMode() || isMarkdownMode()"
 >
   <div
     #editorEl
-    class="rte-editor"
+    class="editor"
     role="textbox"
     tabindex="0"
     aria-multiline="true"
@@ -201,10 +201,10 @@
 <!-- ── Character count footer ────────────────────────────── -->
 @if (maxLength(); as max) {
   <div
-    class="rte-footer"
-    [class.rte-footer--over]="isOverMaxLength()"
+    class="footer"
+    [class.footer--over]="isOverMaxLength()"
     aria-live="polite"
   >
-    <span class="rte-char-count">{{ charCount() }} / {{ max }}</span>
+    <span class="char-count">{{ charCount() }} / {{ max }}</span>
   </div>
 }

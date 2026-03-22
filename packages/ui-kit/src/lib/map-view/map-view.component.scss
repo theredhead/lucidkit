@@ -1,3 +1,5 @@
+@use "mixins" as mix;
+
 /* ================================================================
  *  UIMapView – static map snapshot
  * ================================================================ */
@@ -26,7 +28,7 @@
 
 /* ── Dark theme ───────────────────────────────────────────────── */
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --mv-accent: #7ab0ff;
   --mv-highlight: #ffd08a;
   --mv-text: #f2f6fb;
@@ -38,23 +40,9 @@
   --mv-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --mv-accent: #7ab0ff;
-    --mv-highlight: #ffd08a;
-    --mv-text: #f2f6fb;
-    --mv-muted: #d0d8e3;
-    --mv-border: #505d6d;
-    --mv-surface: #242b33;
-    --mv-attr-bg: rgba(36, 43, 51, 0.85);
-    --mv-attr-text: #d0d8e3;
-    --mv-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
-  }
-}
-
 /* ── Viewport ─────────────────────────────────────────────────── */
 
-.mv-viewport {
+.viewport {
   position: relative;
   width: 100%;
   height: 100%;
@@ -64,28 +52,20 @@
 
 /* ── Tiles ────────────────────────────────────────────────────── */
 
-.mv-tile {
+.tile {
   position: absolute;
   display: block;
 }
 
-/* Dark-mode tile inversion (only when .mv-dark-tiles is set) */
+/* Dark-mode tile inversion (only when .dark-tiles is set) */
 
-:host-context(html.dark-theme) .mv-dark-tiles .mv-tile {
+@include mix.dark-mode(".dark-tiles .tile") {
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme))
-    .mv-dark-tiles
-    .mv-tile {
-    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-  }
 }
 
 /* ── SVG vector overlay ───────────────────────────────────────── */
 
-.mv-vectors {
+.vectors {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -95,7 +75,7 @@
 
 /* ── Markers ──────────────────────────────────────────────────── */
 
-.mv-marker {
+.marker {
   position: absolute;
   pointer-events: none;
   line-height: 0;
@@ -106,13 +86,13 @@
 }
 
 /* Default pin fill — the inline [style.fill] override wins when set */
-.mv-pin-body {
+.pin-body {
   fill: var(--mv-accent);
 }
 
 /* ── Attribution ──────────────────────────────────────────────── */
 
-.mv-attribution {
+.attribution {
   position: absolute;
   bottom: 0;
   right: 0;

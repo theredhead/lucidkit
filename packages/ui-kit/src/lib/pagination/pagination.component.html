@@ -1,10 +1,10 @@
-<div class="pg-container">
+<div class="container">
   @if (pageSizeOptions().length > 0) {
-    <div class="pg-size">
-      <label class="pg-size-label" for="pg-size-select">Rows per page:</label>
+    <div class="size">
+      <label class="size-label" for="size-select">Rows per page:</label>
       <select
-        class="pg-size-select"
-        id="pg-size-select"
+        class="size-select"
+        id="size-select"
         [disabled]="disabled()"
         (change)="onPageSizeChange($event)"
       >
@@ -16,11 +16,11 @@
   }
 
 
-  <span class="pg-summary">{{ summary() }}</span>
+  <span class="summary">{{ summary() }}</span>
 
-  <div class="pg-buttons">
+  <div class="buttons">
     <button
-      class="pg-btn"
+      class="btn"
       type="button"
       aria-label="First page"
       [disabled]="disabled() || !hasPrevious()"
@@ -29,7 +29,7 @@
       ⟪
     </button>
     <button
-      class="pg-btn"
+      class="btn"
       type="button"
       aria-label="Previous page"
       [disabled]="disabled() || !hasPrevious()"
@@ -40,12 +40,12 @@
 
     @for (page of pages(); track $index) {
       @if (page === -1) {
-        <span class="pg-ellipsis">…</span>
+        <span class="ellipsis">…</span>
       } @else {
         <button
-          class="pg-btn pg-btn--page"
+          class="btn btn--page"
           type="button"
-          [class.pg-btn--active]="page === pageIndex()"
+          [class.btn--active]="page === pageIndex()"
           [attr.aria-label]="'Page ' + (page + 1)"
           [attr.aria-current]="page === pageIndex() ? 'page' : undefined"
           [disabled]="disabled()"
@@ -57,7 +57,7 @@
     }
 
     <button
-      class="pg-btn"
+      class="btn"
       type="button"
       aria-label="Next page"
       [disabled]="disabled() || !hasNext()"
@@ -66,7 +66,7 @@
       ›
     </button>
     <button
-      class="pg-btn"
+      class="btn"
       type="button"
       aria-label="Last page"
       [disabled]="disabled() || !hasNext()"

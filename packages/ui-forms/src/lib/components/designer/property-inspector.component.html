@@ -1,30 +1,30 @@
 @if (engine().selection(); as sel) {
   @switch (sel.kind) {
     @case ("form") {
-      <h3 class="pi-heading">Form Properties</h3>
-      <div class="pi-section">
-        <label class="pi-label">
+      <h3 class="heading">Form Properties</h3>
+      <div class="section">
+        <label class="label">
           ID
           <input
-            class="pi-input"
+            class="input"
             [value]="engine().formId()"
             (input)="engine().formId.set(inputValue($event))"
           />
         </label>
 
-        <label class="pi-label">
+        <label class="label">
           Title
           <input
-            class="pi-input"
+            class="input"
             [value]="engine().formTitle()"
             (input)="engine().formTitle.set(inputValue($event))"
           />
         </label>
 
-        <label class="pi-label">
+        <label class="label">
           Description
           <textarea
-            class="pi-textarea"
+            class="textarea"
             rows="2"
             [value]="engine().formDescription()"
             (input)="engine().formDescription.set(inputValue($event))"
@@ -35,30 +35,30 @@
 
     @case ("group") {
       @if (engine().selectedGroup(); as group) {
-        <h3 class="pi-heading">Group Properties</h3>
-        <div class="pi-section">
-          <label class="pi-label">
+        <h3 class="heading">Group Properties</h3>
+        <div class="section">
+          <label class="label">
             ID
             <input
-              class="pi-input"
+              class="input"
               [value]="group.id()"
               (input)="group.id.set(inputValue($event))"
             />
           </label>
 
-          <label class="pi-label">
+          <label class="label">
             Title
             <input
-              class="pi-input"
+              class="input"
               [value]="group.title()"
               (input)="group.title.set(inputValue($event))"
             />
           </label>
 
-          <label class="pi-label">
+          <label class="label">
             Description
             <textarea
-              class="pi-textarea"
+              class="textarea"
               rows="2"
               [value]="group.description()"
               (input)="group.description.set(inputValue($event))"
@@ -70,40 +70,40 @@
 
     @case ("field") {
       @if (engine().selectedField(); as field) {
-        <h3 class="pi-heading">Field Properties</h3>
-        <div class="pi-section">
-          <label class="pi-label">
+        <h3 class="heading">Field Properties</h3>
+        <div class="section">
+          <label class="label">
             ID
             <input
-              class="pi-input"
+              class="input"
               [value]="field.id()"
               (input)="field.id.set(inputValue($event))"
             />
           </label>
 
-          <label class="pi-label">
+          <label class="label">
             Title
             <input
-              class="pi-input"
+              class="input"
               [value]="field.title()"
               (input)="field.title.set(inputValue($event))"
             />
           </label>
 
-          <label class="pi-label">
+          <label class="label">
             Description
             <textarea
-              class="pi-textarea"
+              class="textarea"
               rows="2"
               [value]="field.description()"
               (input)="field.description.set(inputValue($event))"
             ></textarea>
           </label>
 
-          <label class="pi-label">
+          <label class="label">
             Component
             <select
-              class="pi-select"
+              class="select"
               [value]="field.component()"
               (change)="field.component.set(inputValue($event))"
             >
@@ -114,10 +114,10 @@
           </label>
 
           @if (!isFieldFlair(field)) {
-            <label class="pi-label">
+            <label class="label">
               Default Value
               <input
-                class="pi-input"
+                class="input"
                 [value]="field.defaultValue() ?? ''"
                 (input)="field.defaultValue.set(inputValue($event) || null)"
               />
@@ -127,12 +127,12 @@
 
         <!-- Options (for select/radio/autocomplete) -->
         @if (!isFieldFlair(field) && showOptions(field)) {
-          <h4 class="pi-subheading">Options</h4>
-          <div class="pi-section">
+          <h4 class="subheading">Options</h4>
+          <div class="section">
             @for (opt of field.options(); track $index; let i = $index) {
               <div class="pi-option-row">
                 <input
-                  class="pi-input pi-input--sm"
+                  class="input input--sm"
                   placeholder="Label"
                   [value]="opt.label"
                   (input)="
@@ -140,7 +140,7 @@
                   "
                 />
                 <input
-                  class="pi-input pi-input--sm"
+                  class="input input--sm"
                   placeholder="Value"
                   [value]="opt.value"
                   (input)="
@@ -149,7 +149,7 @@
                 />
                 <button
                   type="button"
-                  class="pi-icon-btn pi-icon-btn--danger"
+                  class="icon-btn icon-btn--danger"
                   aria-label="Remove option"
                   (click)="removeOption(field, i)"
                 >
@@ -159,7 +159,7 @@
             }
             <button
               type="button"
-              class="pi-add-btn"
+              class="add-btn"
               (click)="addOption(field)"
             >
               + Add option
@@ -169,16 +169,16 @@
 
         <!-- Validation -->
         @if (!isFieldFlair(field)) {
-          <h4 class="pi-subheading">Validation</h4>
-          <div class="pi-section">
+          <h4 class="subheading">Validation</h4>
+          <div class="section">
             @for (
               rule of field.validation();
               track $index;
               let i = $index
             ) {
-              <div class="pi-validation-row">
+              <div class="validation-row">
                 <select
-                  class="pi-select pi-select--sm"
+                  class="select select--sm"
                   [value]="rule.type"
                   (change)="
                     updateValidationRule(
@@ -196,7 +196,7 @@
 
                 @if (ruleHasParam(rule.type)) {
                   <input
-                    class="pi-input pi-input--sm"
+                    class="input input--sm"
                     [placeholder]="paramPlaceholder(rule.type)"
                     [value]="ruleParamValue(rule)"
                     (input)="
@@ -211,7 +211,7 @@
                 }
 
                 <input
-                  class="pi-input pi-input--sm"
+                  class="input input--sm"
                   placeholder="Error message"
                   [value]="rule.message ?? ''"
                   (input)="
@@ -226,7 +226,7 @@
 
                 <button
                   type="button"
-                  class="pi-icon-btn pi-icon-btn--danger"
+                  class="icon-btn icon-btn--danger"
                   aria-label="Remove validation rule"
                   (click)="removeValidationRule(field, i)"
                 >
@@ -236,7 +236,7 @@
             }
             <button
               type="button"
-              class="pi-add-btn"
+              class="add-btn"
               (click)="addValidationRule(field)"
             >
               + Add rule
@@ -246,16 +246,16 @@
 
         <!-- Config -->
         @if (configSchemaFor(field).length > 0) {
-          <h4 class="pi-subheading">Config</h4>
-          <div class="pi-section">
+          <h4 class="subheading">Config</h4>
+          <div class="section">
             @for (prop of configSchemaFor(field); track prop.key) {
               @if (!prop.visibleWhen || prop.visibleWhen(field.config())) {
                 @switch (prop.editor) {
                   @case ("text") {
-                    <label class="pi-label">
+                    <label class="label">
                       {{ prop.label }}
                       <input
-                        class="pi-input"
+                        class="input"
                         [placeholder]="prop.placeholder ?? ''"
                         [value]="configValue(field, prop.key) ?? ''"
                         (input)="
@@ -270,10 +270,10 @@
                   }
 
                   @case ("number") {
-                    <label class="pi-label">
+                    <label class="label">
                       {{ prop.label }}
                       <input
-                        class="pi-input"
+                        class="input"
                         type="number"
                         [placeholder]="prop.placeholder ?? ''"
                         [value]="configValue(field, prop.key) ?? ''"
@@ -289,7 +289,7 @@
                   }
 
                   @case ("boolean") {
-                    <label class="pi-label pi-label--row">
+                    <label class="label label--row">
                       <input
                         type="checkbox"
                         [checked]="!!configValue(field, prop.key)"
@@ -300,10 +300,10 @@
                   }
 
                   @case ("select") {
-                    <label class="pi-label">
+                    <label class="label">
                       {{ prop.label }}
                       <select
-                        class="pi-select"
+                        class="select"
                         [value]="configValue(field, prop.key) ?? ''"
                         (change)="
                           setConfigValue(
@@ -333,10 +333,10 @@
 
         <!-- Extra config (raw JSON, for properties not in the schema) -->
         @if (hasExtraConfig(field)) {
-          <h4 class="pi-subheading">Extra Config (JSON)</h4>
-          <div class="pi-section">
+          <h4 class="subheading">Extra Config (JSON)</h4>
+          <div class="section">
             <textarea
-              class="pi-textarea pi-textarea--mono"
+              class="textarea textarea--mono"
               rows="3"
               aria-label="Extra configuration JSON"
               aria-describedby="pi-config-error"
@@ -345,7 +345,7 @@
               (change)="onExtraConfigChange(field, $event)"
             ></textarea>
             @if (configError()) {
-              <p class="pi-error" id="pi-config-error" role="alert">
+              <p class="error" id="pi-config-error" role="alert">
                 {{ configError() }}
               </p>
             }
@@ -355,7 +355,7 @@
     }
   }
 } @else {
-  <div class="pi-empty">
+  <div class="empty">
     <p>Select a field, group, or form header to edit its properties.</p>
   </div>
 }

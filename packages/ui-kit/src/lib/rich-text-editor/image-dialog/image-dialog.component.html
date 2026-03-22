@@ -1,8 +1,8 @@
-<div class="ld-field">
-  <label class="ld-label" for="id-src">Image URL</label>
+<div class="field">
+  <label class="label" for="id-src">Image URL</label>
   <input
     id="id-src"
-    class="ld-input"
+    class="input"
     type="url"
     placeholder="https://example.com/image.png"
     [ngModel]="src()"
@@ -10,11 +10,11 @@
     (keydown.enter)="apply()"
   />
 </div>
-<div class="ld-field">
-  <label class="ld-label" for="id-alt">Alt text</label>
+<div class="field">
+  <label class="label" for="id-alt">Alt text</label>
   <input
     id="id-alt"
-    class="ld-input"
+    class="input"
     type="text"
     placeholder="Describe the image"
     [ngModel]="alt()"
@@ -22,17 +22,17 @@
     (keydown.enter)="apply()"
   />
 </div>
-<div class="ld-actions">
+<div class="actions">
   <button
     type="button"
-    class="ld-btn ld-btn--cancel"
+    class="btn btn--cancel"
     (click)="cancel()"
   >
     Cancel
   </button>
   <button
     type="button"
-    class="ld-btn ld-btn--apply"
+    class="btn btn--apply"
     [disabled]="!src().trim()"
     (click)="apply()"
   >

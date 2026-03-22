@@ -1,3 +1,5 @@
+@use "mixins" as mix;
+
 :host {
   display: block;
   border: 1px solid var(--ui-border, #d7dce2);
@@ -5,12 +7,6 @@
   overflow: hidden;
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   border-color: var(--ui-border, #3a3f47);
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    border-color: var(--ui-border, #3a3f47);
-  }
 }
