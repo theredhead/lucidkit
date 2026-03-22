@@ -171,3 +171,28 @@ export interface FormSchema {
  * Only visible fields are included.
  */
 export type FormValues = Record<string, unknown>;
+
+// ── Flair helpers ───────────────────────────────────────────────────
+
+/**
+ * Known flair component keys. Flair items are purely presentational
+ * elements that do not collect user input.
+ */
+export const FLAIR_COMPONENTS = [
+  "flair:richtext",
+  "flair:image",
+  "flair:media",
+] as const;
+
+/** A flair component key. */
+export type FlairComponent = (typeof FLAIR_COMPONENTS)[number];
+
+/**
+ * Returns `true` if the given component key is a flair (non-data)
+ * component.
+ */
+export function isFlairComponent(
+  component: string,
+): component is FlairComponent {
+  return (FLAIR_COMPONENTS as readonly string[]).includes(component);
+}

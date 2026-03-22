@@ -9,6 +9,7 @@ import {
 
 import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 
+import { isFlairComponent } from "../../types/form-schema.types";
 import type {
   FormDesignerEngine,
   MutableGroupDefinition,
@@ -116,6 +117,7 @@ import type {
               [class.dc-field--selected]="
                 engine().selection()?.fieldUid === field.uid
               "
+              [class.dc-field--flair]="isFlair(field.component())"
             >
               <div
                 class="dc-field-info"
@@ -362,6 +364,15 @@ import type {
       padding: 2px 6px;
       border-radius: 4px;
       flex-shrink: 0;
+    }
+
+    .dc-field--flair .dc-field-component {
+      background: var(--theredhead-tertiary, #7b5ea7);
+      color: var(--theredhead-on-tertiary, #ffffff);
+    }
+
+    .dc-field--flair {
+      border-left: 3px solid var(--theredhead-tertiary, #7b5ea7);
     }
 
     .dc-field-title {
@@ -638,6 +649,9 @@ export class UIDesignerCanvas {
     Copy: UIIcons.Lucide.Text.Copy,
     X: UIIcons.Lucide.Notifications.X,
   } as const;
+
+  /** @internal Whether a component key is a flair type. */
+  protected readonly isFlair = isFlairComponent;
 
   /** @internal */
   protected moveGroupUp(event: Event, uid: string, index: number): void {

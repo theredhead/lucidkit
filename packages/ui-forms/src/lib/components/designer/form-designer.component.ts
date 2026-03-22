@@ -14,7 +14,7 @@ import { JsonPipe } from "@angular/common";
 
 import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 
-import type { FormSchema } from "../../types/form-schema.types";
+import type { FormSchema, FormValues } from "../../types/form-schema.types";
 import { FormEngine } from "../../engine/form-engine";
 import { UIForm } from "../form.component";
 import { FormDesignerEngine } from "./designer-engine";
@@ -126,7 +126,24 @@ import { UIPropertyInspector } from "./property-inspector.component";
               <ui-form
                 [engine]="previewEngine()!"
                 submitLabel="Submit (Preview)"
+                (formSubmit)="onPreviewSubmit($event)"
               />
+              <div class="fd-preview-live">
+                <h4 class="fd-preview-live-heading">
+                  Live output
+                  <span
+                    class="fd-preview-live-badge"
+                    [class.fd-preview-live-badge--valid]="
+                      previewEngine()!.valid()
+                    "
+                  >
+                    {{ previewEngine()!.valid() ? "✓ valid" : "✗ invalid" }}
+                  </span>
+                </h4>
+                <pre class="fd-preview-live-json">{{
+                  previewOutput() | json
+                }}</pre>
+              </div>
             } @else {
               <p class="fd-preview-empty">
                 Add some fields to see the preview.
@@ -261,6 +278,51 @@ import { UIPropertyInspector } from "./property-inspector.component";
       padding: 48px 16px;
       color: var(--ui-text-card, #1d232b);
       font-weight: 500;
+    }
+
+    .fd-preview-live {
+      margin-top: 20px;
+      border-top: 1px dashed rgba(128, 128, 128, 0.3);
+      padding-top: 12px;
+    }
+
+    .fd-preview-live-heading {
+      margin: 0 0 4px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fd-preview-live-badge {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      padding: 1px 8px;
+      border-radius: 10px;
+      background: rgba(186, 26, 26, 0.15);
+      color: #ba1a1a;
+    }
+
+    .fd-preview-live-badge--valid {
+      background: rgba(56, 142, 60, 0.15);
+      color: #388e3c;
+    }
+
+    .fd-preview-live-json {
+      margin: 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--ui-text-card, #1d232b);
+      font-size: 0.8125rem;
+      overflow: auto;
+      max-height: 300px;
     }
 
     /* JSON */
@@ -426,6 +488,12 @@ export class UIFormDesigner {
     return new FormEngine(schema);
   });
 
+  /** @internal Live output from the preview engine. */
+  protected readonly previewOutput = computed(() => {
+    const eng = this.previewEngine();
+    return eng ? eng.output()() : null;
+  });
+
   /** @internal The group uid to add a field to when palette is clicked. */
   private lastGroupUid: string | null = null;
 
@@ -470,5 +538,52 @@ export class UIFormDesigner {
   protected onCopyJson(): void {
     const json = JSON.stringify(this.designerEngine.schema(), null, 2);
     navigator.clipboard.writeText(json);
+  }
+
+  /** @internal Show submitted values in a native dialog. */
+  protected onPreviewSubmit(values: FormValues): void {
+    const dialog = document.createElement("dialog");
+    dialog.style.cssText =
+      "border:none;border-radius:12px;padding:24px;max-width:min(90vw,560px);" +
+      "max-height:85vh;display:flex;flex-direction:column;background:var(--ui-surface,#fff);" +
+      "color:var(--ui-text,#1d232b);box-shadow:0 8px 32px rgba(0,0,0,0.25);font-family:inherit;";
+
+    const heading = document.createElement("h2");
+    heading.textContent = "Submitted Values";
+    heading.style.cssText =
+      "margin:0 0 16px;font-size:1.125rem;font-weight:600;";
+
+    const pre = document.createElement("pre");
+    pre.textContent = JSON.stringify(values, null, 2);
+    pre.style.cssText =
+      "margin:0;padding:12px;border-radius:8px;background:rgba(0,0,0,0.06);" +
+      "font-size:0.8125rem;overflow:auto;flex:1;min-height:200px;white-space:pre-wrap;word-break:break-word;";
+
+    const footer = document.createElement("div");
+    footer.style.cssText =
+      "display:flex;justify-content:flex-end;margin-top:16px;";
+
+    const btn = document.createElement("button");
+    btn.textContent = "Close";
+    btn.style.cssText =
+      "appearance:none;border:none;border-radius:8px;padding:8px 20px;" +
+      "font-size:0.875rem;font-weight:600;cursor:pointer;" +
+      "background:var(--theredhead-primary,#3584e4);color:var(--theredhead-on-primary,#fff);";
+    btn.addEventListener("click", () => {
+      dialog.close();
+      dialog.remove();
+    });
+
+    footer.appendChild(btn);
+    dialog.append(heading, pre, footer);
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) {
+        dialog.close();
+        dialog.remove();
+      }
+    });
+    dialog.addEventListener("close", () => dialog.remove());
+    document.body.appendChild(dialog);
+    dialog.showModal();
   }
 }

@@ -35,8 +35,8 @@ describe("UIColorPicker", () => {
       expect(component.disabled()).toBe(false);
     });
 
-    it('should default ariaLabel to "Pick a colour"', () => {
-      expect(component.ariaLabel()).toBe("Pick a colour");
+    it('should default ariaLabel to "Pick a color"', () => {
+      expect(component.ariaLabel()).toBe("Pick a color");
     });
   });
 

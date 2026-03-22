@@ -8,7 +8,119 @@
  * - `'rgba'`   — R / G / B / A sliders with live preview
  * - `'hsla'`   — H / S / L / A sliders with live preview
  */
-export type ColorPickerMode = "theme" | "grid" | "rgba" | "hsla";
+export type ColorPickerMode = "theme" | "grid" | "rgba" | "hsla" | "named";
+
+/**
+ * A named CSS colour with a human-readable label and hex value.
+ */
+export interface NamedColor {
+  /** Human-readable colour name (e.g. "Coral"). */
+  readonly name: string;
+  /** Hex value (`#rrggbb`). */
+  readonly hex: string;
+}
+
+/**
+ * A curated list of named CSS colours for the "named" picker mode.
+ * Sorted roughly by hue family for easy visual scanning.
+ */
+export const NAMED_COLORS: readonly NamedColor[] = [
+  // ── Reds ──
+  { name: "Indian Red", hex: "#cd5c5c" },
+  { name: "Light Coral", hex: "#f08080" },
+  { name: "Salmon", hex: "#fa8072" },
+  { name: "Crimson", hex: "#dc143c" },
+  { name: "Red", hex: "#ff0000" },
+  { name: "Fire Brick", hex: "#b22222" },
+  { name: "Dark Red", hex: "#8b0000" },
+  // ── Oranges ──
+  { name: "Coral", hex: "#ff7f50" },
+  { name: "Tomato", hex: "#ff6347" },
+  { name: "Orange Red", hex: "#ff4500" },
+  { name: "Orange", hex: "#ffa500" },
+  { name: "Dark Orange", hex: "#ff8c00" },
+  // ── Yellows ──
+  { name: "Gold", hex: "#ffd700" },
+  { name: "Yellow", hex: "#ffff00" },
+  { name: "Khaki", hex: "#f0e68c" },
+  { name: "Dark Khaki", hex: "#bdb76b" },
+  // ── Greens ──
+  { name: "Lawn Green", hex: "#7cfc00" },
+  { name: "Lime Green", hex: "#32cd32" },
+  { name: "Lime", hex: "#00ff00" },
+  { name: "Green", hex: "#008000" },
+  { name: "Forest Green", hex: "#228b22" },
+  { name: "Dark Green", hex: "#006400" },
+  { name: "Sea Green", hex: "#2e8b57" },
+  { name: "Medium Spring Green", hex: "#00fa9a" },
+  { name: "Spring Green", hex: "#00ff7f" },
+  { name: "Olive", hex: "#808000" },
+  { name: "Dark Olive Green", hex: "#556b2f" },
+  { name: "Olive Drab", hex: "#6b8e23" },
+  // ── Cyans ──
+  { name: "Aqua", hex: "#00ffff" },
+  { name: "Dark Cyan", hex: "#008b8b" },
+  { name: "Teal", hex: "#008080" },
+  { name: "Light Sea Green", hex: "#20b2aa" },
+  { name: "Cadet Blue", hex: "#5f9ea0" },
+  // ── Blues ──
+  { name: "Steel Blue", hex: "#4682b4" },
+  { name: "Cornflower Blue", hex: "#6495ed" },
+  { name: "Deep Sky Blue", hex: "#00bfff" },
+  { name: "Dodger Blue", hex: "#1e90ff" },
+  { name: "Royal Blue", hex: "#4169e1" },
+  { name: "Blue", hex: "#0000ff" },
+  { name: "Medium Blue", hex: "#0000cd" },
+  { name: "Dark Blue", hex: "#00008b" },
+  { name: "Navy", hex: "#000080" },
+  { name: "Midnight Blue", hex: "#191970" },
+  // ── Purples ──
+  { name: "Lavender", hex: "#e6e6fa" },
+  { name: "Plum", hex: "#dda0dd" },
+  { name: "Violet", hex: "#ee82ee" },
+  { name: "Orchid", hex: "#da70d6" },
+  { name: "Medium Orchid", hex: "#ba55d3" },
+  { name: "Medium Purple", hex: "#9370db" },
+  { name: "Blue Violet", hex: "#8a2be2" },
+  { name: "Dark Violet", hex: "#9400d3" },
+  { name: "Dark Orchid", hex: "#9932cc" },
+  { name: "Dark Magenta", hex: "#8b008b" },
+  { name: "Purple", hex: "#800080" },
+  { name: "Indigo", hex: "#4b0082" },
+  // ── Pinks ──
+  { name: "Pink", hex: "#ffc0cb" },
+  { name: "Light Pink", hex: "#ffb6c1" },
+  { name: "Hot Pink", hex: "#ff69b4" },
+  { name: "Deep Pink", hex: "#ff1493" },
+  { name: "Medium Violet Red", hex: "#c71585" },
+  { name: "Pale Violet Red", hex: "#db7093" },
+  // ── Browns ──
+  { name: "Saddle Brown", hex: "#8b4513" },
+  { name: "Sienna", hex: "#a0522d" },
+  { name: "Chocolate", hex: "#d2691e" },
+  { name: "Peru", hex: "#cd853f" },
+  { name: "Sandy Brown", hex: "#f4a460" },
+  { name: "Burlywood", hex: "#deb887" },
+  { name: "Tan", hex: "#d2b48c" },
+  { name: "Rosy Brown", hex: "#bc8f8f" },
+  { name: "Maroon", hex: "#800000" },
+  // ── Neutrals ──
+  { name: "White", hex: "#ffffff" },
+  { name: "Snow", hex: "#fffafa" },
+  { name: "Ivory", hex: "#fffff0" },
+  { name: "Floral White", hex: "#fffaf0" },
+  { name: "Linen", hex: "#faf0e6" },
+  { name: "Antique White", hex: "#faebd7" },
+  { name: "Beige", hex: "#f5f5dc" },
+  { name: "Gainsboro", hex: "#dcdcdc" },
+  { name: "Silver", hex: "#c0c0c0" },
+  { name: "Dark Gray", hex: "#a9a9a9" },
+  { name: "Gray", hex: "#808080" },
+  { name: "Dim Gray", hex: "#696969" },
+  { name: "Slate Gray", hex: "#708090" },
+  { name: "Dark Slate Gray", hex: "#2f4f4f" },
+  { name: "Black", hex: "#000000" },
+];
 
 /**
  * An RGBA colour value with channels in 0–255 (rgb) and 0–1 (alpha).

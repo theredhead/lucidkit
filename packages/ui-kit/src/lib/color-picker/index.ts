@@ -5,9 +5,11 @@ export {
   type RgbaColor,
   type HslaColor,
   type ThemePaletteGroup,
+  type NamedColor,
   THEME_LUMINOSITY_STOPS,
   THEME_PALETTE_BASES,
   COLOR_GRID,
+  NAMED_COLORS,
 } from "./color-picker.types";
 export {
   hexToRgba,

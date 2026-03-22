@@ -1,6 +1,6 @@
 <div class="cp-header">
   <div class="cp-tabs" role="tablist" aria-label="Colour picker modes">
-    @for (m of modes; track m.key) {
+    @for (m of modes(); track m.key) {
       <button
         type="button"
         role="tab"
@@ -72,7 +72,39 @@
       }
     </div>
   }
-
+  <!-- ── Mode: Named colours ───────────────────────────────────── -->
+  @if (activeMode() === 'named') {
+    <div class="cp-named" role="tabpanel">
+      <input
+        type="text"
+        class="cp-named-search"
+        placeholder="Search colours…"
+        aria-label="Filter named colours"
+        [value]="namedFilter()"
+        (input)="onNamedFilterInput($event)"
+      />
+      <div class="cp-named-list" role="listbox" aria-label="Named colours">
+        @for (c of filteredNamedColors(); track c.hex) {
+          <button
+            type="button"
+            class="cp-named-item"
+            role="option"
+            [class.cp-named-item--selected]="hexValue() === c.hex"
+            [attr.aria-selected]="hexValue() === c.hex"
+            (click)="selectHex(c.hex)"
+          >
+            <span
+              class="cp-named-swatch"
+              [style.background]="c.hex"
+            ></span>
+            <span class="cp-named-label">{{ c.name }}</span>
+          </button>
+        } @empty {
+          <span class="cp-named-empty">No matching colors</span>
+        }
+      </div>
+    </div>
+  }
   <!-- ── Mode: RGBA sliders ───────────────────────────────── -->
   @if (activeMode() === 'rgba') {
     <div class="cp-sliders" role="tabpanel">

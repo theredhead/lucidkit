@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   model,
 } from "@angular/core";
@@ -38,6 +39,9 @@ export class UISelect {
   /** Currently selected value (two-way bindable). */
   readonly value = model("");
 
+  /** Placeholder text shown when no value is selected. */
+  readonly placeholder = input<string>("— Select —");
+
   /** Whether the control is disabled. */
   readonly disabled = input(false);
 
@@ -47,6 +51,12 @@ export class UISelect {
    * Required when no visible `<label>` is associated with the control.
    */
   readonly ariaLabel = input<string | undefined>(undefined);
+
+  /** @internal — true when the current value doesn't match any option. */
+  protected readonly showPlaceholder = computed(() => {
+    const v = this.value();
+    return !v || !this.options().some((o) => o.value === v);
+  });
 
   /** @internal */
   protected onSelectionChange(event: Event): void {

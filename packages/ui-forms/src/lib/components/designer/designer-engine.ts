@@ -468,6 +468,9 @@ export class FormDesignerEngine {
       slider: "Slider",
       richtext: "Rich Text",
       file: "File Upload",
+      "flair:richtext": "Rich Text (flair)",
+      "flair:image": "Image (flair)",
+      "flair:media": "Media (flair)",
     };
     return labels[component] ?? component;
   }

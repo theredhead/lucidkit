@@ -51,9 +51,10 @@ describe("UIDialog", () => {
     expect(host.dialog()).toBeTruthy();
   });
 
-  it("should not render dialog when closed", () => {
+  it("should not show dialog when closed", () => {
     const dialog = fixture.nativeElement.querySelector("dialog");
-    expect(dialog).toBeNull();
+    expect(dialog).toBeTruthy();
+    expect(dialog.hasAttribute("open")).toBe(false);
   });
 
   it("should render dialog when open", () => {
@@ -101,11 +102,12 @@ describe("UIDialog", () => {
     it("should close via the close method", () => {
       host.isOpen.set(true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector("dialog")).toBeTruthy();
+      const dialog = fixture.nativeElement.querySelector("dialog");
+      expect(dialog.hasAttribute("open")).toBe(true);
 
       host.dialog()!.close();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector("dialog")).toBeNull();
+      expect(dialog.hasAttribute("open")).toBe(false);
     });
 
     it("should emit closed event", () => {

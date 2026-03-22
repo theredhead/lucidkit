@@ -1,14 +1,12 @@
-@if (open()) {
-  <dialog
-    #dialogRef
-    class="dlg-dialog"
-    tabindex="-1"
-    [attr.aria-label]="ariaLabel()"
-    (close)="onNativeClose()"
-    (cancel)="onCancel($event)"
-    (click)="onDialogClick($event)"
-    (keydown.escape)="$event.stopPropagation()"
-  >
-    <ng-content />
-  </dialog>
-}
+<dialog
+  #dialogRef
+  class="dlg-dialog"
+  tabindex="-1"
+  [attr.aria-label]="ariaLabel()"
+  (close)="onNativeClose()"
+  (cancel)="onCancel($event)"
+  (click)="onDialogClick($event)"
+  (keydown.escape)="$event.stopPropagation()"
+>
+  <ng-content />
+</dialog>

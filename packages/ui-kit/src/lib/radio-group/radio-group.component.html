@@ -1,1 +1,4 @@
+@for (opt of options(); track opt.value) {
+  <ui-radio-button [value]="opt.value">{{ opt.label }}</ui-radio-button>
+}
 <ng-content />

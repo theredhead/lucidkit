@@ -24,7 +24,9 @@ export type {
   FormGroupDefinition,
   FormSchema,
   FormValues,
+  FlairComponent,
 } from "./lib/types";
+export { isFlairComponent, FLAIR_COMPONENTS } from "./lib/types";
 
 // ── Validation ───────────────────────────────────────────────────────
 export {

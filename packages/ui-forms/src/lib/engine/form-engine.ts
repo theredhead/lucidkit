@@ -13,6 +13,7 @@ import type {
   FormSchema,
   FormValues,
 } from "../types/form-schema.types";
+import { isFlairComponent } from "../types/form-schema.types";
 import type { ValidationResult } from "../types/validation.types";
 import { validate } from "../validation/validators";
 import { evaluateCondition } from "./condition-evaluator";
@@ -181,6 +182,7 @@ export class FormEngine {
         if (!group.visible()) continue;
         for (const field of group.fields) {
           if (!field.visible()) continue;
+          if (isFlairComponent(field.definition.component)) continue;
           result[field.definition.id] = field.value();
         }
       }
@@ -230,7 +232,9 @@ export class FormEngine {
       : computed(() => true);
 
     const validation = computed(() =>
-      def.validation && def.validation.length > 0
+      !isFlairComponent(def.component) &&
+      def.validation &&
+      def.validation.length > 0
         ? validate(def.validation, value())
         : { valid: true, errors: [] },
     );
@@ -260,6 +264,7 @@ export class FormEngine {
   private readFieldValues(): FormValues {
     const v: Record<string, unknown> = {};
     for (const [id, field] of this.fieldMap) {
+      if (isFlairComponent(field.definition.component)) continue;
       v[id] = field.value();
     }
     return v;
@@ -285,6 +290,10 @@ export class FormEngine {
         return [];
       case "autocomplete":
         return [];
+      case "flair:richtext":
+      case "flair:image":
+      case "flair:media":
+        return null;
       default:
         return "";
     }

@@ -54,11 +54,16 @@ export class UIColorPicker {
   /** Which mode tab the popover opens to. */
   public readonly initialMode = input<ColorPickerMode>("theme");
 
+  /** Restrict available mode tabs. When set, only these modes are shown. */
+  public readonly availableModes = input<
+    readonly ColorPickerMode[] | undefined
+  >(undefined);
+
   /** Whether the trigger button is disabled. */
   public readonly disabled = input(false);
 
   /** Accessible label for the trigger button. */
-  public readonly ariaLabel = input("Pick a colour");
+  public readonly ariaLabel = input("Pick a color");
 
   /** Emitted after the user confirms a colour from the popover. */
   public readonly colorChange = output<string>();
@@ -83,10 +88,11 @@ export class UIColorPicker {
       verticalAxisAlignment: "bottom",
       horizontalAxisAlignment: "auto",
       verticalOffset: 4,
-      ariaLabel: "Colour picker",
+      ariaLabel: "Color picker",
       inputs: {
         initialValue: this.value(),
         initialMode: this.initialMode(),
+        availableModes: this.availableModes(),
       },
     });
 

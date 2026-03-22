@@ -8,6 +8,7 @@ import {
   UICheckbox,
   UIToggle,
   UIRadioGroup,
+  UIRichTextView,
   UIAutocomplete,
   UIDatePicker,
   UITimePicker,
@@ -16,6 +17,8 @@ import {
   UISlider,
   UIRichTextEditor,
   UIFileUpload,
+  UIImage,
+  UIMediaPlayer,
 } from "@theredhead/ui-kit";
 
 import {
@@ -43,6 +46,9 @@ import { resolveTextAdapter } from "./text-adapter-resolver";
  * | `"slider"`      | `UISlider`          | `value`        |
  * | `"richtext"`    | `UIRichTextEditor`  | `value`        |
  * | `"file"`        | `UIFileUpload`      | `files`        |
+ * | `"flair:richtext"` | `UIRichTextView`   | `content`       |
+ * | `"flair:image"` | `UIImage`           | `src`          |
+ * | `"flair:media"` | `UIMediaPlayer`     | `source`       |
  */
 export const BUILT_IN_FIELDS: Readonly<Record<string, FormFieldRegistration>> =
   {
@@ -65,9 +71,23 @@ export const BUILT_IN_FIELDS: Readonly<Record<string, FormFieldRegistration>> =
     time: { component: UITimePicker, modelProperty: "value" },
     datetime: { component: UIDateTimePicker, modelProperty: "value" },
     color: { component: UIColorPicker, modelProperty: "value" },
-    slider: { component: UISlider, modelProperty: "value" },
+    slider: {
+      component: UISlider,
+      modelProperty: "value",
+      defaultConfig: { showValue: true, showMinMax: true },
+    },
     richtext: { component: UIRichTextEditor, modelProperty: "value" },
     file: { component: UIFileUpload, modelProperty: "files" },
+    "flair:richtext": {
+      component: UIRichTextView,
+      modelProperty: "content",
+    },
+    "flair:image": { component: UIImage, modelProperty: "src" },
+    "flair:media": {
+      component: UIMediaPlayer,
+      modelProperty: "source",
+      defaultConfig: { controls: true },
+    },
   };
 
 /**

@@ -9,6 +9,7 @@ import {
 
 import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 
+import { isFlairComponent } from "../../types/form-schema.types";
 import type {
   FormDesignerEngine,
   MutableFieldDefinition,
@@ -36,6 +37,9 @@ const COMPONENT_OPTIONS = [
   "slider",
   "richtext",
   "file",
+  "flair:richtext",
+  "flair:image",
+  "flair:media",
 ] as const;
 
 /** Available validation rule types. */
@@ -180,18 +184,20 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
                 </select>
               </label>
 
-              <label class="pi-label">
-                Default Value
-                <input
-                  class="pi-input"
-                  [value]="field.defaultValue() ?? ''"
-                  (input)="field.defaultValue.set(inputValue($event) || null)"
-                />
-              </label>
+              @if (!isFieldFlair(field)) {
+                <label class="pi-label">
+                  Default Value
+                  <input
+                    class="pi-input"
+                    [value]="field.defaultValue() ?? ''"
+                    (input)="field.defaultValue.set(inputValue($event) || null)"
+                  />
+                </label>
+              }
             </div>
 
             <!-- Options (for select/radio/autocomplete) -->
-            @if (showOptions(field)) {
+            @if (!isFieldFlair(field) && showOptions(field)) {
               <h4 class="pi-subheading">Options</h4>
               <div class="pi-section">
                 @for (opt of field.options(); track $index; let i = $index) {
@@ -233,70 +239,81 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
             }
 
             <!-- Validation -->
-            <h4 class="pi-subheading">Validation</h4>
-            <div class="pi-section">
-              @for (rule of field.validation(); track $index; let i = $index) {
-                <div class="pi-validation-row">
-                  <select
-                    class="pi-select pi-select--sm"
-                    [value]="rule.type"
-                    (change)="
-                      updateValidationRule(field, i, 'type', inputValue($event))
-                    "
-                  >
-                    @for (vt of validationTypes; track vt) {
-                      <option [value]="vt">{{ vt }}</option>
-                    }
-                  </select>
-
-                  @if (ruleHasParam(rule.type)) {
-                    <input
-                      class="pi-input pi-input--sm"
-                      [placeholder]="paramPlaceholder(rule.type)"
-                      [value]="ruleParamValue(rule)"
-                      (input)="
-                        updateValidationParam(
+            @if (!isFieldFlair(field)) {
+              <h4 class="pi-subheading">Validation</h4>
+              <div class="pi-section">
+                @for (
+                  rule of field.validation();
+                  track $index;
+                  let i = $index
+                ) {
+                  <div class="pi-validation-row">
+                    <select
+                      class="pi-select pi-select--sm"
+                      [value]="rule.type"
+                      (change)="
+                        updateValidationRule(
                           field,
                           i,
-                          rule.type,
+                          'type',
+                          inputValue($event)
+                        )
+                      "
+                    >
+                      @for (vt of validationTypes; track vt) {
+                        <option [value]="vt">{{ vt }}</option>
+                      }
+                    </select>
+
+                    @if (ruleHasParam(rule.type)) {
+                      <input
+                        class="pi-input pi-input--sm"
+                        [placeholder]="paramPlaceholder(rule.type)"
+                        [value]="ruleParamValue(rule)"
+                        (input)="
+                          updateValidationParam(
+                            field,
+                            i,
+                            rule.type,
+                            inputValue($event)
+                          )
+                        "
+                      />
+                    }
+
+                    <input
+                      class="pi-input pi-input--sm"
+                      placeholder="Error message"
+                      [value]="rule.message ?? ''"
+                      (input)="
+                        updateValidationRule(
+                          field,
+                          i,
+                          'message',
                           inputValue($event)
                         )
                       "
                     />
-                  }
 
-                  <input
-                    class="pi-input pi-input--sm"
-                    placeholder="Error message"
-                    [value]="rule.message ?? ''"
-                    (input)="
-                      updateValidationRule(
-                        field,
-                        i,
-                        'message',
-                        inputValue($event)
-                      )
-                    "
-                  />
-
-                  <button
-                    type="button"
-                    class="pi-icon-btn pi-icon-btn--danger"
-                    aria-label="Remove validation rule"
-                    (click)="removeValidationRule(field, i)"
-                  >
-                    <ui-icon [svg]="iconX" [size]="12" aria-hidden="true" />
-                  </button>
-                </div>
-              }
-              <button
-                type="button"
-                class="pi-add-btn"
-                (click)="addValidationRule(field)"
-              >
-                + Add rule
-              </button>
-            </div>
+                    <button
+                      type="button"
+                      class="pi-icon-btn pi-icon-btn--danger"
+                      aria-label="Remove validation rule"
+                      (click)="removeValidationRule(field, i)"
+                    >
+                      <ui-icon [svg]="iconX" [size]="12" aria-hidden="true" />
+                    </button>
+                  </div>
+                }
+                <button
+                  type="button"
+                  class="pi-add-btn"
+                  (click)="addValidationRule(field)"
+                >
+                  + Add rule
+                </button>
+              </div>
+            }
 
             <!-- Config -->
             @if (configSchemaFor(field).length > 0) {
@@ -694,6 +711,11 @@ export class UIPropertyInspector {
   protected showOptions(field: MutableFieldDefinition): boolean {
     const comp = field.component();
     return comp === "select" || comp === "radio" || comp === "autocomplete";
+  }
+
+  /** @internal Whether the field is a flair (non-data) component. */
+  protected isFieldFlair(field: MutableFieldDefinition): boolean {
+    return isFlairComponent(field.component());
   }
 
   // ── Options ───────────────────────────────────────────────────────

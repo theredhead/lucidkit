@@ -36,8 +36,8 @@ describe("validators", () => {
         expect(runValidator(rule, 0)).toBeNull();
       });
 
-      it("should pass for false (boolean)", () => {
-        expect(runValidator(rule, false)).toBeNull();
+      it("should fail for false (boolean)", () => {
+        expect(runValidator(rule, false)).not.toBeNull();
       });
 
       it("should use custom message when provided", () => {

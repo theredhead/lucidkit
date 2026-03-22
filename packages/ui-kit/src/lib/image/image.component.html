@@ -1,0 +1,11 @@
+@if (activeSrc(); as imgSrc) {
+  <img
+    [src]="imgSrc"
+    [alt]="alt()"
+    [attr.aria-label]="effectiveAriaLabel()"
+    (load)="onLoad()"
+    (error)="onError()"
+  />
+} @else {
+  <div class="ui-image__placeholder" aria-hidden="true"></div>
+}
