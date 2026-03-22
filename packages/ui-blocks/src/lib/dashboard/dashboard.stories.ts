@@ -8,7 +8,7 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIDashboard } from "./dashboard.component";
 import { UIDashboardPanel } from "./dashboard-panel.component";
 import type { DashboardPanelConfig } from "./dashboard.types";
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UIIcon, UIIcons, UIChart, BarGraphStrategy } from "@theredhead/ui-kit";
 
 // ── Shared fixtures ──────────────────────────────────────────────
 
@@ -16,21 +16,27 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
   {
     id: "kpi",
     title: "KPI Overview",
-    placement: { colSpan: 2 },
+    placement: { colSpan: 5 },
     collapsible: true,
   },
-  { id: "revenue", title: "Revenue", collapsible: true },
-  { id: "users", title: "Active Users" },
+  {
+    id: "revenue",
+    title: "Revenue",
+    placement: { colSpan: 3 },
+    collapsible: true,
+  },
+  { id: "users", title: "Active Users", placement: { colSpan: 3 } },
   {
     id: "feed",
     title: "Activity Feed",
-    placement: { colSpan: 2 },
+    placement: { colSpan: 5 },
     collapsible: true,
     removable: true,
   },
   {
     id: "tasks",
     title: "Tasks",
+    placement: { colSpan: 8 },
     collapsible: true,
     removable: true,
   },
@@ -41,7 +47,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
 @Component({
   selector: "ui-dashboard-default-demo",
   standalone: true,
-  imports: [UIDashboard, UIDashboardPanel, UIIcon],
+  imports: [UIDashboard, UIDashboardPanel, UIIcon, UIChart],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -54,18 +60,32 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
         display: flex;
         gap: 2rem;
         padding: 1rem;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        height: 100%;
+        box-sizing: border-box;
       }
       .demo-kpi-item {
         text-align: center;
+        min-width: 0;
       }
       .demo-kpi-value {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         font-weight: 700;
+        white-space: nowrap;
       }
       .demo-kpi-label {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         opacity: 0.55;
         margin-top: 0.25rem;
+      }
+      .demo-chart-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        box-sizing: border-box;
       }
       .demo-chart-placeholder {
         display: flex;
@@ -76,6 +96,9 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
         border-radius: 8px;
         opacity: 0.35;
         font-size: 0.8rem;
+      }
+      ui-dashboard-panel {
+        overflow: hidden;
       }
       .demo-list {
         list-style: none;
@@ -94,7 +117,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
     `,
   ],
   template: `
-    <ui-dashboard [columns]="3" [gap]="16">
+    <ui-dashboard [columns]="8" [gap]="16">
       <ui-dashboard-panel [config]="panels[0]">
         <div class="demo-kpi">
           <div class="demo-kpi-item">
@@ -117,9 +140,17 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
       </ui-dashboard-panel>
 
       <ui-dashboard-panel [config]="panels[1]">
-        <div class="demo-chart-placeholder">
-          <ui-icon [svg]="icons.Charts.ChartBar" [size]="16" /> Revenue chart
-          goes here
+        <div class="demo-chart-wrapper">
+          <ui-chart
+            [source]="revenueData"
+            labelProperty="month"
+            valueProperty="revenue"
+            [strategy]="barStrategy"
+            [width]="280"
+            [height]="180"
+            [showLegend]="false"
+            ariaLabel="Monthly revenue"
+          />
         </div>
       </ui-dashboard-panel>
 
@@ -196,6 +227,15 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
 class DashboardDefaultDemo {
   protected readonly icons = UIIcons.Lucide;
   public readonly panels = SAMPLE_PANELS;
+  protected readonly barStrategy = new BarGraphStrategy();
+  protected readonly revenueData = [
+    { month: "Jul", revenue: 24500 },
+    { month: "Aug", revenue: 21800 },
+    { month: "Sep", revenue: 26300 },
+    { month: "Oct", revenue: 28900 },
+    { month: "Nov", revenue: 31200 },
+    { month: "Dec", revenue: 42500 },
+  ];
 }
 
 // ── Demo: Auto-fill responsive ───────────────────────────────────
