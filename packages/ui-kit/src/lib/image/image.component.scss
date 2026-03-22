@@ -1,0 +1,60 @@
+// ── Shimmer animation ────────────────────────────────────────────────
+@keyframes ui-image-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// ── Light defaults ───────────────────────────────────────────────────
+:host {
+  --ui-image-placeholder-bg: #e4e7eb;
+  --ui-image-placeholder-shimmer: #f0f2f5;
+  --ui-image-border-radius: 4px;
+
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--ui-image-border-radius);
+  line-height: 0;
+}
+
+// ── Dark class ───────────────────────────────────────────────────────
+:host-context(html.dark-theme) {
+  --ui-image-placeholder-bg: #2a2e35;
+  --ui-image-placeholder-shimmer: #3a3f47;
+}
+
+// ── System preference fallback ───────────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not(.light-theme):not(.dark-theme)) {
+    --ui-image-placeholder-bg: #2a2e35;
+    --ui-image-placeholder-shimmer: #3a3f47;
+  }
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.ui-image__placeholder {
+  width: 100%;
+  height: 100%;
+  min-width: 48px;
+  min-height: 48px;
+  background: linear-gradient(
+    90deg,
+    var(--ui-image-placeholder-bg) 25%,
+    var(--ui-image-placeholder-shimmer) 50%,
+    var(--ui-image-placeholder-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: ui-image-shimmer 1.5s infinite ease-in-out;
+  border-radius: inherit;
+}

@@ -57,6 +57,9 @@ export class UISlider {
   /** Whether to show the current value label(s). */
   public readonly showValue = input(false);
 
+  /** Whether to show the min and max labels at each end of the track. */
+  public readonly showMinMax = input(false);
+
   /** Accessible label. */
   public readonly ariaLabel = input<string>("Slider");
 

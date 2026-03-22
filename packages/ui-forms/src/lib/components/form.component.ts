@@ -44,6 +44,19 @@ import { UIFormGroup } from "./form-group.component";
     }
 
     @if (showSubmit()) {
+      @if (!isValid() && validationSummary().length) {
+        <div class="f-validation-summary" role="alert">
+          <strong>Please fix the following issues:</strong>
+          <ul>
+            @for (item of validationSummary(); track item.fieldId) {
+              <li>
+                <strong>{{ item.title }}:</strong>
+                {{ item.errors[0] }}
+              </li>
+            }
+          </ul>
+        </div>
+      }
       <div class="f-actions">
         <button
           type="button"
@@ -86,6 +99,30 @@ import { UIFormGroup } from "./form-group.component";
       border-top: 1px solid var(--ui-border, #d7dce2);
     }
 
+    .f-validation-summary {
+      color: #9a2c2c;
+      background: #fef2f2;
+      border: 1px solid #e8b4b4;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+
+    .f-validation-summary strong {
+      font-weight: 600;
+    }
+
+    .f-validation-summary ul {
+      margin: 6px 0 0;
+      padding-left: 20px;
+    }
+
+    .f-validation-summary li {
+      margin-bottom: 2px;
+    }
+
     .f-submit {
       appearance: none;
       border: none;
@@ -121,6 +158,12 @@ import { UIFormGroup } from "./form-group.component";
       .f-actions {
         border-top-color: var(--ui-border, #3a3f47);
       }
+
+      .f-validation-summary {
+        color: #fca5a5;
+        background: #3b1c1c;
+        border-color: #6b2c2c;
+      }
     }
 
     @media (prefers-color-scheme: dark) {
@@ -131,6 +174,12 @@ import { UIFormGroup } from "./form-group.component";
 
         .f-actions {
           border-top-color: var(--ui-border, #3a3f47);
+        }
+
+        .f-validation-summary {
+          color: #fca5a5;
+          background: #3b1c1c;
+          border-color: #6b2c2c;
         }
       }
     }
@@ -151,6 +200,26 @@ export class UIForm {
 
   /** @internal */
   protected readonly isValid = computed(() => this.engine().valid());
+
+  /** @internal — collects all invalid visible fields for the summary. */
+  protected readonly validationSummary = computed(() => {
+    const summary: { fieldId: string; title: string; errors: string[] }[] = [];
+    for (const group of this.engine().groups) {
+      if (!group.visible()) continue;
+      for (const field of group.fields) {
+        if (!field.visible()) continue;
+        const v = field.validation();
+        if (!v.valid) {
+          summary.push({
+            fieldId: field.definition.id,
+            title: field.definition.title || field.definition.id,
+            errors: v.errors.map((e) => e.message),
+          });
+        }
+      }
+    }
+    return summary;
+  });
 
   /** @internal */
   protected onSubmit(): void {

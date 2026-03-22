@@ -39,23 +39,33 @@ describe("UISelect", () => {
   });
 
   describe("option rendering", () => {
-    it("should render all options", () => {
+    it("should render placeholder plus all options when no value is set", () => {
       const options = fixture.nativeElement.querySelectorAll("option");
-      expect(options.length).toBe(3);
+      expect(options.length).toBe(4);
     });
 
-    it("should render option labels", () => {
+    it("should render placeholder as first option", () => {
       const options = fixture.nativeElement.querySelectorAll("option");
-      expect(options[0].textContent.trim()).toBe("Alpha");
-      expect(options[1].textContent.trim()).toBe("Bravo");
-      expect(options[2].textContent.trim()).toBe("Charlie");
+      expect(options[0].textContent.trim()).toBe("\u2014 Select \u2014");
+      expect(options[1].textContent.trim()).toBe("Alpha");
+      expect(options[2].textContent.trim()).toBe("Bravo");
+      expect(options[3].textContent.trim()).toBe("Charlie");
     });
 
     it("should set option values", () => {
       const options = fixture.nativeElement.querySelectorAll("option");
-      expect(options[0].value).toBe("a");
-      expect(options[1].value).toBe("b");
-      expect(options[2].value).toBe("c");
+      expect(options[0].value).toBe("");
+      expect(options[1].value).toBe("a");
+      expect(options[2].value).toBe("b");
+      expect(options[3].value).toBe("c");
+    });
+
+    it("should hide placeholder once a value is selected", () => {
+      fixture.componentRef.setInput("value", "b");
+      fixture.detectChanges();
+      const options = fixture.nativeElement.querySelectorAll("option");
+      expect(options.length).toBe(3);
+      expect(options[0].textContent.trim()).toBe("Alpha");
     });
   });
 

@@ -29,3 +29,4 @@ export { ColorTextAdapter } from "./color-text-adapter";
 export { SlugTextAdapter } from "./slug-text-adapter";
 export { UuidTextAdapter } from "./uuid-text-adapter";
 export { CronTextAdapter } from "./cron-text-adapter";
+export { UppercaseTextAdapter } from "./uppercase-text-adapter";

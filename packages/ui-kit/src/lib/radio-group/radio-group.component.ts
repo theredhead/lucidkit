@@ -9,6 +9,14 @@ import {
 
 import { UIRadioButton } from "./radio-button.component";
 
+/** Option definition for data-driven radio groups. */
+export interface RadioOption {
+  /** Human-readable label. */
+  label: string;
+  /** The value submitted when this option is chosen. */
+  value: string;
+}
+
 /**
  * A radio group container that manages a single-selection model
  * across its projected `<ui-radio-button>` children.
@@ -25,6 +33,7 @@ import { UIRadioButton } from "./radio-button.component";
 @Component({
   selector: "ui-radio-group",
   standalone: true,
+  imports: [UIRadioButton],
   templateUrl: "./radio-group.component.html",
   styleUrl: "./radio-group.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +50,13 @@ export class UIRadioGroup {
 
   /** The currently selected value. Supports two-way binding. */
   public readonly value = model<unknown>(undefined);
+
+  /**
+   * Data-driven options. When provided, radio buttons are rendered
+   * automatically. Use this instead of projecting `<ui-radio-button>`
+   * children when options come from data (e.g. form schemas).
+   */
+  public readonly options = input<readonly RadioOption[]>([]);
 
   /** Whether the entire group is disabled. */
   public readonly disabled = input(false);

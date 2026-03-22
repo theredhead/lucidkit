@@ -62,12 +62,14 @@ export class UIDialog {
     viewChild<ElementRef<HTMLDialogElement>>("dialogRef");
 
   public constructor() {
-    // When open changes to true and dialog element exists, call showModal
     effect(() => {
       const isOpen = this.open();
       const el = this.dialogEl()?.nativeElement;
-      if (el && isOpen && !el.open) {
+      if (!el) return;
+      if (isOpen && !el.open) {
         el.showModal();
+      } else if (!isOpen && el.open) {
+        el.close();
       }
     });
   }
@@ -75,13 +77,11 @@ export class UIDialog {
   /** Show the dialog. */
   public show(): void {
     this.open.set(true);
-    this.dialogEl()?.nativeElement.showModal();
   }
 
   /** Close the dialog. */
   public close(): void {
     this.open.set(false);
-    this.dialogEl()?.nativeElement.close();
     this.closed.emit();
   }
 

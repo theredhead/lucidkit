@@ -19,6 +19,7 @@ import {
   SlugTextAdapter,
   UuidTextAdapter,
   CronTextAdapter,
+  UppercaseTextAdapter,
 } from "@theredhead/ui-kit";
 
 /**
@@ -45,6 +46,7 @@ const ADAPTER_FACTORIES: Readonly<Record<string, () => TextAdapter>> = {
   slug: () => new SlugTextAdapter(),
   uuid: () => new UuidTextAdapter(),
   cron: () => new CronTextAdapter(),
+  uppercase: () => new UppercaseTextAdapter(),
 };
 
 /**

@@ -55,7 +55,13 @@ const meta: Meta<UIColorPicker> = {
     },
     initialMode: {
       control: "select",
-      options: ["theme", "grid", "rgba", "hsla"] satisfies ColorPickerMode[],
+      options: [
+        "theme",
+        "grid",
+        "named",
+        "rgba",
+        "hsla",
+      ] satisfies ColorPickerMode[],
       description: "Which tab the popover opens to by default.",
     },
     disabled: {

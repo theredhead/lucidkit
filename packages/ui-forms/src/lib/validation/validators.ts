@@ -32,6 +32,7 @@ export function registerCustomValidator(id: string, fn: ValidatorFn): void {
 
 function isEmpty(v: unknown): boolean {
   if (v === null || v === undefined) return true;
+  if (typeof v === "boolean") return !v;
   if (typeof v === "string") return v.trim().length === 0;
   if (Array.isArray(v)) return v.length === 0;
   return false;

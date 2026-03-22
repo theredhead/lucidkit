@@ -15,7 +15,11 @@ import type {
   HslaColor,
   RgbaColor,
 } from "./color-picker.types";
-import { COLOR_GRID, THEME_PALETTE_BASES } from "./color-picker.types";
+import {
+  COLOR_GRID,
+  NAMED_COLORS,
+  THEME_PALETTE_BASES,
+} from "./color-picker.types";
 import {
   hexToRgba,
   hslaToRgba,
@@ -32,6 +36,7 @@ const MODES: readonly {
 }[] = [
   { key: "theme", label: "Theme" },
   { key: "grid", label: "Grid" },
+  { key: "named", label: "Named" },
   { key: "rgba", label: "RGBA" },
   { key: "hsla", label: "HSLA" },
 ];
@@ -65,10 +70,18 @@ export class UIColorPickerPopover implements UIPopoverContent<string> {
   /** Which mode tab to show initially. */
   public readonly initialMode = input<ColorPickerMode>("theme");
 
+  /** Restrict available mode tabs. When set, only these modes are shown. */
+  public readonly availableModes = input<
+    readonly ColorPickerMode[] | undefined
+  >(undefined);
+
   // ── Internal state ─────────────────────────────────────────
 
-  /** The available mode tabs. */
-  public readonly modes = MODES;
+  /** The available mode tabs (filtered by availableModes when set). */
+  public readonly modes = computed(() => {
+    const allowed = this.availableModes();
+    return allowed ? MODES.filter((m) => allowed.includes(m.key)) : MODES;
+  });
 
   /** Active mode tab. */
   public readonly activeMode = signal<ColorPickerMode>("theme");
@@ -98,6 +111,21 @@ export class UIColorPickerPopover implements UIPopoverContent<string> {
 
   /** Flat colour grid. */
   public readonly colorGrid = COLOR_GRID;
+
+  /** Named CSS colours for the named list mode. */
+  public readonly namedColors = NAMED_COLORS;
+
+  /** Filter text for the named colours list. */
+  public readonly namedFilter = signal("");
+
+  /** Filtered named colours based on the search input. */
+  public readonly filteredNamedColors = computed(() => {
+    const q = this.namedFilter().toLowerCase();
+    if (!q) return this.namedColors;
+    return this.namedColors.filter(
+      (c) => c.name.toLowerCase().includes(q) || c.hex.includes(q),
+    );
+  });
 
   /** Columns count for the grid (12 per row). */
   public readonly gridColumns = 12;
@@ -191,6 +219,11 @@ export class UIColorPickerPopover implements UIPopoverContent<string> {
   }
 
   // ── Track-by helpers ───────────────────────────────────────
+
+  /** Update the named colour search filter. */
+  public onNamedFilterInput(event: Event): void {
+    this.namedFilter.set((event.target as HTMLInputElement).value);
+  }
 
   /** @internal */
   public trackByLabel(_: number, group: { label: string }): string {

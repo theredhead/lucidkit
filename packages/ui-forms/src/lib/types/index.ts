@@ -19,4 +19,6 @@ export type {
   FormGroupDefinition,
   FormSchema,
   FormValues,
+  FlairComponent,
 } from "./form-schema.types";
+export { isFlairComponent, FLAIR_COMPONENTS } from "./form-schema.types";

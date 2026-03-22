@@ -146,6 +146,27 @@
   outline-offset: 2px;
 }
 
+/* ── Min / Max labels ── */
+
+.sl-min,
+.sl-max {
+  font:
+    400 0.75rem/1.4 system-ui,
+    sans-serif;
+  color: var(--ui-text);
+  opacity: 0.6;
+  white-space: nowrap;
+  min-width: 1.5rem;
+}
+
+.sl-min {
+  text-align: right;
+}
+
+.sl-max {
+  text-align: left;
+}
+
 /* ── Value label ── */
 
 .sl-value {

@@ -1,4 +1,7 @@
 @if (mode() === 'single') {
+  @if (showMinMax()) {
+    <span class="sl-min">{{ min() }}</span>
+  }
   <div class="sl-track-wrapper">
     <div class="sl-track">
       <div class="sl-fill" [style.width.%]="fillPercent()"></div>
@@ -27,10 +30,16 @@
       </div>
     }
   </div>
+  @if (showMinMax()) {
+    <span class="sl-max">{{ max() }}</span>
+  }
   @if (showValue()) {
     <span class="sl-value">{{ singleValue() }}</span>
   }
 } @else {
+  @if (showMinMax()) {
+    <span class="sl-min">{{ min() }}</span>
+  }
   <div class="sl-track-wrapper sl-track-wrapper--range">
     <div class="sl-track">
       <div class="sl-fill" [style.left.%]="fillStart()" [style.width.%]="fillEnd() - fillStart()"></div>
@@ -70,6 +79,9 @@
       </div>
     }
   </div>
+  @if (showMinMax()) {
+    <span class="sl-max">{{ max() }}</span>
+  }
   @if (showValue()) {
     <span class="sl-value">{{ rangeLow() }} – {{ rangeHigh() }}</span>
   }

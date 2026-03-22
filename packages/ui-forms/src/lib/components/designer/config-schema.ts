@@ -359,6 +359,72 @@ export const COMPONENT_CONFIG_SCHEMAS: Readonly<
       placeholder: "e.g. 5242880",
     },
   ],
+
+  // ── Flair components ────────────────────────────────────────────────
+
+  "flair:richtext": [
+    {
+      key: "content",
+      label: "HTML content",
+      editor: "text",
+      placeholder: "<p>Enter rich text HTML…</p>",
+    },
+  ],
+
+  "flair:image": [
+    {
+      key: "src",
+      label: "Image URL",
+      editor: "text",
+      placeholder: "https://example.com/image.png",
+    },
+    {
+      key: "alt",
+      label: "Alt text",
+      editor: "text",
+      placeholder: "Describe the image",
+    },
+    {
+      key: "width",
+      label: "Width (px)",
+      editor: "number",
+      placeholder: "e.g. 400",
+    },
+    {
+      key: "height",
+      label: "Height (px)",
+      editor: "number",
+      placeholder: "e.g. 300",
+    },
+  ],
+
+  "flair:media": [
+    {
+      key: "source",
+      label: "Media URL",
+      editor: "text",
+      placeholder: "https://example.com/video.mp4",
+    },
+    {
+      key: "type",
+      label: "Media type",
+      editor: "select",
+      options: ["video", "audio"],
+      defaultValue: "video",
+    },
+    {
+      key: "controls",
+      label: "Show controls",
+      editor: "boolean",
+      defaultValue: true,
+    },
+    {
+      key: "poster",
+      label: "Poster image URL",
+      editor: "text",
+      placeholder: "https://example.com/poster.jpg",
+    },
+  ],
 };
 
 /**

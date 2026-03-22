@@ -99,6 +99,28 @@ const PALETTE_FIELDS: readonly PaletteFieldType[] = [
   },
 ];
 
+/** Flair (non-data) types available in the palette. */
+const PALETTE_FLAIR: readonly PaletteFieldType[] = [
+  {
+    key: "flair:richtext",
+    label: "Rich Text",
+    description: "Static rich text content",
+    icon: UIIcons.Lucide.Text.PenLine,
+  },
+  {
+    key: "flair:image",
+    label: "Image",
+    description: "Static image",
+    icon: UIIcons.Lucide.Photography.Image,
+  },
+  {
+    key: "flair:media",
+    label: "Media",
+    description: "Audio or video player",
+    icon: UIIcons.Lucide.Communication.Video,
+  },
+];
+
 /**
  * Palette sidebar that lists available field types. Clicking or
  * dragging a type emits the component key so the parent can add
@@ -116,13 +138,35 @@ const PALETTE_FIELDS: readonly PaletteFieldType[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-field-palette" },
   template: `
-    <h3 class="fp-heading" id="fp-heading">Fields</h3>
-    <nav class="fp-list" aria-labelledby="fp-heading">
+    <h3 class="fp-heading" id="fp-heading-fields">Fields</h3>
+    <nav class="fp-list" aria-labelledby="fp-heading-fields">
       @for (ft of fieldTypes; track ft.key) {
         <button
           type="button"
           class="fp-item"
           [attr.aria-label]="'Add ' + ft.label + ' field: ' + ft.description"
+          (click)="fieldRequested.emit(ft.key)"
+          draggable="true"
+          (dragstart)="onDragStart($event, ft.key)"
+        >
+          <ui-icon
+            class="fp-icon"
+            [svg]="ft.icon"
+            [size]="16"
+            aria-hidden="true"
+          />
+          <span class="fp-label">{{ ft.label }}</span>
+        </button>
+      }
+    </nav>
+
+    <h3 class="fp-heading fp-heading--flair" id="fp-heading-flair">Flair</h3>
+    <nav class="fp-list" aria-labelledby="fp-heading-flair">
+      @for (ft of flairTypes; track ft.key) {
+        <button
+          type="button"
+          class="fp-item"
+          [attr.aria-label]="'Add ' + ft.label + ' flair: ' + ft.description"
           (click)="fieldRequested.emit(ft.key)"
           draggable="true"
           (dragstart)="onDragStart($event, ft.key)"
@@ -157,6 +201,10 @@ const PALETTE_FIELDS: readonly PaletteFieldType[] = [
       margin: 0 0 10px;
       color: var(--ui-text, #1d232b);
       opacity: 0.6;
+    }
+
+    .fp-heading--flair {
+      margin-top: 16px;
     }
 
     .fp-list {
@@ -251,6 +299,9 @@ export class UIFieldPalette {
 
   /** @internal Available field types. */
   protected readonly fieldTypes = PALETTE_FIELDS;
+
+  /** @internal Available flair types. */
+  protected readonly flairTypes = PALETTE_FLAIR;
 
   /** @internal */
   protected onDragStart(event: DragEvent, key: string): void {

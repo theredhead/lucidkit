@@ -16,6 +16,7 @@ import { LoggerFactory } from "@theredhead/foundation";
 
 import type { FieldState } from "../../engine/form-engine";
 import { FormFieldRegistry } from "../../registry/field-registry";
+import { isFlairComponent } from "../../types/form-schema.types";
 
 /**
  * Renders a single form field by dynamically creating the component
@@ -41,7 +42,7 @@ import { FormFieldRegistry } from "../../registry/field-registry";
     "[class.ui-form-field--hidden]": "!state().visible()",
   },
   template: `
-    @if (state().visible()) {
+    @if (state().visible() && !isFlair()) {
       <label class="ff-label" [attr.for]="state().definition.id">
         {{ state().definition.title }}
         @if (isRequired()) {
@@ -58,7 +59,7 @@ import { FormFieldRegistry } from "../../registry/field-registry";
       <ng-container #outlet />
     </div>
 
-    @if (state().visible() && showErrors()) {
+    @if (state().visible() && !isFlair() && showErrors()) {
       <ul class="ff-errors" role="alert">
         @for (error of state().validation().errors; track error.type) {
           <li class="ff-error">{{ error.message }}</li>
@@ -153,6 +154,11 @@ export class UIFormField {
   /** @internal Show errors only when the field has been touched. */
   protected readonly showErrors = computed(
     () => this.state().touched() && !this.state().validation().valid,
+  );
+
+  /** @internal Whether this field is a flair (non-data) component. */
+  protected readonly isFlair = computed(() =>
+    isFlairComponent(this.state().definition.component),
   );
 
   /** @internal Whether the field has a `required` validation rule. */
