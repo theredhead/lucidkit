@@ -1,5 +1,5 @@
 <span
-  class="rb-control"
+  class="control"
   role="radio"
   [attr.aria-checked]="isChecked()"
   [attr.aria-disabled]="isDisabled()"
@@ -8,12 +8,12 @@
   (click)="select()"
   (keydown)="onKeyDown($event)"
 >
-  <span class="rb-circle">
+  <span class="circle">
     @if (isChecked()) {
-      <span class="rb-dot"></span>
+      <span class="dot"></span>
     }
   </span>
 </span>
-<span class="rb-label" (click)="select()" (keydown)="onKeyDown($event)" role="presentation">
+<span class="label" (click)="select()" (keydown)="onKeyDown($event)" role="presentation">
   <ng-content />
 </span>

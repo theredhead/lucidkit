@@ -361,7 +361,7 @@ describe("UIInput", () => {
       fixture.detectChanges();
 
       const prefixBtn = fixture.nativeElement.querySelector(
-        ".ui-input__icon--prefix",
+        ".icon--prefix",
       );
       expect(prefixBtn).toBeTruthy();
       expect(prefixBtn.querySelector("ui-icon")).toBeTruthy();
@@ -372,7 +372,7 @@ describe("UIInput", () => {
       fixture.detectChanges();
 
       const suffixBtn = fixture.nativeElement.querySelector(
-        ".ui-input__icon--suffix",
+        ".icon--suffix",
       );
       expect(suffixBtn).toBeTruthy();
     });
@@ -380,7 +380,7 @@ describe("UIInput", () => {
     it("should not render icons without adapter", () => {
       fixture.detectChanges();
 
-      const icons = fixture.nativeElement.querySelectorAll(".ui-input__icon");
+      const icons = fixture.nativeElement.querySelectorAll(".icon");
       expect(icons.length).toBe(0);
     });
 
@@ -468,7 +468,7 @@ describe("UIInput", () => {
       fixture.detectChanges();
 
       const prefixBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".ui-input__icon--prefix",
+        ".icon--prefix",
       );
       prefixBtn.click();
 
@@ -491,7 +491,7 @@ describe("UIInput", () => {
       fixture.detectChanges();
 
       const suffixBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".ui-input__icon--suffix",
+        ".icon--suffix",
       );
       suffixBtn.click();
 

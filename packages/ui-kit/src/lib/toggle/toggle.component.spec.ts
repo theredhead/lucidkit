@@ -149,7 +149,7 @@ describe("UIToggle", () => {
   describe("click interaction", () => {
     it("should toggle when track is clicked", () => {
       const track = fixture.nativeElement.querySelector(
-        ".toggle-track",
+        ".track",
       ) as HTMLElement;
       track.click();
       fixture.detectChanges();
@@ -162,7 +162,7 @@ describe("UIToggle", () => {
   describe("keyboard interaction", () => {
     it("should toggle on Space key", () => {
       const track = fixture.nativeElement.querySelector(
-        ".toggle-track",
+        ".track",
       ) as HTMLElement;
       const event = new KeyboardEvent("keydown", {
         key: " ",
@@ -176,7 +176,7 @@ describe("UIToggle", () => {
 
     it("should toggle on Enter key", () => {
       const track = fixture.nativeElement.querySelector(
-        ".toggle-track",
+        ".track",
       ) as HTMLElement;
       const event = new KeyboardEvent("keydown", {
         key: "Enter",
@@ -189,7 +189,7 @@ describe("UIToggle", () => {
 
     it("should not toggle on other keys", () => {
       const track = fixture.nativeElement.querySelector(
-        ".toggle-track",
+        ".track",
       ) as HTMLElement;
       track.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
       fixture.detectChanges();
@@ -201,7 +201,7 @@ describe("UIToggle", () => {
 
   describe("labels", () => {
     it("should not render track labels by default", () => {
-      const labels = fixture.nativeElement.querySelectorAll(".toggle-label");
+      const labels = fixture.nativeElement.querySelectorAll(".label");
       expect(labels.length).toBe(0);
     });
 
@@ -211,10 +211,10 @@ describe("UIToggle", () => {
       fixture.detectChanges();
 
       const onLabel = fixture.nativeElement.querySelector(
-        ".toggle-label--on",
+        ".label--on",
       ) as HTMLElement;
       const offLabel = fixture.nativeElement.querySelector(
-        ".toggle-label--off",
+        ".label--off",
       ) as HTMLElement;
 
       expect(onLabel.textContent!.trim()).toBe("Yes");
@@ -226,12 +226,12 @@ describe("UIToggle", () => {
 
   describe("accessibility", () => {
     it('should have role="switch" on the track', () => {
-      const track = fixture.nativeElement.querySelector(".toggle-track");
+      const track = fixture.nativeElement.querySelector(".track");
       expect(track.getAttribute("role")).toBe("switch");
     });
 
     it("should have aria-checked matching value", () => {
-      const track = fixture.nativeElement.querySelector(".toggle-track");
+      const track = fixture.nativeElement.querySelector(".track");
       expect(track.getAttribute("aria-checked")).toBe("false");
 
       fixture.componentRef.setInput("value", true);
@@ -240,21 +240,21 @@ describe("UIToggle", () => {
     });
 
     it("should have tabindex 0 on the track", () => {
-      const track = fixture.nativeElement.querySelector(".toggle-track");
+      const track = fixture.nativeElement.querySelector(".track");
       expect(track.getAttribute("tabindex")).toBe("0");
     });
 
     it("should forward ariaLabel to aria-label", () => {
       fixture.componentRef.setInput("ariaLabel", "Dark mode");
       fixture.detectChanges();
-      const track = fixture.nativeElement.querySelector(".toggle-track");
+      const track = fixture.nativeElement.querySelector(".track");
       expect(track.getAttribute("aria-label")).toBe("Dark mode");
     });
 
     it("should have aria-disabled when disabled", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
-      const track = fixture.nativeElement.querySelector(".toggle-track");
+      const track = fixture.nativeElement.querySelector(".track");
       expect(track.getAttribute("aria-disabled")).toBe("true");
     });
 
@@ -263,7 +263,7 @@ describe("UIToggle", () => {
       fixture.componentRef.setInput("offLabel", "OFF");
       fixture.detectChanges();
 
-      const labels = fixture.nativeElement.querySelectorAll(".toggle-label");
+      const labels = fixture.nativeElement.querySelectorAll(".label");
       for (const label of labels) {
         expect(label.getAttribute("aria-hidden")).toBe("true");
       }
@@ -308,17 +308,17 @@ describe("UIToggle", () => {
 
     it("should project text content", () => {
       const text = hostFixture.nativeElement.querySelector(
-        ".toggle-text",
+        ".text",
       ) as HTMLElement;
       expect(text.textContent!.trim()).toContain("Toggle feature");
     });
 
     it("should display on/off labels", () => {
       const onLabel = hostFixture.nativeElement.querySelector(
-        ".toggle-label--on",
+        ".label--on",
       ) as HTMLElement;
       const offLabel = hostFixture.nativeElement.querySelector(
-        ".toggle-label--off",
+        ".label--off",
       ) as HTMLElement;
       expect(onLabel.textContent!.trim()).toBe("On");
       expect(offLabel.textContent!.trim()).toBe("Off");

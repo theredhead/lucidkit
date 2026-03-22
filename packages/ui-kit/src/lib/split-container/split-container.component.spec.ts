@@ -77,14 +77,14 @@ describe("UISplitContainer", () => {
   });
 
   it("should render two panels and a divider", () => {
-    const panels = fixture.nativeElement.querySelectorAll(".sc-panel");
-    const divider = fixture.nativeElement.querySelector(".sc-divider");
+    const panels = fixture.nativeElement.querySelectorAll(".panel");
+    const divider = fixture.nativeElement.querySelector(".divider");
     expect(panels.length).toBe(2);
     expect(divider).toBeTruthy();
   });
 
   it("should project content into panels", () => {
-    const panels = fixture.nativeElement.querySelectorAll(".sc-panel");
+    const panels = fixture.nativeElement.querySelectorAll(".panel");
     expect(panels[0].textContent.trim()).toBe("First panel");
     expect(panels[1].textContent.trim()).toBe("Second panel");
   });
@@ -127,7 +127,7 @@ describe("UISplitContainer", () => {
     it("should set aria-orientation on divider", () => {
       host.orientation.set("vertical");
       fixture.detectChanges();
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       expect(divider.getAttribute("aria-orientation")).toBe("vertical");
     });
   });
@@ -149,7 +149,7 @@ describe("UISplitContainer", () => {
 
   describe("double-click collapse", () => {
     it("should not collapse when collapseTarget is 'none'", () => {
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
       const split = fixture.debugElement.children[0].children[0]
@@ -160,7 +160,7 @@ describe("UISplitContainer", () => {
     it("should collapse first panel on double-click", () => {
       host.collapseTarget.set("first");
       fixture.detectChanges();
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
       const split = fixture.debugElement.children[0].children[0]
@@ -171,7 +171,7 @@ describe("UISplitContainer", () => {
     it("should collapse second panel on double-click", () => {
       host.collapseTarget.set("second");
       fixture.detectChanges();
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
       const split = fixture.debugElement.children[0].children[0]
@@ -182,7 +182,7 @@ describe("UISplitContainer", () => {
     it("should restore sizes on second double-click", () => {
       host.collapseTarget.set("first");
       fixture.detectChanges();
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
 
       // First dblclick: collapse
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
@@ -200,7 +200,7 @@ describe("UISplitContainer", () => {
     it("should emit resized event on double-click collapse", () => {
       host.collapseTarget.set("first");
       fixture.detectChanges();
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
       expect(host.resizedEvents.length).toBe(1);
@@ -210,17 +210,17 @@ describe("UISplitContainer", () => {
 
   describe("divider", () => {
     it("should have role=separator", () => {
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       expect(divider.getAttribute("role")).toBe("separator");
     });
 
     it("should be focusable", () => {
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       expect(divider.getAttribute("tabindex")).toBe("0");
     });
 
     it("should have aria-valuenow reflecting first panel percentage", () => {
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       expect(divider.getAttribute("aria-valuenow")).toBe("50");
     });
   });
@@ -231,7 +231,7 @@ describe("UISplitContainer", () => {
       host.collapseTarget.set("first");
       fixture.detectChanges();
 
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
 
@@ -244,7 +244,7 @@ describe("UISplitContainer", () => {
       host.collapseTarget.set("first");
       fixture.detectChanges();
 
-      const divider = fixture.nativeElement.querySelector(".sc-divider");
+      const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
 

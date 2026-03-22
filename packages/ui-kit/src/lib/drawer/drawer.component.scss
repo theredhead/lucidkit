@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 /* ── Light defaults ── */
 
 :host {
@@ -8,9 +11,7 @@
   --ui-drawer-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
 }
 
-/* ── Dark mode ── */
-
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-drawer-bg: #2a2f38;
   --ui-drawer-text: #f2f6fb;
   --ui-drawer-border: #3a3f47;
@@ -18,29 +19,19 @@
   --ui-drawer-shadow: -4px 0 16px rgba(0, 0, 0, 0.4);
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-drawer-bg: #2a2f38;
-    --ui-drawer-text: #f2f6fb;
-    --ui-drawer-border: #3a3f47;
-    --ui-drawer-backdrop: rgba(0, 0, 0, 0.55);
-    --ui-drawer-shadow: -4px 0 16px rgba(0, 0, 0, 0.4);
-  }
-}
-
 /* ── Backdrop ── */
 
-.drawer-backdrop {
+.backdrop {
   position: fixed;
   inset: 0;
   z-index: 999;
   background: var(--ui-drawer-backdrop);
-  animation: drawer-backdrop-in 200ms ease-out;
+  animation: ui-drawer-backdrop-in anim.$duration-slow anim.$easing-out;
 }
 
 /* ── Panel ── */
 
-.drawer-panel {
+.panel {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -52,23 +43,23 @@
   padding: 1.25rem;
 }
 
-:host(.ui-drawer--left) .drawer-panel {
+:host(.ui-drawer--left) .panel {
   left: 0;
   border-right: 1px solid var(--ui-drawer-border);
   box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
-  animation: drawer-slide-left 200ms ease-out;
+  animation: ui-drawer-slide-left anim.$duration-slow anim.$easing-out;
 }
 
-:host(.ui-drawer--right) .drawer-panel {
+:host(.ui-drawer--right) .panel {
   right: 0;
   border-left: 1px solid var(--ui-drawer-border);
   box-shadow: var(--ui-drawer-shadow);
-  animation: drawer-slide-right 200ms ease-out;
+  animation: ui-drawer-slide-right anim.$duration-slow anim.$easing-out;
 }
 
 /* ── Animations ── */
 
-@keyframes drawer-backdrop-in {
+@keyframes ui-drawer-backdrop-in {
   from {
     opacity: 0;
   }
@@ -77,7 +68,7 @@
   }
 }
 
-@keyframes drawer-slide-left {
+@keyframes ui-drawer-slide-left {
   from {
     transform: translateX(-100%);
   }
@@ -86,7 +77,7 @@
   }
 }
 
-@keyframes drawer-slide-right {
+@keyframes ui-drawer-slide-right {
   from {
     transform: translateX(100%);
   }

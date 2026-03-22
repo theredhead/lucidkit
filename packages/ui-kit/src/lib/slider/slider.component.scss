@@ -1,3 +1,5 @@
+@use "mixins" as mix;
+
 :host {
   display: flex;
   align-items: center;
@@ -11,22 +13,12 @@
   --ui-thumb: #ffffff;
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-accent: #7ab0ff;
   --ui-accent-hover: #5a9aef;
   --ui-track: #505d6d;
   --ui-text: #f2f6fb;
   --ui-thumb: #e8edf4;
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-accent: #7ab0ff;
-    --ui-accent-hover: #5a9aef;
-    --ui-track: #505d6d;
-    --ui-text: #f2f6fb;
-    --ui-thumb: #e8edf4;
-  }
 }
 
 :host(.ui-slider--disabled) {
@@ -36,7 +28,7 @@
 
 /* ── Track wrapper ── */
 
-.sl-track-wrapper {
+.track-wrapper {
   position: relative;
   flex: 1;
   height: 2rem;
@@ -44,7 +36,7 @@
   align-items: center;
 }
 
-.sl-track {
+.track {
   position: absolute;
   left: 0;
   right: 0;
@@ -53,7 +45,7 @@
   background: var(--ui-track);
 }
 
-.sl-fill {
+.fill {
   position: absolute;
   top: 0;
   left: 0;
@@ -64,7 +56,7 @@
 
 /* ── Native range input (overlay) ── */
 
-.sl-input {
+.input {
   position: absolute;
   left: 0;
   right: 0;
@@ -77,17 +69,18 @@
   appearance: none;
   background: transparent;
   pointer-events: auto;
+  outline: none;
 }
 
-/* Hide the native track so only our custom .sl-track / .sl-fill show */
+/* Hide the native track so only our custom .track / .fill show */
 
-.sl-input::-webkit-slider-runnable-track {
+.input::-webkit-slider-runnable-track {
   background: transparent;
   border: none;
   height: 4px;
 }
 
-.sl-input::-moz-range-track {
+.input::-moz-range-track {
   background: transparent;
   border: none;
   height: 4px;
@@ -95,15 +88,15 @@
 
 /* For range mode, both inputs are stacked — let pointer-events through */
 
-.sl-track-wrapper--range .sl-input {
+.track-wrapper--range .input {
   pointer-events: none;
 }
 
-.sl-track-wrapper--range .sl-input::-webkit-slider-thumb {
+.track-wrapper--range .input::-webkit-slider-thumb {
   pointer-events: auto;
 }
 
-.sl-track-wrapper--range .sl-input::-moz-range-thumb {
+.track-wrapper--range .input::-moz-range-thumb {
   pointer-events: auto;
 }
 
@@ -112,7 +105,7 @@
 /* We show thumb via the native input's pseudo to keep accessibility.
    Style the native thumb to be visible: */
 
-.sl-input::-webkit-slider-thumb {
+.input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 1.125rem;
@@ -126,7 +119,7 @@
   margin-top: -7px;
 }
 
-.sl-input::-moz-range-thumb {
+.input::-moz-range-thumb {
   width: 1.125rem;
   height: 1.125rem;
   border-radius: 50%;
@@ -136,20 +129,20 @@
   cursor: pointer;
 }
 
-.sl-input:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid var(--ui-accent);
+.input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ui-focus-ring);
   outline-offset: 2px;
 }
 
-.sl-input:focus-visible::-moz-range-thumb {
-  outline: 2px solid var(--ui-accent);
+.input:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--ui-focus-ring);
   outline-offset: 2px;
 }
 
 /* ── Min / Max labels ── */
 
-.sl-min,
-.sl-max {
+.min,
+.max {
   font:
     400 0.75rem/1.4 system-ui,
     sans-serif;
@@ -159,17 +152,17 @@
   min-width: 1.5rem;
 }
 
-.sl-min {
+.min {
   text-align: right;
 }
 
-.sl-max {
+.max {
   text-align: left;
 }
 
 /* ── Value label ── */
 
-.sl-value {
+.value {
   font:
     500 0.8125rem/1.4 system-ui,
     sans-serif;
@@ -181,7 +174,7 @@
 
 /* ── Tick marks ── */
 
-.sl-ticks {
+.ticks {
   position: absolute;
   left: 0;
   right: 0;
@@ -191,11 +184,11 @@
   pointer-events: none;
 }
 
-.sl-ticks--labelled {
+.ticks--labelled {
   height: 22px;
 }
 
-.sl-tick {
+.tick {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -203,13 +196,13 @@
   transform: translateX(-50%);
 }
 
-.sl-tick-mark {
+.tick-mark {
   width: 1px;
   height: 6px;
   background: var(--ui-track);
 }
 
-.sl-tick-label {
+.tick-label {
   font:
     400 0.625rem/1.2 system-ui,
     sans-serif;

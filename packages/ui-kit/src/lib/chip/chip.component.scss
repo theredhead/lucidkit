@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 :host {
   display: inline-flex;
   align-items: center;
@@ -15,23 +18,14 @@
   --ui-chip-dismiss: #5a6470;
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-chip-bg: #3a3f47;
   --ui-chip-text: #f2f6fb;
   --ui-chip-dismiss: #d0d8e3;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-chip-bg: #3a3f47;
-    --ui-chip-text: #f2f6fb;
-    --ui-chip-dismiss: #d0d8e3;
-  }
-}
-
 :host(.ui-chip--disabled) {
-  opacity: 0.5;
-  pointer-events: none;
+  @include mix.disabled;
 }
 
 /* ── Color variants ── */
@@ -63,7 +57,7 @@
 
 /* Dark mode colors */
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   &.ui-chip--primary {
     background: rgba(122, 176, 255, 0.2);
     color: #7ab0ff;
@@ -82,56 +76,29 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    &.ui-chip--primary {
-      background: rgba(122, 176, 255, 0.2);
-      color: #7ab0ff;
-    }
-    &.ui-chip--success {
-      background: rgba(87, 227, 137, 0.2);
-      color: #57e389;
-    }
-    &.ui-chip--warning {
-      background: rgba(248, 228, 92, 0.2);
-      color: #f8e45c;
-    }
-    &.ui-chip--danger {
-      background: rgba(255, 107, 107, 0.2);
-      color: #ff6b6b;
-    }
-  }
-}
-
 /* ── Elements ── */
 
-.ch-label {
+.label {
   line-height: 1.4;
 }
 
-.ch-dismiss {
+.dismiss {
+  @include mix.control-reset;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 1rem;
   height: 1rem;
-  padding: 0;
-  border: none;
   border-radius: 50%;
-  background: transparent;
   color: var(--ui-chip-dismiss);
-  cursor: pointer;
   flex-shrink: 0;
-  transition: background-color 120ms ease;
+  transition: background-color anim.$duration-normal anim.$easing-default;
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);
   }
 
-  &:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 1px;
-  }
+  @include mix.focus-ring(1px, currentColor);
 
   svg {
     width: 0.625rem;

@@ -1,24 +1,24 @@
 @if (state().visible() && !isFlair()) {
-  <label class="ff-label" [attr.for]="state().definition.id">
+  <label class="label" [attr.for]="state().definition.id">
     {{ state().definition.title }}
     @if (isRequired()) {
-      <span class="ff-required" aria-hidden="true">*</span>
+      <span class="required" aria-hidden="true">*</span>
     }
   </label>
 
   @if (state().definition.description) {
-    <p class="ff-description">{{ state().definition.description }}</p>
+    <p class="description">{{ state().definition.description }}</p>
   }
 }
 
-<div class="ff-control" [class.ff-control--hidden]="!state().visible()">
+<div class="control" [class.control--hidden]="!state().visible()">
   <ng-container #outlet />
 </div>
 
 @if (state().visible() && !isFlair() && showErrors()) {
-  <ul class="ff-errors" role="alert">
+  <ul class="errors" role="alert">
     @for (error of state().validation().errors; track error.type) {
-      <li class="ff-error">{{ error.message }}</li>
+      <li class="error">{{ error.message }}</li>
     }
   </ul>
 }

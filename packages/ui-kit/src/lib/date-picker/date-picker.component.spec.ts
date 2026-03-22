@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { UIDatePicker } from "./date-picker.component";
+import { UI_DATE_PICKER_DEFAULTS } from "./date-picker.types";
 import {
   formatDate,
   parseDate,
@@ -8,6 +9,8 @@ import {
   normalizeDate,
   getWeekdayLabels,
   getPlaceholder,
+  getLocaleFormat,
+  getLocaleFirstDayOfWeek,
   isSameMonth,
 } from "./date-picker.utils";
 
@@ -38,8 +41,8 @@ describe("UIDatePicker", () => {
   });
 
   describe("defaults", () => {
-    it('should default format to "yyyy-MM-dd"', () => {
-      expect(component.format()).toBe("yyyy-MM-dd");
+    it("should default format to the user's locale", () => {
+      expect(component.format()).toBe(getLocaleFormat());
     });
 
     it("should default value to null", () => {
@@ -62,8 +65,8 @@ describe("UIDatePicker", () => {
       expect(component.max()).toBeNull();
     });
 
-    it("should default firstDayOfWeek to 1 (Monday)", () => {
-      expect(component.firstDayOfWeek()).toBe(1);
+    it("should default firstDayOfWeek to the user's locale", () => {
+      expect(component.firstDayOfWeek()).toBe(getLocaleFirstDayOfWeek());
     });
 
     it('should default ariaLabel to "Date"', () => {
@@ -74,15 +77,15 @@ describe("UIDatePicker", () => {
   describe("input element", () => {
     it("should render a text input", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input).toBeTruthy();
       expect(input.type).toBe("text");
     });
 
     it("should show placeholder from the format", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
-      expect(input.placeholder).toBe("yyyy-MM-dd");
+        fixture.nativeElement.querySelector(".input");
+      expect(input.placeholder).toBe(getLocaleFormat());
     });
 
     it("should forward custom placeholder", () => {
@@ -90,7 +93,7 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.placeholder).toBe("Enter date…");
     });
 
@@ -99,7 +102,7 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.getAttribute("aria-label")).toBe("Birth date");
     });
 
@@ -108,7 +111,7 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.disabled).toBe(true);
     });
 
@@ -117,14 +120,14 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.readOnly).toBe(true);
     });
   });
 
   describe("toggle button", () => {
     it("should render a toggle button", () => {
-      const btn = fixture.nativeElement.querySelector(".dp-toggle");
+      const btn = fixture.nativeElement.querySelector(".toggle");
       expect(btn).toBeTruthy();
     });
 
@@ -133,7 +136,7 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       expect(btn.disabled).toBe(true);
     });
 
@@ -142,62 +145,62 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       expect(btn.disabled).toBe(true);
     });
   });
 
   describe("calendar popup", () => {
     it("should not show the calendar initially", () => {
-      const cal = fixture.nativeElement.querySelector(".dp-calendar");
+      const cal = fixture.nativeElement.querySelector(".calendar");
       expect(cal).toBeNull();
     });
 
     it("should open the calendar on toggle button click", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const cal = fixture.nativeElement.querySelector(".dp-calendar");
+      const cal = fixture.nativeElement.querySelector(".calendar");
       expect(cal).toBeTruthy();
     });
 
     it("should close the calendar on second toggle click", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeTruthy();
 
       btn.click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeNull();
     });
 
     it("should close the calendar on document click outside", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeTruthy();
 
       document.body.click();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeNull();
     });
 
     it("should not close calendar when clicking inside", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
       fixture.nativeElement.click();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeTruthy();
     });
 
     it("should not open calendar when disabled", () => {
@@ -205,40 +208,40 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeNull();
     });
 
     it("should render weekday headers", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const headers = fixture.nativeElement.querySelectorAll(".dp-cal-weekday");
+      const headers = fixture.nativeElement.querySelectorAll(".cal-weekday");
       expect(headers.length).toBe(7);
     });
 
     it("should render 42 day cells", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const days = fixture.nativeElement.querySelectorAll(".dp-cal-day");
+      const days = fixture.nativeElement.querySelectorAll(".cal-day");
       expect(days.length).toBe(42);
     });
 
     it("should render month/year title", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const title = fixture.nativeElement.querySelector(".dp-cal-title");
+      const title = fixture.nativeElement.querySelector(".cal-title");
       expect(title.textContent.trim()).toMatch(/\w+ \d{4}/);
     });
   });
@@ -246,13 +249,13 @@ describe("UIDatePicker", () => {
   describe("day selection", () => {
     it("should set value when clicking a day", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
       const days: NodeListOf<HTMLButtonElement> =
         fixture.nativeElement.querySelectorAll(
-          ".dp-cal-day:not(.dp-cal-day--outside):not(.dp-cal-day--disabled)",
+          ".cal-day:not(.cal-day--outside):not(.cal-day--disabled)",
         );
       const firstDay = days[0];
       firstDay.click();
@@ -266,18 +269,18 @@ describe("UIDatePicker", () => {
 
     it("should close the calendar after selecting a day", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
       const days: NodeListOf<HTMLButtonElement> =
         fixture.nativeElement.querySelectorAll(
-          ".dp-cal-day:not(.dp-cal-day--outside):not(.dp-cal-day--disabled)",
+          ".cal-day:not(.cal-day--outside):not(.cal-day--disabled)",
         );
       days[0].click();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeNull();
     });
 
     it("should emit dateChange on day selection", () => {
@@ -285,13 +288,13 @@ describe("UIDatePicker", () => {
       component.dateChange.subscribe(spy);
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
       const days: NodeListOf<HTMLButtonElement> =
         fixture.nativeElement.querySelectorAll(
-          ".dp-cal-day:not(.dp-cal-day--outside):not(.dp-cal-day--disabled)",
+          ".cal-day:not(.cal-day--outside):not(.cal-day--disabled)",
         );
       days[0].click();
       fixture.detectChanges();
@@ -305,13 +308,12 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const selected = fixture.nativeElement.querySelector(
-        ".dp-cal-day--selected",
-      );
+      const selected =
+        fixture.nativeElement.querySelector(".cal-day--selected");
       expect(selected).toBeTruthy();
     });
   });
@@ -319,11 +321,11 @@ describe("UIDatePicker", () => {
   describe("month navigation", () => {
     it("should navigate to the previous month", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const title = fixture.nativeElement.querySelector(".dp-cal-title");
+      const title = fixture.nativeElement.querySelector(".cal-title");
       const originalText = title.textContent.trim();
 
       const prevBtn = fixture.nativeElement.querySelector(
@@ -337,11 +339,11 @@ describe("UIDatePicker", () => {
 
     it("should navigate to the next month", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const title = fixture.nativeElement.querySelector(".dp-cal-title");
+      const title = fixture.nativeElement.querySelector(".cal-title");
       const originalText = title.textContent.trim();
 
       const nextBtn = fixture.nativeElement.querySelector(
@@ -355,11 +357,11 @@ describe("UIDatePicker", () => {
 
     it("should navigate to the previous year", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const title = fixture.nativeElement.querySelector(".dp-cal-title");
+      const title = fixture.nativeElement.querySelector(".cal-title");
       const text1 = title.textContent.trim();
 
       const prevYearBtn = fixture.nativeElement.querySelector(
@@ -377,11 +379,11 @@ describe("UIDatePicker", () => {
 
     it("should navigate to the next year", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const title = fixture.nativeElement.querySelector(".dp-cal-title");
+      const title = fixture.nativeElement.querySelector(".cal-title");
       const text1 = title.textContent.trim();
 
       const nextYearBtn = fixture.nativeElement.querySelector(
@@ -403,11 +405,11 @@ describe("UIDatePicker", () => {
       component.dateChange.subscribe(spy);
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const todayBtn = fixture.nativeElement.querySelector(".dp-cal-today");
+      const todayBtn = fixture.nativeElement.querySelector(".cal-today");
       todayBtn.click();
       fixture.detectChanges();
 
@@ -421,9 +423,12 @@ describe("UIDatePicker", () => {
   });
 
   describe("text input", () => {
-    it("should parse a typed ISO date", () => {
+    it("should parse a typed date in the default format", () => {
+      fixture.componentRef.setInput("format", "yyyy-MM-dd");
+      fixture.detectChanges();
+
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "2025-06-15";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -439,7 +444,7 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "";
       input.dispatchEvent(new Event("input"));
       input.dispatchEvent(new Event("blur"));
@@ -450,7 +455,7 @@ describe("UIDatePicker", () => {
 
     it("should not set invalid date text as value", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "not-a-date";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -467,13 +472,12 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const disabledDays = fixture.nativeElement.querySelectorAll(
-        ".dp-cal-day--disabled",
-      );
+      const disabledDays =
+        fixture.nativeElement.querySelectorAll(".cal-day--disabled");
       expect(disabledDays.length).toBeGreaterThan(0);
     });
 
@@ -484,13 +488,12 @@ describe("UIDatePicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const disabledDays = fixture.nativeElement.querySelectorAll(
-        ".dp-cal-day--disabled",
-      );
+      const disabledDays =
+        fixture.nativeElement.querySelectorAll(".cal-day--disabled");
       expect(disabledDays.length).toBeGreaterThan(0);
     });
 
@@ -499,10 +502,11 @@ describe("UIDatePicker", () => {
       const max = new Date(2025, 5, 20);
       fixture.componentRef.setInput("min", min);
       fixture.componentRef.setInput("max", max);
+      fixture.componentRef.setInput("format", "yyyy-MM-dd");
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "2025-06-05";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -514,35 +518,35 @@ describe("UIDatePicker", () => {
   describe("keyboard interaction", () => {
     it("should open calendar on ArrowDown", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeTruthy();
     });
 
     it("should close calendar on Escape", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeTruthy();
 
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".dp-calendar")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".calendar")).toBeNull();
     });
   });
 
   describe("accessibility", () => {
     it("should set aria-expanded on the input", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.getAttribute("aria-expanded")).toBe("false");
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
@@ -551,21 +555,21 @@ describe("UIDatePicker", () => {
 
     it("should have a dialog role on the calendar", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const cal = fixture.nativeElement.querySelector(".dp-calendar");
+      const cal = fixture.nativeElement.querySelector(".calendar");
       expect(cal.getAttribute("role")).toBe("dialog");
     });
 
     it("should have gridcell role on day buttons", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const days = fixture.nativeElement.querySelectorAll(".dp-cal-day");
+      const days = fixture.nativeElement.querySelectorAll(".cal-day");
       for (const day of days) {
         expect(day.getAttribute("role")).toBe("gridcell");
       }
@@ -573,15 +577,58 @@ describe("UIDatePicker", () => {
 
     it("should have columnheader role on weekday labels", () => {
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       btn.click();
       fixture.detectChanges();
 
-      const headers = fixture.nativeElement.querySelectorAll(".dp-cal-weekday");
+      const headers = fixture.nativeElement.querySelectorAll(".cal-weekday");
       for (const h of headers) {
         expect(h.getAttribute("role")).toBe("columnheader");
       }
     });
+  });
+});
+
+// ── App-wide defaults via DI ────────────────────────────────────
+
+describe("UIDatePicker with UI_DATE_PICKER_DEFAULTS", () => {
+  let component: UIDatePicker;
+  let fixture: ComponentFixture<UIDatePicker>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [UIDatePicker],
+      providers: [
+        {
+          provide: UI_DATE_PICKER_DEFAULTS,
+          useValue: { format: "dd.MM.yyyy", firstDayOfWeek: 0 },
+        },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(UIDatePicker);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it("should use the provided default format", () => {
+    expect(component.format()).toBe("dd.MM.yyyy");
+  });
+
+  it("should use the provided default firstDayOfWeek", () => {
+    expect(component.firstDayOfWeek()).toBe(0);
+  });
+
+  it("should show placeholder matching the provided format", () => {
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector(".input");
+    expect(input.placeholder).toBe("dd.MM.yyyy");
+  });
+
+  it("should allow explicit input to override the provided default", () => {
+    fixture.componentRef.setInput("format", "yyyy-MM-dd");
+    fixture.detectChanges();
+    expect(component.format()).toBe("yyyy-MM-dd");
   });
 });
 

@@ -129,15 +129,19 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
     `,
   ],
   template: `
-    <ui-dashboard
-      [columns]="8"
-      [gap]="16"
-      [dockMenuIcon]="menuIcon"
-    >
+    <ui-dashboard [columns]="8" [gap]="16" [dockMenuIcon]="menuIcon">
       <ng-container dockMenuItem>
         <hr />
-        <button class="dock-menu-item dock-menu-item--disabled" disabled aria-disabled="true">
-          <ui-icon [svg]="icons.Account.Settings" [size]="14" class="dock-menu-item-icon" />
+        <button
+          class="dock-menu-item dock-menu-item--disabled"
+          disabled
+          aria-disabled="true"
+        >
+          <ui-icon
+            [svg]="icons.Account.Settings"
+            [size]="14"
+            class="dock-menu-item-icon"
+          />
           <span class="dock-menu-item-label">Configure…</span>
         </button>
       </ng-container>

@@ -1,17 +1,17 @@
 <!-- Toolbar -->
-<header class="fd-toolbar">
-  <span class="fd-toolbar-title">Form Designer</span>
+<header class="toolbar">
+  <span class="toolbar-title">Form Designer</span>
 
   <div
-    class="fd-toolbar-actions"
+    class="toolbar-actions"
     role="tablist"
     aria-label="Designer views"
   >
     <button
       type="button"
       role="tab"
-      class="fd-toolbar-btn"
-      [class.fd-toolbar-btn--active]="activeTab() === 'design'"
+      class="toolbar-btn"
+      [class.toolbar-btn--active]="activeTab() === 'design'"
       [attr.aria-selected]="activeTab() === 'design'"
       aria-controls="fd-tabpanel"
       (click)="activeTab.set('design')"
@@ -21,8 +21,8 @@
     <button
       type="button"
       role="tab"
-      class="fd-toolbar-btn"
-      [class.fd-toolbar-btn--active]="activeTab() === 'preview'"
+      class="toolbar-btn"
+      [class.toolbar-btn--active]="activeTab() === 'preview'"
       [attr.aria-selected]="activeTab() === 'preview'"
       aria-controls="fd-tabpanel"
       (click)="activeTab.set('preview')"
@@ -32,8 +32,8 @@
     <button
       type="button"
       role="tab"
-      class="fd-toolbar-btn"
-      [class.fd-toolbar-btn--active]="activeTab() === 'json'"
+      class="toolbar-btn"
+      [class.toolbar-btn--active]="activeTab() === 'json'"
       [attr.aria-selected]="activeTab() === 'json'"
       aria-controls="fd-tabpanel"
       (click)="activeTab.set('json')"
@@ -45,7 +45,7 @@
 
 <!-- Content area -->
 <div
-  class="fd-body"
+  class="body"
   id="fd-tabpanel"
   role="tabpanel"
   [attr.aria-label]="activeTab() + ' view'"
@@ -53,46 +53,46 @@
   @switch (activeTab()) {
     @case ("design") {
       <ui-field-palette
-        class="fd-palette"
+        class="palette"
         (fieldRequested)="onFieldRequested($event)"
       />
       <ui-designer-canvas
-        class="fd-canvas"
+        class="canvas"
         [engine]="designerEngine"
         (addFieldRequest)="onAddFieldToGroup($event)"
       />
       <ui-property-inspector
-        class="fd-inspector"
+        class="inspector"
         [engine]="designerEngine"
       />
     }
 
     @case ("preview") {
-      <div class="fd-preview">
+      <div class="preview">
         @if (previewEngine()) {
           <ui-form
             [engine]="previewEngine()!"
             submitLabel="Submit (Preview)"
             (formSubmit)="onPreviewSubmit($event)"
           />
-          <div class="fd-preview-live">
-            <h4 class="fd-preview-live-heading">
+          <div class="preview-live">
+            <h4 class="preview-live-heading">
               Live output
               <span
-                class="fd-preview-live-badge"
-                [class.fd-preview-live-badge--valid]="
+                class="preview-live-badge"
+                [class.preview-live-badge--valid]="
                   previewEngine()!.valid()
                 "
               >
                 {{ previewEngine()!.valid() ? "✓ valid" : "✗ invalid" }}
               </span>
             </h4>
-            <pre class="fd-preview-live-json">{{
+            <pre class="preview-live-json">{{
               previewOutput() | json
             }}</pre>
           </div>
         } @else {
-          <p class="fd-preview-empty">
+          <p class="preview-empty">
             Add some fields to see the preview.
           </p>
         }
@@ -100,18 +100,18 @@
     }
 
     @case ("json") {
-      <div class="fd-json">
-        <div class="fd-json-header">
+      <div class="json">
+        <div class="json-header">
           <button
             type="button"
-            class="fd-copy-btn"
+            class="copy-btn"
             aria-label="Copy JSON to clipboard"
             (click)="onCopyJson()"
           >
             <ui-icon [svg]="copyIcon" [size]="14" />
           </button>
         </div>
-        <pre class="fd-json-pre">{{ designerEngine.schema() | json }}</pre>
+        <pre class="json-pre">{{ designerEngine.schema() | json }}</pre>
       </div>
     }
   }

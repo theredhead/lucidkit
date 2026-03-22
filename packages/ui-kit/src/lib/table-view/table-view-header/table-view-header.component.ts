@@ -90,10 +90,10 @@ export class UITableHeader {
     const startX = event.clientX;
     const startWidth = cell.getBoundingClientRect().width;
     const root =
-      this.elRef.nativeElement.closest(".table-view-root") ??
+      this.elRef.nativeElement.closest(".root") ??
       this.elRef.nativeElement;
 
-    root.classList.add("tv-resizing");
+    root.classList.add("resizing");
     handle.setPointerCapture(event.pointerId);
 
     const onMove = (e: PointerEvent) => {
@@ -110,7 +110,7 @@ export class UITableHeader {
       handle.releasePointerCapture(e.pointerId);
       handle.removeEventListener("pointermove", onMove);
       handle.removeEventListener("pointerup", onUp);
-      root.classList.remove("tv-resizing");
+      root.classList.remove("resizing");
 
       const finalWidth = Math.max(
         MIN_COLUMN_WIDTH,

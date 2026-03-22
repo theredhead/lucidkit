@@ -1,3 +1,7 @@
+@use "mixins" as mix;
+@use "elevation" as elev;
+@use "animation" as anim;
+
 // ── Light defaults ───────────────────────────────────────────────
 :host {
   --ui-panel-bg: #ffffff;
@@ -6,12 +10,12 @@
   --ui-panel-border: #e5e7eb;
   --ui-panel-header-bg: #f6f7f8;
   --ui-panel-radius: 8px;
-  --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --ui-panel-shadow: #{elev.$shadow-sm-light};
   --ui-panel-action-hover: #e5e7eb;
-  --ui-panel-notify-accent: var(--theredhead-secondary, #625b71);
+  --ui-panel-notify-accent: var(--ui-secondary);
   --ui-panel-notify-glow: color-mix(
     in srgb,
-    var(--theredhead-secondary, #625b71) 22%,
+    var(--ui-secondary) 22%,
     transparent
   );
 
@@ -30,45 +34,25 @@
   }
 }
 
-// ── Explicit dark class ──────────────────────────────────────────
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-panel-bg: #242b33;
   --ui-panel-text: #f2f6fb;
   --ui-panel-text-muted: #a0aab6;
   --ui-panel-border: #3a3f47;
   --ui-panel-header-bg: #1f242a;
-  --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+  --ui-panel-shadow: #{elev.$shadow-sm-dark};
   --ui-panel-action-hover: #3a3f47;
-  --ui-panel-notify-accent: var(--theredhead-secondary, #ccc2dc);
+  --ui-panel-notify-accent: var(--ui-secondary);
   --ui-panel-notify-glow: color-mix(
     in srgb,
-    var(--theredhead-secondary, #ccc2dc) 26%,
+    var(--ui-secondary) 26%,
     transparent
   );
 }
 
-// ── System preference fallback ───────────────────────────────────
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-panel-bg: #242b33;
-    --ui-panel-text: #f2f6fb;
-    --ui-panel-text-muted: #a0aab6;
-    --ui-panel-border: #3a3f47;
-    --ui-panel-header-bg: #1f242a;
-    --ui-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    --ui-panel-action-hover: #3a3f47;
-    --ui-panel-notify-accent: var(--theredhead-secondary, #ccc2dc);
-    --ui-panel-notify-glow: color-mix(
-      in srgb,
-      var(--theredhead-secondary, #ccc2dc) 26%,
-      transparent
-    );
-  }
-}
+// ── Header ───────────────────────────────────────────────────────
 
-// ── Panel header ─────────────────────────────────────────────────
-
-.panel-header {
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -78,33 +62,30 @@
   flex-shrink: 0;
 }
 
-.panel-heading {
+.heading {
   display: flex;
   align-items: center;
   gap: 6px;
   min-width: 0;
 }
 
-.panel-icon {
+.icon {
   flex-shrink: 0;
   color: var(--ui-panel-text-muted);
 }
 
-.panel-title {
+.title {
   margin: 0;
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--ui-panel-text);
   letter-spacing: 0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
+  @include mix.truncate;
 }
 
-// ── Panel actions ────────────────────────────────────────────────
+// ── Actions ──────────────────────────────────────────────────────
 
-.panel-actions {
+.actions {
   display: flex;
   align-items: center;
   gap: 2px;
@@ -112,40 +93,35 @@
   margin-left: 0.5rem;
 }
 
-.panel-action-btn {
+.action {
+  @include mix.control-reset;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 26px;
   height: 26px;
-  border: none;
   border-radius: 4px;
-  background: none;
   color: var(--ui-panel-text-muted);
-  cursor: pointer;
   font-size: 0.7rem;
   transition:
-    background-color 0.15s,
-    color 0.15s;
+    background-color anim.$duration-medium,
+    color anim.$duration-medium;
 
   &:hover {
     background: var(--ui-panel-action-hover);
     color: var(--ui-panel-text);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--ui-panel-border);
-    outline-offset: -2px;
-  }
+  @include mix.focus-ring(-2px, var(--ui-panel-border));
 
   &--remove:hover {
     color: #dc2626;
   }
 }
 
-// ── Panel body ───────────────────────────────────────────────────
+// ── Body ─────────────────────────────────────────────────────────
 
-.panel-body {
+.body {
   flex: 1;
   overflow: auto;
   padding: 0.875rem;
@@ -166,15 +142,15 @@
   box-shadow:
     0 0 0 1px var(--ui-panel-notify-accent),
     0 0 8px var(--ui-panel-notify-glow);
-  animation: ui-panel-pulse 2s ease-in-out infinite;
+  animation: ui-panel-pulse 2s anim.$easing-in-out infinite;
 
-  .panel-header {
+  .header {
     border-bottom-color: var(--ui-panel-notify-accent);
   }
 
-  .panel-icon {
+  .icon {
     color: var(--ui-panel-notify-accent);
-    animation: ui-icon-pulse 2s ease-in-out infinite;
+    animation: ui-icon-pulse 2s anim.$easing-in-out infinite;
   }
 }
 

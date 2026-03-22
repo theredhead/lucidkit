@@ -1,25 +1,25 @@
 @if (engine().schema.title) {
-  <h2 class="fw-title">{{ engine().schema.title }}</h2>
+  <h2 class="title">{{ engine().schema.title }}</h2>
 }
 @if (engine().schema.description) {
-  <p class="fw-description">{{ engine().schema.description }}</p>
+  <p class="description">{{ engine().schema.description }}</p>
 }
 
 <!-- Step indicator -->
-<nav class="fw-steps" aria-label="Form steps">
+<nav class="steps" aria-label="Form steps">
   @for (step of visibleGroups(); track step.definition.id; let i = $index) {
     <button
       type="button"
-      class="fw-step"
-      [class.fw-step--active]="i === currentIndex()"
-      [class.fw-step--completed]="i < currentIndex()"
+      class="step"
+      [class.step--active]="i === currentIndex()"
+      [class.step--completed]="i < currentIndex()"
       [disabled]="i > currentIndex()"
       (click)="goTo(i)"
       [attr.aria-current]="i === currentIndex() ? 'step' : null"
     >
-      <span class="fw-step-number">{{ i + 1 }}</span>
+      <span class="step-number">{{ i + 1 }}</span>
       @if (step.definition.title) {
-        <span class="fw-step-label">{{ step.definition.title }}</span>
+        <span class="step-label">{{ step.definition.title }}</span>
       }
     </button>
   }
@@ -31,19 +31,19 @@
 }
 
 <!-- Navigation -->
-<div class="fw-actions">
+<div class="actions">
   @if (currentIndex() > 0) {
-    <button type="button" class="fw-btn fw-btn--prev" (click)="prev()">
+    <button type="button" class="btn btn--prev" (click)="prev()">
       {{ prevLabel() }}
     </button>
   }
 
-  <div class="fw-spacer"></div>
+  <div class="spacer"></div>
 
   @if (isLastStep()) {
     <button
       type="button"
-      class="fw-btn fw-btn--submit"
+      class="btn btn--submit"
       [disabled]="!engine().valid()"
       (click)="onSubmit()"
     >
@@ -52,7 +52,7 @@
   } @else {
     <button
       type="button"
-      class="fw-btn fw-btn--next"
+      class="btn btn--next"
       [disabled]="!currentStepValid()"
       (click)="next()"
     >

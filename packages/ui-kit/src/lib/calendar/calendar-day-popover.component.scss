@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 /* ── Light defaults ─────────────────────────────────── */
 :host {
   --ui-cal-popover-text: #1d232b;
@@ -15,42 +17,31 @@
   color: var(--ui-cal-popover-text);
 }
 
-/* ── Explicit dark class ────────────────────────────── */
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-cal-popover-text: #f2f6fb;
   --ui-cal-popover-text-muted: #9ca3af;
   --ui-cal-popover-border: #3a3f47;
   --ui-cal-popover-hover: rgba(255, 255, 255, 0.08);
 }
 
-/* ── System preference fallback ─────────────────────── */
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-cal-popover-text: #f2f6fb;
-    --ui-cal-popover-text-muted: #9ca3af;
-    --ui-cal-popover-border: #3a3f47;
-    --ui-cal-popover-hover: rgba(255, 255, 255, 0.08);
-  }
-}
-
-.popover-header {
+.header {
   margin-bottom: 0.375rem;
   padding-bottom: 0.375rem;
   border-bottom: 1px solid var(--ui-cal-popover-border);
 }
 
-.popover-title {
+.title {
   font-size: 0.8rem;
   font-weight: 600;
 }
 
-.popover-events {
+.events {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.popover-event {
+.event {
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -71,21 +62,21 @@
   }
 }
 
-.popover-dot {
+.dot {
   flex-shrink: 0;
   width: 8px;
   height: 8px;
   border-radius: 50%;
 }
 
-.popover-event-title {
+.event-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   min-width: 0;
 }
 
-.popover-event-time {
+.event-time {
   flex-shrink: 0;
   font-size: 0.65rem;
   color: var(--ui-cal-popover-text-muted);

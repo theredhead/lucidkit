@@ -49,12 +49,12 @@ describe("UITabGroup", () => {
     it("should mark first tab as active by default", () => {
       const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
       expect(tabs[0].getAttribute("aria-selected")).toBe("true");
-      expect(tabs[0].classList).toContain("tg-tab--active");
+      expect(tabs[0].classList).toContain("tab--active");
     });
 
     it("should mark disabled tab", () => {
       const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
-      expect(tabs[2].classList).toContain("tg-tab--disabled");
+      expect(tabs[2].classList).toContain("tab--disabled");
     });
   });
 

@@ -74,7 +74,7 @@ describe("UIBadge", () => {
     it("should display the count", () => {
       fixture.componentRef.setInput("count", 5);
       fixture.detectChanges();
-      const body = fixture.nativeElement.querySelector(".badge-body");
+      const body = fixture.nativeElement.querySelector(".body");
       expect(body.textContent.trim()).toBe("5");
     });
 
@@ -82,7 +82,7 @@ describe("UIBadge", () => {
       fixture.componentRef.setInput("count", 150);
       fixture.componentRef.setInput("maxCount", 99);
       fixture.detectChanges();
-      const body = fixture.nativeElement.querySelector(".badge-body");
+      const body = fixture.nativeElement.querySelector(".body");
       expect(body.textContent.trim()).toBe("99+");
     });
 
@@ -90,7 +90,7 @@ describe("UIBadge", () => {
       fixture.componentRef.setInput("count", 99);
       fixture.componentRef.setInput("maxCount", 99);
       fixture.detectChanges();
-      const body = fixture.nativeElement.querySelector(".badge-body");
+      const body = fixture.nativeElement.querySelector(".body");
       expect(body.textContent.trim()).toBe("99");
     });
 
@@ -98,7 +98,7 @@ describe("UIBadge", () => {
       fixture.componentRef.setInput("count", 15);
       fixture.componentRef.setInput("maxCount", 9);
       fixture.detectChanges();
-      const body = fixture.nativeElement.querySelector(".badge-body");
+      const body = fixture.nativeElement.querySelector(".body");
       expect(body.textContent.trim()).toBe("9+");
     });
   });
@@ -107,14 +107,14 @@ describe("UIBadge", () => {
     it("should render dot element", () => {
       fixture.componentRef.setInput("variant", "dot");
       fixture.detectChanges();
-      const dot = fixture.nativeElement.querySelector(".badge-dot");
+      const dot = fixture.nativeElement.querySelector(".dot");
       expect(dot).toBeTruthy();
     });
 
     it("should not render count body", () => {
       fixture.componentRef.setInput("variant", "dot");
       fixture.detectChanges();
-      const body = fixture.nativeElement.querySelector(".badge-body");
+      const body = fixture.nativeElement.querySelector(".body");
       expect(body).toBeFalsy();
     });
   });
@@ -123,7 +123,7 @@ describe("UIBadge", () => {
     it("should render label body", () => {
       fixture.componentRef.setInput("variant", "label");
       fixture.detectChanges();
-      const body = fixture.nativeElement.querySelector(".badge-body--label");
+      const body = fixture.nativeElement.querySelector(".body--label");
       expect(body).toBeTruthy();
     });
   });
@@ -132,7 +132,7 @@ describe("UIBadge", () => {
     it("should forward ariaLabel", () => {
       fixture.componentRef.setInput("ariaLabel", "5 notifications");
       fixture.detectChanges();
-      const body = fixture.nativeElement.querySelector(".badge-body");
+      const body = fixture.nativeElement.querySelector(".body");
       expect(body.getAttribute("aria-label")).toBe("5 notifications");
     });
   });

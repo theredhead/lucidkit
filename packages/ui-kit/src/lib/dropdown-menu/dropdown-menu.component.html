@@ -1,5 +1,5 @@
 <div
-  class="dropdown-trigger"
+  class="trigger"
   tabindex="0"
   role="button"
   aria-haspopup="menu"
@@ -12,8 +12,8 @@
 </div>
 @if (isOpen()) {
   <div
-    class="dropdown-panel"
-    [class.dropdown-panel--end]="align() === 'end'"
+    class="panel"
+    [class.panel--end]="align() === 'end'"
     [attr.aria-label]="ariaLabel()"
     role="menu"
     tabindex="-1"

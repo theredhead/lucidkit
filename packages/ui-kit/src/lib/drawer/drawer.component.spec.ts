@@ -44,21 +44,21 @@ describe("UIDrawer", () => {
 
   describe("visibility", () => {
     it("should not render panel when closed", () => {
-      const panel = fixture.nativeElement.querySelector(".drawer-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel).toBeFalsy();
     });
 
     it("should render panel when open", () => {
       component.open.set(true);
       fixture.detectChanges();
-      const panel = fixture.nativeElement.querySelector(".drawer-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel).toBeTruthy();
     });
 
     it("should render backdrop when open", () => {
       component.open.set(true);
       fixture.detectChanges();
-      const backdrop = fixture.nativeElement.querySelector(".drawer-backdrop");
+      const backdrop = fixture.nativeElement.querySelector(".backdrop");
       expect(backdrop).toBeTruthy();
     });
   });
@@ -81,7 +81,7 @@ describe("UIDrawer", () => {
       component.open.set(true);
       fixture.detectChanges();
       const panel = fixture.nativeElement.querySelector(
-        ".drawer-panel",
+        ".panel",
       ) as HTMLElement;
       expect(panel.style.width).toBe("16rem");
     });
@@ -90,7 +90,7 @@ describe("UIDrawer", () => {
       component.open.set(true);
       fixture.detectChanges();
       const panel = fixture.nativeElement.querySelector(
-        ".drawer-panel",
+        ".panel",
       ) as HTMLElement;
       expect(panel.style.width).toBe("24rem");
     });
@@ -100,7 +100,7 @@ describe("UIDrawer", () => {
       component.open.set(true);
       fixture.detectChanges();
       const panel = fixture.nativeElement.querySelector(
-        ".drawer-panel",
+        ".panel",
       ) as HTMLElement;
       expect(panel.style.width).toBe("36rem");
     });
@@ -110,7 +110,7 @@ describe("UIDrawer", () => {
       component.open.set(true);
       fixture.detectChanges();
       const panel = fixture.nativeElement.querySelector(
-        ".drawer-panel",
+        ".panel",
       ) as HTMLElement;
       expect(panel.style.width).toBe("400px");
     });
@@ -137,7 +137,7 @@ describe("UIDrawer", () => {
 
     it("should close on backdrop click", () => {
       const backdrop = fixture.nativeElement.querySelector(
-        ".drawer-backdrop",
+        ".backdrop",
       ) as HTMLElement;
       backdrop.click();
       fixture.detectChanges();
@@ -148,7 +148,7 @@ describe("UIDrawer", () => {
       fixture.componentRef.setInput("closeOnBackdropClick", false);
       fixture.detectChanges();
       const backdrop = fixture.nativeElement.querySelector(
-        ".drawer-backdrop",
+        ".backdrop",
       ) as HTMLElement;
       backdrop.click();
       fixture.detectChanges();
@@ -157,7 +157,7 @@ describe("UIDrawer", () => {
 
     it("should close on Escape key", () => {
       const panel = fixture.nativeElement.querySelector(
-        ".drawer-panel",
+        ".panel",
       ) as HTMLElement;
       panel.dispatchEvent(
         new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
@@ -170,7 +170,7 @@ describe("UIDrawer", () => {
       fixture.componentRef.setInput("closeOnEscape", false);
       fixture.detectChanges();
       const panel = fixture.nativeElement.querySelector(
-        ".drawer-panel",
+        ".panel",
       ) as HTMLElement;
       panel.dispatchEvent(
         new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
@@ -187,29 +187,29 @@ describe("UIDrawer", () => {
     });
 
     it('should have role="dialog"', () => {
-      const panel = fixture.nativeElement.querySelector(".drawer-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel.getAttribute("role")).toBe("dialog");
     });
 
     it('should have aria-modal="true"', () => {
-      const panel = fixture.nativeElement.querySelector(".drawer-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel.getAttribute("aria-modal")).toBe("true");
     });
 
     it("should have aria-label", () => {
-      const panel = fixture.nativeElement.querySelector(".drawer-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel.getAttribute("aria-label")).toBe("Side panel");
     });
 
     it("should forward custom ariaLabel", () => {
       fixture.componentRef.setInput("ariaLabel", "Navigation menu");
       fixture.detectChanges();
-      const panel = fixture.nativeElement.querySelector(".drawer-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel.getAttribute("aria-label")).toBe("Navigation menu");
     });
 
     it('should have aria-hidden="true" on backdrop', () => {
-      const backdrop = fixture.nativeElement.querySelector(".drawer-backdrop");
+      const backdrop = fixture.nativeElement.querySelector(".backdrop");
       expect(backdrop.getAttribute("aria-hidden")).toBe("true");
     });
   });

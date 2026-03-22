@@ -102,7 +102,7 @@ describe("UIDateTimePicker", () => {
       fixture.detectChanges();
 
       const dateInput: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       const hourInput: HTMLInputElement =
         fixture.nativeElement.querySelector(".tp-hour");
       expect(dateInput.disabled).toBe(true);
@@ -114,7 +114,7 @@ describe("UIDateTimePicker", () => {
       fixture.detectChanges();
 
       const dateInput: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       const hourInput: HTMLInputElement =
         fixture.nativeElement.querySelector(".tp-hour");
       expect(dateInput.readOnly).toBe(true);
@@ -130,7 +130,7 @@ describe("UIDateTimePicker", () => {
 
       // Date part shows in the date input
       const dateInput: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(dateInput.value).toBe("2025-06-15");
 
       // Time part shows in the hour/minute inputs
@@ -153,13 +153,13 @@ describe("UIDateTimePicker", () => {
 
       // Open calendar and click a day
       const toggleBtn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       toggleBtn.click();
       fixture.detectChanges();
 
       const days: NodeListOf<HTMLButtonElement> =
         fixture.nativeElement.querySelectorAll(
-          ".dp-cal-day:not(.dp-cal-day--outside):not(.dp-cal-day--disabled)",
+          ".cal-day:not(.cal-day--outside):not(.cal-day--disabled)",
         );
       days[0].click();
       fixture.detectChanges();
@@ -202,7 +202,7 @@ describe("UIDateTimePicker", () => {
 
       // Clear the date input
       const dateInput: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       dateInput.value = "";
       dateInput.dispatchEvent(new Event("input"));
       dateInput.dispatchEvent(new Event("blur"));
@@ -220,13 +220,13 @@ describe("UIDateTimePicker", () => {
       component.dateChange.subscribe(spy);
 
       const toggleBtn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dp-toggle");
+        fixture.nativeElement.querySelector(".toggle");
       toggleBtn.click();
       fixture.detectChanges();
 
       const days: NodeListOf<HTMLButtonElement> =
         fixture.nativeElement.querySelectorAll(
-          ".dp-cal-day:not(.dp-cal-day--outside):not(.dp-cal-day--disabled)",
+          ".cal-day:not(.cal-day--outside):not(.cal-day--disabled)",
         );
       days[0].click();
       fixture.detectChanges();
@@ -257,19 +257,19 @@ describe("UIDateTimePicker", () => {
       fixture.componentRef.setInput("timeMode", 12);
       fixture.detectChanges();
 
-      const meridiem = fixture.nativeElement.querySelector(".tp-meridiem");
+      const meridiem = fixture.nativeElement.querySelector(".meridiem");
       expect(meridiem).toBeTruthy();
     });
 
     it("should not show AM/PM button in 24-hour mode", () => {
-      const meridiem = fixture.nativeElement.querySelector(".tp-meridiem");
+      const meridiem = fixture.nativeElement.querySelector(".meridiem");
       expect(meridiem).toBeNull();
     });
   });
 
   describe("accessibility", () => {
     it("should have group role on wrapper", () => {
-      const wrapper = fixture.nativeElement.querySelector(".dtp-wrapper");
+      const wrapper = fixture.nativeElement.querySelector(".wrapper");
       expect(wrapper.getAttribute("role")).toBe("group");
     });
 
@@ -277,7 +277,7 @@ describe("UIDateTimePicker", () => {
       fixture.componentRef.setInput("ariaLabel", "Appointment");
       fixture.detectChanges();
 
-      const wrapper = fixture.nativeElement.querySelector(".dtp-wrapper");
+      const wrapper = fixture.nativeElement.querySelector(".wrapper");
       expect(wrapper.getAttribute("aria-label")).toBe("Appointment");
     });
 
@@ -286,7 +286,7 @@ describe("UIDateTimePicker", () => {
       fixture.detectChanges();
 
       const dateInput: HTMLInputElement =
-        fixture.nativeElement.querySelector(".dp-input");
+        fixture.nativeElement.querySelector(".input");
       expect(dateInput.getAttribute("aria-label")).toBe("Start date");
     });
 
@@ -295,7 +295,7 @@ describe("UIDateTimePicker", () => {
       fixture.detectChanges();
 
       const wrapper = fixture.nativeElement.querySelector(
-        "ui-time-picker .tp-wrapper",
+        "ui-time-picker .wrapper",
       );
       expect(wrapper.getAttribute("aria-label")).toBe("Start time");
     });

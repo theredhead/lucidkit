@@ -1,11 +1,11 @@
 @if (state().visible()) {
   @if (state().definition.title) {
-    <h3 class="fg-title">{{ state().definition.title }}</h3>
+    <h3 class="title">{{ state().definition.title }}</h3>
   }
   @if (state().definition.description) {
-    <p class="fg-description">{{ state().definition.description }}</p>
+    <p class="description">{{ state().definition.description }}</p>
   }
-  <div class="fg-fields">
+  <div class="fields">
     @for (field of state().fields; track field.definition.id) {
       <ui-form-field [state]="field" />
     }

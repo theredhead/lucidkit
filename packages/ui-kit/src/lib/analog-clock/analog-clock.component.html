@@ -5,13 +5,13 @@
   [attr.height]="size()"
   [attr.aria-label]="ariaLabel()"
   role="img"
-  class="clock-face"
+  class="face"
 >
   <!-- Outer rim -->
-  <circle cx="50" cy="50" r="49" class="clock-rim" />
+  <circle cx="50" cy="50" r="49" class="rim" />
 
   <!-- Face background -->
-  <circle cx="50" cy="50" r="47" class="clock-bg" />
+  <circle cx="50" cy="50" r="47" class="bg" />
 
   <!-- Tick marks -->
   @if (showTickMarks()) {
@@ -34,7 +34,7 @@
       <text
         [attr.x]="num.x"
         [attr.y]="num.y"
-        class="hour-number"
+        class="number"
         text-anchor="middle"
         dominant-baseline="central"
       >{{ num.hour }}</text>
@@ -43,7 +43,7 @@
 
   <!-- Day/night indicator (Lucide icon, scaled from 24×24 into clock face) -->
   <g
-    class="day-night-indicator"
+    class="indicator"
     transform="translate(45, 63) scale(0.417)"
     [attr.stroke]="indicatorColor()"
     fill="none"
@@ -81,5 +81,5 @@
   }
 
   <!-- Center cap -->
-  <circle cx="50" cy="50" r="2" class="center-cap" />
+  <circle cx="50" cy="50" r="2" class="cap" />
 </svg>

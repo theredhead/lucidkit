@@ -42,19 +42,19 @@ describe("UIBreadcrumb", () => {
   });
 
   it("should render all items", () => {
-    const items = fixture.nativeElement.querySelectorAll(".bc-item");
+    const items = fixture.nativeElement.querySelectorAll(".item");
     expect(items.length).toBe(3);
   });
 
   it("should render item labels", () => {
-    const links = fixture.nativeElement.querySelectorAll(".bc-link");
+    const links = fixture.nativeElement.querySelectorAll(".link");
     expect(links[0].textContent.trim()).toBe("Home");
     expect(links[1].textContent.trim()).toBe("Products");
     expect(links[2].textContent.trim()).toBe("Widget");
   });
 
   it("should render separators between items", () => {
-    const seps = fixture.nativeElement.querySelectorAll(".bc-separator");
+    const seps = fixture.nativeElement.querySelectorAll(".separator");
     expect(seps.length).toBe(2);
     expect(seps[0].textContent.trim()).toBe("/");
   });
@@ -62,18 +62,18 @@ describe("UIBreadcrumb", () => {
   it("should support custom separator", () => {
     host.separator.set("›");
     fixture.detectChanges();
-    const seps = fixture.nativeElement.querySelectorAll(".bc-separator");
+    const seps = fixture.nativeElement.querySelectorAll(".separator");
     expect(seps[0].textContent.trim()).toBe("›");
   });
 
   it("should mark the last item as current", () => {
-    const lastLink = fixture.nativeElement.querySelectorAll(".bc-link")[2];
-    expect(lastLink.classList).toContain("bc-link--current");
+    const lastLink = fixture.nativeElement.querySelectorAll(".link")[2];
+    expect(lastLink.classList).toContain("link--current");
     expect(lastLink.getAttribute("aria-current")).toBe("page");
   });
 
   it("should render non-last items as links", () => {
-    const links = fixture.nativeElement.querySelectorAll("a.bc-link");
+    const links = fixture.nativeElement.querySelectorAll("a.link");
     expect(links.length).toBe(2);
   });
 
@@ -95,7 +95,7 @@ describe("UIBreadcrumb", () => {
         .componentInstance as UIBreadcrumb;
       bc.itemClicked.subscribe(spy);
 
-      const links = fixture.nativeElement.querySelectorAll("a.bc-link");
+      const links = fixture.nativeElement.querySelectorAll("a.link");
       links[0].click();
       expect(spy).toHaveBeenCalledWith(ITEMS[0]);
     });
@@ -108,30 +108,30 @@ describe("UIBreadcrumb", () => {
     });
 
     it("should render buttons instead of links", () => {
-      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
+      const buttons = fixture.nativeElement.querySelectorAll(".btn");
       expect(buttons.length).toBe(3);
-      expect(fixture.nativeElement.querySelectorAll("a.bc-link").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll("a.link").length).toBe(
         0,
       );
     });
 
     it("should render chevron SVG separators", () => {
-      const chevrons = fixture.nativeElement.querySelectorAll(".bc-chevron");
+      const chevrons = fixture.nativeElement.querySelectorAll(".chevron");
       expect(chevrons.length).toBe(2);
       expect(
-        fixture.nativeElement.querySelectorAll(".bc-separator").length,
+        fixture.nativeElement.querySelectorAll(".separator").length,
       ).toBe(0);
     });
 
     it("should disable the last button", () => {
-      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
+      const buttons = fixture.nativeElement.querySelectorAll(".btn");
       expect(buttons[2].disabled).toBe(true);
       expect(buttons[0].disabled).toBe(false);
     });
 
     it("should mark the last button as current", () => {
-      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
-      expect(buttons[2].classList).toContain("bc-button--current");
+      const buttons = fixture.nativeElement.querySelectorAll(".btn");
+      expect(buttons[2].classList).toContain("btn--current");
       expect(buttons[2].getAttribute("aria-current")).toBe("page");
     });
 
@@ -147,7 +147,7 @@ describe("UIBreadcrumb", () => {
         .componentInstance as UIBreadcrumb;
       bc.itemClicked.subscribe(spy);
 
-      const buttons = fixture.nativeElement.querySelectorAll(".bc-button");
+      const buttons = fixture.nativeElement.querySelectorAll(".btn");
       buttons[0].click();
       expect(spy).toHaveBeenCalledWith(ITEMS[0]);
     });

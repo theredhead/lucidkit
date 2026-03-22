@@ -50,14 +50,14 @@ describe("UIRadioGroup", () => {
 
   describe("selection", () => {
     it("should select a radio button on click", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[0].click();
       fixture.detectChanges();
       expect(host.selected()).toBe("red");
     });
 
     it("should update checked state visually", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[1].click();
       fixture.detectChanges();
       const buttons = fixture.nativeElement.querySelectorAll("ui-radio-button");
@@ -66,17 +66,17 @@ describe("UIRadioGroup", () => {
     });
 
     it("should show dot on selected button", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[0].click();
       fixture.detectChanges();
       const dot = fixture.nativeElement
         .querySelectorAll("ui-radio-button")[0]
-        .querySelector(".rb-dot");
+        .querySelector(".dot");
       expect(dot).toBeTruthy();
     });
 
     it("should switch selection when clicking another button", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[0].click();
       fixture.detectChanges();
       expect(host.selected()).toBe("red");
@@ -96,7 +96,7 @@ describe("UIRadioGroup", () => {
 
   describe("disabled", () => {
     it("should not allow selection on disabled button", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[2].click(); // blue is disabled
       fixture.detectChanges();
       expect(host.selected()).toBeUndefined();
@@ -117,7 +117,7 @@ describe("UIRadioGroup", () => {
     it("should not allow selection when group is disabled", () => {
       host.groupDisabled.set(true);
       fixture.detectChanges();
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[0].click();
       fixture.detectChanges();
       expect(host.selected()).toBeUndefined();
@@ -126,7 +126,7 @@ describe("UIRadioGroup", () => {
 
   describe("keyboard interaction", () => {
     it("should select on Space key", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[0].dispatchEvent(
         new KeyboardEvent("keydown", { key: " ", bubbles: true }),
       );
@@ -135,7 +135,7 @@ describe("UIRadioGroup", () => {
     });
 
     it("should select on Enter key", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[1].dispatchEvent(
         new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
       );
@@ -146,7 +146,7 @@ describe("UIRadioGroup", () => {
 
   describe("accessibility", () => {
     it("should set aria-checked on selected button", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       controls[0].click();
       fixture.detectChanges();
       expect(controls[0].getAttribute("aria-checked")).toBe("true");
@@ -154,19 +154,19 @@ describe("UIRadioGroup", () => {
     });
 
     it("should set aria-disabled on disabled button", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       expect(controls[2].getAttribute("aria-disabled")).toBe("true");
     });
 
     it("should have role radio on each button", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       for (const control of controls) {
         expect(control.getAttribute("role")).toBe("radio");
       }
     });
 
     it("should set tabindex -1 on disabled button", () => {
-      const controls = fixture.nativeElement.querySelectorAll(".rb-control");
+      const controls = fixture.nativeElement.querySelectorAll(".control");
       expect(controls[2].getAttribute("tabindex")).toBe("-1");
     });
   });

@@ -72,6 +72,7 @@ export type RichTextFormatAction =
   | "alignLeft"
   | "alignCenter"
   | "alignRight"
+  | "alignJustify"
   | "horizontalRule"
   | "image"
   | "link"
@@ -103,6 +104,7 @@ export const DEFAULT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] = [
   "alignLeft",
   "alignCenter",
   "alignRight",
+  "alignJustify",
   "horizontalRule",
   "image",
   "link",
@@ -258,6 +260,12 @@ export const TOOLBAR_BUTTON_REGISTRY: Record<
     action: "alignRight",
     label: "Align right",
     icon: UIIcons.Lucide.Text.TextAlignEnd,
+    group: "align",
+  },
+  alignJustify: {
+    action: "alignJustify",
+    label: "Justify",
+    icon: UIIcons.Lucide.Text.TextAlignJustify,
     group: "align",
   },
   horizontalRule: {

@@ -506,7 +506,16 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
         return;
       }
       const target = event.target as HTMLElement;
-      if (!this.elRef.nativeElement.contains(target)) {
+      // Close if the click lands outside the component entirely,
+      // or inside the component but outside any dropdown/picker container.
+      const host = this.elRef.nativeElement as HTMLElement;
+      if (!host.contains(target)) {
+        this.openDropdownGroup.set(null);
+        this.isPlaceholderPickerOpen.set(false);
+        return;
+      }
+      const inDropdown = target.closest(".dropdown-group, .placeholder-picker");
+      if (!inDropdown) {
         this.openDropdownGroup.set(null);
         this.isPlaceholderPickerOpen.set(false);
       }

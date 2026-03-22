@@ -1,71 +1,71 @@
-<div class="cal-container" [class.cal-container--week-numbers]="showWeekNumbers()" [attr.aria-label]="ariaLabel()" role="grid">
+<div class="container" [class.container--week-numbers]="showWeekNumbers()" [attr.aria-label]="ariaLabel()" role="grid">
   <!-- Header: navigation + month label -->
-  <div class="cal-header" role="presentation">
+  <div class="header" role="presentation">
     <button
       type="button"
-      class="cal-nav-btn"
+      class="nav-btn"
       aria-label="Previous month"
       (click)="previousMonth()"
     >◀</button>
 
     <button
       type="button"
-      class="cal-month-label"
+      class="month-label"
       aria-label="Go to today"
       (click)="goToToday()"
     >{{ monthLabel() }}</button>
 
     <button
       type="button"
-      class="cal-nav-btn"
+      class="nav-btn"
       aria-label="Next month"
       (click)="nextMonth()"
     >▶</button>
   </div>
 
   <!-- Weekday headers -->
-  <div class="cal-weekdays" role="row">
+  <div class="weekdays" role="row">
     @if (showWeekNumbers()) {
-      <div class="cal-weekday cal-weekday--wk" role="columnheader" aria-label="Week number">Wk</div>
+      <div class="weekday weekday--wk" role="columnheader" aria-label="Week number">Wk</div>
     }
     @for (wd of weekdays; track wd) {
-      <div class="cal-weekday" role="columnheader">{{ wd }}</div>
+      <div class="weekday" role="columnheader">{{ wd }}</div>
     }
   </div>
 
   <!-- Day grid -->
   @for (week of weeks(); track $index) {
-    <div class="cal-week" role="row">
+    <div class="week" role="row">
       @if (showWeekNumbers()) {
-        <div class="cal-week-number" role="rowheader" [attr.aria-label]="'Week ' + week.weekNumber">
+        <div class="week-number" role="rowheader" [attr.aria-label]="'Week ' + week.weekNumber">
           {{ week.weekNumber }}
         </div>
       }
       @for (day of week.days; track day.iso) {
         <button
           type="button"
-          class="cal-day"
-          [class.cal-day--outside]="!day.inMonth"
-          [class.cal-day--today]="day.isToday"
-          [class.cal-day--selected]="isSelected(day)"
+          class="day"
+          [class.day--outside]="!day.inMonth"
+          [class.day--today]="day.isToday"
+          [class.day--selected]="isSelected(day)"
           [attr.aria-label]="day.date.toDateString()"
           [attr.aria-current]="day.isToday ? 'date' : null"
           role="gridcell"
           (click)="onDayClick(day, $event)"
         >
-          <span class="cal-day__number">{{ day.day }}</span>
+          <span class="day__number">{{ day.day }}</span>
 
           @if (day.events.length > 0) {
-            <div class="cal-day__events">
+            <div class="day__events">
               @for (evt of day.events | slice:0:maxEventsPerDay(); track evt.id) {
                 <span
-                  class="cal-event"
+                  class="event"
                   [style.background-color]="evt.color"
                   [title]="evt.title"
                 >{{ evt.title }}</span>
               }
               @if (overflowCount(day) > 0) {
-                <span class="cal-event--overflow">
+                <span class="event--overflow">
                   +{{ overflowCount(day) }} more
                 </span>
               }

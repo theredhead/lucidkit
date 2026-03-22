@@ -1,3 +1,5 @@
+import { InjectionToken } from "@angular/core";
+
 /**
  * Predefined date format strings.
  *
@@ -42,3 +44,37 @@ export interface WeekdayLabel {
   readonly short: string;
   readonly long: string;
 }
+
+/**
+ * Application-wide defaults for `UIDatePicker`.
+ *
+ * Provide via `UI_DATE_PICKER_DEFAULTS` to override the locale-detected
+ * format and/or first day of week for every date picker that doesn't
+ * have an explicit input set.
+ *
+ * @example
+ * ```ts
+ * providers: [
+ *   {
+ *     provide: UI_DATE_PICKER_DEFAULTS,
+ *     useValue: { format: 'dd/MM/yyyy', firstDayOfWeek: 1 },
+ *   },
+ * ]
+ * ```
+ */
+export interface DatePickerDefaults {
+  /** Default date format. */
+  readonly format?: DateFormat;
+  /** Default first day of the week (`0` = Sunday … `6` = Saturday). */
+  readonly firstDayOfWeek?: number;
+}
+
+/**
+ * Injection token for application-wide `UIDatePicker` defaults.
+ *
+ * When provided, these values are used instead of locale detection
+ * for any date picker whose corresponding input is not explicitly set.
+ */
+export const UI_DATE_PICKER_DEFAULTS = new InjectionToken<DatePickerDefaults>(
+  "UI_DATE_PICKER_DEFAULTS",
+);

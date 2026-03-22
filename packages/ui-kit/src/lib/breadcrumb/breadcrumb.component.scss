@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 :host {
   display: block;
 
@@ -7,23 +10,14 @@
   --ui-muted: #5a6470;
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-text: #f2f6fb;
   --ui-link: #7ab0ff;
   --ui-link-hover: #5a9aef;
   --ui-muted: #d0d8e3;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-text: #f2f6fb;
-    --ui-link: #7ab0ff;
-    --ui-link-hover: #5a9aef;
-    --ui-muted: #d0d8e3;
-  }
-}
-
-.bc-list {
+.list {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -33,12 +27,12 @@
   gap: 0;
 }
 
-.bc-item {
+.item {
   display: inline-flex;
   align-items: center;
 }
 
-.bc-link {
+.link {
   color: var(--ui-link);
   text-decoration: none;
   font-size: 0.875rem;
@@ -53,12 +47,11 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-link);
-    outline-offset: 2px;
+    @include mix.focus-ring($offset: 2px);
   }
 }
 
-.bc-link--current {
+.link--current {
   color: var(--ui-text);
   cursor: default;
   font-weight: 500;
@@ -69,7 +62,7 @@
   }
 }
 
-.bc-separator {
+.separator {
   margin: 0 0.375rem;
   color: var(--ui-muted);
   font-size: 0.875rem;
@@ -78,7 +71,7 @@
 
 /* ── Chevron separator (button variant) ── */
 
-.bc-chevron {
+.chevron {
   width: 1rem;
   height: 1rem;
   color: var(--ui-muted);
@@ -87,7 +80,7 @@
 
 /* ── Button variant ── */
 
-.bc-button {
+.btn {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--ui-border, #d7dce2);
@@ -100,8 +93,8 @@
   background: transparent;
   cursor: pointer;
   transition:
-    background 120ms ease,
-    color 120ms ease;
+    background anim.$duration-normal anim.$easing-default,
+    color anim.$duration-normal anim.$easing-default;
 
   &:hover:not(:disabled) {
     background: var(--ui-link);
@@ -109,8 +102,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-link);
-    outline-offset: 2px;
+    @include mix.focus-ring($offset: 2px);
   }
 
   &:disabled {
@@ -118,7 +110,7 @@
   }
 }
 
-.bc-button--current {
+.btn--current {
   color: var(--ui-text);
   border-color: transparent;
   background: transparent;

@@ -8,7 +8,7 @@
 //   3. `@media (prefers-color-scheme: dark)` system-preference fallback
 
 @use "tokens" as tokens;
-@use "palettes" as palettes;
+@use "tooltip" as tooltip;
 
 // ============================================================================
 // Theme Definition
@@ -16,76 +16,160 @@
 
 /// Main mixin to apply the Theredhead theme.
 ///
-/// Sets global `--theredhead-*` CSS custom properties and includes the
-/// fine-grained `--ui-*` component design tokens for both light and dark
-/// modes.  The three-tier dark-mode pattern ensures the theme works when:
+/// Sets `--ui-*` CSS design tokens for both light and dark modes using the
+/// three-tier dark-mode pattern:
 ///   - An explicit class (`light-theme` / `dark-theme`) is on `<html>`
 ///   - No class is set and the OS preference takes over
 ///
-/// @param {String} $font-family ["Cantarell", "Noto Sans", "Segoe UI", sans-serif]
-///   The primary font stack used for body text and headings.
+/// All colour parameters are optional.  When `null` (the default) the
+/// built-in palette value is used.  When a colour is provided it overrides
+/// the corresponding `--ui-*` token on `html` so every component picks it
+/// up automatically.
+///
+/// @param {String}      $font-family     ['"Cantarell", …']  Font stack for body text.
+/// @param {Color|null}  $brand-color     [null]  Brand colour (`--ui-brand`).
+/// @param {Color|null}  $primary-color   [null]  Primary / accent colour (`--ui-accent`).
+/// @param {Color|null}  $secondary-color [null]  Secondary colour (`--ui-secondary`).
+/// @param {Color|null}  $tertiary-color  [null]  Tertiary colour (`--ui-tertiary`).
+/// @param {Color|null}  $info-color      [null]  Info status colour (`--ui-info`).
+/// @param {Color|null}  $warn-color      [null]  Warning status colour (`--ui-warning`).
+/// @param {Color|null}  $success-color   [null]  Success status colour (`--ui-success`).
+/// @param {Color|null}  $error-color     [null]  Error / danger status colour (`--ui-error`).
+///
+/// ## Brand / focus-ring cascade
+///
+/// ```
+///   $brand-color ──────┐
+///                      ├──▶ $_brand ──▶ --ui-brand
+///   $primary-color ────┘                    │
+///         │              (brand wins;       │
+///         │               primary is        │
+///         ▼               fallback)         │
+///    --ui-accent                            │
+///                                           ▼
+///                                    --ui-focus-ring
+///                                           │
+///                                           ▼
+///                                    All focus outlines
+///
+///   Token resolution (CSS custom properties):
+///
+///     --ui-brand:      var(--ui-accent)      ← default (nothing overridden)
+///     --ui-focus-ring: var(--ui-brand)       ← always follows brand
+///
+///   Examples:
+///     • Nothing passed       → focus-ring → brand → accent → #3584e4
+///     • $primary-color only  → accent + brand + focus-ring = that colour
+///     • $brand-color only    → brand + focus-ring = that colour; accent unchanged
+///     • Both passed          → brand wins for focus-ring; accent is independent
+/// ```
 @mixin theredhead-theme(
-  $font-family: '"Cantarell", "Noto Sans", "Segoe UI", sans-serif'
+  $font-family: '"Cantarell", "Noto Sans", "Segoe UI", sans-serif',
+  $brand-color: null,
+  $primary-color: null,
+  $secondary-color: null,
+  $tertiary-color: null,
+  $info-color: null,
+  $warn-color: null,
+  $success-color: null,
+  $error-color: null
 ) {
+  // Resolve brand: explicit $brand-color wins, else fall back to $primary-color.
+  // When neither is given the token default (var(--ui-accent)) applies.
+  $_brand: if($brand-color, $brand-color, $primary-color);
+
   // ── 1. Light defaults ────────────────────────────────────────────
 
   html {
-    --theredhead-background: #{palettes.$light-surface};
-    --theredhead-on-background: #{palettes.$light-on-surface};
-    --theredhead-surface: #{palettes.$light-surface-container};
-    --theredhead-on-surface: #{palettes.$light-on-surface};
-    --theredhead-primary: #{palettes.$light-primary};
-    --theredhead-on-primary: #{palettes.$light-on-primary};
-    --theredhead-secondary: #{palettes.$light-secondary};
-    --theredhead-on-secondary: #{palettes.$light-on-secondary};
-    --theredhead-error: #{palettes.$light-error};
-    --theredhead-on-error: #{palettes.$light-on-error};
-    --theredhead-outline: #{palettes.$light-outline};
-    --theredhead-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-
     @include tokens.ui-tokens-light;
+
+    @if $_brand {
+      --ui-brand: #{$_brand};
+    }
+    @if $primary-color {
+      --ui-accent: #{$primary-color};
+    }
+    @if $secondary-color {
+      --ui-secondary: #{$secondary-color};
+    }
+    @if $tertiary-color {
+      --ui-tertiary: #{$tertiary-color};
+    }
+    @if $info-color {
+      --ui-info: #{$info-color};
+    }
+    @if $warn-color {
+      --ui-warning: #{$warn-color};
+    }
+    @if $success-color {
+      --ui-success: #{$success-color};
+    }
+    @if $error-color {
+      --ui-error: #{$error-color};
+    }
   }
 
   // ── 2. Explicit dark class ───────────────────────────────────────
 
   html.dark-theme {
-    --theredhead-background: #{palettes.$dark-surface};
-    --theredhead-on-background: #{palettes.$dark-on-surface};
-    --theredhead-surface: #{palettes.$dark-surface-container};
-    --theredhead-on-surface: #{palettes.$dark-on-surface};
-    --theredhead-primary: #{palettes.$dark-primary};
-    --theredhead-on-primary: #{palettes.$dark-on-primary};
-    --theredhead-secondary: #{palettes.$dark-secondary};
-    --theredhead-on-secondary: #{palettes.$dark-on-secondary};
-    --theredhead-error: #{palettes.$dark-error};
-    --theredhead-on-error: #{palettes.$dark-on-error};
-    --theredhead-outline: #{palettes.$dark-outline};
-    --theredhead-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
-
     @include tokens.ui-tokens-dark;
+
+    @if $_brand {
+      --ui-brand: #{$_brand};
+    }
+    @if $primary-color {
+      --ui-accent: #{$primary-color};
+    }
+    @if $secondary-color {
+      --ui-secondary: #{$secondary-color};
+    }
+    @if $tertiary-color {
+      --ui-tertiary: #{$tertiary-color};
+    }
+    @if $info-color {
+      --ui-info: #{$info-color};
+    }
+    @if $warn-color {
+      --ui-warning: #{$warn-color};
+    }
+    @if $success-color {
+      --ui-success: #{$success-color};
+    }
+    @if $error-color {
+      --ui-error: #{$error-color};
+    }
   }
 
   // ── 3. System preference fallback ────────────────────────────────
 
   @media (prefers-color-scheme: dark) {
     html:not(.light-theme):not(.dark-theme) {
-      --theredhead-background: #{palettes.$dark-surface};
-      --theredhead-on-background: #{palettes.$dark-on-surface};
-      --theredhead-surface: #{palettes.$dark-surface-container};
-      --theredhead-on-surface: #{palettes.$dark-on-surface};
-      --theredhead-primary: #{palettes.$dark-primary};
-      --theredhead-on-primary: #{palettes.$dark-on-primary};
-      --theredhead-secondary: #{palettes.$dark-secondary};
-      --theredhead-on-secondary: #{palettes.$dark-on-secondary};
-      --theredhead-error: #{palettes.$dark-error};
-      --theredhead-on-error: #{palettes.$dark-on-error};
-      --theredhead-outline: #{palettes.$dark-outline};
-      --theredhead-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
-
       @include tokens.ui-tokens-dark;
+
+      @if $_brand {
+        --ui-brand: #{$_brand};
+      }
+      @if $primary-color {
+        --ui-accent: #{$primary-color};
+      }
+      @if $secondary-color {
+        --ui-secondary: #{$secondary-color};
+      }
+      @if $tertiary-color {
+        --ui-tertiary: #{$tertiary-color};
+      }
+      @if $info-color {
+        --ui-info: #{$info-color};
+      }
+      @if $warn-color {
+        --ui-warning: #{$warn-color};
+      }
+      @if $success-color {
+        --ui-success: #{$success-color};
+      }
+      @if $error-color {
+        --ui-error: #{$error-color};
+      }
     }
   }
 
@@ -94,13 +178,16 @@
   body {
     margin: 0;
     padding: 0;
-    background-color: var(--theredhead-background);
-    color: var(--theredhead-on-background);
+    background-color: var(--ui-bg);
+    color: var(--ui-text);
     font-family: #{$font-family};
     transition:
       background-color 0.2s ease,
       color 0.2s ease;
   }
+  // ── Global component styles ──────────────────────────────────────
+
+  @include tooltip.ui-tooltip-styles;
 }
 
 /// Mixin to apply theme-aware styles in components.

@@ -1,5 +1,5 @@
 <div
-  class="ac-header"
+  class="header"
   role="button"
   [attr.aria-expanded]="expanded()"
   [attr.aria-label]="ariaLabel() ?? label()"
@@ -8,15 +8,15 @@
   (click)="toggle()"
   (keydown)="onHeaderKeyDown($event)"
 >
-  <span class="ac-title">{{ label() }}</span>
-  <svg class="ac-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+  <span class="title">{{ label() }}</span>
+  <svg class="chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
     <polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
   </svg>
 </div>
 
 @if (expanded()) {
-  <div class="ac-panel" role="region">
-    <div class="ac-content">
+  <div class="panel" role="region">
+    <div class="content">
       <ng-content />
     </div>
   </div>

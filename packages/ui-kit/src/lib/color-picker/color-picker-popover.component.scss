@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 // ── Color picker popover ───────────────────────────────────────────
 
 // ── Light defaults ────────────────────────────────────────────────
@@ -7,11 +10,11 @@
   --cp-text-muted: #5a6470;
   --cp-border: #d7dce2;
   --cp-surface: #f6f7f8;
-  --cp-accent: var(--theredhead-primary, #3584e4);
+  --cp-accent: var(--ui-focus-ring);
   --cp-accent-hover: #2b71c7;
-  --cp-slider-thumb: #fff;
-  --cp-slider-thumb-border: #999;
-  --cp-swatch-ring: rgba(0, 0, 0, 0.12);
+  --slider-thumb: #fff;
+  --slider-thumb-border: #999;
+  --swatch-ring: rgba(0, 0, 0, 0.12);
 
   display: block;
   width: 19rem;
@@ -21,44 +24,29 @@
   padding: 0.5rem;
 }
 
-// ── Explicit dark class ───────────────────────────────────────────
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --cp-bg: #1e2228;
   --cp-text: #f2f6fb;
   --cp-text-muted: #a0a8b4;
   --cp-border: #3a3f47;
   --cp-surface: #2a2f38;
-  --cp-slider-thumb: #2a2f38;
-  --cp-slider-thumb-border: #666;
-  --cp-swatch-ring: rgba(255, 255, 255, 0.2);
-}
-
-// ── System preference fallback ────────────────────────────────────
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --cp-bg: #1e2228;
-    --cp-text: #f2f6fb;
-    --cp-text-muted: #a0a8b4;
-    --cp-border: #3a3f47;
-    --cp-surface: #2a2f38;
-    --cp-slider-thumb: #2a2f38;
-    --cp-slider-thumb-border: #666;
-    --cp-swatch-ring: rgba(255, 255, 255, 0.2);
-  }
+  --slider-thumb: #2a2f38;
+  --slider-thumb-border: #666;
+  --swatch-ring: rgba(255, 255, 255, 0.2);
 }
 
 // ── Header / Tab bar ──────────────────────────────────────────────
-.cp-header {
+.header {
   margin-bottom: 0.5rem;
 }
 
-.cp-tabs {
+.tabs {
   display: flex;
   gap: 0;
   border-bottom: 1px solid var(--cp-border);
 }
 
-.cp-tab {
+.tab {
   appearance: none;
   border: none;
   background: none;
@@ -84,14 +72,14 @@
 }
 
 // ── Preview row ───────────────────────────────────────────────────
-.cp-preview-row {
+.preview-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-.cp-swatch-wrap {
+.swatch-wrap {
   width: 2rem;
   height: 2rem;
   border-radius: 0.25rem;
@@ -113,12 +101,12 @@
     -4px 0;
 }
 
-.cp-swatch {
+.swatch {
   width: 100%;
   height: 100%;
 }
 
-.cp-hex-input {
+.hex-input {
   flex: 1;
   appearance: none;
   border: 1px solid var(--cp-border);
@@ -138,19 +126,19 @@
 }
 
 // ── Theme palette ─────────────────────────────────────────────────
-.cp-theme {
+.theme {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
 
-.cp-palette-row {
+.palette-row {
   display: flex;
   align-items: center;
   gap: 0.35rem;
 }
 
-.cp-palette-label {
+.palette-label {
   font-size: 0.625rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -163,15 +151,15 @@
   white-space: nowrap;
 }
 
-.cp-palette-swatches {
+.palette-swatches {
   display: flex;
   gap: 2px;
   flex: 1;
 }
 
-.cp-palette-swatch {
+.palette-swatch {
   appearance: none;
-  border: 1px solid var(--cp-swatch-ring);
+  border: 1px solid var(--swatch-ring);
   border-radius: 2px;
   width: 100%;
   aspect-ratio: 1;
@@ -195,15 +183,15 @@
 }
 
 // ── Colour grid ───────────────────────────────────────────────────
-.cp-grid {
+.grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 2px;
 }
 
-.cp-grid-swatch {
+.grid-swatch {
   appearance: none;
-  border: 1px solid var(--cp-swatch-ring);
+  border: 1px solid var(--swatch-ring);
   border-radius: 2px;
   aspect-ratio: 1;
   cursor: pointer;
@@ -226,19 +214,19 @@
 }
 
 // ── Sliders ───────────────────────────────────────────────────────
-.cp-sliders {
+.sliders {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.cp-slider-row {
+.slider-row {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.cp-slider-label {
+.slider-label {
   font-size: 0.6875rem;
   font-weight: 600;
   color: var(--cp-text-muted);
@@ -247,7 +235,7 @@
   flex-shrink: 0;
 }
 
-.cp-slider-track {
+.slider-track {
   position: relative;
   flex: 1;
   height: 1rem;
@@ -271,7 +259,7 @@
   }
 }
 
-.cp-slider {
+.slider {
   appearance: none;
   -webkit-appearance: none;
   width: 100%;
@@ -288,8 +276,8 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: var(--cp-slider-thumb);
-    border: 2px solid var(--cp-slider-thumb-border);
+    background: var(--slider-thumb);
+    border: 2px solid var(--slider-thumb-border);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
   }
@@ -299,8 +287,8 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: var(--cp-slider-thumb);
-    border: 2px solid var(--cp-slider-thumb-border);
+    background: var(--slider-thumb);
+    border: 2px solid var(--slider-thumb-border);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
   }
@@ -314,12 +302,12 @@
 }
 
 // Alpha track needs the gradient on top of the checkerboard
-.cp-slider-track--alpha .cp-slider {
+.slider-track--alpha .slider {
   position: absolute;
   inset: 0;
 }
 
-.cp-slider-track--alpha {
+.slider-track--alpha {
   position: relative;
 
   &::after {
@@ -333,7 +321,7 @@
   }
 }
 
-.cp-slider-value {
+.slider-value {
   font-size: 0.6875rem;
   font-family: ui-monospace, "SF Mono", monospace;
   color: var(--cp-text-muted);
@@ -452,7 +440,7 @@
   width: 1rem;
   height: 1rem;
   border-radius: 2px;
-  border: 1px solid var(--cp-swatch-ring);
+  border: 1px solid var(--swatch-ring);
   flex-shrink: 0;
 }
 

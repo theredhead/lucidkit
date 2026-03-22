@@ -1,11 +1,11 @@
 @if (open()) {
   <div
-    class="drawer-backdrop"
+    class="backdrop"
     (click)="onBackdropClick()"
     aria-hidden="true"
   ></div>
   <div
-    class="drawer-panel"
+    class="panel"
     [style.width]="resolvedWidth()"
     [attr.aria-label]="ariaLabel()"
     role="dialog"

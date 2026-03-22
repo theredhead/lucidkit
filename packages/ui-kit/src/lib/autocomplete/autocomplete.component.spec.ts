@@ -91,7 +91,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.placeholder).toBe("Type here…");
     });
 
@@ -100,7 +100,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.getAttribute("aria-label")).toBe("Search users");
     });
 
@@ -109,29 +109,29 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.disabled).toBe(true);
     });
   });
 
   describe("popup", () => {
     it("should not show the popup initially", () => {
-      const popup = fixture.nativeElement.querySelector(".ac-popup");
+      const popup = fixture.nativeElement.querySelector(".popup");
       expect(popup).toBeNull();
     });
 
     it("should show suggestions after typing", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      const popup = fixture.nativeElement.querySelector(".ac-popup");
+      const popup = fixture.nativeElement.querySelector(".popup");
       expect(popup).toBeTruthy();
 
-      const options = fixture.nativeElement.querySelectorAll(".ac-option");
+      const options = fixture.nativeElement.querySelectorAll(".option");
       // "Alice", "Albert" match "Al"
       expect(options.length).toBe(2);
     });
@@ -141,24 +141,24 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      const popup = fixture.nativeElement.querySelector(".ac-popup");
+      const popup = fixture.nativeElement.querySelector(".popup");
       expect(popup).toBeNull();
     });
 
     it("should close popup on Escape", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       // Open popup
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeTruthy();
 
       // Press Escape
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
@@ -172,7 +172,7 @@ describe("UIAutocomplete", () => {
   describe("keyboard navigation", () => {
     it("should highlight next item on ArrowDown", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "A";
       input.dispatchEvent(new Event("input"));
@@ -181,13 +181,13 @@ describe("UIAutocomplete", () => {
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
       fixture.detectChanges();
 
-      const active = fixture.nativeElement.querySelector(".ac-option--active");
+      const active = fixture.nativeElement.querySelector(".option--active");
       expect(active).toBeTruthy();
     });
 
     it("should not go below the last item", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Bob";
       input.dispatchEvent(new Event("input"));
@@ -199,7 +199,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const actives =
-        fixture.nativeElement.querySelectorAll(".ac-option--active");
+        fixture.nativeElement.querySelectorAll(".option--active");
       expect(actives.length).toBe(1);
     });
   });
@@ -207,13 +207,13 @@ describe("UIAutocomplete", () => {
   describe("item selection (single mode)", () => {
     it("should set value when clicking a suggestion", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Bob";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      const option = fixture.nativeElement.querySelector(".ac-option");
+      const option = fixture.nativeElement.querySelector(".option");
       option.click();
       fixture.detectChanges();
 
@@ -222,13 +222,13 @@ describe("UIAutocomplete", () => {
 
     it("should replace previous selection in single mode", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       // Pick first item
       input.value = "Alice";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.nativeElement.querySelector(".option").click();
       fixture.detectChanges();
 
       expect(component.value()).toEqual([{ id: 1, name: "Alice" }]);
@@ -237,7 +237,7 @@ describe("UIAutocomplete", () => {
       input.value = "Bob";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.nativeElement.querySelector(".option").click();
       fixture.detectChanges();
 
       expect(component.value()).toEqual([{ id: 2, name: "Bob" }]);
@@ -252,20 +252,20 @@ describe("UIAutocomplete", () => {
 
     it("should accumulate selected items", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       // Pick Alice
       input.value = "Alice";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.nativeElement.querySelector(".option").click();
       fixture.detectChanges();
 
       // Pick Bob
       input.value = "Bob";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.nativeElement.querySelector(".option").click();
       fixture.detectChanges();
 
       expect(component.value().length).toBe(2);
@@ -276,7 +276,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chips = fixture.nativeElement.querySelectorAll(".ac-chip");
+      const chips = fixture.nativeElement.querySelectorAll(".chip");
       expect(chips.length).toBe(1);
     });
 
@@ -288,7 +288,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const removeButtons =
-        fixture.nativeElement.querySelectorAll(".ac-chip-remove");
+        fixture.nativeElement.querySelectorAll(".chip-remove");
       expect(removeButtons.length).toBe(2);
 
       removeButtons[0].click();
@@ -303,7 +303,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chips = fixture.nativeElement.querySelectorAll(".ac-chip");
+      const chips = fixture.nativeElement.querySelectorAll(".chip");
       expect(chips.length).toBe(0);
     });
   });
@@ -324,7 +324,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chipLabel = fixture.nativeElement.querySelector(".ac-chip-label");
+      const chipLabel = fixture.nativeElement.querySelector(".chip-label");
       expect(chipLabel.textContent.trim()).toBe("Alice");
     });
   });
@@ -337,7 +337,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Alice";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -351,19 +351,19 @@ describe("UIAutocomplete", () => {
   describe("accessibility", () => {
     it("should have combobox role on input", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.getAttribute("role")).toBe("combobox");
     });
 
     it("should set aria-expanded to false when popup is closed", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       expect(input.getAttribute("aria-expanded")).toBe("false");
     });
 
     it("should set aria-expanded to true when popup is open", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -373,23 +373,23 @@ describe("UIAutocomplete", () => {
 
     it("should have listbox role on the popup", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      const popup = fixture.nativeElement.querySelector(".ac-popup");
+      const popup = fixture.nativeElement.querySelector(".popup");
       expect(popup.getAttribute("role")).toBe("listbox");
     });
 
     it("should have option role on each suggestion", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      const options = fixture.nativeElement.querySelectorAll(".ac-option");
+      const options = fixture.nativeElement.querySelectorAll(".option");
       for (const opt of options) {
         expect(opt.getAttribute("role")).toBe("option");
       }
@@ -407,7 +407,7 @@ describe("UIAutocomplete", () => {
   describe("keyboard navigation (extended)", () => {
     it("should highlight previous item on ArrowUp", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "A";
       input.dispatchEvent(new Event("input"));
@@ -423,13 +423,13 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const actives =
-        fixture.nativeElement.querySelectorAll(".ac-option--active");
+        fixture.nativeElement.querySelectorAll(".option--active");
       expect(actives.length).toBe(1);
     });
 
     it("should not go above the first item on ArrowUp", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "A";
       input.dispatchEvent(new Event("input"));
@@ -444,13 +444,13 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const actives =
-        fixture.nativeElement.querySelectorAll(".ac-option--active");
+        fixture.nativeElement.querySelectorAll(".option--active");
       expect(actives.length).toBe(1);
     });
 
     it("should pick the active item on Enter", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Bob";
       input.dispatchEvent(new Event("input"));
@@ -467,7 +467,7 @@ describe("UIAutocomplete", () => {
 
     it("should not pick on Enter when no item is highlighted", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
@@ -482,22 +482,22 @@ describe("UIAutocomplete", () => {
 
     it("should close popup on Tab", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeTruthy();
 
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeNull();
     });
 
     it("should ignore keyboard when no suggestions exist", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "zzz";
       input.dispatchEvent(new Event("input"));
@@ -512,7 +512,7 @@ describe("UIAutocomplete", () => {
 
     it("should open popup on ArrowDown when closed", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "A";
       input.dispatchEvent(new Event("input"));
@@ -521,46 +521,46 @@ describe("UIAutocomplete", () => {
       // Close first
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeNull();
 
       // ArrowDown should reopen
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeTruthy();
     });
   });
 
   describe("document click", () => {
     it("should close popup when clicking outside", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeTruthy();
 
       // Click outside the component
       document.body.click();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeNull();
     });
 
     it("should not close popup when clicking inside", () => {
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
 
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeTruthy();
 
       // Click inside the component
       fixture.nativeElement.click();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeTruthy();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeTruthy();
     });
   });
 
@@ -570,11 +570,11 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeNull();
     });
 
     it("should not open popup when query is too short", () => {
@@ -582,13 +582,13 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Al";
       input.dispatchEvent(new Event("input"));
       input.dispatchEvent(new Event("focus"));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".ac-popup")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".popup")).toBeNull();
     });
   });
 
@@ -616,7 +616,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const removeBtn = fixture.nativeElement.querySelector(".ac-chip-remove");
+      const removeBtn = fixture.nativeElement.querySelector(".chip-remove");
       removeBtn.click();
       fixture.detectChanges();
 
@@ -628,12 +628,12 @@ describe("UIAutocomplete", () => {
       component.itemSelected.subscribe(spy);
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Bob";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.nativeElement.querySelector(".option").click();
       fixture.detectChanges();
 
       expect(spy).toHaveBeenCalledWith({ id: 2, name: "Bob" });
@@ -648,7 +648,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const removeBtns =
-        fixture.nativeElement.querySelectorAll(".ac-chip-remove");
+        fixture.nativeElement.querySelectorAll(".chip-remove");
       removeBtns[0].click();
       fixture.detectChanges();
 
@@ -666,12 +666,12 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const input: HTMLInputElement =
-        fixture.nativeElement.querySelector(".ac-input");
+        fixture.nativeElement.querySelector(".input");
       input.value = "Bob";
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      fixture.nativeElement.querySelector(".ac-option").click();
+      fixture.nativeElement.querySelector(".option").click();
       fixture.detectChanges();
 
       // In single mode, query is set to displayWith(item)

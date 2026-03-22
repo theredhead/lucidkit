@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 :host {
   --ui-surface-card: #f7f8fa;
   --ui-text-card: #1d232b;
@@ -13,7 +15,7 @@
 
 /* Toolbar */
 
-.fd-toolbar {
+.toolbar {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -22,14 +24,14 @@
   border-bottom: 1px solid var(--ui-border, #d7dce2);
 }
 
-.fd-toolbar-title {
+.toolbar-title {
   font-weight: 700;
   font-size: 0.9375rem;
   margin-right: auto;
   color: var(--ui-text, #1d232b);
 }
 
-.fd-toolbar-actions {
+.toolbar-actions {
   display: flex;
   gap: 2px;
   background: var(--ui-surface-alt, #ffffff);
@@ -38,7 +40,7 @@
   border: 1px solid var(--ui-border, #d7dce2);
 }
 
-.fd-toolbar-btn {
+.toolbar-btn {
   appearance: none;
   border: none;
   background: transparent;
@@ -51,42 +53,42 @@
   transition: background 0.12s ease;
 }
 
-.fd-toolbar-btn:hover {
+.toolbar-btn:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 
-.fd-toolbar-btn--active {
-  background: var(--theredhead-primary, #3584e4);
-  color: var(--theredhead-on-primary, #ffffff);
+.toolbar-btn--active {
+  background: var(--ui-accent);
+  color: var(--ui-accent-contrast);
 }
 
-.fd-toolbar-btn--active:hover {
+.toolbar-btn--active:hover {
   opacity: 0.9;
 }
 
 /* Body */
 
-.fd-body {
+.body {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
-.fd-palette {
+.palette {
   flex: 0 0 auto;
 }
 
-.fd-canvas {
+.canvas {
   flex: 1;
 }
 
-.fd-inspector {
+.inspector {
   flex: 0 0 auto;
 }
 
 /* Preview */
 
-.fd-preview {
+.preview {
   flex: 1;
   padding: 24px;
   overflow-y: auto;
@@ -100,7 +102,7 @@
   border: 1.5px dashed var(--ui-border, #d7dce2);
 }
 
-.fd-preview-empty {
+.preview-empty {
   text-align: center;
   font-size: 0.9375rem;
   padding: 48px 16px;
@@ -108,13 +110,13 @@
   font-weight: 500;
 }
 
-.fd-preview-live {
+.preview-live {
   margin-top: 20px;
   border-top: 1px dashed rgba(128, 128, 128, 0.3);
   padding-top: 12px;
 }
 
-.fd-preview-live-heading {
+.preview-live-heading {
   margin: 0 0 4px;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -126,7 +128,7 @@
   gap: 8px;
 }
 
-.fd-preview-live-badge {
+.preview-live-badge {
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: none;
@@ -137,12 +139,12 @@
   color: #ba1a1a;
 }
 
-.fd-preview-live-badge--valid {
+.preview-live-badge--valid {
   background: rgba(56, 142, 60, 0.15);
   color: #388e3c;
 }
 
-.fd-preview-live-json {
+.preview-live-json {
   margin: 0;
   padding: 12px;
   border-radius: 8px;
@@ -155,19 +157,19 @@
 
 /* JSON */
 
-.fd-json {
+.json {
   flex: 1;
   padding: 16px;
   overflow: auto;
 }
 
-.fd-json-header {
+.json-header {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 8px;
 }
 
-.fd-copy-btn {
+.copy-btn {
   appearance: none;
   border: 1px solid var(--ui-border, #d7dce2);
   background: var(--ui-surface-alt, #ffffff);
@@ -181,11 +183,11 @@
   transition: background 0.12s ease;
 }
 
-.fd-copy-btn:hover {
+.copy-btn:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 
-.fd-json-pre {
+.json-pre {
   font-family: monospace;
   font-size: 0.8125rem;
   white-space: pre-wrap;
@@ -196,108 +198,54 @@
 
 /* Dark mode — explicit class */
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-surface-card: #1a1d23;
   --ui-text-card: #f2f6fb;
   background: var(--ui-surface-alt, #2a2e36);
   border-color: var(--ui-border, #3a3f47);
 
-  .fd-toolbar {
+  .toolbar {
     background: var(--ui-surface, #1e2128);
     border-bottom-color: var(--ui-border, #3a3f47);
   }
 
-  .fd-toolbar-title {
+  .toolbar-title {
     color: var(--ui-text, #f2f6fb);
   }
 
-  .fd-toolbar-actions {
+  .toolbar-actions {
     background: var(--ui-surface-alt, #2a2e36);
     border-color: var(--ui-border, #3a3f47);
   }
 
-  .fd-toolbar-btn {
+  .toolbar-btn {
     color: var(--ui-text, #f2f6fb);
   }
 
-  .fd-toolbar-btn:hover {
+  .toolbar-btn:hover {
     background: rgba(255, 255, 255, 0.08);
   }
 
-  .fd-toolbar-btn--active {
-    background: var(--theredhead-primary-container, #004787);
-    color: var(--theredhead-on-primary-container, #d6e3ff);
+  .toolbar-btn--active {
+    background: var(--ui-primary-container);
+    color: var(--ui-on-primary-container);
   }
 
-  .fd-toolbar-btn--active:hover {
+  .toolbar-btn--active:hover {
     opacity: 0.9;
   }
 
-  .fd-copy-btn {
+  .copy-btn {
     background: var(--ui-surface-alt, #2a2e36);
     border-color: var(--ui-border, #3a3f47);
     color: var(--ui-text, #f2f6fb);
   }
 
-  .fd-copy-btn:hover {
+  .copy-btn:hover {
     background: rgba(255, 255, 255, 0.08);
   }
 
-  .fd-json-pre {
+  .json-pre {
     color: var(--ui-text, #f2f6fb);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-surface-card: #1a1d23;
-    --ui-text-card: #f2f6fb;
-    background: var(--ui-surface-alt, #2a2e36);
-    border-color: var(--ui-border, #3a3f47);
-
-    .fd-toolbar {
-      background: var(--ui-surface, #1e2128);
-      border-bottom-color: var(--ui-border, #3a3f47);
-    }
-
-    .fd-toolbar-title {
-      color: var(--ui-text, #f2f6fb);
-    }
-
-    .fd-toolbar-actions {
-      background: var(--ui-surface-alt, #2a2e36);
-      border-color: var(--ui-border, #3a3f47);
-    }
-
-    .fd-toolbar-btn {
-      color: var(--ui-text, #f2f6fb);
-    }
-
-    .fd-toolbar-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .fd-toolbar-btn--active {
-      background: var(--theredhead-primary-container, #004787);
-      color: var(--theredhead-on-primary-container, #d6e3ff);
-    }
-
-    .fd-toolbar-btn--active:hover {
-      opacity: 0.9;
-    }
-
-    .fd-copy-btn {
-      background: var(--ui-surface-alt, #2a2e36);
-      border-color: var(--ui-border, #3a3f47);
-      color: var(--ui-text, #f2f6fb);
-    }
-
-    .fd-copy-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .fd-json-pre {
-      color: var(--ui-text, #f2f6fb);
-    }
   }
 }

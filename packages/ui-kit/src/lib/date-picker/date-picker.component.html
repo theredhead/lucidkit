@@ -1,6 +1,6 @@
-<div class="dp-input-wrapper">
+<div class="input-wrapper">
   <input
-    class="dp-input"
+    class="input"
     type="text"
     autocomplete="off"
     [value]="inputText()"
@@ -15,7 +15,7 @@
     (keydown)="onInputKeydown($event)"
   />
   <button
-    class="dp-toggle"
+    class="toggle"
     type="button"
     tabindex="-1"
     aria-label="Toggle calendar"
@@ -34,7 +34,7 @@
 
 @if (isOpen()) {
   <div
-    class="dp-calendar"
+    class="calendar"
     role="dialog"
     aria-modal="true"
     [id]="calendarId"
@@ -42,9 +42,9 @@
     (keydown)="onCalendarKeydown($event)"
   >
     <!-- Calendar header -->
-    <div class="dp-cal-header">
+    <div class="cal-header">
       <button
-        class="dp-cal-nav"
+        class="cal-nav"
         type="button"
         aria-label="Previous year"
         (mousedown)="$event.preventDefault()"
@@ -53,7 +53,7 @@
         «
       </button>
       <button
-        class="dp-cal-nav"
+        class="cal-nav"
         type="button"
         aria-label="Previous month"
         (mousedown)="$event.preventDefault()"
@@ -61,9 +61,9 @@
       >
         ‹
       </button>
-      <span class="dp-cal-title">{{ monthYearLabel() }}</span>
+      <span class="cal-title">{{ monthYearLabel() }}</span>
       <button
-        class="dp-cal-nav"
+        class="cal-nav"
         type="button"
         aria-label="Next month"
         (mousedown)="$event.preventDefault()"
@@ -72,7 +72,7 @@
         ›
       </button>
       <button
-        class="dp-cal-nav"
+        class="cal-nav"
         type="button"
         aria-label="Next year"
         (mousedown)="$event.preventDefault()"
@@ -83,25 +83,25 @@
     </div>
 
     <!-- Weekday headers -->
-    <div class="dp-cal-weekdays" role="row">
+    <div class="cal-weekdays" role="row">
       @for (wd of weekdayLabels(); track wd.long) {
-        <span class="dp-cal-weekday" role="columnheader" [title]="wd.long">
+        <span class="cal-weekday" role="columnheader" [title]="wd.long">
           {{ wd.short }}
         </span>
       }
     </div>
 
     <!-- Day grid -->
-    <div class="dp-cal-grid" role="grid">
+    <div class="cal-grid" role="grid">
       @for (day of calendarDays(); track day.date.getTime()) {
         <button
-          class="dp-cal-day"
+          class="cal-day"
           type="button"
           role="gridcell"
-          [class.dp-cal-day--outside]="!day.isCurrentMonth"
-          [class.dp-cal-day--today]="day.isToday"
-          [class.dp-cal-day--selected]="day.isSelected"
-          [class.dp-cal-day--disabled]="day.isDisabled"
+          [class.cal-day--outside]="!day.isCurrentMonth"
+          [class.cal-day--today]="day.isToday"
+          [class.cal-day--selected]="day.isSelected"
+          [class.cal-day--disabled]="day.isDisabled"
           [disabled]="day.isDisabled"
           [attr.aria-selected]="day.isSelected"
           [attr.aria-label]="day.date.toDateString()"
@@ -114,9 +114,9 @@
     </div>
 
     <!-- Footer -->
-    <div class="dp-cal-footer">
+    <div class="cal-footer">
       <button
-        class="dp-cal-today"
+        class="cal-today"
         type="button"
         (mousedown)="$event.preventDefault()"
         (click)="goToToday()"

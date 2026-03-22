@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 // ── Light defaults ──
 :host {
   display: block;
@@ -12,8 +14,7 @@
   --ui-divider-handle-hover: #6b7685;
 }
 
-// ── Dark mode: explicit class ──
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-divider-bg: #3a3f47;
   --ui-divider-bg-hover: #505860;
   --ui-divider-bg-active: #7ab0ff;
@@ -21,33 +22,22 @@
   --ui-divider-handle-hover: #a0a8b4;
 }
 
-// ── Dark mode: system preference fallback ──
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-divider-bg: #3a3f47;
-    --ui-divider-bg-hover: #505860;
-    --ui-divider-bg-active: #7ab0ff;
-    --ui-divider-handle: #6b7685;
-    --ui-divider-handle-hover: #a0a8b4;
-  }
-}
-
 /* ── Container ── */
 
-.sc-container {
+.container {
   display: flex;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-:host(.ui-split-container--vertical) .sc-container {
+:host(.ui-split-container--vertical) .container {
   flex-direction: column;
 }
 
 /* ── Panels ── */
 
-.sc-panel {
+.panel {
   overflow: auto;
   min-width: 0;
   min-height: 0;
@@ -55,7 +45,7 @@
 
 /* ── Divider ── */
 
-.sc-divider {
+.divider {
   flex: 0 0 var(--ui-divider-width);
   display: flex;
   align-items: center;
@@ -70,47 +60,47 @@
   z-index: 1;
 }
 
-:host(.ui-split-container--horizontal) .sc-divider {
+:host(.ui-split-container--horizontal) .divider {
   cursor: col-resize;
 }
 
-:host(.ui-split-container--vertical) .sc-divider {
+:host(.ui-split-container--vertical) .divider {
   cursor: row-resize;
 }
 
-.sc-divider:hover,
-.sc-divider:focus-visible {
+.divider:hover,
+.divider:focus-visible {
   background: var(--ui-divider-bg-hover);
 }
 
-.sc-divider:focus-visible {
+.divider:focus-visible {
   outline: 2px solid var(--ui-divider-bg-active);
   outline-offset: -2px;
 }
 
-:host(.ui-split-container--dragging) .sc-divider {
+:host(.ui-split-container--dragging) .divider {
   background: var(--ui-divider-bg-active);
 }
 
 /* ── Divider handle grip ── */
 
-.sc-divider__handle {
+.divider__handle {
   border-radius: 2px;
   background: var(--ui-divider-handle);
   transition: background-color 0.15s ease;
 }
 
-.sc-divider:hover .sc-divider__handle,
-.sc-divider:focus-visible .sc-divider__handle {
+.divider:hover .divider__handle,
+.divider:focus-visible .divider__handle {
   background: var(--ui-divider-handle-hover);
 }
 
-:host(.ui-split-container--horizontal) .sc-divider__handle {
+:host(.ui-split-container--horizontal) .divider__handle {
   width: 2px;
   height: 24px;
 }
 
-:host(.ui-split-container--vertical) .sc-divider__handle {
+:host(.ui-split-container--vertical) .divider__handle {
   width: 24px;
   height: 2px;
 }
@@ -125,7 +115,7 @@
   cursor: row-resize;
 }
 
-:host(.ui-split-container--dragging) .sc-panel {
+:host(.ui-split-container--dragging) .panel {
   pointer-events: none;
   user-select: none;
 }

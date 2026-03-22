@@ -54,7 +54,7 @@ describe("UIColorPicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".cp-trigger");
+        fixture.nativeElement.querySelector(".trigger");
       expect(btn.disabled).toBe(true);
     });
   });
@@ -65,7 +65,7 @@ describe("UIColorPicker", () => {
       fixture.detectChanges();
 
       const swatch: HTMLElement =
-        fixture.nativeElement.querySelector(".cp-swatch");
+        fixture.nativeElement.querySelector(".swatch");
       expect(swatch.style.backgroundColor).toBeTruthy();
     });
   });
@@ -76,7 +76,7 @@ describe("UIColorPicker", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".cp-trigger");
+        fixture.nativeElement.querySelector(".trigger");
       expect(btn.getAttribute("aria-label")).toBe("Choose colour");
     });
   });

@@ -79,7 +79,7 @@ describe("UIDashboard", () => {
     });
 
     it("should render panel titles", () => {
-      const titles = el.querySelectorAll(".panel-title");
+      const titles = el.querySelectorAll(".title");
       expect(titles.length).toBe(3);
       expect(titles[0].textContent?.trim()).toBe("KPI Overview");
       expect(titles[1].textContent?.trim()).toBe("Revenue Chart");
@@ -93,33 +93,33 @@ describe("UIDashboard", () => {
     });
 
     it("should render the grid container", () => {
-      const grid = el.querySelector(".dashboard-grid");
+      const grid = el.querySelector(".grid");
       expect(grid).toBeTruthy();
     });
   });
 
   describe("grid layout", () => {
     it("should set grid-template-columns for fixed column count", () => {
-      const grid = el.querySelector(".dashboard-grid") as HTMLElement;
+      const grid = el.querySelector(".grid") as HTMLElement;
       expect(grid.style.gridTemplateColumns).toBe("repeat(3, 1fr)");
     });
 
     it("should set grid-template-columns for auto mode", () => {
       host.columns.set("auto");
       fixture.detectChanges();
-      const grid = el.querySelector(".dashboard-grid") as HTMLElement;
+      const grid = el.querySelector(".grid") as HTMLElement;
       expect(grid.style.gridTemplateColumns).toContain("auto-fill");
     });
 
     it("should set gap", () => {
-      const grid = el.querySelector(".dashboard-grid") as HTMLElement;
+      const grid = el.querySelector(".grid") as HTMLElement;
       expect(grid.style.gap).toBe("16px");
     });
 
     it("should update gap when input changes", () => {
       host.gap.set(24);
       fixture.detectChanges();
-      const grid = el.querySelector(".dashboard-grid") as HTMLElement;
+      const grid = el.querySelector(".grid") as HTMLElement;
       expect(grid.style.gap).toBe("24px");
     });
 
@@ -138,19 +138,19 @@ describe("UIDashboard", () => {
 
   describe("accessibility", () => {
     it("should have role=region on the grid", () => {
-      const grid = el.querySelector(".dashboard-grid");
+      const grid = el.querySelector(".grid");
       expect(grid?.getAttribute("role")).toBe("region");
     });
 
     it("should have aria-label on the grid", () => {
-      const grid = el.querySelector(".dashboard-grid");
+      const grid = el.querySelector(".grid");
       expect(grid?.getAttribute("aria-label")).toBe("Test dashboard");
     });
 
     it("should support custom ariaLabel", () => {
       host.ariaLabel.set("My dashboard");
       fixture.detectChanges();
-      const grid = el.querySelector(".dashboard-grid");
+      const grid = el.querySelector(".grid");
       expect(grid?.getAttribute("aria-label")).toBe("My dashboard");
     });
   });
@@ -160,10 +160,10 @@ describe("UIDashboard", () => {
       const panels = el.querySelectorAll("ui-dashboard-panel");
       // Only the "Activity Feed" panel (index 2) is collapsible
       const btns0 = panels[0].querySelectorAll(
-        ".panel-action-btn:not(.panel-action-btn--remove)",
+        ".action:not(.action--remove)",
       );
       const btns2 = panels[2].querySelectorAll(
-        ".panel-action-btn:not(.panel-action-btn--remove)",
+        ".action:not(.action--remove)",
       );
       expect(btns0.length).toBe(0);
       expect(btns2.length).toBe(1);
@@ -174,15 +174,15 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       const toggleBtn = feedPanel.querySelector(
-        ".panel-action-btn:not(.panel-action-btn--remove)",
+        ".action:not(.action--remove)",
       ) as HTMLElement;
 
-      expect(feedPanel.querySelector(".panel-body")).toBeTruthy();
+      expect(feedPanel.querySelector(".body")).toBeTruthy();
 
       toggleBtn.click();
       fixture.detectChanges();
 
-      expect(feedPanel.querySelector(".panel-body")).toBeNull();
+      expect(feedPanel.querySelector(".body")).toBeNull();
       expect(feedPanel.classList).toContain("ui-dashboard-panel--collapsed");
     });
 
@@ -191,16 +191,16 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       const toggleBtn = feedPanel.querySelector(
-        ".panel-action-btn:not(.panel-action-btn--remove)",
+        ".action:not(.action--remove)",
       ) as HTMLElement;
 
       toggleBtn.click();
       fixture.detectChanges();
-      expect(feedPanel.querySelector(".panel-body")).toBeNull();
+      expect(feedPanel.querySelector(".body")).toBeNull();
 
       toggleBtn.click();
       fixture.detectChanges();
-      expect(feedPanel.querySelector(".panel-body")).toBeTruthy();
+      expect(feedPanel.querySelector(".body")).toBeTruthy();
     });
 
     it("should have correct aria-expanded attribute", () => {
@@ -208,7 +208,7 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       const toggleBtn = feedPanel.querySelector(
-        ".panel-action-btn:not(.panel-action-btn--remove)",
+        ".action:not(.action--remove)",
       ) as HTMLElement;
 
       expect(toggleBtn.getAttribute("aria-expanded")).toBe("true");
@@ -224,10 +224,10 @@ describe("UIDashboard", () => {
     it("should show remove button only for removable panels", () => {
       const panels = el.querySelectorAll("ui-dashboard-panel");
       const removeBtns0 = panels[0].querySelectorAll(
-        ".panel-action-btn--remove",
+        ".action--remove",
       );
       const removeBtns2 = panels[2].querySelectorAll(
-        ".panel-action-btn--remove",
+        ".action--remove",
       );
       expect(removeBtns0.length).toBe(0);
       expect(removeBtns2.length).toBe(1);
@@ -238,7 +238,7 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       const removeBtn = feedPanel.querySelector(
-        ".panel-action-btn--remove",
+        ".action--remove",
       ) as HTMLElement;
 
       removeBtn.click();
@@ -252,7 +252,7 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       const removeBtn = feedPanel.querySelector(
-        ".panel-action-btn--remove",
+        ".action--remove",
       ) as HTMLElement;
 
       removeBtn.click();
@@ -269,7 +269,7 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       const removeBtn = feedPanel.querySelector(
-        ".panel-action-btn--remove",
+        ".action--remove",
       ) as HTMLElement;
       removeBtn.click();
       fixture.detectChanges();
@@ -294,7 +294,7 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       feedPanel
-        .querySelector<HTMLElement>(".panel-action-btn--remove")!
+        .querySelector<HTMLElement>(".action--remove")!
         .click();
       fixture.detectChanges();
       expect(feedPanel.classList).toContain("ui-dashboard-panel--removed");
@@ -316,7 +316,7 @@ describe("UIDashboard", () => {
         '[data-panel-id="feed"]',
       ) as HTMLElement;
       feedPanel
-        .querySelector<HTMLElement>(".panel-action-btn--remove")!
+        .querySelector<HTMLElement>(".action--remove")!
         .click();
       fixture.detectChanges();
 

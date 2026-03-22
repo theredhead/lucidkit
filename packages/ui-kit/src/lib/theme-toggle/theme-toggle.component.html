@@ -1,24 +1,24 @@
 @if (variant() === 'icon') {
   <button
-    class="tt-btn tt-btn--icon"
+    class="btn btn--icon"
     type="button"
     (click)="toggle()"
     [attr.aria-label]="ariaLabel()"
   >
-    <svg class="tt-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path [attr.d]="iconPath" />
     </svg>
   </button>
 } @else {
   <button
-    class="tt-btn tt-btn--text"
+    class="btn btn--text"
     type="button"
     (click)="toggle()"
     [attr.aria-label]="ariaLabel()"
   >
-    <svg class="tt-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path [attr.d]="iconPath" />
     </svg>
-    <span class="tt-label">{{ label }}</span>
+    <span class="label">{{ label }}</span>
   </button>
 }

@@ -48,16 +48,16 @@ describe("UIAccordion", () => {
   });
 
   it("should start with all panels collapsed", () => {
-    const panels = fixture.nativeElement.querySelectorAll(".ac-panel");
+    const panels = fixture.nativeElement.querySelectorAll(".panel");
     expect(panels.length).toBe(0);
   });
 
   describe("expand/collapse", () => {
     it("should expand a panel when header is clicked", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
-      const panels = fixture.nativeElement.querySelectorAll(".ac-panel");
+      const panels = fixture.nativeElement.querySelectorAll(".panel");
       expect(panels.length).toBe(1);
       expect(panels[0].textContent.trim()).toBe("Content A");
     });
@@ -65,24 +65,24 @@ describe("UIAccordion", () => {
     it("should collapse an expanded panel when header is clicked again in multi mode", () => {
       host.mode.set("multi");
       fixture.detectChanges();
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         1,
       );
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         0,
       );
     });
 
     it("should not toggle a disabled item", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[2].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         0,
       );
     });
@@ -90,15 +90,15 @@ describe("UIAccordion", () => {
 
   describe("single mode", () => {
     it("should not collapse the open panel when requireOpen is true", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         1,
       );
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         1,
       );
     });
@@ -106,26 +106,26 @@ describe("UIAccordion", () => {
     it("should allow collapsing the open panel when requireOpen is false", () => {
       host.requireOpen.set(false);
       fixture.detectChanges();
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         1,
       );
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         0,
       );
     });
 
     it("should collapse other panels when one is expanded", async () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         1,
       );
 
@@ -134,7 +134,7 @@ describe("UIAccordion", () => {
       await fixture.whenStable();
       fixture.detectChanges();
 
-      const panels = fixture.nativeElement.querySelectorAll(".ac-panel");
+      const panels = fixture.nativeElement.querySelectorAll(".panel");
       expect(panels.length).toBe(1);
       expect(panels[0].textContent.trim()).toBe("Content B");
     });
@@ -145,7 +145,7 @@ describe("UIAccordion", () => {
       host.mode.set("multi");
       fixture.detectChanges();
 
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
       await fixture.whenStable();
@@ -156,30 +156,30 @@ describe("UIAccordion", () => {
       await fixture.whenStable();
       fixture.detectChanges();
 
-      const panels = fixture.nativeElement.querySelectorAll(".ac-panel");
+      const panels = fixture.nativeElement.querySelectorAll(".panel");
       expect(panels.length).toBe(2);
     });
   });
 
   describe("keyboard", () => {
     it("should toggle on Enter key", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].dispatchEvent(
         new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
       );
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         1,
       );
     });
 
     it("should toggle on Space key", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].dispatchEvent(
         new KeyboardEvent("keydown", { key: " ", bubbles: true }),
       );
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".ac-panel").length).toBe(
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
         1,
       );
     });
@@ -193,7 +193,7 @@ describe("UIAccordion", () => {
     });
 
     it("should apply expanded class to expanded item", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
       const item = fixture.nativeElement.querySelector("ui-accordion-item");
@@ -208,7 +208,7 @@ describe("UIAccordion", () => {
 
   describe("aria", () => {
     it("should set aria-expanded on headers", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       expect(headers[0].getAttribute("aria-expanded")).toBe("false");
       headers[0].click();
       fixture.detectChanges();
@@ -216,7 +216,7 @@ describe("UIAccordion", () => {
     });
 
     it("should set aria-disabled on disabled items", () => {
-      const headers = fixture.nativeElement.querySelectorAll(".ac-header");
+      const headers = fixture.nativeElement.querySelectorAll(".header");
       expect(headers[2].getAttribute("aria-disabled")).toBe("true");
     });
   });

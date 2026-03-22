@@ -52,12 +52,12 @@ describe("UIDropdownMenu", () => {
 
   describe("closed state", () => {
     it("should not render menu panel", () => {
-      const panel = fixture.nativeElement.querySelector(".dropdown-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel).toBeFalsy();
     });
 
     it("should render trigger", () => {
-      const trigger = fixture.nativeElement.querySelector(".dropdown-trigger");
+      const trigger = fixture.nativeElement.querySelector(".trigger");
       expect(trigger).toBeTruthy();
     });
   });
@@ -65,14 +65,14 @@ describe("UIDropdownMenu", () => {
   describe("open state", () => {
     beforeEach(() => {
       const trigger = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
+        ".trigger",
       ) as HTMLElement;
       trigger.click();
       fixture.detectChanges();
     });
 
     it("should render menu panel on trigger click", () => {
-      const panel = fixture.nativeElement.querySelector(".dropdown-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel).toBeTruthy();
     });
 
@@ -90,11 +90,11 @@ describe("UIDropdownMenu", () => {
 
     it("should toggle menu on second click", () => {
       const trigger = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
+        ".trigger",
       ) as HTMLElement;
       trigger.click();
       fixture.detectChanges();
-      const panel = fixture.nativeElement.querySelector(".dropdown-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel).toBeFalsy();
     });
   });
@@ -102,7 +102,7 @@ describe("UIDropdownMenu", () => {
   describe("item interaction", () => {
     beforeEach(() => {
       const trigger = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
+        ".trigger",
       ) as HTMLElement;
       trigger.click();
       fixture.detectChanges();
@@ -114,7 +114,7 @@ describe("UIDropdownMenu", () => {
       ) as NodeListOf<HTMLElement>;
       items[0].click();
       fixture.detectChanges();
-      const panel = fixture.nativeElement.querySelector(".dropdown-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel).toBeFalsy();
     });
   });
@@ -122,7 +122,7 @@ describe("UIDropdownMenu", () => {
   describe("close on Escape", () => {
     it("should close when Escape is pressed", () => {
       const trigger = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
+        ".trigger",
       ) as HTMLElement;
       trigger.click();
       fixture.detectChanges();
@@ -132,7 +132,7 @@ describe("UIDropdownMenu", () => {
       );
       fixture.detectChanges();
 
-      const panel = fixture.nativeElement.querySelector(".dropdown-panel");
+      const panel = fixture.nativeElement.querySelector(".panel");
       expect(panel).toBeFalsy();
     });
   });

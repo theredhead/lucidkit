@@ -22,10 +22,18 @@ export const UI_TOKENS = {
   accentContrast: "--ui-accent-contrast",
   link: "--ui-link",
   linkHover: "--ui-link-hover",
+  error: "--ui-error",
+  onError: "--ui-on-error",
+  secondary: "--ui-secondary",
+  tertiary: "--ui-tertiary",
+  onTertiary: "--ui-on-tertiary",
 
   // ── Surfaces ───────────────────────────────────────────────────
   surface: "--ui-surface",
   surface2: "--ui-surface-2",
+  surfaceVariant: "--ui-surface-variant",
+  primaryContainer: "--ui-primary-container",
+  onPrimaryContainer: "--ui-on-primary-container",
   bg: "--ui-bg",
   hoverBg: "--ui-hover-bg",
   shadow: "--ui-shadow",
@@ -104,6 +112,13 @@ export const UI_TOKENS = {
   inlinePadding: "--ui-inline-padding",
   blockPadding: "--ui-block-padding",
   radius: "--ui-radius",
+
+  // ── Elevation ──────────────────────────────────────────────────
+  shadowSm: "--ui-shadow-sm",
+  shadowMd: "--ui-shadow-md",
+  shadowLg: "--ui-shadow-lg",
+  shadowXl: "--ui-shadow-xl",
+  shadowDropdown: "--ui-shadow-dropdown",
 } as const;
 
 /** Union of all `--ui-*` CSS custom property names. */

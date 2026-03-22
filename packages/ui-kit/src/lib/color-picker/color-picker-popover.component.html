@@ -1,11 +1,11 @@
-<div class="cp-header">
-  <div class="cp-tabs" role="tablist" aria-label="Colour picker modes">
+<div class="header">
+  <div class="tabs" role="tablist" aria-label="Colour picker modes">
     @for (m of modes(); track m.key) {
       <button
         type="button"
         role="tab"
-        class="cp-tab"
-        [class.cp-tab--active]="activeMode() === m.key"
+        class="tab"
+        [class.tab--active]="activeMode() === m.key"
         [attr.aria-selected]="activeMode() === m.key"
         (click)="setMode(m.key)"
       >
@@ -17,13 +17,13 @@
 
 <div class="cp-body">
   <!-- ── Preview + Hex input ──────────────────────────────── -->
-  <div class="cp-preview-row">
-    <div class="cp-swatch-wrap">
-      <div class="cp-swatch" [style.background]="previewCss()"></div>
+  <div class="preview-row">
+    <div class="swatch-wrap">
+      <div class="swatch" [style.background]="previewCss()"></div>
     </div>
     <input
       type="text"
-      class="cp-hex-input"
+      class="hex-input"
       [value]="hexInput()"
       (input)="onHexInput($event)"
       (keydown.enter)="apply()"
@@ -34,17 +34,17 @@
 
   <!-- ── Mode: Theme palette ──────────────────────────────── -->
   @if (activeMode() === 'theme') {
-    <div class="cp-theme" role="tabpanel">
+    <div class="theme" role="tabpanel">
       @for (group of themePalette; track trackByLabel($index, group)) {
-        <div class="cp-palette-row">
-          <span class="cp-palette-label">{{ group.label }}</span>
-          <div class="cp-palette-swatches">
+        <div class="palette-row">
+          <span class="palette-label">{{ group.label }}</span>
+          <div class="palette-swatches">
             @for (color of group.colors; track trackByIndex($index)) {
               <button
                 type="button"
-                class="cp-palette-swatch"
+                class="palette-swatch"
                 [style.background]="color"
-                [class.cp-palette-swatch--selected]="hexValue() === color"
+                [class.palette-swatch--selected]="hexValue() === color"
                 [attr.aria-label]="color"
                 [title]="color"
                 (click)="selectHex(color)"
@@ -58,13 +58,13 @@
 
   <!-- ── Mode: Colour grid ────────────────────────────────── -->
   @if (activeMode() === 'grid') {
-    <div class="cp-grid" role="tabpanel">
+    <div class="grid" role="tabpanel">
       @for (color of colorGrid; track trackByIndex($index)) {
         <button
           type="button"
-          class="cp-grid-swatch"
+          class="grid-swatch"
           [style.background]="color"
-          [class.cp-grid-swatch--selected]="hexValue() === color"
+          [class.grid-swatch--selected]="hexValue() === color"
           [attr.aria-label]="color"
           [title]="color"
           (click)="selectHex(color)"
@@ -107,13 +107,13 @@
   }
   <!-- ── Mode: RGBA sliders ───────────────────────────────── -->
   @if (activeMode() === 'rgba') {
-    <div class="cp-sliders" role="tabpanel">
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">R</span>
-        <div class="cp-slider-track" [style.background]="rgbaRedGradient()">
+    <div class="sliders" role="tabpanel">
+      <div class="slider-row">
+        <span class="slider-label">R</span>
+        <div class="slider-track" [style.background]="rgbaRedGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="255"
             [value]="rgba().r"
@@ -121,14 +121,14 @@
             aria-label="Red"
           />
         </div>
-        <span class="cp-slider-value">{{ rgba().r }}</span>
+        <span class="slider-value">{{ rgba().r }}</span>
       </div>
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">G</span>
-        <div class="cp-slider-track" [style.background]="rgbaGreenGradient()">
+      <div class="slider-row">
+        <span class="slider-label">G</span>
+        <div class="slider-track" [style.background]="rgbaGreenGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="255"
             [value]="rgba().g"
@@ -136,14 +136,14 @@
             aria-label="Green"
           />
         </div>
-        <span class="cp-slider-value">{{ rgba().g }}</span>
+        <span class="slider-value">{{ rgba().g }}</span>
       </div>
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">B</span>
-        <div class="cp-slider-track" [style.background]="rgbaBlueGradient()">
+      <div class="slider-row">
+        <span class="slider-label">B</span>
+        <div class="slider-track" [style.background]="rgbaBlueGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="255"
             [value]="rgba().b"
@@ -151,14 +151,14 @@
             aria-label="Blue"
           />
         </div>
-        <span class="cp-slider-value">{{ rgba().b }}</span>
+        <span class="slider-value">{{ rgba().b }}</span>
       </div>
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">A</span>
-        <div class="cp-slider-track cp-slider-track--alpha" [style.background]="rgbaAlphaGradient()">
+      <div class="slider-row">
+        <span class="slider-label">A</span>
+        <div class="slider-track slider-track--alpha" [style.background]="rgbaAlphaGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="100"
             [value]="rgba().a * 100"
@@ -166,20 +166,20 @@
             aria-label="Alpha"
           />
         </div>
-        <span class="cp-slider-value">{{ rgba().a * 100 | number:'1.0-0' }}%</span>
+        <span class="slider-value">{{ rgba().a * 100 | number:'1.0-0' }}%</span>
       </div>
     </div>
   }
 
   <!-- ── Mode: HSLA sliders ───────────────────────────────── -->
   @if (activeMode() === 'hsla') {
-    <div class="cp-sliders" role="tabpanel">
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">H</span>
-        <div class="cp-slider-track" [style.background]="hslaHueGradient()">
+    <div class="sliders" role="tabpanel">
+      <div class="slider-row">
+        <span class="slider-label">H</span>
+        <div class="slider-track" [style.background]="hslaHueGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="360"
             [value]="hsla().h"
@@ -187,14 +187,14 @@
             aria-label="Hue"
           />
         </div>
-        <span class="cp-slider-value">{{ hsla().h }}°</span>
+        <span class="slider-value">{{ hsla().h }}°</span>
       </div>
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">S</span>
-        <div class="cp-slider-track" [style.background]="hslaSatGradient()">
+      <div class="slider-row">
+        <span class="slider-label">S</span>
+        <div class="slider-track" [style.background]="hslaSatGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="100"
             [value]="hsla().s"
@@ -202,14 +202,14 @@
             aria-label="Saturation"
           />
         </div>
-        <span class="cp-slider-value">{{ hsla().s }}%</span>
+        <span class="slider-value">{{ hsla().s }}%</span>
       </div>
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">L</span>
-        <div class="cp-slider-track" [style.background]="hslaLightGradient()">
+      <div class="slider-row">
+        <span class="slider-label">L</span>
+        <div class="slider-track" [style.background]="hslaLightGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="100"
             [value]="hsla().l"
@@ -217,14 +217,14 @@
             aria-label="Lightness"
           />
         </div>
-        <span class="cp-slider-value">{{ hsla().l }}%</span>
+        <span class="slider-value">{{ hsla().l }}%</span>
       </div>
-      <div class="cp-slider-row">
-        <span class="cp-slider-label">A</span>
-        <div class="cp-slider-track cp-slider-track--alpha" [style.background]="hslaAlphaGradient()">
+      <div class="slider-row">
+        <span class="slider-label">A</span>
+        <div class="slider-track slider-track--alpha" [style.background]="hslaAlphaGradient()">
           <input
             type="range"
-            class="cp-slider"
+            class="slider"
             min="0"
             max="100"
             [value]="hsla().a * 100"
@@ -232,7 +232,7 @@
             aria-label="Alpha"
           />
         </div>
-        <span class="cp-slider-value">{{ hsla().a * 100 | number:'1.0-0' }}%</span>
+        <span class="slider-value">{{ hsla().a * 100 | number:'1.0-0' }}%</span>
       </div>
     </div>
   }

@@ -1,0 +1,158 @@
+// Theredhead UI Theme — Utility Mixins
+// =============================================================================
+//
+// Reusable SCSS mixins for the three-tier dark mode pattern, focus rings,
+// control resets, text truncation, disabled states, scrollable containers,
+// and visually hidden (a11y) elements.
+//
+// Usage (from a component SCSS file):
+//
+//   @use "@theredhead/ui-theme/styles/mixins" as mix;
+//
+//   :host { --ui-text: #1d232b; }
+//   @include mix.dark-mode { --ui-text: #f2f6fb; }
+//
+//   button {
+//     @include mix.control-reset;
+//     @include mix.focus-ring;
+//   }
+// =============================================================================
+
+// ── Three-tier dark mode ───────────────────────────────────────────
+//
+// Wraps a content block in both tier-2 (explicit `.dark-theme` class) and
+// tier-3 (`prefers-color-scheme: dark` media query) selectors using
+// `:host-context`. Avoids repeating the boilerplate in every component.
+//
+// @param {String} $selector [null] — optional inner selector (e.g. '.panel')
+// @content  Dark-mode CSS custom property overrides
+//
+// @example  Bare host overrides
+//   @include dark-mode {
+//     --ui-text: #f2f6fb;
+//     --ui-border: #3a3f47;
+//   }
+//
+// @example  Inner selector
+//   @include dark-mode(".dlg-dialog") {
+//     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+//   }
+
+@mixin dark-mode($selector: null) {
+  @if $selector {
+    :host-context(html.dark-theme) #{$selector} {
+      @content;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :host-context(html:not(.light-theme):not(.dark-theme)) #{$selector} {
+        @content;
+      }
+    }
+  } @else {
+    :host-context(html.dark-theme) {
+      @content;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :host-context(html:not(.light-theme):not(.dark-theme)) {
+        @content;
+      }
+    }
+  }
+}
+
+// ── Focus ring (WCAG AA) ───────────────────────────────────────────
+//
+// Applies a visible focus outline on `:focus-visible`. Uses the accent
+// colour token with a configurable offset.
+//
+// @param {Length} $offset [2px]  — outline-offset value
+// @param {*}     $color  [var(--ui-accent, #3584e4)] — outline colour
+
+@mixin focus-ring(
+  $offset: 2px,
+  $color: var(--ui-focus-ring, var(--ui-brand, var(--ui-accent, #3584e4)))
+) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: $offset;
+  }
+}
+
+// ── Control reset ──────────────────────────────────────────────────
+//
+// Strips default browser chrome from buttons and interactive elements.
+
+@mixin control-reset {
+  appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--ui-font, inherit);
+}
+
+// ── Text truncation ────────────────────────────────────────────────
+//
+// Single-line ellipsis overflow. Include `min-width: 0` so the rule
+// works inside flex containers.
+
+@mixin truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+// ── Disabled state ─────────────────────────────────────────────────
+//
+// @param {Number} $opacity [0.5]  — reduced opacity
+// @param {Bool}   $block   [false] — when true, uses `pointer-events: none`
+//                                    instead of `cursor: not-allowed`
+
+@mixin disabled($opacity: 0.5, $block: false) {
+  opacity: $opacity;
+
+  @if $block {
+    pointer-events: none;
+  } @else {
+    cursor: not-allowed;
+  }
+}
+
+// ── Visually hidden (a11y) ─────────────────────────────────────────
+//
+// Hides an element visually while keeping it accessible to screen
+// readers and assistive technology.
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ── Scrollable container ───────────────────────────────────────────
+//
+// Sets up scroll overflow with momentum-scroll containment; adds
+// `min-height: 0` so flex children can shrink.
+//
+// @param {String} $axis [y] — 'x', 'y', or 'both'
+
+@mixin scrollable($axis: y) {
+  @if $axis == x {
+    overflow-x: auto;
+  } @else if $axis == both {
+    overflow: auto;
+  } @else {
+    overflow-y: auto;
+  }
+
+  overscroll-behavior: contain;
+  min-height: 0;
+}

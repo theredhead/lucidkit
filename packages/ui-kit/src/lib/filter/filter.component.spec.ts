@@ -81,7 +81,7 @@ describe("UIFilter", () => {
   describe("simple mode", () => {
     it("should render a search input in simple mode", () => {
       const input = fixture.nativeElement.querySelector(
-        ".ui-filter__simple ui-input",
+        ".filter__simple ui-input",
       );
       expect(input).toBeTruthy();
     });
@@ -114,7 +114,7 @@ describe("UIFilter", () => {
 
     it("should show mode toggle when both modes allowed", () => {
       const btn = fixture.nativeElement.querySelector(
-        ".ui-filter__simple ui-button",
+        ".filter__simple ui-button",
       );
       expect(btn).toBeTruthy();
     });
@@ -124,7 +124,7 @@ describe("UIFilter", () => {
       fixture.detectChanges();
 
       const btn = fixture.nativeElement.querySelector(
-        ".ui-filter__simple ui-button",
+        ".filter__simple ui-button",
       );
       expect(btn).toBeFalsy();
     });
@@ -325,7 +325,7 @@ describe("UIFilter", () => {
 
     it("should render an add-rule button", () => {
       const btn = fixture.nativeElement.querySelector(
-        ".ui-filter__actions ui-button",
+        ".filter__actions ui-button",
       );
       expect(btn).toBeTruthy();
     });
@@ -340,7 +340,7 @@ describe("UIFilter", () => {
 
     it("should not show junction selector when allowJunction is false", () => {
       const select = fixture.nativeElement.querySelector(
-        ".ui-filter__header ui-select",
+        ".filter__header ui-select",
       );
       expect(select).toBeFalsy();
     });
@@ -350,7 +350,7 @@ describe("UIFilter", () => {
       fixture.detectChanges();
 
       const select = fixture.nativeElement.querySelector(
-        ".ui-filter__header ui-select",
+        ".filter__header ui-select",
       );
       expect(select).toBeTruthy();
     });
@@ -391,7 +391,7 @@ describe("UIFilter", () => {
       component.toggleMode(); // → advanced
       fixture.detectChanges();
 
-      const rules = fixture.nativeElement.querySelector(".ui-filter__rules");
+      const rules = fixture.nativeElement.querySelector(".filter__rules");
       expect(rules.getAttribute("aria-live")).toBe("polite");
     });
 
@@ -399,7 +399,7 @@ describe("UIFilter", () => {
       component.toggleMode(); // → advanced
       fixture.detectChanges();
 
-      const rules = fixture.nativeElement.querySelector(".ui-filter__rules");
+      const rules = fixture.nativeElement.querySelector(".filter__rules");
       expect(rules.getAttribute("role")).toBe("list");
     });
 
@@ -408,7 +408,7 @@ describe("UIFilter", () => {
       fixture.detectChanges();
 
       const btn = fixture.nativeElement.querySelector(
-        ".ui-filter__actions ui-button button",
+        ".filter__actions ui-button button",
       );
       expect(btn.getAttribute("aria-label")).toBe("Add filter rule");
     });

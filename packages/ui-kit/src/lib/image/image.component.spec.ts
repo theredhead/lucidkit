@@ -60,7 +60,7 @@ describe("UIImage", () => {
   describe("lazy loading", () => {
     it("should show placeholder before entering viewport", () => {
       const placeholder = fixture.nativeElement.querySelector(
-        ".ui-image__placeholder",
+        ".placeholder",
       );
       const img = fixture.nativeElement.querySelector("img");
 

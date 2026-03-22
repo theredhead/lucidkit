@@ -1,16 +1,16 @@
 @if (showImage()) {
   <img
-    class="av-image"
+    class="image"
     [src]="effectiveSrc()"
     [alt]="ariaLabel() ?? name()"
     (error)="onImageError()"
   />
 } @else if (initials()) {
-  <span class="av-initials" [attr.aria-label]="ariaLabel() ?? name()">
+  <span class="initials" [attr.aria-label]="ariaLabel() ?? name()">
     {{ initials() }}
   </span>
 } @else {
-  <svg class="av-fallback" viewBox="0 0 24 24" fill="none" [attr.aria-label]="ariaLabel() ?? 'Avatar'">
+  <svg class="fallback" viewBox="0 0 24 24" fill="none" [attr.aria-label]="ariaLabel() ?? 'Avatar'">
     <circle cx="12" cy="8" r="4" fill="currentColor" />
     <path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" fill="currentColor" />
   </svg>

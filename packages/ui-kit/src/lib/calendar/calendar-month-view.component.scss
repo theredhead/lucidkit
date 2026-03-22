@@ -1,16 +1,18 @@
+@use 'mixins' as mix;
+
 // ── Light defaults ───────────────────────────────────────────────
 :host {
   --ui-cal-bg: #ffffff;
   --ui-cal-text: #1d232b;
   --ui-cal-text-muted: #9ca3af;
   --ui-cal-border: #e5e7eb;
-  --ui-cal-header-bg: transparent;
+  --ui-header-bg: transparent;
   --ui-cal-today-bg: #eef4ff;
   --ui-cal-today-text: #1d4ed8;
   --ui-cal-selected-bg: #3b82f6;
   --ui-cal-selected-text: #ffffff;
   --ui-cal-hover-bg: #f3f4f6;
-  --ui-cal-event-text: #ffffff;
+  --ui-event-text: #ffffff;
   --ui-cal-nav-hover: #e5e7eb;
 
   display: block;
@@ -20,8 +22,7 @@
     sans-serif;
 }
 
-// ── Explicit dark class ──────────────────────────────────────────
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-cal-bg: #1f2937;
   --ui-cal-text: #f2f6fb;
   --ui-cal-text-muted: #6b7280;
@@ -31,30 +32,13 @@
   --ui-cal-selected-bg: #2563eb;
   --ui-cal-selected-text: #ffffff;
   --ui-cal-hover-bg: #374151;
-  --ui-cal-event-text: #ffffff;
+  --ui-event-text: #ffffff;
   --ui-cal-nav-hover: #374151;
-}
-
-// ── System preference fallback ───────────────────────────────────
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-cal-bg: #1f2937;
-    --ui-cal-text: #f2f6fb;
-    --ui-cal-text-muted: #6b7280;
-    --ui-cal-border: #374151;
-    --ui-cal-today-bg: #1e3a5f;
-    --ui-cal-today-text: #60a5fa;
-    --ui-cal-selected-bg: #2563eb;
-    --ui-cal-selected-text: #ffffff;
-    --ui-cal-hover-bg: #374151;
-    --ui-cal-event-text: #ffffff;
-    --ui-cal-nav-hover: #374151;
-  }
 }
 
 // ── Layout ───────────────────────────────────────────────────────
 
-.cal-container {
+.container {
   background: var(--ui-cal-bg);
   color: var(--ui-cal-text);
   border: 1px solid var(--ui-cal-border);
@@ -65,8 +49,8 @@
   &--week-numbers {
     max-width: 600px;
 
-    .cal-weekdays,
-    .cal-week {
+    .weekdays,
+    .week {
       grid-template-columns: 36px repeat(7, 1fr);
     }
   }
@@ -74,7 +58,7 @@
 
 // ── Header ───────────────────────────────────────────────────────
 
-.cal-header {
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,7 +66,7 @@
   border-bottom: 1px solid var(--ui-cal-border);
 }
 
-.cal-month-label {
+.month-label {
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -98,7 +82,7 @@
   }
 }
 
-.cal-nav-btn {
+.nav-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -119,13 +103,13 @@
 
 // ── Weekday headers ──────────────────────────────────────────────
 
-.cal-weekdays {
+.weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   border-bottom: 1px solid var(--ui-cal-border);
 }
 
-.cal-weekday {
+.weekday {
   padding: 0.5rem 0;
   text-align: center;
   font-size: 0.75rem;
@@ -137,18 +121,18 @@
 
 // ── Week rows ────────────────────────────────────────────────────
 
-.cal-week {
+.week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
 
 // ── Week number column ───────────────────────────────────────────
 
-.cal-weekday--wk {
+.weekday--wk {
   font-size: 0.65rem;
 }
 
-.cal-week-number {
+.week-number {
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -163,7 +147,7 @@
 
 // ── Day cells ────────────────────────────────────────────────────
 
-.cal-day {
+.day {
   position: relative;
   min-height: 80px;
   min-width: 0;
@@ -195,7 +179,7 @@
   }
 
   &--today {
-    .cal-day__number {
+    .day__number {
       background: var(--ui-cal-today-bg);
       color: var(--ui-cal-today-text);
       font-weight: 700;
@@ -203,14 +187,14 @@
   }
 
   &--selected {
-    .cal-day__number {
+    .day__number {
       background: var(--ui-cal-selected-bg);
       color: var(--ui-cal-selected-text);
     }
   }
 }
 
-.cal-day__number {
+.day__number {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -227,7 +211,7 @@
 
 // ── Events ───────────────────────────────────────────────────────
 
-.cal-day__events {
+.day__events {
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -236,7 +220,7 @@
   min-width: 0;
 }
 
-.cal-event {
+.event {
   display: block;
   width: 100%;
   padding: 1px 4px;
@@ -244,7 +228,7 @@
   font-size: 0.68rem;
   font-weight: 500;
   line-height: 1.4;
-  color: var(--ui-cal-event-text);
+  color: var(--ui-event-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

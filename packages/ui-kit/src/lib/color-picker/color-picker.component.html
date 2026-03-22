@@ -1,14 +1,14 @@
 <button
   type="button"
-  class="cp-trigger"
+  class="trigger"
   [attr.aria-label]="ariaLabel()"
   [disabled]="disabled()"
   (click)="open()"
 >
   <span
-    class="cp-swatch"
+    class="swatch"
     [style.background-color]="value()"
   ></span>
 
-  <ui-icon [svg]="paletteIcon" class="cp-icon" />
+  <ui-icon [svg]="paletteIcon" class="icon" />
 </button>

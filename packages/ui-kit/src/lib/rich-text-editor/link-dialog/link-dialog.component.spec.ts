@@ -90,18 +90,18 @@ describe("UILinkDialog", () => {
     });
 
     it("should render an apply button", () => {
-      const btn = fixture.nativeElement.querySelector(".ld-btn--apply");
+      const btn = fixture.nativeElement.querySelector(".btn--apply");
       expect(btn).toBeTruthy();
     });
 
     it("should render a cancel button", () => {
-      const btn = fixture.nativeElement.querySelector(".ld-btn--cancel");
+      const btn = fixture.nativeElement.querySelector(".btn--cancel");
       expect(btn).toBeTruthy();
       expect(btn.textContent.trim()).toBe("Cancel");
     });
 
     it('should show "Add hyperlink" when not in edit mode', () => {
-      const btn = fixture.nativeElement.querySelector(".ld-btn--apply");
+      const btn = fixture.nativeElement.querySelector(".btn--apply");
       expect(btn.textContent).toContain("Add hyperlink");
       expect(btn.textContent).not.toContain("Edit hyperlink");
     });
@@ -110,7 +110,7 @@ describe("UILinkDialog", () => {
       fixture.componentRef.setInput("editMode", true);
       fixture.detectChanges();
 
-      const btn = fixture.nativeElement.querySelector(".ld-btn--apply");
+      const btn = fixture.nativeElement.querySelector(".btn--apply");
       expect(btn.textContent).toContain("Edit hyperlink");
       expect(btn.textContent).not.toContain("Add hyperlink");
     });
@@ -120,7 +120,7 @@ describe("UILinkDialog", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".ld-btn--apply");
+        fixture.nativeElement.querySelector(".btn--apply");
       expect(btn.disabled).toBe(true);
     });
 
@@ -129,7 +129,7 @@ describe("UILinkDialog", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".ld-btn--apply");
+        fixture.nativeElement.querySelector(".btn--apply");
       expect(btn.disabled).toBe(true);
     });
 
@@ -138,13 +138,13 @@ describe("UILinkDialog", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".ld-btn--apply");
+        fixture.nativeElement.querySelector(".btn--apply");
       expect(btn.disabled).toBe(false);
     });
 
     it("should render a link icon in the apply button", () => {
       const icon = fixture.nativeElement.querySelector(
-        ".ld-btn--apply ui-icon",
+        ".btn--apply ui-icon",
       );
       expect(icon).toBeTruthy();
     });
@@ -241,7 +241,7 @@ describe("UILinkDialog", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".ld-btn--apply");
+        fixture.nativeElement.querySelector(".btn--apply");
       btn.click();
 
       expect(applySpy).toHaveBeenCalled();
@@ -251,7 +251,7 @@ describe("UILinkDialog", () => {
       const cancelSpy = vi.spyOn(component, "cancel");
 
       const btn: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".ld-btn--cancel");
+        fixture.nativeElement.querySelector(".btn--cancel");
       btn.click();
 
       expect(cancelSpy).toHaveBeenCalled();

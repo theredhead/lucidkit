@@ -1,3 +1,5 @@
+@use 'mixins' as mix;
+
 :host {
   /* ── Light-theme tokens (match table-view) ── */
   --ui-font: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
@@ -25,7 +27,7 @@
 
 /* ── Dark theme ── */
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-bg: #1f242a;
   --ui-surface: #242b33;
   --ui-surface-2: #2d3641;
@@ -36,20 +38,7 @@
   --ui-accent: #7ab0ff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-bg: #1f242a;
-    --ui-surface: #242b33;
-    --ui-surface-2: #2d3641;
-    --ui-border: #505d6d;
-    --ui-border-strong: #617184;
-    --ui-text: #f2f6fb;
-    --ui-muted: #d0d8e3;
-    --ui-accent: #7ab0ff;
-  }
-}
-
-.ui-filter {
+.filter {
   &__simple {
     display: flex;
     align-items: center;

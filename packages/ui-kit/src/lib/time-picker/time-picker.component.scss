@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 /* ── Light defaults ───────────────────────────────────────── */
 
 :host {
@@ -17,9 +20,7 @@
   font-size: var(--ui-font-body);
 }
 
-/* ── Dark mode (explicit class) ──────────────────────────── */
-
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-text: #f2f6fb;
   --ui-text-muted: #9ba4ae;
   --ui-surface: #1e2128;
@@ -30,24 +31,9 @@
   --ui-accent-contrast: #1e2128;
 }
 
-/* ── Dark mode (system preference fallback) ──────────────── */
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-text: #f2f6fb;
-    --ui-text-muted: #9ba4ae;
-    --ui-surface: #1e2128;
-    --ui-surface-2: #2a2e35;
-    --ui-border: #3a3f47;
-    --ui-border-strong: #4a5058;
-    --ui-accent: #62a0ea;
-    --ui-accent-contrast: #1e2128;
-  }
-}
-
 /* ── Wrapper ─────────────────────────────────────────────── */
 
-.tp-wrapper {
+.wrapper {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--ui-border);
@@ -64,14 +50,14 @@
   }
 
   &:focus-within {
-    outline: 2px solid var(--ui-accent);
+    outline: 2px solid var(--ui-focus-ring);
     outline-offset: -1px;
   }
 }
 
 /* ── Segment inputs ──────────────────────────────────────── */
 
-.tp-segment {
+.segment {
   appearance: none;
   border: none;
   background: transparent;
@@ -102,7 +88,7 @@
 
 /* ── Separator ───────────────────────────────────────────── */
 
-.tp-separator {
+.separator {
   color: var(--ui-text-muted);
   font-weight: 600;
   user-select: none;
@@ -111,7 +97,7 @@
 
 /* ── AM/PM button ────────────────────────────────────────── */
 
-.tp-meridiem {
+.meridiem {
   appearance: none;
   border: none;
   background: var(--ui-surface-2);

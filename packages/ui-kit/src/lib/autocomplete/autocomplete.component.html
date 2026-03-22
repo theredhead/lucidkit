@@ -1,11 +1,11 @@
 <!-- Chips (multiple mode) -->
 @if (multiple() && value().length > 0) {
-  <div class="ac-chips" role="list" aria-label="Selected items">
+  <div class="chips" role="list" aria-label="Selected items">
     @for (chip of value(); track $index) {
-      <span class="ac-chip" role="listitem">
-        <span class="ac-chip-label">{{ itemToString(chip) }}</span>
+      <span class="chip" role="listitem">
+        <span class="chip-label">{{ itemToString(chip) }}</span>
         <button
-          class="ac-chip-remove"
+          class="chip-remove"
           type="button"
           [attr.aria-label]="'Remove ' + itemToString(chip)"
           (click)="removeItem(chip)"
@@ -19,7 +19,7 @@
 
 <!-- Text input -->
 <input
-  class="ac-input"
+  class="input"
   type="text"
   role="combobox"
   autocomplete="off"
@@ -39,14 +39,14 @@
 
 <!-- Suggestion popup -->
 @if (isOpen() && suggestions().length > 0) {
-  <ul class="ac-popup" role="listbox" [id]="listboxId">
+  <ul class="popup" role="listbox" [id]="listboxId">
     @for (item of suggestions(); track $index) {
       <li
-        class="ac-option"
+        class="option"
         role="option"
         tabindex="-1"
         [id]="listboxId + '-' + $index"
-        [class.ac-option--active]="$index === activeIndex()"
+        [class.option--active]="$index === activeIndex()"
         [attr.aria-selected]="$index === activeIndex()"
         (pointerdown)="$event.preventDefault()"
         (click)="pickItem(item)"

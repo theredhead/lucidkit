@@ -55,7 +55,7 @@ describe("UICheckbox", () => {
   describe("toggle", () => {
     it("should toggle checked state on click", () => {
       const control = fixture.nativeElement.querySelector(
-        ".cb-control",
+        ".control",
       ) as HTMLElement;
       control.click();
       fixture.detectChanges();
@@ -64,7 +64,7 @@ describe("UICheckbox", () => {
 
     it("should toggle back to unchecked on second click", () => {
       const control = fixture.nativeElement.querySelector(
-        ".cb-control",
+        ".control",
       ) as HTMLElement;
       control.click();
       control.click();
@@ -89,21 +89,21 @@ describe("UICheckbox", () => {
 
   describe("checkbox variant", () => {
     it("should render checkbox box element", () => {
-      const box = fixture.nativeElement.querySelector(".cb-box");
+      const box = fixture.nativeElement.querySelector(".box");
       expect(box).toBeTruthy();
     });
 
     it("should show check icon when checked", () => {
       fixture.componentRef.setInput("checked", true);
       fixture.detectChanges();
-      const icon = fixture.nativeElement.querySelector(".cb-icon polyline");
+      const icon = fixture.nativeElement.querySelector(".icon polyline");
       expect(icon).toBeTruthy();
     });
 
     it("should show indeterminate icon when indeterminate", () => {
       fixture.componentRef.setInput("indeterminate", true);
       fixture.detectChanges();
-      const icon = fixture.nativeElement.querySelector(".cb-icon line");
+      const icon = fixture.nativeElement.querySelector(".icon line");
       expect(icon).toBeTruthy();
     });
 
@@ -129,20 +129,20 @@ describe("UICheckbox", () => {
     });
 
     it("should render track and thumb", () => {
-      const track = fixture.nativeElement.querySelector(".cb-track");
-      const thumb = fixture.nativeElement.querySelector(".cb-thumb");
+      const track = fixture.nativeElement.querySelector(".track");
+      const thumb = fixture.nativeElement.querySelector(".thumb");
       expect(track).toBeTruthy();
       expect(thumb).toBeTruthy();
     });
 
     it("should not render checkbox box", () => {
-      const box = fixture.nativeElement.querySelector(".cb-box");
+      const box = fixture.nativeElement.querySelector(".box");
       expect(box).toBeFalsy();
     });
 
     it("should toggle on click", () => {
       const control = fixture.nativeElement.querySelector(
-        ".cb-control",
+        ".control",
       ) as HTMLElement;
       control.click();
       fixture.detectChanges();
@@ -153,7 +153,7 @@ describe("UICheckbox", () => {
   describe("keyboard interaction", () => {
     it("should toggle on Space key", () => {
       const control = fixture.nativeElement.querySelector(
-        ".cb-control",
+        ".control",
       ) as HTMLElement;
       control.dispatchEvent(
         new KeyboardEvent("keydown", { key: " ", bubbles: true }),
@@ -164,7 +164,7 @@ describe("UICheckbox", () => {
 
     it("should toggle on Enter key", () => {
       const control = fixture.nativeElement.querySelector(
-        ".cb-control",
+        ".control",
       ) as HTMLElement;
       control.dispatchEvent(
         new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
@@ -175,7 +175,7 @@ describe("UICheckbox", () => {
 
     it("should not toggle on other keys", () => {
       const control = fixture.nativeElement.querySelector(
-        ".cb-control",
+        ".control",
       ) as HTMLElement;
       control.dispatchEvent(
         new KeyboardEvent("keydown", { key: "a", bubbles: true }),
@@ -197,54 +197,54 @@ describe("UICheckbox", () => {
     it("should set aria-disabled", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("aria-disabled")).toBe("true");
     });
 
     it("should set tabindex to -1 when disabled", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("tabindex")).toBe("-1");
     });
   });
 
   describe("accessibility", () => {
     it('should have role="checkbox" for checkbox variant', () => {
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("role")).toBe("checkbox");
     });
 
     it('should have role="switch" for switch variant', () => {
       fixture.componentRef.setInput("variant", "switch");
       fixture.detectChanges();
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("role")).toBe("switch");
     });
 
     it("should set aria-checked to true when checked", () => {
       fixture.componentRef.setInput("checked", true);
       fixture.detectChanges();
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("aria-checked")).toBe("true");
     });
 
     it('should set aria-checked to "mixed" when indeterminate', () => {
       fixture.componentRef.setInput("indeterminate", true);
       fixture.detectChanges();
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("aria-checked")).toBe("mixed");
     });
 
     it("should forward ariaLabel", () => {
       fixture.componentRef.setInput("ariaLabel", "Accept terms");
       fixture.detectChanges();
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("aria-label")).toBe("Accept terms");
     });
 
     it("should have tabindex 0 when enabled", () => {
-      const control = fixture.nativeElement.querySelector(".cb-control");
+      const control = fixture.nativeElement.querySelector(".control");
       expect(control.getAttribute("tabindex")).toBe("0");
     });
   });

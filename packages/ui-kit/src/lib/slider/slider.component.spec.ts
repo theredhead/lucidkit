@@ -94,7 +94,7 @@ describe("UISlider", () => {
     it("should show value label when showValue is true", () => {
       host.showValue.set(true);
       fixture.detectChanges();
-      const label = fixture.nativeElement.querySelector(".sl-value");
+      const label = fixture.nativeElement.querySelector(".value");
       expect(label).toBeTruthy();
       expect(label.textContent.trim()).toBe("50");
     });
@@ -176,7 +176,7 @@ describe("UISlider", () => {
     it("should show range value label when showValue is true", () => {
       host.showValue.set(true);
       fixture.detectChanges();
-      const label = fixture.nativeElement.querySelector(".sl-value");
+      const label = fixture.nativeElement.querySelector(".value");
       expect(label.textContent).toContain("20");
       expect(label.textContent).toContain("80");
     });
@@ -208,7 +208,7 @@ describe("UISlider", () => {
 
   describe("tick marks", () => {
     it("should not render ticks by default", () => {
-      const ticks = fixture.nativeElement.querySelector(".sl-ticks");
+      const ticks = fixture.nativeElement.querySelector(".ticks");
       expect(ticks).toBeNull();
     });
 
@@ -216,7 +216,7 @@ describe("UISlider", () => {
       host.step.set(25);
       host.showTicks.set(true);
       fixture.detectChanges();
-      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      const marks = fixture.nativeElement.querySelectorAll(".tick");
       // 0, 25, 50, 75, 100 → 5 ticks
       expect(marks.length).toBe(5);
     });
@@ -225,7 +225,7 @@ describe("UISlider", () => {
       host.step.set(50);
       host.showTicks.set(true);
       fixture.detectChanges();
-      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      const marks = fixture.nativeElement.querySelectorAll(".tick");
       // 0%, 50%, 100%
       expect(marks[0].style.left).toBe("0%");
       expect(marks[1].style.left).toBe("50%");
@@ -236,7 +236,7 @@ describe("UISlider", () => {
       host.step.set(50);
       host.showTicks.set(true);
       fixture.detectChanges();
-      const labels = fixture.nativeElement.querySelectorAll(".sl-tick-label");
+      const labels = fixture.nativeElement.querySelectorAll(".tick-label");
       expect(labels.length).toBe(0);
     });
 
@@ -247,9 +247,9 @@ describe("UISlider", () => {
         { value: 100, label: "High" },
       ]);
       fixture.detectChanges();
-      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      const marks = fixture.nativeElement.querySelectorAll(".tick");
       expect(marks.length).toBe(3);
-      const labels = fixture.nativeElement.querySelectorAll(".sl-tick-label");
+      const labels = fixture.nativeElement.querySelectorAll(".tick-label");
       expect(labels.length).toBe(3);
       expect(labels[0].textContent.trim()).toBe("Low");
       expect(labels[1].textContent.trim()).toBe("Mid");
@@ -265,9 +265,9 @@ describe("UISlider", () => {
         { value: 100, label: "Out" },
       ]);
       fixture.detectChanges();
-      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      const marks = fixture.nativeElement.querySelectorAll(".tick");
       expect(marks.length).toBe(1);
-      const label = fixture.nativeElement.querySelector(".sl-tick-label");
+      const label = fixture.nativeElement.querySelector(".tick-label");
       expect(label.textContent.trim()).toBe("In");
     });
 
@@ -277,16 +277,16 @@ describe("UISlider", () => {
       host.step.set(50);
       host.showTicks.set(true);
       fixture.detectChanges();
-      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      const marks = fixture.nativeElement.querySelectorAll(".tick");
       expect(marks.length).toBe(3);
     });
 
     it("should render explicit ticks without labels when label is omitted", () => {
       host.ticks.set([{ value: 0 }, { value: 50 }, { value: 100 }]);
       fixture.detectChanges();
-      const marks = fixture.nativeElement.querySelectorAll(".sl-tick");
+      const marks = fixture.nativeElement.querySelectorAll(".tick");
       expect(marks.length).toBe(3);
-      const labels = fixture.nativeElement.querySelectorAll(".sl-tick-label");
+      const labels = fixture.nativeElement.querySelectorAll(".tick-label");
       expect(labels.length).toBe(0);
     });
   });

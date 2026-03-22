@@ -1,3 +1,6 @@
+@use "mixins" as mix;
+@use "animation" as anim;
+
 :host {
   display: block;
   position: relative;
@@ -7,14 +10,14 @@
 
 /* ── Chips ─────────────────────────────────────────────────── */
 
-.ac-chips {
+.chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
   margin-bottom: 0.35rem;
 }
 
-.ac-chip {
+.chip {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -26,10 +29,8 @@
   white-space: nowrap;
 }
 
-.ac-chip-remove {
-  appearance: none;
-  border: none;
-  background: none;
+.chip-remove {
+  @include mix.control-reset;
   color: inherit;
   cursor: pointer;
   font-size: 0.7rem;
@@ -44,7 +45,7 @@
 
 /* ── Input ─────────────────────────────────────────────────── */
 
-.ac-input {
+.input {
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -56,21 +57,19 @@
   border-radius: 0.25rem;
   padding: 0.4rem 0.5rem;
   transition:
-    border-color 120ms ease,
-    background-color 120ms ease;
+    border-color anim.$duration-normal anim.$easing-default,
+    background-color anim.$duration-normal anim.$easing-default;
 
   &:hover:not(:disabled) {
     border-color: var(--ui-border-strong, #c2c8cf);
   }
 
   &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    @include mix.disabled;
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-accent, #3584e4);
-    outline-offset: -1px;
+    @include mix.focus-ring($offset: -1px);
   }
 
   &::placeholder {
@@ -80,7 +79,7 @@
 
 /* ── Popup ─────────────────────────────────────────────────── */
 
-.ac-popup {
+.popup {
   position: absolute;
   z-index: 100;
   left: 0;
@@ -97,34 +96,24 @@
   overscroll-behavior: contain;
 }
 
-.ac-option {
+.option {
   padding: 0.4rem 0.6rem;
   cursor: pointer;
-  transition: background-color 80ms ease;
+  transition: background-color anim.$duration-fast anim.$easing-default;
 
   &:hover,
-  &.ac-option--active {
+  &.option--active {
     background: var(--ui-surface-2, #f0f2f5);
   }
 
-  &.ac-option--active {
-    outline: 2px solid var(--ui-accent, #3584e4);
+  &.option--active {
+    outline: 2px solid var(--ui-focus-ring);
     outline-offset: -2px;
   }
 }
 
 /* ── Dark mode ─────────────────────────────────────────────── */
 
-:host-context(html.dark-theme) {
-  .ac-popup {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    .ac-popup {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    }
-  }
+@include mix.dark-mode(".popup") {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }

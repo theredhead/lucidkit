@@ -9,7 +9,7 @@
     role="alert"
     aria-live="assertive"
   >
-    <div class="toast-icon">
+    <div class="icon">
       @switch (toast.severity) {
         @case ('success') {
           <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -33,19 +33,19 @@
         }
       }
     </div>
-    <div class="toast-content">
+    <div class="content">
       @if (toast.title) {
-        <div class="toast-title">{{ toast.title }}</div>
+        <div class="title">{{ toast.title }}</div>
       }
-      <div class="toast-message">{{ toast.message }}</div>
+      <div class="message">{{ toast.message }}</div>
     </div>
     @if (toast.actionLabel) {
-      <button class="toast-action" (click)="executeAction(toast)">
+      <button class="action" (click)="executeAction(toast)">
         {{ toast.actionLabel }}
       </button>
     }
     <button
-      class="toast-close"
+      class="close"
       (click)="dismiss(toast)"
       aria-label="Dismiss notification"
     >

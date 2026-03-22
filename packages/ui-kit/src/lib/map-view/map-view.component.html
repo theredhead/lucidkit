@@ -1,13 +1,13 @@
 <div
-  class="mv-viewport"
-  [class.mv-dark-tiles]="darkModeTiles()"
+  class="viewport"
+  [class.dark-tiles]="darkModeTiles()"
   role="img"
   [attr.aria-label]="ariaLabel()"
 >
   <!-- Tile images -->
   @for (tile of tiles(); track tile.key) {
     <img
-      class="mv-tile"
+      class="tile"
       [src]="tile.url"
       [style.left.px]="tile.left"
       [style.top.px]="tile.top"
@@ -20,7 +20,7 @@
 
   <!-- SVG overlay for polylines and polygons -->
   @if (hasVectorOverlays()) {
-    <svg class="mv-vectors" [attr.viewBox]="svgViewBox()">
+    <svg class="vectors" [attr.viewBox]="svgViewBox()">
       <!-- Polygons (behind polylines) -->
       @for (polygon of renderedPolygons(); track $index) {
         <path
@@ -50,7 +50,7 @@
   <!-- Markers -->
   @for (marker of renderedMarkers(); track $index) {
     <div
-      class="mv-marker"
+      class="marker"
       [style.left.px]="marker.left"
       [style.top.px]="marker.top"
       [attr.aria-label]="marker.label"
@@ -72,7 +72,7 @@
           aria-hidden="true"
         >
           <path
-            class="mv-pin-body"
+            class="pin-body"
             d="M12 0C5.373 0 0 5.373 0 12c0 9 12 24 12 24s12-15 12-24C24 5.373 18.627 0 12 0z"
             [style.fill]="marker.color || null"
           />
@@ -84,6 +84,6 @@
 
   <!-- Attribution -->
   @if (attribution()) {
-    <div class="mv-attribution" [innerHTML]="attribution()"></div>
+    <div class="attribution" [innerHTML]="attribution()"></div>
   }
 </div>

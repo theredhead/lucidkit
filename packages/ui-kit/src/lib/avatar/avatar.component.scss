@@ -1,3 +1,5 @@
+@use "mixins" as mix;
+
 :host {
   display: inline-flex;
   align-items: center;
@@ -12,18 +14,10 @@
   --ui-fallback: #5a6470;
 }
 
-:host-context(html.dark-theme) {
+@include mix.dark-mode {
   --ui-bg: #505d6d;
   --ui-text: #f2f6fb;
   --ui-fallback: #d0d8e3;
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-bg: #505d6d;
-    --ui-text: #f2f6fb;
-    --ui-fallback: #d0d8e3;
-  }
 }
 
 /* ── Sizes ── */
@@ -60,7 +54,7 @@
 
 /* ── Image ── */
 
-.av-image {
+.image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -69,7 +63,7 @@
 
 /* ── Initials ── */
 
-.av-initials {
+.initials {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,7 +78,7 @@
 
 /* ── Fallback icon ── */
 
-.av-fallback {
+.fallback {
   width: 60%;
   height: 60%;
   color: var(--ui-fallback);

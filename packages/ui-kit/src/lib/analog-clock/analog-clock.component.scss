@@ -1,3 +1,5 @@
+@use "mixins" as mix;
+
 // ── Light defaults ───────────────────────────────────────────────
 :host {
   --ui-clock-rim: #b0b8c4;
@@ -14,8 +16,8 @@
   line-height: 0;
 }
 
-// ── Explicit dark class ──────────────────────────────────────────
-:host-context(html.dark-theme) {
+// ── Dark mode ────────────────────────────────────────────────────
+@include mix.dark-mode {
   --ui-clock-rim: #4b5563;
   --ui-clock-bg: #1f2937;
   --ui-clock-text: #f2f6fb;
@@ -27,30 +29,15 @@
   --ui-clock-center: #f2f6fb;
 }
 
-// ── System preference fallback ───────────────────────────────────
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-clock-rim: #4b5563;
-    --ui-clock-bg: #1f2937;
-    --ui-clock-text: #f2f6fb;
-    --ui-clock-tick: #9ca3af;
-    --ui-clock-tick-hour: #f2f6fb;
-    --ui-clock-hand-hour: #f2f6fb;
-    --ui-clock-hand-minute: #d1d5db;
-    --ui-clock-hand-second: #ef4444;
-    --ui-clock-center: #f2f6fb;
-  }
-}
-
 // ── SVG elements ─────────────────────────────────────────────────
 
-.clock-rim {
+.rim {
   fill: none;
   stroke: var(--ui-clock-rim);
   stroke-width: 1;
 }
 
-.clock-bg {
+.bg {
   fill: var(--ui-clock-bg);
 }
 
@@ -68,7 +55,7 @@
   }
 }
 
-.hour-number {
+.number {
   fill: var(--ui-clock-text);
   font-size: 7px;
   font-weight: 600;
@@ -99,13 +86,13 @@
   }
 }
 
-.center-cap {
+.cap {
   fill: var(--ui-clock-center);
 }
 
 // ── Day/night indicator ──────────────────────────────────────────
 
-.day-night-indicator {
+.indicator {
   pointer-events: none;
 }
 
