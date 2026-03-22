@@ -1,10 +1,49 @@
-import type { Meta, StoryObj } from "@storybook/angular";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import {
   type ButtonSize,
   type ButtonVariant,
   UIButton,
 } from "./button.component";
+
+// ── Gallery demo ─────────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-button-gallery-demo",
+  standalone: true,
+  imports: [UIButton],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <div>
+        <h4 style="margin: 0 0 8px">Variants</h4>
+        <div style="display: flex; gap: 12px; align-items: center">
+          <ui-button variant="filled">Filled</ui-button>
+          <ui-button variant="outlined">Outlined</ui-button>
+          <ui-button variant="ghost">Ghost</ui-button>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Sizes</h4>
+        <div style="display: flex; gap: 12px; align-items: center">
+          <ui-button size="sm">Small</ui-button>
+          <ui-button size="md">Medium</ui-button>
+          <ui-button size="lg">Large</ui-button>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Disabled</h4>
+        <div style="display: flex; gap: 12px; align-items: center">
+          <ui-button variant="filled" [disabled]="true">Filled</ui-button>
+          <ui-button variant="outlined" [disabled]="true">Outlined</ui-button>
+          <ui-button variant="ghost" [disabled]="true">Ghost</ui-button>
+        </div>
+      </div>
+    </div>
+  `,
+})
+class ButtonGalleryDemo {}
 
 const meta: Meta<UIButton> = {
   title: "@Theredhead/UI Kit/Button",
@@ -18,6 +57,11 @@ const meta: Meta<UIButton> = {
       },
     },
   },
+  decorators: [
+    moduleMetadata({
+      imports: [ButtonGalleryDemo],
+    }),
+  ],
   argTypes: {
     variant: {
       control: "select",
@@ -52,15 +96,9 @@ type Story = StoryObj<UIButton>;
  * Use the controls panel to toggle `variant`, `size`, and `disabled`.
  */
 export const Default: Story = {
-  render: (args) => ({
-    props: args,
-    template: `<ui-button [variant]="variant" [size]="size" [disabled]="disabled">Click me</ui-button>`,
+  render: () => ({
+    template: `<ui-button-gallery-demo />`,
   }),
-  args: {
-    variant: "filled",
-    size: "md",
-    disabled: false,
-  },
   parameters: {
     docs: {
       description: {

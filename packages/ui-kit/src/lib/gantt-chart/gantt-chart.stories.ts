@@ -611,40 +611,6 @@ export const Default: Story = {
   render: () => ({ template: `<ui-gantt-default-demo />` }),
   parameters: {
     docs: {
-      description: {
-        story: [
-          "## Key Features",
-          "",
-          "- **Datasource-driven** — `GanttArrayDatasource` for in-memory data",
-          "- **View modes** — day, week, and month granularity",
-          "- **Progress bars** — optional percentage overlay per task",
-          "- **Milestones** — diamond markers for zero-duration events",
-          "- **Hierarchical** — parent/child task indentation in the sidebar",
-          "- **Dependencies** — `dependencies` array on each task",
-          "- **Today marker** — vertical line showing the current date",
-          "- **Dark-mode ready** — three-tier CSS custom property theming",
-          "- **Accessible** — `role=region`, `aria-label`, keyboard focusable bars",
-          "",
-          "## Inputs",
-          "",
-          "| Input | Type | Default | Description |",
-          "|-------|------|---------|-------------|",
-          "| `datasource` | `IGanttDatasource` | *required* | Task data source |",
-          "| `viewMode` | `'day' \\| 'week' \\| 'month'` | `'day'` | Timeline granularity |",
-          "| `rowHeight` | `number` | `36` | Row height in pixels |",
-          "| `showToday` | `boolean` | `true` | Show today marker line |",
-          "| `showTaskList` | `boolean` | `true` | Show sidebar with task names |",
-          "| `taskListWidth` | `number` | `200` | Sidebar width in pixels |",
-          "| `paddingDays` | `number` | `2` | Extra days before/after range |",
-          '| `ariaLabel` | `string` | `"Gantt chart"` | Accessible label |',
-          "",
-          "## Outputs",
-          "",
-          "| Output | Type | Description |",
-          "|--------|------|-------------|",
-          "| `taskClicked` | `GanttTask<T>` | Emitted when a bar or milestone is clicked |",
-        ].join("\n"),
-      },
       source: {
         code: `
 // ── HTML ──────────────────────────────────────────────────────
@@ -948,6 +914,53 @@ dl {
 `,
         language: "html",
       },
+    },
+  },
+};
+
+/**
+ * _API Reference_ — features, inputs, outputs, and view modes.
+ */
+export const Documentation: Story = {
+  tags: ["!dev"],
+  render: () => ({ template: " " }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          "## Key Features",
+          "",
+          "- **Datasource-driven** — `GanttArrayDatasource` for in-memory data",
+          "- **View modes** — day, week, and month granularity",
+          "- **Progress bars** — optional percentage overlay per task",
+          "- **Milestones** — diamond markers for zero-duration events",
+          "- **Hierarchical** — parent/child task indentation in the sidebar",
+          "- **Dependencies** — `dependencies` array on each task",
+          "- **Today marker** — vertical line showing the current date",
+          "- **Dark-mode ready** — three-tier CSS custom property theming",
+          "- **Accessible** — `role=region`, `aria-label`, keyboard focusable bars",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `datasource` | `IGanttDatasource` | *required* | Task data source |",
+          "| `viewMode` | `'day' \\| 'week' \\| 'month'` | `'day'` | Timeline granularity |",
+          "| `rowHeight` | `number` | `36` | Row height in pixels |",
+          "| `showToday` | `boolean` | `true` | Show today marker line |",
+          "| `showTaskList` | `boolean` | `true` | Show sidebar with task names |",
+          "| `taskListWidth` | `number` | `200` | Sidebar width in pixels |",
+          "| `paddingDays` | `number` | `2` | Extra days before/after range |",
+          '| `ariaLabel` | `string` | `"Gantt chart"` | Accessible label |',
+          "",
+          "## Outputs",
+          "",
+          "| Output | Type | Description |",
+          "|--------|------|-------------|",
+          "| `taskClicked` | `GanttTask<T>` | Emitted when a bar or milestone is clicked |",
+        ].join("\n"),
+      },
+      source: { code: " " },
     },
   },
 };

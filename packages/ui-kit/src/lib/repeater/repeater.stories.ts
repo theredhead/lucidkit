@@ -330,34 +330,6 @@ export const Grid: Story = {
   }),
   parameters: {
     docs: {
-      description: {
-        story: [
-          "## Key Features",
-          "",
-          "- **Datasource-driven** — accepts any `ArrayDatasource<T>` (same interface used by `<ui-table-view>`)",
-          "- **Template context** — each item template receives `$implicit` (the item), plus `index`, `first`, `last`, `even`, `odd` context variables",
-          "- **Limit** — optionally cap the number of rendered items with `[limit]`",
-          "- **Layout-agnostic** — no wrapper element or layout styles; the host decides the visual arrangement",
-          "",
-          "## Inputs",
-          "",
-          "| Input | Type | Default | Description |",
-          "|-------|------|---------|-------------|",
-          "| `datasource` | `ArrayDatasource<T>` | *(required)* | The data to iterate over |",
-          "| `limit` | `number` | — | Maximum items to render |",
-          "",
-          "## Template Context",
-          "",
-          "| Variable | Type | Description |",
-          "|----------|------|-------------|",
-          "| `$implicit` | `T` | The current item |",
-          "| `index` | `number` | Zero-based item index |",
-          "| `first` | `boolean` | `true` for the first item |",
-          "| `last` | `boolean` | `true` for the last item |",
-          "| `even` | `boolean` | `true` for even-indexed items |",
-          "| `odd` | `boolean` | `true` for odd-indexed items |",
-        ].join("\n"),
-      },
       source: {
         code: `<ui-repeater [datasource]="ds">
   <ng-template let-photo let-i="index">
@@ -451,6 +423,47 @@ export const Masonry: Story = {
 </ui-repeater>`,
         language: "html",
       },
+    },
+  },
+};
+
+/**
+ * _API Reference_ — features, inputs, and template context.
+ */
+export const Documentation: Story = {
+  tags: ["!dev"],
+  render: () => ({ template: " " }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          "## Key Features",
+          "",
+          "- **Datasource-driven** — accepts any `ArrayDatasource<T>` (same interface used by `<ui-table-view>`)",
+          "- **Template context** — each item template receives `$implicit` (the item), plus `index`, `first`, `last`, `even`, `odd` context variables",
+          "- **Limit** — optionally cap the number of rendered items with `[limit]`",
+          "- **Layout-agnostic** — no wrapper element or layout styles; the host decides the visual arrangement",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `datasource` | `ArrayDatasource<T>` | *(required)* | The data to iterate over |",
+          "| `limit` | `number` | — | Maximum items to render |",
+          "",
+          "## Template Context",
+          "",
+          "| Variable | Type | Description |",
+          "|----------|------|-------------|",
+          "| `$implicit` | `T` | The current item |",
+          "| `index` | `number` | Zero-based item index |",
+          "| `first` | `boolean` | `true` for the first item |",
+          "| `last` | `boolean` | `true` for the last item |",
+          "| `even` | `boolean` | `true` for even-indexed items |",
+          "| `odd` | `boolean` | `true` for odd-indexed items |",
+        ].join("\n"),
+      },
+      source: { code: " " },
     },
   },
 };

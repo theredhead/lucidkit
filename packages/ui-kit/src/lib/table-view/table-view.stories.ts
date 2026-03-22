@@ -363,43 +363,6 @@ type Story = StoryObj<object>;
 export const JsonPlaceholderPosts: Story = {
   parameters: {
     docs: {
-      description: {
-        story: [
-          "## Key Features",
-          "",
-          "- **Datasource-driven** — any object implementing `TableViewDatasource<T>` can feed the table; ships with `DatasourceAdapter`, `FilterableArrayDatasource`, and JSONPlaceholder demo sources",
-          "- **Declarative columns** — add `<ui-text-column>`, `<ui-number-column>`, `<ui-badge-column>`, or `<ui-template-column>` as content children",
-          '- **Sorting** — enable per-column with `[sortable]="true"`; click headers to cycle asc / desc / none',
-          '- **Pagination** — built-in paginator with configurable page sizes, or bring your own with `[showBuiltInPaginator]="false"`',
-          '- **Row selection** — `selectionMode` supports `"none"`, `"single"`, and `"multiple"` with a `SelectionModel` for external tracking',
-          "- **UI Density** — apply the `uiDensity` directive (`compact`, `comfortable`, `spacious`) to control row height",
-          "- **Resizable columns** — drag column borders to resize",
-          "- **Filter integration** — pair with `<ui-filter>` and `FilterableArrayDatasource` for dynamic client-side filtering",
-          "",
-          "## Inputs",
-          "",
-          "| Input | Type | Default | Description |",
-          "|-------|------|---------|-------------|",
-          "| `datasource` | `TableViewDatasource<T>` | *(required)* | Provides rows and page metadata |",
-          '| `caption` | `string` | `""` | Accessible table caption |',
-          "| `tableId` | `string` | auto | Unique ID for the `<table>` element |",
-          "| `showBuiltInPaginator` | `boolean` | `true` | Show / hide the built-in paginator footer |",
-          "| `showRowIndexIndicator` | `boolean` | `false` | Show a row-number column |",
-          "| `resizable` | `boolean` | `false` | Enable column resize handles |",
-          '| `selectionMode` | `"none" \\| "single" \\| "multiple"` | `"none"` | Row selection behaviour |',
-          "| `selectionModel` | `SelectionModel<T>` | — | External selection tracker |",
-          "| `rowClickSelect` | `boolean` | `false` | Select rows by clicking anywhere on the row |",
-          "",
-          "## Column Types",
-          "",
-          "| Column | Purpose |",
-          "|--------|---------|",
-          "| `<ui-text-column>` | Plain text, optional truncation |",
-          "| `<ui-number-column>` | Formatted numbers via `Intl.NumberFormat` |",
-          "| `<ui-badge-column>` | Coloured badge pill |",
-          "| `<ui-template-column>` | Fully custom `<ng-template let-row>` |",
-        ].join("\n"),
-      },
       source: {
         code: `<ui-table-view
   uiDensity="comfortable"
@@ -1256,6 +1219,56 @@ export const TemplateColumn: Story = {
 </ui-table-view>`,
         language: "html",
       },
+    },
+  },
+};
+
+/**
+ * _API Reference_ — features, inputs, column types, and configuration.
+ */
+export const Documentation: Story = {
+  tags: ["!dev"],
+  render: () => ({ template: " " }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          "## Key Features",
+          "",
+          "- **Datasource-driven** — any object implementing `TableViewDatasource<T>` can feed the table; ships with `DatasourceAdapter`, `FilterableArrayDatasource`, and JSONPlaceholder demo sources",
+          "- **Declarative columns** — add `<ui-text-column>`, `<ui-number-column>`, `<ui-badge-column>`, or `<ui-template-column>` as content children",
+          '- **Sorting** — enable per-column with `[sortable]="true"`; click headers to cycle asc / desc / none',
+          '- **Pagination** — built-in paginator with configurable page sizes, or bring your own with `[showBuiltInPaginator]="false"`',
+          '- **Row selection** — `selectionMode` supports `"none"`, `"single"`, and `"multiple"` with a `SelectionModel` for external tracking',
+          "- **UI Density** — apply the `uiDensity` directive (`compact`, `comfortable`, `spacious`) to control row height",
+          "- **Resizable columns** — drag column borders to resize",
+          "- **Filter integration** — pair with `<ui-filter>` and `FilterableArrayDatasource` for dynamic client-side filtering",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `datasource` | `TableViewDatasource<T>` | *(required)* | Provides rows and page metadata |",
+          '| `caption` | `string` | `""` | Accessible table caption |',
+          "| `tableId` | `string` | auto | Unique ID for the `<table>` element |",
+          "| `showBuiltInPaginator` | `boolean` | `true` | Show / hide the built-in paginator footer |",
+          "| `showRowIndexIndicator` | `boolean` | `false` | Show a row-number column |",
+          "| `resizable` | `boolean` | `false` | Enable column resize handles |",
+          '| `selectionMode` | `"none" \\| "single" \\| "multiple"` | `"none"` | Row selection behaviour |',
+          "| `selectionModel` | `SelectionModel<T>` | — | External selection tracker |",
+          "| `rowClickSelect` | `boolean` | `false` | Select rows by clicking anywhere on the row |",
+          "",
+          "## Column Types",
+          "",
+          "| Column | Purpose |",
+          "|--------|---------|",
+          "| `<ui-text-column>` | Plain text, optional truncation |",
+          "| `<ui-number-column>` | Formatted numbers via `Intl.NumberFormat` |",
+          "| `<ui-badge-column>` | Coloured badge pill |",
+          "| `<ui-template-column>` | Fully custom `<ng-template let-row>` |",
+        ].join("\n"),
+      },
+      source: { code: " " },
     },
   },
 };
