@@ -5,14 +5,20 @@ import {
   contentChildren,
   DestroyRef,
   effect,
+  ElementRef,
   inject,
   input,
   output,
+  signal,
   untracked,
 } from "@angular/core";
 import { LoggerFactory } from "@theredhead/foundation";
 import { UIDashboardPanel } from "./dashboard-panel.component";
-import type { DashboardColumns } from "./dashboard.types";
+import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import type {
+  DashboardColumns,
+  DashboardDockPosition,
+} from "./dashboard.types";
 
 /**
  * Dashboard host component.
@@ -46,6 +52,7 @@ import type { DashboardColumns } from "./dashboard.types";
 @Component({
   selector: "ui-dashboard",
   standalone: true,
+  imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.scss",
@@ -81,10 +88,40 @@ export class UIDashboard {
   /** Accessible label for the dashboard region. */
   public readonly ariaLabel = input<string>("Dashboard");
 
+  /**
+   * Where the collapsed-panel dock is rendered.
+   * Defaults to `'bottom'`.
+   */
+  public readonly dockPosition = input<DashboardDockPosition>("bottom");
+
+  /**
+   * Whether dock chips show the panel title alongside the icon.
+   * Defaults to `false` (icon-only with title in tooltip).
+   */
+  public readonly dockShowTitles = input<boolean>(false);
+
+  /**
+   * Default SVG icon for panels that don't declare their own `icon`.
+   * Defaults to the Lucide `LayoutDashboard` icon.
+   */
+  public readonly defaultDockIcon = input<string>(
+    UIIcons.Lucide.Layout.LayoutDashboard,
+  );
+
+  /**
+   * SVG icon for the optional dock menu button.
+   * When set, a menu button is rendered at the leading edge of the dock.
+   * When omitted (`undefined`), no menu button is shown.
+   */
+  public readonly dockMenuIcon = input<string | undefined>(undefined);
+
   // ── Outputs ─────────────────────────────────────────────────────
 
   /** Emitted when any panel is removed by the user. */
   public readonly panelRemoved = output<string>();
+
+  /** Emitted when the dock menu button is clicked. */
+  public readonly dockMenuClicked = output<void>();
 
   // ── Content queries ─────────────────────────────────────────────
 
@@ -112,10 +149,23 @@ export class UIDashboard {
       .map((p) => p.config().id),
   );
 
+  /** Panels that are currently collapsed (shown in the dock). */
+  public readonly collapsedPanels = computed(() =>
+    this.panels().filter((p) => p.collapsed() && !p.removed()),
+  );
+
+  // ── Public fields ───────────────────────────────────────────────
+
+  /** Whether the dock panel-picker menu is open. */
+  public readonly dockMenuOpen = signal(false);
+
+  // ── Protected fields ────────────────────────────────────────────
+
   // ── Private fields ──────────────────────────────────────────────
 
   private readonly log = inject(LoggerFactory).createLogger("UIDashboard");
   private readonly destroyRef = inject(DestroyRef);
+  private readonly elRef = inject(ElementRef<HTMLElement>);
 
   /** Subscriptions to panel `panelRemoved` outputs. */
   private panelSubs: (() => void)[] = [];
@@ -123,6 +173,22 @@ export class UIDashboard {
   // ── Constructor ─────────────────────────────────────────────────
 
   public constructor() {
+    // Close dock menu on outside click
+    const onDocClick = (e: Event) => {
+      if (
+        this.dockMenuOpen() &&
+        !this.elRef.nativeElement
+          .querySelector(".dock-menu-anchor")
+          ?.contains(e.target as Node)
+      ) {
+        this.dockMenuOpen.set(false);
+      }
+    };
+    document.addEventListener("pointerdown", onDocClick);
+    this.destroyRef.onDestroy(() =>
+      document.removeEventListener("pointerdown", onDocClick),
+    );
+
     // Whenever the projected panels change, subscribe to their
     // panelRemoved outputs so the host can re-emit them.
     effect(() => {
@@ -181,5 +247,40 @@ export class UIDashboard {
       }
     }
     this.log.debug("All panels restored");
+  }
+
+  /**
+   * Resolve the icon SVG for a panel, falling back to the default.
+   *
+   * @param panelIcon - The panel's own icon, if any.
+   * @returns SVG inner-content string.
+   */
+  protected resolveIcon(panelIcon: string | undefined): string {
+    return panelIcon ?? this.defaultDockIcon();
+  }
+
+  /** Toggle the dock panel-picker menu. */
+  public toggleDockMenu(): void {
+    this.dockMenuOpen.update((v) => !v);
+    this.dockMenuClicked.emit();
+  }
+
+  /** Close the dock panel-picker menu. */
+  public closeDockMenu(): void {
+    this.dockMenuOpen.set(false);
+  }
+
+  /**
+   * Toggle a panel's collapsed state from the menu.
+   * If removed, restore it first.
+   */
+  protected menuTogglePanel(panel: UIDashboardPanel): void {
+    if (panel.removed()) {
+      panel.restore();
+    } else if (panel.collapsed()) {
+      panel.toggleCollapse();
+    } else if (panel.config().collapsible) {
+      panel.toggleCollapse();
+    }
   }
 }

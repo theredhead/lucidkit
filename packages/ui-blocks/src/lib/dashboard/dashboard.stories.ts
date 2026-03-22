@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
+  inject,
   signal,
   viewChild,
+  viewChildren,
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIDashboard } from "./dashboard.component";
@@ -16,19 +19,27 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
   {
     id: "kpi",
     title: "KPI Overview",
+    icon: UIIcons.Lucide.Science.Gauge,
     placement: { colSpan: 5 },
     collapsible: true,
   },
   {
     id: "revenue",
     title: "Revenue",
+    icon: UIIcons.Lucide.Charts.ChartColumn,
     placement: { colSpan: 3 },
     collapsible: true,
   },
-  { id: "users", title: "Active Users", placement: { colSpan: 3 } },
+  {
+    id: "users",
+    title: "Active Users",
+    icon: UIIcons.Lucide.Account.Users,
+    placement: { colSpan: 3 },
+  },
   {
     id: "feed",
     title: "Activity Feed",
+    icon: UIIcons.Lucide.Account.Activity,
     placement: { colSpan: 5 },
     collapsible: true,
     removable: true,
@@ -36,6 +47,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
   {
     id: "tasks",
     title: "Tasks",
+    icon: UIIcons.Lucide.Text.ListTodo,
     placement: { colSpan: 8 },
     collapsible: true,
     removable: true,
@@ -117,7 +129,19 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
     `,
   ],
   template: `
-    <ui-dashboard [columns]="8" [gap]="16">
+    <ui-dashboard
+      [columns]="8"
+      [gap]="16"
+      [dockMenuIcon]="menuIcon"
+    >
+      <ng-container dockMenuItem>
+        <hr />
+        <button class="dock-menu-item dock-menu-item--disabled" disabled aria-disabled="true">
+          <ui-icon [svg]="icons.Account.Settings" [size]="14" class="dock-menu-item-icon" />
+          <span class="dock-menu-item-label">Configure…</span>
+        </button>
+      </ng-container>
+
       <ui-dashboard-panel [config]="panels[0]">
         <div class="demo-kpi">
           <div class="demo-kpi-item">
@@ -226,6 +250,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
 })
 class DashboardDefaultDemo {
   protected readonly icons = UIIcons.Lucide;
+  protected readonly menuIcon = UIIcons.Lucide.Layout.Menu;
   public readonly panels = SAMPLE_PANELS;
   protected readonly barStrategy = new BarGraphStrategy();
   protected readonly revenueData = [
@@ -453,6 +478,146 @@ class DashboardRestoreDemo {
 })
 class DashboardSpanningDemo {}
 
+// ── Demo: Notifications ──────────────────────────────────────────
+
+@Component({
+  selector: "ui-dashboard-notification-demo",
+  standalone: true,
+  imports: [UIDashboard, UIDashboardPanel, UIIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        --demo-ctrl-bg: #f9fafb;
+        --demo-ctrl-bg-hover: #e5e7eb;
+        --demo-ctrl-border: #d1d5db;
+        --demo-ctrl-text: #1d232b;
+      }
+      :host-context(html.dark-theme) {
+        --demo-ctrl-bg: #2a3040;
+        --demo-ctrl-bg-hover: #3a3f47;
+        --demo-ctrl-border: #4a5060;
+        --demo-ctrl-text: #f2f6fb;
+      }
+      @media (prefers-color-scheme: dark) {
+        :host-context(html:not(.light-theme):not(.dark-theme)) {
+          --demo-ctrl-bg: #2a3040;
+          --demo-ctrl-bg-hover: #3a3f47;
+          --demo-ctrl-border: #4a5060;
+          --demo-ctrl-text: #f2f6fb;
+        }
+      }
+      .controls {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .controls button {
+        padding: 0.4rem 0.8rem;
+        border: 1px solid var(--demo-ctrl-border);
+        border-radius: 4px;
+        background: var(--demo-ctrl-bg);
+        color: var(--demo-ctrl-text);
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+      .controls button:hover {
+        background: var(--demo-ctrl-bg-hover);
+      }
+      .demo-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .demo-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid currentColor;
+        border-bottom-color: color-mix(in srgb, currentColor 15%, transparent);
+        font-size: 0.8rem;
+      }
+      .demo-list li:last-child {
+        border-bottom: none;
+      }
+    `,
+  ],
+  template: `
+    <div class="controls">
+      <button (click)="notifyFeed()">Notify Activity (persists)</button>
+      <button (click)="notifyTasks()">Notify Tasks (5 s timeout)</button>
+      <button (click)="clearAll()">Clear all</button>
+    </div>
+
+    <ui-dashboard [columns]="3" [gap]="16">
+      <ui-dashboard-panel
+        [config]="{
+          id: 'inbox',
+          title: 'Inbox',
+          icon: icons.Mail.Mail,
+          collapsible: true,
+        }"
+      >
+        <ul class="demo-list">
+          <li>Welcome aboard!</li>
+          <li>Your trial starts today</li>
+        </ul>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel
+        #feedPanel
+        [config]="{
+          id: 'feed',
+          title: 'Activity Feed',
+          icon: icons.Account.Activity,
+          collapsible: true,
+        }"
+      >
+        <ul class="demo-list">
+          <li>Alice deployed v2.4.1</li>
+          <li>Bob merged PR #312</li>
+          <li>Charlie added 3 tests</li>
+        </ul>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel
+        #tasksPanel
+        [config]="{
+          id: 'tasks',
+          title: 'Tasks',
+          icon: icons.Text.ListTodo,
+          collapsible: true,
+        }"
+      >
+        <ul class="demo-list">
+          <li>Update CI pipeline</li>
+          <li>Write dashboard docs</li>
+        </ul>
+      </ui-dashboard-panel>
+    </ui-dashboard>
+  `,
+})
+class DashboardNotificationDemo {
+  protected readonly icons = UIIcons.Lucide;
+
+  private readonly feedPanel =
+    viewChild.required<UIDashboardPanel>("feedPanel");
+  private readonly tasksPanel =
+    viewChild.required<UIDashboardPanel>("tasksPanel");
+
+  protected notifyFeed(): void {
+    this.feedPanel().notify();
+  }
+
+  protected notifyTasks(): void {
+    this.tasksPanel().notify(5000);
+  }
+
+  protected clearAll(): void {
+    this.feedPanel().clearNotification();
+    this.tasksPanel().clearNotification();
+  }
+}
+
 // ── Meta ─────────────────────────────────────────────────────────
 
 const meta: Meta<UIDashboard> = {
@@ -476,6 +641,7 @@ const meta: Meta<UIDashboard> = {
         DashboardAutoDemo,
         DashboardRestoreDemo,
         DashboardSpanningDemo,
+        DashboardNotificationDemo,
       ],
     }),
   ],
@@ -752,6 +918,55 @@ import {
 };
 
 /**
+ * **Notifications** — Panels can signal notifications via `notify()`.
+ * The accent persists until the panel is expanded or an optional
+ * timeout elapses. Collapse a panel, then click "Notify" to see
+ * the accent on both the panel and its dock chip.
+ */
+export const Notifications: Story = {
+  render: () => ({ template: `<ui-dashboard-notification-demo />` }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-dashboard-panel #feedPanel [config]="feedConfig">
+  <my-activity-feed />
+</ui-dashboard-panel>
+
+<!-- In your component class -->
+<button (click)="feedPanel.notify()">Notify (persist)</button>
+<button (click)="feedPanel.notify(5000)">Notify (5 s timeout)</button>
+<button (click)="feedPanel.clearNotification()">Clear</button>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { viewChild } from '@angular/core';
+import { UIDashboardPanel } from '@theredhead/ui-blocks';
+
+export class MyDashboard {
+  private readonly feedPanel = viewChild.required<UIDashboardPanel>('feedPanel');
+
+  notifyFeed(): void {
+    // Persist until expanded
+    this.feedPanel().notify();
+  }
+
+  notifyFeedWithTimeout(): void {
+    // Auto-clear after 5 seconds
+    this.feedPanel().notify(5000);
+  }
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed — notification tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
+/**
  * _API Reference_ — features, dashboard inputs, and panel configuration.
  */
 export const Documentation: Story = {
@@ -767,6 +982,7 @@ export const Documentation: Story = {
           "- **Panel spanning** — `colSpan` and `rowSpan` per panel",
           "- **Collapsible panels** — toggle panel body visibility",
           "- **Removable panels** — hide panels, restore via API",
+          "- **Notifications** — `notify(timeoutMs?)` accent on panel + dock chip, auto-clears on expand or timeout",
           "- **Content-agnostic** — project any widget via `<ng-content>`",
           "- **Dark-mode ready** — three-tier CSS custom property theming",
           "- **Accessible** — `role=region`, `aria-label`, `aria-expanded`",
@@ -785,6 +1001,13 @@ export const Documentation: Story = {
           "| Input | Type | Description |",
           "|-------|------|-------------|",
           "| `config` | `DashboardPanelConfig` | Panel id, title, placement, flags |",
+          "",
+          "## Panel methods",
+          "",
+          "| Method | Description |",
+          "|--------|-------------|",
+          "| `notify(timeoutMs?: number)` | Activates notification accent. Clears on expand or after `timeoutMs` (0 = persist). |",
+          "| `clearNotification()` | Manually clears the notification accent. |",
         ].join("\n"),
       },
       source: { code: " " },

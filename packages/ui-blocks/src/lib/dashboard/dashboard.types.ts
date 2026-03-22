@@ -35,6 +35,13 @@ export interface DashboardPanelConfig {
   /** Display title rendered in the panel header. */
   readonly title: string;
 
+  /**
+   * SVG icon content for the panel header and dock chip.
+   * Pass an SVG inner-content string (e.g. from `UIIcons.Lucide.*`).
+   * Falls back to the dashboard's `defaultDockIcon` when omitted.
+   */
+  readonly icon?: string;
+
   /** Grid placement (column / row span). */
   readonly placement?: DashboardGridPlacement;
 
@@ -60,3 +67,11 @@ export interface DashboardPanelConfig {
  * - A number — explicit fixed column count
  */
 export type DashboardColumns = "auto" | number;
+
+/**
+ * Where the collapsed-panel dock is rendered relative to the grid.
+ *
+ * - `'top'` — above the grid
+ * - `'bottom'` — below the grid (default)
+ */
+export type DashboardDockPosition = "top" | "bottom";

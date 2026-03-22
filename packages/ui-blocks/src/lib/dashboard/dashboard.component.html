@@ -1,3 +1,65 @@
+@if (dockPosition() === 'top') {
+  <div class="dashboard-dock" role="toolbar" aria-label="Dashboard dock">
+    @if (dockMenuIcon()) {
+      <div class="dock-menu-anchor">
+        <button
+          type="button"
+          class="dock-menu-btn"
+          [class.dock-menu-btn--active]="dockMenuOpen()"
+          aria-label="Dashboard menu"
+          [attr.aria-expanded]="dockMenuOpen()"
+          aria-haspopup="menu"
+          (click)="toggleDockMenu()"
+        >
+          <ui-icon [svg]="dockMenuIcon()!" [size]="16" />
+        </button>
+        @if (dockMenuOpen()) {
+          <div class="dock-menu" role="menu" aria-label="Panel picker">
+            @for (panel of panels(); track panel.config().id) {
+              <button
+                type="button"
+                class="dock-menu-item"
+                [class.dock-menu-item--hidden]="panel.collapsed() || panel.removed()"
+                role="menuitem"
+                (click)="menuTogglePanel(panel)"
+              >
+                <ui-icon
+                  [svg]="resolveIcon(panel.config().icon)"
+                  [size]="14"
+                  class="dock-menu-item-icon"
+                />
+                <span class="dock-menu-item-label">{{ panel.config().title }}</span>
+                @if (panel.collapsed() || panel.removed()) {
+                  <span class="dock-menu-item-badge">hidden</span>
+                }
+              </button>
+            }
+            <ng-content select="[dockMenuItem]" />
+          </div>
+        }
+      </div>
+      @if (collapsedPanels().length > 0) {
+        <span class="dock-separator" aria-hidden="true"></span>
+      }
+    }
+    @for (panel of collapsedPanels(); track panel.config().id) {
+      <button
+        type="button"
+        class="dock-chip"
+        [class.dock-chip--notified]="panel.notified()"
+        [attr.title]="panel.config().title"
+        [attr.aria-label]="'Restore ' + panel.config().title"
+        (click)="panel.toggleCollapse()"
+      >
+        <ui-icon [svg]="resolveIcon(panel.config().icon)" [size]="16" />
+        @if (dockShowTitles()) {
+          <span class="dock-chip-label">{{ panel.config().title }}</span>
+        }
+      </button>
+    }
+  </div>
+}
+
 <div
   class="dashboard-grid"
   [style.grid-template-columns]="gridTemplateColumns()"
@@ -7,3 +69,65 @@
 >
   <ng-content />
 </div>
+
+@if (dockPosition() === 'bottom') {
+  <div class="dashboard-dock" role="toolbar" aria-label="Dashboard dock">
+    @if (dockMenuIcon()) {
+      <div class="dock-menu-anchor">
+        <button
+          type="button"
+          class="dock-menu-btn"
+          [class.dock-menu-btn--active]="dockMenuOpen()"
+          aria-label="Dashboard menu"
+          [attr.aria-expanded]="dockMenuOpen()"
+          aria-haspopup="menu"
+          (click)="toggleDockMenu()"
+        >
+          <ui-icon [svg]="dockMenuIcon()!" [size]="16" />
+        </button>
+        @if (dockMenuOpen()) {
+          <div class="dock-menu dock-menu--above" role="menu" aria-label="Panel picker">
+            @for (panel of panels(); track panel.config().id) {
+              <button
+                type="button"
+                class="dock-menu-item"
+                [class.dock-menu-item--hidden]="panel.collapsed() || panel.removed()"
+                role="menuitem"
+                (click)="menuTogglePanel(panel)"
+              >
+                <ui-icon
+                  [svg]="resolveIcon(panel.config().icon)"
+                  [size]="14"
+                  class="dock-menu-item-icon"
+                />
+                <span class="dock-menu-item-label">{{ panel.config().title }}</span>
+                @if (panel.collapsed() || panel.removed()) {
+                  <span class="dock-menu-item-badge">hidden</span>
+                }
+              </button>
+            }
+            <ng-content select="[dockMenuItem]" />
+          </div>
+        }
+      </div>
+      @if (collapsedPanels().length > 0) {
+        <span class="dock-separator" aria-hidden="true"></span>
+      }
+    }
+    @for (panel of collapsedPanels(); track panel.config().id) {
+      <button
+        type="button"
+        class="dock-chip"
+        [class.dock-chip--notified]="panel.notified()"
+        [attr.title]="panel.config().title"
+        [attr.aria-label]="'Restore ' + panel.config().title"
+        (click)="panel.toggleCollapse()"
+      >
+        <ui-icon [svg]="resolveIcon(panel.config().icon)" [size]="16" />
+        @if (dockShowTitles()) {
+          <span class="dock-chip-label">{{ panel.config().title }}</span>
+        }
+      </button>
+    }
+  </div>
+}
