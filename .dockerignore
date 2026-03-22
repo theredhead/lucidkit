@@ -1,0 +1,8 @@
+node_modules
+dist
+dev-docs
+storybook-static
+.angular
+.git
+coverage
+*.tgz

@@ -17,6 +17,7 @@
     "build-storybook": "ng run storybook-host:build-storybook",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",
+    "docker:build": "docker build -t theredhead-docs .",
     "prepare": "husky"
   },
   "lint-staged": {
