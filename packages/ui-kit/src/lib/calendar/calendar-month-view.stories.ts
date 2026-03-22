@@ -376,40 +376,6 @@ export const Default: Story = {
   render: () => ({ template: `<ui-cal-empty-demo />` }),
   parameters: {
     docs: {
-      description: {
-        story: [
-          "## Key Features",
-          "",
-          "- **Datasource-driven** — plug in any `CalendarDatasource` implementation",
-          "- **Navigation** — prev / next / go-to-today controls",
-          "- **Day selection** — two-way `selectedDate` model, `dateSelected` output",
-          "- **Event badges** — colour-coded, overflow indicator (`+N more`)",
-          "- **Day-detail popover** — click any day with events to see full details via PopoverService",
-          "- **Week numbers** — optional ISO week-number leading column",
-          "- **Multi-day events** — span across multiple day cells",
-          "- **Dark-mode ready** — three-tier CSS custom property theming",
-          "- **Accessible** — `role=grid`, `role=gridcell`, `aria-current`, keyboard nav",
-          "",
-          "## Inputs",
-          "",
-          "| Input | Type | Default | Description |",
-          "|-------|------|---------|-------------|",
-          "| `datasource` | `CalendarDatasource` | *required* | Event provider |",
-          "| `selectedDate` | `Date` | today | Currently selected date (two-way) |",
-          "| `maxEventsPerDay` | `number` | `3` | Max visible event badges per cell |",
-          "| `palette` | `string[]` | 8-colour default | Fallback colours for events |",
-          '| `ariaLabel` | `string` | `"Calendar month view"` | Accessible region label |',
-          "| `showWeekNumbers` | `boolean` | `false` | Show ISO week-number leading column |",
-          "",
-          "## Outputs",
-          "",
-          "| Output | Payload | Description |",
-          "|--------|---------|-------------|",
-          "| `dateSelected` | `Date` | Emitted when a day cell is clicked |",
-          "| `eventSelected` | `CalendarEvent` | Emitted when an event badge is clicked |",
-          "| `monthChanged` | `Date` | Emitted when the displayed month changes |",
-        ].join("\n"),
-      },
       source: {
         code: `const ds = new ArrayCalendarDatasource([]);
 
@@ -541,6 +507,53 @@ export const MultiDayEvents: Story = {
   },
 ];`,
       },
+    },
+  },
+};
+
+/**
+ * _API Reference_ — features, inputs, and outputs.
+ */
+export const Documentation: Story = {
+  tags: ["!dev"],
+  render: () => ({ template: " " }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          "## Key Features",
+          "",
+          "- **Datasource-driven** — plug in any `CalendarDatasource` implementation",
+          "- **Navigation** — prev / next / go-to-today controls",
+          "- **Day selection** — two-way `selectedDate` model, `dateSelected` output",
+          "- **Event badges** — colour-coded, overflow indicator (`+N more`)",
+          "- **Day-detail popover** — click any day with events to see full details via PopoverService",
+          "- **Week numbers** — optional ISO week-number leading column",
+          "- **Multi-day events** — span across multiple day cells",
+          "- **Dark-mode ready** — three-tier CSS custom property theming",
+          "- **Accessible** — `role=grid`, `role=gridcell`, `aria-current`, keyboard nav",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `datasource` | `CalendarDatasource` | *required* | Event provider |",
+          "| `selectedDate` | `Date` | today | Currently selected date (two-way) |",
+          "| `maxEventsPerDay` | `number` | `3` | Max visible event badges per cell |",
+          "| `palette` | `string[]` | 8-colour default | Fallback colours for events |",
+          '| `ariaLabel` | `string` | `"Calendar month view"` | Accessible region label |',
+          "| `showWeekNumbers` | `boolean` | `false` | Show ISO week-number leading column |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `dateSelected` | `Date` | Emitted when a day cell is clicked |",
+          "| `eventSelected` | `CalendarEvent` | Emitted when an event badge is clicked |",
+          "| `monthChanged` | `Date` | Emitted when the displayed month changes |",
+        ].join("\n"),
+      },
+      source: { code: " " },
     },
   },
 };

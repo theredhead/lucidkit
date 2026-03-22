@@ -1,8 +1,71 @@
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
 
 import { UITabGroup } from "./tab-group.component";
 import { UITab } from "./tab.component";
+
+// ── Gallery demo ─────────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-tabs-gallery-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 32px">
+      <div>
+        <h4 style="margin: 0 0 8px">Standard tabs</h4>
+        <ui-tab-group>
+          <ui-tab label="Overview">
+            <div
+              style="padding: 0.75rem 0; font-size: 0.88rem; line-height: 1.6"
+            >
+              <strong>Project Dashboard</strong> — Track progress, review
+              milestones, and manage team activity from a single view.
+            </div>
+          </ui-tab>
+          <ui-tab label="Activity">
+            <div
+              style="padding: 0.75rem 0; font-size: 0.88rem; line-height: 1.6"
+            >
+              Recent commits, pull requests, and deployment events appear here.
+            </div>
+          </ui-tab>
+          <ui-tab label="Settings">
+            <div
+              style="padding: 0.75rem 0; font-size: 0.88rem; line-height: 1.6"
+            >
+              Configure notifications, permissions, and integration preferences.
+            </div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">With disabled tab</h4>
+        <ui-tab-group>
+          <ui-tab label="Active">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              This tab is active and interactive.
+            </div>
+          </ui-tab>
+          <ui-tab label="Disabled" [disabled]="true">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              This content is hidden.
+            </div>
+          </ui-tab>
+          <ui-tab label="Also Active">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              Another active tab — disabled tabs are skipped by keyboard
+              navigation.
+            </div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+    </div>
+  `,
+})
+class TabsGalleryDemo {}
 
 const meta: Meta<UITabGroup> = {
   title: "@theredhead/UI Kit/Tabs",
@@ -19,7 +82,7 @@ const meta: Meta<UITabGroup> = {
   },
   decorators: [
     moduleMetadata({
-      imports: [UITab],
+      imports: [UITab, TabsGalleryDemo],
     }),
   ],
 };
@@ -28,24 +91,12 @@ export default meta;
 type Story = StoryObj<UITabGroup>;
 
 /**
- * A basic three-tab layout. Click a tab label to switch panels.
- * Arrow keys also cycle through tab labels when a tab is focused.
+ * Standard and disabled tab configurations shown together.
+ * Click tab labels or use arrow keys to navigate between panels.
  */
 export const Default: Story = {
   render: () => ({
-    template: `
-      <ui-tab-group>
-        <ui-tab label="Overview">
-          <p>This is the overview panel.</p>
-        </ui-tab>
-        <ui-tab label="Details">
-          <p>Detailed information goes here.</p>
-        </ui-tab>
-        <ui-tab label="History">
-          <p>History log content.</p>
-        </ui-tab>
-      </ui-tab-group>
-    `,
+    template: `<ui-tabs-gallery-demo />`,
   }),
   parameters: {
     docs: {

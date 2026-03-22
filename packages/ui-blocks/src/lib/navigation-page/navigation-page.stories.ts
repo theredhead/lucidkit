@@ -446,37 +446,6 @@ export const Default: Story = {
   }),
   parameters: {
     docs: {
-      description: {
-        story:
-          "### Features\n" +
-          "- Pinned sidebar (desktop) or drawer-based sidebar (mobile)\n" +
-          "- Automatic breadcrumb trail with group hierarchy\n" +
-          "- Collapsible sidebar groups via tree nodes with children\n" +
-          "- Icon and badge support on navigation items\n" +
-          "- Two-way binding for active page and drawer state\n" +
-          "- Projected content template with node context\n" +
-          "- `routesToNavigation()` utility for Angular Router integration\n\n" +
-          "### Data sources\n" +
-          "| Input | Type | Default | Purpose |\n" +
-          "|-------|------|---------|--------|\n" +
-          "| `datasource` | `ITreeDatasource<NavigationNodeData>` | – | Dynamic tree data |\n" +
-          "| `items` | `NavigationNode[]` | `[]` | Static in-memory tree |\n\n" +
-          "When both are set, `datasource` takes precedence. Use `navItem()` / " +
-          "`navGroup()` factory helpers to build the tree ergonomically.\n\n" +
-          "### Other inputs\n" +
-          "| Input | Type | Default | Purpose |\n" +
-          "|-------|------|---------|--------|\n" +
-          "| `rootLabel` | `string` | `'Home'` | First breadcrumb label |\n" +
-          "| `sidebarPinned` | `boolean` | `true` | Pin sidebar vs drawer mode |\n" +
-          "| `drawerPosition` | `DrawerPosition` | `'left'` | Drawer slide direction |\n" +
-          "| `drawerWidth` | `DrawerWidth` | `'medium'` | Drawer panel width |\n" +
-          "| `breadcrumbVariant` | `BreadcrumbVariant` | `'button'` | Breadcrumb style |\n\n" +
-          "### Two-way bindings\n" +
-          "| Model | Type | Purpose |\n" +
-          "|-------|------|--------|\n" +
-          "| `activePage` | `string` | Currently active node id |\n" +
-          "| `drawerOpen` | `boolean` | Drawer open state (when not pinned) |",
-      },
       source: {
         language: "html",
         code: `
@@ -714,6 +683,50 @@ export class ShellComponent {
 /* No custom styles needed. */
 `,
       },
+    },
+  },
+};
+
+/**
+ * _API Reference_ — features, data sources, inputs, and two-way bindings.
+ */
+export const Documentation: Story = {
+  tags: ["!dev"],
+  render: () => ({ template: " " }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "### Features\n" +
+          "- Pinned sidebar (desktop) or drawer-based sidebar (mobile)\n" +
+          "- Automatic breadcrumb trail with group hierarchy\n" +
+          "- Collapsible sidebar groups via tree nodes with children\n" +
+          "- Icon and badge support on navigation items\n" +
+          "- Two-way binding for active page and drawer state\n" +
+          "- Projected content template with node context\n" +
+          "- `routesToNavigation()` utility for Angular Router integration\n\n" +
+          "### Data sources\n" +
+          "| Input | Type | Default | Purpose |\n" +
+          "|-------|------|---------|--------|\n" +
+          "| `datasource` | `ITreeDatasource<NavigationNodeData>` | – | Dynamic tree data |\n" +
+          "| `items` | `NavigationNode[]` | `[]` | Static in-memory tree |\n\n" +
+          "When both are set, `datasource` takes precedence. Use `navItem()` / " +
+          "`navGroup()` factory helpers to build the tree ergonomically.\n\n" +
+          "### Other inputs\n" +
+          "| Input | Type | Default | Purpose |\n" +
+          "|-------|------|---------|--------|\n" +
+          "| `rootLabel` | `string` | `'Home'` | First breadcrumb label |\n" +
+          "| `sidebarPinned` | `boolean` | `true` | Pin sidebar vs drawer mode |\n" +
+          "| `drawerPosition` | `DrawerPosition` | `'left'` | Drawer slide direction |\n" +
+          "| `drawerWidth` | `DrawerWidth` | `'medium'` | Drawer panel width |\n" +
+          "| `breadcrumbVariant` | `BreadcrumbVariant` | `'button'` | Breadcrumb style |\n\n" +
+          "### Two-way bindings\n" +
+          "| Model | Type | Purpose |\n" +
+          "|-------|------|--------|\n" +
+          "| `activePage` | `string` | Currently active node id |\n" +
+          "| `drawerOpen` | `boolean` | Drawer open state (when not pinned) |",
+      },
+      source: { code: " " },
     },
   },
 };

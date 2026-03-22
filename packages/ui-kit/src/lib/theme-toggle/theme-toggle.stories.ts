@@ -1,6 +1,39 @@
-import type { Meta, StoryObj } from "@storybook/angular";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIThemeToggle } from "./theme-toggle.component";
+
+// ── Gallery demo ─────────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-theme-toggle-gallery-demo",
+  standalone: true,
+  imports: [UIThemeToggle],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <div>
+        <h4 style="margin: 0 0 8px">Icon variant</h4>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <ui-theme-toggle variant="icon" />
+          <span style="font-size: 0.8125rem; color: #888"
+            >Compact icon-only toggle</span
+          >
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Button variant</h4>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <ui-theme-toggle variant="button" />
+          <span style="font-size: 0.8125rem; color: #888"
+            >Icon + text label</span
+          >
+        </div>
+      </div>
+    </div>
+  `,
+})
+class ThemeToggleGalleryDemo {}
 
 const meta: Meta<UIThemeToggle> = {
   title: "@theredhead/UI Kit/Theme Toggle",
@@ -14,6 +47,11 @@ const meta: Meta<UIThemeToggle> = {
       },
     },
   },
+  decorators: [
+    moduleMetadata({
+      imports: [ThemeToggleGalleryDemo],
+    }),
+  ],
   argTypes: {
     variant: {
       control: "radio",
@@ -35,14 +73,13 @@ export default meta;
 type Story = StoryObj<UIThemeToggle>;
 
 /**
- * The default `icon` variant — a compact button showing only a
- * sun, moon, or auto glyph. Click to cycle through
- * light → dark → system modes.
+ * Both theme toggle variants side by side. Click either to cycle
+ * through light → dark → system modes.
  */
 export const Default: Story = {
-  args: {
-    variant: "icon",
-  },
+  render: () => ({
+    template: `<ui-theme-toggle-gallery-demo />`,
+  }),
   parameters: {
     docs: {
       description: {

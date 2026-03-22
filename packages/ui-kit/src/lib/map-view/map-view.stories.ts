@@ -395,30 +395,6 @@ type Story = StoryObj<object>;
 export const Basic: Story = {
   parameters: {
     docs: {
-      description: {
-        story: [
-          "## Key Features",
-          "",
-          "- **Tile rendering** — fetches and positions OpenStreetMap raster tiles based on `center` and `zoom`",
-          "- **Markers** — drop pins with labels, custom colours, and optional custom SVG icons",
-          "- **Polylines** — draw routes and paths with configurable colour, width, and dash patterns",
-          "- **Polygons** — render filled regions with stroke and fill colours",
-          "- **Highlight mode** — enable a glow effect on polylines and polygons with `highlighted: true`",
-          "- **Accessible** — configurable `ariaLabel` for the map container",
-          "",
-          "## Inputs",
-          "",
-          "| Input | Type | Default | Description |",
-          "|-------|------|---------|-------------|",
-          "| `center` | `{ lat: number; lng: number }` | *(required)* | Geographic centre of the map |",
-          "| `zoom` | `number` | `13` | Zoom level (1 = world, 18 = building) |",
-          '| `height` | `string` | `"400px"` | CSS height of the map container |',
-          "| `markers` | `MapMarker[]` | `[]` | Pin markers with position, label, colour |",
-          "| `polylines` | `MapPolyline[]` | `[]` | Line overlays (routes, paths) |",
-          "| `polygons` | `MapPolygon[]` | `[]` | Filled region overlays |",
-          '| `ariaLabel` | `string` | `"Map"` | Accessible label |',
-        ].join("\n"),
-      },
       source: {
         code: `<ui-map-view
   [center]="{ lat: 52.3676, lng: 4.9041 }"
@@ -663,6 +639,43 @@ readonly highlighted = signal(false);
 toggle(): void { this.highlighted.update(v => !v); }`,
         language: "typescript",
       },
+    },
+  },
+};
+
+/**
+ * _API Reference_ — features, inputs, and overlay types.
+ */
+export const Documentation: Story = {
+  tags: ["!dev"],
+  render: () => ({ template: " " }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          "## Key Features",
+          "",
+          "- **Tile rendering** — fetches and positions OpenStreetMap raster tiles based on `center` and `zoom`",
+          "- **Markers** — drop pins with labels, custom colours, and optional custom SVG icons",
+          "- **Polylines** — draw routes and paths with configurable colour, width, and dash patterns",
+          "- **Polygons** — render filled regions with stroke and fill colours",
+          "- **Highlight mode** — enable a glow effect on polylines and polygons with `highlighted: true`",
+          "- **Accessible** — configurable `ariaLabel` for the map container",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          "| `center` | `{ lat: number; lng: number }` | *(required)* | Geographic centre of the map |",
+          "| `zoom` | `number` | `13` | Zoom level (1 = world, 18 = building) |",
+          '| `height` | `string` | `"400px"` | CSS height of the map container |',
+          "| `markers` | `MapMarker[]` | `[]` | Pin markers with position, label, colour |",
+          "| `polylines` | `MapPolyline[]` | `[]` | Line overlays (routes, paths) |",
+          "| `polygons` | `MapPolygon[]` | `[]` | Filled region overlays |",
+          '| `ariaLabel` | `string` | `"Map"` | Accessible label |',
+        ].join("\n"),
+      },
+      source: { code: " " },
     },
   },
 };

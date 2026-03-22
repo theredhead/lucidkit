@@ -1,6 +1,60 @@
-import type { Meta, StoryObj } from "@storybook/angular";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { type BadgeColor, type BadgeVariant, UIBadge } from "./badge.component";
+
+// ── Gallery demo ─────────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-badge-gallery-demo",
+  standalone: true,
+  imports: [UIBadge],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <div>
+        <h4 style="margin: 0 0 8px">Count badges</h4>
+        <div style="display: flex; gap: 12px; align-items: center">
+          <ui-badge [count]="3" color="primary" />
+          <ui-badge [count]="7" color="success" />
+          <ui-badge [count]="12" color="warning" />
+          <ui-badge [count]="99" color="danger" />
+          <ui-badge [count]="42" color="neutral" />
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Dot indicators</h4>
+        <div style="display: flex; gap: 16px; align-items: center">
+          <ui-badge variant="dot" color="primary" />
+          <ui-badge variant="dot" color="success" />
+          <ui-badge variant="dot" color="warning" />
+          <ui-badge variant="dot" color="danger" />
+          <ui-badge variant="dot" color="neutral" />
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Label badges</h4>
+        <div
+          style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap"
+        >
+          <ui-badge variant="label" color="primary">New</ui-badge>
+          <ui-badge variant="label" color="success">Active</ui-badge>
+          <ui-badge variant="label" color="warning">Pending</ui-badge>
+          <ui-badge variant="label" color="danger">Urgent</ui-badge>
+          <ui-badge variant="label" color="neutral">Draft</ui-badge>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Overflow (99+)</h4>
+        <div style="display: flex; gap: 12px; align-items: center">
+          <ui-badge [count]="150" [maxCount]="99" color="danger" />
+          <ui-badge [count]="500" [maxCount]="99" color="primary" />
+        </div>
+      </div>
+    </div>
+  `,
+})
+class BadgeGalleryDemo {}
 
 const meta: Meta<UIBadge> = {
   title: "@theredhead/UI Kit/Badge",
@@ -15,6 +69,11 @@ const meta: Meta<UIBadge> = {
       },
     },
   },
+  decorators: [
+    moduleMetadata({
+      imports: [BadgeGalleryDemo],
+    }),
+  ],
   argTypes: {
     variant: {
       control: "select",
@@ -53,6 +112,62 @@ const meta: Meta<UIBadge> = {
 
 export default meta;
 type Story = StoryObj<UIBadge>;
+
+/**
+ * All badge variants and colours at a glance: count badges, dot
+ * indicators, text labels, and overflow behaviour.
+ */
+export const Default: Story = {
+  render: () => ({
+    template: `<ui-badge-gallery-demo />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "### Variants\n" +
+          "| Variant | Purpose | Example |\n" +
+          "|---------|---------|---------|\n" +
+          "| `count` | Numeric notification badge | Unread messages (5) |\n" +
+          "| `dot` | Presence / status indicator | Online status |\n" +
+          '| `label` | Short text tag | "New", "Beta" |\n\n' +
+          "### Colors\n" +
+          "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
+          "### Overflow\n" +
+          "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
+          '(e.g. "99+").',
+      },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-badge [count]="5" color="danger" />
+<ui-badge variant="dot" color="success" />
+<ui-badge variant="label" color="primary">New</ui-badge>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIBadge } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIBadge],
+  template: \`
+    <ui-badge [count]="5" color="danger" />
+    <ui-badge variant="dot" color="success" />
+    <ui-badge variant="label" color="primary">New</ui-badge>
+  \`,
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — badge tokens handle theming. */
+`,
+      },
+    },
+  },
+};
 
 /**
  * A numeric count badge — the most common variant. Displays the

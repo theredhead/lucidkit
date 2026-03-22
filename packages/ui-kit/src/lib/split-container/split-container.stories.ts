@@ -241,37 +241,6 @@ export const Default: Story = {
   render: () => ({ template: `<ui-split-default-demo />` }),
   parameters: {
     docs: {
-      description: {
-        story: [
-          "## Key Features",
-          "",
-          '- **Orientation** — `"horizontal"` (side-by-side, default) or `"vertical"` (stacked)',
-          "- **Size constraints** — set `min` / `max` pixel limits per panel via `firstConstraints` and `secondConstraints`",
-          '- **Initial sizes** — provide a `[initialSizes]="[30, 70]"` percentage tuple',
-          '- **Double-click collapse** — set `collapseTarget` to `"first"` or `"second"` to enable collapse/restore on double-click',
-          "- **Persistence** — give the container a `name` and sizes are saved to `localStorage` automatically",
-          "- **Divider width** — customise via `[dividerWidth]` (default 6 px)",
-          "- **Resize event** — `(resized)` emits a `SplitResizeEvent` with the new percentage sizes",
-          "",
-          "## Inputs",
-          "",
-          "| Input | Type | Default | Description |",
-          "|-------|------|---------|-------------|",
-          '| `orientation` | `"horizontal" \\| "vertical"` | `"horizontal"` | Split direction |',
-          "| `initialSizes` | `[number, number]` | `[50, 50]` | Initial panel sizes as percentages |",
-          "| `firstConstraints` | `{ min?: number; max?: number }` | — | Pixel constraints for the first panel |",
-          "| `secondConstraints` | `{ min?: number; max?: number }` | — | Pixel constraints for the second panel |",
-          '| `collapseTarget` | `"first" \\| "second"` | — | Which panel collapses on divider double-click |',
-          "| `dividerWidth` | `number` | `6` | Divider thickness in pixels |",
-          "| `name` | `string` | — | If set, sizes are persisted to localStorage under this key |",
-          "",
-          "## Outputs",
-          "",
-          "| Output | Payload | Description |",
-          "|--------|---------|-------------|",
-          "| `resized` | `SplitResizeEvent` | Emitted after a drag ends with the new sizes |",
-        ].join("\n"),
-      },
       source: {
         language: "html",
         code: `
@@ -620,6 +589,50 @@ export class DividerWidthDemo {}
 }
 `,
       },
+    },
+  },
+};
+
+/**
+ * _API Reference_ — features, inputs, outputs, and configuration.
+ */
+export const Documentation: Story = {
+  tags: ["!dev"],
+  render: () => ({ template: " " }),
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          "## Key Features",
+          "",
+          '- **Orientation** — `"horizontal"` (side-by-side, default) or `"vertical"` (stacked)',
+          "- **Size constraints** — set `min` / `max` pixel limits per panel via `firstConstraints` and `secondConstraints`",
+          '- **Initial sizes** — provide a `[initialSizes]="[30, 70]"` percentage tuple',
+          '- **Double-click collapse** — set `collapseTarget` to `"first"` or `"second"` to enable collapse/restore on double-click',
+          "- **Persistence** — give the container a `name` and sizes are saved to `localStorage` automatically",
+          "- **Divider width** — customise via `[dividerWidth]` (default 6 px)",
+          "- **Resize event** — `(resized)` emits a `SplitResizeEvent` with the new percentage sizes",
+          "",
+          "## Inputs",
+          "",
+          "| Input | Type | Default | Description |",
+          "|-------|------|---------|-------------|",
+          '| `orientation` | `"horizontal" \\| "vertical"` | `"horizontal"` | Split direction |',
+          "| `initialSizes` | `[number, number]` | `[50, 50]` | Initial panel sizes as percentages |",
+          "| `firstConstraints` | `{ min?: number; max?: number }` | — | Pixel constraints for the first panel |",
+          "| `secondConstraints` | `{ min?: number; max?: number }` | — | Pixel constraints for the second panel |",
+          '| `collapseTarget` | `"first" \\| "second"` | — | Which panel collapses on divider double-click |',
+          "| `dividerWidth` | `number` | `6` | Divider thickness in pixels |",
+          "| `name` | `string` | — | If set, sizes are persisted to localStorage under this key |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `resized` | `SplitResizeEvent` | Emitted after a drag ends with the new sizes |",
+        ].join("\n"),
+      },
+      source: { code: " " },
     },
   },
 };

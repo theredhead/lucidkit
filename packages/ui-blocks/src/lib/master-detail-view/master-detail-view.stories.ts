@@ -681,36 +681,6 @@ export const Default: Story = {
   render: () => ({ template: `<ui-mdv-default-demo />` }),
   parameters: {
     docs: {
-      description: {
-        story: [
-          "## Key Features",
-          "",
-          "- **Table mode** (default) — content-project `<ui-text-column>`, `<ui-number-column>`, `<ui-template-column>`, etc. as list columns",
-          "- **Tree mode** — pass an `ITreeDatasource` as `[datasource]` and optional `#nodeTemplate` for hierarchical navigation",
-          "- **Detail template** — project a `#detail` ng-template; the selected item is available as `$implicit`",
-          '- **Built-in filter** — set `[showFilter]="true"` for auto-inferred filtering, or project a custom `#filter` template',
-          "- **Single selection** — row-click-to-select with automatic detail pane update",
-          "",
-          "## Inputs",
-          "",
-          "| Input | Type | Default | Description |",
-          "|-------|------|---------|-------------|",
-          "| `data` | `T[]` | — | Array of items for the built-in table datasource |",
-          "| `datasource` | `DatasourceAdapter<T> \\| ITreeDatasource<T>` | — | External datasource (table or tree mode) |",
-          "| `treeDisplayWith` | `(data: T) => string` | — | Display function for tree nodes |",
-          "| `title` | `string` | — | Heading above the list panel |",
-          "| `showFilter` | `boolean` | `false` | Show the collapsible filter bar |",
-          "",
-          "## Content Projection",
-          "",
-          "| Slot | Purpose |",
-          "|------|--------|",
-          "| Column components | Declarative table columns (same as `<ui-table-view>`) |",
-          "| `#detail` | Template rendered for the selected item |",
-          "| `#filter` | Optional custom filter template (overrides auto-inferred filter) |",
-          "| `#nodeTemplate` | Optional custom tree-node template (tree mode only) |",
-        ].join("\n"),
-      },
       source: {
         code: `<ui-master-detail-view [data]="employees" title="Employees">
   <ui-text-column key="name" headerText="Name" [sortable]="true" />

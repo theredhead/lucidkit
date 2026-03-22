@@ -1,6 +1,46 @@
-import type { Meta, StoryObj } from "@storybook/angular";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { type CheckboxVariant, UICheckbox } from "./checkbox.component";
+
+// ── Gallery demo ─────────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-checkbox-gallery-demo",
+  standalone: true,
+  imports: [UICheckbox],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <div>
+        <h4 style="margin: 0 0 8px">Checkbox variant</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <ui-checkbox>Unchecked</ui-checkbox>
+          <ui-checkbox [checked]="true">Checked</ui-checkbox>
+          <ui-checkbox [indeterminate]="true">Indeterminate</ui-checkbox>
+          <ui-checkbox [disabled]="true">Disabled</ui-checkbox>
+          <ui-checkbox [disabled]="true" [checked]="true"
+            >Disabled checked</ui-checkbox
+          >
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Switch variant</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <ui-checkbox variant="switch">Switch off</ui-checkbox>
+          <ui-checkbox variant="switch" [checked]="true">Switch on</ui-checkbox>
+          <ui-checkbox variant="switch" [disabled]="true"
+            >Disabled switch</ui-checkbox
+          >
+          <ui-checkbox variant="switch" [disabled]="true" [checked]="true"
+            >Disabled switch on</ui-checkbox
+          >
+        </div>
+      </div>
+    </div>
+  `,
+})
+class CheckboxGalleryDemo {}
 
 const meta: Meta<UICheckbox> = {
   title: "@theredhead/UI Kit/Checkbox",
@@ -15,6 +55,11 @@ const meta: Meta<UICheckbox> = {
       },
     },
   },
+  decorators: [
+    moduleMetadata({
+      imports: [CheckboxGalleryDemo],
+    }),
+  ],
   argTypes: {
     variant: {
       control: "select",
@@ -49,20 +94,13 @@ export default meta;
 type Story = StoryObj<UICheckbox>;
 
 /**
- * Interactive checkbox with controls for `variant`, `checked`,
- * `disabled`, and `indeterminate`. Content projection provides
- * the label text.
+ * All checkbox and switch states at a glance: unchecked, checked,
+ * indeterminate, and disabled — for both visual variants.
  */
 export const Default: Story = {
-  render: (args) => ({
-    props: args,
-    template: `<ui-checkbox [variant]="variant" [checked]="checked" [disabled]="disabled">Accept terms</ui-checkbox>`,
+  render: () => ({
+    template: `<ui-checkbox-gallery-demo />`,
   }),
-  args: {
-    variant: "checkbox",
-    checked: false,
-    disabled: false,
-  },
   parameters: {
     docs: {
       description: {
