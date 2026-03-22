@@ -3,7 +3,7 @@ import { InjectionToken } from "@angular/core";
 /**
  * A pluggable Markdown-to-HTML converter.
  *
- * The rich-text editor's {@link MarkdownEditingStrategy} uses this
+ * The rich-text editor's `MarkdownEditingStrategy` uses this
  * interface to convert Markdown source text into an HTML string for
  * the live preview pane.
  *
@@ -44,7 +44,7 @@ export interface MarkdownParser {
 /**
  * Optional DI token for a custom {@link MarkdownParser}.
  *
- * When provided, the {@link MarkdownEditingStrategy} will use it
+ * When provided, the `MarkdownEditingStrategy` will use it
  * instead of the built-in lightweight converter.  This lets
  * consumers plug in full-featured parsers like `marked` or
  * `markdown-it` without adding a dependency to the library itself.
