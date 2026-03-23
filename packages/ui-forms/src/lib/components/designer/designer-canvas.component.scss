@@ -115,6 +115,7 @@
   border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 6px;
   background: var(--ui-surface-alt, #ffffff);
+  cursor: pointer;
   transition:
     border-color 0.12s ease,
     background 0.12s ease;
