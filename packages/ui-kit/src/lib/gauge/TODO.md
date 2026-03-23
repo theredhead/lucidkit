@@ -8,9 +8,9 @@
 
 ## Medium Priority
 
-- [ ] **Semicircle / half-gauge** — 180° sweep variant for fuel/temp dashboards. Either a `sweep` config option on `AnalogGaugeStrategy` or a separate strategy
-- [ ] **Zone labels** — optional `label?: string` on `GaugeZone` for legend/tooltip text ("Safe", "Warning", "Danger")
-- [ ] **Threshold markers / set-point** — `thresholds` input (`readonly number[]`) for reference lines on the gauge face (e.g. target temperature)
+- [x] **Semicircle / half-gauge** — `sweepDegrees` config option on `AnalogGaugeStrategy` (30°–360°); 180° for fuel/temp dashboards
+- [x] **Zone labels** — optional `label?: string` on `GaugeZone` rendered at high detail ("Safe", "Warning", "Danger")
+- [x] **Threshold markers / set-point** — `thresholds` input (`readonly number[]`) for dashed reference lines on the gauge face
 
 ## Lower Priority
 

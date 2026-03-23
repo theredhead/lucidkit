@@ -18,9 +18,9 @@ import { BarGaugeStrategy } from "./strategies/bar-gauge.strategy";
 // ── Shared data ────────────────────────────────────────────────────
 
 const speedZones: GaugeZone[] = [
-  { from: 0, to: 60, color: "#34a853" },
-  { from: 60, to: 80, color: "#fbbc04" },
-  { from: 80, to: 100, color: "#ea4335" },
+  { from: 0, to: 60, color: "#34a853", label: "Safe" },
+  { from: 60, to: 80, color: "#fbbc04", label: "Warning" },
+  { from: 80, to: 100, color: "#ea4335", label: "Danger" },
 ];
 
 const detailLevels: GaugeDetailLevel[] = ["high", "medium", "low"];
@@ -252,6 +252,94 @@ export class SpeedometerComponent {
     { from: 0, to: 100, color: '#34a853' },
     { from: 100, to: 160, color: '#fbbc04' },
     { from: 160, to: 220, color: '#ea4335' },
+  ];
+}
+
+// ── SCSS ──
+/* No custom styles needed — gauge tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
+export const Semicircle: Story = {
+  render: (args) => ({
+    props: { ...args, zones: speedZones },
+    template: `
+      <ui-gauge
+        [value]="value"
+        [min]="min"
+        [max]="max"
+        [unit]="unit"
+        [strategy]="strategy"
+        [zones]="zones"
+        [width]="width"
+        [height]="height"
+        [detailLevel]="detailLevel"
+      />
+    `,
+  }),
+  args: {
+    value: 65,
+    min: 0,
+    max: 100,
+    unit: "°C",
+    strategy: new AnalogGaugeStrategy({ sweepDegrees: 180, majorTicks: 5 }),
+    width: 280,
+    height: 160,
+    detailLevel: "high" as GaugeDetailLevel,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-gauge
+  [value]="temperature"
+  [min]="0"
+  [max]="100"
+  unit="°C"
+  [strategy]="semicircleStrategy"
+  [zones]="zones"
+  [width]="280"
+  [height]="160"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIGauge,
+  AnalogGaugeStrategy,
+  type GaugeZone,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-temp-gauge',
+  standalone: true,
+  imports: [UIGauge],
+  template: \\\`
+    <ui-gauge
+      [value]="temperature"
+      [min]="0" [max]="100"
+      unit="°C"
+      [strategy]="strategy"
+      [zones]="zones"
+      [width]="280" [height]="160"
+    />
+  \\\`,
+})
+export class TempGaugeComponent {
+  readonly temperature = 65;
+  readonly strategy = new AnalogGaugeStrategy({
+    sweepDegrees: 180,
+    majorTicks: 5,
+  });
+  readonly zones: GaugeZone[] = [
+    { from: 0, to: 60, color: '#34a853' },
+    { from: 60, to: 80, color: '#fbbc04' },
+    { from: 80, to: 100, color: '#ea4335' },
   ];
 }
 
@@ -563,13 +651,118 @@ export class CpuMeterComponent {
   },
 };
 
+export const Thresholds: Story = {
+  render: (args) => ({
+    props: {
+      ...args,
+      zones: speedZones,
+      thresholds: [40, 75],
+      analogStrategy: new AnalogGaugeStrategy(),
+      barStrategy: new BarGaugeStrategy({ ticks: 10 }),
+    },
+    template: `
+      <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+        <ui-gauge
+          [value]="value"
+          [min]="min"
+          [max]="max"
+          [unit]="unit"
+          [strategy]="analogStrategy"
+          [zones]="zones"
+          [thresholds]="thresholds"
+          [width]="260"
+          [height]="260"
+        />
+        <ui-gauge
+          [value]="value"
+          [min]="min"
+          [max]="max"
+          [unit]="unit"
+          [strategy]="barStrategy"
+          [zones]="zones"
+          [thresholds]="thresholds"
+          [width]="300"
+          [height]="80"
+        />
+      </div>
+    `,
+  }),
+  args: {
+    value: 55,
+    min: 0,
+    max: 100,
+    unit: "%",
+    detailLevel: "high" as GaugeDetailLevel,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-gauge
+  [value]="load"
+  [min]="0"
+  [max]="100"
+  unit="%"
+  [strategy]="strategy"
+  [zones]="zones"
+  [thresholds]="[40, 75]"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIGauge,
+  AnalogGaugeStrategy,
+  type GaugeZone,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-threshold-demo',
+  standalone: true,
+  imports: [UIGauge],
+  template: \\\`
+    <ui-gauge
+      [value]="load"
+      [min]="0" [max]="100"
+      unit="%"
+      [strategy]="strategy"
+      [zones]="zones"
+      [thresholds]="thresholds"
+    />
+  \\\`,
+})
+export class ThresholdDemoComponent {
+  readonly load = 55;
+  readonly strategy = new AnalogGaugeStrategy();
+  readonly zones: GaugeZone[] = [
+    { from: 0, to: 60, color: '#34a853', label: 'Safe' },
+    { from: 60, to: 80, color: '#fbbc04', label: 'Warning' },
+    { from: 80, to: 100, color: '#ea4335', label: 'Danger' },
+  ];
+  readonly thresholds = [40, 75];
+}
+
+// ── SCSS ──
+/* No custom styles needed — gauge tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
 export const CustomFormatter: Story = {
   render: (args) => ({
     props: {
       ...args,
       zones: speedZones,
       formatCurrency: (n: number): string =>
-        "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+        "$" +
+        n.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
     },
     template: `
       <ui-gauge

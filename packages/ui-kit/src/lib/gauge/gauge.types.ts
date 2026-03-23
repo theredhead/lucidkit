@@ -37,9 +37,9 @@ export type GaugeRenderOutput =
  * @example
  * ```ts
  * const zones: GaugeZone[] = [
- *   { from: 0,   to: 60,  color: '#34a853' },
- *   { from: 60,  to: 80,  color: '#fbbc04' },
- *   { from: 80,  to: 100, color: '#ea4335' },
+ *   { from: 0,   to: 60,  color: '#34a853', label: 'Safe' },
+ *   { from: 60,  to: 80,  color: '#fbbc04', label: 'Warning' },
+ *   { from: 80,  to: 100, color: '#ea4335', label: 'Danger' },
  * ];
  * ```
  */
@@ -50,6 +50,8 @@ export interface GaugeZone {
   readonly to: number;
   /** Fill colour for this zone arc. */
   readonly color: string;
+  /** Optional label for this zone (e.g. "Safe", "Warning", "Danger"). */
+  readonly label?: string;
 }
 
 /**
@@ -83,6 +85,12 @@ export interface GaugeRenderContext {
    * each strategy falls back to its own default formatting.
    */
   readonly formatValue?: (value: number) => string;
+  /**
+   * Optional reference values rendered as marker lines on the gauge.
+   *
+   * Use for target set-points, thresholds, or limit indicators.
+   */
+  readonly thresholds?: readonly number[];
 }
 
 /**

@@ -125,6 +125,19 @@ export class UIGauge {
     undefined,
   );
 
+  /**
+   * Optional reference values rendered as marker lines on the gauge.
+   *
+   * Strategies draw a thin reference line at each threshold position.
+   * Useful for target set-points, limits, or alarm values.
+   *
+   * @example
+   * ```html
+   * <ui-gauge [thresholds]="[75, 90]" />
+   * ```
+   */
+  public readonly thresholds = input<readonly number[]>([]);
+
   // ── Queries ─────────────────────────────────────────────────────────
 
   private readonly containerRef =
@@ -220,6 +233,7 @@ export class UIGauge {
       tokens: this.resolveTokens(),
       detailLevel: this.detailLevel(),
       formatValue: this.formatValue(),
+      thresholds: this.thresholds(),
     };
 
     const output = strategy.render(ctx);

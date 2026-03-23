@@ -10,10 +10,42 @@ import {
 import { GaugePresentationStrategy } from "./gauge-presentation-strategy";
 
 /**
+ * Configuration options for the {@link AnalogGaugeStrategy}.
+ */
+export interface AnalogGaugeOptions {
+  /**
+   * Number of major (labelled) ticks around the arc.
+   * @default 10
+   */
+  readonly majorTicks?: number;
+
+  /**
+   * Number of minor (unlabelled) ticks between each major pair.
+   * @default 4
+   */
+  readonly minorTicks?: number;
+
+  /**
+   * Total arc sweep in degrees.
+   *
+   * - `270` — classic three-quarter gauge (default)
+   * - `180` — semicircle / half-gauge
+   * - Any value between `30` and `360` is accepted
+   *
+   * @default 270
+   */
+  readonly sweepDegrees?: number;
+}
+
+/**
  * Classic circular speedometer-style gauge.
  *
- * Renders a 270° arc with optional coloured zones, major / minor
- * tick marks, numeric labels, a needle, and a centred value readout.
+ * Renders a configurable arc with optional coloured zones, major /
+ * minor tick marks, numeric labels, a needle, and a centred value
+ * readout.
+ *
+ * Use `sweepDegrees: 180` for a semicircle / half-gauge variant
+ * suitable for fuel and temperature dashboards.
  *
  * Output kind: **svg**.
  */
@@ -26,12 +58,23 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
   /** Number of minor (unlabelled) ticks between each major pair. */
   private readonly minorTicks: number;
 
-  public constructor(
-    options: { majorTicks?: number; minorTicks?: number } = {},
-  ) {
+  /** Total arc sweep in radians. */
+  private readonly sweepRad: number;
+
+  /** Start angle in radians. */
+  private readonly startAngleRad: number;
+
+  public constructor(options: AnalogGaugeOptions = {}) {
     super();
     this.majorTicks = options.majorTicks ?? 10;
     this.minorTicks = options.minorTicks ?? 4;
+
+    const deg = Math.max(30, Math.min(360, options.sweepDegrees ?? 270));
+    this.sweepRad = (deg * Math.PI) / 180;
+    // Centre the gap at the bottom (270° in SVG coords).
+    // Start = 270° − sweep/2, converted to radians.
+    // For 270°: start = 135°, for 180°: start = 180°.
+    this.startAngleRad = ((270 - deg / 2) * Math.PI) / 180;
   }
 
   public render(ctx: GaugeRenderContext): GaugeRenderOutput {
@@ -40,19 +83,20 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
     const svg = createGaugeSvgRoot(size);
 
     const cx = size.width / 2;
-    const cy = size.height * 0.55;
-    const outerRadius = Math.min(cx, cy) - 12;
+    // Push centre down for wide sweeps, keep it low for semicircle
+    const isSemicircle = this.sweepRad <= Math.PI;
+    const cy = isSemicircle ? size.height * 0.8 : size.height * 0.55;
+    const outerRadius =
+      Math.min(cx, isSemicircle ? size.height * 0.7 : cy) - 12;
     const innerRadius = outerRadius * 0.82;
 
-    // Sweep: 270° centred at bottom → start at 135° (lower-left), end at 405° (lower-right)
-    const startAngle = (135 * Math.PI) / 180;
-    const endAngle = (405 * Math.PI) / 180;
-    const sweep = endAngle - startAngle;
+    const startAngle = this.startAngleRad;
+    const sweep = this.sweepRad;
 
     // ── Face background arc ──
     svg.appendChild(
       gaugeSvgEl("path", {
-        d: describeArc(cx, cy, outerRadius, startAngle, endAngle),
+        d: describeArc(cx, cy, outerRadius, startAngle, startAngle + sweep),
         fill: "none",
         stroke: tokens.face,
         "stroke-width": outerRadius - innerRadius,
@@ -73,6 +117,45 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
           "stroke-width": outerRadius - innerRadius,
         }),
       );
+
+      // Zone label at arc midpoint (high detail only)
+      if (zone.label && detailLevel === "high") {
+        const midAngle = (zoneStart + zoneEnd) / 2;
+        const labelRadius = innerRadius - 10;
+        const lp = polarToCartesian(cx, cy, labelRadius, midAngle);
+        svg.appendChild(
+          gaugeSvgText(zone.label, lp.x, lp.y, {
+            fill: zone.color,
+            "text-anchor": "middle",
+            "dominant-baseline": "central",
+            "font-size": Math.max(8, Math.round(outerRadius / 12)),
+            "font-weight": "600",
+            class: "zone-label",
+          }),
+        );
+      }
+    }
+
+    // ── Threshold markers ──
+    if (ctx.thresholds && ctx.thresholds.length > 0) {
+      for (const t of ctx.thresholds) {
+        if (t < min || t > max) continue;
+        const tAngle = startAngle + valueToRatio(t, min, max) * sweep;
+        const p1 = polarToCartesian(cx, cy, innerRadius - 4, tAngle);
+        const p2 = polarToCartesian(cx, cy, outerRadius + 4, tAngle);
+        svg.appendChild(
+          gaugeSvgEl("line", {
+            x1: p1.x,
+            y1: p1.y,
+            x2: p2.x,
+            y2: p2.y,
+            stroke: tokens.needle,
+            "stroke-width": 2,
+            "stroke-dasharray": "4,2",
+            class: "threshold-marker",
+          }),
+        );
+      }
     }
 
     // ── Ticks (skipped at 'low' detail) ──
@@ -140,8 +223,11 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
     );
 
     // ── Value readout ──
+    const readoutY = isSemicircle
+      ? cy - outerRadius * 0.15
+      : cy + outerRadius * 0.42;
     svg.appendChild(
-      gaugeSvgText(fmt(value), cx, cy + outerRadius * 0.42, {
+      gaugeSvgText(fmt(value), cx, readoutY, {
         fill: tokens.text,
         "text-anchor": "middle",
         "font-size": Math.max(14, Math.round(outerRadius / 5)),
@@ -151,12 +237,17 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
 
     if (unit) {
       svg.appendChild(
-        gaugeSvgText(unit, cx, cy + outerRadius * 0.55, {
-          fill: tokens.text,
-          "text-anchor": "middle",
-          "font-size": Math.max(10, Math.round(outerRadius / 8)),
-          opacity: 0.7,
-        }),
+        gaugeSvgText(
+          unit,
+          cx,
+          readoutY + Math.max(14, Math.round(outerRadius / 5)) * 0.8,
+          {
+            fill: tokens.text,
+            "text-anchor": "middle",
+            "font-size": Math.max(10, Math.round(outerRadius / 8)),
+            opacity: 0.7,
+          },
+        ),
       );
     }
 

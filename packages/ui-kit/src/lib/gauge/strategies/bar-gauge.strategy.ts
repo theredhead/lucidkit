@@ -135,9 +135,45 @@ export class BarGaugeStrategy extends GaugePresentationStrategy {
             opacity: 0.25,
           }),
         );
+
+        // Zone label centred above the zone segment (high detail only)
+        if (zone.label && detailLevel === "high") {
+          const labelX = x + w / 2;
+          const labelY = trackY + this.trackHeight / 2;
+          svg.appendChild(
+            gaugeSvgText(zone.label, labelX, labelY, {
+              fill: zone.color,
+              "text-anchor": "middle",
+              "dominant-baseline": "central",
+              "font-size": 9,
+              "font-weight": "600",
+              class: "zone-label",
+            }),
+          );
+        }
       }
 
       svg.appendChild(zoneGroup);
+    }
+
+    // ── Threshold markers ──
+    if (ctx.thresholds && ctx.thresholds.length > 0) {
+      for (const t of ctx.thresholds) {
+        if (t < min || t > max) continue;
+        const x = padding.left + valueToRatio(t, min, max) * trackWidth;
+        svg.appendChild(
+          gaugeSvgEl("line", {
+            x1: x,
+            y1: trackY - 2,
+            x2: x,
+            y2: trackY + this.trackHeight + 2,
+            stroke: tokens.needle,
+            "stroke-width": 2,
+            "stroke-dasharray": "4,2",
+            class: "threshold-marker",
+          }),
+        );
+      }
     }
 
     // ── Fill bar ──
