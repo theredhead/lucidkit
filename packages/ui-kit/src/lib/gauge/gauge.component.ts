@@ -7,6 +7,7 @@ import {
   effect,
   inject,
   input,
+  signal,
   viewChild,
 } from "@angular/core";
 import { LoggerFactory } from "@theredhead/foundation";
@@ -59,6 +60,7 @@ import type { GaugePresentationStrategy } from "./strategies/gauge-presentation-
   styleUrl: "./gauge.component.scss",
   host: {
     class: "ui-gauge",
+    "[class.ui-gauge--fit]": "fit()",
   },
 })
 export class UIGauge {
@@ -87,6 +89,22 @@ export class UIGauge {
 
   /** Coloured zones overlaid on the gauge face. */
   public readonly zones = input<readonly GaugeZone[]>([]);
+
+  /**
+   * Whether the gauge fills its parent container.
+   *
+   * When `true`, the gauge uses a `ResizeObserver` to track the host
+   * element's dimensions and re-renders automatically on resize.
+   * The `width` and `height` inputs are used as fallbacks only.
+   *
+   * @example
+   * ```html
+   * <div style="width: 100%; height: 300px">
+   *   <ui-gauge [fit]="true" [value]="speed" [strategy]="strategy" />
+   * </div>
+   * ```
+   */
+  public readonly fit = input<boolean>(false);
 
   /** Accessible label for the gauge. */
   public readonly ariaLabel = input<string>("Gauge");
@@ -150,17 +168,23 @@ export class UIGauge {
     Math.min(this.max(), Math.max(this.min(), this.value())),
   );
 
-  /** Target render size. */
-  protected readonly size = computed<GaugeSize>(() => ({
-    width: this.width(),
-    height: this.height(),
-  }));
+  /** Target render size — observed dimensions when `fit`, else explicit inputs. */
+  protected readonly size = computed<GaugeSize>(() => {
+    if (this.fit()) {
+      const observed = this.observedSize();
+      if (observed) return observed;
+    }
+    return { width: this.width(), height: this.height() };
+  });
 
   // ── Private fields ──────────────────────────────────────────────────
 
   private readonly log = inject(LoggerFactory).createLogger("UIGauge");
   private readonly elRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
+
+  /** Dimensions detected by the ResizeObserver (fit mode). */
+  private readonly observedSize = signal<GaugeSize | null>(null);
 
   /**
    * The value currently being displayed (may be mid-animation).
@@ -170,6 +194,9 @@ export class UIGauge {
 
   /** Handle for the running `requestAnimationFrame` chain. */
   private animationFrameId = 0;
+
+  /** Active ResizeObserver (fit mode). */
+  private resizeObserver: ResizeObserver | null = null;
 
   // ── Constructor ─────────────────────────────────────────────────────
 
@@ -195,7 +222,37 @@ export class UIGauge {
       this.animateTo(fromValue, targetValue, duration);
     });
 
-    this.destroyRef.onDestroy(() => this.cancelAnimation());
+    // ── ResizeObserver for fit mode ──
+    effect(() => {
+      const shouldFit = this.fit();
+
+      this.resizeObserver?.disconnect();
+      this.resizeObserver = null;
+
+      if (shouldFit && typeof ResizeObserver !== "undefined") {
+        const el = this.elRef.nativeElement;
+        this.resizeObserver = new ResizeObserver((entries) => {
+          const entry = entries[0];
+          if (entry) {
+            const { width, height } = entry.contentRect;
+            if (width > 0 && height > 0) {
+              this.observedSize.set({
+                width: Math.round(width),
+                height: Math.round(height),
+              });
+            }
+          }
+        });
+        this.resizeObserver.observe(el);
+      } else {
+        this.observedSize.set(null);
+      }
+    });
+
+    this.destroyRef.onDestroy(() => {
+      this.cancelAnimation();
+      this.resizeObserver?.disconnect();
+    });
   }
 
   // ── Private methods ─────────────────────────────────────────────────

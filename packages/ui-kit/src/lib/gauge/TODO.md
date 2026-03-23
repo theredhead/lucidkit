@@ -15,5 +15,5 @@
 ## Lower Priority
 
 - [ ] **Multi-needle / multi-value** — show two values on one gauge (current + target, or min/max recorded)
-- [ ] **Responsive sizing** — `fit` mode using `ResizeObserver` to fill container instead of fixed width/height
+- [x] **Responsive sizing** — `fit` mode using `ResizeObserver` to fill container instead of fixed width/height
 - [ ] **Click-to-set** — interactive mode: click/drag on needle emits a new value (thermostat use case)

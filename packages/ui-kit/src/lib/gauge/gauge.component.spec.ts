@@ -217,6 +217,49 @@ describe("UIGauge", () => {
       expect(strategy.lastCtx!.formatValue).toBeUndefined();
     });
   });
+
+  describe("fit mode", () => {
+    it("should default fit to false", () => {
+      expect(component.fit()).toBe(false);
+    });
+
+    it("should not add ui-gauge--fit class when fit is false", () => {
+      expect(fixture.nativeElement.classList).not.toContain("ui-gauge--fit");
+    });
+
+    it("should add ui-gauge--fit host class when fit is true", () => {
+      fixture.componentRef.setInput("fit", true);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.classList).toContain("ui-gauge--fit");
+    });
+
+    it("should remove inline width/height on viewport when fit is true", () => {
+      fixture.componentRef.setInput("fit", true);
+      fixture.detectChanges();
+      const viewport = fixture.nativeElement.querySelector(".viewport");
+      expect(viewport.style.width).toBe("");
+      expect(viewport.style.height).toBe("");
+    });
+
+    it("should set inline width/height on viewport when fit is false", () => {
+      fixture.componentRef.setInput("fit", false);
+      fixture.componentRef.setInput("width", 300);
+      fixture.componentRef.setInput("height", 250);
+      fixture.detectChanges();
+      const viewport = fixture.nativeElement.querySelector(".viewport");
+      expect(viewport.style.width).toBe("300px");
+      expect(viewport.style.height).toBe("250px");
+    });
+
+    it("should fall back to width/height inputs when fit is true but no observation yet", () => {
+      fixture.componentRef.setInput("fit", true);
+      fixture.componentRef.setInput("width", 400);
+      fixture.componentRef.setInput("height", 300);
+      fixture.detectChanges();
+      // No ResizeObserver callback yet → uses input fallback
+      expect(strategy.lastCtx!.size).toEqual({ width: 400, height: 300 });
+    });
+  });
 });
 
 // ── AnalogGaugeStrategy ────────────────────────────────────────────
