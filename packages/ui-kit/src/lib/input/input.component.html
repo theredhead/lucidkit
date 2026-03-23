@@ -7,6 +7,15 @@
     [attr.aria-label]="ariaLabel()"
     (input)="onInput($event)"
   ></textarea>
+  @if (heightAdjustable()) {
+    <div
+      class="resize-handle"
+      role="separator"
+      aria-orientation="horizontal"
+      aria-label="Resize text area"
+      (pointerdown)="onResizePointerDown($event)"
+    ></div>
+  }
 } @else {
   @if (prefixIcon(); as icon) {
     <button

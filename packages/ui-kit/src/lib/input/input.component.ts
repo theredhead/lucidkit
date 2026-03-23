@@ -54,6 +54,7 @@ import type {
   host: {
     class: "ui-input",
     "[class.ui-input--multiline]": "multiline()",
+    "[class.ui-input--height-adjustable]": "multiline() && heightAdjustable()",
     "[class.ui-input--has-prefix]": "prefixIcon() !== undefined",
     "[class.ui-input--has-suffix]": "suffixIcon() !== undefined",
     "[class.ui-input--invalid]": "!valid()",
@@ -102,6 +103,13 @@ export class UIInput {
    * is `true`). Defaults to `3`.
    */
   public readonly rows = input(3);
+
+  /**
+   * Whether the multiline textarea can be vertically resized by the
+   * user via a drag handle. Only applies when {@link multiline} is
+   * `true`. Defaults to `true`.
+   */
+  public readonly heightAdjustable = input(true);
 
   /**
    * Accessible label forwarded to the native element as `aria-label`.
@@ -228,5 +236,31 @@ export class UIInput {
   /** @internal */
   protected onSuffixClick(): void {
     this.adapter()?.onSuffixClick?.(this.text());
+  }
+
+  /** @internal Handle pointer-driven vertical resize of the textarea. */
+  protected onResizePointerDown(event: PointerEvent): void {
+    event.preventDefault();
+    const handle = event.target as HTMLElement;
+    const textarea = this.nativeInput()?.nativeElement;
+    if (!textarea) return;
+
+    const startY = event.clientY;
+    const startHeight = textarea.offsetHeight;
+
+    const onMove = (e: PointerEvent): void => {
+      const delta = e.clientY - startY;
+      textarea.style.height = `${Math.max(32, startHeight + delta)}px`;
+    };
+
+    const onUp = (): void => {
+      handle.releasePointerCapture(event.pointerId);
+      handle.removeEventListener("pointermove", onMove);
+      handle.removeEventListener("pointerup", onUp);
+    };
+
+    handle.setPointerCapture(event.pointerId);
+    handle.addEventListener("pointermove", onMove);
+    handle.addEventListener("pointerup", onUp);
   }
 }

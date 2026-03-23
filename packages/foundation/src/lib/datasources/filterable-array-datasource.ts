@@ -103,6 +103,6 @@ export class FilterableArrayDatasource<T> extends ArrayDatasource<T> {
 
   /** Clears any active filter, restoring all rows. */
   public clearFilter(): void {
-    this._filteredRows = this._allRows;
+    this.filterBy(null);
   }
 }

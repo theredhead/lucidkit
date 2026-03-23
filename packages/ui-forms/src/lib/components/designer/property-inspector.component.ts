@@ -8,7 +8,15 @@ import {
   signal,
 } from "@angular/core";
 
-import { ModalService, UIIcon, UIIcons } from "@theredhead/ui-kit";
+import {
+  ModalService,
+  type SelectOption,
+  UICheckbox,
+  UIIcon,
+  UIIcons,
+  UIInput,
+  UISelect,
+} from "@theredhead/ui-kit";
 
 import { isFlairComponent } from "../../types/form-schema.types";
 import type {
@@ -25,7 +33,7 @@ import type {
 } from "../../types/validation.types";
 
 /** Available component keys for the component selector. */
-const COMPONENT_OPTIONS = [
+const COMPONENT_OPTIONS: SelectOption[] = [
   "text",
   "select",
   "checkbox",
@@ -42,18 +50,20 @@ const COMPONENT_OPTIONS = [
   "flair:richtext",
   "flair:image",
   "flair:media",
-] as const;
+].map((k) => ({ value: k, label: k }));
 
 /** Available validation rule types. */
-const VALIDATION_TYPES: ValidationRuleType[] = [
-  "required",
-  "minLength",
-  "maxLength",
-  "min",
-  "max",
-  "pattern",
-  "email",
-];
+const VALIDATION_TYPE_OPTIONS: SelectOption[] = (
+  [
+    "required",
+    "minLength",
+    "maxLength",
+    "min",
+    "max",
+    "pattern",
+    "email",
+  ] satisfies ValidationRuleType[]
+).map((k) => ({ value: k, label: k }));
 
 /**
  * Property inspector panel for editing the properties of the
@@ -67,7 +77,7 @@ const VALIDATION_TYPES: ValidationRuleType[] = [
 @Component({
   selector: "ui-property-inspector",
   standalone: true,
-  imports: [UIIcon],
+  imports: [UIIcon, UIInput, UISelect, UICheckbox],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "ui-property-inspector" },
   templateUrl: "./property-inspector.component.html",
@@ -81,7 +91,7 @@ export class UIPropertyInspector {
   protected readonly componentOptions = COMPONENT_OPTIONS;
 
   /** @internal */
-  protected readonly validationTypes = VALIDATION_TYPES;
+  protected readonly validationTypeOptions = VALIDATION_TYPE_OPTIONS;
 
   /** @internal */
   protected readonly configError = signal<string>("");
@@ -283,13 +293,12 @@ export class UIPropertyInspector {
     });
   }
 
-  /** @internal Set a boolean config value from a checkbox event. */
+  /** @internal Set a boolean config value. */
   protected setConfigBoolean(
     field: MutableFieldDefinition,
     key: string,
-    event: Event,
+    checked: boolean,
   ): void {
-    const checked = (event.target as HTMLInputElement).checked;
     field.config.update((cfg) => {
       const copy = { ...cfg };
       if (!checked) {
@@ -301,13 +310,12 @@ export class UIPropertyInspector {
     });
   }
 
-  /** @internal Normalize select options to { label, value } pairs. */
-  protected configSelectOptions(
-    prop: ConfigPropertySchema,
-  ): readonly { label: string; value: string }[] {
-    return (prop.options ?? []).map((o) =>
+  /** @internal Normalize select options to SelectOption[] with empty option. */
+  protected configSelectOptions(prop: ConfigPropertySchema): SelectOption[] {
+    const opts = (prop.options ?? []).map((o) =>
       typeof o === "string" ? { label: o, value: o } : o,
     );
+    return [{ label: "\u2014", value: "" }, ...opts];
   }
 
   /** @internal Open a richtext editor dialog for the given config key. */

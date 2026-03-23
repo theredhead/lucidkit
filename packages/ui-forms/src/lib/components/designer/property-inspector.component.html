@@ -3,33 +3,34 @@
     @case ("form") {
       <h3 class="heading">Form Properties</h3>
       <div class="section">
-        <label class="label">
+        <div class="label">
           ID
-          <input
-            class="input"
+          <ui-input
             [value]="engine().formId()"
-            (input)="engine().formId.set(inputValue($event))"
+            (valueChange)="engine().formId.set($event)"
+            ariaLabel="Form ID"
           />
-        </label>
+        </div>
 
-        <label class="label">
+        <div class="label">
           Title
-          <input
-            class="input"
+          <ui-input
             [value]="engine().formTitle()"
-            (input)="engine().formTitle.set(inputValue($event))"
+            (valueChange)="engine().formTitle.set($event)"
+            ariaLabel="Form title"
           />
-        </label>
+        </div>
 
-        <label class="label">
+        <div class="label">
           Description
-          <textarea
-            class="textarea"
-            rows="2"
+          <ui-input
+            [multiline]="true"
+            [rows]="2"
             [value]="engine().formDescription()"
-            (input)="engine().formDescription.set(inputValue($event))"
-          ></textarea>
-        </label>
+            (valueChange)="engine().formDescription.set($event)"
+            ariaLabel="Form description"
+          />
+        </div>
       </div>
     }
 
@@ -37,33 +38,34 @@
       @if (engine().selectedGroup(); as group) {
         <h3 class="heading">Group Properties</h3>
         <div class="section">
-          <label class="label">
+          <div class="label">
             ID
-            <input
-              class="input"
+            <ui-input
               [value]="group.id()"
-              (input)="group.id.set(inputValue($event))"
+              (valueChange)="group.id.set($event)"
+              ariaLabel="Group ID"
             />
-          </label>
+          </div>
 
-          <label class="label">
+          <div class="label">
             Title
-            <input
-              class="input"
+            <ui-input
               [value]="group.title()"
-              (input)="group.title.set(inputValue($event))"
+              (valueChange)="group.title.set($event)"
+              ariaLabel="Group title"
             />
-          </label>
+          </div>
 
-          <label class="label">
+          <div class="label">
             Description
-            <textarea
-              class="textarea"
-              rows="2"
+            <ui-input
+              [multiline]="true"
+              [rows]="2"
               [value]="group.description()"
-              (input)="group.description.set(inputValue($event))"
-            ></textarea>
-          </label>
+              (valueChange)="group.description.set($event)"
+              ariaLabel="Group description"
+            />
+          </div>
         </div>
       }
     }
@@ -72,56 +74,56 @@
       @if (engine().selectedField(); as field) {
         <h3 class="heading">Field Properties</h3>
         <div class="section">
-          <label class="label">
+          <div class="label">
             ID
-            <input
-              class="input"
+            <ui-input
               [value]="field.id()"
-              (input)="field.id.set(inputValue($event))"
+              (valueChange)="field.id.set($event)"
+              ariaLabel="Field ID"
             />
-          </label>
-
-          <label class="label">
-            Title
-            <input
-              class="input"
-              [value]="field.title()"
-              (input)="field.title.set(inputValue($event))"
-            />
-          </label>
-
-          <label class="label">
-            Description
-            <textarea
-              class="textarea"
-              rows="2"
-              [value]="field.description()"
-              (input)="field.description.set(inputValue($event))"
-            ></textarea>
-          </label>
-
-          <label class="label">
-            Component
-            <select
-              class="select"
-              [value]="field.component()"
-              (change)="field.component.set(inputValue($event))"
-            >
-              @for (opt of componentOptions; track opt) {
-                <option [value]="opt">{{ opt }}</option>
-              }
-            </select>
-          </label>
+          </div>
 
           @if (!isFieldFlair(field)) {
-            <label class="label">
-              Default Value
-              <input
-                class="input"
-                [value]="field.defaultValue() ?? ''"
-                (input)="field.defaultValue.set(inputValue($event) || null)"
+            <div class="label">
+              Title
+              <ui-input
+                [value]="field.title()"
+                (valueChange)="field.title.set($event)"
+                ariaLabel="Field title"
               />
-            </label>
+            </div>
+
+            <div class="label">
+              Description
+              <ui-input
+                [multiline]="true"
+                [rows]="2"
+                [value]="field.description()"
+                (valueChange)="field.description.set($event)"
+                ariaLabel="Field description"
+              />
+            </div>
+          }
+
+          <div class="label">
+            Component
+            <ui-select
+              [options]="componentOptions"
+              [value]="field.component()"
+              (valueChange)="field.component.set($event)"
+              ariaLabel="Field component type"
+            />
+          </div>
+
+          @if (!isFieldFlair(field)) {
+            <div class="label">
+              Default Value
+              <ui-input
+                [value]="'' + (field.defaultValue() ?? '')"
+                (valueChange)="field.defaultValue.set($event || null)"
+                ariaLabel="Default value"
+              />
+            </div>
           }
         </div>
 
@@ -131,21 +133,17 @@
           <div class="section">
             @for (opt of field.options(); track $index; let i = $index) {
               <div class="pi-option-row">
-                <input
-                  class="input input--sm"
-                  placeholder="Label"
+                <ui-input
                   [value]="opt.label"
-                  (input)="
-                    updateOption(field, i, 'label', inputValue($event))
-                  "
+                  (valueChange)="updateOption(field, i, 'label', $event)"
+                  placeholder="Label"
+                  ariaLabel="Option label"
                 />
-                <input
-                  class="input input--sm"
+                <ui-input
+                  [value]="'' + opt.value"
+                  (valueChange)="updateOption(field, i, 'value', $event)"
                   placeholder="Value"
-                  [value]="opt.value"
-                  (input)="
-                    updateOption(field, i, 'value', inputValue($event))
-                  "
+                  ariaLabel="Option value"
                 />
                 <button
                   type="button"
@@ -177,51 +175,33 @@
               let i = $index
             ) {
               <div class="validation-row">
-                <select
-                  class="select select--sm"
+                <ui-select
+                  [options]="validationTypeOptions"
                   [value]="rule.type"
-                  (change)="
-                    updateValidationRule(
-                      field,
-                      i,
-                      'type',
-                      inputValue($event)
-                    )
+                  (valueChange)="
+                    updateValidationRule(field, i, 'type', $event)
                   "
-                >
-                  @for (vt of validationTypes; track vt) {
-                    <option [value]="vt">{{ vt }}</option>
-                  }
-                </select>
+                  ariaLabel="Validation rule type"
+                />
 
                 @if (ruleHasParam(rule.type)) {
-                  <input
-                    class="input input--sm"
-                    [placeholder]="paramPlaceholder(rule.type)"
+                  <ui-input
                     [value]="ruleParamValue(rule)"
-                    (input)="
-                      updateValidationParam(
-                        field,
-                        i,
-                        rule.type,
-                        inputValue($event)
-                      )
+                    (valueChange)="
+                      updateValidationParam(field, i, rule.type, $event)
                     "
+                    [placeholder]="paramPlaceholder(rule.type)"
+                    ariaLabel="Validation parameter"
                   />
                 }
 
-                <input
-                  class="input input--sm"
-                  placeholder="Error message"
+                <ui-input
                   [value]="rule.message ?? ''"
-                  (input)="
-                    updateValidationRule(
-                      field,
-                      i,
-                      'message',
-                      inputValue($event)
-                    )
+                  (valueChange)="
+                    updateValidationRule(field, i, 'message', $event)
                   "
+                  placeholder="Error message"
+                  ariaLabel="Validation error message"
                 />
 
                 <button
@@ -252,78 +232,58 @@
               @if (!prop.visibleWhen || prop.visibleWhen(field.config())) {
                 @switch (prop.editor) {
                   @case ("text") {
-                    <label class="label">
+                    <div class="label">
                       {{ prop.label }}
-                      <input
-                        class="input"
+                      <ui-input
                         [placeholder]="prop.placeholder ?? ''"
-                        [value]="configValue(field, prop.key) ?? ''"
-                        (input)="
-                          setConfigValue(
-                            field,
-                            prop.key,
-                            inputValue($event)
-                          )
+                        [value]="'' + (configValue(field, prop.key) ?? '')"
+                        (valueChange)="
+                          setConfigValue(field, prop.key, $event)
                         "
+                        [ariaLabel]="prop.label"
                       />
-                    </label>
+                    </div>
                   }
 
                   @case ("number") {
-                    <label class="label">
+                    <div class="label">
                       {{ prop.label }}
-                      <input
-                        class="input"
+                      <ui-input
                         type="number"
                         [placeholder]="prop.placeholder ?? ''"
-                        [value]="configValue(field, prop.key) ?? ''"
-                        (input)="
-                          setConfigNumber(
-                            field,
-                            prop.key,
-                            inputValue($event)
-                          )
+                        [value]="'' + (configValue(field, prop.key) ?? '')"
+                        (valueChange)="
+                          setConfigNumber(field, prop.key, $event)
                         "
+                        [ariaLabel]="prop.label"
                       />
-                    </label>
+                    </div>
                   }
 
                   @case ("boolean") {
-                    <label class="label label--row">
-                      <input
-                        type="checkbox"
-                        [checked]="!!configValue(field, prop.key)"
-                        (change)="setConfigBoolean(field, prop.key, $event)"
-                      />
+                    <ui-checkbox
+                      [checked]="!!configValue(field, prop.key)"
+                      (checkedChange)="
+                        setConfigBoolean(field, prop.key, $event)
+                      "
+                      [ariaLabel]="prop.label"
+                    >
                       {{ prop.label }}
-                    </label>
+                    </ui-checkbox>
                   }
 
                   @case ("select") {
-                    <label class="label">
+                    <div class="label">
                       {{ prop.label }}
-                      <select
-                        class="select"
-                        [value]="configValue(field, prop.key) ?? ''"
-                        (change)="
-                          setConfigValue(
-                            field,
-                            prop.key,
-                            inputValue($event)
-                          )
+                      <ui-select
+                        [options]="configSelectOptions(prop)"
+                        [value]="'' + (configValue(field, prop.key) ?? '')"
+                        (valueChange)="
+                          setConfigValue(field, prop.key, $event)
                         "
-                      >
-                        <option value="">—</option>
-                        @for (
-                          opt of configSelectOptions(prop);
-                          track opt.value
-                        ) {
-                          <option [value]="opt.value">
-                            {{ opt.label }}
-                          </option>
-                        }
-                      </select>
-                    </label>
+                        [ariaLabel]="prop.label"
+                      />
+                    </div>
                   }
 
                   @case ("richtext") {
