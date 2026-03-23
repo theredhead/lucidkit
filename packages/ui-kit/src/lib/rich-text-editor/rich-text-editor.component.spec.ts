@@ -114,17 +114,15 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should render dropdown triggers for grouped actions", () => {
-      const triggers = fixture.nativeElement.querySelectorAll(
-        ".dropdown-trigger",
-      );
+      const triggers =
+        fixture.nativeElement.querySelectorAll(".dropdown-trigger");
       // block (Headings), list (Lists), align (Alignment) = 3
       expect(triggers.length).toBe(3);
     });
 
     it("should show dropdown panel with actions on trigger click", () => {
-      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
-      );
+      const trigger: HTMLButtonElement =
+        fixture.nativeElement.querySelector(".dropdown-trigger");
       trigger.click();
       fixture.detectChanges();
 
@@ -136,21 +134,17 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should close dropdown panel after executing an action", () => {
-      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
-      );
+      const trigger: HTMLButtonElement =
+        fixture.nativeElement.querySelector(".dropdown-trigger");
       trigger.click();
       fixture.detectChanges();
 
-      const action: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".dropdown-action",
-      );
+      const action: HTMLButtonElement =
+        fixture.nativeElement.querySelector(".dropdown-action");
       action.click();
       fixture.detectChanges();
 
-      expect(
-        fixture.nativeElement.querySelector(".dropdown-panel"),
-      ).toBeNull();
+      expect(fixture.nativeElement.querySelector(".dropdown-panel")).toBeNull();
     });
 
     it("should close dropdown when a different dropdown is opened", () => {
@@ -219,9 +213,8 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should render group separators between different groups", () => {
-      const separators = fixture.nativeElement.querySelectorAll(
-        ".toolbar-separator",
-      );
+      const separators =
+        fixture.nativeElement.querySelectorAll(".toolbar-separator");
       expect(separators.length).toBeGreaterThan(0);
     });
   });
@@ -468,9 +461,7 @@ describe("UIRichTextEditor", () => {
       btn.click();
       fixture.detectChanges();
 
-      const option = fixture.nativeElement.querySelector(
-        ".placeholder-option",
-      );
+      const option = fixture.nativeElement.querySelector(".placeholder-option");
       option.click();
       fixture.detectChanges();
 
@@ -489,9 +480,7 @@ describe("UIRichTextEditor", () => {
       btn.click();
       fixture.detectChanges();
 
-      const option = fixture.nativeElement.querySelector(
-        ".placeholder-option",
-      );
+      const option = fixture.nativeElement.querySelector(".placeholder-option");
       option.click();
       fixture.detectChanges();
 
@@ -752,18 +741,14 @@ describe("UIRichTextEditor", () => {
 
   describe("source editing", () => {
     it("should render a source toggle button", () => {
-      const btn = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
-      );
+      const btn = fixture.nativeElement.querySelector(".toolbar-btn--source");
       expect(btn).toBeTruthy();
       expect(btn.getAttribute("aria-label")).toBe("Edit HTML source");
     });
 
     it("should default to WYSIWYG mode (not source)", () => {
       expect(component["isSourceMode"]()).toBe(false);
-      expect(
-        fixture.nativeElement.querySelector(".source-editor"),
-      ).toBeNull();
+      expect(fixture.nativeElement.querySelector(".source-editor")).toBeNull();
       expect(fixture.nativeElement.querySelector(".editor")).toBeTruthy();
     });
 
@@ -1759,9 +1744,8 @@ describe("UIRichTextEditor", () => {
 
     it("should close dropdown group when toggling source mode", () => {
       // Open a dropdown
-      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
-      );
+      const trigger: HTMLButtonElement =
+        fixture.nativeElement.querySelector(".dropdown-trigger");
       trigger.click();
       fixture.detectChanges();
       expect(component["openDropdownGroup"]()).not.toBeNull();
@@ -2079,9 +2063,8 @@ describe("UIRichTextEditor", () => {
 
   describe("outside click closes dropdowns", () => {
     it("should close dropdown group on outside click", () => {
-      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".dropdown-trigger",
-      );
+      const trigger: HTMLButtonElement =
+        fixture.nativeElement.querySelector(".dropdown-trigger");
       trigger.click();
       fixture.detectChanges();
       expect(
@@ -2180,9 +2163,7 @@ describe("UIRichTextEditor", () => {
       component["placeholderSearchTerm"].set("first");
       fixture.detectChanges();
 
-      options = fixture.nativeElement.querySelectorAll(
-        ".placeholder-option",
-      );
+      options = fixture.nativeElement.querySelectorAll(".placeholder-option");
       expect(options.length).toBe(1);
       expect(options[0].textContent.trim()).toBe("First Name");
     });
@@ -2197,9 +2178,7 @@ describe("UIRichTextEditor", () => {
       component["placeholderSearchTerm"].set("zzzzz");
       fixture.detectChanges();
 
-      const empty = fixture.nativeElement.querySelector(
-        ".placeholder-empty",
-      );
+      const empty = fixture.nativeElement.querySelector(".placeholder-empty");
       expect(empty).toBeTruthy();
       expect(empty.textContent.trim()).toBe("No matches");
     });
@@ -2359,7 +2338,9 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "UIRichTextEditor: Image upload failed",
+        expect.stringMatching(
+          /^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] UIRichTextEditor: Image upload failed$/,
+        ),
         expect.any(Error),
       );
       consoleErrorSpy.mockRestore();
