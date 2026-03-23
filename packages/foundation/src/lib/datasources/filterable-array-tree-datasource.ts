@@ -22,7 +22,7 @@ import { ArrayTreeDatasource } from "./array-tree-datasource";
  * ]);
  *
  * // Show only nodes containing 'A' in their data
- * ds.applyPredicate(node => String(node.data).includes('A'));
+ * ds.filterBy(node => String(node.data).includes('A'));
  * ```
  */
 export class FilterableArrayTreeDatasource<T = unknown>
@@ -67,17 +67,15 @@ export class FilterableArrayTreeDatasource<T = unknown>
   // ── IFilterableTreeDataSource ────────────────────────────────────
 
   /**
-   * Apply a filter expression to the tree.
+   * Apply a filter predicate to the tree.
    *
-   * If a Predicate<T> is provided, nodes that match are kept.
-   * Nodes that don't match the predicate are excluded, along with their
-   * descendants. Pass `null` or `undefined` to clear the filter and show
-   * all nodes.
+   * Nodes that match are kept, along with ancestors that lead to
+   * matching descendants. Pass `null` or `undefined` to clear the
+   * filter and show all nodes.
    *
-   * @param expression - The predicate function, or null/undefined to clear filtering.
+   * @param predicate - The predicate function, or null/undefined to clear filtering.
    */
-  public filterBy(expression: unknown): void {
-    const predicate = expression as unknown as Predicate<T> | null | undefined;
+  public filterBy(predicate: Predicate<T> | null | undefined): void {
     if (!predicate) {
       this._filteredRoots = this.deepCopyNodes(
         this._allRoots,
@@ -91,15 +89,6 @@ export class FilterableArrayTreeDatasource<T = unknown>
       predicate,
       this._childrenProperty,
     );
-  }
-
-  /**
-   * Convenience method to apply a typed Predicate<T>.
-   *
-   * @param predicate - The predicate function to filter nodes.
-   */
-  public applyPredicate(predicate: Predicate<T> | null | undefined): void {
-    this.filterBy(predicate);
   }
 
   // ── Private helpers ───────────────────────────────────────────────

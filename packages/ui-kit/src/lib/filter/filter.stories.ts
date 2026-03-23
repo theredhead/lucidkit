@@ -116,7 +116,7 @@ export const Default: Story = {
           "",
           "| Output | Payload | Description |",
           "|--------|---------|-------------|",
-          "| `predicateChange` | `(item: T) => boolean` | Emits a compiled predicate function that can be applied to data arrays |",
+          "| `expressionChange` | `FilterExpression<T>` | Emits a compiled filter expression that can be passed to `FilterableArrayDatasource.filterBy()` |",
           "",
           "## FilterFieldDefinition",
           "",

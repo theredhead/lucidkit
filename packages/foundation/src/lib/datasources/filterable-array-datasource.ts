@@ -1,21 +1,21 @@
-import type { Predicate } from "@angular/core";
-
 import type { FilterExpression } from "../types/filter";
 import { ArrayDatasource } from "./array-datasource";
 
 /**
  * An in-memory array datasource that supports filtering via a
- * `Predicate<T>` or a `FilterExpression<T>`.
+ * {@link FilterExpression}.
  *
- * When a predicate is applied the datasource re-derives its visible
- * rows from the original data. The underlying array is never mutated.
+ * When an expression is applied the datasource compiles it into a
+ * single predicate, re-derives its visible rows from the original
+ * data, and exposes only the matching items. The underlying array
+ * is never mutated.
  *
  * @typeParam T - The row object type.
  *
  * @example
  * ```ts
  * const ds = new FilterableArrayDatasource(employees);
- * ds.applyPredicate(row => row.age > 30);
+ * ds.filterBy([{ predicate: row => row.age > 30 }]);
  * ```
  */
 export class FilterableArrayDatasource<T> extends ArrayDatasource<T> {
@@ -62,42 +62,43 @@ export class FilterableArrayDatasource<T> extends ArrayDatasource<T> {
   /**
    * Applies a structured {@link FilterExpression} to the datasource.
    *
-   * Every element in the expression array is evaluated per row:
-   * - **Property-level** predicates receive the value of the specified
-   *   property.
-   * - **Row-level** predicates receive the entire row object.
+   * The expression is compiled into a single predicate once, which is
+   * then applied to every row. Pass an empty array (or `null` /
+   * `undefined`) to clear the filter and show all rows.
    *
-   * All predicates must pass (AND) for a row to be included.
+   * - **Property-level** entries test a single property value.
+   * - **Row-level** entries test the entire row object.
+   * - All entries must pass (AND) for a row to be included.
    */
-  public filterBy(expression: FilterExpression<T>): void {
+  public filterBy(expression: FilterExpression<T> | null | undefined): void {
     if (!expression || expression.length === 0) {
       this._filteredRows = this._allRows;
       return;
     }
 
-    this._filteredRows = this._allRows.filter((row) =>
-      expression.every((entry) => {
-        if ("property" in entry) {
-          return entry.predicate(row[entry.property]);
-        }
-        return entry.predicate(row);
-      }),
-    );
+    const predicate = this.compileExpression(expression);
+    this._filteredRows = this._allRows.filter(predicate);
   }
 
-  // ── Convenience: raw Predicate<T> ─────────────────────────────────
+  // ── Private helpers ───────────────────────────────────────────────
 
   /**
-   * Applies a single `Predicate<T>` to filter the datasource.
-   *
-   * Pass `null` or `undefined` to clear the filter and show all rows.
+   * Compiles a {@link FilterExpression} into a single predicate
+   * function that can be applied to all rows.
    */
-  public applyPredicate(predicate: Predicate<T> | null | undefined): void {
-    if (!predicate) {
-      this._filteredRows = this._allRows;
-      return;
-    }
-    this._filteredRows = this._allRows.filter(predicate);
+  private compileExpression(
+    expression: FilterExpression<T>,
+  ): (row: T) => boolean {
+    const tests = expression.map((entry) => {
+      if ("property" in entry) {
+        const { property, predicate } = entry;
+        return (row: T) => predicate(row[property]);
+      }
+      const { predicate } = entry;
+      return (row: T) => predicate(row);
+    });
+
+    return (row: T) => tests.every((test) => test(row));
   }
 
   /** Clears any active filter, restoring all rows. */

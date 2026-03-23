@@ -283,10 +283,10 @@ describe("UIFilter", () => {
     });
   });
 
-  describe("predicateChange", () => {
-    it("should emit undefined when there are no rules", () => {
+  describe("expressionChange", () => {
+    it("should emit an empty expression when there are no rules", () => {
       let emitted: unknown = "not-called";
-      component.predicateChange.subscribe((p) => (emitted = p));
+      component.expressionChange.subscribe((p) => (emitted = p));
 
       // The effect runs eagerly in the constructor, but the output
       // subscription above was set up after construction.  Trigger
@@ -294,10 +294,10 @@ describe("UIFilter", () => {
       component.value.set({ junction: "and", rules: [] });
       fixture.detectChanges();
 
-      expect(emitted).toBeUndefined();
+      expect(emitted).toEqual([]);
     });
 
-    it("should emit a predicate when valid rules exist", () => {
+    it("should emit a filter expression when valid rules exist", () => {
       component.toggleMode(); // → advanced
       fixture.detectChanges();
 
@@ -308,12 +308,13 @@ describe("UIFilter", () => {
         value: "Alice",
       });
 
-      let predicate: unknown;
-      component.predicateChange.subscribe((p) => (predicate = p));
+      let expression: unknown;
+      component.expressionChange.subscribe((p) => (expression = p));
 
       fixture.detectChanges();
 
-      expect(typeof predicate).toBe("function");
+      expect(Array.isArray(expression)).toBe(true);
+      expect((expression as unknown[]).length).toBeGreaterThan(0);
     });
   });
 

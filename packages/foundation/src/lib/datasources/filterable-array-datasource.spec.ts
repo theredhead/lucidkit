@@ -38,41 +38,58 @@ describe("FilterableArrayDatasource", () => {
     });
   });
 
-  describe("applyPredicate", () => {
+  describe("filterBy with row-level predicates", () => {
     it("should filter rows matching the predicate", () => {
-      ds.applyPredicate((row) => row.age > 30);
+      ds.filterBy([
+        { predicate: ((row: TestRow) => row.age > 30) as any },
+      ]);
 
       expect(ds.getNumberOfItems()).toBe(2);
       expect(ds.getObjectAtRowIndex(0).name).toBe("Charlie");
       expect(ds.getObjectAtRowIndex(1).name).toBe("Eve");
     });
 
-    it("should return all rows when predicate is null", () => {
-      ds.applyPredicate((row) => row.age > 30);
+    it("should return all rows when expression is null", () => {
+      ds.filterBy([
+        { predicate: ((row: TestRow) => row.age > 30) as any },
+      ]);
       expect(ds.getNumberOfItems()).toBe(2);
 
-      ds.applyPredicate(null);
+      ds.filterBy(null);
       expect(ds.getNumberOfItems()).toBe(5);
     });
 
-    it("should return all rows when predicate is undefined", () => {
-      ds.applyPredicate((row) => row.age > 30);
-      ds.applyPredicate(undefined);
+    it("should return all rows when expression is empty", () => {
+      ds.filterBy([
+        { predicate: ((row: TestRow) => row.age > 30) as any },
+      ]);
+      ds.filterBy([]);
 
       expect(ds.getNumberOfItems()).toBe(5);
     });
 
     it("should return empty when no rows match", () => {
-      ds.applyPredicate((row) => row.age > 100);
+      ds.filterBy([
+        { predicate: ((row: TestRow) => row.age > 100) as any },
+      ]);
 
       expect(ds.getNumberOfItems()).toBe(0);
     });
 
     it("should re-derive from original data, not from previous filter", () => {
-      ds.applyPredicate((row) => row.department === "Engineering");
+      ds.filterBy([
+        {
+          predicate: ((row: TestRow) =>
+            row.department === "Engineering") as any,
+        },
+      ]);
       expect(ds.getNumberOfItems()).toBe(3);
 
-      ds.applyPredicate((row) => row.department === "Sales");
+      ds.filterBy([
+        {
+          predicate: ((row: TestRow) => row.department === "Sales") as any,
+        },
+      ]);
       expect(ds.getNumberOfItems()).toBe(1);
       expect(ds.getObjectAtRowIndex(0).name).toBe("Diana");
     });
@@ -146,8 +163,10 @@ describe("FilterableArrayDatasource", () => {
   });
 
   describe("clearFilter", () => {
-    it("should restore all rows after a predicate filter", () => {
-      ds.applyPredicate((row) => row.age > 30);
+    it("should restore all rows after a row-level filter", () => {
+      ds.filterBy([
+        { predicate: ((row: TestRow) => row.age > 30) as any },
+      ]);
       expect(ds.getNumberOfItems()).toBe(2);
 
       ds.clearFilter();
@@ -175,12 +194,16 @@ describe("FilterableArrayDatasource", () => {
 
   describe("bounds checking", () => {
     it("should throw RangeError for negative index on filtered data", () => {
-      ds.applyPredicate((row) => row.age > 30);
+      ds.filterBy([
+        { predicate: ((row: TestRow) => row.age > 30) as any },
+      ]);
       expect(() => ds.getObjectAtRowIndex(-1)).toThrow(RangeError);
     });
 
     it("should throw RangeError for index beyond filtered length", () => {
-      ds.applyPredicate((row) => row.age > 30);
+      ds.filterBy([
+        { predicate: ((row: TestRow) => row.age > 30) as any },
+      ]);
       // Filtered length is 2
       expect(() => ds.getObjectAtRowIndex(2)).toThrow(RangeError);
     });

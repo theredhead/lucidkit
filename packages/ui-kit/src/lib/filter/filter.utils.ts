@@ -180,7 +180,7 @@ function buildPredicate(
 
 /**
  * Converts a {@link FilterDescriptor} into a single `Predicate<T>`
- * that can be passed directly to `FilterableArrayDatasource.applyPredicate()`.
+ * that can be passed directly to `FilterableArrayDatasource.filterBy()`.
  *
  * - **AND** junction → all rules must match.
  * - **OR** junction → at least one rule must match.

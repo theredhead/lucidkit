@@ -178,7 +178,9 @@ describe("UIRepeater", () => {
     it("should render only filtered items when using FilterableArrayDatasource", async () => {
       const filterable = new FilterableArrayDatasource(TEST_DATA);
       // Filter to only items with id > 2
-      filterable.applyPredicate((item: TestItem) => item.id > 2);
+      filterable.filterBy([
+        { predicate: ((item: TestItem) => item.id > 2) as any },
+      ]);
       host.ds.set(filterable);
       fixture.detectChanges();
       await fixture.whenStable();
@@ -224,7 +226,9 @@ describe("UIRepeater", () => {
 
       // Filter to only keep items with id > 2
       const filterable = new FilterableArrayDatasource(sortedData);
-      filterable.applyPredicate((item: TestItem) => item.id > 2);
+      filterable.filterBy([
+        { predicate: ((item: TestItem) => item.id > 2) as any },
+      ]);
 
       host.ds.set(filterable);
       fixture.detectChanges();

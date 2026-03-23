@@ -2,9 +2,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  type Predicate,
   signal,
 } from "@angular/core";
+
+import type { FilterExpression } from "../core/types/filter";
 
 import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
@@ -933,7 +934,7 @@ const EMPLOYEE_FIELDS: FilterFieldDefinition<Employee>[] = [
     <ui-filter
       [fields]="fields"
       [allowJunction]="true"
-      (predicateChange)="onPredicateChange($event)"
+      (expressionChange)="onExpressionChange($event)"
     />
     <div style="margin-top:0.75rem;">
       <ui-table-view
@@ -982,8 +983,8 @@ class UITableViewFilteredDemo {
   readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
   adapter = new DatasourceAdapter(this.datasource, EMPLOYEES.length);
 
-  onPredicateChange(predicate: Predicate<Employee> | undefined): void {
-    this.datasource.applyPredicate(predicate ?? null);
+  onExpressionChange(expression: FilterExpression<Employee>): void {
+    this.datasource.filterBy(expression);
     // Rebuild the adapter so the table picks up the new row count.
     this.adapter = new DatasourceAdapter(
       this.datasource,
@@ -994,8 +995,8 @@ class UITableViewFilteredDemo {
 
 /**
  * **Filtered table** — Combines `<ui-filter>` with `<ui-table-view>` using
- * a `FilterableArrayDatasource`. The filter emits a `Predicate<T>` that
- * is applied to the datasource in real time. This example uses a static
+ * a `FilterableArrayDatasource`. The filter emits a `FilterExpression<T>`
+ * that is applied to the datasource in real time. This example uses a static
  * employee dataset with string, number, and date filter fields.
  */
 export const FilteredTable: Story = {
@@ -1014,7 +1015,7 @@ export const FilteredTable: Story = {
         code: `<ui-filter
   [fields]="fields"
   [allowJunction]="true"
-  (predicateChange)="onPredicateChange($event)"
+  (expressionChange)="onExpressionChange($event)"
 />
 
 <ui-table-view
@@ -1036,8 +1037,8 @@ export const FilteredTable: Story = {
 readonly datasource = new FilterableArrayDatasource(employees);
 adapter = new DatasourceAdapter(this.datasource);
 
-onPredicateChange(predicate: Predicate<Employee> | undefined): void {
-  this.datasource.applyPredicate(predicate ?? null);
+onExpressionChange(expression: FilterExpression<Employee>): void {
+  this.datasource.filterBy(expression);
   this.adapter = new DatasourceAdapter(this.datasource);
 }`,
         language: "typescript",
