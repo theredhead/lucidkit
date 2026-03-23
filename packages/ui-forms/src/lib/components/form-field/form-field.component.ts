@@ -7,6 +7,7 @@ import {
   effect,
   inject,
   input,
+  signal,
   untracked,
   ViewContainerRef,
   viewChild,
@@ -17,6 +18,7 @@ import { LoggerFactory } from "@theredhead/foundation";
 import type { FieldState } from "../../engine/form-engine";
 import { FormFieldRegistry } from "../../registry/field-registry";
 import { isFlairComponent } from "../../types/form-schema.types";
+import { FORM_SETTINGS } from "../form-settings";
 
 /**
  * Renders a single form field by dynamically creating the component
@@ -48,8 +50,12 @@ export class UIFormField {
   /** The field state managed by the {@link FormEngine}. */
   public readonly state = input.required<FieldState>();
 
-  /** Minimum width (in pixels) for the field control. */
-  public readonly fieldMinWidth = input<number>(200);
+  private readonly settings = inject(FORM_SETTINGS, { optional: true });
+
+  /** Minimum width (in pixels) for the field control, from the parent form. */
+  protected readonly fieldMinWidth = computed(
+    () => this.settings?.fieldMinWidth() ?? 200,
+  );
 
   private readonly registry = inject(FormFieldRegistry);
   private readonly log = inject(LoggerFactory).createLogger("UIFormField");
