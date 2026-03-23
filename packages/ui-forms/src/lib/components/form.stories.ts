@@ -48,6 +48,7 @@ const contactSchema: FormSchema = {
           title: "E-mail",
           component: "text",
           description: "We'll never share your email with anyone.",
+          config: { textAdapter: "email" },
           validation: [{ type: "required" }, { type: "email" }],
         },
       ],
@@ -110,6 +111,7 @@ const conditionalSchema: FormSchema = {
           id: "emailAddress",
           title: "E-mail Address",
           component: "text",
+          config: { textAdapter: "email" },
           visibleWhen: {
             field: "contactMethod",
             operator: "equals",
@@ -121,6 +123,7 @@ const conditionalSchema: FormSchema = {
           id: "phone",
           title: "Phone Number",
           component: "text",
+          config: { textAdapter: "phone" },
           visibleWhen: {
             field: "contactMethod",
             operator: "equals",
@@ -276,6 +279,7 @@ const validationSchema: FormSchema = {
           id: "email",
           title: "Email (with custom message)",
           component: "text",
+          config: { textAdapter: "email" },
           validation: [
             { type: "required" },
             {
@@ -456,7 +460,7 @@ const vehicleRegistrationSchema: FormSchema = {
           id: "mileage",
           title: "Current Odometer Reading (km)",
           component: "text",
-          config: { type: "number" },
+          config: { type: "number", textAdapter: "integer" },
           validation: [
             { type: "required", message: "Odometer reading is required." },
           ],
@@ -506,7 +510,7 @@ const vehicleRegistrationSchema: FormSchema = {
           id: "ownerEmail",
           title: "E-mail Address",
           component: "text",
-          config: { type: "email" },
+          config: { type: "email", textAdapter: "email" },
           description:
             "We will send your registration confirmation to this address.",
           validation: [
@@ -518,7 +522,7 @@ const vehicleRegistrationSchema: FormSchema = {
           id: "ownerPhone",
           title: "Phone Number",
           component: "text",
-          config: { type: "tel" },
+          config: { type: "tel", textAdapter: "phone" },
           validation: [
             { type: "required", message: "Phone number is required." },
           ],
@@ -562,6 +566,7 @@ const vehicleRegistrationSchema: FormSchema = {
           title: "Previous Licence Plate Number",
           component: "text",
           description: "Required for renewals and transfers.",
+          config: { textAdapter: "uppercase" },
           visibleWhen: {
             field: "registrationType",
             operator: "in",
@@ -612,6 +617,7 @@ const vehicleRegistrationSchema: FormSchema = {
           id: "insurancePolicyNo",
           title: "Policy Number",
           component: "text",
+          config: { textAdapter: "uppercase" },
           visibleWhen: {
             field: "hasInsurance",
             operator: "equals",
@@ -633,6 +639,7 @@ const vehicleRegistrationSchema: FormSchema = {
           component: "text",
           description:
             "2–7 characters, letters and numbers only. Subject to availability.",
+          config: { textAdapter: "uppercase" },
           visibleWhen: {
             field: "vanityPlate",
             operator: "equals",
