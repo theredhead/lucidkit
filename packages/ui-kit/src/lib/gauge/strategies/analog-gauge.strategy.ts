@@ -36,6 +36,7 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
 
   public render(ctx: GaugeRenderContext): GaugeRenderOutput {
     const { value, min, max, unit, zones, size, tokens, detailLevel } = ctx;
+    const fmt = ctx.formatValue ?? formatLabel;
     const svg = createGaugeSvgRoot(size);
 
     const cx = size.width / 2;
@@ -103,7 +104,7 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
           const lp = polarToCartesian(cx, cy, labelRadius, angle);
           const tickValue = min + ratio * (max - min);
           svg.appendChild(
-            gaugeSvgText(formatLabel(tickValue), lp.x, lp.y, {
+            gaugeSvgText(fmt(tickValue), lp.x, lp.y, {
               fill: tokens.text,
               "text-anchor": "middle",
               "dominant-baseline": "central",
@@ -140,7 +141,7 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
 
     // ── Value readout ──
     svg.appendChild(
-      gaugeSvgText(formatLabel(value), cx, cy + outerRadius * 0.42, {
+      gaugeSvgText(fmt(value), cx, cy + outerRadius * 0.42, {
         fill: tokens.text,
         "text-anchor": "middle",
         "font-size": Math.max(14, Math.round(outerRadius / 5)),

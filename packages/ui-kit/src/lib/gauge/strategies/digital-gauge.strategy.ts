@@ -24,6 +24,7 @@ export class DigitalGaugeStrategy extends GaugePresentationStrategy {
 
   public render(ctx: GaugeRenderContext): GaugeRenderOutput {
     const { value, min, max, unit, size, tokens, detailLevel } = ctx;
+    const fmt = ctx.formatValue ?? formatLabel;
     const svg = createGaugeSvgRoot(size);
 
     const cx = size.width / 2;
@@ -43,7 +44,9 @@ export class DigitalGaugeStrategy extends GaugePresentationStrategy {
     );
 
     // ── Formatted value ──
-    const formatted = value.toFixed(this.decimals);
+    const formatted = ctx.formatValue
+      ? ctx.formatValue(value)
+      : value.toFixed(this.decimals);
     const fontSize = Math.max(
       20,
       Math.round(Math.min(size.width, size.height) / 3),
@@ -113,7 +116,7 @@ export class DigitalGaugeStrategy extends GaugePresentationStrategy {
 
       // ── Min / Max labels ──
       svg.appendChild(
-        gaugeSvgText(formatLabel(min), barX, barY - 4, {
+        gaugeSvgText(fmt(min), barX, barY - 4, {
           fill: tokens.text,
           "text-anchor": "start",
           "font-size": 9,
@@ -122,7 +125,7 @@ export class DigitalGaugeStrategy extends GaugePresentationStrategy {
       );
 
       svg.appendChild(
-        gaugeSvgText(formatLabel(max), barX + barW, barY - 4, {
+        gaugeSvgText(fmt(max), barX + barW, barY - 4, {
           fill: tokens.text,
           "text-anchor": "end",
           "font-size": 9,

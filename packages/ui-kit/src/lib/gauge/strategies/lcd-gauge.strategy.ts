@@ -124,6 +124,7 @@ export class LcdGaugeStrategy extends GaugePresentationStrategy {
 
   public render(ctx: GaugeRenderContext): GaugeRenderOutput {
     const { value, min, max, unit, size, tokens, detailLevel } = ctx;
+    const fmt = ctx.formatValue ?? formatLabel;
     const svg = createGaugeSvgRoot(size);
 
     const panelPad = 8;
@@ -142,7 +143,9 @@ export class LcdGaugeStrategy extends GaugePresentationStrategy {
     );
 
     // ── Digit layout ──
-    const formatted = value.toFixed(this.decimals);
+    const formatted = ctx.formatValue
+      ? ctx.formatValue(value)
+      : value.toFixed(this.decimals);
     const padded = formatted.padStart(this.digitCount + 1, " "); // +1 for possible decimal point
 
     // Filter out glyphs to render: each is either a digit, '-', '.', or ' ' (blank)
@@ -272,7 +275,7 @@ export class LcdGaugeStrategy extends GaugePresentationStrategy {
     if (detailLevel === "high") {
       const labelY = size.height - panelPad - 6;
       svg.appendChild(
-        gaugeSvgText(formatLabel(min), panelPad + 12, labelY, {
+        gaugeSvgText(fmt(min), panelPad + 12, labelY, {
           fill: tokens.text,
           "text-anchor": "start",
           "font-size": 9,
@@ -280,7 +283,7 @@ export class LcdGaugeStrategy extends GaugePresentationStrategy {
         }),
       );
       svg.appendChild(
-        gaugeSvgText(formatLabel(max), size.width - panelPad - 12, labelY, {
+        gaugeSvgText(fmt(max), size.width - panelPad - 12, labelY, {
           fill: tokens.text,
           "text-anchor": "end",
           "font-size": 9,

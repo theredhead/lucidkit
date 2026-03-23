@@ -68,6 +68,7 @@ export class BarGaugeStrategy extends GaugePresentationStrategy {
 
   public render(ctx: GaugeRenderContext): GaugeRenderOutput {
     const { value, min, max, unit, zones, size, tokens, detailLevel } = ctx;
+    const fmt = ctx.formatValue ?? formatLabel;
     const svg = createGaugeSvgRoot(size);
 
     const ratio = valueToRatio(value, min, max);
@@ -200,7 +201,7 @@ export class BarGaugeStrategy extends GaugePresentationStrategy {
         if (detailLevel === "high") {
           const tickValue = min + tickRatio * (max - min);
           svg.appendChild(
-            gaugeSvgText(formatLabel(tickValue), x, tickY + 16, {
+            gaugeSvgText(fmt(tickValue), x, tickY + 16, {
               fill: tokens.text,
               "text-anchor": "middle",
               "font-size": 10,
@@ -214,7 +215,7 @@ export class BarGaugeStrategy extends GaugePresentationStrategy {
     if (detailLevel !== "low") {
       svg.appendChild(
         gaugeSvgText(
-          `${formatLabel(value)}${unit ? ` ${unit}` : ""}`,
+          `${fmt(value)}${unit ? ` ${unit}` : ""}`,
           size.width / 2,
           trackY - 6,
           {
@@ -236,7 +237,11 @@ export class BarGaugeStrategy extends GaugePresentationStrategy {
    */
   private resolveColor(
     value: number,
-    zones: readonly { readonly from: number; readonly to: number; readonly color: string }[],
+    zones: readonly {
+      readonly from: number;
+      readonly to: number;
+      readonly color: string;
+    }[],
     tokens: { readonly accent: string },
   ): string {
     for (const z of zones) {

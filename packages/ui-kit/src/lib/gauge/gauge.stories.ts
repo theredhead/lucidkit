@@ -563,6 +563,87 @@ export class CpuMeterComponent {
   },
 };
 
+export const CustomFormatter: Story = {
+  render: (args) => ({
+    props: {
+      ...args,
+      zones: speedZones,
+      formatCurrency: (n: number): string =>
+        "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+    },
+    template: `
+      <ui-gauge
+        [value]="value"
+        [min]="min"
+        [max]="max"
+        unit="USD"
+        [strategy]="strategy"
+        [width]="width"
+        [height]="height"
+        [formatValue]="formatCurrency"
+      />
+    `,
+  }),
+  args: {
+    value: 1234.5,
+    min: 0,
+    max: 5000,
+    strategy: new AnalogGaugeStrategy(),
+    width: 260,
+    height: 260,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-gauge
+  [value]="revenue"
+  [min]="0"
+  [max]="5000"
+  unit="USD"
+  [strategy]="analogStrategy"
+  [formatValue]="formatCurrency"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIGauge, AnalogGaugeStrategy } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-revenue-gauge',
+  standalone: true,
+  imports: [UIGauge],
+  template: \\\`
+    <ui-gauge
+      [value]="revenue"
+      [min]="0" [max]="5000"
+      unit="USD"
+      [strategy]="strategy"
+      [formatValue]="formatCurrency"
+    />
+  \\\`,
+})
+export class RevenueGaugeComponent {
+  readonly revenue = 1234.50;
+  readonly strategy = new AnalogGaugeStrategy();
+
+  formatCurrency = (n: number): string =>
+    '$' + n.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+}
+
+// ── SCSS ──
+/* No custom styles needed — gauge tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
 export const Animated: Story = {
   render: (args) => ({
     props: { ...args, zones: speedZones },
