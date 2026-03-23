@@ -11,7 +11,7 @@
   }
 }
 
-<div class="control" [class.control--hidden]="!state().visible()">
+<div class="control" [class.control--hidden]="!state().visible()" [style.min-width.px]="fieldMinWidth()">
   <ng-container #outlet />
 </div>
 

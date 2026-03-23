@@ -7,7 +7,7 @@
   }
   <div class="fields">
     @for (field of state().fields; track field.definition.id) {
-      <ui-form-field [state]="field" />
+      <ui-form-field [state]="field" [fieldMinWidth]="fieldMinWidth()" />
     }
   </div>
 }

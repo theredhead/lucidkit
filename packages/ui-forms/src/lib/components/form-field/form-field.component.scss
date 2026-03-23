@@ -29,13 +29,8 @@
 }
 
 .control {
-  display: inline-block;
+  display: flex;
   margin-bottom: 2px;
-  min-width: var(--ui-form-field-min-width, 200px);
-
-  > * {
-    min-width: var(--ui-form-field-min-width, 200px);
-  }
 }
 
 .control--hidden {
