@@ -54,7 +54,7 @@ export class UIFormField {
 
   /** Minimum width (in pixels) for the field control, from the parent form. */
   protected readonly fieldMinWidth = computed(
-    () => this.settings?.fieldMinWidth() ?? 200,
+    () => this.settings?.fieldMinWidth() ?? 450,
   );
 
   private readonly registry = inject(FormFieldRegistry);
