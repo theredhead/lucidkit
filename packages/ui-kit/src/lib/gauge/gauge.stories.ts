@@ -13,6 +13,7 @@ import { AnalogGaugeStrategy } from "./strategies/analog-gauge.strategy";
 import { VuMeterStrategy } from "./strategies/vu-meter.strategy";
 import { DigitalGaugeStrategy } from "./strategies/digital-gauge.strategy";
 import { LcdGaugeStrategy } from "./strategies/lcd-gauge.strategy";
+import { BarGaugeStrategy } from "./strategies/bar-gauge.strategy";
 
 // ── Shared data ────────────────────────────────────────────────────
 
@@ -29,6 +30,7 @@ const strategies: Record<string, GaugePresentationStrategy> = {
   "VU Meter": new VuMeterStrategy(),
   Digital: new DigitalGaugeStrategy(),
   LCD: new LcdGaugeStrategy(),
+  Bar: new BarGaugeStrategy(),
 };
 
 // ── Interactive demo ───────────────────────────────────────────────
@@ -86,6 +88,18 @@ const strategies: Record<string, GaugePresentationStrategy> = {
         [animated]="true"
         ariaLabel="LCD speed readout"
       />
+      <ui-gauge
+        [value]="value()"
+        [min]="0"
+        [max]="220"
+        unit="km/h"
+        [strategy]="barStrategy"
+        [zones]="speedZones"
+        [width]="300"
+        [height]="80"
+        [animated]="true"
+        ariaLabel="Bar speed meter"
+      />
     </div>
     <div class="demo-controls">
       <label>
@@ -131,6 +145,7 @@ class GaugeInteractiveDemo {
     decimals: 0,
     digitCount: 4,
   });
+  protected readonly barStrategy = new BarGaugeStrategy({ ticks: 10 });
   protected readonly speedZones: GaugeZone[] = [
     { from: 0, to: 100, color: "#34a853" },
     { from: 100, to: 160, color: "#fbbc04" },
@@ -453,6 +468,91 @@ import { UIGauge, LcdGaugeStrategy } from '@theredhead/ui-kit';
 export class LcdThermometerComponent {
   readonly temperature = 37.2;
   readonly strategy = new LcdGaugeStrategy({ decimals: 1, digitCount: 5 });
+}
+
+// ── SCSS ──
+/* No custom styles needed — gauge tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
+export const Bar: Story = {
+  render: (args) => ({
+    props: { ...args, zones: speedZones },
+    template: `
+      <ui-gauge
+        [value]="value"
+        [min]="min"
+        [max]="max"
+        [unit]="unit"
+        [strategy]="strategy"
+        [zones]="zones"
+        [width]="width"
+        [height]="height"
+        [detailLevel]="detailLevel"
+      />
+    `,
+  }),
+  args: {
+    value: 65,
+    min: 0,
+    max: 100,
+    unit: "%",
+    strategy: new BarGaugeStrategy({ ticks: 10 }),
+    width: 300,
+    height: 80,
+    detailLevel: "high" as GaugeDetailLevel,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-gauge
+  [value]="cpuLoad"
+  [min]="0"
+  [max]="100"
+  unit="%"
+  [strategy]="barStrategy"
+  [zones]="zones"
+  [width]="300"
+  [height]="80"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIGauge,
+  BarGaugeStrategy,
+  type GaugeZone,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-cpu-meter',
+  standalone: true,
+  imports: [UIGauge],
+  template: \\\`
+    <ui-gauge
+      [value]="cpuLoad"
+      [min]="0" [max]="100"
+      unit="%"
+      [strategy]="strategy"
+      [zones]="zones"
+      [width]="300" [height]="80"
+    />
+  \\\`,
+})
+export class CpuMeterComponent {
+  readonly cpuLoad = 65;
+  readonly strategy = new BarGaugeStrategy({ ticks: 10 });
+  readonly zones: GaugeZone[] = [
+    { from: 0, to: 60, color: '#34a853' },
+    { from: 60, to: 80, color: '#fbbc04' },
+    { from: 80, to: 100, color: '#ea4335' },
+  ];
 }
 
 // ── SCSS ──

@@ -12,6 +12,7 @@ import { AnalogGaugeStrategy } from "./strategies/analog-gauge.strategy";
 import { VuMeterStrategy } from "./strategies/vu-meter.strategy";
 import { DigitalGaugeStrategy } from "./strategies/digital-gauge.strategy";
 import { LcdGaugeStrategy } from "./strategies/lcd-gauge.strategy";
+import { BarGaugeStrategy } from "./strategies/bar-gauge.strategy";
 
 /** Narrow a render output to SVG kind and return the element. */
 function asSvg(output: GaugeRenderOutput): SVGSVGElement {
@@ -457,6 +458,114 @@ describe("LcdGaugeStrategy", () => {
       // Only unit label
       expect(svg.querySelectorAll("text").length).toBe(1);
     });
+  });
+});
+
+// ── BarGaugeStrategy ───────────────────────────────────────────────
+
+describe("BarGaugeStrategy", () => {
+  it("should produce an SVG output", () => {
+    const output = new BarGaugeStrategy().render(createCtx(60));
+    expect(output.kind).toBe("svg");
+    expect(asSvg(output)).toBeInstanceOf(SVGSVGElement);
+  });
+
+  it("should have name 'Bar'", () => {
+    expect(new BarGaugeStrategy().name).toBe("Bar");
+  });
+
+  it("should render the track background", () => {
+    const svg = asSvg(new BarGaugeStrategy().render(createCtx(50)));
+    const rects = svg.querySelectorAll("rect");
+    // At least track background + fill
+    expect(rects.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("should render tick marks at high detail", () => {
+    const svg = asSvg(
+      new BarGaugeStrategy({ ticks: 5 }).render(
+        createCtx(50, { detailLevel: "high" }),
+      ),
+    );
+    const lines = svg.querySelectorAll("line");
+    // 5 ticks + 1 (0th) = 6
+    expect(lines.length).toBe(6);
+  });
+
+  it("should render tick labels at high detail", () => {
+    const svg = asSvg(
+      new BarGaugeStrategy({ ticks: 5 }).render(
+        createCtx(50, { detailLevel: "high" }),
+      ),
+    );
+    // Tick labels + value readout
+    const texts = svg.querySelectorAll("text");
+    expect(texts.length).toBe(7); // 6 tick labels + 1 value
+  });
+
+  it("should omit tick labels at medium detail", () => {
+    const svgHigh = asSvg(
+      new BarGaugeStrategy({ ticks: 5 }).render(
+        createCtx(50, { detailLevel: "high" }),
+      ),
+    );
+    const svgMed = asSvg(
+      new BarGaugeStrategy({ ticks: 5 }).render(
+        createCtx(50, { detailLevel: "medium" }),
+      ),
+    );
+    expect(svgMed.querySelectorAll("text").length).toBeLessThan(
+      svgHigh.querySelectorAll("text").length,
+    );
+  });
+
+  it("should omit ticks and value at low detail", () => {
+    const svg = asSvg(
+      new BarGaugeStrategy().render(createCtx(50, { detailLevel: "low" })),
+    );
+    expect(svg.querySelectorAll("line").length).toBe(0);
+    expect(svg.querySelectorAll("text").length).toBe(0);
+  });
+
+  it("should render zone backgrounds when zones are provided", () => {
+    const ctx = createCtx(50, {
+      zones: [
+        { from: 0, to: 50, color: "green" },
+        { from: 50, to: 100, color: "red" },
+      ],
+    });
+    const svg = asSvg(new BarGaugeStrategy().render(ctx));
+    // Zone rects have opacity 0.25
+    const zoneRects = Array.from(svg.querySelectorAll("rect")).filter(
+      (r) => r.getAttribute("opacity") === "0.25",
+    );
+    expect(zoneRects.length).toBe(2);
+  });
+
+  it("should render no fill when value equals min", () => {
+    const svg = asSvg(new BarGaugeStrategy().render(createCtx(0)));
+    // Only the track background rect (no fill rect since width=0 is skipped)
+    const rects = svg.querySelectorAll("rect");
+    expect(rects.length).toBe(1);
+  });
+
+  it("should accept custom options", () => {
+    const strategy = new BarGaugeStrategy({
+      ticks: 10,
+      borderRadius: 8,
+      trackHeight: 24,
+    });
+    const svg = asSvg(strategy.render(createCtx(75)));
+    expect(svg).toBeInstanceOf(SVGSVGElement);
+    // 10 ticks + 1 (0th) = 11 lines
+    expect(svg.querySelectorAll("line").length).toBe(11);
+  });
+
+  it("should hide ticks when ticks is 0", () => {
+    const svg = asSvg(
+      new BarGaugeStrategy({ ticks: 0 }).render(createCtx(50)),
+    );
+    expect(svg.querySelectorAll("line").length).toBe(0);
   });
 });
 
