@@ -73,6 +73,11 @@ export class UIFormField {
     isFlairComponent(this.state().definition.component),
   );
 
+  /** @internal Whether this field renders a text input. */
+  protected readonly isTextInput = computed(
+    () => this.state().definition.component === "text",
+  );
+
   /** @internal Whether the field has a `required` validation rule. */
   protected readonly isRequired = computed(() =>
     (this.state().definition.validation ?? []).some(
