@@ -52,3 +52,4 @@ export * from "./lib/toggle";
 export * from "./lib/carousel";
 export * from "./lib/media-player";
 export * from "./lib/image/image.component";
+export * from "./lib/gauge";
