@@ -87,17 +87,12 @@ export class VuMeterStrategy extends GaugePresentationStrategy {
         const y = padding.top + (1 - labelRatio) * barHeight;
 
         svg.appendChild(
-          gaugeSvgText(
-            fmt(labelValue),
-            padding.left - 6,
-            y + segHeight / 2,
-            {
-              fill: tokens.text,
-              "text-anchor": "end",
-              "dominant-baseline": "central",
-              "font-size": 10,
-            },
-          ),
+          gaugeSvgText(fmt(labelValue), padding.left - 6, y + segHeight / 2, {
+            fill: tokens.text,
+            "text-anchor": "end",
+            "dominant-baseline": "central",
+            "font-size": 10,
+          }),
         );
       }
     }

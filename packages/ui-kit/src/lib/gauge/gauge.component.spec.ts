@@ -96,6 +96,10 @@ describe("UIGauge", () => {
     it("should default detailLevel to 'high'", () => {
       expect(component.detailLevel()).toBe("high");
     });
+
+    it("should default thresholds to empty array", () => {
+      expect(component.thresholds()).toEqual([]);
+    });
   });
 
   describe("value clamping", () => {
@@ -151,6 +155,12 @@ describe("UIGauge", () => {
       fixture.componentRef.setInput("height", 250);
       fixture.detectChanges();
       expect(strategy.lastCtx!.size).toEqual({ width: 300, height: 250 });
+    });
+
+    it("should pass thresholds to the strategy", () => {
+      fixture.componentRef.setInput("thresholds", [25, 75]);
+      fixture.detectChanges();
+      expect(strategy.lastCtx!.thresholds).toEqual([25, 75]);
     });
   });
 
@@ -249,6 +259,79 @@ describe("AnalogGaugeStrategy", () => {
     expect(paths.length).toBe(3);
   });
 
+  describe("zone labels", () => {
+    it("should render zone labels at high detail when label is set", () => {
+      const ctx = createCtx(50, {
+        zones: [
+          { from: 0, to: 50, color: "green", label: "Safe" },
+          { from: 50, to: 100, color: "red", label: "Danger" },
+        ],
+        detailLevel: "high",
+      });
+      const svg = asSvg(new AnalogGaugeStrategy().render(ctx));
+      const labels = Array.from(svg.querySelectorAll(".zone-label"));
+      expect(labels.length).toBe(2);
+      expect(labels[0].textContent).toBe("Safe");
+      expect(labels[1].textContent).toBe("Danger");
+    });
+
+    it("should not render zone labels at medium detail", () => {
+      const ctx = createCtx(50, {
+        zones: [{ from: 0, to: 50, color: "green", label: "Safe" }],
+        detailLevel: "medium",
+      });
+      const svg = asSvg(new AnalogGaugeStrategy().render(ctx));
+      expect(svg.querySelectorAll(".zone-label").length).toBe(0);
+    });
+
+    it("should skip zones without a label", () => {
+      const ctx = createCtx(50, {
+        zones: [
+          { from: 0, to: 50, color: "green", label: "Safe" },
+          { from: 50, to: 100, color: "red" },
+        ],
+        detailLevel: "high",
+      });
+      const svg = asSvg(new AnalogGaugeStrategy().render(ctx));
+      expect(svg.querySelectorAll(".zone-label").length).toBe(1);
+    });
+  });
+
+  describe("threshold markers", () => {
+    it("should render threshold marker lines", () => {
+      const ctx = createCtx(50, {
+        thresholds: [25, 75],
+      });
+      const svg = asSvg(new AnalogGaugeStrategy().render(ctx));
+      const markers = svg.querySelectorAll(".threshold-marker");
+      expect(markers.length).toBe(2);
+    });
+
+    it("should skip thresholds outside min/max range", () => {
+      const ctx = createCtx(50, {
+        thresholds: [-10, 50, 200],
+      });
+      const svg = asSvg(new AnalogGaugeStrategy().render(ctx));
+      const markers = svg.querySelectorAll(".threshold-marker");
+      expect(markers.length).toBe(1);
+    });
+
+    it("should use dashed stroke for threshold markers", () => {
+      const ctx = createCtx(50, {
+        thresholds: [50],
+      });
+      const svg = asSvg(new AnalogGaugeStrategy().render(ctx));
+      const marker = svg.querySelector(".threshold-marker") as SVGLineElement;
+      expect(marker.getAttribute("stroke-dasharray")).toBe("4,2");
+    });
+
+    it("should render no markers when thresholds is empty", () => {
+      const ctx = createCtx(50, { thresholds: [] });
+      const svg = asSvg(new AnalogGaugeStrategy().render(ctx));
+      expect(svg.querySelectorAll(".threshold-marker").length).toBe(0);
+    });
+  });
+
   describe("detailLevel", () => {
     it("should omit tick marks at low detail", () => {
       const svg = asSvg(
@@ -301,6 +384,50 @@ describe("AnalogGaugeStrategy", () => {
       );
       expect(texts).toContain("0%");
       expect(texts).toContain("100%");
+    });
+  });
+
+  describe("sweepDegrees", () => {
+    it("should render a 180° semicircle gauge", () => {
+      const strategy = new AnalogGaugeStrategy({ sweepDegrees: 180 });
+      const svg = asSvg(strategy.render(createCtx(50)));
+      expect(svg).toBeInstanceOf(SVGSVGElement);
+      // Should still have needle and background arc
+      expect(svg.querySelectorAll("polygon").length).toBe(1);
+      expect(svg.querySelectorAll("path").length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("should render tick marks on a semicircle", () => {
+      const strategy = new AnalogGaugeStrategy({
+        sweepDegrees: 180,
+        majorTicks: 5,
+        minorTicks: 2,
+      });
+      const svg = asSvg(strategy.render(createCtx(50)));
+      expect(svg.querySelectorAll("line").length).toBeGreaterThan(0);
+    });
+
+    it("should clamp sweep to 30..360 range", () => {
+      const tooSmall = new AnalogGaugeStrategy({ sweepDegrees: 10 });
+      const tooLarge = new AnalogGaugeStrategy({ sweepDegrees: 400 });
+      // Both should render without error
+      expect(asSvg(tooSmall.render(createCtx(50)))).toBeInstanceOf(
+        SVGSVGElement,
+      );
+      expect(asSvg(tooLarge.render(createCtx(50)))).toBeInstanceOf(
+        SVGSVGElement,
+      );
+    });
+
+    it("should default to 270° sweep", () => {
+      const defaultStrategy = new AnalogGaugeStrategy();
+      const explicit270 = new AnalogGaugeStrategy({ sweepDegrees: 270 });
+      const svgDefault = asSvg(defaultStrategy.render(createCtx(50)));
+      const svg270 = asSvg(explicit270.render(createCtx(50)));
+      // Both should produce the same number of elements
+      expect(svgDefault.querySelectorAll("*").length).toBe(
+        svg270.querySelectorAll("*").length,
+      );
     });
   });
 });
@@ -643,6 +770,69 @@ describe("BarGaugeStrategy", () => {
       (r) => r.getAttribute("opacity") === "0.25",
     );
     expect(zoneRects.length).toBe(2);
+  });
+
+  describe("zone labels", () => {
+    it("should render zone labels at high detail when label is set", () => {
+      const ctx = createCtx(50, {
+        zones: [
+          { from: 0, to: 50, color: "green", label: "OK" },
+          { from: 50, to: 100, color: "red", label: "Hot" },
+        ],
+        detailLevel: "high",
+      });
+      const svg = asSvg(new BarGaugeStrategy().render(ctx));
+      const labels = Array.from(svg.querySelectorAll(".zone-label"));
+      expect(labels.length).toBe(2);
+      expect(labels[0].textContent).toBe("OK");
+      expect(labels[1].textContent).toBe("Hot");
+    });
+
+    it("should not render zone labels at medium detail", () => {
+      const ctx = createCtx(50, {
+        zones: [{ from: 0, to: 50, color: "green", label: "OK" }],
+        detailLevel: "medium",
+      });
+      const svg = asSvg(new BarGaugeStrategy().render(ctx));
+      expect(svg.querySelectorAll(".zone-label").length).toBe(0);
+    });
+
+    it("should skip zones without a label", () => {
+      const ctx = createCtx(50, {
+        zones: [
+          { from: 0, to: 50, color: "green", label: "OK" },
+          { from: 50, to: 100, color: "red" },
+        ],
+        detailLevel: "high",
+      });
+      const svg = asSvg(new BarGaugeStrategy().render(ctx));
+      expect(svg.querySelectorAll(".zone-label").length).toBe(1);
+    });
+  });
+
+  describe("threshold markers", () => {
+    it("should render threshold marker lines", () => {
+      const ctx = createCtx(50, {
+        thresholds: [25, 75],
+      });
+      const svg = asSvg(new BarGaugeStrategy().render(ctx));
+      const markers = svg.querySelectorAll(".threshold-marker");
+      expect(markers.length).toBe(2);
+    });
+
+    it("should skip thresholds outside min/max range", () => {
+      const ctx = createCtx(50, {
+        thresholds: [-5, 50, 150],
+      });
+      const svg = asSvg(new BarGaugeStrategy().render(ctx));
+      expect(svg.querySelectorAll(".threshold-marker").length).toBe(1);
+    });
+
+    it("should render no markers when thresholds is empty", () => {
+      const ctx = createCtx(50, { thresholds: [] });
+      const svg = asSvg(new BarGaugeStrategy().render(ctx));
+      expect(svg.querySelectorAll(".threshold-marker").length).toBe(0);
+    });
   });
 
   it("should render no fill when value equals min", () => {

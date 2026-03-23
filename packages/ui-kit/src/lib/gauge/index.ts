@@ -9,6 +9,7 @@ export {
 } from "./gauge.types";
 export { GaugePresentationStrategy } from "./strategies/gauge-presentation-strategy";
 export { AnalogGaugeStrategy } from "./strategies/analog-gauge.strategy";
+export type { AnalogGaugeOptions } from "./strategies/analog-gauge.strategy";
 export { VuMeterStrategy } from "./strategies/vu-meter.strategy";
 export { DigitalGaugeStrategy } from "./strategies/digital-gauge.strategy";
 export { LcdGaugeStrategy } from "./strategies/lcd-gauge.strategy";
