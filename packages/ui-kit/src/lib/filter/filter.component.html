@@ -22,7 +22,7 @@
   <div class="filter__header" role="group" aria-label="Filter junction">
     @if (allowJunction()) {
       <span id="filter-junction-label">Match</span>
-      <ui-select
+      <ui-dropdown-list
         ariaLabel="Filter junction"
         [options]="junctionOptions"
         [value]="currentJunction()"

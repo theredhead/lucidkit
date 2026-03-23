@@ -30,6 +30,7 @@ export * from "./lib/repeater";
 export * from "./lib/accordion";
 export * from "./lib/breadcrumb";
 export * from "./lib/dialog";
+export * from "./lib/dropdown-list";
 export * from "./lib/slider";
 export * from "./lib/progress";
 export * from "./lib/avatar";

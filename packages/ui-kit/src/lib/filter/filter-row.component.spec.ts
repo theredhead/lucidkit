@@ -151,7 +151,7 @@ describe("UIFilterRow", () => {
       component.remove.subscribe(() => (removed = true));
 
       const removeBtn = fixture.nativeElement.querySelector(
-        "ui-button:last-child",
+        ".ui-filter-row__controls > ui-button",
       );
       removeBtn?.click();
 
@@ -240,13 +240,17 @@ describe("UIFilterRow", () => {
     });
 
     it("should have aria-label on the field select", () => {
-      const selects = fixture.nativeElement.querySelectorAll("select");
-      expect(selects[0].getAttribute("aria-label")).toBe("Filter field");
+      const btn = fixture.nativeElement.querySelector(
+        'ui-dropdown-list[aria-label="Filter field"] button',
+      );
+      expect(btn.getAttribute("aria-label")).toBe("Filter field");
     });
 
     it("should have aria-label on the operator select", () => {
-      const selects = fixture.nativeElement.querySelectorAll("select");
-      expect(selects[1].getAttribute("aria-label")).toBe("Operator");
+      const btn = fixture.nativeElement.querySelector(
+        'ui-dropdown-list[aria-label="Operator"] button',
+      );
+      expect(btn.getAttribute("aria-label")).toBe("Operator");
     });
 
     it("should have aria-label on the value input", () => {
@@ -256,7 +260,7 @@ describe("UIFilterRow", () => {
 
     it("should have aria-label on the remove button", () => {
       const btn = fixture.nativeElement.querySelector(
-        "ui-button:last-of-type button",
+        ".ui-filter-row__controls > ui-button button",
       );
       expect(btn.getAttribute("aria-label")).toBe("Remove filter rule");
     });

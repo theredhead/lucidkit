@@ -11,6 +11,7 @@ import {
   type AutocompleteDatasource,
 } from "../autocomplete/autocomplete.component";
 import { UIButton } from "../button/button.component";
+import { UIDropdownList } from "../dropdown-list/dropdown-list.component";
 import { UIInput } from "../input/input.component";
 import { UISelect } from "../select/select.component";
 import type { SelectOption } from "../select/select.component";
@@ -56,7 +57,7 @@ type ValueInputMode = "select" | "autocomplete" | "text";
 @Component({
   selector: "ui-filter-row",
   standalone: true,
-  imports: [UISelect, UIInput, UIButton, UIAutocomplete],
+  imports: [UISelect, UIInput, UIButton, UIAutocomplete, UIDropdownList],
   templateUrl: "./filter-row.component.html",
   styleUrl: "./filter-row.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,

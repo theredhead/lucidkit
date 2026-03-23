@@ -1,6 +1,6 @@
 <div class="ui-filter-row__controls" role="group" [attr.aria-label]="'Filter rule ' + rule().id">
   <!-- Field selector -->
-  <ui-select
+  <ui-dropdown-list
     ariaLabel="Filter field"
     [options]="fieldOptions()"
     [value]="rule().field"
@@ -8,7 +8,7 @@
   />
 
   <!-- Operator selector -->
-  <ui-select
+  <ui-dropdown-list
     ariaLabel="Operator"
     [options]="operatorOptions()"
     [value]="rule().operator"
@@ -50,7 +50,7 @@
     } @else {
       <!-- Standard single value — mode depends on distinct values -->
       @if (valueInputMode() === 'select') {
-        <ui-select
+        <ui-dropdown-list
           ariaLabel="Filter value"
           [options]="valueSelectOptions()"
           [value]="rule().value"
