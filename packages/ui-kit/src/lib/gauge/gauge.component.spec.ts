@@ -172,6 +172,22 @@ describe("UIGauge", () => {
       expect(el.getAttribute("aria-valuemax")).toBe("100");
     });
   });
+
+  describe("animation inputs", () => {
+    it("should default animated to false", () => {
+      expect(component.animated()).toBe(false);
+    });
+
+    it("should default animationDuration to 300", () => {
+      expect(component.animationDuration()).toBe(300);
+    });
+
+    it("should pass value immediately when not animated", () => {
+      fixture.componentRef.setInput("value", 75);
+      fixture.detectChanges();
+      expect(strategy.lastCtx!.value).toBe(75);
+    });
+  });
 });
 
 // ── AnalogGaugeStrategy ────────────────────────────────────────────
@@ -379,7 +395,11 @@ describe("LcdGaugeStrategy", () => {
   });
 
   it("should render seven-segment polygons for each digit", () => {
-    const svg = asSvg(new LcdGaugeStrategy({ decimals: 0, digitCount: 3 }).render(createCtx(42)));
+    const svg = asSvg(
+      new LcdGaugeStrategy({ decimals: 0, digitCount: 3 }).render(
+        createCtx(42),
+      ),
+    );
     const polygons = svg.querySelectorAll("polygon");
     // Each of 3 digit cells renders 7 segments (ghost + active) = 21 polygons
     // Leading space is skipped, so "_42" = 2 visible digits × 7 = 14
@@ -388,7 +408,11 @@ describe("LcdGaugeStrategy", () => {
   });
 
   it("should render a decimal point as a rect", () => {
-    const svg = asSvg(new LcdGaugeStrategy({ decimals: 1, digitCount: 4 }).render(createCtx(3.5)));
+    const svg = asSvg(
+      new LcdGaugeStrategy({ decimals: 1, digitCount: 4 }).render(
+        createCtx(3.5),
+      ),
+    );
     // Background panel + decimal dot = at least 2 rects
     expect(svg.querySelectorAll("rect").length).toBeGreaterThanOrEqual(2);
   });

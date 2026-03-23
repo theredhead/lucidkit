@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   computed,
   effect,
@@ -46,6 +47,7 @@ import type { GaugePresentationStrategy } from "./strategies/gauge-presentation-
  *   unit="km/h"
  *   [strategy]="analogStrategy"
  *   [zones]="speedZones"
+ *   [animated]="true"
  * />
  * ```
  */
@@ -92,6 +94,18 @@ export class UIGauge {
   /** Level of visual detail strategies should render. */
   public readonly detailLevel = input<GaugeDetailLevel>("high");
 
+  /**
+   * Whether value changes are animated.
+   * When `true`, the gauge smoothly interpolates between old and new values.
+   */
+  public readonly animated = input<boolean>(false);
+
+  /**
+   * Duration of the value animation in milliseconds.
+   * Only applies when `animated` is `true`.
+   */
+  public readonly animationDuration = input<number>(300);
+
   // ── Queries ─────────────────────────────────────────────────────────
 
   private readonly containerRef =
@@ -114,13 +128,42 @@ export class UIGauge {
 
   private readonly log = inject(LoggerFactory).createLogger("UIGauge");
   private readonly elRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly destroyRef = inject(DestroyRef);
+
+  /**
+   * The value currently being displayed (may be mid-animation).
+   * Plain field — not a signal — to avoid circular effect deps.
+   */
+  private currentVisualValue: number | undefined;
+
+  /** Handle for the running `requestAnimationFrame` chain. */
+  private animationFrameId = 0;
 
   // ── Constructor ─────────────────────────────────────────────────────
 
   public constructor() {
     effect(() => {
-      this.renderGauge();
+      const targetValue = this.clampedValue();
+      const isAnimated = this.animated();
+      const duration = this.animationDuration();
+
+      if (!isAnimated || this.currentVisualValue === undefined) {
+        this.cancelAnimation();
+        this.currentVisualValue = targetValue;
+        this.renderGauge(targetValue);
+        return;
+      }
+
+      const fromValue = this.currentVisualValue;
+      if (fromValue === targetValue) {
+        this.renderGauge(targetValue);
+        return;
+      }
+
+      this.animateTo(fromValue, targetValue, duration);
     });
+
+    this.destroyRef.onDestroy(() => this.cancelAnimation());
   }
 
   // ── Private methods ─────────────────────────────────────────────────
@@ -140,8 +183,8 @@ export class UIGauge {
     };
   }
 
-  /** Run the strategy and insert the output. */
-  private renderGauge(): void {
+  /** Run the strategy and insert the output into the DOM. */
+  private renderGauge(displayValue: number): void {
     const strategy = this.strategy();
     const size = this.size();
     const container = this.containerRef().nativeElement;
@@ -149,7 +192,7 @@ export class UIGauge {
     container.innerHTML = "";
 
     const ctx: GaugeRenderContext = {
-      value: this.clampedValue(),
+      value: displayValue,
       min: this.min(),
       max: this.max(),
       unit: this.unit(),
@@ -181,6 +224,40 @@ export class UIGauge {
         container.appendChild(canvas);
         break;
       }
+    }
+  }
+
+  /** Animate from one value to another over the given duration. */
+  private animateTo(from: number, to: number, duration: number): void {
+    this.cancelAnimation();
+
+    const startTime = performance.now();
+
+    const step = (now: number): void => {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      // Ease-out cubic for a natural deceleration feel
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = from + (to - from) * eased;
+
+      this.currentVisualValue = current;
+      this.renderGauge(current);
+
+      if (t < 1) {
+        this.animationFrameId = requestAnimationFrame(step);
+      } else {
+        this.animationFrameId = 0;
+      }
+    };
+
+    this.animationFrameId = requestAnimationFrame(step);
+  }
+
+  /** Cancel any running animation frame chain. */
+  private cancelAnimation(): void {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = 0;
     }
   }
 }
