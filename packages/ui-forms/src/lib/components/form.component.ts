@@ -30,7 +30,6 @@ import { UIFormGroup } from "./form-group.component";
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-form",
-    "[style.--ui-form-field-min-width]": "fieldMinWidth() + 'px'",
   },
   templateUrl: "./form.component.html",
   styleUrl: "./form.component.scss",

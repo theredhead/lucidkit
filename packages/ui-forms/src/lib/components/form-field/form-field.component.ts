@@ -48,6 +48,9 @@ export class UIFormField {
   /** The field state managed by the {@link FormEngine}. */
   public readonly state = input.required<FieldState>();
 
+  /** Minimum width (in pixels) for the field control. */
+  public readonly fieldMinWidth = input<number>(200);
+
   private readonly registry = inject(FormFieldRegistry);
   private readonly log = inject(LoggerFactory).createLogger("UIFormField");
   private readonly outlet = viewChild<unknown, ViewContainerRef>("outlet", {
