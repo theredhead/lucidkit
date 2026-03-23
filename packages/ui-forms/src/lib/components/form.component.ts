@@ -30,6 +30,7 @@ import { UIFormGroup } from "./form-group.component";
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-form",
+    "[style.--ui-form-field-min-width]": "fieldMinWidth() + 'px'",
   },
   templateUrl: "./form.component.html",
   styleUrl: "./form.component.scss",
@@ -43,6 +44,9 @@ export class UIForm {
 
   /** Whether to show the built-in submit button. Defaults to `true`. */
   public readonly showSubmit = input<boolean>(true);
+
+  /** Minimum width (in pixels) for form field controls. Defaults to `200`. */
+  public readonly fieldMinWidth = input<number>(200);
 
   /** Emitted when the submit button is clicked and the form is valid. */
   public readonly formSubmit = output<FormValues>();
