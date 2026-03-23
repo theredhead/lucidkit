@@ -148,6 +148,30 @@
   background: var(--ui-primary-container);
 }
 
+.edit-content-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--ui-accent);
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--ui-accent);
+  background: transparent;
+  transition:
+    background-color 80ms ease,
+    color 80ms ease;
+}
+
+.edit-content-btn:hover {
+  background: var(--ui-accent);
+  color: #ffffff;
+}
+
 .error {
   font-size: 0.75rem;
   color: var(--ui-error);
@@ -200,6 +224,16 @@
 
   .add-btn:hover {
     background: var(--ui-primary-container);
+  }
+
+  .edit-content-btn {
+    border-color: var(--ui-accent);
+    color: var(--ui-accent);
+  }
+
+  .edit-content-btn:hover {
+    background: var(--ui-accent);
+    color: #ffffff;
   }
 
   .error {

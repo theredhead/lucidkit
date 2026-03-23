@@ -3,11 +3,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   input,
   signal,
 } from "@angular/core";
 
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { ModalService, UIIcon, UIIcons } from "@theredhead/ui-kit";
 
 import { isFlairComponent } from "../../types/form-schema.types";
 import type {
@@ -16,6 +17,7 @@ import type {
 } from "./designer-engine";
 
 import { type ConfigPropertySchema, getConfigSchema } from "./config-schema";
+import { UIRichTextContentDialog } from "./richtext-content-dialog/richtext-content-dialog.component";
 
 import type {
   ValidationRule,
@@ -86,6 +88,11 @@ export class UIPropertyInspector {
 
   /** @internal X icon for remove buttons. */
   protected readonly iconX = UIIcons.Lucide.Notifications.X;
+
+  /** @internal Edit icon for the rich text button. */
+  protected readonly iconEdit = UIIcons.Lucide.Text.Type;
+
+  private readonly modalService = inject(ModalService);
 
   // ── Helpers ───────────────────────────────────────────────────────
 
@@ -301,6 +308,25 @@ export class UIPropertyInspector {
     return (prop.options ?? []).map((o) =>
       typeof o === "string" ? { label: o, value: o } : o,
     );
+  }
+
+  /** @internal Open a richtext editor dialog for the given config key. */
+  protected openRichTextEditor(
+    field: MutableFieldDefinition,
+    key: string,
+  ): void {
+    const current = (field.config()[key] as string) ?? "";
+    this.modalService
+      .openModal<UIRichTextContentDialog, string>({
+        component: UIRichTextContentDialog,
+        inputs: { initialContent: current },
+        ariaLabel: "Edit rich text content",
+      })
+      .closed.subscribe((result) => {
+        if (result !== undefined) {
+          this.setConfigValue(field, key, result);
+        }
+      });
   }
 
   // ── Extra Config (raw JSON for unknown keys) ──────────────────────
