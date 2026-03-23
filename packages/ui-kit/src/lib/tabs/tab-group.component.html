@@ -1,4 +1,6 @@
-<div class="header" role="tablist" [attr.aria-label]="ariaLabel()">
+<div class="header" role="tablist"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-orientation]="resolvedTabPosition() === 'left' || resolvedTabPosition() === 'right' ? 'vertical' : undefined">
   @for (tab of tabs(); track tab; let i = $index) {
     <button
       class="tab"
@@ -13,8 +15,14 @@
       [attr.aria-controls]="'panel-' + i"
       (click)="selectTab(i)"
       (keydown)="onTabKeyDown($event, i)"
+      [attr.aria-label]="tab.resolvedAriaLabel()"
     >
-      {{ tab.label() }}
+      @if (tab.icon(); as svg) {
+        <ui-icon [svg]="svg" [size]="14" />
+      }
+      @if (tab.label(); as label) {
+        {{ label }}
+      }
     </button>
   }
 </div>
