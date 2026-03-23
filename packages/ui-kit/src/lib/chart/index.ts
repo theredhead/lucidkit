@@ -12,6 +12,8 @@ export {
 export { GraphPresentationStrategy } from "./strategies/graph-presentation-strategy";
 export { LineGraphStrategy } from "./strategies/line-graph.strategy";
 export { BarGraphStrategy } from "./strategies/bar-graph.strategy";
+export { StackedBarGraphStrategy } from "./strategies/stacked-bar-graph.strategy";
+export type { StackedBarGraphOptions } from "./strategies/stacked-bar-graph.strategy";
 export { PieChartStrategy } from "./strategies/pie-chart.strategy";
 export { ScatterPlotStrategy } from "./strategies/scatter-plot.strategy";
 export {

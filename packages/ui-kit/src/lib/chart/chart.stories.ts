@@ -6,6 +6,7 @@ import { BarGraphStrategy } from "./strategies/bar-graph.strategy";
 import { LineGraphStrategy } from "./strategies/line-graph.strategy";
 import { PieChartStrategy } from "./strategies/pie-chart.strategy";
 import { ScatterPlotStrategy } from "./strategies/scatter-plot.strategy";
+import { StackedBarGraphStrategy } from "./strategies/stacked-bar-graph.strategy";
 import type { GraphPresentationStrategy } from "./strategies/graph-presentation-strategy";
 
 // ── Sample data ─────────────────────────────────────────────────
@@ -812,6 +813,112 @@ class ChartGroupedBarDemo {
   ];
 }
 
+// ── Demo: Stacked Bar ────────────────────────────────────────────
+
+@Component({
+  selector: "ui-chart-stacked-bar-demo",
+  standalone: true,
+  imports: [UIChart],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        padding: 1rem;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+      }
+      h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+      }
+      p {
+        margin: 0.5rem 0 0;
+        font-size: 0.8125rem;
+        opacity: 0.65;
+      }
+    `,
+  ],
+  template: `
+    <h3>Stacked Bar — Revenue, Cost &amp; Profit</h3>
+    <ui-chart
+      [source]="data"
+      labelProperty="month"
+      valueProperty="revenue"
+      [sources]="layers"
+      [strategy]="strategy"
+      [width]="560"
+      [height]="340"
+      ariaLabel="Revenue, cost and profit stacked bar chart"
+    />
+    <p>
+      Each bar stacks series segments vertically so the total height
+      represents the cumulative value at each X position.
+    </p>
+  `,
+})
+class ChartStackedBarDemo {
+  public readonly data = financialData;
+  public readonly strategy = new StackedBarGraphStrategy();
+  public readonly layers: ChartLayer<FinancialMonth>[] = [
+    { name: "Cost", valueProperty: "cost" },
+    { name: "Profit", valueProperty: "profit" },
+  ];
+}
+
+// ── Demo: Stacked Bar (normalised) ──────────────────────────────
+
+@Component({
+  selector: "ui-chart-stacked-bar-norm-demo",
+  standalone: true,
+  imports: [UIChart],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        padding: 1rem;
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 6px;
+      }
+      h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+      }
+      p {
+        margin: 0.5rem 0 0;
+        font-size: 0.8125rem;
+        opacity: 0.65;
+      }
+    `,
+  ],
+  template: `
+    <h3>100 % Stacked Bar — Revenue Breakdown</h3>
+    <ui-chart
+      [source]="data"
+      labelProperty="month"
+      valueProperty="revenue"
+      [sources]="layers"
+      [strategy]="strategy"
+      [width]="560"
+      [height]="340"
+      ariaLabel="Normalised stacked bar chart showing cost vs profit proportions"
+    />
+    <p>
+      Each bar is normalised to 100 %, making it easy to compare the
+      proportion of each segment across X positions.
+    </p>
+  `,
+})
+class ChartStackedBarNormDemo {
+  public readonly data = financialData;
+  public readonly strategy = new StackedBarGraphStrategy({ normalised: true });
+  public readonly layers: ChartLayer<FinancialMonth>[] = [
+    { name: "Cost", valueProperty: "cost" },
+    { name: "Profit", valueProperty: "profit" },
+  ];
+}
+
 // ── Demo: Multi-Series Scatter ───────────────────────────────────
 
 @Component({
@@ -1051,6 +1158,8 @@ const meta: Meta<UIChart<unknown>> = {
         ChartComparisonDemo,
         ChartMultiLineDemo,
         ChartGroupedBarDemo,
+        ChartStackedBarDemo,
+        ChartStackedBarNormDemo,
         ChartMultiScatterDemo,
         ChartYoyDemo,
       ],
@@ -1576,6 +1685,98 @@ export const GroupedBar: Story = {
   ]"
   [strategy]="barStrategy"
 />`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/**
+ * **Stacked Bar** — Cost and Profit stacked vertically so each
+ * bar's total equals the cumulative sum across series.
+ */
+export const StackedBar: Story = {
+  render: () => ({
+    template: `<ui-chart-stacked-bar-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-chart
+  [source]="financialData"
+  labelProperty="month"
+  valueProperty="revenue"
+  [sources]="[
+    { name: 'Cost',   valueProperty: 'cost' },
+    { name: 'Profit', valueProperty: 'profit' }
+  ]"
+  [strategy]="stackedStrategy"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIChart,
+  StackedBarGraphStrategy,
+  type ChartLayer,
+} from '@theredhead/ui-kit';
+
+@Component({
+  standalone: true,
+  imports: [UIChart],
+  template: \`
+    <ui-chart
+      [source]="data"
+      labelProperty="month"
+      valueProperty="revenue"
+      [sources]="layers"
+      [strategy]="strategy"
+    />
+  \`,
+})
+export class StackedBarComponent {
+  readonly data = [ /* ... */ ];
+  readonly strategy = new StackedBarGraphStrategy();
+  readonly layers: ChartLayer<any>[] = [
+    { name: 'Cost',   valueProperty: 'cost' },
+    { name: 'Profit', valueProperty: 'profit' },
+  ];
+}
+`,
+        language: "html",
+      },
+    },
+  },
+};
+
+/**
+ * **100 % Stacked Bar** — Each bar is normalised to 100 % so it's
+ * easy to compare segment proportions across X positions.
+ */
+export const StackedBarNormalised: Story = {
+  render: () => ({
+    template: `<ui-chart-stacked-bar-norm-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+// ── HTML ──
+<ui-chart
+  [source]="financialData"
+  labelProperty="month"
+  valueProperty="revenue"
+  [sources]="layers"
+  [strategy]="normalisedStrategy"
+/>
+
+// ── TypeScript ──
+import { StackedBarGraphStrategy } from '@theredhead/ui-kit';
+
+readonly strategy = new StackedBarGraphStrategy({ normalised: true });
+`,
         language: "html",
       },
     },
