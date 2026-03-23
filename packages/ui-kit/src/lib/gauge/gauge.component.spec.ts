@@ -189,6 +189,24 @@ describe("UIGauge", () => {
       expect(strategy.lastCtx!.value).toBe(75);
     });
   });
+
+  describe("formatValue", () => {
+    it("should default formatValue to undefined", () => {
+      expect(component.formatValue()).toBeUndefined();
+    });
+
+    it("should pass formatValue through the render context", () => {
+      const fmt = (n: number): string => `$${n.toFixed(2)}`;
+      fixture.componentRef.setInput("formatValue", fmt);
+      fixture.detectChanges();
+      expect(strategy.lastCtx!.formatValue).toBe(fmt);
+    });
+
+    it("should pass undefined formatValue when not set", () => {
+      fixture.detectChanges();
+      expect(strategy.lastCtx!.formatValue).toBeUndefined();
+    });
+  });
 });
 
 // ── AnalogGaugeStrategy ────────────────────────────────────────────
@@ -258,6 +276,33 @@ describe("AnalogGaugeStrategy", () => {
       );
     });
   });
+
+  describe("formatValue", () => {
+    it("should use custom formatter for value readout", () => {
+      const fmt = (n: number): string => `$${n.toFixed(2)}`;
+      const svg = asSvg(
+        new AnalogGaugeStrategy().render(createCtx(72.5, { formatValue: fmt })),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("$72.50");
+    });
+
+    it("should use custom formatter for tick labels", () => {
+      const fmt = (n: number): string => `${n}%`;
+      const svg = asSvg(
+        new AnalogGaugeStrategy({ majorTicks: 5 }).render(
+          createCtx(50, { formatValue: fmt }),
+        ),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("0%");
+      expect(texts).toContain("100%");
+    });
+  });
 });
 
 // ── VuMeterStrategy ────────────────────────────────────────────────
@@ -312,6 +357,21 @@ describe("VuMeterStrategy", () => {
       expect(svgMed.querySelectorAll("text").length).toBeLessThan(
         svgHigh.querySelectorAll("text").length,
       );
+    });
+  });
+
+  describe("formatValue", () => {
+    it("should use custom formatter for value readout", () => {
+      const fmt = (n: number): string => `${n.toFixed(0)} dB`;
+      const svg = asSvg(
+        new VuMeterStrategy().render(
+          createCtx(65, { formatValue: fmt, unit: "" }),
+        ),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("65 dB");
     });
   });
 });
@@ -377,6 +437,33 @@ describe("DigitalGaugeStrategy", () => {
       expect(svg.querySelectorAll("rect").length).toBe(1);
       // Value + unit label
       expect(svg.querySelectorAll("text").length).toBe(2);
+    });
+  });
+
+  describe("formatValue", () => {
+    it("should use custom formatter for the main readout", () => {
+      const fmt = (n: number): string => `$${n.toFixed(2)}`;
+      const svg = asSvg(
+        new DigitalGaugeStrategy().render(createCtx(42, { formatValue: fmt })),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("$42.00");
+    });
+
+    it("should use custom formatter for min/max labels", () => {
+      const fmt = (n: number): string => `${n}%`;
+      const svg = asSvg(
+        new DigitalGaugeStrategy().render(
+          createCtx(50, { formatValue: fmt, detailLevel: "high" }),
+        ),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("0%");
+      expect(texts).toContain("100%");
     });
   });
 });
@@ -457,6 +544,22 @@ describe("LcdGaugeStrategy", () => {
       );
       // Only unit label
       expect(svg.querySelectorAll("text").length).toBe(1);
+    });
+  });
+
+  describe("formatValue", () => {
+    it("should use custom formatter for min/max labels", () => {
+      const fmt = (n: number): string => `${n}V`;
+      const svg = asSvg(
+        new LcdGaugeStrategy().render(
+          createCtx(50, { formatValue: fmt, detailLevel: "high" }),
+        ),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("0V");
+      expect(texts).toContain("100V");
     });
   });
 });
@@ -562,10 +665,37 @@ describe("BarGaugeStrategy", () => {
   });
 
   it("should hide ticks when ticks is 0", () => {
-    const svg = asSvg(
-      new BarGaugeStrategy({ ticks: 0 }).render(createCtx(50)),
-    );
+    const svg = asSvg(new BarGaugeStrategy({ ticks: 0 }).render(createCtx(50)));
     expect(svg.querySelectorAll("line").length).toBe(0);
+  });
+
+  describe("formatValue", () => {
+    it("should use custom formatter for value readout", () => {
+      const fmt = (n: number): string => `${n.toFixed(1)}%`;
+      const svg = asSvg(
+        new BarGaugeStrategy().render(
+          createCtx(65, { formatValue: fmt, unit: "" }),
+        ),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("65.0%");
+    });
+
+    it("should use custom formatter for tick labels", () => {
+      const fmt = (n: number): string => `$${n}`;
+      const svg = asSvg(
+        new BarGaugeStrategy({ ticks: 5 }).render(
+          createCtx(50, { formatValue: fmt, detailLevel: "high" }),
+        ),
+      );
+      const texts = Array.from(svg.querySelectorAll("text")).map(
+        (t: SVGTextElement) => t.textContent,
+      );
+      expect(texts).toContain("$0");
+      expect(texts).toContain("$100");
+    });
   });
 });
 

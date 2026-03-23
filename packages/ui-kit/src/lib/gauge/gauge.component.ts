@@ -106,6 +106,25 @@ export class UIGauge {
    */
   public readonly animationDuration = input<number>(300);
 
+  /**
+   * Optional formatter for numeric values displayed by the strategy.
+   *
+   * When provided, strategies use this callback for all numeric labels
+   * (value readout, tick marks, min/max). This lets consumers control
+   * locale, precision, currency symbols, etc.
+   *
+   * @example
+   * ```html
+   * <ui-gauge [formatValue]="formatCurrency" />
+   * ```
+   * ```ts
+   * formatCurrency = (n: number) => '$' + n.toFixed(2);
+   * ```
+   */
+  public readonly formatValue = input<((value: number) => string) | undefined>(
+    undefined,
+  );
+
   // ── Queries ─────────────────────────────────────────────────────────
 
   private readonly containerRef =
@@ -200,6 +219,7 @@ export class UIGauge {
       size,
       tokens: this.resolveTokens(),
       detailLevel: this.detailLevel(),
+      formatValue: this.formatValue(),
     };
 
     const output = strategy.render(ctx);

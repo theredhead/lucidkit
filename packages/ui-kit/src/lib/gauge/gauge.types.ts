@@ -75,6 +75,14 @@ export interface GaugeRenderContext {
   readonly tokens: GaugeTokens;
   /** Level of visual detail the strategy should render. */
   readonly detailLevel: GaugeDetailLevel;
+  /**
+   * Optional consumer-supplied formatter for numeric values.
+   *
+   * When provided, strategies use this for **all** numeric labels
+   * (value readout, tick labels, min/max). When `undefined`,
+   * each strategy falls back to its own default formatting.
+   */
+  readonly formatValue?: (value: number) => string;
 }
 
 /**

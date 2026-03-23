@@ -34,6 +34,7 @@ export class VuMeterStrategy extends GaugePresentationStrategy {
 
   public render(ctx: GaugeRenderContext): GaugeRenderOutput {
     const { value, min, max, unit, zones, size, tokens, detailLevel } = ctx;
+    const fmt = ctx.formatValue ?? formatLabel;
     const svg = createGaugeSvgRoot(size);
 
     const ratio = valueToRatio(value, min, max);
@@ -87,7 +88,7 @@ export class VuMeterStrategy extends GaugePresentationStrategy {
 
         svg.appendChild(
           gaugeSvgText(
-            formatLabel(labelValue),
+            fmt(labelValue),
             padding.left - 6,
             y + segHeight / 2,
             {
@@ -105,7 +106,7 @@ export class VuMeterStrategy extends GaugePresentationStrategy {
     if (detailLevel !== "low") {
       svg.appendChild(
         gaugeSvgText(
-          `${formatLabel(value)}${unit ? ` ${unit}` : ""}`,
+          `${fmt(value)}${unit ? ` ${unit}` : ""}`,
           size.width / 2,
           size.height - 6,
           {
