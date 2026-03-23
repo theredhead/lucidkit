@@ -53,7 +53,7 @@ export class UIForm {
   public readonly showSubmit = input<boolean>(true);
 
   /** Minimum width (in pixels) for form field controls. Defaults to `200`. */
-  public readonly fieldMinWidth = input<number>(200);
+  public readonly fieldMinWidth = input<number>(450);
 
   /** Emitted when the submit button is clicked and the form is valid. */
   public readonly formSubmit = output<FormValues>();

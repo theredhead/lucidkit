@@ -61,7 +61,7 @@ export class UIFormWizard {
   public readonly submitLabel = input<string>("Submit");
 
   /** Minimum width (in pixels) for form field controls. Defaults to `200`. */
-  public readonly fieldMinWidth = input<number>(200);
+  public readonly fieldMinWidth = input<number>(450);
 
   /** Emitted when the form is submitted (last step, valid). */
   public readonly formSubmit = output<FormValues>();
