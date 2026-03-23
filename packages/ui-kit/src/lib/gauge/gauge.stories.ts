@@ -929,6 +929,96 @@ export class AnimatedGaugeComponent {
   },
 };
 
+export const Responsive: Story = {
+  render: (args) => ({
+    props: { ...args, zones: speedZones, strategy: new AnalogGaugeStrategy() },
+    template: `
+      <p style="color: var(--ui-gauge-text, #555); margin-bottom: 8px; font-size: 13px;">
+        Resize your browser window — the gauge fills the container.
+      </p>
+      <div style="width: 100%; max-width: 500px; height: 320px;
+                  border: 1px dashed var(--ui-gauge-tick, #888);
+                  border-radius: 8px; padding: 8px; box-sizing: border-box;">
+        <ui-gauge
+          [value]="value"
+          [min]="min"
+          [max]="max"
+          [unit]="unit"
+          [strategy]="strategy"
+          [zones]="zones"
+          [fit]="true"
+        />
+      </div>
+    `,
+  }),
+  args: {
+    value: 72,
+    min: 0,
+    max: 100,
+    unit: "km/h",
+    detailLevel: "high" as GaugeDetailLevel,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div style="width: 100%; height: 300px;">
+  <ui-gauge
+    [value]="speed"
+    [min]="0"
+    [max]="220"
+    unit="km/h"
+    [strategy]="strategy"
+    [zones]="zones"
+    [fit]="true"
+  />
+</div>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIGauge,
+  AnalogGaugeStrategy,
+  type GaugeZone,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-responsive-gauge',
+  standalone: true,
+  imports: [UIGauge],
+  template: \\\`
+    <div style="width: 100%; height: 300px;">
+      <ui-gauge
+        [value]="speed"
+        [min]="0" [max]="220"
+        unit="km/h"
+        [strategy]="strategy"
+        [zones]="zones"
+        [fit]="true"
+      />
+    </div>
+  \\\`,
+})
+export class ResponsiveGaugeComponent {
+  readonly speed = 72;
+  readonly strategy = new AnalogGaugeStrategy();
+  readonly zones: GaugeZone[] = [
+    { from: 0, to: 60, color: '#34a853' },
+    { from: 60, to: 80, color: '#fbbc04' },
+    { from: 80, to: 100, color: '#ea4335' },
+  ];
+}
+
+// ── SCSS ──
+/* The gauge fills its parent — set width/height on the container. */
+`,
+      },
+    },
+  },
+};
+
 export const Interactive: Story = {
   render: () => ({
     template: `<ui-gauge-interactive-demo />`,

@@ -11,6 +11,12 @@
   font-family: inherit;
 }
 
+:host(.ui-gauge--fit) {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 @include mix.dark-mode {
   --ui-gauge-text: #ccc;
   --ui-gauge-face: #2a2d32;
@@ -22,6 +28,11 @@
 .viewport {
   overflow: hidden;
   line-height: 0;
+
+  :host(.ui-gauge--fit) & {
+    width: 100%;
+    height: 100%;
+  }
 
   svg,
   canvas {
