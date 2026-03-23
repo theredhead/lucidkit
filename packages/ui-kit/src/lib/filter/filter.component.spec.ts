@@ -341,7 +341,7 @@ describe("UIFilter", () => {
 
     it("should not show junction selector when allowJunction is false", () => {
       const select = fixture.nativeElement.querySelector(
-        ".filter__header ui-select",
+        ".filter__header ui-dropdown-list",
       );
       expect(select).toBeFalsy();
     });
@@ -351,7 +351,7 @@ describe("UIFilter", () => {
       fixture.detectChanges();
 
       const select = fixture.nativeElement.querySelector(
-        ".filter__header ui-select",
+        ".filter__header ui-dropdown-list",
       );
       expect(select).toBeTruthy();
     });

@@ -1,0 +1,19 @@
+<span #trigger>
+  <ui-button
+    variant="outlined"
+    size="sm"
+    [disabled]="disabled()"
+    [ariaLabel]="ariaLabel()"
+    (click)="toggle()"
+  >
+    <span class="dropdown-label" [class.dropdown-label--placeholder]="isPlaceholder()">
+      {{ displayLabel() }}
+    </span>
+    <ui-icon
+      class="dropdown-chevron"
+      [class.dropdown-chevron--open]="isOpen()"
+      [svg]="chevronIcon"
+      [size]="14"
+    />
+  </ui-button>
+</span>
