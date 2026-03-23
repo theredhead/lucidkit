@@ -116,9 +116,7 @@ export class LcdGaugeStrategy extends GaugePresentationStrategy {
   /** Total number of digit cells (including sign and decimal point). */
   private readonly digitCount: number;
 
-  public constructor(
-    options: { decimals?: number; digitCount?: number } = {},
-  ) {
+  public constructor(options: { decimals?: number; digitCount?: number } = {}) {
     super();
     this.decimals = options.decimals ?? 1;
     this.digitCount = options.digitCount ?? 5;
@@ -221,7 +219,13 @@ export class LcdGaugeStrategy extends GaugePresentationStrategy {
           const isActive = activeSegs.includes(seg);
           svg.appendChild(
             gaugeSvgEl("polygon", {
-              points: segmentPoints(seg, cursorX, cursorY, cellWidth, cellHeight),
+              points: segmentPoints(
+                seg,
+                cursorX,
+                cursorY,
+                cellWidth,
+                cellHeight,
+              ),
               fill: isActive ? activeColor : ghostColor,
               opacity: isActive ? 1 : ghostOpacity,
             }),
