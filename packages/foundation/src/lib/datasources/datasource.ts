@@ -1,3 +1,4 @@
+import type { FilterExpression } from "../types/filter";
 import type {
   RowChangedNotification,
   RowRangeChangedNotification,
@@ -194,7 +195,7 @@ export interface IFilterableTreeDatasource<
    *
    * @param expression - The filter expression to apply.
    */
-  filterBy(expression: unknown): void;
+  filterBy(expression: FilterExpression<T> | null | undefined): void;
 }
 
 /**

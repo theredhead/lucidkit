@@ -460,9 +460,7 @@ class CustomFilterDemo {
   private readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
   protected readonly adapter = new DatasourceAdapter(this.datasource, 100);
 
-  protected onExpression(
-    expression: FilterExpression<Employee>,
-  ): void {
+  protected onExpression(expression: FilterExpression<Employee>): void {
     this.datasource.filterBy(expression);
     this.adapter.pageIndex.set(0);
     this.adapter.totalItems.set(this.datasource.getNumberOfItems() as number);
