@@ -49,6 +49,7 @@ const strategies: Record<string, GaugePresentationStrategy> = {
         [zones]="speedZones"
         [width]="240"
         [height]="240"
+        [animated]="true"
         ariaLabel="Speedometer"
       />
       <ui-gauge
@@ -60,6 +61,7 @@ const strategies: Record<string, GaugePresentationStrategy> = {
         [zones]="speedZones"
         [width]="100"
         [height]="240"
+        [animated]="true"
         ariaLabel="VU speed meter"
       />
       <ui-gauge
@@ -70,6 +72,7 @@ const strategies: Record<string, GaugePresentationStrategy> = {
         [strategy]="digitalStrategy"
         [width]="200"
         [height]="120"
+        [animated]="true"
         ariaLabel="Digital speed readout"
       />
       <ui-gauge
@@ -80,6 +83,7 @@ const strategies: Record<string, GaugePresentationStrategy> = {
         [strategy]="lcdStrategy"
         [width]="260"
         [height]="120"
+        [animated]="true"
         ariaLabel="LCD speed readout"
       />
     </div>
@@ -123,7 +127,10 @@ class GaugeInteractiveDemo {
   protected readonly analogStrategy = new AnalogGaugeStrategy();
   protected readonly vuStrategy = new VuMeterStrategy();
   protected readonly digitalStrategy = new DigitalGaugeStrategy();
-  protected readonly lcdStrategy = new LcdGaugeStrategy({ decimals: 0, digitCount: 4 });
+  protected readonly lcdStrategy = new LcdGaugeStrategy({
+    decimals: 0,
+    digitCount: 4,
+  });
   protected readonly speedZones: GaugeZone[] = [
     { from: 0, to: 100, color: "#34a853" },
     { from: 100, to: 160, color: "#fbbc04" },
@@ -450,6 +457,98 @@ export class LcdThermometerComponent {
 
 // ── SCSS ──
 /* No custom styles needed — gauge tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
+export const Animated: Story = {
+  render: (args) => ({
+    props: { ...args, zones: speedZones },
+    template: `
+      <ui-gauge
+        [value]="value"
+        [min]="min"
+        [max]="max"
+        [unit]="unit"
+        [strategy]="strategy"
+        [zones]="zones"
+        [width]="width"
+        [height]="height"
+        [animated]="true"
+        [animationDuration]="animationDuration"
+      />
+    `,
+  }),
+  args: {
+    value: 72,
+    min: 0,
+    max: 100,
+    unit: "km/h",
+    strategy: new AnalogGaugeStrategy(),
+    width: 260,
+    height: 260,
+    animationDuration: 300,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-gauge
+  [value]="speed"
+  [min]="0"
+  [max]="220"
+  unit="km/h"
+  [strategy]="analogStrategy"
+  [zones]="speedZones"
+  [animated]="true"
+  [animationDuration]="300"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import {
+  UIGauge,
+  AnalogGaugeStrategy,
+  type GaugeZone,
+} from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-animated-gauge',
+  standalone: true,
+  imports: [UIGauge],
+  template: \\\`
+    <ui-gauge
+      [value]="speed()"
+      [min]="0" [max]="220"
+      unit="km/h"
+      [strategy]="strategy"
+      [zones]="zones"
+      [animated]="true"
+      [animationDuration]="300"
+    />
+    <button (click)="randomize()">Randomize</button>
+  \\\`,
+})
+export class AnimatedGaugeComponent {
+  readonly speed = signal(72);
+  readonly strategy = new AnalogGaugeStrategy();
+  readonly zones: GaugeZone[] = [
+    { from: 0, to: 100, color: '#34a853' },
+    { from: 100, to: 160, color: '#fbbc04' },
+    { from: 160, to: 220, color: '#ea4335' },
+  ];
+
+  randomize(): void {
+    this.speed.set(Math.round(Math.random() * 220));
+  }
+}
+
+// ── SCSS ──
+/* No custom styles needed — animation is built into the gauge. */
 `,
       },
     },

@@ -2,7 +2,7 @@
 
 ## High Priority
 
-- [ ] **Animation / transitions** — `animated` input that interpolates between old → new value over ~300ms using `requestAnimationFrame`
+- [x] **Animation / transitions** — `animated` input that interpolates between old → new value over ~300ms using `requestAnimationFrame`
 - [ ] **Horizontal bar gauge strategy** — linear horizontal track + fill + optional ticks. Covers progress-like KPIs (CPU, battery, tank level)
 - [ ] **`formatValue` callback** — `formatValue` input `(n: number) => string` on the component, passed through `GaugeRenderContext`, so consumers control formatting (locale, precision, "$", "%")
 
