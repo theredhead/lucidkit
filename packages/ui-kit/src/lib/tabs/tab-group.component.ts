@@ -4,12 +4,70 @@ import {
   computed,
   contentChildren,
   effect,
+  inject,
+  InjectionToken,
   input,
+  makeEnvironmentProviders,
   signal,
 } from "@angular/core";
+import type { EnvironmentProviders } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 
+import { UIIcon } from "../icon/icon.component";
 import { UITab } from "./tab.component";
+
+/** Position of the tab headers relative to the content panel. */
+export type TabPosition = "top" | "bottom" | "left" | "right";
+
+/** Visual style of the content panel. */
+export type TabPanelStyle = "flat" | "outline" | "raised";
+
+/** Injectable defaults for UITabGroup. */
+export interface TabGroupDefaults {
+  /** Default tab header position. */
+  readonly tabPosition: TabPosition;
+  /** Default content panel style. */
+  readonly panelStyle: TabPanelStyle;
+}
+
+/** Default configuration when no provider is registered. */
+export const DEFAULT_TAB_GROUP_DEFAULTS: TabGroupDefaults = {
+  tabPosition: "top",
+  panelStyle: "raised",
+};
+
+/** Injection token for UITabGroup default configuration. */
+export const TAB_GROUP_DEFAULTS = new InjectionToken<TabGroupDefaults>(
+  "TAB_GROUP_DEFAULTS",
+  {
+    providedIn: "root",
+    factory: () => DEFAULT_TAB_GROUP_DEFAULTS,
+  },
+);
+
+/**
+ * Provide custom defaults for all UITabGroup instances.
+ *
+ * @example
+ * ```ts
+ * // app.config.ts
+ * export const appConfig = {
+ *   providers: [
+ *     provideTabDefaults({ tabPosition: 'left', panelStyle: 'flat' }),
+ *   ],
+ * };
+ * ```
+ */
+export function provideTabDefaults(
+  defaults: Partial<TabGroupDefaults>,
+): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    {
+      provide: TAB_GROUP_DEFAULTS,
+      useValue: { ...DEFAULT_TAB_GROUP_DEFAULTS, ...defaults },
+    },
+  ]);
+}
 
 /**
  * A tabbed container that manages tab headers and lazy-renders
@@ -27,16 +85,29 @@ import { UITab } from "./tab.component";
 @Component({
   selector: "ui-tab-group",
   standalone: true,
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, UIIcon],
   templateUrl: "./tab-group.component.html",
   styleUrl: "./tab-group.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-tab-group",
     "[class.ui-tab-group--disabled]": "disabled()",
+    "[class.ui-tab-group--top]": "resolvedTabPosition() === 'top'",
+    "[class.ui-tab-group--bottom]": "resolvedTabPosition() === 'bottom'",
+    "[class.ui-tab-group--left]": "resolvedTabPosition() === 'left'",
+    "[class.ui-tab-group--right]": "resolvedTabPosition() === 'right'",
+    "[class.ui-tab-group--flat]": "resolvedPanelStyle() === 'flat'",
+    "[class.ui-tab-group--outline]": "resolvedPanelStyle() === 'outline'",
+    "[class.ui-tab-group--raised]": "resolvedPanelStyle() === 'raised'",
   },
 })
 export class UITabGroup {
+  /** Position of the tab headers: top, bottom, left, or right. */
+  public readonly tabPosition = input<TabPosition | undefined>(undefined);
+
+  /** Visual style of the content panel: flat, outline, or raised. */
+  public readonly panelStyle = input<TabPanelStyle | undefined>(undefined);
+
   /** Whether the tab group is disabled. */
   public readonly disabled = input<boolean>(false);
 
@@ -49,6 +120,16 @@ export class UITabGroup {
   /** @internal — projected tab children. */
   public readonly tabs = contentChildren(UITab);
 
+  /** Resolved tab position (input wins, then injected default). */
+  public readonly resolvedTabPosition = computed(
+    () => this.tabPosition() ?? this.defaults.tabPosition,
+  );
+
+  /** Resolved panel style (input wins, then injected default). */
+  public readonly resolvedPanelStyle = computed(
+    () => this.panelStyle() ?? this.defaults.panelStyle,
+  );
+
   /** The currently active tab index. */
   public readonly activeIndex = signal(0);
 
@@ -58,6 +139,8 @@ export class UITabGroup {
     const idx = this.activeIndex();
     return tabs[idx] ?? tabs[0];
   });
+
+  private readonly defaults = inject(TAB_GROUP_DEFAULTS);
 
   public constructor() {
     // Sync initial selectedIndex input to activeIndex

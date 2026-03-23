@@ -3,7 +3,10 @@ import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
 
 import { UITabGroup } from "./tab-group.component";
+import type { TabPosition } from "./tab-group.component";
+import type { TabPanelStyle } from "./tab-group.component";
 import { UITab } from "./tab.component";
+import { UIIcons } from "../icon/lucide-icons.generated";
 
 // ── Gallery demo ─────────────────────────────────────────────────────
 
@@ -67,6 +70,79 @@ import { UITab } from "./tab.component";
 })
 class TabsGalleryDemo {}
 
+// ── Tab-position gallery demo ────────────────────────────────────────
+
+@Component({
+  selector: "ui-tabs-position-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px">
+      @for (pos of positions; track pos) {
+        <div>
+          <h4 style="margin: 0 0 8px; color: inherit">
+            tabPosition="{{ pos }}"
+          </h4>
+          <ui-tab-group [tabPosition]="pos" style="min-height: 160px">
+            <ui-tab label="Alpha">
+              <div style="padding: 0.5rem; font-size: 0.88rem">Alpha panel</div>
+            </ui-tab>
+            <ui-tab label="Beta">
+              <div style="padding: 0.5rem; font-size: 0.88rem">Beta panel</div>
+            </ui-tab>
+            <ui-tab label="Gamma">
+              <div style="padding: 0.5rem; font-size: 0.88rem">Gamma panel</div>
+            </ui-tab>
+          </ui-tab-group>
+        </div>
+      }
+    </div>
+  `,
+})
+class TabsPositionDemo {
+  protected readonly positions: TabPosition[] = [
+    "top",
+    "bottom",
+    "left",
+    "right",
+  ];
+}
+
+// ── Panel-style gallery demo ─────────────────────────────────────────
+
+@Component({
+  selector: "ui-tabs-panel-style-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 32px">
+      @for (style of styles; track style) {
+        <div>
+          <h4 style="margin: 0 0 8px; color: inherit">
+            panelStyle="{{ style }}"
+          </h4>
+          <ui-tab-group [panelStyle]="style">
+            <ui-tab label="Alpha">
+              <div style="font-size: 0.88rem">Alpha panel content.</div>
+            </ui-tab>
+            <ui-tab label="Beta">
+              <div style="font-size: 0.88rem">Beta panel content.</div>
+            </ui-tab>
+            <ui-tab label="Gamma">
+              <div style="font-size: 0.88rem">Gamma panel content.</div>
+            </ui-tab>
+          </ui-tab-group>
+        </div>
+      }
+    </div>
+  `,
+})
+class TabsPanelStyleDemo {
+  protected readonly styles: TabPanelStyle[] = ["raised", "outline", "flat"];
+}
+
 const meta: Meta<UITabGroup> = {
   title: "@theredhead/UI Kit/Tabs",
   component: UITabGroup,
@@ -82,7 +158,7 @@ const meta: Meta<UITabGroup> = {
   },
   decorators: [
     moduleMetadata({
-      imports: [UITab, TabsGalleryDemo],
+      imports: [UITab, TabsGalleryDemo, TabsPositionDemo, TabsPanelStyleDemo],
     }),
   ],
 };
@@ -294,6 +370,341 @@ export class ExampleComponent {}
 
 // ── SCSS ──
 /* No custom styles needed — default styling applies. */
+`,
+      },
+    },
+  },
+};
+
+// ── Tab-position stories ─────────────────────────────────────────────
+
+/**
+ * All four `tabPosition` values shown side-by-side.
+ * Left and right positions rotate the tab labels for a vertical reading direction.
+ */
+export const TabPositions: Story = {
+  render: () => ({
+    template: `<ui-tabs-position-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- Top (default) -->
+<ui-tab-group tabPosition="top">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+<!-- Bottom -->
+<ui-tab-group tabPosition="bottom">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+<!-- Left (rotated labels) -->
+<ui-tab-group tabPosition="left">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+<!-- Right (rotated labels) -->
+<ui-tab-group tabPosition="right">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — position is handled by the tabPosition input. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * Tabs positioned at the bottom of the container. Tab headers
+ * appear below the panel content.
+ */
+export const BottomTabs: Story = {
+  render: () => ({
+    template: `
+      <ui-tab-group tabPosition="bottom" style="min-height: 160px">
+        <ui-tab label="Overview">The overview panel is above the tabs.</ui-tab>
+        <ui-tab label="Details">Detail content renders above.</ui-tab>
+        <ui-tab label="Settings">Settings panel.</ui-tab>
+      </ui-tab-group>
+    `,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-tab-group tabPosition="bottom">
+  <ui-tab label="Overview">Content above the tabs.</ui-tab>
+  <ui-tab label="Details">Detail content.</ui-tab>
+</ui-tab-group>
+`,
+      },
+    },
+  },
+};
+
+/**
+ * Tabs positioned on the left edge with rotated labels reading
+ * bottom-to-top.
+ */
+export const LeftTabs: Story = {
+  render: () => ({
+    template: `
+      <ui-tab-group tabPosition="left" style="min-height: 200px">
+        <ui-tab label="Overview">Content to the right of the tabs.</ui-tab>
+        <ui-tab label="Details">Detail panel beside the tab strip.</ui-tab>
+        <ui-tab label="Settings">Settings panel.</ui-tab>
+      </ui-tab-group>
+    `,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-tab-group tabPosition="left">
+  <ui-tab label="Overview">Content beside the tabs.</ui-tab>
+  <ui-tab label="Details">Detail content.</ui-tab>
+</ui-tab-group>
+`,
+      },
+    },
+  },
+};
+
+/**
+ * Tabs positioned on the right edge with rotated labels reading
+ * top-to-bottom.
+ */
+export const RightTabs: Story = {
+  render: () => ({
+    template: `
+      <ui-tab-group tabPosition="right" style="min-height: 200px">
+        <ui-tab label="Overview">Content to the left of the tabs.</ui-tab>
+        <ui-tab label="Details">Detail panel beside the tab strip.</ui-tab>
+        <ui-tab label="Settings">Settings panel.</ui-tab>
+      </ui-tab-group>
+    `,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-tab-group tabPosition="right">
+  <ui-tab label="Overview">Content beside the tabs.</ui-tab>
+  <ui-tab label="Details">Detail content.</ui-tab>
+</ui-tab-group>
+`,
+      },
+    },
+  },
+};
+
+// ── Panel-style stories ─────────────────────────────────────────────
+
+/**
+ * All three `panelStyle` values shown together: raised (shadow),
+ * outline (border), and flat (no decoration).
+ */
+export const PanelStyles: Story = {
+  render: () => ({
+    template: `<ui-tabs-panel-style-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- Raised (default) -->
+<ui-tab-group panelStyle="raised">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+<!-- Outline -->
+<ui-tab-group panelStyle="outline">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+<!-- Flat -->
+<ui-tab-group panelStyle="flat">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — panelStyle handles appearance. */
+`,
+      },
+    },
+  },
+};
+
+// ── Icon stories ─────────────────────────────────────────────────────
+
+/**
+ * Tabs can display an icon before the label via the `[icon]` input.
+ * Pass any SVG content from `UIIcons` or a custom SVG string.
+ */
+export const WithIcons: Story = {
+  render: () => ({
+    props: {
+      houseIcon: UIIcons.Lucide.Buildings.House,
+      activityIcon: UIIcons.Lucide.Account.Activity,
+      settingsIcon: UIIcons.Lucide.Account.Settings,
+    },
+    template: `
+      <ui-tab-group>
+        <ui-tab label="Home" [icon]="houseIcon">
+          <div style="font-size: 0.88rem">Welcome home.</div>
+        </ui-tab>
+        <ui-tab label="Activity" [icon]="activityIcon">
+          <div style="font-size: 0.88rem">Recent activity feed.</div>
+        </ui-tab>
+        <ui-tab label="Settings" [icon]="settingsIcon">
+          <div style="font-size: 0.88rem">Configure your preferences.</div>
+        </ui-tab>
+      </ui-tab-group>
+    `,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-tab-group>
+  <ui-tab label="Home" [icon]="icons.house">Home content</ui-tab>
+  <ui-tab label="Activity" [icon]="icons.activity">Activity feed</ui-tab>
+  <ui-tab label="Settings" [icon]="icons.settings">Settings panel</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab, UIIcons } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly icons = {
+    house: UIIcons.Lucide.Buildings.House,
+    activity: UIIcons.Lucide.Account.Activity,
+    settings: UIIcons.Lucide.Account.Settings,
+  } as const;
+}
+
+// ── SCSS ──
+/* No custom styles needed — icons inherit the tab's text colour. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * Tabs can be icon-only by omitting the `label` input. When no visible
+ * label is provided, set `ariaLabel` so the tab remains accessible.
+ * Icon-only tabs can be mixed with labelled tabs in the same group.
+ */
+export const IconOnly: Story = {
+  render: () => ({
+    props: {
+      houseIcon: UIIcons.Lucide.Buildings.House,
+      activityIcon: UIIcons.Lucide.Account.Activity,
+      settingsIcon: UIIcons.Lucide.Account.Settings,
+    },
+    template: `
+      <ui-tab-group>
+        <ui-tab [icon]="houseIcon" ariaLabel="Home">
+          <div style="font-size: 0.88rem">Welcome home.</div>
+        </ui-tab>
+        <ui-tab [icon]="activityIcon" ariaLabel="Activity">
+          <div style="font-size: 0.88rem">Recent activity feed.</div>
+        </ui-tab>
+        <ui-tab label="Settings" [icon]="settingsIcon">
+          <div style="font-size: 0.88rem">This tab has both icon and label.</div>
+        </ui-tab>
+      </ui-tab-group>
+    `,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-tab-group>
+  <!-- Icon-only tabs need ariaLabel for accessibility -->
+  <ui-tab [icon]="icons.house" ariaLabel="Home">Home content</ui-tab>
+  <ui-tab [icon]="icons.activity" ariaLabel="Activity">Activity feed</ui-tab>
+  <!-- Mix with labelled tabs -->
+  <ui-tab label="Settings" [icon]="icons.settings">Settings panel</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab, UIIcons } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly icons = {
+    house: UIIcons.Lucide.Buildings.House,
+    activity: UIIcons.Lucide.Account.Activity,
+    settings: UIIcons.Lucide.Account.Settings,
+  } as const;
+}
+
+// ── SCSS ──
+/* No custom styles needed — icons inherit the tab's text colour. */
 `,
       },
     },

@@ -2,13 +2,19 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component, signal } from "@angular/core";
 
 import { UITabGroup } from "./tab-group.component";
+import type { TabPosition, TabPanelStyle } from "./tab-group.component";
+import { provideTabDefaults } from "./tab-group.component";
 import { UITab } from "./tab.component";
 
 @Component({
   standalone: true,
   imports: [UITabGroup, UITab],
   template: `
-    <ui-tab-group [selectedIndex]="startIndex()">
+    <ui-tab-group
+      [selectedIndex]="startIndex()"
+      [tabPosition]="tabPosition()"
+      [panelStyle]="panelStyle()"
+    >
       <ui-tab label="One">Content one</ui-tab>
       <ui-tab label="Two">Content two</ui-tab>
       <ui-tab label="Three" [disabled]="true">Content three</ui-tab>
@@ -17,6 +23,8 @@ import { UITab } from "./tab.component";
 })
 class TestHost {
   public readonly startIndex = signal(0);
+  public readonly tabPosition = signal<TabPosition | undefined>(undefined);
+  public readonly panelStyle = signal<TabPanelStyle | undefined>(undefined);
 }
 
 describe("UITabGroup", () => {
@@ -178,5 +186,197 @@ describe("UITabGroup", () => {
       const panel = fixture.nativeElement.querySelector("[role='tabpanel']");
       expect(tab.getAttribute("aria-controls")).toBe(panel.id);
     });
+  });
+
+  describe("tabPosition", () => {
+    it("should default to top position", () => {
+      const el = fixture.nativeElement.querySelector(".ui-tab-group");
+      expect(el.classList).toContain("ui-tab-group--top");
+    });
+
+    for (const position of ["top", "bottom", "left", "right"] as const) {
+      it(`should apply ui-tab-group--${position} host class`, () => {
+        host.tabPosition.set(position);
+        fixture.detectChanges();
+        const el = fixture.nativeElement.querySelector(".ui-tab-group");
+        expect(el.classList).toContain(`ui-tab-group--${position}`);
+      });
+    }
+
+    it("should set vertical aria-orientation for left position", () => {
+      host.tabPosition.set("left");
+      fixture.detectChanges();
+      const tablist = fixture.nativeElement.querySelector("[role='tablist']");
+      expect(tablist.getAttribute("aria-orientation")).toBe("vertical");
+    });
+
+    it("should set vertical aria-orientation for right position", () => {
+      host.tabPosition.set("right");
+      fixture.detectChanges();
+      const tablist = fixture.nativeElement.querySelector("[role='tablist']");
+      expect(tablist.getAttribute("aria-orientation")).toBe("vertical");
+    });
+
+    it("should not set aria-orientation for top position", () => {
+      host.tabPosition.set("top");
+      fixture.detectChanges();
+      const tablist = fixture.nativeElement.querySelector("[role='tablist']");
+      expect(tablist.getAttribute("aria-orientation")).toBeNull();
+    });
+  });
+
+  describe("panelStyle", () => {
+    it("should default to raised", () => {
+      const el = fixture.nativeElement.querySelector(".ui-tab-group");
+      expect(el.classList).toContain("ui-tab-group--raised");
+    });
+
+    for (const style of ["flat", "outline", "raised"] as const) {
+      it(`should apply ui-tab-group--${style} host class`, () => {
+        host.panelStyle.set(style);
+        fixture.detectChanges();
+        const el = fixture.nativeElement.querySelector(".ui-tab-group");
+        expect(el.classList).toContain(`ui-tab-group--${style}`);
+      });
+    }
+  });
+});
+
+describe("UITabGroup with provideTabDefaults", () => {
+  let fixture: ComponentFixture<TestHost>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TestHost],
+      providers: [
+        provideTabDefaults({ tabPosition: "left", panelStyle: "flat" }),
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TestHost);
+    fixture.detectChanges();
+  });
+
+  it("should use injected tabPosition default", () => {
+    const el = fixture.nativeElement.querySelector(".ui-tab-group");
+    expect(el.classList).toContain("ui-tab-group--left");
+  });
+
+  it("should use injected panelStyle default", () => {
+    const el = fixture.nativeElement.querySelector(".ui-tab-group");
+    expect(el.classList).toContain("ui-tab-group--flat");
+  });
+
+  it("should allow input to override injected default", () => {
+    fixture.componentInstance.tabPosition.set("bottom");
+    fixture.detectChanges();
+    const el = fixture.nativeElement.querySelector(".ui-tab-group");
+    expect(el.classList).toContain("ui-tab-group--bottom");
+    expect(el.classList).not.toContain("ui-tab-group--left");
+  });
+});
+
+describe("UITabGroup with icons", () => {
+  @Component({
+    standalone: true,
+    imports: [UITabGroup, UITab],
+    template: `
+      <ui-tab-group>
+        <ui-tab label="Home" [icon]="homeIcon">Home content</ui-tab>
+        <ui-tab label="Plain">Plain content</ui-tab>
+      </ui-tab-group>
+    `,
+  })
+  class IconTestHost {
+    public readonly homeIcon =
+      '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />';
+  }
+
+  let fixture: ComponentFixture<IconTestHost>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [IconTestHost],
+    }).compileComponents();
+    fixture = TestBed.createComponent(IconTestHost);
+    fixture.detectChanges();
+  });
+
+  it("should render an icon in the tab with an icon input", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    const icon = tabs[0].querySelector("ui-icon");
+    expect(icon).toBeTruthy();
+  });
+
+  it("should not render an icon when no icon input is set", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    const icon = tabs[1].querySelector("ui-icon");
+    expect(icon).toBeNull();
+  });
+});
+
+describe("UITabGroup with icon-only tabs", () => {
+  @Component({
+    standalone: true,
+    imports: [UITabGroup, UITab],
+    template: `
+      <ui-tab-group>
+        <ui-tab [icon]="settingsIcon" ariaLabel="Settings"
+          >Settings content</ui-tab
+        >
+        <ui-tab label="Details" [icon]="detailsIcon">Details content</ui-tab>
+        <ui-tab label="Plain">Plain content</ui-tab>
+      </ui-tab-group>
+    `,
+  })
+  class IconOnlyTestHost {
+    public readonly settingsIcon =
+      '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25" />';
+    public readonly detailsIcon =
+      '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />';
+  }
+
+  let fixture: ComponentFixture<IconOnlyTestHost>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [IconOnlyTestHost],
+    }).compileComponents();
+    fixture = TestBed.createComponent(IconOnlyTestHost);
+    fixture.detectChanges();
+  });
+
+  it("should render icon-only tab without label text", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    const icon = tabs[0].querySelector("ui-icon");
+    expect(icon).toBeTruthy();
+    // Should only contain the icon, no label text
+    const textContent = tabs[0].textContent.trim();
+    expect(textContent).toBe("");
+  });
+
+  it("should set aria-label on icon-only tab", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    expect(tabs[0].getAttribute("aria-label")).toBe("Settings");
+  });
+
+  it("should use label as aria-label when ariaLabel is not explicit", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    expect(tabs[1].getAttribute("aria-label")).toBe("Details");
+  });
+
+  it("should render both icon and label when both are set", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    const icon = tabs[1].querySelector("ui-icon");
+    expect(icon).toBeTruthy();
+    expect(tabs[1].textContent.trim()).toBe("Details");
+  });
+
+  it("should switch to icon-only tab on click", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    tabs[0].click();
+    fixture.detectChanges();
+    const panel = fixture.nativeElement.querySelector("[role='tabpanel']");
+    expect(panel.textContent).toContain("Settings content");
   });
 });
