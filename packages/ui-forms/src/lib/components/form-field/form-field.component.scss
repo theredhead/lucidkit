@@ -29,11 +29,12 @@
 }
 
 .control {
+  display: inline-block;
   margin-bottom: 2px;
   min-width: var(--ui-form-field-min-width, 200px);
 
   > * {
-    width: 100%;
+    min-width: var(--ui-form-field-min-width, 200px);
   }
 }
 
