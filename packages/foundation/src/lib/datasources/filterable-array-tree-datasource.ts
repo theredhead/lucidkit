@@ -1,14 +1,17 @@
 import type { Predicate } from "@angular/core";
 
+import type { FilterExpression } from "../types/filter";
 import type { IFilterableTreeDatasource, TreeNode } from "./datasource";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
 
 /**
- * An in-memory tree datasource that supports filtering via a `Predicate<T>`.
+ * An in-memory tree datasource that supports filtering via a
+ * {@link FilterExpression}.
  *
- * When a predicate is applied, the datasource re-derives its visible tree
- * structure from the original data. Nodes that don't match the predicate
- * are excluded, along with their descendants. The underlying tree is never mutated.
+ * When an expression is applied the datasource compiles it into a
+ * single predicate, re-derives its visible tree structure from the
+ * original data, and exposes only the matching nodes (plus their
+ * ancestors). The underlying tree is never mutated.
  *
  * @typeParam T - The data payload type.
  *
@@ -22,7 +25,7 @@ import { ArrayTreeDatasource } from "./array-tree-datasource";
  * ]);
  *
  * // Show only nodes containing 'A' in their data
- * ds.filterBy(node => String(node.data).includes('A'));
+ * ds.filterBy([{ predicate: node => String(node).includes('A') }]);
  * ```
  */
 export class FilterableArrayTreeDatasource<T = unknown>
@@ -67,16 +70,19 @@ export class FilterableArrayTreeDatasource<T = unknown>
   // ── IFilterableTreeDataSource ────────────────────────────────────
 
   /**
-   * Apply a filter predicate to the tree.
+   * Applies a structured {@link FilterExpression} to the tree.
    *
-   * Nodes that match are kept, along with ancestors that lead to
-   * matching descendants. Pass `null` or `undefined` to clear the
-   * filter and show all nodes.
+   * The expression is compiled into a single predicate once, which is
+   * then applied to each node's `data`. Matching nodes and their
+   * ancestors are kept. Pass an empty array (or `null` / `undefined`)
+   * to clear the filter and show all nodes.
    *
-   * @param predicate - The predicate function, or null/undefined to clear filtering.
+   * - **Property-level** entries test a single property of `T`.
+   * - **Row-level** entries test the entire `T` object.
+   * - All entries must pass (AND) for a node to be included.
    */
-  public filterBy(predicate: Predicate<T> | null | undefined): void {
-    if (!predicate) {
+  public filterBy(expression: FilterExpression<T> | null | undefined): void {
+    if (!expression || expression.length === 0) {
       this._filteredRoots = this.deepCopyNodes(
         this._allRoots,
         this._childrenProperty,
@@ -84,6 +90,7 @@ export class FilterableArrayTreeDatasource<T = unknown>
       return;
     }
 
+    const predicate = this.compileExpression(expression);
     this._filteredRoots = this.filterNodes(
       this._allRoots,
       predicate,
@@ -91,7 +98,32 @@ export class FilterableArrayTreeDatasource<T = unknown>
     );
   }
 
+  /** Clears any active filter, restoring all nodes. */
+  public clearFilter(): void {
+    this._filteredRoots = this.deepCopyNodes(
+      this._allRoots,
+      this._childrenProperty,
+    );
+  }
+
   // ── Private helpers ───────────────────────────────────────────────
+
+  /**
+   * Compiles a {@link FilterExpression} into a single predicate
+   * function that can be applied to each node's `data`.
+   */
+  private compileExpression(expression: FilterExpression<T>): Predicate<T> {
+    const tests = expression.map((entry) => {
+      if ("property" in entry) {
+        const { property, predicate } = entry;
+        return (data: T) => predicate(data[property]);
+      }
+      const { predicate } = entry;
+      return (data: T) => predicate(data);
+    });
+
+    return (data: T) => tests.every((test) => test(data));
+  }
 
   /**
    * Recursively filter tree nodes, excluding non-matching nodes and

@@ -13,7 +13,11 @@ import {
   untracked,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
-import { isTreeDatasource, type Predicate } from "@theredhead/foundation";
+import {
+  FilterableArrayTreeDatasource,
+  isTreeDatasource,
+  type Predicate,
+} from "@theredhead/foundation";
 import {
   DatasourceAdapter,
   FilterableArrayDatasource,
@@ -521,8 +525,16 @@ export class UIMasterDetailView<T = unknown> {
   public onFilterExpressionChange(expression: FilterExpression<T>): void {
     this.expressionChange.emit(expression);
 
-    // Tree mode: compile to predicate for the tree-view
     if (this.isTreeMode()) {
+      const treeDs = this.resolvedTreeDatasource();
+
+      // FilterableArrayTreeDatasource: pass expression directly
+      if (treeDs instanceof FilterableArrayTreeDatasource) {
+        treeDs.filterBy(expression);
+        return;
+      }
+
+      // Plain ITreeDatasource: fall back to tree-view filterPredicate input
       const fields = this.resolvedFilterFields();
       const descriptor = this.filterDescriptor();
       this.treeFilterPredicate.set(toPredicate(descriptor, fields));

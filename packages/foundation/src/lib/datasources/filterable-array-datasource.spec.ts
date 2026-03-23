@@ -40,9 +40,7 @@ describe("FilterableArrayDatasource", () => {
 
   describe("filterBy with row-level predicates", () => {
     it("should filter rows matching the predicate", () => {
-      ds.filterBy([
-        { predicate: ((row: TestRow) => row.age > 30) as any },
-      ]);
+      ds.filterBy([{ predicate: ((row: TestRow) => row.age > 30) as any }]);
 
       expect(ds.getNumberOfItems()).toBe(2);
       expect(ds.getObjectAtRowIndex(0).name).toBe("Charlie");
@@ -50,9 +48,7 @@ describe("FilterableArrayDatasource", () => {
     });
 
     it("should return all rows when expression is null", () => {
-      ds.filterBy([
-        { predicate: ((row: TestRow) => row.age > 30) as any },
-      ]);
+      ds.filterBy([{ predicate: ((row: TestRow) => row.age > 30) as any }]);
       expect(ds.getNumberOfItems()).toBe(2);
 
       ds.filterBy(null);
@@ -60,18 +56,14 @@ describe("FilterableArrayDatasource", () => {
     });
 
     it("should return all rows when expression is empty", () => {
-      ds.filterBy([
-        { predicate: ((row: TestRow) => row.age > 30) as any },
-      ]);
+      ds.filterBy([{ predicate: ((row: TestRow) => row.age > 30) as any }]);
       ds.filterBy([]);
 
       expect(ds.getNumberOfItems()).toBe(5);
     });
 
     it("should return empty when no rows match", () => {
-      ds.filterBy([
-        { predicate: ((row: TestRow) => row.age > 100) as any },
-      ]);
+      ds.filterBy([{ predicate: ((row: TestRow) => row.age > 100) as any }]);
 
       expect(ds.getNumberOfItems()).toBe(0);
     });
@@ -164,9 +156,7 @@ describe("FilterableArrayDatasource", () => {
 
   describe("clearFilter", () => {
     it("should restore all rows after a row-level filter", () => {
-      ds.filterBy([
-        { predicate: ((row: TestRow) => row.age > 30) as any },
-      ]);
+      ds.filterBy([{ predicate: ((row: TestRow) => row.age > 30) as any }]);
       expect(ds.getNumberOfItems()).toBe(2);
 
       ds.clearFilter();
@@ -194,16 +184,12 @@ describe("FilterableArrayDatasource", () => {
 
   describe("bounds checking", () => {
     it("should throw RangeError for negative index on filtered data", () => {
-      ds.filterBy([
-        { predicate: ((row: TestRow) => row.age > 30) as any },
-      ]);
+      ds.filterBy([{ predicate: ((row: TestRow) => row.age > 30) as any }]);
       expect(() => ds.getObjectAtRowIndex(-1)).toThrow(RangeError);
     });
 
     it("should throw RangeError for index beyond filtered length", () => {
-      ds.filterBy([
-        { predicate: ((row: TestRow) => row.age > 30) as any },
-      ]);
+      ds.filterBy([{ predicate: ((row: TestRow) => row.age > 30) as any }]);
       // Filtered length is 2
       expect(() => ds.getObjectAtRowIndex(2)).toThrow(RangeError);
     });

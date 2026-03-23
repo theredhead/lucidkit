@@ -72,7 +72,7 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should filter by root node match", () => {
-      ds.filterBy((node) => node.id === "1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1" }]);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(1);
       expect(roots[0].data.id).toBe("1");
@@ -81,7 +81,7 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should include parent if child matches", () => {
-      ds.filterBy((node) => node.id === "1-1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1-1" }]);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(1);
       expect(roots[0].data.id).toBe("1");
@@ -90,7 +90,7 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should include multiple matching children", () => {
-      ds.filterBy((node) => node.id.startsWith("1-"));
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id.startsWith("1-") }]);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(1);
       expect(roots[0].data.id).toBe("1");
@@ -100,7 +100,7 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should handle mixed root and child matches", () => {
-      ds.filterBy((node) => node.id === "1" || node.id === "2-1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1" || node.id === "2-1" }]);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(2);
       expect(roots[0].data.id).toBe("1");
@@ -111,13 +111,13 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should exclude all nodes when predicate matches none", () => {
-      ds.filterBy((node) => node.id === "nonexistent");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "nonexistent" }]);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(0);
     });
 
     it("should clear filter with null", () => {
-      ds.filterBy((node) => node.id === "1-1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1-1" }]);
       ds.filterBy(null);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(2);
@@ -125,7 +125,7 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should clear filter with undefined", () => {
-      ds.filterBy((node) => node.id === "1-1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1-1" }]);
       ds.filterBy(undefined);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(2);
@@ -150,7 +150,7 @@ describe("FilterableArrayTreeDatasource", () => {
       const allRoots = ds.allRoots;
       const originalChildCount = allRoots[0].children!.length;
 
-      ds.filterBy((node) => node.id === "1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1" }]);
       const allRootsAfter = ds.allRoots;
       expect(allRootsAfter[0].children).toHaveLength(originalChildCount);
     });
@@ -185,7 +185,7 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should filter deep leaf nodes", () => {
-      ds.filterBy((node) => node.id === "1-1-1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1-1-1" }]);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(1);
       expect(roots[0].children).toHaveLength(1);
@@ -194,7 +194,7 @@ describe("FilterableArrayTreeDatasource", () => {
     });
 
     it("should preserve all levels when filter matches middle level", () => {
-      ds.filterBy((node) => node.id === "1-1");
+      ds.filterBy([{ predicate: (node: { id: string; name: string }) => node.id === "1-1" }]);
       const roots = ds.getRootNodes();
       expect(roots).toHaveLength(1);
       expect(roots[0].children).toHaveLength(1);
