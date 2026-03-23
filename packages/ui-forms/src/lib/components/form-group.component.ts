@@ -32,7 +32,4 @@ import { UIFormField } from "./form-field/form-field.component";
 export class UIFormGroup {
   /** The group state managed by the {@link FormEngine}. */
   public readonly state = input.required<GroupState>();
-
-  /** Minimum width (in pixels) for field controls. Passed through to each field. */
-  public readonly fieldMinWidth = input<number>(200);
 }

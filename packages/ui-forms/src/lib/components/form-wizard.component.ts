@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  forwardRef,
   input,
   output,
   signal,
@@ -11,6 +12,7 @@ import {
 
 import { FormEngine, type GroupState } from "../engine/form-engine";
 import type { FormValues } from "../types/form-schema.types";
+import { FORM_SETTINGS } from "./form-settings";
 import { UIFormGroup } from "./form-group.component";
 
 /**
@@ -36,6 +38,12 @@ import { UIFormGroup } from "./form-group.component";
   host: {
     class: "ui-form-wizard",
   },
+  providers: [
+    {
+      provide: FORM_SETTINGS,
+      useExisting: forwardRef(() => UIFormWizard),
+    },
+  ],
   templateUrl: "./form-wizard.component.html",
   styleUrl: "./form-wizard.component.scss",
 })

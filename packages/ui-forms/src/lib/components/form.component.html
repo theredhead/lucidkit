@@ -6,7 +6,7 @@
 }
 
 @for (group of engine().groups; track group.definition.id) {
-  <ui-form-group [state]="group" [fieldMinWidth]="fieldMinWidth()" />
+  <ui-form-group [state]="group" />
 }
 
 @if (showSubmit()) {
