@@ -1,4 +1,4 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 :host {
   display: block;
@@ -30,7 +30,11 @@
 
 .control {
   margin-bottom: 2px;
-  min-width: 200px;
+  min-width: var(--ui-form-field-min-width, 200px);
+
+  > * {
+    width: 100%;
+  }
 }
 
 .control--hidden {

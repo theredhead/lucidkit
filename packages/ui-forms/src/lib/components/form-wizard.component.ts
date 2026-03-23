@@ -35,6 +35,7 @@ import { UIFormGroup } from "./form-group.component";
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-form-wizard",
+    "[style.--ui-form-field-min-width]": "fieldMinWidth() + 'px'",
   },
   templateUrl: "./form-wizard.component.html",
   styleUrl: "./form-wizard.component.scss",
@@ -51,6 +52,9 @@ export class UIFormWizard {
 
   /** Label for the "Submit" button (last step). */
   public readonly submitLabel = input<string>("Submit");
+
+  /** Minimum width (in pixels) for form field controls. Defaults to `200`. */
+  public readonly fieldMinWidth = input<number>(200);
 
   /** Emitted when the form is submitted (last step, valid). */
   public readonly formSubmit = output<FormValues>();
