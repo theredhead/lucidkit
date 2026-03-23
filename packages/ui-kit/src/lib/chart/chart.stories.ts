@@ -852,8 +852,8 @@ class ChartGroupedBarDemo {
       ariaLabel="Revenue, cost and profit stacked bar chart"
     />
     <p>
-      Each bar stacks series segments vertically so the total height
-      represents the cumulative value at each X position.
+      Each bar stacks series segments vertically so the total height represents
+      the cumulative value at each X position.
     </p>
   `,
 })
@@ -905,8 +905,8 @@ class ChartStackedBarDemo {
       ariaLabel="Normalised stacked bar chart showing cost vs profit proportions"
     />
     <p>
-      Each bar is normalised to 100 %, making it easy to compare the
-      proportion of each segment across X positions.
+      Each bar is normalised to 100 %, making it easy to compare the proportion
+      of each segment across X positions.
     </p>
   `,
 })
