@@ -1,0 +1,69 @@
+@use "mixins" as mix;
+
+:host {
+  display: block;
+  padding: 0.75rem;
+  min-width: 32rem;
+  max-width: 48rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.editor-wrapper {
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 0.25rem;
+  overflow: hidden;
+  min-height: 14rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.35rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 0.25rem;
+  padding: 0.35rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease;
+  white-space: nowrap;
+}
+
+.btn--apply {
+  background: var(--ui-accent);
+  color: #fff;
+  border-color: var(--ui-accent);
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+}
+
+.btn--cancel {
+  background: var(--ui-surface, #ffffff);
+  color: var(--ui-text, #1d232b);
+
+  &:hover {
+    background: var(--ui-surface-2);
+    border-color: var(--ui-border-strong);
+  }
+}
+
+@include mix.dark-mode {
+  .btn--cancel {
+    background: var(--ui-surface, #2a2e35);
+    color: var(--ui-text, #f2f6fb);
+  }
+}

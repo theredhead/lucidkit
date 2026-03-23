@@ -20,6 +20,7 @@
   padding: 12px 16px;
   cursor: pointer;
   text-align: left;
+  flex-shrink: 0;
   transition: border-color 0.15s ease;
 }
 
@@ -54,6 +55,7 @@
   border-radius: 8px;
   background: var(--ui-surface-alt, #ffffff);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .group--selected {

@@ -12,7 +12,7 @@ export interface ConfigPropertySchema {
   readonly label: string;
 
   /** The editor to use. */
-  readonly editor: "text" | "number" | "boolean" | "select";
+  readonly editor: "text" | "number" | "boolean" | "select" | "richtext";
 
   /**
    * For `"select"` editors — the list of allowed values.
@@ -366,8 +366,7 @@ export const COMPONENT_CONFIG_SCHEMAS: Readonly<
     {
       key: "content",
       label: "HTML content",
-      editor: "text",
-      placeholder: "<p>Enter rich text HTML…</p>",
+      editor: "richtext",
     },
   ],
 

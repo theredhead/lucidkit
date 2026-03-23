@@ -1,0 +1,23 @@
+<div class="editor-wrapper">
+  <ui-rich-text-editor
+    [value]="content()"
+    (valueChange)="onValueChange($event)"
+    ariaLabel="Edit rich text content"
+  />
+</div>
+<div class="actions">
+  <button
+    type="button"
+    class="btn btn--cancel"
+    (click)="cancel()"
+  >
+    Cancel
+  </button>
+  <button
+    type="button"
+    class="btn btn--apply"
+    (click)="apply()"
+  >
+    Apply
+  </button>
+</div>

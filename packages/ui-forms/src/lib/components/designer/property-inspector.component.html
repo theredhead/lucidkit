@@ -325,6 +325,20 @@
                       </select>
                     </label>
                   }
+
+                  @case ("richtext") {
+                    <div class="label">
+                      {{ prop.label }}
+                      <button
+                        type="button"
+                        class="edit-content-btn"
+                        (click)="openRichTextEditor(field, prop.key)"
+                      >
+                        <ui-icon [svg]="iconEdit" [size]="14" aria-hidden="true" />
+                        Edit Content
+                      </button>
+                    </div>
+                  }
                 }
               }
             }
