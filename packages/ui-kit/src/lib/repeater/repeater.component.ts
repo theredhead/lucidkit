@@ -42,7 +42,7 @@ import type { RepeaterItemContext } from "./repeater.types";
  * import { FilterableArrayDatasource } from '@theredhead/foundation';
  *
  * const ds = new FilterableArrayDatasource(items);
- * ds.applyPredicate(item => item.active);
+ * ds.filterBy([{ predicate: item => item.active }]);
  * ```
  *
  * @example

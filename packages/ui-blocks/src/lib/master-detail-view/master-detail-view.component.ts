@@ -11,10 +11,9 @@ import {
   signal,
   TemplateRef,
   untracked,
-  type Predicate,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
-import { isTreeDatasource } from "@theredhead/foundation";
+import { isTreeDatasource, type Predicate } from "@theredhead/foundation";
 import {
   DatasourceAdapter,
   FilterableArrayDatasource,
@@ -27,8 +26,10 @@ import {
   UITableViewColumn,
   UITreeView,
   inferFilterFields,
+  toPredicate,
   type ColumnMeta,
   type FilterDescriptor,
+  type FilterExpression,
   type FilterFieldDefinition,
   type ITreeDatasource,
   type SplitCollapseTarget,
@@ -89,7 +90,7 @@ export interface MasterDetailContext<T> {
  * <ui-master-detail-view [data]="items" [showFilter]="true">
  *   <ng-template #filter>
  *     <ui-filter [fields]="fields" [(value)]="descriptor"
- *                (predicateChange)="ds.applyPredicate($event)" />
+ *                (expressionChange)="ds.filterBy($event)" />
  *   </ng-template>
  *   <!-- columns and detail template -->
  * </ui-master-detail-view>
@@ -227,14 +228,14 @@ export class UIMasterDetailView<T = unknown> {
   public readonly selectedChange = output<T | undefined>();
 
   /**
-   * Emits the compiled `Predicate<T>` every time the filter rules
-   * change. Emits `undefined` when no valid rules remain.
+   * Emits the {@link FilterExpression} every time the filter rules
+   * change. Emits an empty array when no valid rules remain.
    *
-   * For {@link FilterableArrayDatasource} instances the predicate is
+   * For {@link FilterableArrayDatasource} instances the expression is
    * applied automatically — this output is for consumers who use a
    * custom datasource and need to handle filtering manually.
    */
-  public readonly predicateChange = output<Predicate<T> | undefined>();
+  public readonly expressionChange = output<FilterExpression<T>>();
 
   // ── Models ────────────────────────────────────────────────────────
 
@@ -508,27 +509,31 @@ export class UIMasterDetailView<T = unknown> {
   // ── Public methods ────────────────────────────────────────────────
 
   /**
-   * Called by the embedded `<ui-filter>` when the predicate changes.
+   * Called by the embedded `<ui-filter>` when the expression changes.
    *
-   * - For {@link FilterableArrayDatasource} the predicate is applied
-   *   automatically and the adapter is refreshed.
-   * - Always emits via {@link predicateChange} so consumers with
+   * - For {@link FilterableArrayDatasource} the expression is applied
+   *   via `filterBy()` and the adapter is refreshed.
+   * - For tree mode the expression is compiled into a predicate for
+   *   the tree-view's `filterPredicate` input.
+   * - Always emits via {@link expressionChange} so consumers with
    *   custom datasources can react.
    */
-  public onFilterPredicateChange(predicate: Predicate<T> | undefined): void {
-    this.predicateChange.emit(predicate);
+  public onFilterExpressionChange(expression: FilterExpression<T>): void {
+    this.expressionChange.emit(expression);
 
-    // Tree mode: store predicate for the tree-view
+    // Tree mode: compile to predicate for the tree-view
     if (this.isTreeMode()) {
-      this.treeFilterPredicate.set(predicate);
+      const fields = this.resolvedFilterFields();
+      const descriptor = this.filterDescriptor();
+      this.treeFilterPredicate.set(toPredicate(descriptor, fields));
       return;
     }
 
-    // Table mode: apply to FilterableArrayDatasource
+    // Table mode: apply expression to FilterableArrayDatasource
     const adapter = this.resolvedDatasource();
     const raw = adapter.datasource;
     if (raw instanceof FilterableArrayDatasource) {
-      raw.applyPredicate(predicate ?? null);
+      raw.filterBy(expression);
       adapter.pageIndex.set(0);
       adapter.totalItems.set(raw.getNumberOfItems() as number);
     }

@@ -1,6 +1,7 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
-import { type Predicate } from "@angular/core";
+
+import type { FilterExpression } from "../../core/types/filter";
 
 import { UITableView } from "../table-view.component";
 import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive";
@@ -435,7 +436,7 @@ const employeeFilterFields = inferFilterFields(employeesForFilter[0]);
     <ui-filter
       [fields]="fields"
       [allowJunction]="true"
-      (predicateChange)="onPredicateChange($event)"
+      (expressionChange)="onExpressionChange($event)"
     />
     <div style="margin-top: 0.75rem">
       <ui-table-view
@@ -452,10 +453,10 @@ class DemoAutogenerateFilteredComponent {
   );
   public readonly adapter = signal(new DatasourceAdapter(this.datasource));
 
-  public onPredicateChange(
-    predicate: Predicate<Record<string, unknown>> | undefined,
+  public onExpressionChange(
+    expression: FilterExpression<Record<string, unknown>>,
   ): void {
-    this.datasource.applyPredicate(predicate ?? null);
+    this.datasource.filterBy(expression);
     this.adapter.set(new DatasourceAdapter(this.datasource));
   }
 }
@@ -474,7 +475,7 @@ const productFilterFields: FilterFieldDefinition[] = inferFilterFields(
     <ui-filter
       [fields]="fields"
       [allowJunction]="true"
-      (predicateChange)="onPredicateChange($event)"
+      (expressionChange)="onExpressionChange($event)"
     />
     <div style="margin-top: 0.75rem">
       <ui-table-view
@@ -502,10 +503,10 @@ class DemoAutogenerateFilteredProductsComponent {
   );
   public readonly adapter = signal(new DatasourceAdapter(this.datasource));
 
-  public onPredicateChange(
-    predicate: Predicate<Record<string, unknown>> | undefined,
+  public onExpressionChange(
+    expression: FilterExpression<Record<string, unknown>>,
   ): void {
-    this.datasource.applyPredicate(predicate ?? null);
+    this.datasource.filterBy(expression);
     this.adapter.set(new DatasourceAdapter(this.datasource));
   }
 }
@@ -1038,7 +1039,7 @@ export const FilteredEmployees200: Story = {
 <ui-filter
   [fields]="filterFields"
   [allowJunction]="true"
-  (predicateChange)="onPredicateChange($event)"
+  (expressionChange)="onExpressionChange($event)"
 />
 
 <ui-table-view
@@ -1048,7 +1049,7 @@ export const FilteredEmployees200: Story = {
 
 // \u2500\u2500 TypeScript \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 import { Component, signal } from '@angular/core';
-import type { Predicate } from '@angular/core';
+
 import {
   UITableView,
   UIAutogenerateColumnsDirective,
@@ -1056,6 +1057,7 @@ import {
   FilterableArrayDatasource,
   DatasourceAdapter,
   inferFilterFields,
+  type FilterExpression,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -1066,7 +1068,7 @@ import {
     <ui-filter
       [fields]="filterFields"
       [allowJunction]="true"
-      (predicateChange)="onPredicateChange($event)"
+      (expressionChange)="onExpressionChange($event)"
     />
     <ui-table-view
       [datasource]="adapter()"
@@ -1079,8 +1081,8 @@ export class ExampleComponent {
   readonly adapter = signal(new DatasourceAdapter(this.datasource));
   readonly filterFields = inferFilterFields(myData[0]);
 
-  onPredicateChange(predicate: Predicate<Record<string, unknown>> | undefined): void {
-    this.datasource.applyPredicate(predicate ?? null);
+  onExpressionChange(expression: FilterExpression<Record<string, unknown>>): void {
+    this.datasource.filterBy(expression);
     this.adapter.set(new DatasourceAdapter(this.datasource));
   }
 }
@@ -1116,7 +1118,7 @@ export const FilteredProducts500: Story = {
 <ui-filter
   [fields]="filterFields"
   [allowJunction]="true"
-  (predicateChange)="onPredicateChange($event)"
+  (expressionChange)="onExpressionChange($event)"
 />
 
 <ui-table-view
@@ -1126,7 +1128,7 @@ export const FilteredProducts500: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { Component, signal } from '@angular/core';
-import type { Predicate } from '@angular/core';
+
 import {
   UITableView,
   UIAutogenerateColumnsDirective,
@@ -1134,6 +1136,7 @@ import {
   FilterableArrayDatasource,
   DatasourceAdapter,
   inferFilterFields,
+  type FilterExpression,
   type FilterFieldDefinition,
 } from '@theredhead/ui-kit';
 
@@ -1145,7 +1148,7 @@ import {
     <ui-filter
       [fields]="filterFields"
       [allowJunction]="true"
-      (predicateChange)="onPredicateChange($event)"
+      (expressionChange)="onExpressionChange($event)"
     />
     <ui-table-view
       [datasource]="adapter()"
@@ -1169,8 +1172,8 @@ export class ExampleComponent {
     },
   });
 
-  onPredicateChange(predicate: Predicate<Record<string, unknown>> | undefined): void {
-    this.datasource.applyPredicate(predicate ?? null);
+  onExpressionChange(expression: FilterExpression<Record<string, unknown>>): void {
+    this.datasource.filterBy(expression);
     this.adapter.set(new DatasourceAdapter(this.datasource));
   }
 }

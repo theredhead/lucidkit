@@ -7,9 +7,9 @@ import {
   model,
   output,
   signal,
-  type Predicate,
 } from "@angular/core";
 
+import type { FilterExpression } from "../core/types/filter";
 import { UIButton } from "../button/button.component";
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
@@ -26,7 +26,7 @@ import type {
   FilterRule,
 } from "./filter.types";
 import { ANY_FIELD_KEY } from "./filter.types";
-import { toPredicate } from "./filter.utils";
+import { toFilterExpression } from "./filter.utils";
 
 const JUNCTION_OPTIONS: SelectOption[] = [
   { value: "and", label: "all" },
@@ -126,13 +126,13 @@ export class UIFilter<T = any> {
   });
 
   /**
-   * Emits a `Predicate<T>` every time the filter rules change.
+   * Emits a {@link FilterExpression} every time the filter rules change.
    *
-   * - Emits `undefined` when no valid rules remain (= show all rows).
+   * - Emits an empty array when no valid rules remain (= show all rows).
    * - Designed to be wired directly into
-   *   `FilterableArrayDatasource.applyPredicate()`.
+   *   `FilterableArrayDatasource.filterBy()`.
    */
-  readonly predicateChange = output<Predicate<T> | undefined>();
+  readonly expressionChange = output<FilterExpression<T>>();
 
   // ── Mode state ──────────────────────────────────────────────────────
 
@@ -164,11 +164,11 @@ export class UIFilter<T = any> {
       }
     });
 
-    // Derive and emit a predicate every time the descriptor changes.
+    // Derive and emit a filter expression every time the descriptor changes.
     effect(() => {
       const descriptor = this.value();
       const fields = this.fields();
-      this.predicateChange.emit(toPredicate(descriptor, fields));
+      this.expressionChange.emit(toFilterExpression(descriptor, fields));
     });
 
     // In simple mode, sync the search term into the descriptor.

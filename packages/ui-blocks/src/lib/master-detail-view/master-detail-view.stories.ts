@@ -11,6 +11,7 @@ import {
   UITextColumn,
   type FilterFieldDefinition,
   type FilterDescriptor,
+  type FilterExpression,
   type TreeNode,
 } from "@theredhead/ui-kit";
 
@@ -428,7 +429,7 @@ const FILTER_FIELDS: FilterFieldDefinition<Employee>[] = [
           [data]="employees"
           [allowJunction]="true"
           [(value)]="filterDescriptor"
-          (predicateChange)="onPredicate($event)"
+          (expressionChange)="onExpression($event)"
         />
       </ng-template>
 
@@ -459,10 +460,10 @@ class CustomFilterDemo {
   private readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
   protected readonly adapter = new DatasourceAdapter(this.datasource, 100);
 
-  protected onPredicate(
-    predicate: ((item: Employee) => boolean) | undefined,
+  protected onExpression(
+    expression: FilterExpression<Employee>,
   ): void {
-    this.datasource.applyPredicate(predicate ?? null);
+    this.datasource.filterBy(expression);
     this.adapter.pageIndex.set(0);
     this.adapter.totalItems.set(this.datasource.getNumberOfItems() as number);
   }
@@ -791,7 +792,7 @@ export const CustomFilterTemplate: Story = {
   <ng-template #filter>
     <ui-filter [fields]="fields" [data]="employees" [allowJunction]="true"
                [(value)]="descriptor"
-               (predicateChange)="onPredicate($event)" />
+               (expressionChange)="onExpression($event)" />
   </ng-template>
 
   <ui-text-column key="name" headerText="Name" [sortable]="true" />
