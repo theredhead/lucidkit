@@ -8,6 +8,7 @@ import { BarGraphStrategy } from "./bar-graph.strategy";
 import { LineGraphStrategy } from "./line-graph.strategy";
 import { PieChartStrategy } from "./pie-chart.strategy";
 import { ScatterPlotStrategy } from "./scatter-plot.strategy";
+import { StackedBarGraphStrategy } from "./stacked-bar-graph.strategy";
 
 const samplePoints: ChartDataPoint[] = [
   { label: "Jan", value: 100, color: "#4285f4" },
@@ -298,6 +299,113 @@ describe("GraphPresentationStrategy implementations", () => {
       if (output.kind === "svg") {
         const circles = output.element.querySelectorAll("circle");
         expect(circles.length).toBe(6);
+      }
+    });
+  });
+
+  // ── StackedBarGraphStrategy ─────────────────────────────────────
+
+  describe("StackedBarGraphStrategy", () => {
+    it("should have name 'Stacked Bar'", () => {
+      expect(new StackedBarGraphStrategy().name).toBe("Stacked Bar");
+    });
+
+    it("should return svg output kind", () => {
+      const output = new StackedBarGraphStrategy().render(
+        singleSeries(samplePoints),
+        size,
+      );
+      expect(output.kind).toBe("svg");
+    });
+
+    it("should render one rect per data point in single-series mode", () => {
+      const output = new StackedBarGraphStrategy().render(
+        singleSeries(samplePoints),
+        size,
+      );
+      if (output.kind === "svg") {
+        const rects = output.element.querySelectorAll("rect");
+        expect(rects.length).toBe(samplePoints.length);
+      }
+    });
+
+    it("should stack segments (one rect per series × position) in multi-series mode", () => {
+      const output = new StackedBarGraphStrategy().render(multiSeries(), size);
+      if (output.kind === "svg") {
+        // 2 series × 3 points = 6 stacked rects
+        const rects = output.element.querySelectorAll("rect");
+        expect(rects.length).toBe(6);
+      }
+    });
+
+    it("should handle empty data without error", () => {
+      const output = new StackedBarGraphStrategy().render(
+        singleSeries([]),
+        size,
+      );
+      expect(output.kind).toBe("svg");
+    });
+
+    it("should render X-axis labels", () => {
+      const output = new StackedBarGraphStrategy().render(
+        singleSeries(samplePoints),
+        size,
+      );
+      if (output.kind === "svg") {
+        const texts = Array.from(output.element.querySelectorAll("text")).map(
+          (t) => t.textContent,
+        );
+        expect(texts).toContain("Jan");
+        expect(texts).toContain("Apr");
+      }
+    });
+
+    it("should accept custom barWidthRatio and borderRadius", () => {
+      const strategy = new StackedBarGraphStrategy({
+        barWidthRatio: 0.8,
+        borderRadius: 6,
+      });
+      const output = strategy.render(singleSeries(samplePoints), size);
+      expect(output.kind).toBe("svg");
+      if (output.kind === "svg") {
+        expect(output.element.querySelectorAll("rect").length).toBe(
+          samplePoints.length,
+        );
+      }
+    });
+
+    it("should render in normalised mode", () => {
+      const strategy = new StackedBarGraphStrategy({ normalised: true });
+      const output = strategy.render(multiSeries(), size);
+      if (output.kind === "svg") {
+        const rects = output.element.querySelectorAll("rect");
+        expect(rects.length).toBe(6);
+      }
+    });
+
+    it("should give top segment rounded corners only", () => {
+      const twoSeries: ChartSeriesData[] = [
+        {
+          name: "A",
+          color: "#f00",
+          points: [{ label: "X", value: 50, color: "#f00" }],
+        },
+        {
+          name: "B",
+          color: "#00f",
+          points: [{ label: "X", value: 50, color: "#00f" }],
+        },
+      ];
+      const output = new StackedBarGraphStrategy({ borderRadius: 5 }).render(
+        twoSeries,
+        size,
+      );
+      if (output.kind === "svg") {
+        const rects = Array.from(output.element.querySelectorAll("rect"));
+        // Bottom segment (series A) — no rounded corners
+        expect(rects[0].getAttribute("rx")).toBe("0");
+        // Top segment (series B) — rounded
+        expect(rects[1].getAttribute("rx")).toBe("5");
       }
     });
   });
