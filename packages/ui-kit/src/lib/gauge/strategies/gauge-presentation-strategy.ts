@@ -12,6 +12,7 @@ import type { GaugeRenderContext, GaugeRenderOutput } from "../gauge.types";
  * - {@link VuMeterStrategy}      — vertical LED-style VU meter
  * - {@link DigitalGaugeStrategy} — numeric seven-segment display
  * - {@link LcdGaugeStrategy}     — segmented LCD panel display
+ * - {@link BarGaugeStrategy}     — horizontal bar / progress track
  *
  * @example
  * ```ts
