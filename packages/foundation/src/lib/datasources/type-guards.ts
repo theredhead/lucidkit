@@ -31,6 +31,9 @@
 
 import type {
   IFilterableDatasource,
+  IInsertableDatasource,
+  IReorderableDatasource,
+  IRemovableDatasource,
   ISortableDatasource,
   ITreeDatasource,
   IFilterableTreeDatasource,
@@ -128,4 +131,55 @@ export function isSortableTreeDatasource<T>(
   }
   const obj = datasource as Record<string, unknown>;
   return typeof obj["applyComparator"] === "function";
+}
+
+/**
+ * Check if a datasource supports reordering items.
+ *
+ * @template T The item type (used for type narrowing).
+ * @param datasource The datasource to check.
+ * @returns `true` if `datasource` implements `IReorderableDatasource<T>`; `false` otherwise.
+ */
+export function isReorderableDatasource<T>(
+  datasource: unknown,
+): datasource is IReorderableDatasource<T> {
+  if (datasource === null || datasource === undefined) {
+    return false;
+  }
+  const obj = datasource as Record<string, unknown>;
+  return typeof obj["moveItem"] === "function";
+}
+
+/**
+ * Check if a datasource supports inserting items.
+ *
+ * @template T The item type (used for type narrowing).
+ * @param datasource The datasource to check.
+ * @returns `true` if `datasource` implements `IInsertableDatasource<T>`; `false` otherwise.
+ */
+export function isInsertableDatasource<T>(
+  datasource: unknown,
+): datasource is IInsertableDatasource<T> {
+  if (datasource === null || datasource === undefined) {
+    return false;
+  }
+  const obj = datasource as Record<string, unknown>;
+  return typeof obj["insertItem"] === "function";
+}
+
+/**
+ * Check if a datasource supports removing items.
+ *
+ * @template T The item type (used for type narrowing).
+ * @param datasource The datasource to check.
+ * @returns `true` if `datasource` implements `IRemovableDatasource<T>`; `false` otherwise.
+ */
+export function isRemovableDatasource<T>(
+  datasource: unknown,
+): datasource is IRemovableDatasource<T> {
+  if (datasource === null || datasource === undefined) {
+    return false;
+  }
+  const obj = datasource as Record<string, unknown>;
+  return typeof obj["removeItem"] === "function";
 }

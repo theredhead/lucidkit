@@ -16,6 +16,11 @@ import { NgTemplateOutlet } from "@angular/common";
 
 import type { IDatasource } from "../table-view/datasources/datasource";
 import { DatasourceAdapter } from "../table-view/datasources/datasource-adapter";
+import {
+  isReorderableDatasource,
+  isRemovableDatasource,
+  isInsertableDatasource,
+} from "@theredhead/foundation";
 import type {
   RepeaterItemContext,
   RepeaterReorderEvent,
@@ -220,10 +225,16 @@ export class UIRepeater<T = unknown> {
 
   /** @internal — reorder items within this repeater. */
   private handleReorder(previousIndex: number, currentIndex: number): void {
-    const items = [...this.items()];
-    const [item] = items.splice(previousIndex, 1);
-    items.splice(currentIndex, 0, item);
-    this.items.set(items);
+    const ds = this.datasource();
+    if (!isReorderableDatasource(ds)) {
+      throw new Error(
+        "UIRepeater: datasource does not implement IReorderableDatasource. " +
+          "Use a datasource that supports moveItem() to enable reordering.",
+      );
+    }
+
+    ds.moveItem(previousIndex, currentIndex);
+    this.refreshItems();
     this.reordered.emit({ previousIndex, currentIndex });
   }
 
@@ -238,14 +249,65 @@ export class UIRepeater<T = unknown> {
     );
     if (!targetRepeater) return;
 
-    const sourceItems = [...this.items()];
-    const [item] = sourceItems.splice(previousIndex, 1);
-    this.items.set(sourceItems);
+    const sourceDatasource = this.datasource();
+    const targetDatasource = targetRepeater.datasource();
 
-    const targetItems = [...targetRepeater.items()];
-    targetItems.splice(currentIndex, 0, item);
-    targetRepeater.items.set(targetItems);
+    if (!isRemovableDatasource(sourceDatasource)) {
+      throw new Error(
+        "UIRepeater: source datasource does not implement IRemovableDatasource. " +
+          "Use a datasource that supports removeItem() to enable transfers.",
+      );
+    }
+    if (!isInsertableDatasource(targetDatasource)) {
+      throw new Error(
+        "UIRepeater: target datasource does not implement IInsertableDatasource. " +
+          "Use a datasource that supports insertItem() to enable transfers.",
+      );
+    }
+
+    const item = sourceDatasource.removeItem(previousIndex) as T;
+    targetDatasource.insertItem(currentIndex, item);
+
+    this.refreshItems();
+    targetRepeater.refreshItems();
 
     targetRepeater.transferred.emit({ item, previousIndex, currentIndex });
+  }
+
+  /** @internal — re-resolve visible items from the datasource. */
+  private refreshItems(): void {
+    const adapter = this.adapter();
+    if (!adapter) {
+      this.items.set([]);
+      return;
+    }
+
+    const window = adapter.visibleWindow();
+    const limit = this.limit();
+    const capped = Number.isFinite(limit) ? window.slice(0, limit) : window;
+
+    const resolved: T[] = [];
+    const promises: Promise<void>[] = [];
+
+    for (let i = 0; i < capped.length; i++) {
+      const rowResult = capped[i];
+      if (rowResult instanceof Promise) {
+        promises.push(
+          rowResult.then((value) => {
+            resolved[i] = value;
+          }),
+        );
+      } else {
+        resolved[i] = rowResult;
+      }
+    }
+
+    if (promises.length === 0) {
+      this.items.set(resolved);
+    } else {
+      Promise.all(promises).then(() => {
+        this.items.set([...resolved]);
+      });
+    }
   }
 }

@@ -220,3 +220,73 @@ export interface ISortableTreeDatasource<
    */
   applyComparator<N = TreeNode<T>>(comparator: (a: N, b: N) => number): void;
 }
+
+/**
+ * A datasource that supports reordering items by index.
+ *
+ * Implement this interface when the datasource can move an item from one
+ * position to another. UI components use the {@link isReorderableDatasource}
+ * type guard to detect this capability before calling `moveItem`.
+ *
+ * @typeParam T - The row object type.
+ */
+export interface IReorderableDatasource<T = unknown> extends IDatasource<T> {
+  /**
+   * Moves the item at `fromIndex` to `toIndex`, shifting other items
+   * to accommodate.
+   *
+   * After this call, subsequent calls to `getObjectAtRowIndex()` and
+   * `getNumberOfItems()` must reflect the new order.
+   *
+   * @param fromIndex - The current zero-based index of the item to move.
+   * @param toIndex   - The desired zero-based index for the item.
+   */
+  moveItem(fromIndex: number, toIndex: number): void;
+}
+
+/**
+ * A datasource that supports inserting items at a given index.
+ *
+ * Implement this interface when the datasource can accept new items
+ * (e.g. as the target of a cross-list drag-and-drop transfer).
+ * UI components use the {@link isInsertableDatasource} type guard
+ * to detect this capability.
+ *
+ * @typeParam T - The row object type.
+ */
+export interface IInsertableDatasource<T = unknown> extends IDatasource<T> {
+  /**
+   * Inserts `item` at `index`, shifting subsequent items to the right.
+   *
+   * After this call, `getNumberOfItems()` must return one more than
+   * before, and `getObjectAtRowIndex(index)` must return the inserted item.
+   *
+   * @param index - The zero-based position at which to insert.
+   * @param item  - The item to insert.
+   */
+  insertItem(index: number, item: T): void;
+}
+
+/**
+ * A datasource that supports removing items by index.
+ *
+ * Implement this interface when the datasource can give up items
+ * (e.g. as the source of a cross-list drag-and-drop transfer).
+ * UI components use the {@link isRemovableDatasource} type guard
+ * to detect this capability.
+ *
+ * @typeParam T - The row object type.
+ */
+export interface IRemovableDatasource<T = unknown> extends IDatasource<T> {
+  /**
+   * Removes and returns the item at `index`, shifting subsequent items
+   * to the left.
+   *
+   * After this call, `getNumberOfItems()` must return one fewer than
+   * before.
+   *
+   * @param index - The zero-based position of the item to remove.
+   * @returns The removed item.
+   */
+  removeItem(index: number): T;
+}

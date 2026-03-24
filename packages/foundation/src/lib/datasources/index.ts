@@ -10,6 +10,9 @@ export {
   type ITreeDatasource,
   type IFilterableTreeDatasource,
   type ISortableTreeDatasource,
+  type IReorderableDatasource,
+  type IInsertableDatasource,
+  type IRemovableDatasource,
   type TreeSelectionMode,
 } from "./datasource";
 
@@ -29,4 +32,15 @@ export {
   isTreeDatasource,
   isFilterableTreeDatasource,
   isSortableTreeDatasource,
+  isReorderableDatasource,
+  isInsertableDatasource,
+  isRemovableDatasource,
 } from "./type-guards";
+
+// ── Utility functions ──────────────────────────────────────────────
+export {
+  moveItemInArray,
+  moveItemToArray,
+  moveItemInArrayPure,
+  moveItemToArrayPure,
+} from "./array-utils";
