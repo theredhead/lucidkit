@@ -1121,122 +1121,126 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
         <!-- ─── Settings ─── -->
         @if (node.id === "settings") {
           <div class="page-fill">
-          <div class="page-header">
-            <div class="page-title">
-              <ui-icon [svg]="icons.settings" [size]="24" />
-              <h2>Settings</h2>
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.settings" [size]="24" />
+                <h2>Settings</h2>
+              </div>
             </div>
-          </div>
 
-          <ui-tab-group>
-            <ui-tab label="General" [icon]="icons.settings">
-              <div style="padding-top: 0.75rem">
-                <div class="form-grid">
-                  <div class="form-field form-field-full">
-                    <span class="field-label">Organisation Name</span>
-                    <ui-input
-                      placeholder="Acme Corp"
-                      ariaLabel="Organisation name"
-                    />
-                  </div>
-                  <div class="form-field">
-                    <span class="field-label">Default Role for New Users</span>
-                    <ui-select
-                      [options]="roleOptions"
-                      ariaLabel="Default role"
-                    />
-                  </div>
-                  <div class="form-field">
-                    <span class="field-label">Default Department</span>
-                    <ui-select
-                      [options]="departmentOptions"
-                      ariaLabel="Default department"
-                    />
-                  </div>
-                  <div class="form-field form-field-full">
-                    <ui-checkbox ariaLabel="Auto-provision">
-                      Auto-provision users from SSO
-                    </ui-checkbox>
-                  </div>
-                  <div class="form-actions">
-                    <ui-button variant="filled">Save Changes</ui-button>
+            <ui-tab-group>
+              <ui-tab label="General" [icon]="icons.settings">
+                <div style="padding-top: 0.75rem">
+                  <div class="form-grid">
+                    <div class="form-field form-field-full">
+                      <span class="field-label">Organisation Name</span>
+                      <ui-input
+                        placeholder="Acme Corp"
+                        ariaLabel="Organisation name"
+                      />
+                    </div>
+                    <div class="form-field">
+                      <span class="field-label"
+                        >Default Role for New Users</span
+                      >
+                      <ui-select
+                        [options]="roleOptions"
+                        ariaLabel="Default role"
+                      />
+                    </div>
+                    <div class="form-field">
+                      <span class="field-label">Default Department</span>
+                      <ui-select
+                        [options]="departmentOptions"
+                        ariaLabel="Default department"
+                      />
+                    </div>
+                    <div class="form-field form-field-full">
+                      <ui-checkbox ariaLabel="Auto-provision">
+                        Auto-provision users from SSO
+                      </ui-checkbox>
+                    </div>
+                    <div class="form-actions">
+                      <ui-button variant="filled">Save Changes</ui-button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ui-tab>
-            <ui-tab label="Notifications" [icon]="icons.activity">
-              <div style="padding-top: 0.75rem">
-                <div class="policies-grid">
-                  <div class="policy-row">
-                    <div>
-                      <div class="policy-label">
-                        Email on New User Registration
+              </ui-tab>
+              <ui-tab label="Notifications" [icon]="icons.activity">
+                <div style="padding-top: 0.75rem">
+                  <div class="policies-grid">
+                    <div class="policy-row">
+                      <div>
+                        <div class="policy-label">
+                          Email on New User Registration
+                        </div>
+                        <div class="policy-desc">
+                          Notify admins when a new user account is created.
+                        </div>
                       </div>
-                      <div class="policy-desc">
-                        Notify admins when a new user account is created.
-                      </div>
+                      <ui-toggle
+                        [value]="true"
+                        ariaLabel="New user notification"
+                      />
                     </div>
-                    <ui-toggle
-                      [value]="true"
-                      ariaLabel="New user notification"
-                    />
-                  </div>
-                  <div class="policy-row">
-                    <div>
-                      <div class="policy-label">Alert on Suspicious Login</div>
-                      <div class="policy-desc">
-                        Send an alert when a login attempt from an unrecognised
-                        location is detected.
+                    <div class="policy-row">
+                      <div>
+                        <div class="policy-label">
+                          Alert on Suspicious Login
+                        </div>
+                        <div class="policy-desc">
+                          Send an alert when a login attempt from an
+                          unrecognised location is detected.
+                        </div>
                       </div>
+                      <ui-toggle
+                        [value]="true"
+                        ariaLabel="Suspicious login alert"
+                      />
                     </div>
-                    <ui-toggle
-                      [value]="true"
-                      ariaLabel="Suspicious login alert"
-                    />
-                  </div>
-                  <div class="policy-row">
-                    <div>
-                      <div class="policy-label">Weekly Security Summary</div>
-                      <div class="policy-desc">
-                        Send a weekly digest of security events to all admins.
+                    <div class="policy-row">
+                      <div>
+                        <div class="policy-label">Weekly Security Summary</div>
+                        <div class="policy-desc">
+                          Send a weekly digest of security events to all admins.
+                        </div>
                       </div>
+                      <ui-toggle [value]="false" ariaLabel="Weekly summary" />
                     </div>
-                    <ui-toggle [value]="false" ariaLabel="Weekly summary" />
                   </div>
                 </div>
-              </div>
-            </ui-tab>
-            <ui-tab-spacer />
-            <ui-tab [icon]="icons.shieldAlert" ariaLabel="Danger zone">
-              <div style="padding-top: 0.75rem">
-                <ui-card variant="outlined">
-                  <ui-card-header>
-                    <span
-                      style="font-weight: 700; color: var(--ui-danger, #dc2626)"
-                    >
-                      Danger Zone
-                    </span>
-                  </ui-card-header>
-                  <ui-card-body>
-                    <p
-                      style="margin: 0 0 1rem; font-size: 0.88rem; line-height: 1.5"
-                    >
-                      These actions are irreversible and affect the entire
-                      organisation. Proceed with extreme caution.
-                    </p>
-                    <div style="display: flex; gap: 0.5rem">
-                      <ui-button variant="outlined" size="sm">
-                        Export All Data
-                      </ui-button>
-                      <ui-button variant="outlined" size="sm">
-                        Purge Inactive Users
-                      </ui-button>
-                    </div>
-                  </ui-card-body>
-                </ui-card>
-              </div>
-            </ui-tab>
-          </ui-tab-group>
+              </ui-tab>
+              <ui-tab-spacer />
+              <ui-tab [icon]="icons.shieldAlert" ariaLabel="Danger zone">
+                <div style="padding-top: 0.75rem">
+                  <ui-card variant="outlined">
+                    <ui-card-header>
+                      <span
+                        style="font-weight: 700; color: var(--ui-danger, #dc2626)"
+                      >
+                        Danger Zone
+                      </span>
+                    </ui-card-header>
+                    <ui-card-body>
+                      <p
+                        style="margin: 0 0 1rem; font-size: 0.88rem; line-height: 1.5"
+                      >
+                        These actions are irreversible and affect the entire
+                        organisation. Proceed with extreme caution.
+                      </p>
+                      <div style="display: flex; gap: 0.5rem">
+                        <ui-button variant="outlined" size="sm">
+                          Export All Data
+                        </ui-button>
+                        <ui-button variant="outlined" size="sm">
+                          Purge Inactive Users
+                        </ui-button>
+                      </div>
+                    </ui-card-body>
+                  </ui-card>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
           </div>
         }
       </ng-template>

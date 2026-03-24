@@ -59,12 +59,7 @@ interface PickOrder {
   readonly customer: string;
   readonly items: number;
   readonly priority: "urgent" | "high" | "normal" | "low";
-  readonly status:
-    | "pending"
-    | "picking"
-    | "packed"
-    | "shipped"
-    | "cancelled";
+  readonly status: "pending" | "picking" | "packed" | "shipped" | "cancelled";
   readonly created: string;
   readonly assignee: string;
   readonly totalValue: number;
@@ -601,15 +596,11 @@ const NAV: NavigationNode[] = [
     [
       navItem("pick-queue", "Pick Queue", {
         icon: ICONS.clipboardList,
-        badge: String(
-          PICK_ORDERS.filter((o) => o.status === "pending").length,
-        ),
+        badge: String(PICK_ORDERS.filter((o) => o.status === "pending").length),
       }),
       navItem("active-picks", "Active Picks", {
         icon: ICONS.listChecks,
-        badge: String(
-          PICK_ORDERS.filter((o) => o.status === "picking").length,
-        ),
+        badge: String(PICK_ORDERS.filter((o) => o.status === "picking").length),
       }),
     ],
     { icon: ICONS.clipboardCheck, expanded: true },
@@ -1122,42 +1113,37 @@ function formatQty(n: number): string {
 
             <ui-tab-group panelStyle="outline">
               <ui-tab label="Recent Orders" [icon]="icons.clipboardList">
-                <div class="scroll-area" style="padding-top: 0.5rem">
-                  <div class="mdv-wrap" style="border: none">
-                    <ui-master-detail-view
-                      [datasource]="recentOrdersDs"
-                      title="Recent"
-                      placeholder="Select an order"
-                    >
-                      <ui-text-column
-                        key="orderNumber"
-                        headerText="Order #"
-                      />
-                      <ui-text-column key="customer" headerText="Customer" />
-                      <ui-badge-column key="status" headerText="Status" />
+                <div class="mdv-wrap" style="border: none; margin-top: 0.5rem">
+                  <ui-master-detail-view
+                    [datasource]="recentOrdersDs"
+                    title="Recent"
+                    placeholder="Select an order"
+                  >
+                    <ui-text-column key="orderNumber" headerText="Order #" />
+                    <ui-text-column key="customer" headerText="Customer" />
+                    <ui-badge-column key="status" headerText="Status" />
 
-                      <ng-template #detail let-order>
-                        <dl class="detail-grid">
-                          <dt>Order</dt>
-                          <dd>{{ order.orderNumber }}</dd>
-                          <dt>Customer</dt>
-                          <dd>{{ order.customer }}</dd>
-                          <dt>Items</dt>
-                          <dd>{{ order.items }}</dd>
-                          <dt>Priority</dt>
-                          <dd>
-                            <ui-chip [color]="getPriorityColor(order.priority)">
-                              {{ order.priority }}
-                            </ui-chip>
-                          </dd>
-                          <dt>Assignee</dt>
-                          <dd>{{ order.assignee }}</dd>
-                          <dt>Value</dt>
-                          <dd>{{ fmtCurrency(order.totalValue) }}</dd>
-                        </dl>
-                      </ng-template>
-                    </ui-master-detail-view>
-                  </div>
+                    <ng-template #detail let-order>
+                      <dl class="detail-grid">
+                        <dt>Order</dt>
+                        <dd>{{ order.orderNumber }}</dd>
+                        <dt>Customer</dt>
+                        <dd>{{ order.customer }}</dd>
+                        <dt>Items</dt>
+                        <dd>{{ order.items }}</dd>
+                        <dt>Priority</dt>
+                        <dd>
+                          <ui-chip [color]="getPriorityColor(order.priority)">
+                            {{ order.priority }}
+                          </ui-chip>
+                        </dd>
+                        <dt>Assignee</dt>
+                        <dd>{{ order.assignee }}</dd>
+                        <dt>Value</dt>
+                        <dd>{{ fmtCurrency(order.totalValue) }}</dd>
+                      </dl>
+                    </ng-template>
+                  </ui-master-detail-view>
                 </div>
               </ui-tab>
               <ui-tab-separator />
@@ -1165,10 +1151,7 @@ function formatQty(n: number): string {
                 <div style="padding-top: 0.75rem">
                   @for (zone of allZones; track zone.id) {
                     <div class="zone-bar">
-                      <span
-                        class="stock-bar-label"
-                        style="min-width: 14rem"
-                      >
+                      <span class="stock-bar-label" style="min-width: 14rem">
                         {{ zone.name }}
                       </span>
                       <ui-progress
@@ -1199,18 +1182,14 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="outlined" size="sm">
-                  Export CSV
-                </ui-button>
+                <ui-button variant="outlined" size="sm"> Export CSV </ui-button>
               </div>
             </div>
 
             <div class="category-strip">
               @for (cat of partCategories; track cat) {
                 <ui-chip
-                  [color]="
-                    selectedCategory() === cat ? 'primary' : 'neutral'
-                  "
+                  [color]="selectedCategory() === cat ? 'primary' : 'neutral'"
                   (click)="selectedCategory.set(cat)"
                 >
                   {{ cat }}
@@ -1235,9 +1214,7 @@ function formatQty(n: number): string {
                       "
                     >
                       <ui-icon [svg]="icons.barcode" [size]="14" />
-                      <span
-                        style="font-family: monospace; font-weight: 600"
-                      >
+                      <span style="font-family: monospace; font-weight: 600">
                         {{ row.sku }}
                       </span>
                     </div>
@@ -1295,9 +1272,7 @@ function formatQty(n: number): string {
                           <ui-progress
                             [value]="
                               part.minStock > 0
-                                ? (part.quantity /
-                                    (part.minStock * 5)) *
-                                  100
+                                ? (part.quantity / (part.minStock * 5)) * 100
                                 : 0
                             "
                             ariaLabel="Stock level"
@@ -1312,9 +1287,7 @@ function formatQty(n: number): string {
                           <ui-progress
                             [value]="
                               part.minStock > 0
-                                ? (part.minStock /
-                                    (part.minStock * 5)) *
-                                  100
+                                ? (part.minStock / (part.minStock * 5)) * 100
                                 : 0
                             "
                             ariaLabel="Minimum stock"
@@ -1339,10 +1312,7 @@ function formatQty(n: number): string {
                               align-items: center;
                             "
                           >
-                            <ui-icon
-                              [svg]="icons.triangleAlert"
-                              [size]="16"
-                            />
+                            <ui-icon [svg]="icons.triangleAlert" [size]="16" />
                             <span style="font-size: 0.88rem; font-weight: 600">
                               Reorder recommended — below minimum threshold
                             </span>
@@ -1419,10 +1389,7 @@ function formatQty(n: number): string {
                 </div>
                 <div class="form-field">
                   <span class="field-label">Quantity</span>
-                  <ui-input
-                    placeholder="0"
-                    ariaLabel="Quantity received"
-                  />
+                  <ui-input placeholder="0" ariaLabel="Quantity received" />
                 </div>
                 <div class="form-field">
                   <span class="field-label">Storage Location</span>
@@ -1454,9 +1421,7 @@ function formatQty(n: number): string {
                 </div>
                 <div class="form-actions">
                   <ui-button variant="filled">Confirm Receipt</ui-button>
-                  <ui-button variant="outlined">
-                    Scan Next Item
-                  </ui-button>
+                  <ui-button variant="outlined"> Scan Next Item </ui-button>
                   <ui-button variant="ghost">Cancel</ui-button>
                 </div>
               </div>
@@ -1478,9 +1443,7 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="filled" size="sm">
-                  Reorder All
-                </ui-button>
+                <ui-button variant="filled" size="sm"> Reorder All </ui-button>
               </div>
             </div>
 
@@ -1543,8 +1506,10 @@ function formatQty(n: number): string {
                     <dt>Min Stock</dt>
                     <dd>{{ part.minStock | number }}</dd>
                     <dt>Deficit</dt>
-                    <dd style="font-weight: 700; color: var(--ui-danger, #dc2626)">
-                      {{ (part.minStock - part.quantity) | number }} units
+                    <dd
+                      style="font-weight: 700; color: var(--ui-danger, #dc2626)"
+                    >
+                      {{ part.minStock - part.quantity | number }} units
                     </dd>
                     <dt>Supplier</dt>
                     <dd>{{ part.supplier }}</dd>
@@ -1581,9 +1546,7 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="filled" size="sm">
-                  Auto-Assign
-                </ui-button>
+                <ui-button variant="filled" size="sm"> Auto-Assign </ui-button>
               </div>
             </div>
 
@@ -1594,10 +1557,7 @@ function formatQty(n: number): string {
                 [showFilter]="true"
                 placeholder="Select an order to begin picking"
               >
-                <ui-template-column
-                  key="orderNumber"
-                  headerText="Order"
-                >
+                <ui-template-column key="orderNumber" headerText="Order">
                   <ng-template let-row>
                     <div
                       style="
@@ -1726,10 +1686,7 @@ function formatQty(n: number): string {
                 title="In Progress"
                 placeholder="Select a pick to view progress"
               >
-                <ui-text-column
-                  key="orderNumber"
-                  headerText="Order"
-                />
+                <ui-text-column key="orderNumber" headerText="Order" />
                 <ui-text-column key="assignee" headerText="Picker" />
                 <ui-text-column key="items" headerText="Items" />
                 <ui-template-column key="priority" headerText="Priority">
@@ -1747,9 +1704,7 @@ function formatQty(n: number): string {
                       <h3 class="detail-name">
                         {{ order.orderNumber }}
                       </h3>
-                      <p class="detail-sub">
-                        Assigned to {{ order.assignee }}
-                      </p>
+                      <p class="detail-sub">Assigned to {{ order.assignee }}</p>
                     </div>
                   </div>
                   <div class="stock-bar" style="margin-bottom: 0.75rem">
@@ -1846,9 +1801,7 @@ function formatQty(n: number): string {
                       </p>
                     </div>
                     <div style="margin-left: auto">
-                      <ui-chip
-                        [color]="getShipmentStatusColor(ship.status)"
-                      >
+                      <ui-chip [color]="getShipmentStatusColor(ship.status)">
                         {{ ship.status }}
                       </ui-chip>
                     </div>
@@ -1935,9 +1888,7 @@ function formatQty(n: number): string {
                     <ui-button variant="ghost" size="sm">
                       View Racks
                     </ui-button>
-                    <ui-button variant="ghost" size="sm">
-                      Zone Map
-                    </ui-button>
+                    <ui-button variant="ghost" size="sm"> Zone Map </ui-button>
                   </div>
                 </ui-card-footer>
               </ui-card>
@@ -1987,10 +1938,7 @@ function formatQty(n: number): string {
                   </ng-template>
                 </ui-template-column>
                 <ui-text-column key="leadTime" headerText="Lead Time" />
-                <ui-text-column
-                  key="activeOrders"
-                  headerText="Active Orders"
-                />
+                <ui-text-column key="activeOrders" headerText="Active Orders" />
 
                 <ng-template #detail let-sup>
                   <div class="detail-header">
@@ -2034,8 +1982,7 @@ function formatQty(n: number): string {
                     <ui-tab label="Parts" [icon]="icons.cpu">
                       <div style="padding-top: 0.75rem; font-size: 0.88rem">
                         <p style="margin: 0 0 0.5rem">
-                          {{ sup.totalParts }} parts sourced from this
-                          supplier.
+                          {{ sup.totalParts }} parts sourced from this supplier.
                         </p>
                         <div class="category-strip">
                           @for (
@@ -2121,10 +2068,7 @@ function formatQty(n: number): string {
                               minimum.
                             </div>
                           </div>
-                          <ui-toggle
-                            [value]="false"
-                            ariaLabel="Auto reorder"
-                          />
+                          <ui-toggle [value]="false" ariaLabel="Auto reorder" />
                         </div>
                         <div class="setting-row">
                           <div>
@@ -2162,9 +2106,7 @@ function formatQty(n: number): string {
                     </div>
                     <div class="setting-row">
                       <div>
-                        <div class="setting-label">
-                          Auto-Confirm on Scan
-                        </div>
+                        <div class="setting-label">Auto-Confirm on Scan</div>
                         <div class="setting-desc">
                           Automatically mark items as picked after scanning.
                         </div>
@@ -2181,10 +2123,7 @@ function formatQty(n: number): string {
                           Play an audible tone on successful scan.
                         </div>
                       </div>
-                      <ui-toggle
-                        [value]="true"
-                        ariaLabel="Scanner sound"
-                      />
+                      <ui-toggle [value]="true" ariaLabel="Scanner sound" />
                     </div>
                   </div>
                 </div>
@@ -2199,10 +2138,7 @@ function formatQty(n: number): string {
                           Notify when new pick orders arrive.
                         </div>
                       </div>
-                      <ui-toggle
-                        [value]="true"
-                        ariaLabel="New order alerts"
-                      />
+                      <ui-toggle [value]="true" ariaLabel="New order alerts" />
                     </div>
                     <div class="setting-row">
                       <div>
@@ -2211,10 +2147,7 @@ function formatQty(n: number): string {
                           Track carrier status changes in real time.
                         </div>
                       </div>
-                      <ui-toggle
-                        [value]="true"
-                        ariaLabel="Shipment updates"
-                      />
+                      <ui-toggle [value]="true" ariaLabel="Shipment updates" />
                     </div>
                     <div class="setting-row">
                       <div>
@@ -2318,9 +2251,7 @@ class WarehouseManagementAppDemo {
 
   protected readonly partsDs = new FilterableArrayDatasource(PARTS);
   protected readonly pickQueueDs = new FilterableArrayDatasource(
-    PICK_ORDERS.filter(
-      (o) => o.status === "pending" || o.status === "picking",
-    ),
+    PICK_ORDERS.filter((o) => o.status === "pending" || o.status === "picking"),
   );
   protected readonly activePicksDs = new FilterableArrayDatasource(
     PICK_ORDERS.filter((o) => o.status === "picking"),
@@ -2337,11 +2268,41 @@ class WarehouseManagementAppDemo {
   protected readonly suppliersDs = new FilterableArrayDatasource(SUPPLIERS);
 
   protected readonly pickSteps = [
-    { seq: 1, location: "A-01-03", part: "10K Ohm Resistor (0805)", qty: 500, status: "picked" },
-    { seq: 2, location: "A-02-07", part: "100µF Electrolytic Capacitor", qty: 200, status: "picked" },
-    { seq: 3, location: "B-04-12", part: "ATmega328P Microcontroller", qty: 50, status: "next" },
-    { seq: 4, location: "C-01-09", part: "USB-C Female Connector", qty: 100, status: "pending" },
-    { seq: 5, location: "A-03-01", part: "Red LED 5mm (620nm)", qty: 300, status: "pending" },
+    {
+      seq: 1,
+      location: "A-01-03",
+      part: "10K Ohm Resistor (0805)",
+      qty: 500,
+      status: "picked",
+    },
+    {
+      seq: 2,
+      location: "A-02-07",
+      part: "100µF Electrolytic Capacitor",
+      qty: 200,
+      status: "picked",
+    },
+    {
+      seq: 3,
+      location: "B-04-12",
+      part: "ATmega328P Microcontroller",
+      qty: 50,
+      status: "next",
+    },
+    {
+      seq: 4,
+      location: "C-01-09",
+      part: "USB-C Female Connector",
+      qty: 100,
+      status: "pending",
+    },
+    {
+      seq: 5,
+      location: "A-03-01",
+      part: "Red LED 5mm (620nm)",
+      qty: 300,
+      status: "pending",
+    },
   ];
 
   protected readonly supplierOptions = SUPPLIERS.map((s) => ({
