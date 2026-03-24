@@ -1,8 +1,12 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
 import { UIRepeater } from "./repeater.component";
 import { ArrayDatasource } from "../table-view/datasources/array-datasource";
+import type {
+  RepeaterReorderEvent,
+  RepeaterTransferEvent,
+} from "./repeater.types";
 
 /* ── demo data ────────────────────────────────────────────────── */
 
@@ -80,7 +84,7 @@ const PHOTOS = buildPhotos();
       border-radius: 8px;
       overflow: hidden;
       background: var(--theredhead-surface, #fff);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      box-shadow: var(--ui-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
     }
     .card img {
       display: block;
@@ -94,6 +98,26 @@ const PHOTOS = buildPhotos();
         500 0.875rem/1.4 system-ui,
         sans-serif;
       color: var(--theredhead-on-surface, #333);
+    }
+
+    :host-context(html.dark-theme) {
+      .card {
+        background: #1e2128;
+      }
+      .card figcaption {
+        color: #f2f6fb;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :host-context(html:not(.light-theme):not(.dark-theme)) {
+        .card {
+          background: #1e2128;
+        }
+        .card figcaption {
+          color: #f2f6fb;
+        }
+      }
     }
   `,
 })
@@ -136,7 +160,7 @@ class RepeaterGridDemo {
       border-radius: 8px;
       overflow: hidden;
       background: var(--theredhead-surface, #fff);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--ui-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
       transition: transform 0.15s ease;
     }
     .tile:hover {
@@ -157,6 +181,32 @@ class RepeaterGridDemo {
         400 0.75rem/1.4 system-ui,
         sans-serif;
       color: var(--theredhead-on-surface, #444);
+    }
+
+    :host-context(html.dark-theme) {
+      .tile {
+        background: #1e2128;
+      }
+      .tile.even {
+        border-color: #b0a0d8;
+      }
+      .label {
+        color: #d0d5dd;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :host-context(html:not(.light-theme):not(.dark-theme)) {
+        .tile {
+          background: #1e2128;
+        }
+        .tile.even {
+          border-color: #b0a0d8;
+        }
+        .label {
+          color: #d0d5dd;
+        }
+      }
     }
   `,
 })
@@ -196,7 +246,7 @@ class RepeaterFlexRowDemo {
       max-width: 360px;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      box-shadow: var(--ui-shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.08));
       background: var(--theredhead-surface, #fff);
     }
     .row {
@@ -204,7 +254,7 @@ class RepeaterFlexRowDemo {
       align-items: center;
       gap: 12px;
       padding: 8px 12px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      border-bottom: 1px solid var(--ui-border, #d7dce2);
     }
     .row.last {
       border-bottom: none;
@@ -232,6 +282,38 @@ class RepeaterFlexRowDemo {
         400 0.75rem/1.3 system-ui,
         sans-serif;
       color: var(--theredhead-on-surface-variant, #666);
+    }
+
+    :host-context(html.dark-theme) {
+      & {
+        background: #1e2128;
+      }
+      .row {
+        border-bottom-color: #3a3f47;
+      }
+      .info strong {
+        color: #f2f6fb;
+      }
+      .meta {
+        color: #8b919a;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :host-context(html:not(.light-theme):not(.dark-theme)) {
+        & {
+          background: #1e2128;
+        }
+        .row {
+          border-bottom-color: #3a3f47;
+        }
+        .info strong {
+          color: #f2f6fb;
+        }
+        .meta {
+          color: #8b919a;
+        }
+      }
     }
   `,
 })
@@ -282,13 +364,362 @@ class RepeaterFlexColumnDemo {
       font:
         600 0.8rem/1.4 system-ui,
         sans-serif;
-      color: #fff;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+      color: var(--ui-overlay-text, #fff);
+      background: var(
+        --ui-overlay-bg,
+        linear-gradient(transparent, rgba(0, 0, 0, 0.55))
+      );
     }
   `,
 })
 class RepeaterMasonryDemo {
   public readonly ds = new ArrayDatasource(PHOTOS);
+}
+
+/* ── drag-and-drop wrapper components ─────────────────────────── */
+
+@Component({
+  selector: "ui-repeater-reorder-demo",
+  standalone: true,
+  imports: [UIRepeater],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <h3 class="heading">Drag items to reorder</h3>
+    <ui-repeater
+      [datasource]="ds"
+      [reorderable]="true"
+      [limit]="8"
+      (reordered)="onReorder($event)"
+    >
+      <ng-template let-photo let-i="index">
+        <div class="row">
+          <span class="handle">⠿</span>
+          <img
+            [src]="photo.url"
+            [alt]="photo.name"
+            loading="lazy"
+            width="48"
+            height="48"
+          />
+          <div class="info">
+            <strong>#{{ i + 1 }} {{ photo.name }}</strong>
+            <span class="meta">{{ photo.width }} × {{ photo.height }}</span>
+          </div>
+        </div>
+      </ng-template>
+    </ui-repeater>
+    @if (lastEvent()) {
+      <pre class="log">{{ lastEvent() | json }}</pre>
+    }
+  `,
+  styles: `
+    :host {
+      display: block;
+      max-width: 420px;
+    }
+    .heading {
+      margin: 0 0 12px;
+      font:
+        600 1rem/1.4 system-ui,
+        sans-serif;
+      color: var(--theredhead-on-surface, #222);
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--theredhead-surface, #fff);
+      border: 1px solid var(--ui-border, #e0e0e0);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      cursor: grab;
+      user-select: none;
+    }
+    .row:active {
+      cursor: grabbing;
+    }
+    .handle {
+      color: var(--theredhead-on-surface-variant, #999);
+      font-size: 1.1rem;
+    }
+    .row img {
+      display: block;
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .info strong {
+      font:
+        500 0.875rem/1.3 system-ui,
+        sans-serif;
+      color: var(--theredhead-on-surface, #222);
+    }
+    .meta {
+      font:
+        400 0.75rem/1.3 system-ui,
+        sans-serif;
+      color: var(--theredhead-on-surface-variant, #666);
+    }
+    .log {
+      margin: 16px 0 0;
+      padding: 10px 14px;
+      background: var(--theredhead-surface-variant, #f4f4f4);
+      color: var(--theredhead-on-surface, #333);
+      border-radius: 6px;
+      font: 400 0.75rem/1.5 monospace;
+    }
+
+    :host-context(html.dark-theme) {
+      .heading {
+        color: #f2f6fb;
+      }
+      .row {
+        background: #1e2128;
+        border-color: #3a3f47;
+      }
+      .handle {
+        color: #8b919a;
+      }
+      .info strong {
+        color: #f2f6fb;
+      }
+      .meta {
+        color: #8b919a;
+      }
+      .log {
+        background: #1e2128;
+        color: #d0d5dd;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :host-context(html:not(.light-theme):not(.dark-theme)) {
+        .heading {
+          color: #f2f6fb;
+        }
+        .row {
+          background: #1e2128;
+          border-color: #3a3f47;
+        }
+        .handle {
+          color: #8b919a;
+        }
+        .info strong {
+          color: #f2f6fb;
+        }
+        .meta {
+          color: #8b919a;
+        }
+        .log {
+          background: #1e2128;
+          color: #d0d5dd;
+        }
+      }
+    }
+  `,
+})
+class RepeaterReorderDemo {
+  public readonly ds = new ArrayDatasource(PHOTOS);
+  public readonly lastEvent = signal<RepeaterReorderEvent | null>(null);
+
+  public onReorder(event: RepeaterReorderEvent): void {
+    this.lastEvent.set(event);
+  }
+}
+
+@Component({
+  selector: "ui-repeater-transfer-demo",
+  standalone: true,
+  imports: [UIRepeater],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div class="columns">
+      <div class="column">
+        <h3 class="heading">Available</h3>
+        <ui-repeater
+          #listA
+          [datasource]="dsA"
+          [reorderable]="true"
+          [connectedTo]="[listB]"
+          (reordered)="onReorder('A', $event)"
+          (transferred)="onTransfer('A', $event)"
+        >
+          <ng-template let-photo>
+            <div class="card">
+              <img
+                [src]="photo.url"
+                [alt]="photo.name"
+                loading="lazy"
+                width="100"
+                height="100"
+              />
+              <span class="label">{{ photo.name }}</span>
+            </div>
+          </ng-template>
+        </ui-repeater>
+      </div>
+      <div class="column">
+        <h3 class="heading">Selected</h3>
+        <ui-repeater
+          #listB
+          [datasource]="dsB"
+          [reorderable]="true"
+          [connectedTo]="[listA]"
+          (reordered)="onReorder('B', $event)"
+          (transferred)="onTransfer('B', $event)"
+        >
+          <ng-template let-photo>
+            <div class="card">
+              <img
+                [src]="photo.url"
+                [alt]="photo.name"
+                loading="lazy"
+                width="100"
+                height="100"
+              />
+              <span class="label">{{ photo.name }}</span>
+            </div>
+          </ng-template>
+        </ui-repeater>
+      </div>
+    </div>
+    @if (lastLog()) {
+      <pre class="log">{{ lastLog() }}</pre>
+    }
+  `,
+  styles: `
+    :host {
+      display: block;
+    }
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .column {
+      display: flex;
+      flex-direction: column;
+    }
+    .heading {
+      margin: 0 0 10px;
+      font:
+        600 0.95rem/1.4 system-ui,
+        sans-serif;
+      color: var(--theredhead-on-surface, #222);
+    }
+    ui-repeater {
+      display: block;
+      min-height: 120px;
+      padding: 8px;
+      border: 2px dashed var(--ui-border, #ccc);
+      border-radius: 10px;
+      background: var(--theredhead-surface-variant, #fafafa);
+    }
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      background: var(--theredhead-surface, #fff);
+      border: 1px solid var(--ui-border, #e0e0e0);
+      border-radius: 8px;
+      cursor: grab;
+      user-select: none;
+    }
+    .card:active {
+      cursor: grabbing;
+    }
+    .card img {
+      display: block;
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .label {
+      font:
+        500 0.85rem/1.3 system-ui,
+        sans-serif;
+      color: var(--theredhead-on-surface, #333);
+    }
+    .log {
+      margin: 16px 0 0;
+      padding: 10px 14px;
+      background: var(--theredhead-surface-variant, #f4f4f4);
+      color: var(--theredhead-on-surface, #333);
+      border-radius: 6px;
+      font: 400 0.75rem/1.5 monospace;
+    }
+
+    :host-context(html.dark-theme) {
+      .heading {
+        color: #f2f6fb;
+      }
+      ui-repeater {
+        background: #16191e;
+        border-color: #3a3f47;
+      }
+      .card {
+        background: #1e2128;
+        border-color: #3a3f47;
+      }
+      .label {
+        color: #d0d5dd;
+      }
+      .log {
+        background: #1e2128;
+        color: #d0d5dd;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :host-context(html:not(.light-theme):not(.dark-theme)) {
+        .heading {
+          color: #f2f6fb;
+        }
+        ui-repeater {
+          background: #16191e;
+          border-color: #3a3f47;
+        }
+        .card {
+          background: #1e2128;
+          border-color: #3a3f47;
+        }
+        .label {
+          color: #d0d5dd;
+        }
+        .log {
+          background: #1e2128;
+          color: #d0d5dd;
+        }
+      }
+    }
+  `,
+})
+class RepeaterTransferDemo {
+  public readonly dsA = new ArrayDatasource(PHOTOS.slice(0, 6));
+  public readonly dsB = new ArrayDatasource(PHOTOS.slice(6, 9));
+  public readonly lastLog = signal<string | null>(null);
+
+  public onReorder(list: string, event: RepeaterReorderEvent): void {
+    this.lastLog.set(
+      `Reorder in ${list}: ${event.previousIndex} → ${event.currentIndex}`,
+    );
+  }
+
+  public onTransfer(list: string, event: RepeaterTransferEvent<unknown>): void {
+    this.lastLog.set(
+      `Transfer → ${list}: "${(event.item as { name: string }).name}" at index ${event.currentIndex}`,
+    );
+  }
 }
 
 /* ── Storybook meta ───────────────────────────────────────────── */
@@ -312,6 +743,8 @@ const meta: Meta<UIRepeater> = {
         RepeaterFlexRowDemo,
         RepeaterFlexColumnDemo,
         RepeaterMasonryDemo,
+        RepeaterReorderDemo,
+        RepeaterTransferDemo,
       ],
     }),
   ],
@@ -428,6 +861,166 @@ export const Masonry: Story = {
 };
 
 /**
+ * **Drag-and-drop reorder** — enable `[reorderable]="true"` to allow
+ * users to drag items into a new order within a single repeater.
+ * The `(reordered)` event emits the previous and current indices.
+ */
+export const Reorderable: Story = {
+  render: () => ({
+    template: `<ui-repeater-reorder-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-repeater
+  [datasource]="ds"
+  [reorderable]="true"
+  (reordered)="onReorder($event)"
+>
+  <ng-template let-item let-i="index">
+    <div class="row">
+      <span class="handle">⠿</span>
+      <strong>#{{ i + 1 }} {{ item.name }}</strong>
+    </div>
+  </ng-template>
+</ui-repeater>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIRepeater, RepeaterReorderEvent } from '@theredhead/ui-kit';
+import { ArrayDatasource } from '@theredhead/foundation';
+
+@Component({
+  selector: 'app-reorder-example',
+  standalone: true,
+  imports: [UIRepeater],
+  templateUrl: './reorder-example.component.html',
+})
+export class ReorderExampleComponent {
+  readonly ds = new ArrayDatasource([
+    { id: 1, name: 'Alpha' },
+    { id: 2, name: 'Bravo' },
+    { id: 3, name: 'Charlie' },
+  ]);
+
+  onReorder(event: RepeaterReorderEvent): void {
+    console.log('Moved from', event.previousIndex, 'to', event.currentIndex);
+  }
+}
+
+// ── SCSS ──
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  cursor: grab;
+}
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Transfer between lists** — connect two repeaters with `[connectedTo]`
+ * to allow dragging items from one list to another.
+ * Both `(reordered)` and `(transferred)` events are emitted as appropriate.
+ */
+export const TransferBetweenLists: Story = {
+  render: () => ({
+    template: `<ui-repeater-transfer-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div class="columns">
+  <ui-repeater
+    #listA
+    [datasource]="dsAvailable"
+    [reorderable]="true"
+    [connectedTo]="[listB]"
+    (transferred)="onTransfer($event)"
+  >
+    <ng-template let-item>
+      <div class="card">{{ item.name }}</div>
+    </ng-template>
+  </ui-repeater>
+
+  <ui-repeater
+    #listB
+    [datasource]="dsSelected"
+    [reorderable]="true"
+    [connectedTo]="[listA]"
+    (transferred)="onTransfer($event)"
+  >
+    <ng-template let-item>
+      <div class="card">{{ item.name }}</div>
+    </ng-template>
+  </ui-repeater>
+</div>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIRepeater, RepeaterTransferEvent } from '@theredhead/ui-kit';
+import { ArrayDatasource } from '@theredhead/foundation';
+
+@Component({
+  selector: 'app-transfer-example',
+  standalone: true,
+  imports: [UIRepeater],
+  templateUrl: './transfer-example.component.html',
+})
+export class TransferExampleComponent {
+  readonly dsAvailable = new ArrayDatasource([
+    { id: 1, name: 'Item A' },
+    { id: 2, name: 'Item B' },
+    { id: 3, name: 'Item C' },
+  ]);
+  readonly dsSelected = new ArrayDatasource([
+    { id: 4, name: 'Item D' },
+  ]);
+
+  onTransfer(event: RepeaterTransferEvent<{ id: number; name: string }>): void {
+    console.log('Transferred:', event.item.name, 'to index', event.currentIndex);
+  }
+}
+
+// ── SCSS ──
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+ui-repeater {
+  min-height: 120px;
+  padding: 8px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+}
+.card {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: grab;
+}
+`,
+      },
+    },
+  },
+};
+
+/**
  * _API Reference_ — features, inputs, and template context.
  */
 export const Documentation: Story = {
@@ -443,6 +1036,8 @@ export const Documentation: Story = {
           "- **Template context** — each item template receives `$implicit` (the item), plus `index`, `first`, `last`, `even`, `odd` context variables",
           "- **Limit** — optionally cap the number of rendered items with `[limit]`",
           "- **Layout-agnostic** — no wrapper element or layout styles; the host decides the visual arrangement",
+          '- **Drag-and-drop reorder** — enable `[reorderable]="true"` to let users drag items into a new order within a single repeater',
+          "- **Cross-list transfer** — connect multiple repeaters with `[connectedTo]` to allow items to be dragged between them",
           "",
           "## Inputs",
           "",
@@ -450,6 +1045,15 @@ export const Documentation: Story = {
           "|-------|------|---------|-------------|",
           "| `datasource` | `ArrayDatasource<T>` | *(required)* | The data to iterate over |",
           "| `limit` | `number` | — | Maximum items to render |",
+          "| `reorderable` | `boolean` | `false` | Enable drag-and-drop reordering |",
+          "| `connectedTo` | `UIRepeater[]` | `[]` | Other repeaters to allow transfer to/from |",
+          "",
+          "## Outputs",
+          "",
+          "| Output | Payload | Description |",
+          "|--------|---------|-------------|",
+          "| `reordered` | `{ previousIndex, currentIndex }` | Emitted when an item is reordered within this repeater |",
+          "| `transferred` | `{ item, previousIndex, currentIndex }` | Emitted on the target when an item is transferred from another repeater |",
           "",
           "## Template Context",
           "",

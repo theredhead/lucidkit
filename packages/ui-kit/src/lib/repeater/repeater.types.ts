@@ -19,3 +19,27 @@ export interface RepeaterItemContext<T> {
   /** Whether the index is odd. */
   readonly odd: boolean;
 }
+
+/**
+ * Event emitted when items are reordered within a single repeater via drag-and-drop.
+ */
+export interface RepeaterReorderEvent {
+  /** The index the item was dragged from. */
+  readonly previousIndex: number;
+  /** The index the item was dropped at. */
+  readonly currentIndex: number;
+}
+
+/**
+ * Event emitted when an item is transferred between two connected repeaters.
+ *
+ * @typeParam T - The item type.
+ */
+export interface RepeaterTransferEvent<T> {
+  /** The transferred item. */
+  readonly item: T;
+  /** The index in the source repeater. */
+  readonly previousIndex: number;
+  /** The index in the target repeater. */
+  readonly currentIndex: number;
+}
