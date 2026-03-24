@@ -1,6 +1,17 @@
-@for (item of items(); track item; let i = $index) {
-  <ng-container
-    [ngTemplateOutlet]="itemTemplate()"
-    [ngTemplateOutletContext]="buildContext(item, i)"
-  />
+@if (reorderable()) {
+  @for (item of items(); track item; let i = $index) {
+    <div class="ui-repeater-item">
+      <ng-container
+        [ngTemplateOutlet]="itemTemplate()"
+        [ngTemplateOutletContext]="buildContext(item, i)"
+      />
+    </div>
+  }
+} @else {
+  @for (item of items(); track item; let i = $index) {
+    <ng-container
+      [ngTemplateOutlet]="itemTemplate()"
+      [ngTemplateOutletContext]="buildContext(item, i)"
+    />
+  }
 }

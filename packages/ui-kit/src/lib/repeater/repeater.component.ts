@@ -3,8 +3,12 @@ import {
   Component,
   computed,
   contentChild,
+  DestroyRef,
   effect,
+  ElementRef,
+  inject,
   input,
+  output,
   signal,
   TemplateRef,
 } from "@angular/core";
@@ -12,7 +16,12 @@ import { NgTemplateOutlet } from "@angular/common";
 
 import type { IDatasource } from "../table-view/datasources/datasource";
 import { DatasourceAdapter } from "../table-view/datasources/datasource-adapter";
-import type { RepeaterItemContext } from "./repeater.types";
+import type {
+  RepeaterItemContext,
+  RepeaterReorderEvent,
+  RepeaterTransferEvent,
+} from "./repeater.types";
+import { RepeaterDragHandler } from "./repeater-drag-handler";
 
 /**
  * A layout-agnostic repeater that renders a consumer-provided template
@@ -63,6 +72,7 @@ import type { RepeaterItemContext } from "./repeater.types";
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-repeater",
+    "[class.ui-repeater--reorderable]": "reorderable()",
   },
 })
 export class UIRepeater<T = unknown> {
@@ -79,8 +89,28 @@ export class UIRepeater<T = unknown> {
    */
   public readonly limit = input(Infinity);
 
+  /**
+   * Whether items can be reordered via drag-and-drop.
+   * When `true` the host gains `display: block` and pointer-event
+   * drag handling is activated. When `false` (default) the repeater
+   * behaves as before (`display: contents`, no drag overhead).
+   */
+  public readonly reorderable = input(false);
+
+  /**
+   * Other `UIRepeater` instances that this repeater can transfer items to/from.
+   * Pass an array of repeater references to enable cross-list drag-and-drop.
+   */
+  public readonly connectedTo = input<readonly UIRepeater<T>[]>([]);
+
   /** Accessible label for the repeater container. */
   public readonly ariaLabel = input<string | undefined>(undefined);
+
+  /** Emitted when an item is reordered within this repeater. */
+  public readonly reordered = output<RepeaterReorderEvent>();
+
+  /** Emitted on the target repeater when an item is transferred from another repeater. */
+  public readonly transferred = output<RepeaterTransferEvent<T>>();
 
   /** @internal — the projected item template. */
   public readonly itemTemplate =
@@ -97,7 +127,32 @@ export class UIRepeater<T = unknown> {
     () => this.adapter()?.totalItems() ?? 0,
   );
 
+  /** @internal — pointer-event drag handler for reorder / transfer. */
+  public readonly dragHandler: RepeaterDragHandler;
+
+  private readonly elementRef = inject(ElementRef);
+
   public constructor() {
+    // Create the drag handler (always present, enabled reactively)
+    this.dragHandler = new RepeaterDragHandler(
+      this.elementRef.nativeElement,
+      (from, to) => this.handleReorder(from, to),
+      (target, from, to) => this.handleTransfer(target, from, to),
+    );
+    inject(DestroyRef).onDestroy(() => this.dragHandler.destroy());
+
+    // Enable/disable based on reorderable input
+    effect(() => {
+      this.dragHandler.enabled = this.reorderable();
+    });
+
+    // Wire connected handlers
+    effect(() => {
+      this.dragHandler.setConnected(
+        this.connectedTo().map((r) => r.dragHandler),
+      );
+    });
+
     // Rebuild adapter when datasource changes
     effect(() => {
       const ds = this.datasource();
@@ -161,5 +216,36 @@ export class UIRepeater<T = unknown> {
       even: index % 2 === 0,
       odd: index % 2 !== 0,
     };
+  }
+
+  /** @internal — reorder items within this repeater. */
+  private handleReorder(previousIndex: number, currentIndex: number): void {
+    const items = [...this.items()];
+    const [item] = items.splice(previousIndex, 1);
+    items.splice(currentIndex, 0, item);
+    this.items.set(items);
+    this.reordered.emit({ previousIndex, currentIndex });
+  }
+
+  /** @internal — transfer an item from this repeater to a connected one. */
+  private handleTransfer(
+    targetHandler: RepeaterDragHandler,
+    previousIndex: number,
+    currentIndex: number,
+  ): void {
+    const targetRepeater = this.connectedTo().find(
+      (r) => r.dragHandler === targetHandler,
+    );
+    if (!targetRepeater) return;
+
+    const sourceItems = [...this.items()];
+    const [item] = sourceItems.splice(previousIndex, 1);
+    this.items.set(sourceItems);
+
+    const targetItems = [...targetRepeater.items()];
+    targetItems.splice(currentIndex, 0, item);
+    targetRepeater.items.set(targetItems);
+
+    targetRepeater.transferred.emit({ item, previousIndex, currentIndex });
   }
 }
