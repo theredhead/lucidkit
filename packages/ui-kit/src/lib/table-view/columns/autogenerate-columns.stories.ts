@@ -1,5 +1,10 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  signal,
+  viewChild,
+} from "@angular/core";
 
 import type { FilterExpression } from "../../core/types/filter";
 
@@ -7,7 +12,6 @@ import { UITableView } from "../table-view.component";
 import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive";
 import { ArrayDatasource } from "../datasources/array-datasource";
 import { FilterableArrayDatasource } from "../datasources/filterable-array-datasource";
-import { DatasourceAdapter } from "../datasources/datasource-adapter";
 import { UIFilter } from "../../filter/filter.component";
 import { inferFilterFields } from "../../filter/infer-filter-fields";
 import { type FilterFieldDefinition } from "../../filter/filter.types";
@@ -25,8 +29,7 @@ import { type FilterFieldDefinition } from "../../filter/filter.types";
 })
 class DemoAutogenerateComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource([
+    new ArrayDatasource([
         {
           id: 1,
           firstName: "John",
@@ -58,7 +61,6 @@ class DemoAutogenerateComponent {
           email: "charlie@example.com",
         },
       ]),
-    ),
   );
 }
 
@@ -75,8 +77,7 @@ class DemoAutogenerateComponent {
 })
 class DemoAutogenerateCustomComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource([
+    new ArrayDatasource([
         {
           userId: 1,
           userName: "john_doe",
@@ -96,7 +97,6 @@ class DemoAutogenerateCustomComponent {
           createdAt: "2024-03-10",
         },
       ]),
-    ),
   );
 
   public readonly config = signal({
@@ -122,8 +122,7 @@ class DemoAutogenerateCustomComponent {
 })
 class DemoAutogenerateNoHumanizeComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource([
+    new ArrayDatasource([
         {
           id: 1,
           firstName: "John",
@@ -137,7 +136,6 @@ class DemoAutogenerateNoHumanizeComponent {
           email: "jane@example.com",
         },
       ]),
-    ),
   );
 }
 
@@ -340,7 +338,7 @@ function generateServerLogs(count: number) {
 })
 class DemoAutogenerateEmployeesComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(generateEmployees(200))),
+    new ArrayDatasource(generateEmployees(200)),
   );
 }
 
@@ -357,7 +355,7 @@ class DemoAutogenerateEmployeesComponent {
 })
 class DemoAutogenerateProductsComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(generateProducts(500))),
+    new ArrayDatasource(generateProducts(500)),
   );
   public readonly config = signal({
     excludeKeys: ["isDiscontinued"],
@@ -384,7 +382,7 @@ class DemoAutogenerateProductsComponent {
 })
 class DemoAutogenerateLogsComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(generateServerLogs(1000))),
+    new ArrayDatasource(generateServerLogs(1000)),
   );
 }
 
@@ -401,8 +399,7 @@ class DemoAutogenerateLogsComponent {
 })
 class DemoAutogenerateEmployeesCityComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource(
+    new ArrayDatasource(
         generateEmployees(150).map((e, i) => ({
           ...e,
           city: cities[i % cities.length],
@@ -410,7 +407,6 @@ class DemoAutogenerateEmployeesCityComponent {
           extension: 2000 + i,
         })),
       ),
-    ),
   );
   public readonly config = signal({
     excludeKeys: ["employeeId"],
@@ -440,7 +436,7 @@ const employeeFilterFields = inferFilterFields(employeesForFilter[0]);
     />
     <div style="margin-top: 0.75rem">
       <ui-table-view
-        [datasource]="adapter()"
+        [datasource]="datasource"
         uiAutogenerateColumns
       ></ui-table-view>
     </div>
@@ -448,16 +444,16 @@ const employeeFilterFields = inferFilterFields(employeesForFilter[0]);
 })
 class DemoAutogenerateFilteredComponent {
   public readonly fields = employeeFilterFields;
-  private readonly datasource = new FilterableArrayDatasource(
+  public readonly datasource = new FilterableArrayDatasource(
     employeesForFilter,
   );
-  public readonly adapter = signal(new DatasourceAdapter(this.datasource));
+  private readonly table = viewChild.required(UITableView);
 
   public onExpressionChange(
     expression: FilterExpression<Record<string, unknown>>,
   ): void {
     this.datasource.filterBy(expression);
-    this.adapter.set(new DatasourceAdapter(this.datasource));
+    this.table().refreshDatasource();
   }
 }
 
@@ -479,7 +475,7 @@ const productFilterFields: FilterFieldDefinition[] = inferFilterFields(
     />
     <div style="margin-top: 0.75rem">
       <ui-table-view
-        [datasource]="adapter()"
+        [datasource]="datasource"
         [uiAutogenerateColumns]="columnConfig()"
       ></ui-table-view>
     </div>
@@ -498,16 +494,16 @@ class DemoAutogenerateFilteredProductsComponent {
     },
   });
 
-  private readonly datasource = new FilterableArrayDatasource(
+  public readonly datasource = new FilterableArrayDatasource(
     productsForFilter,
   );
-  public readonly adapter = signal(new DatasourceAdapter(this.datasource));
+  private readonly table = viewChild.required(UITableView);
 
   public onExpressionChange(
     expression: FilterExpression<Record<string, unknown>>,
   ): void {
     this.datasource.filterBy(expression);
-    this.adapter.set(new DatasourceAdapter(this.datasource));
+    this.table().refreshDatasource();
   }
 }
 
@@ -595,7 +591,6 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -611,12 +606,10 @@ import {
 })
 export class ExampleComponent {
   readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource([
+    new ArrayDatasource([
         { id: 1, firstName: 'Alice', email: 'alice@example.com' },
         { id: 2, firstName: 'Bob',   email: 'bob@example.com' },
       ]),
-    ),
   );
 }
 
@@ -655,7 +648,6 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -671,7 +663,7 @@ import {
 })
 export class ExampleComponent {
   readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(myData)),
+    new ArrayDatasource(myData),
   );
 
   readonly columnConfig = signal({
@@ -713,12 +705,11 @@ export const AutogenerateNoHumanize: Story = {
 />
 
 // \u2500\u2500 TypeScript \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -727,15 +718,13 @@ import {
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: \`
     <ui-table-view
-      [datasource]="datasource()"
+      [datasource]="datasource"
       [uiAutogenerateColumns]="{ humanizeHeaders: false }"
     />
   \`,
 })
 export class ExampleComponent {
-  readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(myData)),
-  );
+  readonly datasource = new ArrayDatasource(myData);
 }
 
 // \u2500\u2500 SCSS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
@@ -771,12 +760,11 @@ export const Employees200: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -785,22 +773,18 @@ import {
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: \`
     <ui-table-view
-      [datasource]="datasource()"
+      [datasource]="datasource"
       uiAutogenerateColumns
     />
   \`,
 })
 export class ExampleComponent {
-  readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource([
-        { employeeId: 1, firstName: 'Alice', lastName: 'Smith',
-          email: 'alice@acme.com', department: 'Engineering',
-          salary: 95000, startDate: '2021-03-15', status: 'Active' },
-        // … more rows
-      ]),
-    ),
-  );
+  readonly datasource = new ArrayDatasource([
+    { employeeId: 1, firstName: 'Alice', lastName: 'Smith',
+      email: 'alice@acme.com', department: 'Engineering',
+      salary: 95000, startDate: '2021-03-15', status: 'Active' },
+    // … more rows
+  ]);
 }
 
 // ── SCSS ──────────────────────────────────────────────────────
@@ -838,7 +822,6 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -847,15 +830,13 @@ import {
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: \`
     <ui-table-view
-      [datasource]="datasource()"
+      [datasource]="datasource"
       [uiAutogenerateColumns]="columnConfig()"
     />
   \`,
 })
 export class ExampleComponent {
-  readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(products)),
-  );
+  readonly datasource = new ArrayDatasource(products);
 
   readonly columnConfig = signal({
     excludeKeys: ['isDiscontinued'],
@@ -901,12 +882,11 @@ export const ServerLogs1000: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -915,23 +895,19 @@ import {
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: \`
     <ui-table-view
-      [datasource]="datasource()"
+      [datasource]="datasource"
       uiAutogenerateColumns
     />
   \`,
 })
 export class ExampleComponent {
-  readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource([
-        { timestamp: '2026-03-01T08:14:26Z', level: 'INFO',
-          service: 'api-gateway', message: 'Request processed',
-          responseTimeMs: 42, statusCode: 200,
-          requestId: 'req-a1b2c3d4' },
-        // … more rows
-      ]),
-    ),
-  );
+  readonly datasource = new ArrayDatasource([
+    { timestamp: '2026-03-01T08:14:26Z', level: 'INFO',
+      service: 'api-gateway', message: 'Request processed',
+      responseTimeMs: 42, statusCode: 200,
+      requestId: 'req-a1b2c3d4' },
+    // … more rows
+  ]);
 }
 
 // ── SCSS ──────────────────────────────────────────────────────
@@ -972,7 +948,6 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
 @Component({
@@ -981,23 +956,19 @@ import {
   imports: [UITableView, UIAutogenerateColumnsDirective],
   template: \`
     <ui-table-view
-      [datasource]="datasource()"
+      [datasource]="datasource"
       [uiAutogenerateColumns]="columnConfig()"
     />
   \`,
 })
 export class ExampleComponent {
-  readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource([
-        { employeeId: 1, firstName: 'Alice', lastName: 'Smith',
-          email: 'alice@acme.com', department: 'Engineering',
-          salary: 95000, startDate: '2021-03-15', status: 'Active',
-          city: 'New York', floor: 3, extension: 2001 },
-        // … more rows
-      ]),
-    ),
-  );
+  readonly datasource = new ArrayDatasource([
+    { employeeId: 1, firstName: 'Alice', lastName: 'Smith',
+      email: 'alice@acme.com', department: 'Engineering',
+      salary: 95000, startDate: '2021-03-15', status: 'Active',
+      city: 'New York', floor: 3, extension: 2001 },
+    // … more rows
+  ]);
 
   readonly columnConfig = signal({
     excludeKeys: ['employeeId'],
@@ -1043,19 +1014,18 @@ export const FilteredEmployees200: Story = {
 />
 
 <ui-table-view
-  [datasource]="adapter()"
+  [datasource]="datasource"
   uiAutogenerateColumns
 />
 
 // \u2500\u2500 TypeScript \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-import { Component, signal } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 
 import {
   UITableView,
   UIAutogenerateColumnsDirective,
   UIFilter,
   FilterableArrayDatasource,
-  DatasourceAdapter,
   inferFilterFields,
   type FilterExpression,
 } from '@theredhead/ui-kit';
@@ -1071,19 +1041,19 @@ import {
       (expressionChange)="onExpressionChange($event)"
     />
     <ui-table-view
-      [datasource]="adapter()"
+      [datasource]="datasource"
       uiAutogenerateColumns
     />
   \`,
 })
 export class ExampleComponent {
-  private readonly datasource = new FilterableArrayDatasource(myData);
-  readonly adapter = signal(new DatasourceAdapter(this.datasource));
+  private readonly table = viewChild.required(UITableView);
+  readonly datasource = new FilterableArrayDatasource(myData);
   readonly filterFields = inferFilterFields(myData[0]);
 
   onExpressionChange(expression: FilterExpression<Record<string, unknown>>): void {
     this.datasource.filterBy(expression);
-    this.adapter.set(new DatasourceAdapter(this.datasource));
+    this.table().refreshDatasource();
   }
 }
 
@@ -1122,19 +1092,18 @@ export const FilteredProducts500: Story = {
 />
 
 <ui-table-view
-  [datasource]="adapter()"
+  [datasource]="datasource"
   [uiAutogenerateColumns]="columnConfig()"
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { Component, signal } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 
 import {
   UITableView,
   UIAutogenerateColumnsDirective,
   UIFilter,
   FilterableArrayDatasource,
-  DatasourceAdapter,
   inferFilterFields,
   type FilterExpression,
   type FilterFieldDefinition,
@@ -1151,14 +1120,14 @@ import {
       (expressionChange)="onExpressionChange($event)"
     />
     <ui-table-view
-      [datasource]="adapter()"
+      [datasource]="datasource"
       [uiAutogenerateColumns]="columnConfig()"
     />
   \`,
 })
 export class ExampleComponent {
-  private readonly datasource = new FilterableArrayDatasource(products);
-  readonly adapter = signal(new DatasourceAdapter(this.datasource));
+  private readonly table = viewChild.required(UITableView);
+  readonly datasource = new FilterableArrayDatasource(products);
 
   readonly filterFields: FilterFieldDefinition[] =
     inferFilterFields(products[0]).filter(f => f.key !== 'isDiscontinued');
@@ -1174,7 +1143,7 @@ export class ExampleComponent {
 
   onExpressionChange(expression: FilterExpression<Record<string, unknown>>): void {
     this.datasource.filterBy(expression);
-    this.adapter.set(new DatasourceAdapter(this.datasource));
+    this.table().refreshDatasource();
   }
 }
 

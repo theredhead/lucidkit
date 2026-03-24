@@ -15,6 +15,5 @@ export * from "./columns/autogenerate-columns.directive";
 export * from "./datasources/datasource";
 export * from "./datasources/array-datasource";
 export * from "./datasources/filterable-array-datasource";
-export * from "./datasources/datasource-adapter";
 export * from "./datasources/rest-datasource";
 export * from "./datasources/jsonplaceholder-datasource";

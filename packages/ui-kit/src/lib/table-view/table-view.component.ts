@@ -12,9 +12,11 @@ import {
   OnInit,
   output,
   signal,
+  untracked,
 } from "@angular/core";
 
 import {
+  type IDatasource,
   type Predicate,
   isFilterableDatasource,
   isSortableDatasource,
@@ -59,11 +61,27 @@ export class UITableView implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
 
   /** Whether the table view is disabled. */
-   
+
   disabled = input<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  datasource = input.required<DatasourceAdapter<any>>();
+  datasource = input.required<IDatasource<any>>();
+
+  /** Bumped to force the adapter computed to rebuild. @internal */
+  private readonly _adapterVersion = signal(0);
+
+  /**
+   * Internal adapter wrapping the raw datasource for signal-based
+   * pagination. Rebuilt whenever the `datasource` input changes or
+   * {@link refreshDatasource} is called.
+   * @internal
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected readonly adapter = computed<DatasourceAdapter<any>>(() => {
+    this._adapterVersion();
+    const ds = this.datasource();
+    return untracked(() => new DatasourceAdapter(ds));
+  });
   showBuiltInPaginator = input<boolean>(true);
   caption = input<string>("");
   showRowIndexIndicator = input<boolean>(false);
@@ -172,7 +190,7 @@ export class UITableView implements OnInit, AfterViewInit {
     this.caption().trim() ? this.captionId : null,
   );
   protected readonly rowIndexOffset = computed(
-    () => this.datasource().pageIndex() * this.datasource().pageSize(),
+    () => this.adapter().pageIndex() * this.adapter().pageSize(),
   );
 
   /** Column widths as a record (key → px). Used by both header and body. */
@@ -230,7 +248,7 @@ export class UITableView implements OnInit, AfterViewInit {
    * in-component.
    */
   protected readonly supportsSorting = computed(() => {
-    return isSortableDatasource(this.datasource().datasource);
+    return isSortableDatasource(this.datasource());
   });
 
   /**
@@ -239,7 +257,7 @@ export class UITableView implements OnInit, AfterViewInit {
    * is not available.
    */
   protected readonly supportsFiltering = computed(() => {
-    return isFilterableDatasource(this.datasource().datasource);
+    return isFilterableDatasource(this.datasource());
   });
 
   protected readonly sortedRows = computed(() => {
@@ -265,7 +283,7 @@ export class UITableView implements OnInit, AfterViewInit {
 
   constructor() {
     effect(() => {
-      const items = this.datasource().visibleWindow();
+      const items = this.adapter().visibleWindow();
       const gen = ++this.resolveGeneration;
       const rows: (unknown | null)[] = new Array(items.length).fill(null);
 
@@ -314,10 +332,11 @@ export class UITableView implements OnInit, AfterViewInit {
     // Apply filter predicate when it changes (if datasource supports filtering)
     effect(() => {
       if (this.supportsFiltering()) {
-        const datasource = this.datasource().datasource;
+        const ds = this.datasource();
         const predicate = this.filterPredicate();
-        if (isFilterableDatasource(datasource)) {
-          datasource.filterBy(predicate);
+        if (isFilterableDatasource(ds)) {
+          ds.filterBy(predicate);
+          untracked(() => this.refreshDatasource());
         }
       }
     });
@@ -455,20 +474,31 @@ export class UITableView implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Force the table to rebuild its internal adapter and re-read data
+   * from the current datasource. Call this after mutating the datasource
+   * externally (e.g. after calling `filterBy` on a
+   * `FilterableArrayDatasource`).
+   */
+  public refreshDatasource(): void {
+    this._adapterVersion.update((v) => v + 1);
+  }
+
   protected onSortChange(state: SortState | null): void {
     this.sortState.set(state);
 
     // If the datasource supports sorting, delegate to it
     if (this.supportsSorting()) {
-      const datasource = this.datasource().datasource;
-      if (isSortableDatasource(datasource)) {
-        datasource.sortBy(toComparator(state));
+      const ds = this.datasource();
+      if (isSortableDatasource(ds)) {
+        ds.sortBy(toComparator(state));
+        this.refreshDatasource();
       }
     }
   }
 
   protected onPageChange(page: number): void {
-    this.datasource().pageIndex.set(page);
+    this.adapter().pageIndex.set(page);
   }
 
   protected onColumnResize(event: ColumnResizeEvent): void {

@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { UITableView } from "../table-view.component";
 import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive";
 import { Component, signal } from "@angular/core";
-import { ArrayDatasource } from "@theredhead/foundation";
-import { DatasourceAdapter } from "../datasources/datasource-adapter";
+import { ArrayDatasource, type IDatasource } from "@theredhead/foundation";
 
 // ── Test data ───────────────────────────────────────────────────────
 
@@ -37,8 +36,8 @@ const camelCaseData = [
 })
 class BasicTestComponent {
   public readonly datasource = signal<
-    DatasourceAdapter<Record<string, unknown>>
-  >(new DatasourceAdapter(new ArrayDatasource(testData)));
+    IDatasource<Record<string, unknown>>
+  >(new ArrayDatasource(testData));
 }
 
 @Component({
@@ -54,7 +53,7 @@ class BasicTestComponent {
 })
 class ConfigTestComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(camelCaseData)),
+    new ArrayDatasource(camelCaseData),
   );
   public readonly config = signal<{
     humanizeHeaders?: boolean;
@@ -76,9 +75,7 @@ class ConfigTestComponent {
 })
 class EmptyTestComponent {
   public readonly datasource = signal(
-    new DatasourceAdapter(
-      new ArrayDatasource<{ id: number; name: string }>([]),
-    ),
+    new ArrayDatasource<{ id: number; name: string }>([]),
   );
 }
 
@@ -353,7 +350,7 @@ describe("UIAutogenerateColumnsDirective", () => {
         { age: 25, city: "LA" },
       ];
       component.datasource.set(
-        new DatasourceAdapter(new ArrayDatasource(newData)),
+        new ArrayDatasource(newData),
       );
       fixture.detectChanges();
       await fixture.whenStable();
@@ -372,7 +369,7 @@ describe("UIAutogenerateColumnsDirective", () => {
 
       // Switch to empty datasource
       component.datasource.set(
-        new DatasourceAdapter(new ArrayDatasource<Record<string, unknown>>([])),
+        new ArrayDatasource<Record<string, unknown>>([]),
       );
       fixture.detectChanges();
       await fixture.whenStable();

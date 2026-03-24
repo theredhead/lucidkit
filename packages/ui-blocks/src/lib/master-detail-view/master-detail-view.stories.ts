@@ -3,7 +3,6 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import {
   ArrayTreeDatasource,
-  DatasourceAdapter,
   FilterableArrayDatasource,
   UIAvatar,
   UIFilter,
@@ -176,7 +175,7 @@ const EMPLOYEES: Employee[] = [
   ],
   template: `
     <ui-master-detail-view
-      [data]="employees"
+      [datasource]="adapter"
       title="Employees"
       placeholder="Select an employee to view their profile"
       (selectedChange)="selected.set($event)"
@@ -205,7 +204,7 @@ const EMPLOYEES: Employee[] = [
   `,
 })
 class DefaultDemo {
-  protected readonly employees = EMPLOYEES;
+  protected readonly adapter = new FilterableArrayDatasource(EMPLOYEES);
   protected readonly selected = signal<Employee | undefined>(undefined);
 }
 
@@ -229,7 +228,7 @@ class DefaultDemo {
   ],
   template: `
     <ui-master-detail-view
-      [data]="employees"
+      [datasource]="adapter"
       title="Employees"
       [showFilter]="true"
     >
@@ -266,7 +265,7 @@ class DefaultDemo {
   `,
 })
 class FilterDemo {
-  protected readonly employees = EMPLOYEES;
+  protected readonly adapter = new FilterableArrayDatasource(EMPLOYEES);
 }
 
 // ── Demo: Filter Always Expanded ─────────────────────────────────────
@@ -289,7 +288,7 @@ class FilterDemo {
   ],
   template: `
     <ui-master-detail-view
-      [data]="employees"
+      [datasource]="adapter"
       title="Employees"
       [showFilter]="true"
       [filterExpanded]="true"
@@ -328,7 +327,7 @@ class FilterDemo {
   `,
 })
 class FilterExpandedDemo {
-  protected readonly employees = EMPLOYEES;
+  protected readonly adapter = new FilterableArrayDatasource(EMPLOYEES);
 }
 
 // ── Demo: Filter Starts Collapsed ───────────────────────────────────
@@ -351,7 +350,7 @@ class FilterExpandedDemo {
   ],
   template: `
     <ui-master-detail-view
-      [data]="employees"
+      [datasource]="adapter"
       title="Employees"
       [showFilter]="true"
       [filterExpanded]="false"
@@ -390,7 +389,7 @@ class FilterExpandedDemo {
   `,
 })
 class FilterCollapsedDemo {
-  protected readonly employees = EMPLOYEES;
+  protected readonly adapter = new FilterableArrayDatasource(EMPLOYEES);
 }
 
 // ── Demo: With Custom Filter Template ────────────────────────────────
@@ -458,12 +457,10 @@ class CustomFilterDemo {
   });
 
   private readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
-  protected readonly adapter = new DatasourceAdapter(this.datasource, 100);
+  protected readonly adapter = this.datasource;
 
   protected onExpression(expression: FilterExpression<Employee>): void {
     this.datasource.filterBy(expression);
-    this.adapter.pageIndex.set(0);
-    this.adapter.totalItems.set(this.datasource.getNumberOfItems() as number);
   }
 }
 
@@ -637,8 +634,7 @@ const meta: Meta = {
           "",
           "| Input | Type | Default | Description |",
           "|-------|------|---------|-------------|",
-          "| `data` | `T[]` | — | Array of items for the built-in table datasource |",
-          "| `datasource` | `DatasourceAdapter<T> \\| ITreeDatasource<T>` | — | External datasource (table or tree mode) |",
+          "| `datasource` | `IDatasource<T> \\| ITreeDatasource<T>` | — | Datasource powering the list (table or tree mode) |",
           "| `treeDisplayWith` | `(data: T) => string` | — | Display function for tree nodes |",
           "| `title` | `string` | — | Heading above the list panel |",
           "| `showFilter` | `boolean` | `false` | Show the collapsible filter bar |",
@@ -681,7 +677,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<ui-master-detail-view [data]="employees" title="Employees">
+        code: `<ui-master-detail-view [datasource]="adapter" title="Employees">
   <ui-text-column key="name" headerText="Name" [sortable]="true" />
   <ui-text-column key="role" headerText="Role" [sortable]="true" />
 
@@ -689,7 +685,28 @@ export const Default: Story = {
     <h3>{{ person.name }}</h3>
     <p>{{ person.email }}</p>
   </ng-template>
-</ui-master-detail-view>`,
+</ui-master-detail-view>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { FilterableArrayDatasource, UITextColumn } from '@theredhead/ui-kit';
+import { UIMasterDetailView } from '@theredhead/ui-blocks';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIMasterDetailView, UITextColumn],
+  template: \`<ui-master-detail-view [datasource]="datasource" title="Employees">
+    <ui-text-column key="name" headerText="Name" [sortable]="true" />
+    <ng-template #detail let-person><h3>{{ person.name }}</h3></ng-template>
+  </ui-master-detail-view>\`,
+})
+export class ExampleComponent {
+  readonly datasource = new FilterableArrayDatasource([
+    { name: 'Alice', email: 'alice@example.com' },
+    { name: 'Bob', email: 'bob@example.com' },
+  ]);
+}`,
         language: "html",
       },
     },
@@ -706,7 +723,7 @@ export const WithFilter: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<ui-master-detail-view [data]="employees" title="Employees" [showFilter]="true">
+        code: `<ui-master-detail-view [datasource]="adapter" title="Employees" [showFilter]="true">
   <ui-template-column key="name" headerText="Employee">
     <ng-template let-row>
       <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
@@ -717,7 +734,24 @@ export const WithFilter: Story = {
   <ng-template #detail let-person>
     <h3>{{ person.name }}</h3>
   </ng-template>
-</ui-master-detail-view>`,
+</ui-master-detail-view>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { FilterableArrayDatasource, UITemplateColumn, UIAvatar } from '@theredhead/ui-kit';
+import { UIMasterDetailView } from '@theredhead/ui-blocks';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIMasterDetailView, UITemplateColumn, UIAvatar],
+  template: \`<ui-master-detail-view [datasource]="datasource" title="Employees" [showFilter]="true">
+    ...
+  </ui-master-detail-view>\`,
+})
+export class ExampleComponent {
+  readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
+}`,
         language: "html",
       },
     },
@@ -735,7 +769,7 @@ export const FilterModeLockedOpen: Story = {
     docs: {
       source: {
         code: `<ui-master-detail-view
-  [data]="employees"
+  [datasource]="adapter"
   title="Employees"
   [showFilter]="true"
   [filterExpanded]="true"
@@ -761,7 +795,7 @@ export const FilterModeLockedClosed: Story = {
     docs: {
       source: {
         code: `<ui-master-detail-view
-  [data]="employees"
+  [datasource]="adapter"
   title="Employees"
   [showFilter]="true"
   [filterExpanded]="false"

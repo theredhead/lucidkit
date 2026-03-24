@@ -38,7 +38,7 @@ import { UIMasterDetailView } from "@theredhead/ui-blocks";
   `,
 })
 export class UsersComponent {
-  adapter = new DatasourceAdapter(new ArrayDatasource(this.users));
+  datasource = new ArrayDatasource(this.users);
 
   onSelect(item: unknown) {
     console.log("selected", item);
@@ -50,7 +50,7 @@ export class UsersComponent {
 
 | Input                   | Type                                         | Default            | Description                            |
 | ----------------------- | -------------------------------------------- | ------------------ | -------------------------------------- |
-| `datasource`            | `DatasourceAdapter<T> \| ITreeDatasource<T>` | —                  | Data source (flat table or tree mode)  |
+| `datasource`            | `IDatasource<T> \| ITreeDatasource<T>` | —                  | Data source (flat table or tree mode)  |
 | `data`                  | `readonly T[]`                               | `[]`               | Convenience raw data array             |
 | `masterTitle`           | `string`                                     | `'Items'`          | Title shown above the master pane      |
 | `detailPlaceholderText` | `string`                                     | `'Select an item'` | Placeholder when nothing is selected   |
