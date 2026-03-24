@@ -326,15 +326,13 @@ export class UIMasterDetailView<T = unknown> {
    * when the input is a tree datasource.
    * @internal
    */
-  protected readonly resolvedTableDatasource = computed<IDatasource<T>>(
-    () => {
-      const explicit = this.datasource();
-      if (explicit && !isTreeDatasource(explicit)) {
-        return explicit;
-      }
-      return new FilterableArrayDatasource<T>([]);
-    },
-  );
+  protected readonly resolvedTableDatasource = computed<IDatasource<T>>(() => {
+    const explicit = this.datasource();
+    if (explicit && !isTreeDatasource(explicit)) {
+      return explicit;
+    }
+    return new FilterableArrayDatasource<T>([]);
+  });
 
   /**
    * Whether the filter section should be displayed.
