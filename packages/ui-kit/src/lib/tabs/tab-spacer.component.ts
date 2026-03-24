@@ -20,9 +20,7 @@ import { TAB_HEADER_ITEM } from "./tab-header-item";
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: "",
-  providers: [
-    { provide: TAB_HEADER_ITEM, useExisting: UITabSpacer },
-  ],
+  providers: [{ provide: TAB_HEADER_ITEM, useExisting: UITabSpacer }],
   host: {
     class: "ui-tab-spacer",
   },

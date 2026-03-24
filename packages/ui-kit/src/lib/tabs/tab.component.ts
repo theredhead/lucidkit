@@ -38,9 +38,7 @@ import { TAB_HEADER_ITEM } from "./tab-header-item";
   standalone: true,
   templateUrl: "./tab.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: TAB_HEADER_ITEM, useExisting: UITab },
-  ],
+  providers: [{ provide: TAB_HEADER_ITEM, useExisting: UITab }],
 })
 export class UITab {
   /** @internal — discriminant for the tab header item union. */

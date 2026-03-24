@@ -411,7 +411,7 @@ describe("UITabGroup alignment", () => {
     fixture.detectChanges();
   });
 
-  it('should default to start alignment', () => {
+  it("should default to start alignment", () => {
     const el = fixture.nativeElement.querySelector("ui-tab-group");
     expect(el.classList).toContain("ui-tab-group--align-start");
   });
@@ -419,9 +419,7 @@ describe("UITabGroup alignment", () => {
   for (const alignment of ["start", "center", "end"] as TabAlignment[]) {
     it(`should apply ui-tab-group--align-${alignment} host class`, () => {
       fixture.componentInstance.align = alignment;
-      fixture.componentRef.injector
-        .get(ChangeDetectorRef)
-        .markForCheck();
+      fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
       fixture.detectChanges();
       const el = fixture.nativeElement.querySelector("ui-tab-group");
       expect(el.classList).toContain(`ui-tab-group--align-${alignment}`);

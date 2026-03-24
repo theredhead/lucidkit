@@ -157,7 +157,9 @@ class TabsPanelStyleDemo {
     <div style="display: flex; flex-direction: column; gap: 32px">
       @for (align of alignments; track align) {
         <div>
-          <h4 style="margin: 0 0 8px; color: inherit">tabAlign="{{ align }}"</h4>
+          <h4 style="margin: 0 0 8px; color: inherit">
+            tabAlign="{{ align }}"
+          </h4>
           <ui-tab-group [tabAlign]="align">
             <ui-tab label="Alpha">
               <div style="padding: 0.5rem; font-size: 0.88rem">Alpha panel</div>
@@ -191,10 +193,14 @@ class TabsAlignmentDemo {
         <h4 style="margin: 0 0 8px; color: inherit">Separator between tabs</h4>
         <ui-tab-group>
           <ui-tab label="File">
-            <div style="padding: 0.5rem; font-size: 0.88rem">File operations</div>
+            <div style="padding: 0.5rem; font-size: 0.88rem">
+              File operations
+            </div>
           </ui-tab>
           <ui-tab label="Edit">
-            <div style="padding: 0.5rem; font-size: 0.88rem">Edit operations</div>
+            <div style="padding: 0.5rem; font-size: 0.88rem">
+              Edit operations
+            </div>
           </ui-tab>
           <ui-tab-separator />
           <ui-tab label="View">
@@ -206,22 +212,30 @@ class TabsAlignmentDemo {
         </ui-tab-group>
       </div>
       <div>
-        <h4 style="margin: 0 0 8px; color: inherit">Spacer pushing tabs apart</h4>
+        <h4 style="margin: 0 0 8px; color: inherit">
+          Spacer pushing tabs apart
+        </h4>
         <ui-tab-group>
           <ui-tab label="Main">
             <div style="padding: 0.5rem; font-size: 0.88rem">Main content</div>
           </ui-tab>
           <ui-tab label="Dashboard">
-            <div style="padding: 0.5rem; font-size: 0.88rem">Dashboard view</div>
+            <div style="padding: 0.5rem; font-size: 0.88rem">
+              Dashboard view
+            </div>
           </ui-tab>
           <ui-tab-spacer />
           <ui-tab label="Settings">
-            <div style="padding: 0.5rem; font-size: 0.88rem">Settings pushed to the right</div>
+            <div style="padding: 0.5rem; font-size: 0.88rem">
+              Settings pushed to the right
+            </div>
           </ui-tab>
         </ui-tab-group>
       </div>
       <div>
-        <h4 style="margin: 0 0 8px; color: inherit">Combined: separator + spacer</h4>
+        <h4 style="margin: 0 0 8px; color: inherit">
+          Combined: separator + spacer
+        </h4>
         <ui-tab-group>
           <ui-tab label="Alpha">
             <div style="padding: 0.5rem; font-size: 0.88rem">Alpha content</div>
@@ -232,7 +246,9 @@ class TabsAlignmentDemo {
           </ui-tab>
           <ui-tab-spacer />
           <ui-tab label="Omega">
-            <div style="padding: 0.5rem; font-size: 0.88rem">Omega pushed to the end</div>
+            <div style="padding: 0.5rem; font-size: 0.88rem">
+              Omega pushed to the end
+            </div>
           </ui-tab>
         </ui-tab-group>
       </div>
@@ -240,6 +256,228 @@ class TabsAlignmentDemo {
   `,
 })
 class TabsSeparatorSpacerDemo {}
+
+// ── IDE-style toolbar tabs demo ──────────────────────────────────────
+
+@Component({
+  selector: "ui-tabs-ide-toolbar-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator, UITabSpacer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <ui-tab-group panelStyle="flat">
+      <ui-tab label="main.ts">
+        <div
+          style="font-family: monospace; font-size: 0.82rem; line-height: 1.7; padding: 0.75rem 0; white-space: pre"
+        >
+          export function bootstrap() &lbrace; const app = createApp();
+          app.listen(3000); console.log('Server started'); &rbrace;
+        </div>
+      </ui-tab>
+      <ui-tab label="app.module.ts">
+        <div
+          style="font-family: monospace; font-size: 0.82rem; line-height: 1.7; padding: 0.75rem 0; white-space: pre"
+        >
+          &#64;NgModule(&lbrace; declarations: [], imports: [CommonModule],
+          &rbrace;) export class AppModule &lbrace;&rbrace;
+        </div>
+      </ui-tab>
+      <ui-tab-separator />
+      <ui-tab label="styles.scss">
+        <div
+          style="font-family: monospace; font-size: 0.82rem; line-height: 1.7; padding: 0.75rem 0; white-space: pre"
+        >
+          :root &lbrace; --primary: #3b82f6; --surface: #ffffff; &rbrace;
+        </div>
+      </ui-tab>
+      <ui-tab-spacer />
+      <ui-tab label="README.md">
+        <div style="font-size: 0.88rem; padding: 0.75rem 0">
+          <strong>Project README</strong> — documentation and setup
+          instructions.
+        </div>
+      </ui-tab>
+    </ui-tab-group>
+  `,
+})
+class TabsIdeToolbarDemo {}
+
+// ── Centered nav with actions demo ───────────────────────────────────
+
+@Component({
+  selector: "ui-tabs-centered-nav-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSpacer, UITabSeparator],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 32px">
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">
+          Centered navigation with action pushed right
+        </h4>
+        <ui-tab-group tabAlign="start">
+          <ui-tab label="Home">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              Welcome to the dashboard. Select a section to get started.
+            </div>
+          </ui-tab>
+          <ui-tab label="Projects">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              3 active projects, 12 completed this quarter.
+            </div>
+          </ui-tab>
+          <ui-tab label="Team">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              8 members across 2 time zones.
+            </div>
+          </ui-tab>
+          <ui-tab-spacer />
+          <ui-tab label="My Account">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              Profile settings, notifications, and security preferences.
+            </div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">
+          Grouped sections with multiple separators
+        </h4>
+        <ui-tab-group panelStyle="outline">
+          <ui-tab label="All">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              Showing all 142 items across every category.
+            </div>
+          </ui-tab>
+          <ui-tab-separator />
+          <ui-tab label="Active">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              87 active items in progress right now.
+            </div>
+          </ui-tab>
+          <ui-tab label="Archived">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              55 items archived this month.
+            </div>
+          </ui-tab>
+          <ui-tab-separator />
+          <ui-tab label="Drafts">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              12 unpublished drafts waiting for review.
+            </div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+    </div>
+  `,
+})
+class TabsCenteredNavDemo {}
+
+// ── Kitchen sink: icons + spacer + separator + alignment ─────────────
+
+@Component({
+  selector: "ui-tabs-kitchen-sink-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator, UITabSpacer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 32px">
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">
+          End-aligned with icons and spacer
+        </h4>
+        <ui-tab-group tabAlign="end" panelStyle="outline">
+          <ui-tab [icon]="icons.inbox" label="Inbox">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              <strong>23 unread</strong> messages across 4 threads.
+            </div>
+          </ui-tab>
+          <ui-tab [icon]="icons.send" label="Sent">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              12 messages sent today.
+            </div>
+          </ui-tab>
+          <ui-tab-separator />
+          <ui-tab [icon]="icons.archive" label="Archive">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              1,847 archived conversations since January.
+            </div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">
+          Primary nav + icon-only actions (right-pushed)
+        </h4>
+        <ui-tab-group panelStyle="flat">
+          <ui-tab label="Overview">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              System overview with live metrics and alerts.
+            </div>
+          </ui-tab>
+          <ui-tab label="Logs">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              Streaming application logs from all services.
+            </div>
+          </ui-tab>
+          <ui-tab label="Alerts">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              3 active alerts requiring attention.
+            </div>
+          </ui-tab>
+          <ui-tab-spacer />
+          <ui-tab [icon]="icons.settings" ariaLabel="Settings">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              Configure monitoring thresholds and notification channels.
+            </div>
+          </ui-tab>
+          <ui-tab [icon]="icons.help" ariaLabel="Help">
+            <div style="padding: 0.75rem 0; font-size: 0.88rem">
+              Documentation, guides, and support resources.
+            </div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">
+          Bottom tabs with centered alignment + separator
+        </h4>
+        <ui-tab-group
+          tabPosition="bottom"
+          tabAlign="center"
+          style="min-height: 140px"
+        >
+          <ui-tab [icon]="icons.home" label="Home">
+            <div style="font-size: 0.88rem">Home screen content.</div>
+          </ui-tab>
+          <ui-tab [icon]="icons.search" label="Explore">
+            <div style="font-size: 0.88rem">Discover trending content.</div>
+          </ui-tab>
+          <ui-tab-separator />
+          <ui-tab [icon]="icons.bell" label="Alerts">
+            <div style="font-size: 0.88rem">3 new notifications.</div>
+          </ui-tab>
+          <ui-tab [icon]="icons.user" label="Profile">
+            <div style="font-size: 0.88rem">Your profile and preferences.</div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+    </div>
+  `,
+})
+class TabsKitchenSinkDemo {
+  protected readonly icons = {
+    inbox: UIIcons.Lucide.Mail.Inbox,
+    send: UIIcons.Lucide.Mail.Send,
+    archive: UIIcons.Lucide.Mail.Archive,
+    settings: UIIcons.Lucide.Account.Settings,
+    help: UIIcons.Lucide.Accessibility.BadgeQuestionMark,
+    home: UIIcons.Lucide.Buildings.House,
+    search: UIIcons.Lucide.Social.Search,
+    bell: UIIcons.Lucide.Account.Bell,
+    user: UIIcons.Lucide.Account.User,
+  } as const;
+}
 
 const meta: Meta<UITabGroup> = {
   title: "@theredhead/UI Kit/Tabs",
@@ -265,6 +503,9 @@ const meta: Meta<UITabGroup> = {
         TabsPanelStyleDemo,
         TabsAlignmentDemo,
         TabsSeparatorSpacerDemo,
+        TabsIdeToolbarDemo,
+        TabsCenteredNavDemo,
+        TabsKitchenSinkDemo,
       ],
     }),
   ],
@@ -928,6 +1169,200 @@ export class ExampleComponent {}
 
 // ── SCSS ──
 /* No custom styles needed — separator and spacer are styled automatically. */
+`,
+      },
+    },
+  },
+};
+
+// ── IDE Toolbar story ────────────────────────────────────────────────
+
+/**
+ * Mimics an IDE-style file tabbar: related files are grouped with a
+ * separator, and an outlier tab is pushed to the far end via a spacer.
+ */
+export const IdeToolbar: Story = {
+  render: () => ({
+    template: `<ui-tabs-ide-toolbar-demo />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A code-editor-style tab bar. The separator visually groups " +
+          "TypeScript sources apart from stylesheets, while the spacer " +
+          "pushes the README tab to the right edge.",
+      },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-tab-group panelStyle="flat">
+  <ui-tab label="main.ts">TypeScript entry point</ui-tab>
+  <ui-tab label="app.module.ts">Angular module</ui-tab>
+  <ui-tab-separator />
+  <ui-tab label="styles.scss">Global styles</ui-tab>
+  <ui-tab-spacer />
+  <ui-tab label="README.md">Project docs</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator, UITabSpacer],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
+};
+
+// ── App Navigation story ─────────────────────────────────────────────
+
+/**
+ * Real-world application navigation patterns combining spacer, separator,
+ * and multiple visual groupings.
+ */
+export const AppNavigation: Story = {
+  render: () => ({
+    template: `<ui-tabs-centered-nav-demo />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Two navigation patterns: (1) primary nav with a user account " +
+          "tab pushed right via spacer, and (2) filter tabs using " +
+          "separators to create visual groupings.",
+      },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- Nav with spacer — account tab pushed right -->
+<ui-tab-group>
+  <ui-tab label="Home">Home content</ui-tab>
+  <ui-tab label="Projects">Projects list</ui-tab>
+  <ui-tab label="Team">Team directory</ui-tab>
+  <ui-tab-spacer />
+  <ui-tab label="My Account">Account settings</ui-tab>
+</ui-tab-group>
+
+<!-- Filter tabs with separators -->
+<ui-tab-group panelStyle="outline">
+  <ui-tab label="All">All items</ui-tab>
+  <ui-tab-separator />
+  <ui-tab label="Active">Active items</ui-tab>
+  <ui-tab label="Archived">Archived items</ui-tab>
+  <ui-tab-separator />
+  <ui-tab label="Drafts">Draft items</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator, UITabSpacer],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
+};
+
+// ── Kitchen Sink story ───────────────────────────────────────────────
+
+/**
+ * Comprehensive demo combining icons, alignment, spacers, separators,
+ * tab positions, and panel styles — showcasing how all features compose.
+ */
+export const KitchenSink: Story = {
+  render: () => ({
+    template: `<ui-tabs-kitchen-sink-demo />`,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Three examples showcasing feature composition:\n" +
+          "1. **End-aligned email client** — icons + separator + end alignment\n" +
+          "2. **Monitoring dashboard** — labelled nav + spacer + icon-only action tabs\n" +
+          "3. **Mobile-style bottom bar** — bottom position + center alignment + separator",
+      },
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- End-aligned mail tabs with icons -->
+<ui-tab-group tabAlign="end" panelStyle="outline">
+  <ui-tab [icon]="icons.inbox" label="Inbox">Messages</ui-tab>
+  <ui-tab [icon]="icons.send" label="Sent">Sent mail</ui-tab>
+  <ui-tab-separator />
+  <ui-tab [icon]="icons.archive" label="Archive">Archived</ui-tab>
+</ui-tab-group>
+
+<!-- Dashboard with icon-only actions pushed right -->
+<ui-tab-group panelStyle="flat">
+  <ui-tab label="Overview">System metrics</ui-tab>
+  <ui-tab label="Logs">App logs</ui-tab>
+  <ui-tab label="Alerts">Active alerts</ui-tab>
+  <ui-tab-spacer />
+  <ui-tab [icon]="icons.settings" ariaLabel="Settings">Config</ui-tab>
+  <ui-tab [icon]="icons.help" ariaLabel="Help">Docs</ui-tab>
+</ui-tab-group>
+
+<!-- Bottom bar with centered alignment -->
+<ui-tab-group tabPosition="bottom" tabAlign="center">
+  <ui-tab [icon]="icons.home" label="Home">Home</ui-tab>
+  <ui-tab [icon]="icons.search" label="Explore">Explore</ui-tab>
+  <ui-tab-separator />
+  <ui-tab [icon]="icons.bell" label="Alerts">Notifications</ui-tab>
+  <ui-tab [icon]="icons.user" label="Profile">Profile</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer, UIIcons } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator, UITabSpacer],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {
+  protected readonly icons = {
+    inbox: UIIcons.Lucide.Mail.Inbox,
+    send: UIIcons.Lucide.Mail.Send,
+    archive: UIIcons.Lucide.Mail.Archive,
+    settings: UIIcons.Lucide.Account.Settings,
+    help: UIIcons.Lucide.Accessibility.BadgeQuestionMark,
+    home: UIIcons.Lucide.Buildings.House,
+    search: UIIcons.Lucide.Social.Search,
+    bell: UIIcons.Lucide.Account.Bell,
+    user: UIIcons.Lucide.Account.User,
+  } as const;
+}
+
+// ── SCSS ──
+/* No custom styles needed — all features compose through inputs. */
 `,
       },
     },
