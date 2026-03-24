@@ -8,3 +8,6 @@ export {
   provideTabDefaults,
 } from "./tab-group.component";
 export { UITab } from "./tab.component";
+export { UITabSeparator } from "./tab-separator.component";
+export { UITabSpacer } from "./tab-spacer.component";
+export { type TabAlignment } from "./tab-header-item";

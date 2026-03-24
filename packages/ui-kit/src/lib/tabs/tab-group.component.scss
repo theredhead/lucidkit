@@ -27,6 +27,35 @@
   gap: 0;
 }
 
+// ── Tab alignment ────────────────────────────────────────────────────
+
+:host(.ui-tab-group--align-start) .header {
+  justify-content: flex-start;
+}
+
+:host(.ui-tab-group--align-center) .header {
+  justify-content: center;
+}
+
+:host(.ui-tab-group--align-end) .header {
+  justify-content: flex-end;
+}
+
+// ── Header separator (fixed gap) ─────────────────────────────────────
+
+.header-separator {
+  width: 1px;
+  align-self: stretch;
+  margin: 0.375rem 0.5rem;
+  background: var(--ui-border);
+}
+
+// ── Header spacer (flexible gap) ─────────────────────────────────────
+
+.header-spacer {
+  flex: 1;
+}
+
 // ── Tab button ───────────────────────────────────────────────────────
 
 .tab {

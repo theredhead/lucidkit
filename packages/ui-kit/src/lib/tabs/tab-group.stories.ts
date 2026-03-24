@@ -6,6 +6,9 @@ import { UITabGroup } from "./tab-group.component";
 import type { TabPosition } from "./tab-group.component";
 import type { TabPanelStyle } from "./tab-group.component";
 import { UITab } from "./tab.component";
+import { UITabSeparator } from "./tab-separator.component";
+import { UITabSpacer } from "./tab-spacer.component";
+import type { TabAlignment } from "./tab-header-item";
 import { UIIcons } from "../icon/lucide-icons.generated";
 
 // ── Gallery demo ─────────────────────────────────────────────────────
@@ -143,6 +146,101 @@ class TabsPanelStyleDemo {
   protected readonly styles: TabPanelStyle[] = ["raised", "outline", "flat"];
 }
 
+// ── Alignment gallery demo ───────────────────────────────────────────
+
+@Component({
+  selector: "ui-tabs-alignment-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 32px">
+      @for (align of alignments; track align) {
+        <div>
+          <h4 style="margin: 0 0 8px; color: inherit">tabAlign="{{ align }}"</h4>
+          <ui-tab-group [tabAlign]="align">
+            <ui-tab label="Alpha">
+              <div style="padding: 0.5rem; font-size: 0.88rem">Alpha panel</div>
+            </ui-tab>
+            <ui-tab label="Beta">
+              <div style="padding: 0.5rem; font-size: 0.88rem">Beta panel</div>
+            </ui-tab>
+            <ui-tab label="Gamma">
+              <div style="padding: 0.5rem; font-size: 0.88rem">Gamma panel</div>
+            </ui-tab>
+          </ui-tab-group>
+        </div>
+      }
+    </div>
+  `,
+})
+class TabsAlignmentDemo {
+  protected readonly alignments: TabAlignment[] = ["start", "center", "end"];
+}
+
+// ── Separator / Spacer demo ──────────────────────────────────────────
+
+@Component({
+  selector: "ui-tabs-separator-spacer-demo",
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator, UITabSpacer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div style="display: flex; flex-direction: column; gap: 32px">
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">Separator between tabs</h4>
+        <ui-tab-group>
+          <ui-tab label="File">
+            <div style="padding: 0.5rem; font-size: 0.88rem">File operations</div>
+          </ui-tab>
+          <ui-tab label="Edit">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Edit operations</div>
+          </ui-tab>
+          <ui-tab-separator />
+          <ui-tab label="View">
+            <div style="padding: 0.5rem; font-size: 0.88rem">View settings</div>
+          </ui-tab>
+          <ui-tab label="Help">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Help content</div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">Spacer pushing tabs apart</h4>
+        <ui-tab-group>
+          <ui-tab label="Main">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Main content</div>
+          </ui-tab>
+          <ui-tab label="Dashboard">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Dashboard view</div>
+          </ui-tab>
+          <ui-tab-spacer />
+          <ui-tab label="Settings">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Settings pushed to the right</div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px; color: inherit">Combined: separator + spacer</h4>
+        <ui-tab-group>
+          <ui-tab label="Alpha">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Alpha content</div>
+          </ui-tab>
+          <ui-tab-separator />
+          <ui-tab label="Beta">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Beta content</div>
+          </ui-tab>
+          <ui-tab-spacer />
+          <ui-tab label="Omega">
+            <div style="padding: 0.5rem; font-size: 0.88rem">Omega pushed to the end</div>
+          </ui-tab>
+        </ui-tab-group>
+      </div>
+    </div>
+  `,
+})
+class TabsSeparatorSpacerDemo {}
+
 const meta: Meta<UITabGroup> = {
   title: "@theredhead/UI Kit/Tabs",
   component: UITabGroup,
@@ -158,7 +256,16 @@ const meta: Meta<UITabGroup> = {
   },
   decorators: [
     moduleMetadata({
-      imports: [UITab, TabsGalleryDemo, TabsPositionDemo, TabsPanelStyleDemo],
+      imports: [
+        UITab,
+        UITabSeparator,
+        UITabSpacer,
+        TabsGalleryDemo,
+        TabsPositionDemo,
+        TabsPanelStyleDemo,
+        TabsAlignmentDemo,
+        TabsSeparatorSpacerDemo,
+      ],
     }),
   ],
 };
@@ -705,6 +812,122 @@ export class ExampleComponent {
 
 // ── SCSS ──
 /* No custom styles needed — icons inherit the tab's text colour. */
+`,
+      },
+    },
+  },
+};
+
+// ── Alignment stories ────────────────────────────────────────────────
+
+/**
+ * All three \`tabAlign\` values — start (default), center, and end —
+ * control horizontal alignment of the tab headers within the header bar.
+ */
+export const Alignment: Story = {
+  render: () => ({
+    template: `<ui-tabs-alignment-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- Start (default) -->
+<ui-tab-group tabAlign="start">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+<!-- Center -->
+<ui-tab-group tabAlign="center">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+<!-- End -->
+<ui-tab-group tabAlign="end">
+  <ui-tab label="Alpha">Alpha panel</ui-tab>
+  <ui-tab label="Beta">Beta panel</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — tabAlign handles header alignment. */
+`,
+      },
+    },
+  },
+};
+
+// ── Separator / Spacer stories ───────────────────────────────────────
+
+/**
+ * \`<ui-tab-separator>\` renders a thin visual divider between tab groups.
+ * \`<ui-tab-spacer>\` pushes subsequent tabs to the far end of the header.
+ *
+ * Both components can be combined for complex toolbar-style layouts.
+ */
+export const SeparatorAndSpacer: Story = {
+  render: () => ({
+    template: `<ui-tabs-separator-spacer-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<!-- Separator adds a visual divider -->
+<ui-tab-group>
+  <ui-tab label="File">File content</ui-tab>
+  <ui-tab label="Edit">Edit content</ui-tab>
+  <ui-tab-separator />
+  <ui-tab label="View">View content</ui-tab>
+</ui-tab-group>
+
+<!-- Spacer pushes tabs to the right -->
+<ui-tab-group>
+  <ui-tab label="Main">Main content</ui-tab>
+  <ui-tab-spacer />
+  <ui-tab label="Settings">Settings pushed right</ui-tab>
+</ui-tab-group>
+
+<!-- Combined -->
+<ui-tab-group>
+  <ui-tab label="Alpha">Alpha</ui-tab>
+  <ui-tab-separator />
+  <ui-tab label="Beta">Beta</ui-tab>
+  <ui-tab-spacer />
+  <ui-tab label="Omega">Omega pushed right</ui-tab>
+</ui-tab-group>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator, UITabSpacer],
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — separator and spacer are styled automatically. */
 `,
       },
     },
