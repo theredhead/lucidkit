@@ -18,9 +18,12 @@ const preview: Preview = {
     moduleMetadata({
       imports: [UIThemeToggle],
     }),
-    (story) => {
+    (story, context) => {
       const result = story();
       const tpl = result.template ?? "";
+      if (context?.parameters?.["hideThemeToggle"]) {
+        return result;
+      }
       return {
         ...result,
         template: `

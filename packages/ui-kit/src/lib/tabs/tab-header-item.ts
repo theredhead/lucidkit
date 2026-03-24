@@ -14,6 +14,6 @@ export type TabHeaderItemKind = "tab" | "separator" | "spacer";
  *
  * @internal
  */
-export const TAB_HEADER_ITEM = new InjectionToken<{ readonly kind: TabHeaderItemKind }>(
-  "TAB_HEADER_ITEM",
-);
+export const TAB_HEADER_ITEM = new InjectionToken<{
+  readonly kind: TabHeaderItemKind;
+}>("TAB_HEADER_ITEM");
