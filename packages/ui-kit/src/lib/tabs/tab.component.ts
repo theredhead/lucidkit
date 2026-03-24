@@ -9,6 +9,8 @@ import {
 } from "@angular/core";
 import { LoggerFactory } from "@theredhead/foundation";
 
+import { TAB_HEADER_ITEM } from "./tab-header-item";
+
 /**
  * A single tab panel within a `<ui-tab-group>`.
  *
@@ -36,8 +38,13 @@ import { LoggerFactory } from "@theredhead/foundation";
   standalone: true,
   templateUrl: "./tab.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    { provide: TAB_HEADER_ITEM, useExisting: UITab },
+  ],
 })
 export class UITab {
+  /** @internal — discriminant for the tab header item union. */
+  public readonly kind = "tab" as const;
   /** The text label displayed in the tab header. Optional when `icon` is set. */
   public readonly label = input<string | undefined>(undefined);
 

@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { Component, signal } from "@angular/core";
+import { ChangeDetectorRef, Component, signal } from "@angular/core";
 
 import { UITabGroup } from "./tab-group.component";
 import type { TabPosition, TabPanelStyle } from "./tab-group.component";
 import { provideTabDefaults } from "./tab-group.component";
 import { UITab } from "./tab.component";
+import { UITabSeparator } from "./tab-separator.component";
+import { UITabSpacer } from "./tab-spacer.component";
+import type { TabAlignment } from "./tab-header-item";
 
 @Component({
   standalone: true,
@@ -378,5 +381,150 @@ describe("UITabGroup with icon-only tabs", () => {
     fixture.detectChanges();
     const panel = fixture.nativeElement.querySelector("[role='tabpanel']");
     expect(panel.textContent).toContain("Settings content");
+  });
+});
+
+// ── Tab Alignment ──────────────────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [UITabGroup, UITab],
+  template: `
+    <ui-tab-group [tabAlign]="align">
+      <ui-tab label="A">A</ui-tab>
+      <ui-tab label="B">B</ui-tab>
+    </ui-tab-group>
+  `,
+})
+class AlignmentTestHost {
+  public align: TabAlignment = "start";
+}
+
+describe("UITabGroup alignment", () => {
+  let fixture: ComponentFixture<AlignmentTestHost>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AlignmentTestHost],
+    }).compileComponents();
+    fixture = TestBed.createComponent(AlignmentTestHost);
+    fixture.detectChanges();
+  });
+
+  it('should default to start alignment', () => {
+    const el = fixture.nativeElement.querySelector("ui-tab-group");
+    expect(el.classList).toContain("ui-tab-group--align-start");
+  });
+
+  for (const alignment of ["start", "center", "end"] as TabAlignment[]) {
+    it(`should apply ui-tab-group--align-${alignment} host class`, () => {
+      fixture.componentInstance.align = alignment;
+      fixture.componentRef.injector
+        .get(ChangeDetectorRef)
+        .markForCheck();
+      fixture.detectChanges();
+      const el = fixture.nativeElement.querySelector("ui-tab-group");
+      expect(el.classList).toContain(`ui-tab-group--align-${alignment}`);
+    });
+  }
+});
+
+// ── Tab Separator ──────────────────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSeparator],
+  template: `
+    <ui-tab-group>
+      <ui-tab label="A">A</ui-tab>
+      <ui-tab-separator />
+      <ui-tab label="B">B</ui-tab>
+    </ui-tab-group>
+  `,
+})
+class SeparatorTestHost {}
+
+describe("UITabSeparator", () => {
+  let fixture: ComponentFixture<SeparatorTestHost>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SeparatorTestHost],
+    }).compileComponents();
+    fixture = TestBed.createComponent(SeparatorTestHost);
+    fixture.detectChanges();
+  });
+
+  it("should render a separator in the header", () => {
+    const sep = fixture.nativeElement.querySelector(".header-separator");
+    expect(sep).toBeTruthy();
+  });
+
+  it("should have role=separator", () => {
+    const sep = fixture.nativeElement.querySelector(".header-separator");
+    expect(sep.getAttribute("role")).toBe("separator");
+  });
+
+  it("should still render both tabs", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    expect(tabs.length).toBe(2);
+  });
+
+  it("should render two tab panels when tabs are clicked", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    tabs[0].click();
+    fixture.detectChanges();
+    let panel = fixture.nativeElement.querySelector("[role='tabpanel']");
+    expect(panel.textContent).toContain("A");
+
+    tabs[1].click();
+    fixture.detectChanges();
+    panel = fixture.nativeElement.querySelector("[role='tabpanel']");
+    expect(panel.textContent).toContain("B");
+  });
+});
+
+// ── Tab Spacer ─────────────────────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [UITabGroup, UITab, UITabSpacer],
+  template: `
+    <ui-tab-group>
+      <ui-tab label="Left">Left panel</ui-tab>
+      <ui-tab-spacer />
+      <ui-tab label="Right">Right panel</ui-tab>
+    </ui-tab-group>
+  `,
+})
+class SpacerTestHost {}
+
+describe("UITabSpacer", () => {
+  let fixture: ComponentFixture<SpacerTestHost>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SpacerTestHost],
+    }).compileComponents();
+    fixture = TestBed.createComponent(SpacerTestHost);
+    fixture.detectChanges();
+  });
+
+  it("should render a spacer in the header", () => {
+    const spacer = fixture.nativeElement.querySelector(".header-spacer");
+    expect(spacer).toBeTruthy();
+  });
+
+  it("should still render both tabs", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    expect(tabs.length).toBe(2);
+  });
+
+  it("should navigate between tabs across the spacer", () => {
+    const tabs = fixture.nativeElement.querySelectorAll("[role='tab']");
+    tabs[1].click();
+    fixture.detectChanges();
+    const panel = fixture.nativeElement.querySelector("[role='tabpanel']");
+    expect(panel.textContent).toContain("Right panel");
   });
 });

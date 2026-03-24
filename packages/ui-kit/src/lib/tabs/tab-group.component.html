@@ -1,29 +1,35 @@
 <div class="header" role="tablist"
   [attr.aria-label]="ariaLabel()"
   [attr.aria-orientation]="resolvedTabPosition() === 'left' || resolvedTabPosition() === 'right' ? 'vertical' : undefined">
-  @for (tab of tabs(); track tab; let i = $index) {
-    <button
-      class="tab"
-      role="tab"
-      type="button"
-      [class.tab--active]="i === activeIndex()"
-      [class.tab--disabled]="tab.disabled()"
-      [attr.aria-selected]="i === activeIndex()"
-      [attr.aria-disabled]="tab.disabled() || undefined"
-      [attr.tabindex]="i === activeIndex() ? 0 : -1"
-      [attr.id]="'tab-' + i"
-      [attr.aria-controls]="'panel-' + i"
-      (click)="selectTab(i)"
-      (keydown)="onTabKeyDown($event, i)"
-      [attr.aria-label]="tab.resolvedAriaLabel()"
-    >
-      @if (tab.icon(); as svg) {
-        <ui-icon [svg]="svg" [size]="14" />
-      }
-      @if (tab.label(); as label) {
-        {{ label }}
-      }
-    </button>
+  @for (item of headerItems(); track item) {
+    @if (isTab(item)) {
+      <button
+        class="tab"
+        role="tab"
+        type="button"
+        [class.tab--active]="tabIndex(item) === activeIndex()"
+        [class.tab--disabled]="item.disabled()"
+        [attr.aria-selected]="tabIndex(item) === activeIndex()"
+        [attr.aria-disabled]="item.disabled() || undefined"
+        [attr.tabindex]="tabIndex(item) === activeIndex() ? 0 : -1"
+        [attr.id]="'tab-' + tabIndex(item)"
+        [attr.aria-controls]="'panel-' + tabIndex(item)"
+        (click)="selectTab(tabIndex(item))"
+        (keydown)="onTabKeyDown($event, tabIndex(item))"
+        [attr.aria-label]="item.resolvedAriaLabel()"
+      >
+        @if (item.icon(); as svg) {
+          <ui-icon [svg]="svg" [size]="14" />
+        }
+        @if (item.label(); as label) {
+          {{ label }}
+        }
+      </button>
+    } @else if (isSeparator(item)) {
+      <div class="header-separator" role="separator" aria-orientation="vertical"></div>
+    } @else if (isSpacer(item)) {
+      <div class="header-spacer"></div>
+    }
   }
 </div>
 

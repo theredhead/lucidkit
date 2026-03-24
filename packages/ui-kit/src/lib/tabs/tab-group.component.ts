@@ -15,6 +15,9 @@ import { NgTemplateOutlet } from "@angular/common";
 
 import { UIIcon } from "../icon/icon.component";
 import { UITab } from "./tab.component";
+import { TAB_HEADER_ITEM, type TabAlignment } from "./tab-header-item";
+import { UITabSeparator } from "./tab-separator.component";
+import { UITabSpacer } from "./tab-spacer.component";
 
 /** Position of the tab headers relative to the content panel. */
 export type TabPosition = "top" | "bottom" | "left" | "right";
@@ -99,6 +102,9 @@ export function provideTabDefaults(
     "[class.ui-tab-group--flat]": "resolvedPanelStyle() === 'flat'",
     "[class.ui-tab-group--outline]": "resolvedPanelStyle() === 'outline'",
     "[class.ui-tab-group--raised]": "resolvedPanelStyle() === 'raised'",
+    "[class.ui-tab-group--align-start]": "tabAlign() === 'start'",
+    "[class.ui-tab-group--align-center]": "tabAlign() === 'center'",
+    "[class.ui-tab-group--align-end]": "tabAlign() === 'end'",
   },
 })
 export class UITabGroup {
@@ -107,6 +113,9 @@ export class UITabGroup {
 
   /** Visual style of the content panel: flat, outline, or raised. */
   public readonly panelStyle = input<TabPanelStyle | undefined>(undefined);
+
+  /** Alignment of the tab headers within their strip. */
+  public readonly tabAlign = input<TabAlignment>("start");
 
   /** Whether the tab group is disabled. */
   public readonly disabled = input<boolean>(false);
@@ -119,6 +128,9 @@ export class UITabGroup {
 
   /** @internal — projected tab children. */
   public readonly tabs = contentChildren(UITab);
+
+  /** @internal — all header items (tabs + separators + spacers) in DOM order. */
+  public readonly headerItems = contentChildren(TAB_HEADER_ITEM);
 
   /** Resolved tab position (input wins, then injected default). */
   public readonly resolvedTabPosition = computed(
@@ -139,6 +151,26 @@ export class UITabGroup {
     const idx = this.activeIndex();
     return tabs[idx] ?? tabs[0];
   });
+
+  /** @internal — type guard helper for the template. */
+  protected isTab(item: unknown): item is UITab {
+    return item instanceof UITab;
+  }
+
+  /** @internal — type guard helper for the template. */
+  protected isSeparator(item: unknown): item is UITabSeparator {
+    return item instanceof UITabSeparator;
+  }
+
+  /** @internal — type guard helper for the template. */
+  protected isSpacer(item: unknown): item is UITabSpacer {
+    return item instanceof UITabSpacer;
+  }
+
+  /** @internal — get the tab index within the tabs array for a header item. */
+  protected tabIndex(tab: UITab): number {
+    return this.tabs().indexOf(tab);
+  }
 
   private readonly defaults = inject(TAB_GROUP_DEFAULTS);
 
