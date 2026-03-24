@@ -58,20 +58,20 @@ export class UIAutogenerateColumnsDirective {
   public constructor() {
     // Watch for datasource changes and extract first row
     effect(() => {
-      const adapter = this.table.datasource();
-      if (!adapter) {
+      const ds = this.table.datasource();
+      if (!ds) {
         this.firstRowSignal.set(null);
         return;
       }
 
-      const totalItems = adapter.totalItems();
+      const totalItems = ds.getNumberOfItems();
       if (totalItems === null || totalItems === 0) {
         this.firstRowSignal.set(null);
         return;
       }
 
       try {
-        const row = adapter.datasource.getObjectAtRowIndex(0);
+        const row = ds.getObjectAtRowIndex(0);
         if (row instanceof Promise) {
           void row
             .then((resolved) => {

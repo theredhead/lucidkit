@@ -69,12 +69,11 @@ All columns extend `UITableViewColumn` and register via DI forwarding:
 
 ## Table View datasources
 
-| Class                       | Description                                                            |
-| --------------------------- | ---------------------------------------------------------------------- |
-| `ArrayDatasource`           | In-memory datasource backed by a plain array                           |
-| `FilterableArrayDatasource` | Extends `ArrayDatasource` with client-side filtering                   |
-| `DatasourceAdapter`         | Adds pagination, sorting, and signal state on top of any `IDatasource` |
-| `RestDatasource`            | HTTP-backed datasource for REST APIs                                   |
+| Class                       | Description                                          |
+| --------------------------- | ---------------------------------------------------- |
+| `ArrayDatasource`           | In-memory datasource backed by a plain array         |
+| `FilterableArrayDatasource` | Extends `ArrayDatasource` with client-side filtering |
+| `RestDatasource`            | HTTP-backed datasource for REST APIs                 |
 
 ## Tree View datasources
 
@@ -96,14 +95,14 @@ import { UIButton, UITableView, UITextColumn } from "@theredhead/ui-kit";
   template: `
     <ui-button variant="filled" (click)="load()">Refresh</ui-button>
 
-    <ui-table-view [datasource]="adapter">
+    <ui-table-view [datasource]="datasource">
       <ui-text-column key="name" headerText="Name" [sortable]="true" />
       <ui-text-column key="email" headerText="Email" [truncate]="true" />
     </ui-table-view>
   `,
 })
 export class DemoComponent {
-  adapter = new DatasourceAdapter(new ArrayDatasource(this.data));
+  datasource = new ArrayDatasource(this.data);
 }
 ```
 

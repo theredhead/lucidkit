@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import {
   ArrayDatasource,
   ArrayTreeDatasource,
-  DatasourceAdapter,
+  FilterableArrayDatasource,
   UITextColumn,
   type ITreeDatasource,
   type TreeNode,
@@ -29,7 +29,7 @@ const PEOPLE: Person[] = [
   imports: [UIMasterDetailView, UITextColumn],
   template: `
     <ui-master-detail-view
-      [data]="data()"
+      [datasource]="ds()"
       [title]="title()"
       [placeholder]="placeholder()"
       [showFilter]="showFilter()"
@@ -54,7 +54,9 @@ const PEOPLE: Person[] = [
   `,
 })
 class TestHost {
-  public readonly data = signal<Person[]>(PEOPLE);
+  public readonly ds = signal<FilterableArrayDatasource<Person>>(
+    new FilterableArrayDatasource(PEOPLE),
+  );
   public readonly title = signal("Team");
   public readonly placeholder = signal("Select a person");
   public readonly showFilter = signal(false);
@@ -178,9 +180,8 @@ describe("UIMasterDetailView", () => {
       const tv = fixture.debugElement.query(
         (de) => de.nativeElement.localName === "ui-table-view",
       );
-      const ds: DatasourceAdapter<Person> = tv.componentInstance.datasource();
-      expect(ds.totalItems()).toBe(3);
-      expect(ds.visibleWindow().length).toBe(3);
+      const ds = tv.componentInstance.datasource();
+      expect(ds.getNumberOfItems()).toBe(3);
     });
 
     it("should not show pagination", () => {
@@ -265,9 +266,7 @@ describe("UIMasterDetailView", () => {
       host.showFilter.set(true);
       fixture.detectChanges();
 
-      const toggle = el.querySelector(
-        ".filter-toggle",
-      ) as HTMLButtonElement;
+      const toggle = el.querySelector(".filter-toggle") as HTMLButtonElement;
       expect(el.querySelector(".test-filter-content")).toBeTruthy();
 
       toggle.click();
@@ -363,10 +362,7 @@ describe("UIMasterDetailView", () => {
         `,
       })
       class DsHost {
-        public readonly ds = new DatasourceAdapter<Person>(
-          new ArrayDatasource(PEOPLE),
-          100,
-        );
+        public readonly ds = new ArrayDatasource(PEOPLE);
       }
 
       const dsFixture = TestBed.createComponent(DsHost);
@@ -377,9 +373,8 @@ describe("UIMasterDetailView", () => {
       const tv = dsFixture.debugElement.query(
         (de) => de.nativeElement.localName === "ui-table-view",
       );
-      const ds: DatasourceAdapter<Person> = tv.componentInstance.datasource();
-      expect(ds.totalItems()).toBe(3);
-      expect(ds.visibleWindow().length).toBe(3);
+      const ds = tv.componentInstance.datasource();
+      expect(ds.getNumberOfItems()).toBe(3);
     });
   });
 });
@@ -479,9 +474,9 @@ describe("UIMasterDetailView (tree mode)", () => {
 
   it("should show the placeholder when no node is selected", () => {
     expect(treeEl.querySelector(".placeholder")).toBeTruthy();
-    expect(
-      treeEl.querySelector(".placeholder p")?.textContent?.trim(),
-    ).toBe("Select a department");
+    expect(treeEl.querySelector(".placeholder p")?.textContent?.trim()).toBe(
+      "Select a department",
+    );
   });
 
   it("should show detail after selecting a tree node", () => {

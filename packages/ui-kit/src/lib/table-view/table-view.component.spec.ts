@@ -5,7 +5,6 @@ import { ArrayDatasource } from "@theredhead/foundation";
 
 import { UITableView } from "./table-view.component";
 import { UITextColumn } from "./columns/text-column/text-column.component";
-import { DatasourceAdapter } from "./datasources/datasource-adapter";
 import type { SelectionMode } from "../core/selection-model";
 
 // ── Test helpers ─────────────────────────────────────────────────────
@@ -41,9 +40,7 @@ const PEOPLE: Person[] = [
 class TestHost {
   readonly selectionMode = signal<SelectionMode>("single");
   readonly rowClickSelect = signal(true);
-  readonly datasource = signal(
-    new DatasourceAdapter(new ArrayDatasource(PEOPLE), PEOPLE.length),
-  );
+  readonly datasource = signal(new ArrayDatasource(PEOPLE));
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -229,9 +226,7 @@ describe("UITableView", () => {
 
     describe("empty table", () => {
       it("should do nothing when the table has no rows", () => {
-        host.datasource.set(
-          new DatasourceAdapter(new ArrayDatasource<Person>([]), 10),
-        );
+        host.datasource.set(new ArrayDatasource<Person>([]));
         fixture.detectChanges();
 
         keydown(tableEl, "ArrowDown");

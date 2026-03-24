@@ -11,15 +11,16 @@ import {
   signal,
   TemplateRef,
   untracked,
+  viewChild,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import {
   FilterableArrayTreeDatasource,
   isTreeDatasource,
+  type IDatasource,
   type Predicate,
 } from "@theredhead/foundation";
 import {
-  DatasourceAdapter,
   FilterableArrayDatasource,
   SelectionModel,
   UIFilter,
@@ -59,7 +60,7 @@ export interface MasterDetailContext<T> {
  *
  * ### Basic usage (table mode)
  * ```html
- * <ui-master-detail-view [data]="items">
+ * <ui-master-detail-view [datasource]="adapter" title="People">
  *   <ui-text-column key="name" headerText="Name" />
  *   <ui-text-column key="email" headerText="Email" />
  *
@@ -82,7 +83,7 @@ export interface MasterDetailContext<T> {
  * ### With filter
  * ```html
  * <!-- Auto-inferred fields from columns + data types -->
- * <ui-master-detail-view [data]="items" [showFilter]="true">
+ * <ui-master-detail-view [datasource]="adapter" [showFilter]="true">
  *   <ui-text-column key="name" headerText="Name" />
  *   <ui-text-column key="email" headerText="Email" />
  *   <ng-template #detail let-object>…</ng-template>
@@ -91,7 +92,7 @@ export interface MasterDetailContext<T> {
  *
  * ### With custom filter template (override)
  * ```html
- * <ui-master-detail-view [data]="items" [showFilter]="true">
+ * <ui-master-detail-view [datasource]="adapter" [showFilter]="true">
  *   <ng-template #filter>
  *     <ui-filter [fields]="fields" [(value)]="descriptor"
  *                (expressionChange)="ds.filterBy($event)" />
@@ -127,23 +128,14 @@ export class UIMasterDetailView<T = unknown> {
   /**
    * The datasource powering the master list.
    *
-   * Accepts either a {@link DatasourceAdapter} (for flat table mode)
+   * Accepts any {@link IDatasource} (for flat table mode)
    * or an {@link ITreeDatasource} (for hierarchical tree mode).
    * The component detects the type at runtime and renders the
    * appropriate view.
-   *
-   * When provided, this takes precedence over the `data` input.
    */
   public readonly datasource = input<
-    DatasourceAdapter<T> | ITreeDatasource<T> | undefined
+    IDatasource<T> | ITreeDatasource<T> | undefined
   >(undefined);
-
-  /**
-   * Convenience: raw data array. When set, an internal
-   * `FilterableArrayDatasource` is created automatically.
-   * Ignored when `datasource` is provided.
-   */
-  public readonly data = input<readonly T[]>([]);
 
   /**
    * Function that returns a display string for tree node data.
@@ -276,6 +268,11 @@ export class UIMasterDetailView<T = unknown> {
   public readonly treeNodeTemplate =
     contentChild<TemplateRef<TreeNodeContext<T>>>("nodeTemplate");
 
+  // ── View queries ──────────────────────────────────────────────────
+
+  /** @internal — the internal table view instance (table mode). */
+  private readonly tableViewChild = viewChild(UITableView);
+
   // ── Computed ──────────────────────────────────────────────────────
 
   /**
@@ -321,28 +318,23 @@ export class UIMasterDetailView<T = unknown> {
   });
 
   /**
-   * The resolved datasource: explicit `datasource` input takes
-   * precedence, otherwise an internal adapter wraps the `data` array
-   * using a {@link FilterableArrayDatasource} (so built-in filter
-   * support is available automatically).
+   * The resolved flat-table datasource.
    *
-   * The adapter construction is wrapped in `untracked` because
-   * {@link DatasourceAdapter}'s constructor writes to signals,
-   * which is forbidden inside `computed` contexts.
+   * Returns the `datasource` input when it is a flat
+   * {@link IDatasource} (not a tree). Falls back to an empty
+   * {@link FilterableArrayDatasource} when no datasource is set or
+   * when the input is a tree datasource.
    * @internal
    */
-  protected readonly resolvedDatasource = computed<DatasourceAdapter<T>>(() => {
-    const explicit = this.datasource();
-    if (explicit && !isTreeDatasource(explicit)) return explicit;
-    const data = this.data();
-    return untracked(
-      () =>
-        new DatasourceAdapter<T>(
-          new FilterableArrayDatasource<T>([...(data as T[])]),
-          100,
-        ),
-    );
-  });
+  protected readonly resolvedTableDatasource = computed<IDatasource<T>>(
+    () => {
+      const explicit = this.datasource();
+      if (explicit && !isTreeDatasource(explicit)) {
+        return explicit;
+      }
+      return new FilterableArrayDatasource<T>([]);
+    },
+  );
 
   /**
    * Whether the filter section should be displayed.
@@ -359,9 +351,9 @@ export class UIMasterDetailView<T = unknown> {
     // Tree mode: auto-show when a tree datasource is provided
     if (this.resolvedTreeDatasource() !== undefined) return false;
 
-    // Auto-detect: unwrap the DatasourceAdapter to check the raw datasource
-    const adapter = this.resolvedDatasource();
-    return adapter.datasource instanceof FilterableArrayDatasource;
+    // Auto-detect: show filter when the datasource supports filtering
+    const ds = this.resolvedTableDatasource();
+    return ds instanceof FilterableArrayDatasource;
   });
 
   /**
@@ -396,26 +388,24 @@ export class UIMasterDetailView<T = unknown> {
     }));
 
     // Get a sample row from the *unfiltered* datasource to sniff
-    // types.  We must NOT use adapter.totalItems() or
-    // raw.getNumberOfItems() — those reflect the *filtered* count,
-    // which drops to 0 when no rows match the current predicate and
-    // would make the filter fields (and the filter component)
-    // disappear.
-    const adapter = this.resolvedDatasource();
-    const raw = adapter.datasource;
+    // types.  We must NOT use getNumberOfItems() on a filtered
+    // datasource — the filtered count drops to 0 when no rows match
+    // the current predicate and would make the filter fields (and
+    // the filter component) disappear.
+    const ds = this.resolvedTableDatasource();
 
     // Prefer the full unfiltered list when available
     const allRows =
-      raw instanceof FilterableArrayDatasource ? raw.allRows : undefined;
+      ds instanceof FilterableArrayDatasource ? ds.allRows : undefined;
 
     let sample: T | undefined;
     if (allRows && allRows.length > 0) {
       sample = allRows[0];
     } else {
       // Fallback for non-filterable datasources
-      const count = raw.getNumberOfItems();
+      const count = ds.getNumberOfItems();
       if (typeof count !== "number" || count === 0) return [];
-      const result = raw.getObjectAtRowIndex(0);
+      const result = ds.getObjectAtRowIndex(0);
       if (!result || result instanceof Promise) return [];
       sample = result;
     }
@@ -442,23 +432,22 @@ export class UIMasterDetailView<T = unknown> {
     }
 
     // ── Table mode ──
-    const adapter = this.resolvedDatasource();
-    const raw = adapter.datasource;
+    const ds = this.resolvedTableDatasource();
 
     // Use the full unfiltered dataset when available so that distinct
     // value lists and autocomplete options don't shrink as the user
     // narrows the filter.
-    if (raw instanceof FilterableArrayDatasource) {
-      const all = raw.allRows;
+    if (ds instanceof FilterableArrayDatasource) {
+      const all = ds.allRows;
       return all.length < 1000 ? all : [];
     }
 
     // Fallback for non-filterable datasources: gather visible rows
-    const count = raw.getNumberOfItems();
+    const count = ds.getNumberOfItems();
     if (typeof count !== "number" || count === 0 || count >= 1000) return [];
     const rows: T[] = [];
     for (let i = 0; i < count; i++) {
-      const row = raw.getObjectAtRowIndex(i);
+      const row = ds.getObjectAtRowIndex(i);
       if (!(row instanceof Promise)) rows.push(row);
     }
     return rows;
@@ -542,12 +531,10 @@ export class UIMasterDetailView<T = unknown> {
     }
 
     // Table mode: apply expression to FilterableArrayDatasource
-    const adapter = this.resolvedDatasource();
-    const raw = adapter.datasource;
-    if (raw instanceof FilterableArrayDatasource) {
-      raw.filterBy(expression);
-      adapter.pageIndex.set(0);
-      adapter.totalItems.set(raw.getNumberOfItems() as number);
+    const ds = this.resolvedTableDatasource();
+    if (ds instanceof FilterableArrayDatasource) {
+      ds.filterBy(expression);
+      this.tableViewChild()?.refreshDatasource();
     }
   }
 

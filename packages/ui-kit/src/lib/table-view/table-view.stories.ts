@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  signal,
+  viewChild,
+} from "@angular/core";
 
 import type { FilterExpression } from "../core/types/filter";
 
@@ -13,7 +18,6 @@ import { UIBadgeColumn } from "./columns/badge-column/badge-column.component";
 import { UINumberColumn } from "./columns/number-column/number-column.component";
 import { UITemplateColumn } from "./columns/template-column/template-column.component";
 import { UITextColumn } from "./columns/text-column/text-column.component";
-import { DatasourceAdapter } from "./datasources/datasource-adapter";
 import { FilterableArrayDatasource } from "./datasources/filterable-array-datasource";
 import {
   JsonPlaceholderCommentsDatasource,
@@ -66,9 +70,7 @@ import { SelectionModel } from "../core/selection-model";
   `,
 })
 class UITableViewStoryDemo {
-  readonly adapter = new DatasourceAdapter(
-    new JsonPlaceholderPostsDatasource(25),
-  );
+  readonly adapter = new JsonPlaceholderPostsDatasource(25);
 }
 
 @Component({
@@ -114,9 +116,7 @@ class UITableViewStoryDemo {
   `,
 })
 class UITableViewCommentsStoryDemo {
-  readonly adapter = new DatasourceAdapter(
-    new JsonPlaceholderCommentsDatasource(25),
-  );
+  readonly adapter = new JsonPlaceholderCommentsDatasource(25);
 }
 
 @Component({
@@ -166,9 +166,7 @@ class UITableViewCommentsStoryDemo {
   `,
 })
 class UITableViewPhotosStoryDemo {
-  readonly adapter = new DatasourceAdapter(
-    new JsonPlaceholderPhotosDatasource(25),
-  );
+  readonly adapter = new JsonPlaceholderPhotosDatasource(25);
 }
 
 @Component({
@@ -223,9 +221,7 @@ Selected: {{ selectedJson() }}</pre
   `,
 })
 class UITableViewSingleSelectDemo {
-  readonly adapter = new DatasourceAdapter(
-    new JsonPlaceholderPostsDatasource(25),
-  );
+  readonly adapter = new JsonPlaceholderPostsDatasource(25);
   readonly selectionModel = new SelectionModel<any>("single", (row) => row.id);
   readonly selectedJson = signal("(none)");
 
@@ -288,9 +284,7 @@ Selected ({{ selectedCount() }}): {{ selectedJson() }}</pre
   `,
 })
 class UITableViewMultiSelectDemo {
-  readonly adapter = new DatasourceAdapter(
-    new JsonPlaceholderPostsDatasource(25),
-  );
+  readonly adapter = new JsonPlaceholderPostsDatasource(25);
   readonly selectionModel = new SelectionModel<any>(
     "multiple",
     (row) => row.id,
@@ -474,7 +468,7 @@ export const DensityPlayground: Story = {
     },
     pageSize: {
       control: { type: "number", min: 5, max: 100, step: 5 },
-      description: "Initial page size passed to DatasourceAdapter.",
+      description: "Initial page size for the datasource.",
     },
   },
   args: {
@@ -490,10 +484,7 @@ export const DensityPlayground: Story = {
         .showBuiltInPaginator,
       showRowIndexIndicator: (args as { showRowIndexIndicator: boolean })
         .showRowIndexIndicator,
-      adapter: new DatasourceAdapter(
-        new JsonPlaceholderPostsDatasource(
-          (args as { pageSize: number }).pageSize,
-        ),
+      adapter: new JsonPlaceholderPostsDatasource(
         (args as { pageSize: number }).pageSize,
       ),
     },
@@ -560,12 +551,11 @@ import {
   UINumberColumn,
   UITextColumn,
   UIBadgeColumn,
-  DatasourceAdapter,
   type UIDensity,
 } from '@theredhead/ui-kit';
 
 density: UIDensity = 'comfortable'; // 'small' | 'compact' | 'comfortable' | 'generous'
-adapter = new DatasourceAdapter(myDatasource, 25);
+adapter = new JsonPlaceholderPostsDatasource(25);
 
 // ── SCSS ──
 /* No custom styles needed — density is controlled via the uiDensity directive. */`,
@@ -595,10 +585,7 @@ export const WithoutBuiltInPaginator: Story = {
   ],
   render: () => ({
     props: {
-      adapter: new DatasourceAdapter(
-        new JsonPlaceholderPostsDatasource(25),
-        25,
-      ),
+      adapter: new JsonPlaceholderPostsDatasource(25),
     },
     template: `
                         <ui-table-view
@@ -663,10 +650,9 @@ import {
   UINumberColumn,
   UITextColumn,
   UIBadgeColumn,
-  DatasourceAdapter,
 } from '@theredhead/ui-kit';
 
-adapter = new DatasourceAdapter(myDatasource, 25);
+adapter = new JsonPlaceholderPostsDatasource(25);
 
 // ── SCSS ──
 /* No custom styles needed. Provide your own pagination UI externally. */`,
@@ -939,7 +925,7 @@ const EMPLOYEE_FIELDS: FilterFieldDefinition<Employee>[] = [
         tableId="story-filtered"
         [showRowIndexIndicator]="true"
         [showBuiltInPaginator]="true"
-        [datasource]="adapter"
+        [datasource]="datasource"
       >
         <ui-number-column
           key="id"
@@ -977,15 +963,11 @@ const EMPLOYEE_FIELDS: FilterFieldDefinition<Employee>[] = [
 class UITableViewFilteredDemo {
   readonly fields = EMPLOYEE_FIELDS;
   readonly datasource = new FilterableArrayDatasource(EMPLOYEES);
-  adapter = new DatasourceAdapter(this.datasource, EMPLOYEES.length);
+  private readonly table = viewChild.required(UITableView);
 
   onExpressionChange(expression: FilterExpression<Employee>): void {
     this.datasource.filterBy(expression);
-    // Rebuild the adapter so the table picks up the new row count.
-    this.adapter = new DatasourceAdapter(
-      this.datasource,
-      this.datasource.getNumberOfItems() as number,
-    );
+    this.table().refreshDatasource();
   }
 }
 
@@ -1019,7 +1001,7 @@ export const FilteredTable: Story = {
   tableId="filtered-table"
   [showRowIndexIndicator]="true"
   [showBuiltInPaginator]="true"
-  [datasource]="adapter"
+  [datasource]="datasource"
 >
   <ui-number-column key="id" headerText="ID" [sortable]="true" />
   <ui-text-column key="name" headerText="Name" [sortable]="true" />
@@ -1031,11 +1013,12 @@ export const FilteredTable: Story = {
 
 // Component class:
 readonly datasource = new FilterableArrayDatasource(employees);
-adapter = new DatasourceAdapter(this.datasource);
+
+@ViewChild(UITableView) table!: UITableView;
 
 onExpressionChange(expression: FilterExpression<Employee>): void {
   this.datasource.filterBy(expression);
-  this.adapter = new DatasourceAdapter(this.datasource);
+  this.table.refreshDatasource();
 }`,
         language: "typescript",
       },
@@ -1123,9 +1106,7 @@ onExpressionChange(expression: FilterExpression<Employee>): void {
   ],
 })
 class UITableViewTemplateColDemo {
-  readonly adapter = new DatasourceAdapter(
-    new JsonPlaceholderPostsDatasource(25),
-  );
+  readonly adapter = new JsonPlaceholderPostsDatasource(25);
   readonly lastAction = signal("Click a button to see the action here…");
 
   onAction(action: string, row: any): void {
@@ -1195,7 +1176,7 @@ export const Documentation: Story = {
         story: [
           "## Key Features",
           "",
-          "- **Datasource-driven** — any object implementing `TableViewDatasource<T>` can feed the table; ships with `DatasourceAdapter`, `FilterableArrayDatasource`, and JSONPlaceholder demo sources",
+          "- **Datasource-driven** — any object implementing `IDatasource<T>` can feed the table; ships with `ArrayDatasource`, `FilterableArrayDatasource`, and JSONPlaceholder demo sources",
           "- **Declarative columns** — add `<ui-text-column>`, `<ui-number-column>`, `<ui-badge-column>`, or `<ui-template-column>` as content children",
           '- **Sorting** — enable per-column with `[sortable]="true"`; click headers to cycle asc / desc / none',
           '- **Pagination** — built-in paginator with configurable page sizes, or bring your own with `[showBuiltInPaginator]="false"`',
