@@ -9,12 +9,11 @@ const meta: Meta<UIQRCode> = {
 export default meta;
 type Story = StoryObj<UIQRCode>;
 
-export const Rickroll: Story = {
+export const Basic_QR_Code: Story = {
   render: (args) => ({
     props: args,
     template: `
       <ui-qr-code [value]="value" [size]="size" [foreground]="foreground" [background]="background" ariaLabel="QR code" />
-      <div style="margin-top: 12px; color: #1d232b; background: #f7f8fa; padding: 8px; font-size: 14px;">Scan to get going!</div>
     `,
   }),
   args: {
@@ -97,7 +96,7 @@ export const WiFi: Story = {
     props: args,
     template: `
       <ui-qr-code [value]="value" [size]="size" ariaLabel="WiFi QR code" />
-      <div style="margin-top: 12px; color: #1d232b; background: #f7f8fa; padding: 8px; font-size: 14px;">Scan to connect to WiFi</div>
+      <p>Scan to connect to WiFi</p>
     `,
   }),
   args: {
