@@ -1,0 +1,34 @@
+<div class="timeline-track">
+  @for (event of items(); track event; let i = $index) {
+    <div
+      class="timeline-entry"
+      [class.timeline-entry--start]="alignment() === 'alternate' ? i % 2 === 0 : alignment() === 'start'"
+      [class.timeline-entry--end]="alignment() === 'alternate' ? i % 2 !== 0 : alignment() === 'end'"
+      role="listitem"
+      (click)="handleEventClick(event)"
+      (keydown.enter)="handleEventClick(event)"
+      (keydown.space)="handleEventClick(event)"
+      tabindex="0"
+    >
+      <div class="timeline-marker">
+        <div class="timeline-dot"></div>
+        @if (i < items().length - 1) {
+          <div class="timeline-connector"></div>
+        }
+      </div>
+
+      <div class="timeline-content">
+        @if (useComponentOutlet()) {
+          <ng-container
+            *ngComponentOutlet="resolveComponent(event); inputs: buildComponentInputs(event, i)"
+          />
+        } @else if (eventTemplate()) {
+          <ng-container
+            [ngTemplateOutlet]="eventTemplate()!"
+            [ngTemplateOutletContext]="buildContext(event, i)"
+          />
+        }
+      </div>
+    </div>
+  }
+</div>
