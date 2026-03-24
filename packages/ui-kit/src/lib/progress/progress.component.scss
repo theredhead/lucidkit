@@ -5,12 +5,10 @@
   display: inline-flex;
   align-items: center;
 
-  --ui-accent: #3584e4;
   --ui-track: #d7dce2;
 }
 
 @include mix.dark-mode {
-  --ui-accent: #7ab0ff;
   --ui-track: #505d6d;
 }
 

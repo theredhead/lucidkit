@@ -8,7 +8,6 @@
   --ui-border: #d7dce2;
   --ui-border-strong: #c2c8cf;
   --ui-muted: #5a6470;
-  --ui-accent: #3584e4;
 }
 
 @include mix.dark-mode {
@@ -16,7 +15,6 @@
   --ui-border: #505d6d;
   --ui-border-strong: #617184;
   --ui-muted: #d0d8e3;
-  --ui-accent: #7ab0ff;
 }
 
 button {

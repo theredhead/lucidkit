@@ -6,16 +6,12 @@
   gap: 0.75rem;
   min-width: 120px;
 
-  --ui-accent: #3584e4;
-  --ui-accent-hover: #2b6fc4;
   --ui-track: #d7dce2;
   --ui-text: #1d232b;
   --ui-thumb: #ffffff;
 }
 
 @include mix.dark-mode {
-  --ui-accent: #7ab0ff;
-  --ui-accent-hover: #5a9aef;
   --ui-track: #505d6d;
   --ui-text: #f2f6fb;
   --ui-thumb: #e8edf4;
