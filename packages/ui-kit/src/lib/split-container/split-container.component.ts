@@ -4,11 +4,14 @@ import {
   Component,
   computed,
   ElementRef,
+  inject,
   input,
   output,
   signal,
   viewChild,
 } from "@angular/core";
+
+import { StorageService } from "@theredhead/foundation";
 
 import type {
   SplitCollapseTarget,
@@ -164,6 +167,10 @@ export class UISplitContainer implements AfterViewInit {
   protected readonly preCollapsePercent = signal<
     readonly [number, number] | null
   >(null);
+
+  // ── Private fields ────────────────────────────────────────────────
+
+  private readonly storage = inject(StorageService);
 
   // ── Lifecycle ─────────────────────────────────────────────────────
 
@@ -340,23 +347,19 @@ export class UISplitContainer implements AfterViewInit {
     return clamped;
   }
 
-  /** Persists sizes to localStorage (if a name is set). */
+  /** Persists sizes to storage (if a name is set). */
   private saveSizes(sizes: readonly [number, number]): void {
     const key = this.name();
     if (!key) return;
-    try {
-      localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(sizes));
-    } catch {
-      // Storage full or disabled — silently ignore.
-    }
+    this.storage.setItem(STORAGE_PREFIX + key, JSON.stringify(sizes));
   }
 
-  /** Restores sizes from localStorage (if a name is set). */
+  /** Restores sizes from storage (if a name is set). */
   private loadSizes(): readonly [number, number] | null {
     const key = this.name();
     if (!key) return null;
     try {
-      const raw = localStorage.getItem(STORAGE_PREFIX + key);
+      const raw = this.storage.getItem(STORAGE_PREFIX + key);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
       if (

@@ -35,9 +35,9 @@ const camelCaseData = [
   `,
 })
 class BasicTestComponent {
-  public readonly datasource = signal<
-    IDatasource<Record<string, unknown>>
-  >(new ArrayDatasource(testData));
+  public readonly datasource = signal<IDatasource<Record<string, unknown>>>(
+    new ArrayDatasource(testData),
+  );
 }
 
 @Component({
@@ -52,9 +52,7 @@ class BasicTestComponent {
   `,
 })
 class ConfigTestComponent {
-  public readonly datasource = signal(
-    new ArrayDatasource(camelCaseData),
-  );
+  public readonly datasource = signal(new ArrayDatasource(camelCaseData));
   public readonly config = signal<{
     humanizeHeaders?: boolean;
     headerMap?: Record<string, string>;
@@ -349,9 +347,7 @@ describe("UIAutogenerateColumnsDirective", () => {
         { age: 30, city: "NYC" },
         { age: 25, city: "LA" },
       ];
-      component.datasource.set(
-        new ArrayDatasource(newData),
-      );
+      component.datasource.set(new ArrayDatasource(newData));
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();

@@ -1,4 +1,6 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
+
+import { StorageService } from "@theredhead/foundation";
 
 const STORAGE_PREFIX = "ui-table-col-widths";
 
@@ -13,6 +15,8 @@ export interface ColumnWidthEntry {
  */
 @Injectable({ providedIn: "root" })
 export class ColumnResizeService {
+  private readonly storage = inject(StorageService);
+
   private storageKey(tableId: string): string {
     return `${STORAGE_PREFIX}:${tableId}`;
   }
@@ -26,7 +30,7 @@ export class ColumnResizeService {
     if (!tableId) return map;
 
     try {
-      const raw = localStorage.getItem(this.storageKey(tableId));
+      const raw = this.storage.getItem(this.storageKey(tableId));
       if (raw) {
         const entries: ColumnWidthEntry[] = JSON.parse(raw);
         for (const e of entries) {
@@ -58,7 +62,7 @@ export class ColumnResizeService {
     }
 
     try {
-      localStorage.setItem(this.storageKey(tableId), JSON.stringify(entries));
+      this.storage.setItem(this.storageKey(tableId), JSON.stringify(entries));
     } catch {
       // Storage full or unavailable – silently ignore
     }
@@ -70,7 +74,7 @@ export class ColumnResizeService {
   clear(tableId: string): void {
     if (!tableId) return;
     try {
-      localStorage.removeItem(this.storageKey(tableId));
+      this.storage.removeItem(this.storageKey(tableId));
     } catch {
       // Silently ignore
     }

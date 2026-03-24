@@ -3,6 +3,11 @@ import { TestBed } from "@angular/core/testing";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  type IStorageStrategy,
+  STORAGE_STRATEGY,
+} from "@theredhead/foundation";
+
 import { DEFAULT_THEME_CONFIG, THEME_CONFIG } from "../tokens/theme.tokens";
 import { ThemeService } from "./theme.service";
 
@@ -10,11 +15,23 @@ describe("ThemeService", () => {
   let service: ThemeService;
   let mockDocument: Document;
   let mockLocalStorage: Record<string, string>;
+  let mockStorageStrategy: IStorageStrategy;
   let mockMediaQueryList: MediaQueryList;
   let mediaQueryCallback: ((e: MediaQueryListEvent) => void) | null = null;
 
   beforeEach(() => {
     mockLocalStorage = {};
+
+    mockStorageStrategy = {
+      getItem: vi.fn((key: string) => mockLocalStorage[key] ?? null),
+      setItem: vi.fn((key: string, value: string) => {
+        mockLocalStorage[key] = value;
+      }),
+      removeItem: vi.fn((key: string) => {
+        delete mockLocalStorage[key];
+      }),
+    };
+
     mockMediaQueryList = {
       matches: false,
       media: "(prefers-color-scheme: dark)",
@@ -42,12 +59,6 @@ describe("ThemeService", () => {
       },
       defaultView: {
         matchMedia: vi.fn().mockReturnValue(mockMediaQueryList),
-        localStorage: {
-          getItem: vi.fn((key: string) => mockLocalStorage[key] ?? null),
-          setItem: vi.fn((key: string, value: string) => {
-            mockLocalStorage[key] = value;
-          }),
-        },
       },
     } as unknown as Document;
 
@@ -56,6 +67,7 @@ describe("ThemeService", () => {
         ThemeService,
         { provide: DOCUMENT, useValue: mockDocument },
         { provide: THEME_CONFIG, useValue: DEFAULT_THEME_CONFIG },
+        { provide: STORAGE_STRATEGY, useValue: mockStorageStrategy },
       ],
     });
 
@@ -124,11 +136,11 @@ describe("ThemeService", () => {
     expect(service.themeMode()).toBe("system");
   });
 
-  it("should persist theme to localStorage", () => {
+  it("should persist theme to storage", () => {
     service.setTheme("dark");
     TestBed.flushEffects();
 
-    expect(mockDocument.defaultView?.localStorage.setItem).toHaveBeenCalledWith(
+    expect(mockStorageStrategy.setItem).toHaveBeenCalledWith(
       "theredhead-theme-mode",
       "dark",
     );
@@ -185,28 +197,28 @@ describe("ThemeService", () => {
     expect(service.isDarkMode()).toBe(false);
   });
 
-  it("should restore stored theme from localStorage", () => {
-    // Set up localStorage with a stored value before creating the service
+  it("should restore stored theme from storage", () => {
+    // Set up storage with a stored value before creating the service
     mockLocalStorage["theredhead-theme-mode"] = "dark";
 
     // Re-create service so it reads the stored value
     service = TestBed.inject(ThemeService);
     TestBed.flushEffects();
 
-    // Note: the existing instance already read localStorage in its constructor,
-    // so this verifies getItem was called
-    expect(mockDocument.defaultView?.localStorage.getItem).toHaveBeenCalledWith(
+    // Verify getItem was called with the theme key
+    expect(mockStorageStrategy.getItem).toHaveBeenCalledWith(
       "theredhead-theme-mode",
     );
   });
 
-  it("should handle localStorage throwing (read)", () => {
-    // Replace getItem to throw
-    (
-      mockDocument.defaultView!.localStorage.getItem as ReturnType<typeof vi.fn>
-    ).mockImplementation(() => {
-      throw new Error("SecurityError");
-    });
+  it("should handle storage throwing (read)", () => {
+    const throwingStrategy: IStorageStrategy = {
+      getItem: () => {
+        throw new Error("SecurityError");
+      },
+      setItem: () => {},
+      removeItem: () => {},
+    };
 
     // Re-create service — should not throw
     expect(() => {
@@ -216,6 +228,7 @@ describe("ThemeService", () => {
           ThemeService,
           { provide: DOCUMENT, useValue: mockDocument },
           { provide: THEME_CONFIG, useValue: DEFAULT_THEME_CONFIG },
+          { provide: STORAGE_STRATEGY, useValue: throwingStrategy },
         ],
       });
       TestBed.inject(ThemeService);
@@ -223,9 +236,9 @@ describe("ThemeService", () => {
     }).not.toThrow();
   });
 
-  it("should handle localStorage throwing (write)", () => {
+  it("should handle storage throwing (write)", () => {
     (
-      mockDocument.defaultView!.localStorage.setItem as ReturnType<typeof vi.fn>
+      mockStorageStrategy.setItem as ReturnType<typeof vi.fn>
     ).mockImplementation(() => {
       throw new Error("QuotaExceeded");
     });
@@ -246,6 +259,7 @@ describe("ThemeService", () => {
         ThemeService,
         { provide: DOCUMENT, useValue: mockDocument },
         { provide: THEME_CONFIG, useValue: DEFAULT_THEME_CONFIG },
+        { provide: STORAGE_STRATEGY, useValue: mockStorageStrategy },
       ],
     });
     const svc = TestBed.inject(ThemeService);
@@ -264,6 +278,7 @@ describe("ThemeService", () => {
         ThemeService,
         { provide: DOCUMENT, useValue: mockDocument },
         { provide: THEME_CONFIG, useValue: DEFAULT_THEME_CONFIG },
+        { provide: STORAGE_STRATEGY, useValue: mockStorageStrategy },
       ],
     });
     const svc = TestBed.inject(ThemeService);

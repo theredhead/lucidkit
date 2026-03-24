@@ -30,37 +30,37 @@ import { type FilterFieldDefinition } from "../../filter/filter.types";
 class DemoAutogenerateComponent {
   public readonly datasource = signal(
     new ArrayDatasource([
-        {
-          id: 1,
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@example.com",
-        },
-        {
-          id: 2,
-          firstName: "Jane",
-          lastName: "Smith",
-          email: "jane@example.com",
-        },
-        {
-          id: 3,
-          firstName: "Bob",
-          lastName: "Johnson",
-          email: "bob@example.com",
-        },
-        {
-          id: 4,
-          firstName: "Alice",
-          lastName: "Williams",
-          email: "alice@example.com",
-        },
-        {
-          id: 5,
-          firstName: "Charlie",
-          lastName: "Brown",
-          email: "charlie@example.com",
-        },
-      ]),
+      {
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+      },
+      {
+        id: 2,
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane@example.com",
+      },
+      {
+        id: 3,
+        firstName: "Bob",
+        lastName: "Johnson",
+        email: "bob@example.com",
+      },
+      {
+        id: 4,
+        firstName: "Alice",
+        lastName: "Williams",
+        email: "alice@example.com",
+      },
+      {
+        id: 5,
+        firstName: "Charlie",
+        lastName: "Brown",
+        email: "charlie@example.com",
+      },
+    ]),
   );
 }
 
@@ -78,25 +78,25 @@ class DemoAutogenerateComponent {
 class DemoAutogenerateCustomComponent {
   public readonly datasource = signal(
     new ArrayDatasource([
-        {
-          userId: 1,
-          userName: "john_doe",
-          userEmail: "john@example.com",
-          createdAt: "2024-01-15",
-        },
-        {
-          userId: 2,
-          userName: "jane_smith",
-          userEmail: "jane@example.com",
-          createdAt: "2024-02-20",
-        },
-        {
-          userId: 3,
-          userName: "bob_johnson",
-          userEmail: "bob@example.com",
-          createdAt: "2024-03-10",
-        },
-      ]),
+      {
+        userId: 1,
+        userName: "john_doe",
+        userEmail: "john@example.com",
+        createdAt: "2024-01-15",
+      },
+      {
+        userId: 2,
+        userName: "jane_smith",
+        userEmail: "jane@example.com",
+        createdAt: "2024-02-20",
+      },
+      {
+        userId: 3,
+        userName: "bob_johnson",
+        userEmail: "bob@example.com",
+        createdAt: "2024-03-10",
+      },
+    ]),
   );
 
   public readonly config = signal({
@@ -123,19 +123,19 @@ class DemoAutogenerateCustomComponent {
 class DemoAutogenerateNoHumanizeComponent {
   public readonly datasource = signal(
     new ArrayDatasource([
-        {
-          id: 1,
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@example.com",
-        },
-        {
-          id: 2,
-          firstName: "Jane",
-          lastName: "Smith",
-          email: "jane@example.com",
-        },
-      ]),
+      {
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+      },
+      {
+        id: 2,
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane@example.com",
+      },
+    ]),
   );
 }
 
@@ -400,13 +400,13 @@ class DemoAutogenerateLogsComponent {
 class DemoAutogenerateEmployeesCityComponent {
   public readonly datasource = signal(
     new ArrayDatasource(
-        generateEmployees(150).map((e, i) => ({
-          ...e,
-          city: cities[i % cities.length],
-          floor: (i % 12) + 1,
-          extension: 2000 + i,
-        })),
-      ),
+      generateEmployees(150).map((e, i) => ({
+        ...e,
+        city: cities[i % cities.length],
+        floor: (i % 12) + 1,
+        extension: 2000 + i,
+      })),
+    ),
   );
   public readonly config = signal({
     excludeKeys: ["employeeId"],
@@ -494,9 +494,7 @@ class DemoAutogenerateFilteredProductsComponent {
     },
   });
 
-  public readonly datasource = new FilterableArrayDatasource(
-    productsForFilter,
-  );
+  public readonly datasource = new FilterableArrayDatasource(productsForFilter);
   private readonly table = viewChild.required(UITableView);
 
   public onExpressionChange(
