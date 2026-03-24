@@ -33,10 +33,10 @@
   --ui-text-muted: #5a6470;
   --ui-muted: #5a6470;
   --ui-accent: #3584e4;
-  --ui-accent-hover: #2b6fc4;
+  --ui-accent-hover: color-mix(in srgb, var(--ui-accent) 85%, black);
   --ui-accent-contrast: #ffffff;
   --ui-link: #3584e4;
-  --ui-link-hover: #2b6fc4;
+  --ui-link-hover: color-mix(in srgb, var(--ui-link) 85%, black);
   --ui-info: #1a73e8;
   --ui-warning: #e8a317;
   --ui-success: #1e8e3e;
@@ -149,10 +149,10 @@
   --ui-text-muted: #9ba4ae;
   --ui-muted: #d0d8e3;
   --ui-accent: #7ab0ff;
-  --ui-accent-hover: #5a9aef;
+  --ui-accent-hover: color-mix(in srgb, var(--ui-accent) 85%, white);
   --ui-accent-contrast: #1e2128;
   --ui-link: #7ab0ff;
-  --ui-link-hover: #5a9aef;
+  --ui-link-hover: color-mix(in srgb, var(--ui-link) 85%, white);
   --ui-info: #8ab4f8;
   --ui-warning: #ffd08a;
   --ui-success: #81c995;
