@@ -185,6 +185,36 @@
       background-color 0.2s ease,
       color 0.2s ease;
   }
+
+  // ── Themed scrollbars ────────────────────────────────────────────
+
+  html {
+    color-scheme: light;
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--ui-border) transparent;
+    }
+  }
+
+  html.dark-theme {
+    color-scheme: dark;
+
+    * {
+      scrollbar-color: #4b5563 transparent;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not(.light-theme):not(.dark-theme) {
+      color-scheme: dark;
+
+      * {
+        scrollbar-color: #4b5563 transparent;
+      }
+    }
+  }
+
   // ── Global component styles ──────────────────────────────────────
 
   @include tooltip.ui-tooltip-styles;

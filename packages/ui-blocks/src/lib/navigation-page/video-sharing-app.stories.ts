@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import {
@@ -84,9 +94,135 @@ interface Playlist {
   readonly lastUpdated: string;
 }
 
+// ── Video data generator ─────────────────────────────────────────────
+
+const VIDEO_TITLES_EXTRA: readonly string[] = [
+  "CSS Grid vs Flexbox — When to Use Which",
+  "Exploring Patagonia on a Budget",
+  "Deep House Mix — Late Night Session",
+  "How Batteries Actually Work",
+  "Sushi at Home — Beginner's Guide",
+  "Building CLI Tools with Node.js",
+  "30-Day Fitness Challenge Results",
+  "The Physics of Black Holes Explained",
+  "Night Photography Masterclass",
+  "React vs Angular vs Vue in 2026",
+  "Thai Street Food Tour — Bangkok",
+  "Ambient Study Music — 4 Hour Mix",
+  "How GPS Satellites Work",
+  "One-Pan Pasta Recipes — 5 Ideas",
+  "Debugging Like a Senior Developer",
+  "HIIT Workout — No Equipment Needed",
+  "What Happens Inside a Nuclear Reactor",
+  "Film Photography on a Budget",
+  "Docker & Kubernetes Crash Course",
+  "Hidden Beaches of Portugal",
+  "Jazz Piano Improvisation Tips",
+  "The Science of Sleep",
+  "Korean BBQ at Home — Full Guide",
+  "Git Rebase vs Merge — Finally Explained",
+  "Cycling Across Japan — Day 1",
+  "Lo-fi Jazz & Rain Sounds — 3 Hours",
+  "How Transistors Changed the World",
+  "Meal Prep Sunday — Healthy Lunches",
+  "System Design Interview Prep",
+  "Sunrise Yoga on the Beach",
+  "The True Scale of the Universe",
+  "Macro Photography Tips & Tricks",
+  "Building a Game Engine from Scratch",
+  "Backpacking Through Vietnam",
+  "Acoustic Guitar Covers Playlist",
+  "How mRNA Vaccines Work",
+  "Perfect Sourdough Bread Recipe",
+  "Rust Programming for Beginners",
+  "Full Body Stretch Routine — 15 Min",
+  "Why the Ocean is Salty",
+  "Architectural Photography Guide",
+];
+
+const CHANNEL_POOL: readonly { name: string; avatar: string }[] = [
+  { name: "CodeCraft Studio", avatar: "CC" },
+  { name: "ChillWave Radio", avatar: "CW" },
+  { name: "Wanderlust Diaries", avatar: "WD" },
+  { name: "ScienceNova", avatar: "SN" },
+  { name: "Umami Kitchen", avatar: "UK" },
+  { name: "DevTools Daily", avatar: "DD" },
+  { name: "ZenBody Fitness", avatar: "ZB" },
+  { name: "LensLife", avatar: "LL" },
+  { name: "PixelPlay", avatar: "PP" },
+  { name: "BeatStream", avatar: "BS" },
+];
+
+const CATEGORY_POOL: readonly string[] = [
+  "Education",
+  "Music",
+  "Travel",
+  "Science",
+  "Food",
+  "Fitness",
+  "Gaming",
+];
+
+const VIEW_POOL: readonly string[] = [
+  "1.2M views",
+  "845K views",
+  "3.4M views",
+  "210K views",
+  "560K views",
+  "92K views",
+  "1.7M views",
+  "430K views",
+  "2.1M views",
+  "78K views",
+  "1.5M views",
+  "320K views",
+];
+
+const UPLOAD_POOL: readonly string[] = [
+  "2 hours ago",
+  "1 day ago",
+  "3 days ago",
+  "1 week ago",
+  "2 weeks ago",
+  "1 month ago",
+  "3 months ago",
+  "6 months ago",
+];
+
+function generateDuration(idx: number): string {
+  const mins = 5 + ((idx * 7 + 3) % 55);
+  const secs = (idx * 13 + 7) % 60;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
+function generateExtendedVideos(seed: Video[], total: number): Video[] {
+  const result = [...seed];
+  let nextId = seed.length + 1;
+  for (let i = 0; result.length < total; i++) {
+    const titleIdx = i % VIDEO_TITLES_EXTRA.length;
+    const ch = CHANNEL_POOL[i % CHANNEL_POOL.length];
+    const cat = CATEGORY_POOL[i % CATEGORY_POOL.length];
+    result.push({
+      id: nextId++,
+      title: VIDEO_TITLES_EXTRA[titleIdx],
+      channel: ch.name,
+      channelAvatar: ch.avatar,
+      views: VIEW_POOL[i % VIEW_POOL.length],
+      uploaded: UPLOAD_POOL[i % UPLOAD_POOL.length],
+      duration: generateDuration(i),
+      category: cat,
+      likes: 1000 + ((i * 1237) % 90000),
+      dislikes: 10 + ((i * 37) % 800),
+      comments: 50 + ((i * 89) % 5000),
+      status: "published",
+    });
+  }
+  return result;
+}
+
 // ── Seed data ────────────────────────────────────────────────────────
 
-const VIDEOS: Video[] = [
+const VIDEOS_SEED: Video[] = [
   {
     id: 1,
     title: "Building a REST API from Scratch — Full Course",
@@ -256,6 +392,8 @@ const VIDEOS: Video[] = [
     status: "removed",
   },
 ];
+
+const VIDEOS = generateExtendedVideos(VIDEOS_SEED, 60);
 
 const CHANNELS: Channel[] = [
   {
@@ -579,7 +717,7 @@ function formatNumber(n: number): string {
   styles: [
     `
       :host {
-        display: grid;
+        display: block;
         height: 100vh;
         overflow: hidden;
       }
@@ -588,6 +726,19 @@ function formatNumber(n: number): string {
         display: flex;
         flex-direction: column;
         height: 100%;
+      }
+
+      .home-top-bar {
+        position: sticky;
+        top: -1.5rem;
+        z-index: 2;
+        background: var(--ui-content-bg, #f9fafb);
+        margin: -1.5rem -1.5rem 1rem;
+        padding: 1.5rem 1.5rem 0.75rem;
+      }
+
+      .home-top-bar .category-strip {
+        margin-bottom: 0;
       }
 
       .page-fill > ui-tab-group {
@@ -917,6 +1068,14 @@ function formatNumber(n: number): string {
         overflow-y: auto;
         padding-right: 0.25rem;
       }
+
+      /* Load more sentinel */
+      .load-more-sentinel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+      }
     `,
   ],
   template: `
@@ -928,7 +1087,7 @@ function formatNumber(n: number): string {
       <ng-template #content let-node>
         <!-- ─── Home ─── -->
         @if (node.id === "home") {
-          <div class="page-fill">
+          <div class="home-top-bar">
             <div class="page-header">
               <div class="page-title">
                 <ui-icon [svg]="icons.home" [size]="24" />
@@ -953,30 +1112,37 @@ function formatNumber(n: number): string {
                 </ui-chip>
               }
             </div>
-
-            <div class="scroll-area">
-              <div class="video-grid">
-                @for (video of publishedVideos; track video.id) {
-                  <div>
-                    <div class="video-thumb">
-                      <ui-icon [svg]="icons.play" [size]="32" />
-                      <span class="video-duration">{{ video.duration }}</span>
-                    </div>
-                    <div class="video-meta">
-                      <ui-avatar [name]="video.channel" size="sm" />
-                      <div class="video-info">
-                        <p class="video-title">{{ video.title }}</p>
-                        <p class="video-channel-name">{{ video.channel }}</p>
-                        <p class="video-stats">
-                          {{ video.views }} · {{ video.uploaded }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                }
-              </div>
-            </div>
           </div>
+
+          <div class="video-grid">
+            @for (video of visibleVideos(); track video.id) {
+              <div>
+                <div class="video-thumb">
+                  <ui-icon [svg]="icons.play" [size]="32" />
+                  <span class="video-duration">{{ video.duration }}</span>
+                </div>
+                <div class="video-meta">
+                  <ui-avatar [name]="video.channel" size="sm" />
+                  <div class="video-info">
+                    <p class="video-title">{{ video.title }}</p>
+                    <p class="video-channel-name">{{ video.channel }}</p>
+                    <p class="video-stats">
+                      {{ video.views }} · {{ video.uploaded }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          @if (hasMoreVideos()) {
+            <div class="load-more-sentinel" #loadMoreSentinel>
+              <ui-progress
+                variant="circular"
+                mode="indeterminate"
+                ariaLabel="Loading more videos"
+              />
+            </div>
+          }
         }
 
         <!-- ─── Trending ─── -->
@@ -1847,6 +2013,20 @@ class VideoSharingAppDemo {
   protected readonly publishedVideos = VIDEOS.filter(
     (v) => v.status === "published",
   );
+
+  private readonly videoBatchSize = 12;
+  protected readonly visibleVideoCount = signal(12);
+  protected readonly visibleVideos = computed(() =>
+    this.publishedVideos.slice(0, this.visibleVideoCount()),
+  );
+  protected readonly hasMoreVideos = computed(
+    () => this.visibleVideoCount() < this.publishedVideos.length,
+  );
+
+  protected readonly loadMoreSentinel =
+    viewChild<ElementRef<HTMLElement>>("loadMoreSentinel");
+
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly trendingVideos = [...VIDEOS]
     .filter((v) => v.status === "published")
     .sort((a, b) => b.likes - a.likes)
@@ -1924,6 +2104,47 @@ class VideoSharingAppDemo {
 
   protected formatNum(n: number): string {
     return formatNumber(n);
+  }
+
+  public constructor() {
+    afterNextRender(() => this.setupInfiniteScroll());
+  }
+
+  private setupInfiniteScroll(): void {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && this.hasMoreVideos()) {
+          this.loadMoreVideos();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    this.destroyRef.onDestroy(() => observer.disconnect());
+
+    // Re-observe whenever the sentinel element (re)appears
+    let currentEl: HTMLElement | null = null;
+    const check = (): void => {
+      const el = this.loadMoreSentinel()?.nativeElement ?? null;
+      if (el !== currentEl) {
+        if (currentEl) observer.unobserve(currentEl);
+        if (el) observer.observe(el);
+        currentEl = el;
+      }
+      if (!this.destroyed) requestAnimationFrame(check);
+    };
+    check();
+    this.destroyRef.onDestroy(() => {
+      this.destroyed = true;
+    });
+  }
+
+  private destroyed = false;
+
+  private loadMoreVideos(): void {
+    this.visibleVideoCount.update((n) =>
+      Math.min(n + this.videoBatchSize, this.publishedVideos.length),
+    );
   }
 }
 
