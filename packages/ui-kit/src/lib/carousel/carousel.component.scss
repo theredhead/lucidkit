@@ -1,4 +1,4 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 :host {
   display: block;
@@ -9,7 +9,7 @@
   --ui-text: #1d232b;
   --ui-border: #d7dce2;
   --ui-indicator: #bbc3cc;
-  --ui-indicator-active: #3584e4;
+  --ui-indicator-active: var(--ui-accent, #3584e4);
   --ui-btn-bg: rgba(255, 255, 255, 0.85);
   --ui-btn-hover: rgba(255, 255, 255, 1);
   --ui-btn-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
@@ -20,7 +20,7 @@
   --ui-text: #f2f6fb;
   --ui-border: #3a3f47;
   --ui-indicator: #505d6d;
-  --ui-indicator-active: #7ab0ff;
+  --ui-indicator-active: var(--ui-accent, #7ab0ff);
   --ui-btn-bg: rgba(30, 34, 40, 0.85);
   --ui-btn-hover: rgba(30, 34, 40, 1);
   --ui-btn-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);

@@ -6,7 +6,7 @@
 
 :host {
   --mv-font: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
-  --mv-accent: #3584e4;
+  --mv-accent: var(--ui-accent, #3584e4);
   --mv-highlight: #e5a00d;
   --mv-text: #1d232b;
   --mv-muted: #5a6470;
@@ -29,7 +29,7 @@
 /* ── Dark theme ───────────────────────────────────────────────── */
 
 @include mix.dark-mode {
-  --mv-accent: #7ab0ff;
+  --mv-accent: var(--ui-accent, #7ab0ff);
   --mv-highlight: #ffd08a;
   --mv-text: #f2f6fb;
   --mv-muted: #d0d8e3;

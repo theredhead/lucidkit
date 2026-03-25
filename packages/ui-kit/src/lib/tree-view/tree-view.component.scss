@@ -3,7 +3,7 @@
 :host {
   --ui-tree-text: #1d232b;
   --ui-tree-border: #d7dce2;
-  --ui-tree-accent: #3584e4;
+  --ui-tree-accent: var(--ui-accent, #3584e4);
   --ui-tree-surface: transparent;
 
   display: block;
@@ -15,5 +15,5 @@
 @include mix.dark-mode {
   --ui-tree-text: #f2f6fb;
   --ui-tree-border: #3a3f47;
-  --ui-tree-accent: #7ab0ff;
+  --ui-tree-accent: var(--ui-accent, #7ab0ff);
 }

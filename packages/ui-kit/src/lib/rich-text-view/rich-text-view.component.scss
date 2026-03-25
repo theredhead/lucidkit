@@ -1,10 +1,10 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 :host {
   display: block;
 
   --ui-rtv-text: #1d232b;
-  --ui-rtv-link: #3584e4;
+  --ui-rtv-link: var(--ui-accent, #3584e4);
   --ui-rtv-border: #d7dce2;
 }
 
@@ -12,7 +12,7 @@
 
 @include mix.dark-mode {
   --ui-rtv-text: #f2f6fb;
-  --ui-rtv-link: #78b9f7;
+  --ui-rtv-link: var(--ui-accent, #78b9f7);
   --ui-rtv-border: #3a3f47;
 }
 

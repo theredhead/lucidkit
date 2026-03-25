@@ -36,8 +36,8 @@
 }
 
 :host(.ui-chip--primary) {
-  background: #dbeafe;
-  color: #1e40af;
+  background: color-mix(in srgb, var(--ui-accent, #3584e4) 15%, transparent);
+  color: var(--ui-accent, #1e40af);
 }
 
 :host(.ui-chip--success) {
@@ -59,8 +59,8 @@
 
 @include mix.dark-mode {
   &.ui-chip--primary {
-    background: rgba(122, 176, 255, 0.2);
-    color: #7ab0ff;
+    background: color-mix(in srgb, var(--ui-accent, #7ab0ff) 20%, transparent);
+    color: var(--ui-accent, #7ab0ff);
   }
   &.ui-chip--success {
     background: rgba(87, 227, 137, 0.2);
