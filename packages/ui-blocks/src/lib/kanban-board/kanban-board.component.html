@@ -1,0 +1,44 @@
+<div class="kanban-columns" cdkDropListGroup role="region" [attr.aria-label]="ariaLabel()">
+  @for (column of columns(); track column.id) {
+    <div class="kanban-column" [style.border-top-color]="column.color ?? null">
+      <div class="kanban-column-header">
+        <span class="kanban-column-title">{{ column.title }}</span>
+        <span class="kanban-column-count" [attr.aria-label]="column.cards.length + ' cards'">
+          {{ column.cards.length }}
+        </span>
+      </div>
+
+      <div
+        class="kanban-column-body"
+        cdkDropList
+        [cdkDropListData]="column.cards"
+        [id]="column.id"
+        (cdkDropListDropped)="onDrop($event)"
+      >
+        @for (card of column.cards; track card.id) {
+          <div
+            class="kanban-card-wrapper"
+            cdkDrag
+            [cdkDragData]="card"
+            tabindex="0"
+            role="listitem"
+            (click)="onCardClick(card)"
+            (keydown.enter)="onCardClick(card)"
+          >
+            <div cdkDragPlaceholder class="kanban-card-placeholder"></div>
+
+            @if (cardTemplate(); as tpl) {
+              <ng-container
+                *ngTemplateOutlet="tpl; context: { $implicit: card, column: column }"
+              />
+            } @else {
+              <div class="kanban-card-fallback">{{ card.id }}</div>
+            }
+          </div>
+        } @empty {
+          <div class="kanban-column-empty">No cards</div>
+        }
+      </div>
+    </div>
+  }
+</div>

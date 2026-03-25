@@ -22,3 +22,5 @@ export * from "./lib/file-browser";
 export * from "./lib/chat-view";
 
 export * from "./lib/wizard";
+
+export * from "./lib/kanban-board";
