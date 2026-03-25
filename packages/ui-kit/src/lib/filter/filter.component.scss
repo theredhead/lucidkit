@@ -1,4 +1,4 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 :host {
   /* ── Light-theme tokens (match table-view) ── */
@@ -60,6 +60,10 @@
     border-bottom: 1px solid var(--ui-border);
     margin-bottom: 0.625rem;
     user-select: none;
+  }
+
+  &__header-spacer {
+    flex: 1;
   }
 
   &__mode-toggle {

@@ -20,6 +20,8 @@ import { LoggerFactory } from "@theredhead/foundation";
 
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
+import { UIEmojiPicker } from "../emoji-picker/emoji-picker.component";
+import type { EmojiCategory } from "../emoji-picker/emoji-picker.types";
 import { PopoverService } from "../popover/popover.service";
 import {
   UILinkDialog,
@@ -101,7 +103,7 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
 @Component({
   selector: "ui-rich-text-editor",
   standalone: true,
-  imports: [UIIcon],
+  imports: [UIIcon, UIEmojiPicker],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./rich-text-editor.component.html",
   styleUrl: "./rich-text-editor.component.scss",
@@ -243,6 +245,13 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     undefined,
   );
 
+  /**
+   * Optional custom emoji categories for the inline emoji
+   * picker.  When not provided the picker uses the default
+   * comprehensive emoji set.
+   */
+  public readonly emojiCategories = input<readonly EmojiCategory[]>([]);
+
   // ── Two-way value ──────────────────────────────────────────
 
   /**
@@ -290,8 +299,14 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** Whether the editor is in raw source editing mode. */
   protected readonly isSourceMode = signal(false);
 
+  /** Whether the emoji picker dropdown is open. */
+  protected readonly isEmojiPickerOpen = signal(false);
+
   /** SVG content for the source-toggle toolbar button. @internal */
   protected readonly sourceIcon = UIIcons.Lucide.Development.CodeXml;
+
+  /** SVG content for the emoji toolbar button. @internal */
+  protected readonly emojiIcon = UIIcons.Lucide.Emoji.Smile;
 
   /**
    * Whether the editor is in Markdown mode.  In this mode the
@@ -482,6 +497,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       this.isSourceMode.set(false);
       this.openDropdownGroup.set(null);
       this.isPlaceholderPickerOpen.set(false);
+      this.isEmojiPickerOpen.set(false);
       this.activeFormats.set(new Set());
       this.renderToEditor(this.value());
     });
@@ -502,7 +518,11 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
     // Close dropdowns on outside click
     const onDocumentClick = (event: MouseEvent) => {
-      if (!this.openDropdownGroup() && !this.isPlaceholderPickerOpen()) {
+      if (
+        !this.openDropdownGroup() &&
+        !this.isPlaceholderPickerOpen() &&
+        !this.isEmojiPickerOpen()
+      ) {
         return;
       }
       const target = event.target as HTMLElement;
@@ -512,12 +532,16 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       if (!host.contains(target)) {
         this.openDropdownGroup.set(null);
         this.isPlaceholderPickerOpen.set(false);
+        this.isEmojiPickerOpen.set(false);
         return;
       }
-      const inDropdown = target.closest(".dropdown-group, .placeholder-picker");
+      const inDropdown = target.closest(
+        ".dropdown-group, .placeholder-picker, .emoji-picker-wrapper",
+      );
       if (!inDropdown) {
         this.openDropdownGroup.set(null);
         this.isPlaceholderPickerOpen.set(false);
+        this.isEmojiPickerOpen.set(false);
       }
     };
     document.addEventListener("click", onDocumentClick, true);
@@ -664,6 +688,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected toggleDropdownGroup(group: string): void {
     if (this.disabled() || this.readonly()) return;
     this.isPlaceholderPickerOpen.set(false);
+    this.isEmojiPickerOpen.set(false);
     this.openDropdownGroup.update((current) =>
       current === group ? null : group,
     );
@@ -673,6 +698,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected togglePlaceholderPicker(): void {
     if (this.disabled() || this.readonly()) return;
     this.openDropdownGroup.set(null);
+    this.isEmojiPickerOpen.set(false);
     this.isPlaceholderPickerOpen.update((v) => {
       if (v) this.placeholderSearchTerm.set("");
       return !v;
@@ -683,6 +709,80 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected closePlaceholderPicker(): void {
     this.isPlaceholderPickerOpen.set(false);
     this.placeholderSearchTerm.set("");
+  }
+
+  // ── Emoji picker ──────────────────────────────────────────
+
+  /**
+   * Toggles the emoji picker dropdown.
+   * @internal
+   */
+  protected toggleEmojiPicker(): void {
+    if (this.disabled() || this.readonly()) return;
+    this.openDropdownGroup.set(null);
+    this.isPlaceholderPickerOpen.set(false);
+    this.isEmojiPickerOpen.update((v) => !v);
+  }
+
+  /**
+   * Inserts the selected emoji at the current caret position.
+   * @internal
+   */
+  protected insertEmoji(emoji: string): void {
+    if (this.disabled() || this.readonly()) return;
+    this.isEmojiPickerOpen.set(false);
+
+    if (this.isMarkdownMode()) {
+      this.insertEmojiMarkdown(emoji);
+    } else {
+      this.insertEmojiHtml(emoji);
+    }
+  }
+
+  /**
+   * Inserts an emoji character into the contenteditable editor
+   * (HTML mode).
+   * @internal
+   */
+  private insertEmojiHtml(emoji: string): void {
+    this.restoreFocus();
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+      range.deleteContents();
+      const textNode = document.createTextNode(emoji);
+      range.insertNode(textNode);
+      range.setStartAfter(textNode);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else {
+      this.editorRef().nativeElement.appendChild(
+        document.createTextNode(emoji),
+      );
+    }
+    this.syncValueFromEditor();
+  }
+
+  /**
+   * Inserts an emoji character into the Markdown textarea.
+   * @internal
+   */
+  private insertEmojiMarkdown(emoji: string): void {
+    const strat = this.strategy();
+    if (strat instanceof MarkdownEditingStrategy && strat.textareaEl) {
+      const textarea = strat.textareaEl;
+      const { selectionStart, selectionEnd, value } = textarea;
+      textarea.value =
+        value.substring(0, selectionStart) +
+        emoji +
+        value.substring(selectionEnd);
+      textarea.selectionStart = selectionStart + emoji.length;
+      textarea.selectionEnd = selectionStart + emoji.length;
+      textarea.focus();
+      textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    this.syncValueFromEditor();
   }
 
   /**
@@ -704,6 +804,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     if (this.disabled() || this.readonly()) return;
     this.openDropdownGroup.set(null);
     this.isPlaceholderPickerOpen.set(false);
+    this.isEmojiPickerOpen.set(false);
 
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0) {
@@ -788,6 +889,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     if (this.disabled() || this.readonly()) return;
     this.openDropdownGroup.set(null);
     this.isPlaceholderPickerOpen.set(false);
+    this.isEmojiPickerOpen.set(false);
 
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0) {
@@ -902,6 +1004,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     if (this.disabled() || this.readonly()) return;
     this.openDropdownGroup.set(null);
     this.isPlaceholderPickerOpen.set(false);
+    this.isEmojiPickerOpen.set(false);
     this.isSourceMode.update((v) => !v);
   }
 

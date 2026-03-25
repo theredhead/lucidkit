@@ -87,6 +87,23 @@ html.dark-theme dialog.ui-dialog-service::backdrop {
  * dynamically render a component, pass inputs/outputs, and collect a
  * typed result via {@link ModalRef.closed}.
  *
+ * ## When to use `ModalService` vs {@link UIDialog}
+ *
+ * | Scenario | Recommended |
+ * |----------|-------------|
+ * | Dialog content is determined at runtime | `ModalService` |
+ * | Opening a dialog from a service, guard, or resolver | `ModalService` |
+ * | You need a typed result observable (`ModalRef.closed`) | `ModalService` |
+ * | You want to pass dynamic inputs/outputs programmatically | `ModalService` |
+ * | Dialog content is known at compile time | {@link UIDialog} |
+ * | Dialog is tied to a specific view or form | {@link UIDialog} |
+ * | You want template-driven two-way binding (`[(open)]`) | {@link UIDialog} |
+ *
+ * **Rule of thumb:** reach for `ModalService` when the dialog must be
+ * spawned dynamically, reused across features, or opened from
+ * non-component code. Reach for {@link UIDialog} when you own the
+ * template and the dialog lives alongside its trigger.
+ *
  * @example
  * ```ts
  * const ref = this.modal.openModal<MyDialog, string>({

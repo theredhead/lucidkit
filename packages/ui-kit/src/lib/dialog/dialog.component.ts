@@ -15,7 +15,21 @@ import {
  * Provides header / body / footer content slots. Open and close it
  * via the `open` two-way binding or by calling `show()` / `close()`.
  *
- * For programmatic service-based modals see {@link ModalService}.
+ * ## When to use `UIDialog` vs {@link ModalService}
+ *
+ * | Scenario | Recommended |
+ * |----------|-------------|
+ * | Dialog content is known at compile time | `UIDialog` |
+ * | Dialog is tied to a specific view or form | `UIDialog` |
+ * | You want template-driven two-way binding (`[(open)]`) | `UIDialog` |
+ * | Dialog content is determined at runtime | {@link ModalService} |
+ * | You need to open a dialog from a service or guard | {@link ModalService} |
+ * | You need a typed result (`ModalRef.closed`) | {@link ModalService} |
+ * | You want to pass dynamic inputs/outputs programmatically | {@link ModalService} |
+ *
+ * **Rule of thumb:** reach for `UIDialog` when you own the template and
+ * the dialog lives alongside its trigger. Reach for {@link ModalService}
+ * when the dialog must be spawned dynamically or from non-component code.
  *
  * @example
  * ```html

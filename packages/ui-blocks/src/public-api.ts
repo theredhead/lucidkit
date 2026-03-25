@@ -10,3 +10,7 @@ export {
 export * from "./lib/dashboard";
 
 export * from "./lib/navigation-page";
+
+export * from "./lib/search-view";
+
+export * from "./lib/property-sheet";

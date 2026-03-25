@@ -228,6 +228,21 @@
   }
 }
 
+/* ── Emoji picker ──────────────────────────────────────── */
+
+.emoji-picker-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.emoji-picker-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 110;
+  margin-top: 0.25rem;
+}
+
 /* ── Editor wrapper ────────────────────────────────────── */
 
 .editor-wrapper {
