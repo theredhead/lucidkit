@@ -1,0 +1,79 @@
+@if (showStepIndicator()) {
+  <nav class="wizard-indicator" [attr.aria-label]="ariaLabel() + ' steps'" role="tablist">
+    @for (step of steps(); track $index; let i = $index) {
+      @if (i > 0) {
+        <div
+          class="wizard-connector"
+          [class.wizard-connector--completed]="i <= activeIndex()"
+        ></div>
+      }
+
+      <button
+        type="button"
+        class="wizard-step-indicator"
+        [class.wizard-step-indicator--active]="i === activeIndex()"
+        [class.wizard-step-indicator--completed]="i < activeIndex()"
+        [class.wizard-step-indicator--clickable]="isStepClickable(i)"
+        [disabled]="!isStepClickable(i)"
+        role="tab"
+        [attr.aria-selected]="i === activeIndex()"
+        [attr.aria-label]="step.label()"
+        (click)="onStepClick(i)"
+      >
+        <span class="wizard-step-number">
+          @if (i < activeIndex()) {
+            <ui-icon [svg]="checkIcon" [size]="14" />
+          } @else {
+            {{ i + 1 }}
+          }
+        </span>
+        <span class="wizard-step-label">
+          {{ step.label() }}
+          @if (step.optional()) {
+            <span class="wizard-step-optional">Optional</span>
+          }
+        </span>
+      </button>
+    }
+  </nav>
+}
+
+<div class="wizard-content" role="tabpanel">
+  @if (activeStep(); as step) {
+    <ng-container *ngTemplateOutlet="step.contentTemplate()" />
+  }
+</div>
+
+<div class="wizard-navigation">
+  @if (!isFirstStep()) {
+    <button
+      type="button"
+      class="wizard-nav-button wizard-nav-button--back"
+      (click)="previous()"
+    >
+      {{ backLabel() }}
+    </button>
+  }
+
+  <div class="wizard-nav-spacer"></div>
+
+  @if (isLastStep()) {
+    <button
+      type="button"
+      class="wizard-nav-button wizard-nav-button--finish"
+      [disabled]="!canGoNext()"
+      (click)="finish()"
+    >
+      {{ finishLabel() }}
+    </button>
+  } @else {
+    <button
+      type="button"
+      class="wizard-nav-button wizard-nav-button--next"
+      [disabled]="!canGoNext()"
+      (click)="next()"
+    >
+      {{ nextLabel() }}
+    </button>
+  }
+</div>
