@@ -5,14 +5,14 @@
   align-items: center;
   justify-content: center;
 
-  --ui-badge-bg: #3584e4;
+  --ui-badge-bg: var(--ui-accent, #3584e4);
   --ui-badge-text: #ffffff;
 }
 
 /* ── Color variants ── */
 
 :host(.ui-badge--primary) {
-  --ui-badge-bg: #3584e4;
+  --ui-badge-bg: var(--ui-accent, #3584e4);
 }
 
 :host(.ui-badge--success) {
@@ -36,7 +36,7 @@
 
 @include mix.dark-mode {
   &.ui-badge--primary {
-    --ui-badge-bg: #7ab0ff;
+    --ui-badge-bg: var(--ui-accent, #7ab0ff);
     --ui-badge-text: #1d232b;
   }
   &.ui-badge--success {

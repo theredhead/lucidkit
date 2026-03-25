@@ -1,4 +1,4 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 // ── Light defaults ──
 :host {
@@ -9,7 +9,7 @@
   --ui-divider-width: 6px;
   --ui-divider-bg: #e2e6eb;
   --ui-divider-bg-hover: #c8cdd4;
-  --ui-divider-bg-active: #3584e4;
+  --ui-divider-bg-active: var(--ui-accent, #3584e4);
   --ui-divider-handle: #a0a8b4;
   --ui-divider-handle-hover: #6b7685;
 }
@@ -17,7 +17,7 @@
 @include mix.dark-mode {
   --ui-divider-bg: #3a3f47;
   --ui-divider-bg-hover: #505860;
-  --ui-divider-bg-active: #7ab0ff;
+  --ui-divider-bg-active: var(--ui-accent, #7ab0ff);
   --ui-divider-handle: #6b7685;
   --ui-divider-handle-hover: #a0a8b4;
 }

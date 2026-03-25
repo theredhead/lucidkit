@@ -5,15 +5,15 @@
   display: block;
 
   --ui-text: #1d232b;
-  --ui-link: #3584e4;
-  --ui-link-hover: #2b6fc4;
+  --ui-link: var(--ui-accent, #3584e4);
+  --ui-link-hover: var(--ui-accent-hover, #2b6fc4);
   --ui-muted: #5a6470;
 }
 
 @include mix.dark-mode {
   --ui-text: #f2f6fb;
-  --ui-link: #7ab0ff;
-  --ui-link-hover: #5a9aef;
+  --ui-link: var(--ui-accent, #7ab0ff);
+  --ui-link-hover: var(--ui-accent-hover, #5a9aef);
   --ui-muted: #d0d8e3;
 }
 
