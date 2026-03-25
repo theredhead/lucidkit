@@ -18,3 +18,5 @@ export * from "./lib/property-sheet";
 export * from "./lib/command-palette";
 
 export * from "./lib/file-browser";
+
+export * from "./lib/chat-view";
