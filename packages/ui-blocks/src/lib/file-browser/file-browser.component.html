@@ -1,0 +1,74 @@
+<div class="fb-header">
+  <ui-breadcrumb
+    [items]="breadcrumbItems()"
+    variant="button"
+    ariaLabel="File path"
+    (itemClicked)="onBreadcrumbClick($event)"
+  />
+</div>
+
+<div class="fb-body">
+  <!-- Sidebar: Folder tree -->
+  @if (showSidebar()) {
+    <div class="fb-sidebar">
+      <ui-tree-view
+        #treeView
+        [datasource]="treeDatasource()"
+        [displayWith]="displayNodeLabel"
+        ariaLabel="Folder tree"
+        [selected]="treeSelected()"
+        (selectedChange)="onTreeNodeSelected($event)"
+        (nodeActivated)="onTreeNodeActivated($event)"
+      >
+        <ng-template #nodeTemplate let-node>
+          <ui-icon
+            [svg]="node.data.icon ?? icons.folder"
+            [size]="16"
+          />
+          <span class="fb-node-label">{{ node.data.name }}</span>
+        </ng-template>
+      </ui-tree-view>
+    </div>
+  }
+
+  <!-- Main panel: Directory contents -->
+  <div class="fb-contents" role="list" [attr.aria-label]="ariaLabel()">
+    @if (contents().length === 0) {
+      <div class="fb-empty">Empty folder</div>
+    } @else {
+      @for (entry of contents(); track entry.id) {
+        <div
+          class="fb-entry"
+          role="listitem"
+          tabindex="0"
+          [class.fb-entry--selected]="isEntrySelected(entry)"
+          [class.fb-entry--directory]="entry.isDirectory"
+          (click)="onEntryClick(entry)"
+          (dblclick)="onEntryDblClick(entry)"
+          (keydown)="onEntryKeydown($event, entry)"
+        >
+          @if (entryTemplate(); as tpl) {
+            <ng-container
+              [ngTemplateOutlet]="tpl"
+              [ngTemplateOutletContext]="{ $implicit: entry }"
+            />
+          } @else {
+            <ui-icon
+              class="fb-entry-icon"
+              [svg]="getEntryIcon(entry)"
+              [size]="18"
+            />
+            <span class="fb-entry-name">{{ entry.name }}</span>
+            @if (entry.isDirectory) {
+              <ui-icon
+                class="fb-entry-chevron"
+                [svg]="icons.chevronRight"
+                [size]="14"
+              />
+            }
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

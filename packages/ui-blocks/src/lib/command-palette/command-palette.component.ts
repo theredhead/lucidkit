@@ -60,9 +60,7 @@ export class UICommandPalette<C = unknown> {
   // ── Inputs ────────────────────────────────────────────────────────
 
   /** The full list of available commands. */
-  public readonly commands = input.required<
-    readonly CommandPaletteItem<C>[]
-  >();
+  public readonly commands = input.required<readonly CommandPaletteItem<C>[]>();
 
   /** Placeholder text for the search input. */
   public readonly placeholder = input<string>("Type a command…");
@@ -278,10 +276,7 @@ export class UICommandPalette<C = unknown> {
   }
 
   /** @internal — compute the flat index for a group item. */
-  protected getFlatIndex(
-    groupIndex: number,
-    itemIndex: number,
-  ): number {
+  protected getFlatIndex(groupIndex: number, itemIndex: number): number {
     const groups = this.filteredGroups();
     let offset = this.showRecent() ? this.recentCommands().length : 0;
     for (let g = 0; g < groupIndex; g++) {
