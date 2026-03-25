@@ -6,9 +6,25 @@ const COMMANDS: CommandPaletteItem[] = [
   { id: "save", label: "Save File", group: "File", shortcut: "Cmd+S" },
   { id: "open", label: "Open File", group: "File", shortcut: "Cmd+O" },
   { id: "close", label: "Close Tab", group: "File" },
-  { id: "find", label: "Find in Files", group: "Search", shortcut: "Cmd+Shift+F", keywords: ["grep", "search"] },
-  { id: "replace", label: "Find and Replace", group: "Search", shortcut: "Cmd+H" },
-  { id: "settings", label: "Open Settings", group: "Preferences", icon: "<path d='M0 0'/>" },
+  {
+    id: "find",
+    label: "Find in Files",
+    group: "Search",
+    shortcut: "Cmd+Shift+F",
+    keywords: ["grep", "search"],
+  },
+  {
+    id: "replace",
+    label: "Find and Replace",
+    group: "Search",
+    shortcut: "Cmd+H",
+  },
+  {
+    id: "settings",
+    label: "Open Settings",
+    group: "Preferences",
+    icon: "<path d='M0 0'/>",
+  },
   { id: "disabled-cmd", label: "Disabled Action", disabled: true },
 ];
 
@@ -117,11 +133,10 @@ describe("UICommandPalette", () => {
     });
 
     it("should display group headings", () => {
-      const headings = fixture.nativeElement.querySelectorAll(
-        ".cp-group-heading",
-      );
-      const texts = Array.from(headings).map(
-        (h: unknown) => (h as HTMLElement).textContent?.trim(),
+      const headings =
+        fixture.nativeElement.querySelectorAll(".cp-group-heading");
+      const texts = Array.from(headings).map((h: unknown) =>
+        (h as HTMLElement).textContent?.trim(),
       );
       expect(texts).toContain("File");
       expect(texts).toContain("Search");
@@ -206,8 +221,8 @@ describe("UICommandPalette", () => {
       component.execute.subscribe(spy);
       const items = fixture.nativeElement.querySelectorAll(".cp-item");
       // Find the disabled item
-      const disabledItem = Array.from(items).find(
-        (el) => (el as HTMLElement).classList.contains("cp-item--disabled"),
+      const disabledItem = Array.from(items).find((el) =>
+        (el as HTMLElement).classList.contains("cp-item--disabled"),
       ) as HTMLElement;
       disabledItem?.click();
       expect(spy).not.toHaveBeenCalled();
@@ -221,9 +236,7 @@ describe("UICommandPalette", () => {
     });
 
     it("should not show recent section initially", () => {
-      const heading = fixture.nativeElement.querySelector(
-        ".cp-group-heading",
-      );
+      const heading = fixture.nativeElement.querySelector(".cp-group-heading");
       expect(heading?.textContent?.trim()).not.toBe("Recent");
     });
 
@@ -237,11 +250,10 @@ describe("UICommandPalette", () => {
       component.show();
       fixture.detectChanges();
 
-      const headings = fixture.nativeElement.querySelectorAll(
-        ".cp-group-heading",
-      );
-      const texts = Array.from(headings).map(
-        (h: unknown) => (h as HTMLElement).textContent?.trim(),
+      const headings =
+        fixture.nativeElement.querySelectorAll(".cp-group-heading");
+      const texts = Array.from(headings).map((h: unknown) =>
+        (h as HTMLElement).textContent?.trim(),
       );
       expect(texts).toContain("Recent");
     });
@@ -269,11 +281,10 @@ describe("UICommandPalette", () => {
       component.show();
       fixture.detectChanges();
 
-      const headings = fixture.nativeElement.querySelectorAll(
-        ".cp-group-heading",
-      );
-      const texts = Array.from(headings).map(
-        (h: unknown) => (h as HTMLElement).textContent?.trim(),
+      const headings =
+        fixture.nativeElement.querySelectorAll(".cp-group-heading");
+      const texts = Array.from(headings).map((h: unknown) =>
+        (h as HTMLElement).textContent?.trim(),
       );
       expect(texts).not.toContain("Recent");
     });
@@ -297,9 +308,8 @@ describe("UICommandPalette", () => {
     });
 
     it("should display shortcut text on items that have one", () => {
-      const shortcuts = fixture.nativeElement.querySelectorAll(
-        ".cp-item-shortcut",
-      );
+      const shortcuts =
+        fixture.nativeElement.querySelectorAll(".cp-item-shortcut");
       expect(shortcuts.length).toBeGreaterThan(0);
       expect(shortcuts[0].textContent).toContain("Cmd+S");
     });
@@ -330,9 +340,7 @@ describe("UICommandPalette", () => {
 
   function dispatchKey(key: string): void {
     const dialog = fixture.nativeElement.querySelector(".cp-dialog");
-    dialog.dispatchEvent(
-      new KeyboardEvent("keydown", { key, bubbles: true }),
-    );
+    dialog.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
     fixture.detectChanges();
   }
 
@@ -340,11 +348,10 @@ describe("UICommandPalette", () => {
     component.show();
     fixture.detectChanges();
     const items = fixture.nativeElement.querySelectorAll(".cp-item");
-    const target = Array.from(items).find(
-      (el) =>
-        (el as HTMLElement).textContent?.includes(
-          COMMANDS.find((c) => c.id === id)!.label,
-        ),
+    const target = Array.from(items).find((el) =>
+      (el as HTMLElement).textContent?.includes(
+        COMMANDS.find((c) => c.id === id)!.label,
+      ),
     ) as HTMLElement;
     target?.click();
     fixture.detectChanges();

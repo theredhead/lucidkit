@@ -16,3 +16,5 @@ export * from "./lib/search-view";
 export * from "./lib/property-sheet";
 
 export * from "./lib/command-palette";
+
+export * from "./lib/file-browser";
