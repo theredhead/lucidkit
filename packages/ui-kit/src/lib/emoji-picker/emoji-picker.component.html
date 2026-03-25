@@ -1,0 +1,76 @@
+<div class="ep-search" role="search">
+  <ui-icon [svg]="UIIcons.Lucide.Social.Search" [size]="14" />
+  <input
+    type="text"
+    class="ep-search-input"
+    [placeholder]="searchPlaceholder()"
+    [value]="searchTerm()"
+    aria-label="Search emoji"
+    (input)="onSearchInput($event)"
+  />
+</div>
+
+<div
+  class="ep-tabs"
+  role="tablist"
+  [attr.aria-label]="ariaLabel()"
+>
+  <button
+    type="button"
+    class="ep-tab"
+    role="tab"
+    [class.ep-tab--active]="activeCategoryIndex() === null && !searchTerm()"
+    [attr.aria-selected]="activeCategoryIndex() === null && !searchTerm()"
+    (click)="selectCategory(null)"
+  >
+    All
+  </button>
+  @for (cat of effectiveCategories(); track cat.name; let i = $index) {
+    <button
+      type="button"
+      class="ep-tab"
+      role="tab"
+      [class.ep-tab--active]="activeCategoryIndex() === i && !searchTerm()"
+      [attr.aria-selected]="activeCategoryIndex() === i && !searchTerm()"
+      [attr.title]="cat.name"
+      (click)="selectCategory(i)"
+    >
+      {{ cat.emojis[0] }}
+    </button>
+  }
+</div>
+
+<div class="ep-body" role="listbox" [attr.aria-label]="ariaLabel()">
+  @for (cat of filteredCategories(); track cat.name) {
+    <div class="ep-category-header">{{ cat.name }}</div>
+    <div class="ep-grid">
+      @for (emoji of cat.emojis; track emoji) {
+        <button
+          type="button"
+          class="ep-emoji"
+          role="option"
+          [attr.aria-label]="emoji"
+          [attr.aria-selected]="false"
+          (click)="selectEmoji(emoji)"
+          (pointerenter)="onEmojiHover(emoji)"
+          (pointerleave)="onEmojiLeave()"
+        >
+          {{ emoji }}
+        </button>
+      }
+    </div>
+  }
+  @if (filteredCategories().length === 0) {
+    <div class="ep-empty">No emoji found</div>
+  }
+</div>
+
+@if (previewSize() > 0) {
+  <div
+    class="ep-preview"
+    aria-hidden="true"
+    [style.--ep-preview-size]="previewSize() + 'px'"
+  >
+    <span class="ep-preview-emoji">{{ hoveredEmoji() ?? '' }}</span>
+  </div>
+}

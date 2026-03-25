@@ -119,6 +119,32 @@
     </div>
   }
 
+  <!-- Emoji picker -->
+  <span class="toolbar-separator" aria-hidden="true"></span>
+  <div class="emoji-picker-wrapper">
+    <button
+      type="button"
+      class="toolbar-btn"
+      aria-label="Insert emoji"
+      title="Insert emoji"
+      [disabled]="disabled() || readonly()"
+      [attr.aria-expanded]="isEmojiPickerOpen()"
+      (mousedown)="$event.preventDefault()"
+      (click)="toggleEmojiPicker()"
+    >
+      <ui-icon [svg]="emojiIcon" [size]="16" />
+    </button>
+
+    @if (isEmojiPickerOpen()) {
+      <div class="emoji-picker-dropdown">
+        <ui-emoji-picker
+          [categories]="emojiCategories()"
+          (emojiSelected)="insertEmoji($event)"
+        />
+      </div>
+    }
+  </div>
+
   <!-- Source toggle -->
   @if (!isMarkdownMode()) {
     <span class="toolbar-separator" aria-hidden="true"></span>

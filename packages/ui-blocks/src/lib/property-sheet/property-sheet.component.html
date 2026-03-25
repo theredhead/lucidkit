@@ -1,0 +1,73 @@
+<div class="ps-sheet" role="form" [attr.aria-label]="ariaLabel()">
+  @for (group of groups(); track group.name) {
+    @if (group.name) {
+      <h3 class="ps-group-heading">{{ group.name }}</h3>
+    }
+    @for (field of group.fields; track field.key) {
+      <div class="ps-row" [class.ps-row--readonly]="field.readonly">
+        <label class="ps-label" [attr.for]="'ps-' + field.key">
+          {{ field.label }}
+        </label>
+        <div class="ps-editor">
+          @switch (field.type) {
+            @case ('string') {
+              <ui-input
+                [attr.id]="'ps-' + field.key"
+                [value]="'' + (getValue(field.key) ?? '')"
+                [placeholder]="field.placeholder ?? ''"
+                [disabled]="field.readonly ?? false"
+                [ariaLabel]="field.label"
+                (valueChange)="onValueChange(field.key, $event)"
+              />
+            }
+            @case ('number') {
+              <ui-input
+                [attr.id]="'ps-' + field.key"
+                type="number"
+                [value]="'' + (getValue(field.key) ?? '')"
+                [placeholder]="field.placeholder ?? ''"
+                [disabled]="field.readonly ?? false"
+                [ariaLabel]="field.label"
+                (valueChange)="onValueChange(field.key, +$event)"
+              />
+            }
+            @case ('boolean') {
+              <ui-checkbox
+                [checked]="!!getValue(field.key)"
+                [disabled]="field.readonly ?? false"
+                [ariaLabel]="field.label"
+                (checkedChange)="onValueChange(field.key, $event)"
+              />
+            }
+            @case ('select') {
+              <ui-select
+                [options]="field.options ?? []"
+                [value]="'' + (getValue(field.key) ?? '')"
+                [disabled]="field.readonly ?? false"
+                [ariaLabel]="field.label"
+                (valueChange)="onValueChange(field.key, $event)"
+              />
+            }
+            @case ('color') {
+              <ui-color-picker
+                [value]="'' + (getValue(field.key) ?? '#000000')"
+                (valueChange)="onValueChange(field.key, $event)"
+              />
+            }
+            @case ('slider') {
+              <ui-slider
+                [value]="+(getValue(field.key) ?? 0)"
+                [min]="field.min ?? 0"
+                [max]="field.max ?? 100"
+                [step]="field.step ?? 1"
+                [disabled]="field.readonly ?? false"
+                [showValue]="true"
+                (valueChange)="onValueChange(field.key, $event)"
+              />
+            }
+          }
+        </div>
+      </div>
+    }
+  }
+</div>

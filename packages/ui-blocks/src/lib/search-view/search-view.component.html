@@ -1,0 +1,151 @@
+<!-- Hidden slot: instantiates projected columns for contentChildren discovery. -->
+<div class="columns-slot"><ng-content /></div>
+
+<header class="sv-header">
+  <h2 class="sv-title">{{ title() }}</h2>
+  <span class="sv-count">{{ totalItems() }} items</span>
+</header>
+
+@if (resolvedShowFilter()) {
+  <div class="sv-filter-bar">
+    @if (!filterModeLocked()) {
+      <button
+        class="sv-filter-toggle"
+        type="button"
+        (click)="toggleFilter()"
+        [attr.aria-expanded]="!filterCollapsed()"
+        aria-controls="sv-filter-content"
+      >
+        <ui-icon
+          [svg]="filterCollapsed() ? chevronRight : chevronDown"
+          [size]="14"
+        />
+        <span>Filter</span>
+      </button>
+    }
+    @if (!filterCollapsed()) {
+      <div class="sv-filter-content" id="sv-filter-content">
+        @if (filterTemplate(); as filterTpl) {
+          <ng-container *ngTemplateOutlet="filterTpl" />
+        } @else {
+          @if (resolvedFilterFields(); as fields) {
+            @if (fields.length > 0) {
+              <ui-filter
+                [fields]="fields"
+                [data]="resolvedFilterData()"
+                [allowJunction]="true"
+                [modeLocked]="filterModeLocked()"
+                [showSaveButton]="savedSearchesEnabled()"
+                [(value)]="filterDescriptor"
+                (expressionChange)="onFilterExpressionChange($event)"
+                (saveFilter)="onSaveFilterClick()"
+              />
+            }
+          }
+        }
+      </div>
+    }
+  </div>
+}
+
+@if (savedSearchesEnabled() && savedSearches().length > 0) {
+  <div
+    class="sv-chip-strip"
+    role="listbox"
+    aria-label="Saved searches"
+  >
+    @for (search of savedSearches(); track search.id; let idx = $index) {
+      <button
+        class="sv-chip"
+        type="button"
+        role="option"
+        [attr.aria-selected]="selectedSearchId() === search.id"
+        [class.sv-chip--active]="selectedSearchId() === search.id"
+        draggable="true"
+        (click)="onLoadSearch(search.id)"
+        (dragstart)="onChipDragStart($event, idx)"
+        (dragover)="onChipDragOver($event)"
+        (drop)="onChipDrop($event, idx)"
+        (dragend)="onChipDragEnd()"
+      >
+        <span class="sv-chip-label">{{ search.name }}</span>
+        <span
+          class="sv-chip-remove"
+          role="button"
+          tabindex="0"
+          [attr.aria-label]="'Delete ' + search.name"
+          (click)="onDeleteSearch($event, search.id)"
+          (keydown.enter)="onDeleteSearch($event, search.id)"
+          (keydown.space)="onDeleteSearch($event, search.id)"
+        >
+          <ui-icon [svg]="xIcon" [size]="10" />
+        </span>
+      </button>
+    }
+  </div>
+}
+
+<div class="sv-results" role="region" [attr.aria-label]="ariaLabel()">
+  @if (layout() === 'table') {
+    <div class="sv-table-wrapper">
+      <ui-table-view
+        [datasource]="datasource()!"
+        [externalColumns]="columns()"
+        [showBuiltInPaginator]="false"
+        [showRowIndexIndicator]="false"
+        [pageSize]="pageSize()"
+        [pageIndex]="pageIndex()"
+      />
+      @if (totalItems() === 0) {
+        @if (emptyTemplate(); as emptyTpl) {
+          <ng-container *ngTemplateOutlet="emptyTpl" />
+        } @else {
+          <div class="sv-empty">
+            <p>{{ placeholder() }}</p>
+          </div>
+        }
+      }
+    </div>
+  } @else if (totalItems() === 0) {
+    @if (emptyTemplate(); as emptyTpl) {
+      <ng-container *ngTemplateOutlet="emptyTpl" />
+    } @else {
+      <div class="sv-empty">
+        <p>{{ placeholder() }}</p>
+      </div>
+    }
+  } @else if (resultsTemplate(); as resultsTpl) {
+    <div class="sv-custom-results">
+      <ng-container
+        *ngTemplateOutlet="resultsTpl; context: { $implicit: pagedRows() }"
+      />
+    </div>
+  }
+</div>
+
+@if (showPagination() && totalItems() > 0) {
+  <footer class="sv-footer">
+    <ui-pagination
+      [totalItems]="totalItems()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="pageSizeOptions()"
+      [(pageIndex)]="pageIndex"
+      (pageChange)="onPageChange($event)"
+    />
+  </footer>
+}
+
+<ui-dialog [(open)]="saveDialogOpen" ariaLabel="Save filter">
+  <ui-dialog-header>Save Filter</ui-dialog-header>
+  <ui-dialog-body>
+    <ui-input
+      [(value)]="searchName"
+      placeholder="Filter name"
+      ariaLabel="Filter name"
+    />
+  </ui-dialog-body>
+  <ui-dialog-footer>
+    <ui-button variant="ghost" (click)="onCancelSave()">Cancel</ui-button>
+    <ui-button variant="filled" (click)="onConfirmSave()" [disabled]="!searchName().trim()">Save</ui-button>
+  </ui-dialog-footer>
+</ui-dialog>

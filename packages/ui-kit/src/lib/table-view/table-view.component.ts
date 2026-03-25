@@ -27,6 +27,7 @@ import { UITableViewColumn } from "./columns/table-column.directive";
 import { DatasourceAdapter } from "./datasources/datasource-adapter";
 import {
   FLEX_COLUMN_MIN_WIDTH,
+  INITIAL_PAGE_SIZE,
   ROW_INDEX_COLUMN_WIDTH,
   SELECTION_COLUMN_WIDTH,
 } from "./table-view.constants";
@@ -67,6 +68,20 @@ export class UITableView implements OnInit, AfterViewInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   datasource = input.required<IDatasource<any>>();
 
+  /**
+   * External page size. When provided, the adapter's page size is set
+   * to this value. Leave `undefined` to use the default
+   * ({@link INITIAL_PAGE_SIZE}).
+   */
+  pageSize = input<number | undefined>(undefined);
+
+  /**
+   * External page index (zero-based). When provided, the adapter uses
+   * this as the current page. Leave `undefined` to let the built-in
+   * paginator manage the index.
+   */
+  pageIndex = input<number | undefined>(undefined);
+
   /** Bumped to force the adapter computed to rebuild. @internal */
   private readonly _adapterVersion = signal(0);
 
@@ -80,7 +95,8 @@ export class UITableView implements OnInit, AfterViewInit {
   protected readonly adapter = computed<DatasourceAdapter<any>>(() => {
     this._adapterVersion();
     const ds = this.datasource();
-    return untracked(() => new DatasourceAdapter(ds));
+    const ps = untracked(() => this.pageSize());
+    return untracked(() => new DatasourceAdapter(ds, ps ?? INITIAL_PAGE_SIZE));
   });
   showBuiltInPaginator = input<boolean>(true);
   caption = input<string>("");
@@ -282,6 +298,21 @@ export class UITableView implements OnInit, AfterViewInit {
   });
 
   constructor() {
+    // ── Sync external pageSize / pageIndex inputs into the adapter ──
+    effect(() => {
+      const ps = this.pageSize();
+      if (ps !== undefined) {
+        this.adapter().pageSize.set(ps);
+      }
+    });
+
+    effect(() => {
+      const pi = this.pageIndex();
+      if (pi !== undefined) {
+        this.adapter().pageIndex.set(pi);
+      }
+    });
+
     effect(() => {
       const items = this.adapter().visibleWindow();
       const gen = ++this.resolveGeneration;

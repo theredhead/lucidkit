@@ -32,6 +32,16 @@
     } @else {
       <span>Match <strong>all</strong> of the following rules:</span>
     }
+    <span class="filter__header-spacer"></span>
+    @if (showSaveButton()) {
+      <ui-button
+        class="filter__save-button"
+        variant="ghost"
+        size="sm"
+        ariaLabel="Save filter"
+        (click)="saveFilter.emit()"
+      ><ui-icon [svg]="saveIcon" [size]="14" /> Save Filter</ui-button>
+    }
     @if (showModeToggle()) {
       <ui-button
         class="filter__mode-toggle"

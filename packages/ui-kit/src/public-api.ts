@@ -56,3 +56,4 @@ export * from "./lib/image/image.component";
 export * from "./lib/gauge";
 export * from "./lib/qr-code";
 export * from "./lib/timeline";
+export * from "./lib/emoji-picker";

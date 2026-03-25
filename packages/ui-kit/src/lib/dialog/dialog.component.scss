@@ -12,12 +12,15 @@
   max-width: min(90vw, 40rem);
   max-height: 85vh;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
   background: var(--ui-surface);
   color: var(--ui-text);
   box-shadow: var(--ui-shadow);
   animation: ui-dlg-enter anim.$duration-medium anim.$easing-out;
+}
+
+.dialog[open] {
+  display: flex;
+  flex-direction: column;
 }
 
 .dialog::backdrop {

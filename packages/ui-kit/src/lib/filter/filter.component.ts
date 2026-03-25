@@ -109,6 +109,13 @@ export class UIFilter<T = any> {
   readonly modeLocked = input(false);
 
   /**
+   * Whether to show a "Save Filter" button in the advanced mode header.
+   *
+   * When clicked, the {@link saveFilter} output emits.
+   */
+  readonly showSaveButton = input(false);
+
+  /**
    * Optional raw dataset used to derive distinct values per string field.
    *
    * When provided and the total row count is below 1 000, each string
@@ -134,6 +141,14 @@ export class UIFilter<T = any> {
    *   `FilterableArrayDatasource.filterBy()`.
    */
   readonly expressionChange = output<FilterExpression<T>>();
+
+  /**
+   * Emitted when the user clicks the "Save Filter" button.
+   *
+   * Only fires when {@link showSaveButton} is `true` and the filter
+   * is in advanced mode.
+   */
+  readonly saveFilter = output<void>();
 
   // ── Mode state ──────────────────────────────────────────────────────
 
@@ -202,6 +217,9 @@ export class UIFilter<T = any> {
 
   /** @internal Icon shown on the "Simple" toggle button. */
   protected readonly simpleIcon = UIIcons.Lucide.Social.Search;
+
+  /** @internal Icon shown on the "Save Filter" button. */
+  protected readonly saveIcon = UIIcons.Lucide.Files.Save;
 
   protected readonly currentJunction = computed(() => this.value().junction);
 

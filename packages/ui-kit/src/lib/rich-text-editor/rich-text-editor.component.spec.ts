@@ -109,8 +109,8 @@ describe("UIRichTextEditor", () => {
       const flatButtons = fixture.nativeElement.querySelectorAll(
         ".toolbar-btn:not(.dropdown-trigger):not(.toolbar-btn--source)",
       );
-      // 2 history (↩ ↪) + 4 inline (B, I, U, S) + 2 insert (― 🖼) + 1 link (🔗) + 1 misc (⌧) = 10
-      expect(flatButtons.length).toBe(10);
+      // 2 history (↩ ↪) + 4 inline (B, I, U, S) + 2 insert (― 🖼) + 1 link (🔗) + 1 misc (⌧) + 1 emoji = 11
+      expect(flatButtons.length).toBe(11);
     });
 
     it("should render dropdown triggers for grouped actions", () => {
@@ -183,9 +183,11 @@ describe("UIRichTextEditor", () => {
       const buttons = fixture.nativeElement.querySelectorAll(
         ".toolbar-btn:not(.dropdown-trigger):not(.toolbar-btn--source)",
       );
-      expect(buttons.length).toBe(2);
+      // 2 toolbar actions + 1 emoji picker = 3
+      expect(buttons.length).toBe(3);
       expect(buttons[0].getAttribute("aria-label")).toBe("Bold");
       expect(buttons[1].getAttribute("aria-label")).toBe("Italic");
+      expect(buttons[2].getAttribute("aria-label")).toBe("Insert emoji");
     });
 
     it("should disable all toolbar buttons when disabled", () => {
