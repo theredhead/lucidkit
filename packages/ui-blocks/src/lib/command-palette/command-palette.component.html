@@ -1,0 +1,123 @@
+@if (open()) {
+  <div class="cp-backdrop" (click)="onBackdropClick()" (keydown)="onKeydown($event)" tabindex="-1"></div>
+  <div
+    class="cp-dialog"
+    role="dialog"
+    [attr.aria-label]="ariaLabel()"
+    (keydown)="onKeydown($event)"
+  >
+    <!-- Search bar -->
+    <div class="cp-search">
+      <ui-icon class="cp-search-icon" [svg]="searchIcon" [size]="18" />
+      <input
+        #searchInput
+        class="cp-search-input"
+        type="text"
+        [placeholder]="placeholder()"
+        [value]="query()"
+        (input)="onSearchInput($event)"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded="true"
+        aria-controls="cp-results"
+        [attr.aria-activedescendant]="
+          flatItems().length
+            ? 'cp-item-' + activeIndex()
+            : null
+        "
+      />
+      <kbd class="cp-kbd">esc</kbd>
+    </div>
+
+    <!-- Results List -->
+    <div
+      id="cp-results"
+      class="cp-results"
+      role="listbox"
+      [attr.aria-label]="'Search results'"
+    >
+      @if (flatItems().length === 0) {
+        <div class="cp-empty">No matching commands</div>
+      } @else {
+        <!-- Recent Commands -->
+        @if (showRecent()) {
+          <div class="cp-group">
+            <div class="cp-group-heading">Recent</div>
+            @for (item of recentCommands(); track item.id; let i = $index) {
+              <div
+                class="cp-item"
+                role="option"
+                tabindex="-1"
+                [id]="'cp-item-' + getRecentFlatIndex(i)"
+                [class.cp-item--active]="activeIndex() === getRecentFlatIndex(i)"
+                [class.cp-item--disabled]="item.disabled"
+                [attr.aria-selected]="activeIndex() === getRecentFlatIndex(i)"
+                [attr.aria-disabled]="item.disabled ?? false"
+                (click)="onItemClick(item)"
+                (keydown)="onKeydown($event)"
+                (pointerenter)="activeIndex.set(getRecentFlatIndex(i))"
+              >
+                @if (item.icon) {
+                  <ui-icon class="cp-item-icon" [svg]="item.icon" [size]="16" />
+                }
+                <span class="cp-item-label">{{ item.label }}</span>
+                @if (item.shortcut) {
+                  <kbd class="cp-item-shortcut">{{ item.shortcut }}</kbd>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Grouped commands -->
+        @for (group of filteredGroups(); track group.name; let gi = $index) {
+          <div class="cp-group">
+            @if (group.name) {
+              <div class="cp-group-heading">{{ group.name }}</div>
+            }
+            @for (item of group.items; track item.id; let ii = $index) {
+              <div
+                class="cp-item"
+                role="option"
+                tabindex="-1"
+                [id]="'cp-item-' + getFlatIndex(gi, ii)"
+                [class.cp-item--active]="activeIndex() === getFlatIndex(gi, ii)"
+                [class.cp-item--disabled]="item.disabled"
+                [attr.aria-selected]="activeIndex() === getFlatIndex(gi, ii)"
+                [attr.aria-disabled]="item.disabled ?? false"
+                (click)="onItemClick(item)"
+                (keydown)="onKeydown($event)"
+                (pointerenter)="activeIndex.set(getFlatIndex(gi, ii))"
+              >
+                @if (item.icon) {
+                  <ui-icon class="cp-item-icon" [svg]="item.icon" [size]="16" />
+                }
+                <span class="cp-item-label">{{ item.label }}</span>
+                @if (item.shortcut) {
+                  <kbd class="cp-item-shortcut">{{ item.shortcut }}</kbd>
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+    </div>
+
+    <!-- Footer hints -->
+    <div class="cp-footer">
+      <span class="cp-hint">
+        <ui-icon [svg]="returnIcon" [size]="12" />
+        <span>to select</span>
+      </span>
+      <span class="cp-hint">
+        <ui-icon [svg]="arrowUpIcon" [size]="12" />
+        <ui-icon [svg]="arrowDownIcon" [size]="12" />
+        <span>to navigate</span>
+      </span>
+      <span class="cp-hint">
+        <kbd>esc</kbd>
+        <span>to close</span>
+      </span>
+    </div>
+  </div>
+}
