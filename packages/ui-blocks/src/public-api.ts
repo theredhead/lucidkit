@@ -24,3 +24,5 @@ export * from "./lib/chat-view";
 export * from "./lib/wizard";
 
 export * from "./lib/kanban-board";
+
+export * from "./lib/common-dialogs";
