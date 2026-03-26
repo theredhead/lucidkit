@@ -1,4 +1,4 @@
-export { UIChatView } from './chat-view.component';
+export { UIChatView } from "./chat-view.component";
 export {
   type ChatComposerMode,
   type ChatMessage,
@@ -7,4 +7,4 @@ export {
   type MessageDateGroup,
   type MessageSendEvent,
   type MessageTemplateContext,
-} from './chat-view.types';
+} from "./chat-view.types";

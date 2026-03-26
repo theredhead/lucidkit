@@ -1,8 +1,8 @@
 /** Visual style of a chat message. */
-export type ChatMessageType = 'text' | 'rich-text' | 'system';
+export type ChatMessageType = "text" | "rich-text" | "system";
 
 /** Mode for the message composer. */
-export type ChatComposerMode = 'text' | 'rich-text';
+export type ChatComposerMode = "text" | "rich-text";
 
 /**
  * A chat participant (user, bot, or system).

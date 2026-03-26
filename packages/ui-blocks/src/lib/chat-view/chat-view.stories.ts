@@ -1,24 +1,24 @@
-import { Component, signal } from '@angular/core';
-import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { Component, signal } from "@angular/core";
+import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIChatView } from './chat-view.component';
-import type { ChatMessage, ChatParticipant } from './chat-view.types';
+import { UIChatView } from "./chat-view.component";
+import type { ChatMessage, ChatParticipant } from "./chat-view.types";
 
 const alice: ChatParticipant = {
-  id: 'alice',
-  name: 'Alice Johnson',
-  avatarEmail: 'alice@example.com',
+  id: "alice",
+  name: "Alice Johnson",
+  avatarEmail: "alice@example.com",
 };
 
 const bob: ChatParticipant = {
-  id: 'bob',
-  name: 'Bob Smith',
-  avatarEmail: 'bob@example.com',
+  id: "bob",
+  name: "Bob Smith",
+  avatarEmail: "bob@example.com",
 };
 
 const system: ChatParticipant = {
-  id: 'system',
-  name: 'System',
+  id: "system",
+  name: "System",
 };
 
 function msg(
@@ -26,7 +26,7 @@ function msg(
   sender: ChatParticipant,
   content: string,
   minutesAgo: number,
-  type: 'text' | 'rich-text' | 'system' = 'text',
+  type: "text" | "rich-text" | "system" = "text",
 ): ChatMessage {
   return {
     id,
@@ -38,22 +38,29 @@ function msg(
 }
 
 const sampleMessages: ChatMessage[] = [
-  msg('1', system, 'Bob joined the conversation', 30, 'system'),
-  msg('2', bob, 'Hey Alice! How is the component library coming along?', 25),
-  msg('3', alice, 'Pretty well! Just finished the file browser block.', 22),
-  msg('4', bob, 'Nice! What are you working on next?', 20),
-  msg('5', alice, 'The chat view — that is what you are looking at right now!', 18),
-  msg('6', bob, 'Haha, very meta. Looks great so far!', 15),
-  msg('7', alice, 'Thanks! Still need to wire up the rich-text mode.', 12),
-  msg('8', bob, 'Looking forward to trying it out.', 10),
+  msg("1", system, "Bob joined the conversation", 30, "system"),
+  msg("2", bob, "Hey Alice! How is the component library coming along?", 25),
+  msg("3", alice, "Pretty well! Just finished the file browser block.", 22),
+  msg("4", bob, "Nice! What are you working on next?", 20),
+  msg(
+    "5",
+    alice,
+    "The chat view — that is what you are looking at right now!",
+    18,
+  ),
+  msg("6", bob, "Haha, very meta. Looks great so far!", 15),
+  msg("7", alice, "Thanks! Still need to wire up the rich-text mode.", 12),
+  msg("8", bob, "Looking forward to trying it out.", 10),
 ];
 
 @Component({
-  selector: 'ui-story-chat-demo',
+  selector: "ui-story-chat-demo",
   standalone: true,
   imports: [UIChatView],
   template: `
-    <div style="height: 500px; color: #1d232b; background: #f7f8fa; padding: 16px;">
+    <div
+      style="height: 500px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+    >
       <ui-chat-view
         [messages]="messages()"
         [currentUser]="currentUser"
@@ -65,7 +72,7 @@ const sampleMessages: ChatMessage[] = [
 })
 class ChatDemoComponent {
   public currentUser = alice;
-  public composerMode: 'text' | 'rich-text' = 'text';
+  public composerMode: "text" | "rich-text" = "text";
   public messages = signal<ChatMessage[]>([...sampleMessages]);
 
   public onSend(event: { content: string }): void {
@@ -80,11 +87,13 @@ class ChatDemoComponent {
 }
 
 @Component({
-  selector: 'ui-story-rich-text-demo',
+  selector: "ui-story-rich-text-demo",
   standalone: true,
   imports: [UIChatView],
   template: `
-    <div style="height: 500px; color: #1d232b; background: #f7f8fa; padding: 16px;">
+    <div
+      style="height: 500px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+    >
       <ui-chat-view
         [messages]="messages()"
         [currentUser]="currentUser"
@@ -97,9 +106,21 @@ class ChatDemoComponent {
 class RichTextDemoComponent {
   public currentUser = alice;
   public messages = signal<ChatMessage[]>([
-    msg('1', bob, 'Check out this <strong>bold</strong> and <em>italic</em> text!', 10, 'rich-text'),
-    msg('2', alice, 'Neat! The rich-text editor integrates nicely.', 8),
-    msg('3', bob, 'Here is a <a href="#">link</a> in a message.', 5, 'rich-text'),
+    msg(
+      "1",
+      bob,
+      "Check out this <strong>bold</strong> and <em>italic</em> text!",
+      10,
+      "rich-text",
+    ),
+    msg("2", alice, "Neat! The rich-text editor integrates nicely.", 8),
+    msg(
+      "3",
+      bob,
+      'Here is a <a href="#">link</a> in a message.',
+      5,
+      "rich-text",
+    ),
   ]);
 
   public onSend(event: { content: string }): void {
@@ -108,16 +129,16 @@ class RichTextDemoComponent {
       sender: this.currentUser,
       content: event.content,
       timestamp: new Date(),
-      type: 'rich-text',
+      type: "rich-text",
     };
     this.messages.update((prev) => [...prev, newMsg]);
   }
 }
 
 const meta: Meta<UIChatView> = {
-  title: '@theredhead/UI Blocks/Chat View',
+  title: "@theredhead/UI Blocks/Chat View",
   component: UIChatView,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     moduleMetadata({
       imports: [ChatDemoComponent, RichTextDemoComponent],
@@ -134,7 +155,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       source: {
-        language: 'html',
+        language: "html",
         code: `
 // ── HTML ──
 <ui-chat-view
@@ -193,7 +214,7 @@ export const RichTextComposer: Story = {
   parameters: {
     docs: {
       source: {
-        language: 'html',
+        language: "html",
         code: `
 // ── HTML ──
 <ui-chat-view
@@ -257,7 +278,7 @@ export const EmptyChat: Story = {
   parameters: {
     docs: {
       source: {
-        language: 'html',
+        language: "html",
         code: `
 // ── HTML ──
 <ui-chat-view [messages]="[]" [currentUser]="me" />
