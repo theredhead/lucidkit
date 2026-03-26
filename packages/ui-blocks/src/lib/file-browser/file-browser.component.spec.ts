@@ -451,4 +451,94 @@ describe("UIFileBrowser", () => {
       expect(kind.textContent?.trim()).toBe("Folder");
     });
   });
+
+  // ═══════════════════════════════════════════════════════════════
+  // ── Resizable panels ─────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════
+
+  describe("resizable panels", () => {
+    it("should render the sidebar divider when sidebar is shown", () => {
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--sidebar",
+      );
+      expect(divider).toBeTruthy();
+    });
+
+    it("should not render the sidebar divider when sidebar is hidden", () => {
+      fixture.componentRef.setInput("showSidebar", false);
+      fixture.detectChanges();
+
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--sidebar",
+      );
+      expect(divider).toBeNull();
+    });
+
+    it("should render the details divider when details pane is visible", () => {
+      fixture.componentRef.setInput("showDetails", true);
+      fixture.detectChanges();
+
+      // Select an entry to trigger the details pane
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      entries[2].click();
+      fixture.detectChanges();
+
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--details",
+      );
+      expect(divider).toBeTruthy();
+    });
+
+    it("should collapse sidebar on divider double-click", () => {
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--sidebar",
+      );
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+
+      const sidebar = fixture.nativeElement.querySelector(".fb-sidebar");
+      expect(sidebar.classList).toContain("fb-sidebar--collapsed");
+    });
+
+    it("should restore sidebar on second double-click", () => {
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--sidebar",
+      );
+      // Collapse
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+      expect(
+        fixture.nativeElement
+          .querySelector(".fb-sidebar")
+          .classList.contains("fb-sidebar--collapsed"),
+      ).toBe(true);
+
+      // Restore
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+      expect(
+        fixture.nativeElement
+          .querySelector(".fb-sidebar")
+          .classList.contains("fb-sidebar--collapsed"),
+      ).toBe(false);
+    });
+
+    it("should collapse details pane on divider double-click", () => {
+      fixture.componentRef.setInput("showDetails", true);
+      fixture.detectChanges();
+
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      entries[2].click();
+      fixture.detectChanges();
+
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--details",
+      );
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+
+      const details = fixture.nativeElement.querySelector(".fb-details");
+      expect(details.classList).toContain("fb-details--collapsed");
+    });
+  });
 });

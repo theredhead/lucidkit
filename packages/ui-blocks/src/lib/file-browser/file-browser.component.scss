@@ -15,6 +15,11 @@
   --fb-empty-text: #8b919a;
   --fb-header-bg: #f4f5f7;
   --fb-column-width: 220px;
+  --fb-divider-bg: transparent;
+  --fb-divider-bg-hover: #c8cdd4;
+  --fb-divider-bg-active: var(--ui-accent, #3b82f6);
+  --fb-divider-handle: #b0b6bf;
+  --fb-divider-handle-hover: #6b7685;
 
   display: flex;
   flex-direction: column;
@@ -38,6 +43,10 @@
   --fb-entry-selected-text: #ffffff;
   --fb-empty-text: #6b7280;
   --fb-header-bg: #1a1d23;
+  --fb-divider-bg-hover: #505860;
+  --fb-divider-bg-active: var(--ui-accent, #7ab0ff);
+  --fb-divider-handle: #6b7685;
+  --fb-divider-handle-hover: #a0a8b4;
 }
 
 // ── Header (breadcrumb) ─────────────────────────────────────────────
@@ -61,13 +70,23 @@
 .fb-sidebar {
   width: var(--fb-sidebar-width);
   min-width: var(--fb-sidebar-width);
-  border-right: 1px solid var(--fb-border);
+  border-right: none;
   background: var(--fb-sidebar-bg);
   overflow-y: auto;
   padding: 4px 0;
+  transition:
+    width 0.15s ease,
+    min-width 0.15s ease;
 
   ui-tree-view {
     font-size: 13px;
+  }
+
+  &--collapsed {
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
   }
 }
 
@@ -76,6 +95,64 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+// ── Resize dividers ─────────────────────────────────────────────────
+
+.fb-divider {
+  flex: 0 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fb-divider-bg);
+  border: none;
+  outline: none;
+  user-select: none;
+  touch-action: none;
+  cursor: col-resize;
+  transition: background-color 0.15s ease;
+  position: relative;
+  z-index: 2;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--fb-divider-bg-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fb-divider-bg-active);
+    outline-offset: -2px;
+  }
+}
+
+.fb-divider-handle {
+  width: 2px;
+  height: 24px;
+  border-radius: 2px;
+  background: var(--fb-divider-handle);
+  transition: background-color 0.15s ease;
+}
+
+.fb-divider:hover .fb-divider-handle,
+.fb-divider:focus-visible .fb-divider-handle {
+  background: var(--fb-divider-handle-hover);
+}
+
+// ── Dragging state ──────────────────────────────────────────────────
+
+:host(.ui-file-browser--dragging) {
+  cursor: col-resize;
+
+  .fb-contents,
+  .fb-sidebar,
+  .fb-details {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .fb-divider {
+    background: var(--fb-divider-bg-active);
+  }
 }
 
 // ── Contents (shared base) ──────────────────────────────────────────
@@ -340,13 +417,23 @@
 .fb-details {
   width: var(--fb-details-width);
   min-width: var(--fb-details-width);
-  border-left: 1px solid var(--fb-border);
+  border-left: none;
   background: var(--fb-sidebar-bg);
   overflow-y: auto;
   padding: 16px 12px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transition:
+    width 0.15s ease,
+    min-width 0.15s ease;
+
+  &--collapsed {
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
+  }
 }
 
 .fb-details-header {
