@@ -8,7 +8,7 @@ import {
   type Preview,
 } from "@storybook/angular";
 
-import { UIThemeToggle } from "../packages/ui-kit/src/lib/theme-toggle/theme-toggle.component";
+import { StoryToolbar } from "./story-toolbar.component";
 
 const preview: Preview = {
   decorators: [
@@ -16,7 +16,7 @@ const preview: Preview = {
       providers: [provideAnimationsAsync()],
     }),
     moduleMetadata({
-      imports: [UIThemeToggle],
+      imports: [StoryToolbar],
     }),
     (story, context) => {
       const result = story();
@@ -27,9 +27,7 @@ const preview: Preview = {
       return {
         ...result,
         template: `
-          <div style="display: flex; justify-content: flex-end; padding: 4px 8px; margin-bottom: 12px">
-            <ui-theme-toggle />
-          </div>
+          <ui-story-toolbar />
           ${tpl}
         `,
       };
