@@ -233,9 +233,10 @@ const priorityColors: Record<string, string> = {
           style="padding: 12px; display: flex; flex-direction: column; gap: 6px;"
         >
           <strong style="font-size: 0.875rem;">{{ card.data.title }}</strong>
-          <span style="font-size: 0.75rem; color: var(--ui-text-muted, #6b7280);">{{
-            card.data.description
-          }}</span>
+          <span
+            style="font-size: 0.75rem; color: var(--ui-text-muted, #6b7280);"
+            >{{ card.data.description }}</span
+          >
           <div
             style="display: flex; align-items: center; gap: 6px; margin-top: 4px;"
           >
