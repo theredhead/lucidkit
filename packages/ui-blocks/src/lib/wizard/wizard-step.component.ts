@@ -4,7 +4,7 @@ import {
   input,
   TemplateRef,
   viewChild,
-} from '@angular/core';
+} from "@angular/core";
 
 /**
  * A single step inside a {@link UIWizard}.
@@ -22,13 +22,13 @@ import {
  * ```
  */
 @Component({
-  selector: 'ui-wizard-step',
+  selector: "ui-wizard-step",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-template #stepContent><ng-content /></ng-template>',
+  template: "<ng-template #stepContent><ng-content /></ng-template>",
   host: {
-    class: 'ui-wizard-step',
-    '[style.display]': '"none"',
+    class: "ui-wizard-step",
+    "[style.display]": '"none"',
   },
 })
 export class UIWizardStep {
@@ -52,5 +52,5 @@ export class UIWizardStep {
 
   /** @internal — template holding the step's projected content. */
   public readonly contentTemplate =
-    viewChild.required<TemplateRef<unknown>>('stepContent');
+    viewChild.required<TemplateRef<unknown>>("stepContent");
 }

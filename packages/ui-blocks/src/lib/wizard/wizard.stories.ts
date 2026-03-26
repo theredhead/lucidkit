@@ -1,15 +1,17 @@
-import { Component, signal } from '@angular/core';
-import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { Component, signal } from "@angular/core";
+import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIWizard } from './wizard.component';
-import { UIWizardStep } from './wizard-step.component';
+import { UIWizard } from "./wizard.component";
+import { UIWizardStep } from "./wizard-step.component";
 
 @Component({
-  selector: 'ui-story-wizard-basic',
+  selector: "ui-story-wizard-basic",
   standalone: true,
   imports: [UIWizard, UIWizardStep],
   template: `
-    <div style="height: 400px; color: #1d232b; background: #f7f8fa; padding: 16px;">
+    <div
+      style="height: 400px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+    >
       <ui-wizard (complete)="onComplete()">
         <ui-wizard-step label="Account">
           <h3>Create your account</h3>
@@ -29,21 +31,25 @@ import { UIWizardStep } from './wizard-step.component';
 })
 class BasicWizardStory {
   public onComplete(): void {
-    alert('Wizard completed!');
+    alert("Wizard completed!");
   }
 }
 
 @Component({
-  selector: 'ui-story-wizard-validation',
+  selector: "ui-story-wizard-validation",
   standalone: true,
   imports: [UIWizard, UIWizardStep],
   template: `
-    <div style="height: 400px; color: #1d232b; background: #f7f8fa; padding: 16px;">
+    <div
+      style="height: 400px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+    >
       <ui-wizard [linear]="true" (complete)="onComplete()">
         <ui-wizard-step label="Terms" [canAdvance]="accepted()">
           <h3>Accept the Terms</h3>
           <p>You must accept the terms to continue.</p>
-          <label style="display: flex; align-items: center; gap: 8px; margin-top: 16px;">
+          <label
+            style="display: flex; align-items: center; gap: 8px; margin-top: 16px;"
+          >
             <input
               type="checkbox"
               [checked]="accepted()"
@@ -68,14 +74,14 @@ class ValidationWizardStory {
   public readonly accepted = signal(false);
 
   public onComplete(): void {
-    alert('Wizard completed with validation!');
+    alert("Wizard completed with validation!");
   }
 }
 
 const meta: Meta<UIWizard> = {
-  title: '@theredhead/UI Blocks/Wizard',
+  title: "@theredhead/UI Blocks/Wizard",
   component: UIWizard,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     moduleMetadata({
       imports: [BasicWizardStory, ValidationWizardStory],
@@ -92,7 +98,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       source: {
-        language: 'html',
+        language: "html",
         code: `
 // ── HTML ──
 <ui-wizard (complete)="onFinish()">
@@ -142,7 +148,7 @@ export const WithValidation: Story = {
   parameters: {
     docs: {
       source: {
-        language: 'html',
+        language: "html",
         code: `
 // ── HTML ──
 <ui-wizard [linear]="true" (complete)="onFinish()">
