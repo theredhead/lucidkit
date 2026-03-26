@@ -48,9 +48,7 @@ import { UIFormDesigner } from "./form-designer.component";
         <div
           style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px"
         >
-          <h4
-            style="margin: 0; font-size: 0.875rem; font-weight: 700"
-          >
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700">
             Export
           </h4>
           <select
@@ -79,9 +77,7 @@ import { UIFormDesigner } from "./form-designer.component";
         <div
           style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
         >
-          <h4
-            style="margin: 0; font-size: 0.875rem; font-weight: 700"
-          >
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700">
             Export Result
           </h4>
           <span
@@ -145,9 +141,7 @@ class StoryDesignerDemo {
         <div
           style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
         >
-          <h4
-            style="margin: 0; font-size: 0.875rem; font-weight: 700"
-          >
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700">
             {{ result.fileName }}
           </h4>
           <span
