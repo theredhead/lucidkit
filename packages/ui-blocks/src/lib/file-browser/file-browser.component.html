@@ -31,44 +31,173 @@
     </div>
   }
 
-  <!-- Main panel: Directory contents -->
-  <div class="fb-contents" role="list" [attr.aria-label]="ariaLabel()">
-    @if (contents().length === 0) {
-      <div class="fb-empty">Empty folder</div>
-    } @else {
-      @for (entry of contents(); track entry.id) {
-        <div
-          class="fb-entry"
-          role="listitem"
-          tabindex="0"
-          [class.fb-entry--selected]="isEntrySelected(entry)"
-          [class.fb-entry--directory]="entry.isDirectory"
-          (click)="onEntryClick(entry)"
-          (dblclick)="onEntryDblClick(entry)"
-          (keydown)="onEntryKeydown($event, entry)"
-        >
-          @if (entryTemplate(); as tpl) {
-            <ng-container
-              [ngTemplateOutlet]="tpl"
-              [ngTemplateOutletContext]="{ $implicit: entry }"
-            />
-          } @else {
-            <ui-icon
-              class="fb-entry-icon"
-              [svg]="getEntryIcon(entry)"
-              [size]="18"
-            />
-            <span class="fb-entry-name">{{ entry.name }}</span>
-            @if (entry.isDirectory) {
-              <ui-icon
-                class="fb-entry-chevron"
-                [svg]="icons.chevronRight"
-                [size]="14"
-              />
-            }
+  <!-- ═══ Contents panel — switches on viewMode ═══ -->
+
+  @switch (viewMode()) {
+
+    <!-- ── List view (default) ── -->
+    @case ('list') {
+      <div class="fb-contents fb-contents--list" role="list" [attr.aria-label]="ariaLabel()">
+        @if (contents().length === 0) {
+          <div class="fb-empty">Empty folder</div>
+        } @else {
+          @for (entry of contents(); track entry.id) {
+            <div
+              class="fb-entry"
+              role="listitem"
+              tabindex="0"
+              [class.fb-entry--selected]="isEntrySelected(entry)"
+              [class.fb-entry--directory]="entry.isDirectory"
+              (click)="onEntryClick(entry)"
+              (dblclick)="onEntryDblClick(entry)"
+              (keydown)="onEntryKeydown($event, entry)"
+            >
+              @if (entryTemplate(); as tpl) {
+                <ng-container
+                  [ngTemplateOutlet]="tpl"
+                  [ngTemplateOutletContext]="{ $implicit: entry }"
+                />
+              } @else {
+                <ui-icon class="fb-entry-icon" [svg]="getEntryIcon(entry)" [size]="18" />
+                <span class="fb-entry-name">{{ entry.name }}</span>
+                @if (entry.isDirectory) {
+                  <ui-icon class="fb-entry-chevron" [svg]="icons.chevronRight" [size]="14" />
+                }
+              }
+            </div>
           }
-        </div>
-      }
+        }
+      </div>
     }
-  </div>
+
+    <!-- ── Icon view ── -->
+    @case ('icons') {
+      <div class="fb-contents fb-contents--icons" role="list" [attr.aria-label]="ariaLabel()">
+        @if (contents().length === 0) {
+          <div class="fb-empty">Empty folder</div>
+        } @else {
+          @for (entry of contents(); track entry.id) {
+            <div
+              class="fb-icon-tile"
+              role="listitem"
+              tabindex="0"
+              [class.fb-icon-tile--selected]="isEntrySelected(entry)"
+              (click)="onEntryClick(entry)"
+              (dblclick)="onEntryDblClick(entry)"
+              (keydown)="onEntryKeydown($event, entry)"
+            >
+              <ui-icon class="fb-icon-tile-icon" [svg]="getEntryIcon(entry)" [size]="40" />
+              <span class="fb-icon-tile-name">{{ entry.name }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+
+    <!-- ── Detail view (table-like) ── -->
+    @case ('detail') {
+      <div class="fb-contents fb-contents--detail" role="table" [attr.aria-label]="ariaLabel()">
+        <div class="fb-detail-header" role="row">
+          <span class="fb-detail-cell fb-detail-cell--icon" role="columnheader"></span>
+          <span class="fb-detail-cell fb-detail-cell--name" role="columnheader">Name</span>
+          <span class="fb-detail-cell fb-detail-cell--meta" role="columnheader">Size</span>
+          <span class="fb-detail-cell fb-detail-cell--meta" role="columnheader">Type</span>
+          <span class="fb-detail-cell fb-detail-cell--meta" role="columnheader">Modified</span>
+        </div>
+        @if (contents().length === 0) {
+          <div class="fb-empty">Empty folder</div>
+        } @else {
+          @for (entry of contents(); track entry.id) {
+            <div
+              class="fb-detail-row"
+              role="row"
+              tabindex="0"
+              [class.fb-detail-row--selected]="isEntrySelected(entry)"
+              [class.fb-detail-row--directory]="entry.isDirectory"
+              (click)="onEntryClick(entry)"
+              (dblclick)="onEntryDblClick(entry)"
+              (keydown)="onEntryKeydown($event, entry)"
+            >
+              <span class="fb-detail-cell fb-detail-cell--icon" role="cell">
+                <ui-icon [svg]="getEntryIcon(entry)" [size]="16" />
+              </span>
+              <span class="fb-detail-cell fb-detail-cell--name" role="cell">{{ entry.name }}</span>
+              <span class="fb-detail-cell fb-detail-cell--meta" role="cell">{{ $any(entry.meta)?.size ?? '—' }}</span>
+              <span class="fb-detail-cell fb-detail-cell--meta" role="cell">{{ $any(entry.meta)?.type ?? '—' }}</span>
+              <span class="fb-detail-cell fb-detail-cell--meta" role="cell">{{ $any(entry.meta)?.modified ?? '—' }}</span>
+            </div>
+          }
+        }
+      </div>
+    }
+
+    <!-- ── Tree view ── -->
+    @case ('tree') {
+      <div class="fb-contents fb-contents--tree" [attr.aria-label]="ariaLabel()">
+        <ui-tree-view
+          [datasource]="treeDatasource()"
+          [displayWith]="displayNodeLabel"
+          ariaLabel="File tree"
+          (nodeActivated)="onTreeNodeActivated($event)"
+        >
+          <ng-template #nodeTemplate let-node>
+            <ui-icon [svg]="getEntryIcon(node.data)" [size]="16" />
+            <span class="fb-node-label">{{ node.data.name }}</span>
+          </ng-template>
+        </ui-tree-view>
+      </div>
+    }
+
+    <!-- ── Column view (NeXTSTEP / macOS Finder) ── -->
+    @case ('column') {
+      <div class="fb-contents fb-contents--column" [attr.aria-label]="ariaLabel()">
+        @for (pane of columnPanes(); track $index; let i = $index) {
+          <div class="fb-column-pane" role="list">
+            @for (entry of pane.entries; track entry.id) {
+              <div
+                class="fb-column-entry"
+                role="listitem"
+                tabindex="0"
+                [class.fb-column-entry--selected]="isColumnEntrySelected(i, entry)"
+                [class.fb-column-entry--directory]="entry.isDirectory"
+                (click)="onColumnEntryClick(i, entry)"
+                (dblclick)="onColumnEntryDblClick(entry)"
+                (keydown)="onEntryKeydown($event, entry)"
+              >
+                <ui-icon [svg]="getEntryIcon(entry)" [size]="16" />
+                <span class="fb-column-entry-name">{{ entry.name }}</span>
+                @if (entry.isDirectory) {
+                  <ui-icon class="fb-entry-chevron" [svg]="icons.chevronRight" [size]="12" />
+                }
+              </div>
+            } @empty {
+              <div class="fb-empty">Empty</div>
+            }
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- ═══ Details pane ═══ -->
+  @if (showDetails() && hasSelection()) {
+    <aside class="fb-details" aria-label="File details">
+      <div class="fb-details-header">
+        <ui-icon [svg]="getEntryIcon(selectedEntry()!)" [size]="32" />
+        <span class="fb-details-name">{{ selectedEntry()!.name }}</span>
+        <span class="fb-details-kind">
+          {{ selectedEntry()!.isDirectory ? 'Folder' : 'File' }}
+        </span>
+      </div>
+
+      @if (detailFields().length > 0) {
+        <dl class="fb-details-meta">
+          @for (field of detailFields(); track field.label) {
+            <dt class="fb-details-label">{{ field.label }}</dt>
+            <dd class="fb-details-value">{{ field.value }}</dd>
+          }
+        </dl>
+      }
+    </aside>
+  }
 </div>

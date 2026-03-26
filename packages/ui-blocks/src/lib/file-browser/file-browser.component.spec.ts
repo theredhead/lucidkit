@@ -276,4 +276,179 @@ describe("UIFileBrowser", () => {
       expect(empty.textContent).toContain("Empty folder");
     });
   });
+
+  // ═══════════════════════════════════════════════════════════════
+  // ── View mode tests ───────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════
+
+  describe("viewMode: icons", () => {
+    beforeEach(async () => {
+      fixture.componentRef.setInput("viewMode", "icons");
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    it("should render icon tiles", () => {
+      const tiles = fixture.nativeElement.querySelectorAll(".fb-icon-tile");
+      expect(tiles.length).toBe(ENTRIES.length);
+    });
+
+    it("should show entry names", () => {
+      const names =
+        fixture.nativeElement.querySelectorAll(".fb-icon-tile-name");
+      const texts = Array.from(names).map((n: unknown) =>
+        (n as HTMLElement).textContent?.trim(),
+      );
+      expect(texts).toContain("Documents");
+      expect(texts).toContain("README.md");
+    });
+
+    it("should select a tile on click", () => {
+      const tiles = fixture.nativeElement.querySelectorAll(".fb-icon-tile");
+      tiles[2].click();
+      fixture.detectChanges();
+
+      expect(component.selectedEntry()?.name).toBe("README.md");
+      expect(tiles[2].classList).toContain("fb-icon-tile--selected");
+    });
+  });
+
+  describe("viewMode: detail", () => {
+    beforeEach(async () => {
+      fixture.componentRef.setInput("viewMode", "detail");
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    it("should render the detail header", () => {
+      const header = fixture.nativeElement.querySelector(".fb-detail-header");
+      expect(header).toBeTruthy();
+      expect(header.textContent).toContain("Name");
+    });
+
+    it("should render detail rows", () => {
+      const rows = fixture.nativeElement.querySelectorAll(".fb-detail-row");
+      expect(rows.length).toBe(ENTRIES.length);
+    });
+
+    it("should select a row on click", () => {
+      const rows = fixture.nativeElement.querySelectorAll(".fb-detail-row");
+      rows[2].click();
+      fixture.detectChanges();
+
+      expect(component.selectedEntry()?.name).toBe("README.md");
+      expect(rows[2].classList).toContain("fb-detail-row--selected");
+    });
+
+    it("should display meta columns", () => {
+      const metaCells = fixture.nativeElement.querySelectorAll(
+        ".fb-detail-row .fb-detail-cell--meta",
+      );
+      // 3 meta columns × 4 entries = 12
+      expect(metaCells.length).toBe(ENTRIES.length * 3);
+    });
+  });
+
+  describe("viewMode: column", () => {
+    beforeEach(async () => {
+      fixture.componentRef.setInput("viewMode", "column");
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    it("should render the root column pane", () => {
+      const panes = fixture.nativeElement.querySelectorAll(".fb-column-pane");
+      expect(panes.length).toBe(1);
+    });
+
+    it("should render entries inside the root pane", () => {
+      const entries =
+        fixture.nativeElement.querySelectorAll(".fb-column-entry");
+      expect(entries.length).toBe(ENTRIES.length);
+    });
+
+    it("should open a second pane when clicking a directory", async () => {
+      const entries =
+        fixture.nativeElement.querySelectorAll(".fb-column-entry");
+      // Click "Documents" (first entry, a directory)
+      entries[0].click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const panes = fixture.nativeElement.querySelectorAll(".fb-column-pane");
+      expect(panes.length).toBe(2);
+    });
+
+    it("should select an entry in a pane", () => {
+      const entries =
+        fixture.nativeElement.querySelectorAll(".fb-column-entry");
+      entries[2].click(); // Click "README.md"
+      fixture.detectChanges();
+
+      expect(component.selectedEntry()?.name).toBe("README.md");
+      expect(entries[2].classList).toContain("fb-column-entry--selected");
+    });
+  });
+
+  describe("details pane", () => {
+    it("should not show details pane by default", () => {
+      const details = fixture.nativeElement.querySelector(".fb-details");
+      expect(details).toBeNull();
+    });
+
+    it("should show details pane when showDetails is true and entry is selected", () => {
+      fixture.componentRef.setInput("showDetails", true);
+      fixture.detectChanges();
+
+      // Select an entry
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      entries[2].click(); // README.md
+      fixture.detectChanges();
+
+      const details = fixture.nativeElement.querySelector(".fb-details");
+      expect(details).toBeTruthy();
+      expect(details.textContent).toContain("README.md");
+    });
+
+    it("should display metadata from the provider", () => {
+      fixture.componentRef.setInput("showDetails", true);
+      fixture.componentRef.setInput(
+        "metadataProvider",
+        (entry: FileBrowserEntry<FileMeta>) => [
+          { label: "Size", value: entry.meta?.size ?? 0 },
+        ],
+      );
+      fixture.detectChanges();
+
+      // Select README.md (has meta.size = 1024)
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      entries[2].click();
+      fixture.detectChanges();
+
+      const labels =
+        fixture.nativeElement.querySelectorAll(".fb-details-label");
+      const values =
+        fixture.nativeElement.querySelectorAll(".fb-details-value");
+      expect(labels.length).toBeGreaterThan(0);
+      expect(labels[0].textContent?.trim()).toBe("Size");
+      expect(values[0].textContent?.trim()).toBe("1024");
+    });
+
+    it("should show File or Folder kind", () => {
+      fixture.componentRef.setInput("showDetails", true);
+      fixture.detectChanges();
+
+      // Select a directory
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      entries[0].click(); // Documents (directory)
+      fixture.detectChanges();
+
+      const kind = fixture.nativeElement.querySelector(".fb-details-kind");
+      expect(kind.textContent?.trim()).toBe("Folder");
+    });
+  });
 });

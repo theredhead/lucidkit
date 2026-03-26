@@ -7,6 +7,7 @@ import type {
   FileBrowserEntry,
   FileActivateEvent,
   DirectoryChangeEvent,
+  MetadataField,
 } from "./file-browser.types";
 
 // ── Sample data ──────────────────────────────────────────────────────
@@ -283,6 +284,148 @@ class CustomTemplateDemo {
   }
 }
 
+// ── Metadata provider ────────────────────────────────────────────────
+
+function metadataProvider(entry: FileBrowserEntry<FileMeta>): MetadataField[] {
+  const fields: MetadataField[] = [];
+  if (entry.meta?.size) fields.push({ label: "Size", value: entry.meta.size });
+  if (entry.meta?.type) fields.push({ label: "Type", value: entry.meta.type });
+  if (entry.meta?.modified)
+    fields.push({ label: "Modified", value: entry.meta.modified });
+  return fields;
+}
+
+// ── Icon view demo ──────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-file-browser-icon-view-demo",
+  standalone: true,
+  imports: [UIFileBrowser],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [outputStyles],
+  template: `
+    <div class="story-wrapper">
+      <ui-file-browser
+        [datasource]="ds"
+        viewMode="icons"
+        [showDetails]="true"
+        [metadataProvider]="metadataProvider"
+        (fileActivated)="onFileActivated($event)"
+      />
+    </div>
+    @if (lastEvent()) {
+      <div class="story-output">{{ lastEvent() }}</div>
+    }
+  `,
+})
+class IconViewDemo {
+  protected readonly ds = new SampleDatasource();
+  protected readonly lastEvent = signal<string>("");
+  protected readonly metadataProvider = metadataProvider;
+
+  protected onFileActivated(event: FileActivateEvent<FileMeta>): void {
+    this.lastEvent.set(`Opened: ${event.entry.name}`);
+  }
+}
+
+// ── Detail view demo ────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-file-browser-detail-view-demo",
+  standalone: true,
+  imports: [UIFileBrowser],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [outputStyles],
+  template: `
+    <div class="story-wrapper">
+      <ui-file-browser
+        [datasource]="ds"
+        viewMode="detail"
+        [showDetails]="true"
+        [metadataProvider]="metadataProvider"
+        (fileActivated)="onFileActivated($event)"
+      />
+    </div>
+    @if (lastEvent()) {
+      <div class="story-output">{{ lastEvent() }}</div>
+    }
+  `,
+})
+class DetailViewDemo {
+  protected readonly ds = new SampleDatasource();
+  protected readonly lastEvent = signal<string>("");
+  protected readonly metadataProvider = metadataProvider;
+
+  protected onFileActivated(event: FileActivateEvent<FileMeta>): void {
+    this.lastEvent.set(`Opened: ${event.entry.name}`);
+  }
+}
+
+// ── Column view demo ────────────────────────────────────────────────
+
+@Component({
+  selector: "ui-file-browser-column-view-demo",
+  standalone: true,
+  imports: [UIFileBrowser],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [outputStyles],
+  template: `
+    <div class="story-wrapper">
+      <ui-file-browser
+        [datasource]="ds"
+        viewMode="column"
+        [showDetails]="true"
+        [metadataProvider]="metadataProvider"
+        (fileActivated)="onFileActivated($event)"
+      />
+    </div>
+    @if (lastEvent()) {
+      <div class="story-output">{{ lastEvent() }}</div>
+    }
+  `,
+})
+class ColumnViewDemo {
+  protected readonly ds = new SampleDatasource();
+  protected readonly lastEvent = signal<string>("");
+  protected readonly metadataProvider = metadataProvider;
+
+  protected onFileActivated(event: FileActivateEvent<FileMeta>): void {
+    this.lastEvent.set(`Opened: ${event.entry.name}`);
+  }
+}
+
+// ── Details pane demo ───────────────────────────────────────────────
+
+@Component({
+  selector: "ui-file-browser-details-pane-demo",
+  standalone: true,
+  imports: [UIFileBrowser],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [outputStyles],
+  template: `
+    <div class="story-wrapper">
+      <ui-file-browser
+        [datasource]="ds"
+        [showDetails]="true"
+        [metadataProvider]="metadataProvider"
+        (fileActivated)="onFileActivated($event)"
+      />
+    </div>
+    @if (lastEvent()) {
+      <div class="story-output">{{ lastEvent() }}</div>
+    }
+  `,
+})
+class DetailsPaneDemo {
+  protected readonly ds = new SampleDatasource();
+  protected readonly lastEvent = signal<string>("");
+  protected readonly metadataProvider = metadataProvider;
+
+  protected onFileActivated(event: FileActivateEvent<FileMeta>): void {
+    this.lastEvent.set(`Opened: ${event.entry.name}`);
+  }
+}
+
 // ── Storybook meta & stories ─────────────────────────────────────────
 
 const meta: Meta = {
@@ -313,7 +456,15 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [DefaultDemo, NoSidebarDemo, CustomTemplateDemo],
+      imports: [
+        DefaultDemo,
+        NoSidebarDemo,
+        CustomTemplateDemo,
+        IconViewDemo,
+        DetailViewDemo,
+        ColumnViewDemo,
+        DetailsPaneDemo,
+      ],
     }),
   ],
 };
@@ -430,6 +581,218 @@ export const CustomTemplate: Story = {
     <span class="meta">{{ entry.meta?.type }}</span>
   </ng-template>
 </ui-file-browser>
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Icon View** — Displays entries as a grid of large icons.
+ * Set `viewMode="icons"` and optionally enable `showDetails` for a
+ * metadata sidebar.
+ */
+export const IconView: Story = {
+  render: () => ({
+    template: `<ui-file-browser-icon-view-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-file-browser
+  [datasource]="ds"
+  viewMode="icons"
+  [showDetails]="true"
+  [metadataProvider]="metadataProvider"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIFileBrowser,
+  type FileBrowserEntry,
+  type MetadataField,
+} from '@theredhead/ui-blocks';
+
+@Component({
+  selector: 'app-icon-view',
+  standalone: true,
+  imports: [UIFileBrowser],
+  template: \\\`
+    <ui-file-browser
+      [datasource]="ds"
+      viewMode="icons"
+      [showDetails]="true"
+      [metadataProvider]="metadataProvider"
+    />
+  \\\`,
+  styles: [':host { display: block; height: 500px; }'],
+})
+export class IconViewComponent {
+  readonly ds = new MyDatasource();
+  metadataProvider(entry: FileBrowserEntry): MetadataField[] {
+    return [{ label: 'Size', value: entry.meta?.size }];
+  }
+}
+
+// ── SCSS ──
+/* No custom styles needed — uses built-in icon grid layout. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Detail View** — Table-like layout showing Name, Size, Type, and
+ * Modified columns. Best for file listings where metadata matters.
+ */
+export const DetailView: Story = {
+  render: () => ({
+    template: `<ui-file-browser-detail-view-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-file-browser
+  [datasource]="ds"
+  viewMode="detail"
+  [showDetails]="true"
+  [metadataProvider]="metadataProvider"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIFileBrowser } from '@theredhead/ui-blocks';
+
+@Component({
+  selector: 'app-detail-view',
+  standalone: true,
+  imports: [UIFileBrowser],
+  template: \\\`
+    <ui-file-browser [datasource]="ds" viewMode="detail" />
+  \\\`,
+  styles: [':host { display: block; height: 500px; }'],
+})
+export class DetailViewComponent {
+  readonly ds = new MyDatasource();
+}
+
+// ── SCSS ──
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Column View** — NeXTSTEP / macOS Finder-style multi-column browser.
+ * Each directory click appends a new column to the right.
+ */
+export const ColumnView: Story = {
+  render: () => ({
+    template: `<ui-file-browser-column-view-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-file-browser
+  [datasource]="ds"
+  viewMode="column"
+  [showDetails]="true"
+  [metadataProvider]="metadataProvider"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIFileBrowser } from '@theredhead/ui-blocks';
+
+@Component({
+  selector: 'app-column-view',
+  standalone: true,
+  imports: [UIFileBrowser],
+  template: \\\`
+    <ui-file-browser [datasource]="ds" viewMode="column" />
+  \\\`,
+  styles: [':host { display: block; height: 500px; }'],
+})
+export class ColumnViewComponent {
+  readonly ds = new MyDatasource();
+}
+
+// ── SCSS ──
+/* Adjust column width: */
+ui-file-browser { --fb-column-width: 260px; }
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Details Pane** — Enable `[showDetails]="true"` with a metadata provider
+ * to show a sidebar with file/folder properties when an entry is selected.
+ */
+export const DetailsPane: Story = {
+  render: () => ({
+    template: `<ui-file-browser-details-pane-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-file-browser
+  [datasource]="ds"
+  [showDetails]="true"
+  [metadataProvider]="metadataProvider"
+/>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIFileBrowser,
+  type FileBrowserEntry,
+  type MetadataField,
+} from '@theredhead/ui-blocks';
+
+@Component({
+  selector: 'app-details-pane',
+  standalone: true,
+  imports: [UIFileBrowser],
+  template: \\\`
+    <ui-file-browser
+      [datasource]="ds"
+      [showDetails]="true"
+      [metadataProvider]="metadataProvider"
+    />
+  \\\`,
+  styles: [':host { display: block; height: 500px; }'],
+})
+export class DetailsPaneComponent {
+  readonly ds = new MyDatasource();
+  metadataProvider(entry: FileBrowserEntry): MetadataField[] {
+    return [
+      { label: 'Size', value: entry.meta?.size ?? 'N/A' },
+      { label: 'Type', value: entry.meta?.type ?? 'Unknown' },
+    ];
+  }
+}
+
+// ── SCSS ──
+/* Adjust details width: */
+ui-file-browser { --fb-details-width: 260px; }
 `,
       },
     },
