@@ -6,8 +6,8 @@ import {
   model,
   output,
   TemplateRef,
-} from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
+} from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
 import {
   CdkDropListGroup,
   CdkDropList,
@@ -16,14 +16,14 @@ import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
-} from '@angular/cdk/drag-drop';
+} from "@angular/cdk/drag-drop";
 
 import type {
   KanbanColumn,
   KanbanCard,
   KanbanCardMoveEvent,
   KanbanCardContext,
-} from './kanban-board.types';
+} from "./kanban-board.types";
 
 /**
  * Column-based kanban board with drag-and-drop card reordering.
@@ -43,7 +43,7 @@ import type {
  * ```
  */
 @Component({
-  selector: 'ui-kanban-board',
+  selector: "ui-kanban-board",
   standalone: true,
   imports: [
     NgTemplateOutlet,
@@ -53,10 +53,10 @@ import type {
     CdkDragPlaceholder,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './kanban-board.component.html',
-  styleUrl: './kanban-board.component.scss',
+  templateUrl: "./kanban-board.component.html",
+  styleUrl: "./kanban-board.component.scss",
   host: {
-    class: 'ui-kanban-board',
+    class: "ui-kanban-board",
   },
 })
 export class UIKanbanBoard<T = unknown> {
@@ -68,12 +68,13 @@ export class UIKanbanBoard<T = unknown> {
   // ── Inputs ────────────────────────────────────────────────────────
 
   /** Accessible label for the board region. */
-  public readonly ariaLabel = input<string>('Kanban board');
+  public readonly ariaLabel = input<string>("Kanban board");
 
   // ── Content children ──────────────────────────────────────────────
 
   /** Optional projected template for card rendering. */
-  public readonly cardTemplate = contentChild<TemplateRef<KanbanCardContext<T>>>(TemplateRef);
+  public readonly cardTemplate =
+    contentChild<TemplateRef<KanbanCardContext<T>>>(TemplateRef);
 
   // ── Outputs ───────────────────────────────────────────────────────
 

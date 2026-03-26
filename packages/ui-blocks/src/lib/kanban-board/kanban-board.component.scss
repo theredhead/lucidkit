@@ -13,7 +13,11 @@
   --kb-column-radius: 8px;
   --kb-card-radius: 6px;
 
-  display: block;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   color: var(--kb-text);
   background: transparent;
 }
@@ -30,18 +34,20 @@
 
 .kanban-columns {
   display: flex;
+  flex: 1;
   gap: var(--kb-column-gap);
   @include mix.scrollable(x);
   padding: 4px;
-  min-height: 200px;
+  min-height: 0;
 }
 
 .kanban-column {
-  flex: 0 0 var(--kb-column-width);
+  flex: 1 0 var(--kb-column-width);
   display: flex;
   flex-direction: column;
   background: var(--kb-surface);
   border-radius: var(--kb-column-radius);
+  min-height: 0;
   max-height: 100%;
   border-top: 3px solid transparent;
 }
@@ -141,6 +147,7 @@
   border: 2px dashed var(--kb-accent);
 }
 
-.kanban-column-body.cdk-drop-list-dragging .kanban-card-wrapper:not(.cdk-drag-placeholder) {
+.kanban-column-body.cdk-drop-list-dragging
+  .kanban-card-wrapper:not(.cdk-drag-placeholder) {
   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
