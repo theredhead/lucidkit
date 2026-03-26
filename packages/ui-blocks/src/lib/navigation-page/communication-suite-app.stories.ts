@@ -37,6 +37,11 @@ import {
   UIToggle,
 } from "@theredhead/ui-kit";
 
+import { UIChatView } from "../chat-view/chat-view.component";
+import type {
+  ChatMessage as ChatViewMessage,
+  ChatParticipant,
+} from "../chat-view/chat-view.types";
 import { UIMasterDetailView } from "../master-detail-view/master-detail-view.component";
 import { UINavigationPage } from "./navigation-page.component";
 import {
@@ -702,6 +707,84 @@ const CHAT_MESSAGES: ChatMessage[] = [
   },
 ];
 
+// ── Chat participants (for UIChatView) ───────────────────────────
+
+const CURRENT_USER: ChatParticipant = {
+  id: "you",
+  name: "You",
+  avatarEmail: "you@acme.com",
+};
+
+const CHAT_PARTICIPANTS: Record<string, ChatParticipant> = {
+  "Alice Chen": {
+    id: "alice",
+    name: "Alice Chen",
+    avatarEmail: "alice@acme.com",
+  },
+  "David Kim": {
+    id: "david",
+    name: "David Kim",
+    avatarEmail: "david@acme.com",
+  },
+  "Karen Lee": {
+    id: "karen",
+    name: "Karen Lee",
+    avatarEmail: "karen@acme.com",
+  },
+  "Grace Okafor": {
+    id: "grace",
+    name: "Grace Okafor",
+    avatarEmail: "grace@acme.com",
+  },
+  "Bob Martinez": {
+    id: "bob",
+    name: "Bob Martinez",
+    avatarEmail: "bob@acme.com",
+  },
+  "James Wright": {
+    id: "james",
+    name: "James Wright",
+    avatarEmail: "james@acme.com",
+  },
+  "Carol Davis": {
+    id: "carol",
+    name: "Carol Davis",
+    avatarEmail: "carol@acme.com",
+  },
+  "Eva Johansson": {
+    id: "eva",
+    name: "Eva Johansson",
+    avatarEmail: "eva@acme.com",
+  },
+  "Henry Tanaka": {
+    id: "henry",
+    name: "Henry Tanaka",
+    avatarEmail: "henry@acme.com",
+  },
+};
+
+function toChatViewMessages(msgs: ChatMessage[]): ChatViewMessage[] {
+  const today = new Date("2026-03-25");
+  return msgs.map((m) => {
+    const match = m.time.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    let h = match ? parseInt(match[1], 10) : 0;
+    const min = match ? parseInt(match[2], 10) : 0;
+    if (match && match[3].toUpperCase() === "PM" && h < 12) h += 12;
+    if (match && match[3].toUpperCase() === "AM" && h === 12) h = 0;
+    const ts = new Date(today);
+    ts.setHours(h, min, 0, 0);
+    return {
+      id: String(m.id),
+      content: m.text,
+      timestamp: ts,
+      sender: CHAT_PARTICIPANTS[m.sender] ?? {
+        id: m.sender.toLowerCase().replace(/\s/g, "-"),
+        name: m.sender,
+      },
+    };
+  });
+}
+
 const MEETINGS: Meeting[] = [
   {
     id: 1,
@@ -1295,6 +1378,7 @@ function channelIcon(type: string): string {
   standalone: true,
   imports: [
     UINavigationPage,
+    UIChatView,
     UIMasterDetailView,
     UICalendarMonthView,
     UITabGroup,
@@ -1590,6 +1674,12 @@ function channelIcon(type: string): string {
       }
       .chat-input-bar ui-input {
         flex: 1;
+      }
+      .chat-main ui-chat-view {
+        flex: 1;
+        min-height: 0;
+        border: none;
+        border-radius: 0;
       }
 
       /* ── Calendar / Schedule ── */
@@ -2138,36 +2228,12 @@ function channelIcon(type: string): string {
                       </ui-button>
                     </div>
                   </div>
-                  <div class="chat-messages">
-                    @for (msg of channelMessages(); track msg.id) {
-                      <div class="chat-msg">
-                        <ui-avatar [name]="msg.sender" [size]="32" />
-                        <div class="chat-msg-content">
-                          <div class="chat-msg-sender">
-                            {{ msg.sender }}
-                            <span class="chat-msg-time">{{ msg.time }}</span>
-                          </div>
-                          <div class="chat-msg-text">{{ msg.text }}</div>
-                        </div>
-                      </div>
-                    } @empty {
-                      <div
-                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; opacity: 0.5;"
-                      >
-                        <ui-icon [svg]="icons.messageCircle" [size]="48" />
-                        <p style="margin-top: 1rem;">No messages yet</p>
-                      </div>
-                    }
-                  </div>
-                  <div class="chat-input-bar">
-                    <ui-input
-                      placeholder="Type a message..."
-                      ariaLabel="Message input"
-                    />
-                    <ui-button variant="filled" ariaLabel="Send">
-                      <ui-icon [svg]="icons.send" [size]="16" />
-                    </ui-button>
-                  </div>
+                  <ui-chat-view
+                    [messages]="channelMessages()"
+                    [currentUser]="currentUser"
+                    [placeholder]="'Message #' + ch.name + '...'"
+                    [ariaLabel]="'Chat in ' + ch.name"
+                  />
                 }
               </div>
             </div>
@@ -2240,36 +2306,12 @@ function channelIcon(type: string): string {
                       </ui-button>
                     </div>
                   </div>
-                  <div class="chat-messages">
-                    @for (msg of dmMessages(); track msg.id) {
-                      <div class="chat-msg">
-                        <ui-avatar [name]="msg.sender" [size]="32" />
-                        <div class="chat-msg-content">
-                          <div class="chat-msg-sender">
-                            {{ msg.sender }}
-                            <span class="chat-msg-time">{{ msg.time }}</span>
-                          </div>
-                          <div class="chat-msg-text">{{ msg.text }}</div>
-                        </div>
-                      </div>
-                    } @empty {
-                      <div
-                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; opacity: 0.5;"
-                      >
-                        <ui-icon [svg]="icons.messageCircle" [size]="48" />
-                        <p style="margin-top: 1rem;">Start a conversation</p>
-                      </div>
-                    }
-                  </div>
-                  <div class="chat-input-bar">
-                    <ui-input
-                      placeholder="Type a message..."
-                      ariaLabel="Message input"
-                    />
-                    <ui-button variant="filled" ariaLabel="Send">
-                      <ui-icon [svg]="icons.send" [size]="16" />
-                    </ui-button>
-                  </div>
+                  <ui-chat-view
+                    [messages]="dmMessages()"
+                    [currentUser]="currentUser"
+                    [placeholder]="'Message ' + dm.name + '...'"
+                    [ariaLabel]="'Chat with ' + dm.name"
+                  />
                 }
               </div>
             </div>
@@ -3084,6 +3126,8 @@ class UIDemoCommunicationSuiteApp {
     (c) => c.type === "direct",
   );
 
+  protected readonly currentUser = CURRENT_USER;
+
   protected readonly activeChannel = computed(() => {
     return (
       this.chatChannels.find((c) => c.id === this.selectedChannel()) ?? null
@@ -3091,7 +3135,9 @@ class UIDemoCommunicationSuiteApp {
   });
 
   protected readonly channelMessages = computed(() => {
-    return CHAT_MESSAGES.filter((m) => m.channelId === this.selectedChannel());
+    return toChatViewMessages(
+      CHAT_MESSAGES.filter((m) => m.channelId === this.selectedChannel()),
+    );
   });
 
   protected readonly activeDm = computed(() => {
@@ -3099,7 +3145,9 @@ class UIDemoCommunicationSuiteApp {
   });
 
   protected readonly dmMessages = computed(() => {
-    return CHAT_MESSAGES.filter((m) => m.channelId === this.selectedDm());
+    return toChatViewMessages(
+      CHAT_MESSAGES.filter((m) => m.channelId === this.selectedDm()),
+    );
   });
 
   // ── Calendar ──
@@ -3243,7 +3291,12 @@ export const Default: Story = {
       </ui-master-detail-view>
     }
     @if (node.id === 'channels') {
-      <!-- Split-panel chat: channel list + messages + input -->
+      <!-- Channel list sidebar + UIChatView for messages & composer -->
+      <ui-chat-view
+        [messages]="channelMessages()"
+        [currentUser]="currentUser"
+        placeholder="Message #general..."
+      />
     }
     @if (node.id === 'schedule') {
       <ui-calendar-month-view
@@ -3267,7 +3320,7 @@ export const Default: Story = {
 import { Component, signal, computed } from '@angular/core';
 import {
   UINavigationPage, navItem, navGroup, type NavigationNode,
-  UIMasterDetailView,
+  UIMasterDetailView, UIChatView, type ChatParticipant,
 } from '@theredhead/ui-blocks';
 import {
   FilterableArrayDatasource, ArrayCalendarDatasource,
@@ -3280,7 +3333,7 @@ import {
   selector: 'app-communication-suite',
   standalone: true,
   imports: [
-    UINavigationPage, UIMasterDetailView, UICalendarMonthView,
+    UINavigationPage, UIMasterDetailView, UIChatView, UICalendarMonthView,
     UITabGroup, UITab, UITabSpacer, UIChip, UIAvatar, UIBadge,
     UIBadgeColumn, UITemplateColumn, UIIcon, UICard, UICardBody,
     UIButton, UIInput,
