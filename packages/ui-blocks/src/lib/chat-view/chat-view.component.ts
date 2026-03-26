@@ -11,10 +11,16 @@ import {
   signal,
   TemplateRef,
   viewChild,
-} from '@angular/core';
-import { NgTemplateOutlet, DatePipe } from '@angular/common';
+} from "@angular/core";
+import { NgTemplateOutlet, DatePipe } from "@angular/common";
 
-import { UIAvatar, UIButton, UIIcon, UIIcons, UIRichTextEditor } from '@theredhead/ui-kit';
+import {
+  UIAvatar,
+  UIButton,
+  UIIcon,
+  UIIcons,
+  UIRichTextEditor,
+} from "@theredhead/ui-kit";
 
 import type {
   ChatComposerMode,
@@ -23,7 +29,7 @@ import type {
   MessageDateGroup,
   MessageSendEvent,
   MessageTemplateContext,
-} from './chat-view.types';
+} from "./chat-view.types";
 
 /**
  * A chat / messaging view composing UIAvatar, UIRichTextEditor,
@@ -60,14 +66,21 @@ import type {
  * ```
  */
 @Component({
-  selector: 'ui-chat-view',
+  selector: "ui-chat-view",
   standalone: true,
-  imports: [NgTemplateOutlet, DatePipe, UIAvatar, UIButton, UIIcon, UIRichTextEditor],
+  imports: [
+    NgTemplateOutlet,
+    DatePipe,
+    UIAvatar,
+    UIButton,
+    UIIcon,
+    UIRichTextEditor,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './chat-view.component.html',
-  styleUrl: './chat-view.component.scss',
+  templateUrl: "./chat-view.component.html",
+  styleUrl: "./chat-view.component.scss",
   host: {
-    class: 'ui-chat-view',
+    class: "ui-chat-view",
   },
 })
 export class UIChatView<M = unknown> implements AfterViewInit {
@@ -80,13 +93,13 @@ export class UIChatView<M = unknown> implements AfterViewInit {
   public readonly currentUser = input.required<ChatParticipant>();
 
   /** Composer input mode. */
-  public readonly composerMode = input<ChatComposerMode>('text');
+  public readonly composerMode = input<ChatComposerMode>("text");
 
   /** Placeholder text for the composer. */
-  public readonly placeholder = input<string>('Type a message…');
+  public readonly placeholder = input<string>("Type a message…");
 
   /** Accessible label for the chat view. */
-  public readonly ariaLabel = input<string>('Chat');
+  public readonly ariaLabel = input<string>("Chat");
 
   // ── Content children ──────────────────────────────────────────────
 
@@ -106,16 +119,16 @@ export class UIChatView<M = unknown> implements AfterViewInit {
 
   /** @internal */
   private readonly messageListRef =
-    viewChild<ElementRef<HTMLDivElement>>('messageList');
+    viewChild<ElementRef<HTMLDivElement>>("messageList");
 
   /** @internal */
   private readonly composerInputRef =
-    viewChild<ElementRef<HTMLTextAreaElement>>('composerInput');
+    viewChild<ElementRef<HTMLTextAreaElement>>("composerInput");
 
   // ── Internal state ────────────────────────────────────────────────
 
   /** @internal — current text in the composer. */
-  protected readonly composerValue = signal('');
+  protected readonly composerValue = signal("");
 
   // ── Icons ─────────────────────────────────────────────────────────
 
@@ -125,12 +138,14 @@ export class UIChatView<M = unknown> implements AfterViewInit {
   // ── Computed ──────────────────────────────────────────────────────
 
   /** @internal — messages grouped by date. */
-  protected readonly groupedMessages = computed<readonly MessageDateGroup<M>[]>(() =>
-    this.groupByDate(this.messages()),
+  protected readonly groupedMessages = computed<readonly MessageDateGroup<M>[]>(
+    () => this.groupByDate(this.messages()),
   );
 
   /** @internal — whether the send button should be enabled. */
-  protected readonly canSend = computed(() => this.composerValue().trim().length > 0);
+  protected readonly canSend = computed(
+    () => this.composerValue().trim().length > 0,
+  );
 
   // ── Constructor ───────────────────────────────────────────────────
 
@@ -173,7 +188,7 @@ export class UIChatView<M = unknown> implements AfterViewInit {
     if (!content) return;
 
     this.messageSend.emit({ content });
-    this.composerValue.set('');
+    this.composerValue.set("");
 
     // Re-focus the plain-text composer
     const textarea = this.composerInputRef()?.nativeElement;
@@ -184,7 +199,7 @@ export class UIChatView<M = unknown> implements AfterViewInit {
 
   /** @internal — handle Enter key in the text composer. */
   protected onComposerKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       this.send();
     }
@@ -199,7 +214,9 @@ export class UIChatView<M = unknown> implements AfterViewInit {
   // ── Private methods ───────────────────────────────────────────────
 
   /** Group messages by date, producing human-readable labels. */
-  private groupByDate(messages: readonly ChatMessage<M>[]): MessageDateGroup<M>[] {
+  private groupByDate(
+    messages: readonly ChatMessage<M>[],
+  ): MessageDateGroup<M>[] {
     const groups = new Map<string, ChatMessage<M>[]>();
 
     for (const msg of messages) {
@@ -213,23 +230,21 @@ export class UIChatView<M = unknown> implements AfterViewInit {
     }
 
     const today = this.toDateKey(new Date());
-    const yesterday = this.toDateKey(
-      new Date(Date.now() - 86_400_000),
-    );
+    const yesterday = this.toDateKey(new Date(Date.now() - 86_400_000));
 
     const result: MessageDateGroup<M>[] = [];
     for (const [date, msgs] of groups) {
       let label: string;
       if (date === today) {
-        label = 'Today';
+        label = "Today";
       } else if (date === yesterday) {
-        label = 'Yesterday';
+        label = "Yesterday";
       } else {
         label = new Date(date).toLocaleDateString(undefined, {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         });
       }
       result.push({ date, label, messages: msgs });
@@ -240,6 +255,6 @@ export class UIChatView<M = unknown> implements AfterViewInit {
 
   /** Convert a Date to a YYYY-MM-DD key. */
   private toDateKey(d: Date): string {
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   }
 }

@@ -1,4 +1,4 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 :host {
   --cv-bg: #ffffff;
@@ -69,7 +69,7 @@
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     flex: 1;
     height: 1px;
     background: var(--cv-border);
