@@ -4,14 +4,17 @@
 :host {
   --fb-bg: #ffffff;
   --fb-text: #1d232b;
+  --fb-text-secondary: #5a6270;
   --fb-border: #d7dce2;
   --fb-sidebar-bg: #f7f8fa;
   --fb-sidebar-width: 240px;
+  --fb-details-width: 220px;
   --fb-entry-hover: #f0f2f5;
   --fb-entry-selected: var(--ui-accent, #3b82f6);
   --fb-entry-selected-text: #ffffff;
   --fb-empty-text: #8b919a;
   --fb-header-bg: #f4f5f7;
+  --fb-column-width: 220px;
 
   display: flex;
   flex-direction: column;
@@ -27,6 +30,7 @@
 @include mix.dark-mode {
   --fb-bg: #1e2128;
   --fb-text: #e8ecf2;
+  --fb-text-secondary: #9ca3af;
   --fb-border: #2f343c;
   --fb-sidebar-bg: #181b20;
   --fb-entry-hover: #282c34;
@@ -46,7 +50,7 @@
   min-height: 40px;
 }
 
-// ── Body (sidebar + contents) ───────────────────────────────────────
+// ── Body (sidebar + contents + details) ─────────────────────────────
 .fb-body {
   display: flex;
   flex: 1;
@@ -74,11 +78,12 @@
   text-overflow: ellipsis;
 }
 
-// ── Contents ────────────────────────────────────────────────────────
+// ── Contents (shared base) ──────────────────────────────────────────
 .fb-contents {
   flex: 1;
   overflow-y: auto;
   padding: 4px 0;
+  min-width: 0;
 }
 
 .fb-empty {
@@ -88,7 +93,10 @@
   font-size: 14px;
 }
 
-// ── Entry rows ──────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// ── List view (default) ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
 .fb-entry {
   display: flex;
   align-items: center;
@@ -119,9 +127,7 @@
 .fb-entry-name {
   flex: 1;
   min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include mix.truncate;
 }
 
 .fb-entry-chevron {
@@ -131,4 +137,252 @@
 
 .fb-entry--directory {
   font-weight: 500;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ── Icon view ───────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
+.fb-contents--icons {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px;
+  padding: 12px;
+}
+
+.fb-icon-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  width: 88px;
+  padding: 10px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+  transition: background 60ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--fb-entry-hover);
+  }
+
+  &.fb-icon-tile--selected {
+    background: var(--fb-entry-selected);
+    color: var(--fb-entry-selected-text);
+  }
+}
+
+.fb-icon-tile-icon {
+  flex-shrink: 0;
+}
+
+.fb-icon-tile-name {
+  font-size: 11px;
+  line-height: 1.3;
+  max-width: 80px;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ── Detail view (table) ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
+.fb-contents--detail {
+  padding: 0;
+}
+
+.fb-detail-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fb-text-secondary);
+  border-bottom: 1px solid var(--fb-border);
+  background: var(--fb-header-bg);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.fb-detail-row {
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  transition: background 60ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--fb-entry-hover);
+  }
+
+  &.fb-detail-row--selected {
+    background: var(--fb-entry-selected);
+    color: var(--fb-entry-selected-text);
+  }
+
+  &.fb-detail-row--directory {
+    font-weight: 500;
+  }
+}
+
+.fb-detail-cell {
+  padding: 0 6px;
+
+  &--icon {
+    flex: 0 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &--name {
+    flex: 2;
+    min-width: 0;
+    @include mix.truncate;
+  }
+
+  &--meta {
+    flex: 1;
+    min-width: 0;
+    @include mix.truncate;
+    color: var(--fb-text-secondary);
+    font-size: 12px;
+  }
+}
+
+.fb-detail-row--selected .fb-detail-cell--meta {
+  color: var(--fb-entry-selected-text);
+  opacity: 0.8;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ── Tree view (contents panel) ──────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
+.fb-contents--tree {
+  ui-tree-view {
+    font-size: 13px;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ── Column view (NeXTSTEP / macOS Finder) ───────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
+.fb-contents--column {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0;
+}
+
+.fb-column-pane {
+  flex: 0 0 var(--fb-column-width);
+  min-width: var(--fb-column-width);
+  border-right: 1px solid var(--fb-border);
+  overflow-y: auto;
+  padding: 2px 0;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.fb-column-entry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  transition: background 60ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--fb-entry-hover);
+  }
+
+  &.fb-column-entry--selected {
+    background: var(--fb-entry-selected);
+    color: var(--fb-entry-selected-text);
+  }
+
+  &.fb-column-entry--directory {
+    font-weight: 500;
+  }
+}
+
+.fb-column-entry-name {
+  flex: 1;
+  min-width: 0;
+  @include mix.truncate;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ── Details pane ────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
+.fb-details {
+  width: var(--fb-details-width);
+  min-width: var(--fb-details-width);
+  border-left: 1px solid var(--fb-border);
+  background: var(--fb-sidebar-bg);
+  overflow-y: auto;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fb-details-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.fb-details-name {
+  font-weight: 600;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.fb-details-kind {
+  font-size: 12px;
+  color: var(--fb-text-secondary);
+}
+
+.fb-details-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 10px;
+  font-size: 12px;
+  margin: 0;
+}
+
+.fb-details-label {
+  font-weight: 600;
+  color: var(--fb-text-secondary);
+}
+
+.fb-details-value {
+  margin: 0;
+  min-width: 0;
+  @include mix.truncate;
 }

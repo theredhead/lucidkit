@@ -1,4 +1,68 @@
+import { InjectionToken } from "@angular/core";
 import type { TreeNode } from "@theredhead/ui-kit";
+
+/**
+ * View modes supported by the file browser contents panel.
+ *
+ * - `list`   — Default row-per-entry list (original behaviour).
+ * - `icons`  — Grid of large icons with name labels.
+ * - `detail` — Table with sortable columns (name, size, date, type).
+ * - `tree`   — Flat tree view showing nested hierarchy inline.
+ * - `column` — NeXTSTEP / macOS Finder column view: one column per
+ *              traversed directory level with horizontal scrolling.
+ */
+export type FileBrowserViewMode =
+  | "list"
+  | "icons"
+  | "detail"
+  | "tree"
+  | "column";
+
+/**
+ * Maps file extensions (without leading dot, lower-case) to SVG icon
+ * strings. Consumers provide this via DI to customise the icon view.
+ *
+ * @example
+ * ```ts
+ * const MY_ICONS: FileIconRegistry = {
+ *   ts:   UIIcons.Lucide.Files.FileCode,
+ *   json: UIIcons.Lucide.Files.FileJson,
+ *   md:   UIIcons.Lucide.Files.FileText,
+ * };
+ *
+ * providers: [{ provide: FILE_ICON_REGISTRY, useValue: MY_ICONS }]
+ * ```
+ */
+export type FileIconRegistry = Record<string, string>;
+
+/**
+ * DI token for the customisable file-icon registry.
+ *
+ * When provided, the icon view resolves icons by looking up the
+ * file's extension (lower-case, without the leading dot) in the
+ * registry. Falls back to the default file/folder icon.
+ */
+export const FILE_ICON_REGISTRY = new InjectionToken<FileIconRegistry>(
+  "FILE_ICON_REGISTRY",
+);
+
+/**
+ * A key-value metadata pair displayed in the details pane.
+ */
+export interface MetadataField {
+  /** Human-readable label for the field. */
+  readonly label: string;
+  /** Displayable value. */
+  readonly value: string | number | boolean;
+}
+
+/**
+ * Callback that extracts displayable metadata fields from an entry.
+ * Provided via the `[metadataProvider]` input on the file browser.
+ */
+export type MetadataProvider<M = unknown> = (
+  entry: FileBrowserEntry<M>,
+) => MetadataField[];
 
 /**
  * A single entry in a file browser — either a file or a directory.

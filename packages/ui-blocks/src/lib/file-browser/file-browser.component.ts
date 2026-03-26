@@ -4,6 +4,7 @@ import {
   computed,
   contentChild,
   effect,
+  inject,
   input,
   model,
   output,
@@ -29,8 +30,11 @@ import type {
   FileActivateEvent,
   FileBrowserDatasource,
   FileBrowserEntry,
+  FileBrowserViewMode,
+  MetadataField,
+  MetadataProvider,
 } from "./file-browser.types";
-import { entryToTreeNode } from "./file-browser.types";
+import { entryToTreeNode, FILE_ICON_REGISTRY } from "./file-browser.types";
 
 /**
  * Context provided to a custom entry template.
@@ -90,6 +94,18 @@ export class UIFileBrowser<M = unknown> {
 
   /** Label for the root breadcrumb item. */
   public readonly rootLabel = input<string>("Root");
+
+  /** Active view mode for the contents panel. */
+  public readonly viewMode = input<FileBrowserViewMode>("list");
+
+  /** Whether to show the details pane for the selected entry. */
+  public readonly showDetails = input<boolean>(false);
+
+  /**
+   * Callback that extracts metadata fields from a selected entry.
+   * Required for the details pane to display meaningful data.
+   */
+  public readonly metadataProvider = input<MetadataProvider<M> | null>(null);
 
   // ── Models ────────────────────────────────────────────────────────
 
@@ -157,6 +173,33 @@ export class UIFileBrowser<M = unknown> {
     chevronRight: UIIcons.Lucide.Arrows.ChevronRight,
   } as const;
 
+  // ── DI ────────────────────────────────────────────────────────────
+
+  /** @internal — optional icon registry supplied via DI. */
+  private readonly iconRegistry = inject(FILE_ICON_REGISTRY, {
+    optional: true,
+  });
+
+  // ── Column-view state ─────────────────────────────────────────────
+
+  /**
+   * @internal — each element represents one column in the column view.
+   * Index 0 = root, subsequent = each directory navigated into.
+   */
+  protected readonly columnPanes = signal<
+    readonly {
+      directory: FileBrowserEntry<M> | null;
+      entries: readonly FileBrowserEntry<M>[];
+    }[]
+  >([]);
+
+  /**
+   * @internal — the entry selected in each column pane (by pane index).
+   */
+  protected readonly columnSelections = signal<
+    readonly (FileBrowserEntry<M> | null)[]
+  >([]);
+
   // ── Computed ──────────────────────────────────────────────────────
 
   /** @internal — breadcrumb items built from the current path. */
@@ -175,6 +218,14 @@ export class UIFileBrowser<M = unknown> {
     () => this.selectedEntry() !== null,
   );
 
+  /** @internal — metadata fields for the selected entry (details pane). */
+  protected readonly detailFields = computed<readonly MetadataField[]>(() => {
+    const entry = this.selectedEntry();
+    const provider = this.metadataProvider();
+    if (!entry || !provider) return [];
+    return provider(entry);
+  });
+
   // ── Constructor ───────────────────────────────────────────────────
 
   public constructor() {
@@ -182,6 +233,15 @@ export class UIFileBrowser<M = unknown> {
     effect(() => {
       const ds = this.datasource();
       this.loadContents(ds, null);
+    });
+
+    // Initialise column-view root pane when datasource is ready
+    effect(() => {
+      const ds = this.datasource();
+      const mode = this.viewMode();
+      if (mode === "column") {
+        this.initColumnView(ds);
+      }
     });
   }
 
@@ -270,7 +330,15 @@ export class UIFileBrowser<M = unknown> {
   /** @internal */
   protected getEntryIcon(entry: FileBrowserEntry<M>): string {
     if (entry.icon) return entry.icon;
-    return entry.isDirectory ? this.icons.folder : this.icons.file;
+    if (entry.isDirectory) return this.icons.folder;
+    // Check DI icon registry by file extension
+    if (this.iconRegistry) {
+      const ext = this.extractExtension(entry.name);
+      if (ext && ext in this.iconRegistry) {
+        return this.iconRegistry[ext];
+      }
+    }
+    return this.icons.file;
   }
 
   /** @internal */
@@ -377,5 +445,61 @@ export class UIFileBrowser<M = unknown> {
       const node = entryToTreeNode(entry);
       tree.expand(node);
     }
+  }
+
+  // ── Column-view helpers ───────────────────────────────────────────
+
+  /** @internal — handle click on an entry inside a column pane. */
+  protected async onColumnEntryClick(
+    paneIndex: number,
+    entry: FileBrowserEntry<M>,
+  ): Promise<void> {
+    // Update selection in this pane
+    const sels = [...this.columnSelections()];
+    sels[paneIndex] = entry;
+    // Clear selections in deeper panes
+    this.columnSelections.set(sels.slice(0, paneIndex + 1));
+    this.selectedEntry.set(entry);
+
+    // If directory, open a new pane to the right (truncate deeper panes first)
+    if (entry.isDirectory) {
+      const ds = this.datasource();
+      const children = await Promise.resolve(ds.getChildren(entry));
+      const panes = this.columnPanes().slice(0, paneIndex + 1);
+      this.columnPanes.set([...panes, { directory: entry, entries: children }]);
+    } else {
+      // Truncate deeper panes for file selection
+      this.columnPanes.set(this.columnPanes().slice(0, paneIndex + 1));
+    }
+  }
+
+  /** @internal — double-click in column view activates a file. */
+  protected onColumnEntryDblClick(entry: FileBrowserEntry<M>): void {
+    if (!entry.isDirectory) {
+      this.fileActivated.emit({
+        entry,
+        activatedAt: new Date().toISOString(),
+      });
+    }
+  }
+
+  /** @internal — check if entry is selected in a column pane. */
+  protected isColumnEntrySelected(
+    paneIndex: number,
+    entry: FileBrowserEntry<M>,
+  ): boolean {
+    return this.columnSelections()[paneIndex]?.id === entry.id;
+  }
+
+  private async initColumnView(ds: FileBrowserDatasource<M>): Promise<void> {
+    const rootEntries = await Promise.resolve(ds.getChildren(null));
+    this.columnPanes.set([{ directory: null, entries: rootEntries }]);
+    this.columnSelections.set([]);
+  }
+
+  private extractExtension(filename: string): string | null {
+    const dot = filename.lastIndexOf(".");
+    if (dot < 1) return null;
+    return filename.slice(dot + 1).toLowerCase();
   }
 }
