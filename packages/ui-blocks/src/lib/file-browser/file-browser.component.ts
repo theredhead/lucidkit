@@ -1,9 +1,12 @@
 import {
+  AfterViewInit,
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
   effect,
+  ElementRef,
   inject,
   input,
   model,
@@ -22,6 +25,8 @@ import {
   type TreeNode,
   type ITreeDatasource,
 } from "@theredhead/ui-kit";
+
+import { StorageService } from "@theredhead/foundation";
 
 import { NgTemplateOutlet } from "@angular/common";
 
@@ -78,9 +83,12 @@ export interface EntryTemplateContext<M = unknown> {
   styleUrl: "./file-browser.component.scss",
   host: {
     class: "ui-file-browser",
+    "[class.ui-file-browser--dragging]": "draggingPanel()",
+    "[style.--fb-sidebar-width]": "sidebarWidthPx() + 'px'",
+    "[style.--fb-details-width]": "detailsWidthPx() + 'px'",
   },
 })
-export class UIFileBrowser<M = unknown> {
+export class UIFileBrowser<M = unknown> implements AfterViewInit {
   // ── Inputs ────────────────────────────────────────────────────────
 
   /** The datasource providing the file/directory structure. */
@@ -100,6 +108,12 @@ export class UIFileBrowser<M = unknown> {
 
   /** Whether to show the details pane for the selected entry. */
   public readonly showDetails = input<boolean>(false);
+
+  /**
+   * Optional persistence key. When set, sidebar and details panel widths
+   * are saved to and restored from storage.
+   */
+  public readonly name = input<string | undefined>(undefined);
 
   /**
    * Callback that extracts metadata fields from a selected entry.
@@ -180,6 +194,35 @@ export class UIFileBrowser<M = unknown> {
     optional: true,
   });
 
+  /** @internal */
+  private readonly elRef = inject(ElementRef);
+
+  /** @internal */
+  private readonly storage = inject(StorageService);
+
+  // ── Resize state ──────────────────────────────────────────────────
+
+  /** @internal — current sidebar width in pixels. */
+  protected readonly sidebarWidthPx = signal(240);
+
+  /** @internal — current details panel width in pixels. */
+  protected readonly detailsWidthPx = signal(220);
+
+  /** @internal — which panel divider is actively being dragged. */
+  protected readonly draggingPanel = signal<"sidebar" | "details" | null>(null);
+
+  /** @internal — collapsed state for sidebar. */
+  protected readonly sidebarCollapsed = signal(false);
+
+  /** @internal — collapsed state for details panel. */
+  protected readonly detailsCollapsed = signal(false);
+
+  /** @internal — width before sidebar collapse for restore. */
+  private preSidebarCollapseWidth: number | null = null;
+
+  /** @internal — width before details collapse for restore. */
+  private preDetailsCollapseWidth: number | null = null;
+
   // ── Column-view state ─────────────────────────────────────────────
 
   /**
@@ -245,6 +288,18 @@ export class UIFileBrowser<M = unknown> {
     });
   }
 
+  // ── Lifecycle ─────────────────────────────────────────────────────
+
+  public ngAfterViewInit(): void {
+    const saved = this.loadPanelWidths();
+    if (saved) {
+      this.sidebarWidthPx.set(saved.sidebar);
+      this.detailsWidthPx.set(saved.details);
+      this.sidebarCollapsed.set(saved.sidebarCollapsed);
+      this.detailsCollapsed.set(saved.detailsCollapsed);
+    }
+  }
+
   // ── Public methods ────────────────────────────────────────────────
 
   /** Navigate to the root directory. */
@@ -260,6 +315,81 @@ export class UIFileBrowser<M = unknown> {
   }
 
   // ── Protected methods ─────────────────────────────────────────────
+
+  /** @internal — starts pointer-based divider dragging for a panel. */
+  protected onDividerPointerDown(
+    event: PointerEvent,
+    panel: "sidebar" | "details",
+  ): void {
+    event.preventDefault();
+    const divider = event.currentTarget as HTMLElement;
+    divider.setPointerCapture(event.pointerId);
+
+    this.draggingPanel.set(panel);
+
+    const body = (this.elRef.nativeElement as HTMLElement).querySelector(
+      ".fb-body",
+    ) as HTMLElement;
+    if (!body) return;
+    const bodyRect = body.getBoundingClientRect();
+
+    const onMove = (e: PointerEvent): void => {
+      const cursor = e.clientX - bodyRect.left;
+      const bodyWidth = bodyRect.width;
+
+      if (panel === "sidebar") {
+        const clampedPx = Math.max(80, Math.min(cursor, bodyWidth * 0.5));
+        this.sidebarWidthPx.set(Math.round(clampedPx));
+        this.sidebarCollapsed.set(false);
+      } else {
+        // Details panel: measure from the right edge
+        const fromRight = bodyRect.right - e.clientX;
+        const clampedPx = Math.max(120, Math.min(fromRight, bodyWidth * 0.5));
+        this.detailsWidthPx.set(Math.round(clampedPx));
+        this.detailsCollapsed.set(false);
+      }
+    };
+
+    const onUp = (): void => {
+      this.draggingPanel.set(null);
+      divider.removeEventListener("pointermove", onMove);
+      divider.removeEventListener("pointerup", onUp);
+      divider.removeEventListener("pointercancel", onUp);
+      this.savePanelWidths();
+    };
+
+    divider.addEventListener("pointermove", onMove);
+    divider.addEventListener("pointerup", onUp);
+    divider.addEventListener("pointercancel", onUp);
+  }
+
+  /** @internal — double-click on a divider toggles panel collapse. */
+  protected onDividerDblClick(panel: "sidebar" | "details"): void {
+    if (panel === "sidebar") {
+      if (this.sidebarCollapsed()) {
+        this.sidebarCollapsed.set(false);
+        if (this.preSidebarCollapseWidth) {
+          this.sidebarWidthPx.set(this.preSidebarCollapseWidth);
+          this.preSidebarCollapseWidth = null;
+        }
+      } else {
+        this.preSidebarCollapseWidth = this.sidebarWidthPx();
+        this.sidebarCollapsed.set(true);
+      }
+    } else {
+      if (this.detailsCollapsed()) {
+        this.detailsCollapsed.set(false);
+        if (this.preDetailsCollapseWidth) {
+          this.detailsWidthPx.set(this.preDetailsCollapseWidth);
+          this.preDetailsCollapseWidth = null;
+        }
+      } else {
+        this.preDetailsCollapseWidth = this.detailsWidthPx();
+        this.detailsCollapsed.set(true);
+      }
+    }
+    this.savePanelWidths();
+  }
 
   /** @internal */
   protected onBreadcrumbClick(item: BreadcrumbItem): void {
@@ -467,6 +597,7 @@ export class UIFileBrowser<M = unknown> {
       const children = await Promise.resolve(ds.getChildren(entry));
       const panes = this.columnPanes().slice(0, paneIndex + 1);
       this.columnPanes.set([...panes, { directory: entry, entries: children }]);
+      this.scrollLastColumnPaneIntoView();
     } else {
       // Truncate deeper panes for file selection
       this.columnPanes.set(this.columnPanes().slice(0, paneIndex + 1));
@@ -501,5 +632,69 @@ export class UIFileBrowser<M = unknown> {
     const dot = filename.lastIndexOf(".");
     if (dot < 1) return null;
     return filename.slice(dot + 1).toLowerCase();
+  }
+
+  /** @internal — scroll the rightmost column pane into view after DOM update. */
+  private scrollLastColumnPaneIntoView(): void {
+    afterNextRender(() => {
+      const container = (this.elRef.nativeElement as HTMLElement).querySelector(
+        ".fb-contents--column",
+      );
+      if (container) {
+        const lastPane = container.querySelector(".fb-column-pane:last-child");
+        lastPane?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "end",
+        });
+      }
+    });
+  }
+
+  // ── Panel width persistence ───────────────────────────────────────
+
+  private static readonly STORAGE_PREFIX = "ui-file-browser:";
+
+  private savePanelWidths(): void {
+    const key = this.name();
+    if (!key) return;
+    const data = JSON.stringify({
+      sidebar: this.sidebarWidthPx(),
+      details: this.detailsWidthPx(),
+      sidebarCollapsed: this.sidebarCollapsed(),
+      detailsCollapsed: this.detailsCollapsed(),
+    });
+    this.storage.setItem(UIFileBrowser.STORAGE_PREFIX + key, data);
+  }
+
+  private loadPanelWidths(): {
+    sidebar: number;
+    details: number;
+    sidebarCollapsed: boolean;
+    detailsCollapsed: boolean;
+  } | null {
+    const key = this.name();
+    if (!key) return null;
+    try {
+      const raw = this.storage.getItem(UIFileBrowser.STORAGE_PREFIX + key);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (
+        typeof parsed === "object" &&
+        parsed !== null &&
+        typeof parsed.sidebar === "number" &&
+        typeof parsed.details === "number"
+      ) {
+        return {
+          sidebar: parsed.sidebar,
+          details: parsed.details,
+          sidebarCollapsed: !!parsed.sidebarCollapsed,
+          detailsCollapsed: !!parsed.detailsCollapsed,
+        };
+      }
+    } catch {
+      // Corrupt data — ignore.
+    }
+    return null;
   }
 }

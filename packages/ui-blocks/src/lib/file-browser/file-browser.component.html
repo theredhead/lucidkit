@@ -10,24 +10,39 @@
 <div class="fb-body">
   <!-- Sidebar: Folder tree -->
   @if (showSidebar()) {
-    <div class="fb-sidebar">
-      <ui-tree-view
-        #treeView
-        [datasource]="treeDatasource()"
-        [displayWith]="displayNodeLabel"
-        ariaLabel="Folder tree"
-        [selected]="treeSelected()"
-        (selectedChange)="onTreeNodeSelected($event)"
-        (nodeActivated)="onTreeNodeActivated($event)"
-      >
-        <ng-template #nodeTemplate let-node>
-          <ui-icon
-            [svg]="node.data.icon ?? icons.folder"
-            [size]="16"
-          />
-          <span class="fb-node-label">{{ node.data.name }}</span>
-        </ng-template>
-      </ui-tree-view>
+    <div class="fb-sidebar" [class.fb-sidebar--collapsed]="sidebarCollapsed()">
+      @if (!sidebarCollapsed()) {
+        <ui-tree-view
+          #treeView
+          [datasource]="treeDatasource()"
+          [displayWith]="displayNodeLabel"
+          ariaLabel="Folder tree"
+          [selected]="treeSelected()"
+          (selectedChange)="onTreeNodeSelected($event)"
+          (nodeActivated)="onTreeNodeActivated($event)"
+        >
+          <ng-template #nodeTemplate let-node>
+            <ui-icon
+              [svg]="node.data.icon ?? icons.folder"
+              [size]="16"
+            />
+            <span class="fb-node-label">{{ node.data.name }}</span>
+          </ng-template>
+        </ui-tree-view>
+      }
+    </div>
+
+    <!-- Sidebar resize divider -->
+    <div
+      class="fb-divider fb-divider--sidebar"
+      role="separator"
+      tabindex="0"
+      aria-label="Resize sidebar"
+      aria-orientation="horizontal"
+      (pointerdown)="onDividerPointerDown($event, 'sidebar')"
+      (dblclick)="onDividerDblClick('sidebar')"
+    >
+      <div class="fb-divider-handle"></div>
     </div>
   }
 
@@ -181,22 +196,37 @@
 
   <!-- ═══ Details pane ═══ -->
   @if (showDetails() && hasSelection()) {
-    <aside class="fb-details" aria-label="File details">
-      <div class="fb-details-header">
-        <ui-icon [svg]="getEntryIcon(selectedEntry()!)" [size]="32" />
-        <span class="fb-details-name">{{ selectedEntry()!.name }}</span>
-        <span class="fb-details-kind">
-          {{ selectedEntry()!.isDirectory ? 'Folder' : 'File' }}
-        </span>
-      </div>
+    <!-- Details resize divider -->
+    <div
+      class="fb-divider fb-divider--details"
+      role="separator"
+      tabindex="0"
+      aria-label="Resize details"
+      aria-orientation="horizontal"
+      (pointerdown)="onDividerPointerDown($event, 'details')"
+      (dblclick)="onDividerDblClick('details')"
+    >
+      <div class="fb-divider-handle"></div>
+    </div>
 
-      @if (detailFields().length > 0) {
-        <dl class="fb-details-meta">
-          @for (field of detailFields(); track field.label) {
-            <dt class="fb-details-label">{{ field.label }}</dt>
-            <dd class="fb-details-value">{{ field.value }}</dd>
-          }
-        </dl>
+    <aside class="fb-details" [class.fb-details--collapsed]="detailsCollapsed()" aria-label="File details">
+      @if (!detailsCollapsed()) {
+        <div class="fb-details-header">
+          <ui-icon [svg]="getEntryIcon(selectedEntry()!)" [size]="32" />
+          <span class="fb-details-name">{{ selectedEntry()!.name }}</span>
+          <span class="fb-details-kind">
+            {{ selectedEntry()!.isDirectory ? 'Folder' : 'File' }}
+          </span>
+        </div>
+
+        @if (detailFields().length > 0) {
+          <dl class="fb-details-meta">
+            @for (field of detailFields(); track field.label) {
+              <dt class="fb-details-label">{{ field.label }}</dt>
+              <dd class="fb-details-value">{{ field.value }}</dd>
+            }
+          </dl>
+        }
       }
     </aside>
   }
