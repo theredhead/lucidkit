@@ -6,13 +6,13 @@ import {
   input,
   model,
   output,
-} from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
+} from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
 
-import { UIIcon, UIIcons } from '@theredhead/ui-kit';
+import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 
-import { UIWizardStep } from './wizard-step.component';
-import type { StepChangeEvent } from './wizard.types';
+import { UIWizardStep } from "./wizard-step.component";
+import type { StepChangeEvent } from "./wizard.types";
 
 /**
  * A multi-step workflow shell with a step indicator, navigation
@@ -42,14 +42,14 @@ import type { StepChangeEvent } from './wizard.types';
  * ```
  */
 @Component({
-  selector: 'ui-wizard',
+  selector: "ui-wizard",
   standalone: true,
   imports: [NgTemplateOutlet, UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './wizard.component.html',
-  styleUrl: './wizard.component.scss',
+  templateUrl: "./wizard.component.html",
+  styleUrl: "./wizard.component.scss",
   host: {
-    class: 'ui-wizard',
+    class: "ui-wizard",
   },
 })
 export class UIWizard {
@@ -65,16 +65,16 @@ export class UIWizard {
   public readonly showStepIndicator = input<boolean>(true);
 
   /** Label for the Back button. */
-  public readonly backLabel = input<string>('Back');
+  public readonly backLabel = input<string>("Back");
 
   /** Label for the Next button. */
-  public readonly nextLabel = input<string>('Next');
+  public readonly nextLabel = input<string>("Next");
 
   /** Label for the Finish button (shown on the last step). */
-  public readonly finishLabel = input<string>('Finish');
+  public readonly finishLabel = input<string>("Finish");
 
   /** Accessible label for the wizard. */
-  public readonly ariaLabel = input<string>('Wizard');
+  public readonly ariaLabel = input<string>("Wizard");
 
   // ── Models ────────────────────────────────────────────────────────
 

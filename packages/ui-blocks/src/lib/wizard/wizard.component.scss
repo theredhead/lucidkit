@@ -1,4 +1,4 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 :host {
   --wz-bg: #ffffff;
@@ -112,7 +112,9 @@
   font-weight: 600;
   color: var(--wz-indicator-text);
   background: var(--wz-indicator-bg);
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   flex-shrink: 0;
 
   .wizard-step-indicator--active & {
@@ -177,7 +179,9 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
 
   &--back {
     color: var(--wz-btn-secondary-text);
