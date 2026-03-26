@@ -59,7 +59,7 @@ const sampleMessages: ChatMessage[] = [
   imports: [UIChatView],
   template: `
     <div
-      style="height: 500px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+      style="height: 500px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
     >
       <ui-chat-view
         [messages]="messages()"
@@ -92,7 +92,7 @@ class ChatDemoComponent {
   imports: [UIChatView],
   template: `
     <div
-      style="height: 500px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+      style="height: 500px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
     >
       <ui-chat-view
         [messages]="messages()"
@@ -267,7 +267,7 @@ export class RichChatComponent {
 export const EmptyChat: Story = {
   render: () => ({
     template: `
-      <div style="height: 400px; color: #1d232b; background: #f7f8fa; padding: 16px;">
+      <div style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;">
         <ui-chat-view [messages]="[]" [currentUser]="currentUser" />
       </div>
     `,

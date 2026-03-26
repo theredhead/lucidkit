@@ -43,18 +43,18 @@ import { UIFormDesigner } from "./form-designer.component";
 
     @if (latestSchema()) {
       <div
-        style="color: #1d232b; background: #f7f8fa; margin-top: 16px; padding: 16px; border: 1px solid #d7dce2; border-radius: 8px"
+        style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa); margin-top: 16px; padding: 16px; border: 1px solid var(--ui-border, #d7dce2); border-radius: 8px"
       >
         <div
           style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px"
         >
           <h4
-            style="color: #1d232b; margin: 0; font-size: 0.875rem; font-weight: 700"
+            style="margin: 0; font-size: 0.875rem; font-weight: 700"
           >
             Export
           </h4>
           <select
-            style="color: #1d232b; background: #ffffff; border: 1px solid #d7dce2; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem"
+            style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); border: 1px solid var(--ui-border, #d7dce2); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem"
             (change)="onStrategyChange($event)"
           >
             @for (s of allStrategies; track s.label; let i = $index) {
@@ -63,7 +63,7 @@ import { UIFormDesigner } from "./form-designer.component";
           </select>
           <button
             type="button"
-            style="color: #3584e4; background: transparent; border: 1px solid #3584e4; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer"
+            style="color: var(--ui-accent, #3584e4); background: transparent; border: 1px solid var(--ui-accent, #3584e4); padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer"
             (click)="onExport()"
           >
             Export
@@ -74,13 +74,13 @@ import { UIFormDesigner } from "./form-designer.component";
 
     @if (lastExport()) {
       <div
-        style="color: #1d232b; background: #f0f4e8; margin-top: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
+        style="color: var(--ui-text, #1d232b); background: #f0f4e8; margin-top: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
       >
         <div
           style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
         >
           <h4
-            style="color: #1d232b; margin: 0; font-size: 0.875rem; font-weight: 700"
+            style="margin: 0; font-size: 0.875rem; font-weight: 700"
           >
             Export Result
           </h4>
@@ -91,7 +91,7 @@ import { UIFormDesigner } from "./form-designer.component";
           </span>
         </div>
         <pre
-          style="color: #1d232b; font-size: 0.75rem; margin: 0; white-space: pre-wrap; word-break: break-word; max-height: 400px; overflow: auto"
+          style="color: var(--ui-text, #1d232b); font-size: 0.75rem; margin: 0; white-space: pre-wrap; word-break: break-word; max-height: 400px; overflow: auto"
           >{{ lastExport()!.content }}</pre
         >
       </div>
@@ -140,13 +140,13 @@ class StoryDesignerDemo {
   template: `
     @for (result of results(); track result.fileName) {
       <div
-        style="color: #1d232b; background: #f0f4e8; margin-bottom: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
+        style="color: var(--ui-text, #1d232b); background: #f0f4e8; margin-bottom: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
       >
         <div
           style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
         >
           <h4
-            style="color: #1d232b; margin: 0; font-size: 0.875rem; font-weight: 700"
+            style="margin: 0; font-size: 0.875rem; font-weight: 700"
           >
             {{ result.fileName }}
           </h4>
@@ -157,7 +157,7 @@ class StoryDesignerDemo {
           </span>
         </div>
         <pre
-          style="color: #1d232b; background: #fafdf5; font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow: auto; border: 1px solid #d5e3b5"
+          style="color: var(--ui-text, #1d232b); background: #fafdf5; font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow: auto; border: 1px solid #d5e3b5"
           >{{ result.content }}</pre
         >
       </div>

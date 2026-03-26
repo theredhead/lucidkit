@@ -68,16 +68,10 @@ import type { ConfirmVariant } from "./common-dialog.types";
         line-height: 1.55;
         white-space: pre-wrap;
       }
-      :host(.ui-confirm-dialog--danger)
-        ::ng-deep
-        ui-dialog-footer
-        ui-button[variant="filled"] {
+      :host(.ui-confirm-dialog--danger) {
         --ui-accent: #d93025;
       }
-      :host(.ui-confirm-dialog--warning)
-        ::ng-deep
-        ui-dialog-footer
-        ui-button[variant="filled"] {
+      :host(.ui-confirm-dialog--warning) {
         --ui-accent: #e5a50a;
       }
     `,
