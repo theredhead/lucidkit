@@ -14,7 +14,8 @@
     "../packages/ui-forms/src/**/*.stories.*",
     "../packages/ui-forms/src/**/*.ts",
     "../packages/ui-theme/src/**/*.ts",
-    "./preview.ts"
+    "./preview.ts",
+    "./story-toolbar.component.ts"
   ],
   "files": ["./typings.d.ts"]
 }
