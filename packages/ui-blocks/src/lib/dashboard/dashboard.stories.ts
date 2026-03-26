@@ -204,7 +204,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
             <ui-icon
               [svg]="icons.Shapes.Circle"
               [size]="14"
-              style="color: #9ca3af"
+              style="color: var(--ui-text-muted, #9ca3af)"
             />
             12,409 this week
           </li>
@@ -235,7 +235,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
             <ui-icon
               [svg]="icons.Shapes.Square"
               [size]="14"
-              style="color: #9ca3af"
+              style="color: var(--ui-text-muted, #9ca3af)"
             />
             Update CI pipeline
           </li>
@@ -243,7 +243,7 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
             <ui-icon
               [svg]="icons.Shapes.Square"
               [size]="14"
-              style="color: #9ca3af"
+              style="color: var(--ui-text-muted, #9ca3af)"
             />
             Write dashboard docs
           </li>

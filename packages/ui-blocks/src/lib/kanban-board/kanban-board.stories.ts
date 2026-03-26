@@ -233,7 +233,7 @@ const priorityColors: Record<string, string> = {
           style="padding: 12px; display: flex; flex-direction: column; gap: 6px;"
         >
           <strong style="font-size: 0.875rem;">{{ card.data.title }}</strong>
-          <span style="font-size: 0.75rem; color: #6b7280;">{{
+          <span style="font-size: 0.75rem; color: var(--ui-text-muted, #6b7280);">{{
             card.data.description
           }}</span>
           <div
@@ -246,7 +246,7 @@ const priorityColors: Record<string, string> = {
             >
             @if (card.data.assignee) {
               <span
-                style="font-size: 0.75rem; color: #9ca3af; margin-left: auto;"
+                style="font-size: 0.75rem; color: var(--ui-text-muted, #9ca3af); margin-left: auto;"
               >
                 {{ card.data.assignee }}
               </span>

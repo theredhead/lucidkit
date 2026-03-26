@@ -10,7 +10,7 @@ import { UIWizardStep } from "./wizard-step.component";
   imports: [UIWizard, UIWizardStep],
   template: `
     <div
-      style="height: 400px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+      style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
     >
       <ui-wizard (complete)="onComplete()">
         <ui-wizard-step label="Account">
@@ -41,7 +41,7 @@ class BasicWizardStory {
   imports: [UIWizard, UIWizardStep],
   template: `
     <div
-      style="height: 400px; color: #1d232b; background: #f7f8fa; padding: 16px;"
+      style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
     >
       <ui-wizard [linear]="true" (complete)="onComplete()">
         <ui-wizard-step label="Terms" [canAdvance]="accepted()">

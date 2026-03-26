@@ -47,7 +47,7 @@ import {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -80,7 +80,7 @@ class EmailAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -112,7 +112,7 @@ class UrlAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -144,7 +144,7 @@ class IPAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -181,7 +181,7 @@ class MoneyAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -218,7 +218,7 @@ class IntegerAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -255,7 +255,7 @@ class FloatAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -295,7 +295,7 @@ class DecimalAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -333,7 +333,7 @@ class HexAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -370,7 +370,7 @@ class PhoneAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -407,7 +407,7 @@ class CreditCardAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -444,7 +444,7 @@ class PercentageAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -481,7 +481,7 @@ class DateAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -518,7 +518,7 @@ class TimeAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -561,7 +561,7 @@ class ColorAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -598,7 +598,7 @@ class SlugAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -635,7 +635,7 @@ class UuidAdapterDemo {
         [(value)]="processedValue"
       />
       <div
-        style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;
+        style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);
                padding: 8px 12px; border-radius: 4px; line-height: 1.5;"
       >
         <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
@@ -665,7 +665,7 @@ class CronAdapterDemo {
       style="display: flex; flex-direction: column; gap: 16px; max-width: 360px;"
     >
       @for (entry of entries; track entry.label) {
-        <div style="font-size: 0.8125rem; color: #1d232b; background: #f7f8fa;">
+        <div style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);">
           <span>{{ entry.label }}</span>
           <ui-input
             [type]="entry.type"

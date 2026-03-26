@@ -95,7 +95,7 @@ import {
       }
       .cd-about-version {
         font-size: 0.82rem;
-        opacity: 0.6;
+        color: var(--ui-text-muted, #5a6470);
       }
       .cd-about-desc {
         margin: 0.5rem 0 0;
@@ -117,11 +117,12 @@ import {
         padding-left: 1.25rem;
         font-size: 0.85rem;
         line-height: 1.6;
+        color: var(--ui-text-muted, #5a6470);
       }
       .cd-about-copyright {
         margin: 0.75rem 0 0;
         font-size: 0.78rem;
-        opacity: 0.55;
+        color: var(--ui-text-muted, #5a6470);
       }
     `,
   ],
