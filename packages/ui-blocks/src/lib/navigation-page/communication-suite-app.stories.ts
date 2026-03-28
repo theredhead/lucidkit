@@ -1929,24 +1929,32 @@ function channelIcon(type: string): string {
                 <ui-template-column key="subject" headerText="Subject">
                   <ng-template let-row>
                     <div
-                      style="display: flex; align-items: center; gap: 0.5rem;"
+                      style="display: flex; flex-direction: column; padding: .15rem; width: 100%;"
                     >
-                      @if (!row.read) {
-                        <strong>{{ row.subject }}</strong>
-                      } @else {
-                        <span>{{ row.subject }}</span>
-                      }
-                      @if (row.hasAttachment) {
-                        <ui-icon [svg]="icons.attachment" [size]="13" />
-                      }
-                      @if (row.starred) {
-                        <ui-icon [svg]="icons.star" [size]="13" />
-                      }
+                      <div
+                        style="display: flex; align-items: center; gap: 0.5rem;"
+                      >
+                        @if (!row.read) {
+                          <strong>{{ row.subject }}</strong>
+                        } @else {
+                          <span>{{ row.subject }}</span>
+                        }
+                        <div style="flex: 1 1 auto;"></div>
+                        @if (row.hasAttachment) {
+                          <ui-icon [svg]="icons.attachment" [size]="13" />
+                        }
+                        @if (row.starred) {
+                          <ui-icon [svg]="icons.star" [size]="13" />
+                        }
+                      </div>
+                      <div style="display: flex; flex-direction: row;">
+                        <div>{{ row.from }}</div>
+                        <div style="flex: 1 1 auto;"></div>
+                        <div>{{ row.date }}</div>
+                      </div>
                     </div>
                   </ng-template>
                 </ui-template-column>
-                <ui-text-column key="from" headerText="From" />
-                <ui-text-column key="date" headerText="Date" />
 
                 <ng-template #detail let-mail>
                   <div class="detail-header">
