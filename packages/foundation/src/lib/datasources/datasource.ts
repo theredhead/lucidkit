@@ -1,4 +1,5 @@
 import type { FilterExpression } from "../types/filter";
+import type { SortExpression } from "../types/sort";
 import type {
   RowChangedNotification,
   RowRangeChangedNotification,
@@ -41,9 +42,14 @@ export interface ISortableDatasource<T = unknown> extends IDatasource<T> {
   /**
    * Applies the given sort expression to the datasource.
    *
-   * @param expression - One or more sort criteria in priority order, or a custom expression format.
+   * The expression is a serializable array of `{ columnKey, direction }` objects
+   * that can safely cross network boundaries (e.g. to a REST or GraphQL backend).
+   *
+   * Pass `null` to clear the current sort and restore the original order.
+   *
+   * @param expression - One or more sort criteria in priority order, or `null` to clear.
    */
-  sortBy(expression: unknown): void;
+  sortBy(expression: SortExpression<T> | null): void;
 }
 
 /**
@@ -210,15 +216,17 @@ export interface ISortableTreeDatasource<
   T = unknown,
 > extends ITreeDatasource<T> {
   /**
-   * Apply a comparator function to sort the tree.
+   * Applies a serializable sort expression to the tree datasource.
    *
-   * The comparator should sort nodes at all levels recursively (roots and all descendants).
-   * This should update the internal state to reflect the sorted tree structure.
+   * The expression describes which properties of the data payload `T` to sort by.
+   * Sorting is applied recursively at all levels (root nodes and all descendants).
    * Subsequent calls to `getRootNodes()` and `getChildren()` should return sorted data.
    *
-   * @param comparator - The comparator function to sort items.
+   * Pass `null` to clear sorting and restore the original insertion order.
+   *
+   * @param expression - Sort criteria in priority order, or `null` to clear.
    */
-  applyComparator<N = TreeNode<T>>(comparator: (a: N, b: N) => number): void;
+  sortBy(expression: SortExpression<T> | null): void;
 }
 
 /**

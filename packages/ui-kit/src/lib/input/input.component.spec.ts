@@ -602,8 +602,7 @@ describe("UIInput", () => {
       fixture.componentRef.setInput("adapter", new ColorTextAdapter());
       fixture.detectChanges();
 
-      const prefixBtn =
-        fixture.nativeElement.querySelector(".icon--prefix");
+      const prefixBtn = fixture.nativeElement.querySelector(".icon--prefix");
       if (prefixBtn) {
         prefixBtn.click();
         fixture.detectChanges();

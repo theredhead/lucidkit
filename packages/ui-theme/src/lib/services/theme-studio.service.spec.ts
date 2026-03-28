@@ -72,11 +72,9 @@ describe("ThemeStudioService", () => {
       defaultView: {
         screen: { width: 1920, height: 1080 },
         open: vi.fn(() => mockPopup),
-        addEventListener: vi.fn(
-          (_: string, fn: (e: MessageEvent) => void) => {
-            messageListeners.push(fn);
-          },
-        ),
+        addEventListener: vi.fn((_: string, fn: (e: MessageEvent) => void) => {
+          messageListeners.push(fn);
+        }),
         removeEventListener: vi.fn(),
       },
     } as unknown as Document;
@@ -162,7 +160,9 @@ describe("ThemeStudioService", () => {
     });
 
     it("should handle popup being blocked by browser", async () => {
-      (mockDocument.defaultView!.open as ReturnType<typeof vi.fn>).mockReturnValue(null);
+      (
+        mockDocument.defaultView!.open as ReturnType<typeof vi.fn>
+      ).mockReturnValue(null);
       await service.open({ manifest: TEST_MANIFEST });
       expect(service.isOpen).toBe(false);
     });
@@ -226,7 +226,9 @@ describe("ThemeStudioService", () => {
     });
 
     it("should handle fetch exception gracefully", async () => {
-      const fetchSpy = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("network error"));
+      const fetchSpy = vi
+        .spyOn(globalThis, "fetch")
+        .mockRejectedValue(new Error("network error"));
 
       await service.open();
 
@@ -244,10 +246,9 @@ describe("ThemeStudioService", () => {
       } as MessageEvent;
       messageListeners.forEach((fn) => fn(readyEvent));
 
-      expect(mockDocument.defaultView!.removeEventListener).toHaveBeenCalledWith(
-        "message",
-        expect.any(Function),
-      );
+      expect(
+        mockDocument.defaultView!.removeEventListener,
+      ).toHaveBeenCalledWith("message", expect.any(Function));
     });
   });
 

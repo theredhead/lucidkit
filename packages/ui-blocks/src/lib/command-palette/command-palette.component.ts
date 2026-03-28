@@ -18,7 +18,7 @@ import type {
   CommandGroup,
   CommandPaletteItem,
 } from "./command-palette.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * A keyboard-triggered command palette that provides quick access
@@ -51,7 +51,7 @@ import { UISurface } from '@theredhead/foundation';
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./command-palette.component.html",
   styleUrl: "./command-palette.component.scss",
   host: {
@@ -337,7 +337,7 @@ export class UICommandPalette<C = unknown> {
       const active = this.searchInputRef()
         ?.nativeElement.closest(".cp-dialog")
         ?.querySelector(".cp-item--active");
-      active?.scrollIntoView({ block: "nearest" });
+      active?.scrollIntoView?.({ block: "nearest" });
     });
   }
 }

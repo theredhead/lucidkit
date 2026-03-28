@@ -446,8 +446,7 @@ describe("UISplitContainer", () => {
       divider.setPointerCapture = vi.fn();
 
       // Mock getBoundingClientRect on the container
-      const container =
-        fixture.nativeElement.querySelector(".split-container");
+      const container = fixture.nativeElement.querySelector(".split-container");
       if (container) {
         container.getBoundingClientRect = () => ({
           left: 0,
@@ -553,9 +552,9 @@ describe("UISplitContainer", () => {
 
       // We can't easily set the split's disabled input from TestHost,
       // but we can verify the host binding exists
-      expect(
-        hostEl.classList.contains("ui-split-container--disabled"),
-      ).toBe(false);
+      expect(hostEl.classList.contains("ui-split-container--disabled")).toBe(
+        false,
+      );
     });
   });
 

@@ -235,9 +235,7 @@ class TestEventCard {
 @Component({
   standalone: true,
   imports: [UITimeline],
-  template: `
-    <ui-timeline [datasource]="ds()" [withComponent]="resolver" />
-  `,
+  template: ` <ui-timeline [datasource]="ds()" [withComponent]="resolver" /> `,
 })
 class ComponentHost {
   public readonly ds = signal<IDatasource<TestEvent>>(
@@ -262,7 +260,7 @@ describe("UITimeline — component rendering", () => {
   });
 
   it("should render events using the component resolver", () => {
-    const cards = fixture.nativeElement.querySelectorAll("test-event-card");
+    const cards = fixture.nativeElement.querySelectorAll("ui-test-event-card");
     expect(cards.length).toBe(4);
   });
 

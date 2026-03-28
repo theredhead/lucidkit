@@ -284,12 +284,11 @@ describe("UIImageCropper", () => {
 
     it("should resolve after loading image data", async () => {
       // Mock toBlob
-      vi.spyOn(
-        HTMLCanvasElement.prototype,
-        "toBlob",
-      ).mockImplementation(function (this: HTMLCanvasElement, cb: BlobCallback) {
-        cb(new Blob(["test"], { type: "image/png" }));
-      });
+      vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation(
+        function (this: HTMLCanvasElement, cb: BlobCallback) {
+          cb(new Blob(["test"], { type: "image/png" }));
+        },
+      );
 
       component.loadImageData(new ImageData(100, 80));
 

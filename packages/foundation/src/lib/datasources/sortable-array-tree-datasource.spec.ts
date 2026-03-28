@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { SortableArrayTreeDatasource } from "./sortable-array-tree-datasource";
+import { isSortableTreeDatasource } from "./type-guards";
 import type { TreeNode } from "./datasource";
+import { SortDirection } from "../types/sort";
 
 interface TestData {
   id: string;
@@ -278,5 +280,92 @@ describe("SortableArrayTreeDatasource", () => {
     // Original root should not be modified
     expect(roots[0]).toBe(originalFirst);
     expect(roots[0].data.name).toBe("Zebra");
+  });
+
+  describe("sortBy (ISortableTreeDatasource)", () => {
+    it("should be recognised by isSortableTreeDatasource type guard", () => {
+      const ds = new SortableArrayTreeDatasource([
+        createTestNode("1", "Apple"),
+      ]);
+      expect(isSortableTreeDatasource(ds)).toBe(true);
+    });
+
+    it("should sort root nodes by data property ascending", () => {
+      const roots: TreeNode<TestData>[] = [
+        createTestNode("1", "Zebra"),
+        createTestNode("2", "Apple"),
+        createTestNode("3", "Mango"),
+      ];
+      const ds = new SortableArrayTreeDatasource(roots);
+
+      ds.sortBy([{ columnKey: "name", direction: SortDirection.Ascending }]);
+      const nodes = ds.getRootNodes();
+
+      expect(nodes[0].data.name).toBe("Apple");
+      expect(nodes[1].data.name).toBe("Mango");
+      expect(nodes[2].data.name).toBe("Zebra");
+    });
+
+    it("should sort root nodes descending", () => {
+      const roots: TreeNode<TestData>[] = [
+        createTestNode("1", "Apple"),
+        createTestNode("2", "Zebra"),
+        createTestNode("3", "Mango"),
+      ];
+      const ds = new SortableArrayTreeDatasource(roots);
+
+      ds.sortBy([{ columnKey: "name", direction: SortDirection.Descending }]);
+      const nodes = ds.getRootNodes();
+
+      expect(nodes[0].data.name).toBe("Zebra");
+      expect(nodes[1].data.name).toBe("Mango");
+      expect(nodes[2].data.name).toBe("Apple");
+    });
+
+    it("should recursively sort children", () => {
+      const roots: TreeNode<TestData>[] = [
+        createTestNode("1", "Zoo", [
+          createTestNode("1.1", "Zebra"),
+          createTestNode("1.2", "Apple"),
+        ]),
+      ];
+      const ds = new SortableArrayTreeDatasource(roots);
+
+      ds.sortBy([{ columnKey: "name", direction: SortDirection.Ascending }]);
+      const children = ds.getRootNodes()[0].children!;
+
+      expect(children[0].data.name).toBe("Apple");
+      expect(children[1].data.name).toBe("Zebra");
+    });
+
+    it("should clear sort when given null", () => {
+      const roots: TreeNode<TestData>[] = [
+        createTestNode("1", "Zebra"),
+        createTestNode("2", "Apple"),
+      ];
+      const ds = new SortableArrayTreeDatasource(roots);
+
+      ds.sortBy([{ columnKey: "name", direction: SortDirection.Ascending }]);
+      ds.sortBy(null);
+      const nodes = ds.getRootNodes();
+
+      expect(nodes[0].data.name).toBe("Zebra");
+      expect(nodes[1].data.name).toBe("Apple");
+    });
+
+    it("should clear sort when given empty array", () => {
+      const roots: TreeNode<TestData>[] = [
+        createTestNode("1", "Zebra"),
+        createTestNode("2", "Apple"),
+      ];
+      const ds = new SortableArrayTreeDatasource(roots);
+
+      ds.sortBy([{ columnKey: "name", direction: SortDirection.Ascending }]);
+      ds.sortBy([]);
+      const nodes = ds.getRootNodes();
+
+      expect(nodes[0].data.name).toBe("Zebra");
+      expect(nodes[1].data.name).toBe("Apple");
+    });
   });
 });

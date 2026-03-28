@@ -84,10 +84,7 @@ describe("UIColorPicker", () => {
 
   describe("open", () => {
     it("should not open when disabled", () => {
-      const spy = vi.spyOn(
-        TestBed.inject(PopoverService),
-        "openPopover",
-      );
+      const spy = vi.spyOn(TestBed.inject(PopoverService), "openPopover");
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
 
@@ -110,10 +107,9 @@ describe("UIColorPicker", () => {
 
     it("should update value and emit colorChange on popover close with result", () => {
       const closed$ = new Subject<unknown>();
-      vi.spyOn(
-        TestBed.inject(PopoverService),
-        "openPopover",
-      ).mockReturnValue({ closed: closed$.asObservable() } as any);
+      vi.spyOn(TestBed.inject(PopoverService), "openPopover").mockReturnValue({
+        closed: closed$.asObservable(),
+      } as any);
 
       const emitSpy = vi.fn();
       component.colorChange.subscribe(emitSpy);
@@ -128,10 +124,9 @@ describe("UIColorPicker", () => {
 
     it("should not update value when popover closes with null", () => {
       const closed$ = new Subject<unknown>();
-      vi.spyOn(
-        TestBed.inject(PopoverService),
-        "openPopover",
-      ).mockReturnValue({ closed: closed$.asObservable() } as any);
+      vi.spyOn(TestBed.inject(PopoverService), "openPopover").mockReturnValue({
+        closed: closed$.asObservable(),
+      } as any);
 
       component.open();
       closed$.next(null);

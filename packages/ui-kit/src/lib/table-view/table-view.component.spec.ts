@@ -2,7 +2,10 @@ import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { vi } from "vitest";
 
-import { ArrayDatasource } from "@theredhead/foundation";
+import {
+  ArrayDatasource,
+  SortableArrayDatasource,
+} from "@theredhead/foundation";
 
 import { UITableView } from "./table-view.component";
 import { UITextColumn } from "./columns/text-column/text-column.component";
@@ -283,7 +286,10 @@ describe("UITableView", () => {
   describe("onSortChange", () => {
     it("should set sortState for in-component sort", () => {
       tableView["onSortChange"]({ key: "name", direction: "asc" });
-      expect(tableView["sortState"]()).toEqual({ key: "name", direction: "asc" });
+      expect(tableView["sortState"]()).toEqual({
+        key: "name",
+        direction: "asc",
+      });
     });
 
     it("should clear sortState when null", () => {
@@ -293,17 +299,33 @@ describe("UITableView", () => {
     });
 
     it("should delegate to sortable datasource", async () => {
-      const sortBySpy = vi.fn();
-      const ds = new ArrayDatasource(PEOPLE);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (ds as any).sortBy = sortBySpy;
+      const ds = new SortableArrayDatasource(PEOPLE);
+      const sortBySpy = vi.spyOn(ds, "sortBy");
       host.datasource.set(ds);
       fixture.detectChanges();
       await fixture.whenStable();
 
-      const tv = fixture.debugElement.children[0].componentInstance as UITableView;
+      const tv = fixture.debugElement.children[0]
+        .componentInstance as UITableView;
       tv["onSortChange"]({ key: "name", direction: "desc" });
       expect(sortBySpy).toHaveBeenCalledTimes(1);
+      expect(sortBySpy).toHaveBeenCalledWith([
+        { columnKey: "name", direction: "desc" },
+      ]);
+    });
+
+    it("should pass null to sortBy when sort is cleared", async () => {
+      const ds = new SortableArrayDatasource(PEOPLE);
+      const sortBySpy = vi.spyOn(ds, "sortBy");
+      host.datasource.set(ds);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const tv = fixture.debugElement.children[0]
+        .componentInstance as UITableView;
+      tv["onSortChange"]({ key: "name", direction: "asc" });
+      tv["onSortChange"](null);
+      expect(sortBySpy).toHaveBeenLastCalledWith(null);
     });
   });
 
@@ -347,7 +369,8 @@ describe("UITableView", () => {
       fixture.detectChanges();
 
       // Access the inner UITableView and call onColumnResize directly
-      const tv = fixture.debugElement.children[0].componentInstance as UITableView;
+      const tv = fixture.debugElement.children[0]
+        .componentInstance as UITableView;
       tv["onColumnResize"]({ key: "name", widthPx: 150 });
       // The resizeService.save doesn't fire because the host doesn't have tableId input
       // So test directly on tableView which is already constructed

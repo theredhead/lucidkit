@@ -130,7 +130,7 @@ export function isSortableTreeDatasource<T>(
     return false;
   }
   const obj = datasource as Record<string, unknown>;
-  return typeof obj["applyComparator"] === "function";
+  return typeof obj["sortBy"] === "function";
 }
 
 /**

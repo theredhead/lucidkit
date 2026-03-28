@@ -366,7 +366,11 @@ class ImageDataStubStrategy extends GaugePresentationStrategy {
 
   public render(_ctx: GaugeRenderContext): GaugeRenderOutput {
     // jsdom doesn't have ImageData — create a minimal duck-typed stand-in
-    const data = { width: 100, height: 100, data: new Uint8ClampedArray(100 * 100 * 4) } as unknown as ImageData;
+    const data = {
+      width: 100,
+      height: 100,
+      data: new Uint8ClampedArray(100 * 100 * 4),
+    } as unknown as ImageData;
     return { kind: "imagedata", data };
   }
 }
