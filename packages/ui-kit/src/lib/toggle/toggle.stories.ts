@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 import { type Meta, type StoryObj, moduleMetadata } from "@storybook/angular";
-import { UIToggle } from "./toggle.component";
+import { type ToggleSize, UIToggle } from "./toggle.component";
 
 // ── Demo wrapper: Default ────────────────────────────────────────────
 
@@ -44,15 +44,15 @@ class DemoToggleDefault {
       style="display: flex; flex-direction: column; gap: 20px; font-family: system-ui, sans-serif;"
     >
       <div style="display: flex; align-items: center; gap: 12px;">
-        <ui-toggle [(value)]="sm" size="sm" onLabel="ON" offLabel="OFF" />
+        <ui-toggle [(value)]="sm" size="small" onLabel="ON" offLabel="OFF" />
         <span style="font-size: 13px; color: #888;">Small</span>
       </div>
       <div style="display: flex; align-items: center; gap: 12px;">
-        <ui-toggle [(value)]="md" size="md" onLabel="ON" offLabel="OFF" />
+        <ui-toggle [(value)]="md" size="medium" onLabel="ON" offLabel="OFF" />
         <span style="font-size: 13px; color: #888;">Medium (default)</span>
       </div>
       <div style="display: flex; align-items: center; gap: 12px;">
-        <ui-toggle [(value)]="lg" size="lg" onLabel="ON" offLabel="OFF" />
+        <ui-toggle [(value)]="lg" size="large" onLabel="ON" offLabel="OFF" />
         <span style="font-size: 13px; color: #888;">Large</span>
       </div>
     </div>
@@ -117,9 +117,61 @@ const meta: Meta<UIToggle> = {
       imports: [DemoToggleDefault, DemoToggleSizes, DemoToggleStates],
     }),
   ],
+  argTypes: {
+    value: {
+      control: "boolean",
+      description: "On/off state (two-way bindable via `[(value)]`).",
+    },
+    onLabel: {
+      control: "text",
+      description: "Label shown inside the track when the toggle is on.",
+    },
+    offLabel: {
+      control: "text",
+      description: "Label shown inside the track when the toggle is off.",
+    },
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"] satisfies ToggleSize[],
+      description: "Size variant.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the toggle.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<UIToggle>;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-toggle
+      [value]="value"
+      [onLabel]="onLabel"
+      [offLabel]="offLabel"
+      [size]="size"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    value: false,
+    onLabel: "ON",
+    offLabel: "OFF",
+    size: "medium",
+    disabled: false,
+    ariaLabel: "Toggle switch",
+  },
+};
 
 /**
  * Default toggle with customisable labels. Demonstrates two-way binding
@@ -133,7 +185,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "Supports two-way binding via `[(value)]`, three sizes (`sm`, `md`, `lg`), " +
+          "Supports two-way binding via `[(value)]`, three sizes (`small`, `medium`, `large`), " +
           "and optional text labels inside the track.\n\n" +
           "### Inputs\n" +
           "| Input | Type | Default | Description |\n" +
@@ -141,7 +193,7 @@ export const Default: Story = {
           "| `value` | `boolean` | `false` | On/off state (two-way) |\n" +
           "| `onLabel` | `string` | `''` | Label shown when on |\n" +
           "| `offLabel` | `string` | `''` | Label shown when off |\n" +
-          "| `size` | `'sm' \\| 'md' \\| 'lg'` | `'md'` | Size variant |\n" +
+          "| `size` | `'small' \\| 'medium' \\| 'large'` | `'medium'` | Size variant |\n" +
           "| `disabled` | `boolean` | `false` | Disables interaction |\n" +
           "| `ariaLabel` | `string` | `''` | Accessible label |\n\n" +
           "### Outputs\n" +
@@ -196,9 +248,9 @@ export const Sizes: Story = {
       source: {
         code: [
           "// ── HTML ──",
-          '<ui-toggle size="sm" [(value)]="a" onLabel="ON" offLabel="OFF" />',
-          '<ui-toggle size="md" [(value)]="b" onLabel="ON" offLabel="OFF" />',
-          '<ui-toggle size="lg" [(value)]="c" onLabel="ON" offLabel="OFF" />',
+          '<ui-toggle size="small" [(value)]="a" onLabel="ON" offLabel="OFF" />',
+          '<ui-toggle size="medium" [(value)]="b" onLabel="ON" offLabel="OFF" />',
+          '<ui-toggle size="large" [(value)]="c" onLabel="ON" offLabel="OFF" />',
           "",
           "// ── TypeScript ──",
           "import { Component, signal } from '@angular/core';",
@@ -209,9 +261,9 @@ export const Sizes: Story = {
           "  standalone: true,",
           "  imports: [UIToggle],",
           "  template: `",
-          '    <ui-toggle size="sm" [(value)]="small" onLabel="ON" offLabel="OFF" />',
-          '    <ui-toggle size="md" [(value)]="medium" onLabel="ON" offLabel="OFF" />',
-          '    <ui-toggle size="lg" [(value)]="large" onLabel="ON" offLabel="OFF" />',
+          '    <ui-toggle size="small" [(value)]="small" onLabel="ON" offLabel="OFF" />',
+          '    <ui-toggle size="medium" [(value)]="medium" onLabel="ON" offLabel="OFF" />',
+          '    <ui-toggle size="large" [(value)]="large" onLabel="ON" offLabel="OFF" />',
           "  `,",
           "})",
           "export class ExampleComponent {",

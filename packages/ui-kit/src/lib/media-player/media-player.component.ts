@@ -14,7 +14,7 @@ import {
 } from "@angular/core";
 import { DomSanitizer, type SafeResourceUrl } from "@angular/platform-browser";
 
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
@@ -82,6 +82,7 @@ import type {
   templateUrl: "./media-player.component.html",
   styleUrl: "./media-player.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-media-player",
     "[class.ui-media-player--audio]": "type() === 'audio'",

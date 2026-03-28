@@ -1,5 +1,10 @@
+import type { Type } from "@angular/core";
+
+import { UIColorPanel } from "../../color-picker/color-panel.component";
 import { UIIcons } from "../../icon/lucide-icons.generated";
-import type { TextAdapter, TextAdapterValidationResult } from "./text-adapter";
+import type { InputPopupPanel } from "./popup-text-adapter";
+import type { PopupTextAdapter } from "./popup-text-adapter";
+import type { TextAdapterValidationResult } from "./text-adapter";
 
 /** @internal Hex colour pattern: #RGB, #RRGGBB, or #RRGGBBAA */
 const HEX_COLOR_PATTERN = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
@@ -11,7 +16,8 @@ const HEX_COLOR_PATTERN = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
  * Validates that the input is a valid hex colour (`#RGB`, `#RRGGBB`, or
  * `#RRGGBBAA`).
  *
- * Shows a palette prefix icon.
+ * Clicking the palette prefix icon opens a full colour-picker popup
+ * (theme palette, grid, named colours, RGBA / HSLA sliders).
  *
  * @example
  * ```ts
@@ -19,8 +25,11 @@ const HEX_COLOR_PATTERN = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
  * // "FF6600" → value "#ff6600"
  * ```
  */
-export class ColorTextAdapter implements TextAdapter {
+export class ColorTextAdapter implements PopupTextAdapter {
   public readonly prefixIcon = UIIcons.Lucide.Design.Palette;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public readonly popupPanel: Type<InputPopupPanel<any>> = UIColorPanel;
 
   public toValue(text: string): string {
     const trimmed = text.trim();
@@ -46,5 +55,15 @@ export class ColorTextAdapter implements TextAdapter {
       };
     }
     return { valid: true, errors: [] };
+  }
+
+  public popupInputs(currentText: string): Record<string, unknown> {
+    return {
+      currentValue: this.toValue(currentText) || "#0061a4",
+    };
+  }
+
+  public fromPopupValue(value: unknown): string {
+    return value as string;
   }
 }

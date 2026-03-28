@@ -10,10 +10,12 @@ import {
   UITableViewCellContext,
   UITableViewColumn,
 } from "../table-column.directive";
+import { UISurface } from '@theredhead/foundation';
 
 @Component({
   selector: "ui-text-column",
   standalone: true,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   providers: [
     {
       provide: UITableViewColumn,

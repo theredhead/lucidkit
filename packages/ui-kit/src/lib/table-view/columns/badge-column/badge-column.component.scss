@@ -6,7 +6,6 @@
   max-width: 100%;
   padding: var(--ui-badge-padding, 0.15rem 0.55rem);
   border-radius: 999px;
-  border: 1px solid transparent;
   font-size: var(--ui-font-badge);
   font-weight: 600;
   line-height: var(--ui-badge-line-height, 1.2);
@@ -15,31 +14,29 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  /* Default (neutral) */
   color: var(--ui-badge-neutral-fg);
-  background: var(--ui-badge-neutral-bg);
-  border-color: var(--ui-badge-neutral-border);
+  background-color: var(--ui-badge-neutral-bg);
+  border: 1px solid var(--ui-badge-neutral-border);
 }
 
-.badge-cell[data-variant="neutral"] {
-  color: var(--ui-badge-neutral-fg);
-  background: var(--ui-badge-neutral-bg);
-  border-color: var(--ui-badge-neutral-border);
-}
+/* ── Variant colours ── */
 
 .badge-cell[data-variant="success"] {
   color: var(--ui-badge-success-fg);
-  background: var(--ui-badge-success-bg);
+  background-color: var(--ui-badge-success-bg);
   border-color: var(--ui-badge-success-border);
 }
 
 .badge-cell[data-variant="warning"] {
   color: var(--ui-badge-warning-fg);
-  background: var(--ui-badge-warning-bg);
+  background-color: var(--ui-badge-warning-bg);
   border-color: var(--ui-badge-warning-border);
 }
 
-.badge-cell[data-variant="danger"] {
+.badge-cell[data-variant="danger"],
+.badge-cell[data-variant="error"] {
   color: var(--ui-badge-danger-fg);
-  background: var(--ui-badge-danger-bg);
+  background-color: var(--ui-badge-danger-bg);
   border-color: var(--ui-badge-danger-border);
 }

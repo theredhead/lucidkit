@@ -7,15 +7,12 @@
   flex: 1;
   padding: 16px;
   overflow-y: auto;
-  background: var(--ui-surface-bg, #eef1f5);
 }
 
 /* Form header */
 
 .form-header {
   appearance: none;
-  border: 2px dashed var(--ui-border, #d7dce2);
-  background: var(--ui-surface-alt, #ffffff);
   border-radius: 8px;
   padding: 12px 16px;
   cursor: pointer;
@@ -24,43 +21,28 @@
   transition: border-color 0.15s ease;
 }
 
-.form-header:hover {
-  border-color: var(--ui-accent);
-}
-
 .form-header--selected {
-  border-color: var(--ui-accent);
   border-style: solid;
-  background: var(--ui-primary-container);
 }
 
 .form-title {
   display: block;
   font-weight: 700;
   font-size: 1rem;
-  color: var(--ui-text, #1d232b);
 }
 
 .form-desc {
   display: block;
   font-size: 0.8125rem;
-  color: var(--ui-text-muted, #5a6270);
   margin-top: 2px;
 }
 
 /* Groups */
 
 .group {
-  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 8px;
-  background: var(--ui-surface-alt, #ffffff);
   overflow: hidden;
   flex-shrink: 0;
-}
-
-.group--selected {
-  border-color: var(--ui-accent);
-  box-shadow: 0 0 0 1px var(--ui-accent);
 }
 
 .group-header {
@@ -68,27 +50,19 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  background: var(--ui-surface, #f0f2f5);
   cursor: pointer;
-  border-bottom: 1px solid var(--ui-border, #d7dce2);
 }
 
 .group-title {
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--ui-text, #1d232b);
   cursor: pointer;
   border-radius: 4px;
   padding: 2px 4px;
   margin: -2px -4px;
 }
 
-.group-title:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
 .group-title:focus-visible {
-  outline: 2px solid var(--ui-focus-ring);
   outline-offset: 2px;
 }
 
@@ -112,22 +86,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 10px;
-  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 6px;
-  background: var(--ui-surface-alt, #ffffff);
   cursor: pointer;
   transition:
     border-color 0.12s ease,
     background 0.12s ease;
-}
-
-.field:hover {
-  border-color: var(--ui-accent);
-}
-
-.field--selected {
-  border-color: var(--ui-accent);
-  background: var(--ui-primary-container);
 }
 
 .field-info {
@@ -143,7 +106,6 @@
 }
 
 .field-info:focus-visible {
-  outline: 2px solid var(--ui-focus-ring);
   outline-offset: 2px;
 }
 
@@ -152,26 +114,14 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: var(--ui-accent);
-  color: var(--ui-accent-contrast);
   padding: 2px 6px;
   border-radius: 4px;
   flex-shrink: 0;
 }
 
-.field--flair .field-component {
-  background: var(--ui-tertiary);
-  color: var(--ui-on-tertiary);
-}
-
-.field--flair {
-  border-left: 3px solid var(--ui-tertiary);
-}
-
 .field-title {
   font-weight: 500;
   font-size: 0.875rem;
-  color: var(--ui-text, #1d232b);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -179,7 +129,6 @@
 
 .field-id {
   font-size: 0.75rem;
-  color: var(--ui-text-muted, #5a6270);
   font-family: monospace;
 }
 
@@ -212,7 +161,6 @@
 .dc-icon-btn {
   appearance: none;
   border: none;
-  background: transparent;
   cursor: pointer;
   font-size: 0.8125rem;
   width: 26px;
@@ -221,12 +169,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  color: var(--ui-text, #1d232b);
   transition: background 0.1s ease;
-}
-
-.dc-icon-btn:hover {
-  background: rgba(0, 0, 0, 0.08);
 }
 
 .dc-icon-btn:disabled {
@@ -234,132 +177,29 @@
   cursor: default;
 }
 
-.dc-icon-btn--danger:hover {
-  background: var(--ui-error);
-  color: #ffffff;
-}
-
 /* Add buttons */
 
 .dc-add-field {
   appearance: none;
-  border: 1px dashed var(--ui-border, #d7dce2);
-  background: transparent;
   border-radius: 6px;
   padding: 8px;
   margin: 4px 8px 8px;
   cursor: pointer;
   font-size: 0.8125rem;
-  color: var(--ui-accent);
   font-weight: 500;
   transition: background 0.12s ease;
 }
 
-.dc-add-field:hover {
-  background: var(--ui-primary-container);
-}
-
 .dc-add-group {
   appearance: none;
-  border: 2px dashed var(--ui-border, #d7dce2);
-  background: transparent;
   border-radius: 8px;
   padding: 14px;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--ui-accent);
   transition:
     background 0.12s ease,
     border-color 0.12s ease;
 }
 
-.dc-add-group:hover {
-  background: var(--ui-primary-container);
-  border-color: var(--ui-accent);
-}
-
 /* Dark mode */
-
-@include mix.dark-mode {
-  background: var(--ui-surface-bg, #16181d);
-
-  .form-header {
-    background: var(--ui-surface-alt, #2a2e36);
-    border-color: var(--ui-border, #3a3f47);
-  }
-
-  .form-header--selected {
-    background: var(--ui-primary-container);
-  }
-
-  .form-title {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .form-desc {
-    color: var(--ui-text-muted, #a0a8b4);
-  }
-
-  .group {
-    background: var(--ui-surface-alt, #2a2e36);
-    border-color: var(--ui-border, #3a3f47);
-  }
-
-  .group-header {
-    background: var(--ui-surface, #1e2128);
-    border-bottom-color: var(--ui-border, #3a3f47);
-  }
-
-  .group-title {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .field {
-    background: var(--ui-surface, #1e2128);
-    border-color: var(--ui-border, #3a3f47);
-  }
-
-  .field--selected {
-    background: var(--ui-primary-container);
-  }
-
-  .field-title {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .field-id {
-    color: var(--ui-text-muted, #a0a8b4);
-  }
-
-  .field-component {
-    background: var(--ui-primary-container);
-    color: var(--ui-on-primary-container);
-  }
-
-  .dc-icon-btn {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .dc-icon-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .dc-add-field {
-    border-color: var(--ui-border, #3a3f47);
-    color: var(--ui-accent);
-  }
-
-  .dc-add-field:hover {
-    background: var(--ui-primary-container);
-  }
-
-  .dc-add-group {
-    border-color: var(--ui-border, #3a3f47);
-    color: var(--ui-accent);
-  }
-
-  .dc-add-group:hover {
-    background: var(--ui-primary-container);
-  }
-}

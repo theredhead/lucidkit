@@ -4,6 +4,7 @@ import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 import { UITreeView } from "./tree-view.component";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
 import type { TreeNode } from "./tree-view.types";
+import { UIButton } from "../button/button.component";
 
 // ── Demo data ─────────────────────────────────────────────────────────
 
@@ -235,12 +236,16 @@ class TreeViewOrgDemo {
 @Component({
   selector: "ui-tree-view-expand-demo",
   standalone: true,
-  imports: [UITreeView],
+  imports: [UITreeView, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div style="margin-bottom: 0.75rem;">
-      <button (click)="tree.expandAll()">Expand All</button>
-      <button (click)="tree.collapseAll()">Collapse All</button>
+    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+      <ui-button variant="outlined" (click)="tree.expandAll()"
+        >Expand All</ui-button
+      >
+      <ui-button variant="outlined" (click)="tree.collapseAll()"
+        >Collapse All</ui-button
+      >
     </div>
     <ui-tree-view
       #tree
@@ -341,6 +346,16 @@ const meta: Meta<UITreeView> = {
   title: "@theredhead/UI Kit/Tree View",
   component: UITreeView,
   tags: ["autodocs"],
+  argTypes: {
+    disabled: {
+      control: "boolean",
+      description: "Disables the tree view.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the tree.",
+    },
+  },
   parameters: {
     docs: {
       description: {

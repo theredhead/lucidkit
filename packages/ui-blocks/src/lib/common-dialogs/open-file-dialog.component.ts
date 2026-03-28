@@ -21,6 +21,7 @@ import type {
   FileActivateEvent,
 } from "../file-browser/file-browser.types";
 import type { OpenFileResult } from "./common-dialog.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Content component for an open-file dialog.
@@ -42,6 +43,7 @@ import type { OpenFileResult } from "./common-dialog.types";
     UIFileBrowser,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-open-file-dialog" },
   template: `
     <ui-dialog-header>{{ title() }}</ui-dialog-header>

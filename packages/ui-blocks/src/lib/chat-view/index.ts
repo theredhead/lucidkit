@@ -1,4 +1,5 @@
 export { UIChatView } from "./chat-view.component";
+export { UIMessageBubble } from "./message-bubble/message-bubble.component";
 export {
   type ChatComposerMode,
   type ChatMessage,

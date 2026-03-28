@@ -139,6 +139,21 @@ const meta: Meta<UIChatView> = {
   title: "@theredhead/UI Blocks/Chat View",
   component: UIChatView,
   tags: ["autodocs"],
+  argTypes: {
+    composerMode: {
+      control: "select",
+      options: ["text", "rich-text"],
+      description: "Composer input mode.",
+    },
+    placeholder: {
+      control: "text",
+      description: "Placeholder text for the composer.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the chat view.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [ChatDemoComponent, RichTextDemoComponent],

@@ -2,30 +2,12 @@
 
 /* ── Light defaults ── */
 :host {
-  --ui-text: #1d232b;
-  --ui-text-muted: #5a6470;
-  --ui-bg: #f6f7f8;
-  --ui-surface: #ffffff;
-  --ui-border: #d7dce2;
-  --ui-shadow: 0 1px 3px rgba(18, 24, 33, 0.06);
-  --ui-filter-bg: #f0f2f5;
   --ui-radius: 6px;
 
   display: flex;
   flex-direction: column;
   height: 100%;
-  color: var(--ui-text);
   font-family: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
-}
-
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-text-muted: #a0aab6;
-  --ui-bg: #1f242a;
-  --ui-surface: #242b33;
-  --ui-border: #3a3f47;
-  --ui-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
-  --ui-filter-bg: #2a3240;
 }
 
 /* Hidden slot — instantiates projected columns for contentChildren discovery */
@@ -44,7 +26,6 @@
 .list {
   display: flex;
   flex-direction: column;
-  background: var(--ui-surface);
   overflow: hidden;
   height: 100%;
   min-height: 0;
@@ -52,7 +33,6 @@
 
 .header {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--ui-border);
   flex-shrink: 0;
 }
 
@@ -61,14 +41,12 @@
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: var(--ui-text);
 }
 
 /* ── Filter bar ── */
 
 .filter-bar {
   flex-shrink: 0;
-  border-bottom: 1px solid var(--ui-border);
 }
 
 .filter-toggle {
@@ -78,22 +56,9 @@
   gap: 6px;
   width: 100%;
   padding: 0.45rem 1rem;
-  background: var(--ui-filter-bg);
-  color: var(--ui-text-muted);
   font-size: 0.78rem;
   font-weight: 500;
   text-align: left;
-
-  &:hover {
-    color: var(--ui-text);
-  }
-
-  @include mix.focus-ring(-2px, var(--ui-accent));
-}
-
-.filter-content {
-  background: var(--ui-filter-bg);
-  border-top: 1px solid var(--ui-border);
 }
 
 /* ── Table wrapper ── */
@@ -148,7 +113,6 @@
 .detail {
   display: flex;
   flex-direction: column;
-  background: var(--ui-bg);
   overflow: hidden;
   height: 100%;
 }
@@ -168,6 +132,5 @@
   p {
     margin: 0;
     font-size: 0.88rem;
-    color: var(--ui-text-muted);
   }
 }

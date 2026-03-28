@@ -9,6 +9,7 @@ import {
   UITableViewCellContext,
   UITableViewColumn,
 } from "../table-column.directive";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A table column whose cell content is defined entirely by the consumer
@@ -30,6 +31,7 @@ import {
 @Component({
   selector: "ui-template-column",
   standalone: true,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   providers: [
     {
       provide: UITableViewColumn,

@@ -23,6 +23,7 @@ import type {
   DirectoryChangeEvent,
 } from "../file-browser/file-browser.types";
 import type { SaveFileResult } from "./common-dialog.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Content component for a save-file dialog.
@@ -45,6 +46,7 @@ import type { SaveFileResult } from "./common-dialog.types";
     UIFileBrowser,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-save-file-dialog" },
   template: `
     <ui-dialog-header>{{ title() }}</ui-dialog-header>

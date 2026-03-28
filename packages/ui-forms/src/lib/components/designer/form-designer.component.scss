@@ -1,16 +1,12 @@
 @use 'mixins' as mix;
 
 :host {
-  --ui-surface-card: #f7f8fa;
-  --ui-text-card: #1d232b;
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 500px;
-  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 8px;
   overflow: hidden;
-  background: var(--ui-surface-alt, #ffffff);
 }
 
 /* Toolbar */
@@ -20,46 +16,30 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--ui-surface, #f0f2f5);
-  border-bottom: 1px solid var(--ui-border, #d7dce2);
 }
 
 .toolbar-title {
   font-weight: 700;
   font-size: 0.9375rem;
   margin-right: auto;
-  color: var(--ui-text, #1d232b);
 }
 
 .toolbar-actions {
   display: flex;
   gap: 2px;
-  background: var(--ui-surface-alt, #ffffff);
   border-radius: 6px;
   padding: 2px;
-  border: 1px solid var(--ui-border, #d7dce2);
 }
 
 .toolbar-btn {
   appearance: none;
   border: none;
-  background: transparent;
   padding: 5px 12px;
   border-radius: 4px;
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
-  color: var(--ui-text, #1d232b);
   transition: background 0.12s ease;
-}
-
-.toolbar-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.toolbar-btn--active {
-  background: var(--ui-accent);
-  color: var(--ui-accent-contrast);
 }
 
 .toolbar-btn--active:hover {
@@ -95,24 +75,18 @@
   max-width: 720px;
   margin: 0 auto;
   width: 100%;
-  background: var(--ui-surface-card, #f7f8fa);
-  color: var(--ui-text-card, #1d232b);
   border-radius: 12px;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
-  border: 1.5px dashed var(--ui-border, #d7dce2);
 }
 
 .preview-empty {
   text-align: center;
   font-size: 0.9375rem;
   padding: 48px 16px;
-  color: var(--ui-text-card, #1d232b);
   font-weight: 500;
 }
 
 .preview-live {
   margin-top: 20px;
-  border-top: 1px dashed rgba(128, 128, 128, 0.3);
   padding-top: 12px;
 }
 
@@ -135,21 +109,12 @@
   letter-spacing: 0;
   padding: 1px 8px;
   border-radius: 10px;
-  background: rgba(186, 26, 26, 0.15);
-  color: #ba1a1a;
-}
-
-.preview-live-badge--valid {
-  background: rgba(56, 142, 60, 0.15);
-  color: #388e3c;
 }
 
 .preview-live-json {
   margin: 0;
   padding: 12px;
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.06);
-  color: var(--ui-text-card, #1d232b);
   font-size: 0.8125rem;
   overflow: auto;
   max-height: 300px;
@@ -171,9 +136,6 @@
 
 .copy-btn {
   appearance: none;
-  border: 1px solid var(--ui-border, #d7dce2);
-  background: var(--ui-surface-alt, #ffffff);
-  color: var(--ui-text, #1d232b);
   padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
@@ -183,69 +145,19 @@
   transition: background 0.12s ease;
 }
 
-.copy-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
 .json-pre {
   font-family: monospace;
   font-size: 0.8125rem;
   white-space: pre-wrap;
   word-break: break-word;
   margin: 0;
-  color: var(--ui-text, #1d232b);
 }
 
 /* Dark mode — explicit class */
 
 @include mix.dark-mode {
-  --ui-surface-card: #1a1d23;
-  --ui-text-card: #f2f6fb;
-  background: var(--ui-surface-alt, #2a2e36);
-  border-color: var(--ui-border, #3a3f47);
-
-  .toolbar {
-    background: var(--ui-surface, #1e2128);
-    border-bottom-color: var(--ui-border, #3a3f47);
-  }
-
-  .toolbar-title {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .toolbar-actions {
-    background: var(--ui-surface-alt, #2a2e36);
-    border-color: var(--ui-border, #3a3f47);
-  }
-
-  .toolbar-btn {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .toolbar-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .toolbar-btn--active {
-    background: var(--ui-primary-container);
-    color: var(--ui-on-primary-container);
-  }
 
   .toolbar-btn--active:hover {
     opacity: 0.9;
-  }
-
-  .copy-btn {
-    background: var(--ui-surface-alt, #2a2e36);
-    border-color: var(--ui-border, #3a3f47);
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .copy-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .json-pre {
-    color: var(--ui-text, #f2f6fb);
   }
 }

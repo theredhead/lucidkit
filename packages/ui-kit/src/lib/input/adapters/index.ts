@@ -3,6 +3,11 @@ export {
   type TextAdapterValidationResult,
 } from "./text-adapter";
 export {
+  type InputPopupPanel,
+  type PopupTextAdapter,
+  isPopupAdapter,
+} from "./popup-text-adapter";
+export {
   type TextAdapterRegistration,
   TEXT_ADAPTER_REGISTRATIONS,
   TextAdapterRegistry,
@@ -24,9 +29,18 @@ export { PhoneTextAdapter } from "./phone-text-adapter";
 export { CreditCardTextAdapter } from "./credit-card-text-adapter";
 export { PercentageTextAdapter } from "./percentage-text-adapter";
 export { DateTextAdapter } from "./date-text-adapter";
+export {
+  DateInputAdapter,
+  type DateInputAdapterOptions,
+} from "./date-input-adapter";
 export { TimeTextAdapter } from "./time-text-adapter";
 export { ColorTextAdapter } from "./color-text-adapter";
 export { SlugTextAdapter } from "./slug-text-adapter";
 export { UuidTextAdapter } from "./uuid-text-adapter";
 export { CronTextAdapter } from "./cron-text-adapter";
 export { UppercaseTextAdapter } from "./uppercase-text-adapter";
+export { LowercaseTextAdapter } from "./lowercase-text-adapter";
+export { TrimTextAdapter } from "./trim-text-adapter";
+export { PasswordTextAdapter } from "./password-text-adapter";
+export { IbanTextAdapter } from "./iban-text-adapter";
+export { MacAddressTextAdapter } from "./mac-address-text-adapter";

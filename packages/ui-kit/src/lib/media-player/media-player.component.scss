@@ -2,36 +2,15 @@
 
 // ── Light defaults ──
 :host {
-  --ui-text: #1d232b;
-  --ui-border: #d7dce2;
-  --ui-surface: #ffffff;
-  --ui-track: #d7dce2;
-  --ui-buffered: #b0c4de;
-  --ui-overlay: rgba(0, 0, 0, 0.6);
 
   display: block;
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  background: #000;
-  color: var(--ui-text);
   font-family: inherit;
 }
 
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-border: #3a3f47;
-  --ui-surface: #1e2228;
-  --ui-track: #505d6d;
-  --ui-buffered: #4a6a8a;
-  --ui-overlay: rgba(0, 0, 0, 0.75);
-}
-
 // ── Audio mode ──
-:host(.ui-media-player--audio) {
-  background: var(--ui-surface);
-  border: 1px solid var(--ui-border);
-}
 
 // ── Viewport (video) ──
 
@@ -39,7 +18,6 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,8 +42,6 @@ audio.media {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1e25 0%, #2a2f38 100%);
-  color: rgba(255, 255, 255, 0.35);
   pointer-events: none;
   z-index: 1;
 }
@@ -82,8 +58,6 @@ audio.media {
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--ui-overlay);
-  color: #f2f6fb;
   font-size: 0.8125rem;
   user-select: none;
 }
@@ -103,18 +77,12 @@ audio.media {
   opacity: 1;
 }
 
-:host(.ui-media-player--audio) .controls {
-  background: transparent;
-  color: var(--ui-text);
-}
-
 // ── Buttons ──
 
 .btn {
   appearance: none;
   background: none;
   border: none;
-  color: inherit;
   padding: 4px;
   margin: 0;
   cursor: pointer;
@@ -124,18 +92,9 @@ audio.media {
   justify-content: center;
   line-height: 1;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring);
     outline-offset: 2px;
   }
-}
-
-:host(.ui-media-player--audio) .btn:hover {
-  background: rgba(0, 0, 0, 0.08);
 }
 
 .icon {
@@ -160,13 +119,11 @@ audio.media {
   position: relative;
   flex: 1;
   height: 6px;
-  background: var(--ui-track);
   border-radius: 3px;
   cursor: pointer;
   overflow: visible;
 
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring);
     outline-offset: 2px;
   }
 }
@@ -177,7 +134,6 @@ audio.media {
   left: 0;
   height: 100%;
   border-radius: 3px;
-  background: var(--ui-buffered);
   opacity: 0.4;
   pointer-events: none;
 }
@@ -188,7 +144,6 @@ audio.media {
   left: 0;
   height: 100%;
   border-radius: 3px;
-  background: var(--ui-brand);
   pointer-events: none;
 }
 
@@ -198,11 +153,8 @@ audio.media {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--ui-brand);
-  border: 2px solid #fff;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   opacity: 0;
   transition: opacity 0.15s ease;
 }
@@ -218,7 +170,6 @@ audio.media {
   height: 4px;
   -webkit-appearance: none;
   appearance: none;
-  background: var(--ui-track);
   border-radius: 2px;
   cursor: pointer;
   margin: 0;
@@ -229,9 +180,6 @@ audio.media {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: var(--ui-brand);
-    border: 2px solid #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     margin-top: -4px;
   }
@@ -240,24 +188,18 @@ audio.media {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: var(--ui-brand);
-    border: 2px solid #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     cursor: pointer;
   }
 
   &::-webkit-slider-runnable-track {
     height: 4px;
-    background: transparent;
   }
 
   &::-moz-range-track {
     height: 4px;
-    background: transparent;
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring);
     outline-offset: 4px;
   }
 }
@@ -279,10 +221,7 @@ audio.media {
   bottom: 100%;
   right: 0;
   margin-bottom: 6px;
-  background: var(--ui-surface);
-  border: 1px solid var(--ui-border);
   border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   padding: 4px;
   display: flex;
   flex-direction: column;
@@ -294,20 +233,14 @@ audio.media {
   appearance: none;
   background: none;
   border: none;
-  color: var(--ui-text);
   padding: 4px 8px;
   font-size: 0.75rem;
   cursor: pointer;
   border-radius: 4px;
   text-align: center;
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.08);
-  }
-
   &--active {
     font-weight: 700;
-    color: var(--ui-brand);
   }
 }
 
@@ -321,8 +254,6 @@ audio.media {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: rgba(0, 0, 0, 0.85);
-  color: var(--ui-error);
   z-index: 3;
   padding: 24px;
   text-align: center;
@@ -345,9 +276,6 @@ audio.media {
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  background: color-mix(in srgb, var(--ui-error) 8%, var(--ui-surface));
-  border-bottom: 1px solid color-mix(in srgb, var(--ui-error) 25%, transparent);
-  color: var(--ui-error);
   font-size: 0.8125rem;
   line-height: 1.4;
   pointer-events: none;

@@ -5,15 +5,37 @@ const meta: Meta<UIQRCode> = {
   title: "@theredhead/UI Kit/QR Code",
   component: UIQRCode,
   tags: ["autodocs"],
+  argTypes: {
+    value: {
+      control: "text",
+      description: "The data to encode in the QR code.",
+    },
+    size: {
+      control: "number",
+      description: "QR code size in pixels.",
+    },
+    foreground: {
+      control: "color",
+      description: "Foreground (module) colour.",
+    },
+    background: {
+      control: "color",
+      description: "Background colour.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<UIQRCode>;
 
-export const Basic_QR_Code: Story = {
+export const Playground: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <ui-qr-code [value]="value" [size]="size" [foreground]="foreground" [background]="background" ariaLabel="QR code" />
+      <ui-qr-code [value]="value" [size]="size" [foreground]="foreground" [background]="background" [ariaLabel]="ariaLabel" />
     `,
   }),
   args: {
@@ -21,6 +43,7 @@ export const Basic_QR_Code: Story = {
     size: 180,
     foreground: "#222",
     background: "#fff",
+    ariaLabel: "QR code",
   },
   parameters: {
     docs: {

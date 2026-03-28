@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 
 import { UIIcon } from "../icon/icon.component";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /**
  * A single navigation item in the sidebar.
@@ -22,6 +23,7 @@ import { UIIcon } from "../icon/icon.component";
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-sidebar-item",
     "[class.ui-sidebar-item--active]": "active()",
@@ -134,6 +136,8 @@ export class UISidebarGroup {
   selector: "ui-sidebar-nav",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   host: {
     class: "ui-sidebar-nav",
     "[attr.role]": "'navigation'",

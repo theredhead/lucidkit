@@ -10,6 +10,7 @@ import { NgTemplateOutlet } from "@angular/common";
 import { UIIcon } from "../icon/icon.component";
 import type { TreeNodeContext } from "./tree-view.component";
 import type { ITreeDatasource, TreeNode } from "./tree-view.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Recursive node renderer for {@link UITreeView}.
@@ -27,6 +28,7 @@ import type { ITreeDatasource, TreeNode } from "./tree-view.types";
   templateUrl: "./tree-node.component.html",
   styleUrl: "./tree-node.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-tree-node",
     role: "treeitem",

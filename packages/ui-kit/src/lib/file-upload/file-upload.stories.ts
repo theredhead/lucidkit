@@ -197,6 +197,28 @@ class DocumentsDemo {
 const meta: Meta = {
   title: "@theredhead/UI Kit/File Upload",
   tags: ["autodocs"],
+  argTypes: {
+    accept: {
+      control: "text",
+      description: "Accepted file types (MIME or extension, e.g. `image/*`, `.pdf,.docx`).",
+    },
+    multiple: {
+      control: "boolean",
+      description: "Allow selecting multiple files.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the upload zone.",
+    },
+    label: {
+      control: "text",
+      description: "Label text displayed inside the drop zone.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -208,6 +230,7 @@ const meta: Meta = {
   decorators: [
     moduleMetadata({
       imports: [
+        UIFileUpload,
         DefaultDemo,
         ImagesDemo,
         SizeLimitDemo,
@@ -219,6 +242,29 @@ const meta: Meta = {
 };
 export default meta;
 type Story = StoryObj;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-file-upload
+      [accept]="accept"
+      [multiple]="multiple"
+      [disabled]="disabled"
+      [label]="label"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    accept: "",
+    multiple: false,
+    disabled: false,
+    label: "Drop files here or click to browse",
+    ariaLabel: "Upload file",
+  },
+};
 
 /**
  * **Default** — A single-file upload zone with event logging. Drop a file

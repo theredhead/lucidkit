@@ -12,9 +12,6 @@
   max-width: min(90vw, 40rem);
   max-height: 85vh;
   overflow: hidden;
-  background: var(--ui-surface);
-  color: var(--ui-text);
-  box-shadow: var(--ui-shadow);
   animation: ui-dlg-enter anim.$duration-medium anim.$easing-out;
 }
 
@@ -24,19 +21,10 @@
 }
 
 .dialog::backdrop {
-  background: rgba(0, 0, 0, 0.45);
   animation: ui-dlg-backdrop-enter anim.$duration-medium anim.$easing-out;
 }
 
 /* ── Dark mode ── */
-
-@include mix.dark-mode(".dialog") {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-@include mix.dark-mode(".dialog::backdrop") {
-  background: rgba(0, 0, 0, 0.65);
-}
 
 /* ── Animations ── */
 

@@ -114,6 +114,29 @@ export default meta;
 type Story = StoryObj<UIBadge>;
 
 /**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-badge
+      [variant]="variant"
+      [color]="color"
+      [count]="count"
+      [maxCount]="maxCount"
+      [ariaLabel]="ariaLabel"
+    >Label</ui-badge>`,
+  }),
+  args: {
+    variant: "count",
+    color: "primary",
+    count: 5,
+    maxCount: 99,
+    ariaLabel: "Notification badge",
+  },
+};
+
+/**
  * All badge variants and colours at a glance: count badges, dot
  * indicators, text labels, and overflow behaviour.
  */

@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import {
+  type ButtonColor,
   type ButtonSize,
   type ButtonVariant,
+  UI_BUTTON_DEFAULTS,
   UIButton,
 } from "./button.component";
 
@@ -33,8 +35,12 @@ describe("UIButton", () => {
       expect(component.variant()).toBe("filled");
     });
 
-    it('should default size to "md"', () => {
-      expect(component.size()).toBe("md");
+    it('should default size to "medium"', () => {
+      expect(component.size()).toBe("medium");
+    });
+
+    it('should default color to "primary"', () => {
+      expect(component.color()).toBe("primary");
     });
 
     it("should default disabled to false", () => {
@@ -57,7 +63,7 @@ describe("UIButton", () => {
   });
 
   describe("sizes", () => {
-    const sizes: ButtonSize[] = ["sm", "md", "lg"];
+    const sizes: ButtonSize[] = ["small", "medium", "large"];
 
     sizes.forEach((size) => {
       it(`should apply ${size} host class`, () => {
@@ -109,6 +115,57 @@ describe("UIButton", () => {
       const button: HTMLButtonElement =
         fixture.nativeElement.querySelector("button");
       expect(button.type).toBe("button");
+    });
+  });
+
+  describe("UI_BUTTON_DEFAULTS", () => {
+    it("should use provided defaults", async () => {
+      await TestBed.resetTestingModule()
+        .configureTestingModule({
+          imports: [UIButton],
+          providers: [
+            {
+              provide: UI_BUTTON_DEFAULTS,
+              useValue: {
+                variant: "outlined",
+                color: "danger",
+                size: "large",
+                pill: true,
+              },
+            },
+          ],
+        })
+        .compileComponents();
+
+      const f = TestBed.createComponent(UIButton);
+      f.detectChanges();
+
+      expect(f.componentInstance.variant()).toBe("outlined");
+      expect(f.componentInstance.color()).toBe("danger");
+      expect(f.componentInstance.size()).toBe("large");
+      expect(f.componentInstance.pill()).toBe(true);
+    });
+
+    it("should allow partial defaults", async () => {
+      await TestBed.resetTestingModule()
+        .configureTestingModule({
+          imports: [UIButton],
+          providers: [
+            {
+              provide: UI_BUTTON_DEFAULTS,
+              useValue: { color: "neutral" },
+            },
+          ],
+        })
+        .compileComponents();
+
+      const f = TestBed.createComponent(UIButton);
+      f.detectChanges();
+
+      expect(f.componentInstance.variant()).toBe("filled");
+      expect(f.componentInstance.color()).toBe("neutral");
+      expect(f.componentInstance.size()).toBe("medium");
+      expect(f.componentInstance.pill()).toBe(false);
     });
   });
 });

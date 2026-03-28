@@ -303,6 +303,12 @@ const meta: Meta<UIKanbanBoard<Task>> = {
   title: "@theredhead/UI Blocks/Kanban Board",
   component: UIKanbanBoard,
   tags: ["autodocs"],
+  argTypes: {
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the kanban board.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [StoryKanbanDemo, StoryKanbanMinimal],

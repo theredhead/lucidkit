@@ -10,6 +10,7 @@ import { FormsModule } from "@angular/forms";
 import { UIIcon } from "../../icon/icon.component";
 import { UIIcons } from "../../icon/lucide-icons.generated";
 import { PopoverRef, type UIPopoverContent } from "../../popover/popover.types";
+import { UISurface } from '@theredhead/foundation';
 
 // ── Result type ────────────────────────────────────────────────────
 
@@ -41,6 +42,7 @@ export interface LinkDialogResult {
   standalone: true,
   imports: [FormsModule, UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-link-dialog" },
   templateUrl: "./link-dialog.component.html",
   styleUrl: "./link-dialog.component.scss",

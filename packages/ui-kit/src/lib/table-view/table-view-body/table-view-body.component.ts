@@ -15,11 +15,14 @@ import {
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { DEFAULT_ROW_HEIGHT, MIN_COLUMN_WIDTH } from "../table-view.constants";
 import type { SelectionMode, SelectionModel } from "../../core/selection-model";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 @Component({
   selector: "ui-table-body",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "table-body" }],
   imports: [ScrollingModule, NgTemplateOutlet],
   templateUrl: "./table-view-body.component.html",
   styleUrl: "./table-view-body.component.scss",

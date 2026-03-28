@@ -14,6 +14,7 @@ import type {
   FormDesignerEngine,
   MutableGroupDefinition,
 } from "./designer-engine";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * The central canvas of the form designer. Displays all groups
@@ -30,6 +31,7 @@ import type {
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-designer-canvas" },
   templateUrl: "./designer-canvas.component.html",
   styleUrl: "./designer-canvas.component.scss",

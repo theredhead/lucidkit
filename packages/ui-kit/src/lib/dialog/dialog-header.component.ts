@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Header section for a dialog.
@@ -15,6 +16,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   selector: "ui-dialog-header",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-dialog-header" },
   templateUrl: "./dialog-header.component.html",
   styleUrl: "./dialog-header.component.scss",

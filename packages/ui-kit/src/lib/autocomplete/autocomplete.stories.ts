@@ -282,6 +282,28 @@ class DisabledDemo {
 const meta: Meta = {
   title: "@theredhead/UI Kit/Autocomplete",
   tags: ["autodocs"],
+  argTypes: {
+    placeholder: {
+      control: "text",
+      description: "Placeholder text for the search input.",
+    },
+    minChars: {
+      control: "number",
+      description: "Minimum characters before querying the datasource.",
+    },
+    multiple: {
+      control: "boolean",
+      description: "Enable multi-select with chip tokens.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the autocomplete.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the input.",
+    },
+  },
   parameters: {
     docs: {
       description: {

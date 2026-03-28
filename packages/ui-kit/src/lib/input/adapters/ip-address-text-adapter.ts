@@ -14,7 +14,7 @@ export class IPAddressTextAdapter implements TextAdapter {
   public readonly prefixIcon = UIIcons.Lucide.Development.Network;
 
   public toValue(text: string): string {
-    return text.trim();
+    return text.replace(/[^0-9.]/g, "");
   }
 
   public validate(text: string): TextAdapterValidationResult {

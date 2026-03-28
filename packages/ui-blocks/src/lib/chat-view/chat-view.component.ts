@@ -30,6 +30,8 @@ import type {
   MessageSendEvent,
   MessageTemplateContext,
 } from "./chat-view.types";
+import { UIMessageBubble } from "./message-bubble/message-bubble.component";
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * A chat / messaging view composing UIAvatar, UIRichTextEditor,
@@ -74,9 +76,11 @@ import type {
     UIAvatar,
     UIButton,
     UIIcon,
+    UIMessageBubble,
     UIRichTextEditor,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./chat-view.component.html",
   styleUrl: "./chat-view.component.scss",
   host: {

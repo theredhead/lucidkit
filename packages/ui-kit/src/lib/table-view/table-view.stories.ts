@@ -26,6 +26,7 @@ import {
 } from "./datasources/jsonplaceholder-datasource";
 import { UITableView } from "./table-view.component";
 import { SelectionModel } from "../core/selection-model";
+import { UIButton } from "../button/button.component";
 
 @Component({
   selector: "ui-table-view-story-demo",
@@ -310,8 +311,42 @@ const meta: Meta<object> = {
   title: "@theredhead/UI Kit/Table View",
   component: UITableViewStoryDemo,
   tags: ["autodocs"],
+  argTypes: {
+    caption: {
+      control: "text",
+      description: "Visible <caption> for the table.",
+    },
+    selectionMode: {
+      control: "select",
+      options: ["none", "single", "multiple"],
+      description: "Row selection behaviour.",
+    },
+    showBuiltInPaginator: {
+      control: "boolean",
+      description: "Show the built-in pagination footer.",
+    },
+    showRowIndexIndicator: {
+      control: "boolean",
+      description: "Show a row-index column.",
+    },
+    showSelectionColumn: {
+      control: "boolean",
+      description: "Show the checkbox / radio selection column.",
+    },
+    rowClickSelect: {
+      control: "boolean",
+      description: "Select a row by clicking anywhere on it.",
+    },
+    pageSize: {
+      control: "number",
+      description: "Items per page.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the table.",
+    },
+  },
   parameters: {
-    layout: "fullscreen",
     docs: {
       description: {
         component:
@@ -1040,6 +1075,7 @@ onExpressionChange(expression: FilterExpression<Employee>): void {
     UITextColumn,
     UITemplateColumn,
     UIDensityDirective,
+    UIButton,
   ],
   template: `
     <ui-table-view
@@ -1075,18 +1111,20 @@ onExpressionChange(expression: FilterExpression<Employee>): void {
       </ui-template-column>
       <ui-template-column key="actions" headerText="Actions">
         <ng-template let-row>
-          <button
-            style="padding:2px 10px;font-size:0.8rem;border:1px solid var(--ui-border,#d7dce2);border-radius:4px;background:var(--ui-surface-2,#f6f7f8);color:var(--ui-text,#1d232b);cursor:pointer;"
+          <ui-button
+            variant="outlined"
+            size="small"
             (click)="onAction('view', row)"
           >
             View
-          </button>
-          <button
-            style="padding:2px 10px;font-size:0.8rem;margin-left:4px;border:1px solid var(--ui-border,#d7dce2);border-radius:4px;background:var(--ui-accent,#3b82f6);color:#fff;cursor:pointer;"
+          </ui-button>
+          <ui-button
+            size="small"
+            style="margin-left: 4px"
             (click)="onAction('edit', row)"
           >
             Edit
-          </button>
+          </ui-button>
         </ng-template>
       </ui-template-column>
     </ui-table-view>

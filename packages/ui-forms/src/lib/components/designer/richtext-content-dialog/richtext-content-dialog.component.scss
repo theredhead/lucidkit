@@ -10,7 +10,6 @@
 }
 
 .editor-wrapper {
-  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 0.25rem;
   overflow: hidden;
   min-height: 14rem;
@@ -25,7 +24,6 @@
 
 .btn {
   appearance: none;
-  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 0.25rem;
   padding: 0.35rem 0.75rem;
   font-family: inherit;
@@ -42,28 +40,8 @@
 }
 
 .btn--apply {
-  background: var(--ui-accent);
-  color: #fff;
-  border-color: var(--ui-accent);
 
   &:hover:not(:disabled) {
     opacity: 0.9;
-  }
-}
-
-.btn--cancel {
-  background: var(--ui-surface, #ffffff);
-  color: var(--ui-text, #1d232b);
-
-  &:hover {
-    background: var(--ui-surface-2);
-    border-color: var(--ui-border-strong);
-  }
-}
-
-@include mix.dark-mode {
-  .btn--cancel {
-    background: var(--ui-surface, #2a2e35);
-    color: var(--ui-text, #f2f6fb);
   }
 }

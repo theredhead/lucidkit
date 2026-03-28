@@ -104,30 +104,65 @@ export class MoneyTextAdapter implements TextAdapter {
 
   public readonly prefixIcon: string;
 
-  public constructor(currency = "EUR") {
+  private readonly locale: string;
+  private readonly thousands: string;
+  private readonly decimal: string;
+
+  public constructor(currency = "EUR", locale?: string) {
     this.currency = currency.toUpperCase();
     this.decimals = ZERO_DECIMAL_CURRENCIES.has(this.currency) ? 0 : 2;
     this.prefixIcon =
       CURRENCY_ICONS[this.currency] ?? UIIcons.Lucide.Finance.Currency;
+    this.locale = locale ?? navigator?.language ?? "en";
+    const parts = new Intl.NumberFormat(this.locale).formatToParts(1234.5);
+    this.thousands = parts.find((p) => p.type === "group")?.value ?? "";
+    this.decimal = parts.find((p) => p.type === "decimal")?.value ?? ".";
   }
 
   public toValue(text: string): string {
-    const stripped = text.trim().replace(/,/g, "");
-    return stripped;
+    let s = text;
+    if (this.thousands) s = s.split(this.thousands).join("");
+    if (this.decimal !== ".") s = s.replace(this.decimal, ".");
+  const cleaned = s.replace(/[^0-9.+-]/g, "");
+    if (!cleaned || cleaned === "-" || cleaned === "." || cleaned === "-.")
+      return cleaned;
+    const n = Number(cleaned);
+    if (!Number.isFinite(n)) return cleaned;
+    if (cleaned.includes(".") && n.toString() !== cleaned) return cleaned;
+    return n.toString();
+  }
+
+  public toDisplayValue(value: string): string {
+    if (!value) return "";
+    const n = Number(value);
+    if (!Number.isFinite(n)) return value;
+    if (value.includes(".") && n.toString() !== value) return value;
+    return n.toLocaleString(this.locale, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: this.decimals,
+    });
   }
 
   public validate(text: string): TextAdapterValidationResult {
-    const stripped = text.trim().replace(/,/g, "");
-    if (!stripped) {
-      return { valid: true, errors: [] };
+    const raw = text.trim();
+    if (!raw) return { valid: true, errors: [] };
+    let normalized = this.thousands ? raw.split(this.thousands).join("") : raw;
+    if (this.decimal !== ".")
+      normalized = normalized.replace(this.decimal, ".");
+    const cleaned = normalized.replace(/[^0-9.+-]/g, "");
+    if (cleaned !== normalized) {
+      return {
+        valid: false,
+        errors: ["Value must be a valid monetary amount"],
+      };
     }
     const pattern =
       this.decimals === 0
         ? /^[+-]?\d+$/
         : new RegExp(`^[+-]?\\d+(\\.\\d{0,${this.decimals}})?$`);
-    if (!pattern.test(stripped)) {
+    if (!pattern.test(cleaned)) {
       const errors: string[] = [];
-      if (!/^[+-]?[\d,]+(\.\d+)?$/.test(text.trim())) {
+      if (!/^[+-]?\d+(\.\d+)?$/.test(cleaned)) {
         errors.push("Value must be a valid monetary amount");
       } else if (this.decimals === 0) {
         errors.push(`${this.currency} amounts do not allow decimal places`);

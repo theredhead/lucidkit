@@ -82,6 +82,7 @@
 
   html {
     @include tokens.ui-tokens-light;
+    line-height: 1.5;
 
     @if $_brand {
       --ui-brand: #{$_brand};

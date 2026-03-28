@@ -5,6 +5,7 @@
   display: inline-flex;
   align-items: center;
   position: relative;
+  color: var(--ui-text);
 }
 
 :host(.ui-input--multiline) {
@@ -16,9 +17,9 @@ input,
 textarea {
   font-family: var(--ui-font, inherit);
   font-size: var(--ui-font-body, 0.875rem);
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #ffffff);
-  border: 1px solid var(--ui-border, #d7dce2);
+  color: var(--ui-text);
+  background-color: var(--ui-surface);
+  border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
   padding: 0.3rem 0.5rem;
   min-width: 0;
@@ -28,7 +29,7 @@ textarea {
     background-color anim.$duration-normal anim.$easing-default;
 
   &:hover:not(:disabled) {
-    border-color: var(--ui-border-strong, #c2c8cf);
+    border-color: var(--ui-border-strong);
   }
 
   &:disabled {
@@ -40,27 +41,12 @@ textarea {
   }
 
   &::placeholder {
-    color: var(--ui-muted, #5a6470);
+    color: var(--ui-text-muted);
     opacity: 0.55;
   }
 }
 
 // Invalid state
-:host(.ui-input--invalid) {
-  input,
-  textarea {
-    border-color: var(--ui-error, #d93025);
-
-    &:focus-visible {
-      outline-color: var(--ui-error, #d93025);
-    }
-  }
-
-  .icon {
-    border-color: var(--ui-error, #d93025);
-    color: var(--ui-error, #d93025);
-  }
-}
 
 :host(.ui-input--has-prefix) input {
   padding-left: 0;
@@ -91,8 +77,8 @@ textarea {
   width: 100%;
   height: 8px;
   cursor: ns-resize;
-  background: var(--ui-border, #d7dce2);
-  border: 1px solid var(--ui-border, #d7dce2);
+  background-color: var(--ui-surface-2);
+  border: 1px solid var(--ui-border);
   border-top: none;
   border-radius: 0 0 0.25rem 0.25rem;
   display: flex;
@@ -106,12 +92,12 @@ textarea {
     width: 24px;
     height: 2px;
     border-radius: 1px;
-    background: var(--ui-muted, #5a6470);
+    background-color: var(--ui-border-strong);
     opacity: 0.5;
   }
 
   &:hover {
-    background: var(--ui-surface-hover, #f0f2f5);
+    background-color: var(--ui-hover-bg);
 
     &::after {
       opacity: 0.8;
@@ -119,7 +105,7 @@ textarea {
   }
 
   &:active {
-    background: var(--ui-surface-hover, #e4e8ec);
+    background-color: var(--ui-hover-bg);
 
     &::after {
       opacity: 1;
@@ -132,74 +118,39 @@ textarea {
   align-items: center;
   justify-content: center;
   padding: 0.3rem 0.4rem;
-  border: 1px solid var(--ui-border, #d7dce2);
-  color: var(--ui-muted, #5a6470);
-  background: var(--ui-surface, #ffffff);
   cursor: pointer;
   line-height: 1;
+  color: var(--ui-text-muted);
+  background-color: var(--ui-surface-2);
   transition:
     color anim.$duration-normal anim.$easing-default,
     background-color anim.$duration-normal anim.$easing-default;
 
   &:hover {
-    color: var(--ui-text, #1d232b);
-    background: var(--ui-surface-hover, #f0f2f5);
+    color: var(--ui-text);
   }
 
   &--prefix {
+    border: 1px solid var(--ui-border);
     border-right: none;
     border-radius: 0.25rem 0 0 0.25rem;
   }
 
   &--suffix {
+    border: 1px solid var(--ui-border);
     border-left: none;
     border-radius: 0 0.25rem 0.25rem 0;
   }
 }
 
-// Dark-mode
-@include mix.dark-mode {
-  .icon {
-    color: var(--ui-muted, #8b929a);
-    background: var(--ui-surface, #1e1e2e);
-    border-color: var(--ui-border, #3a3f47);
+/* ── Popup anchor ─────────────────────────────────────────── */
 
-    &:hover {
-      color: var(--ui-text, #f2f6fb);
-      background: var(--ui-surface-hover, #2a2a3a);
-    }
-  }
-
-  .resize-handle {
-    background: var(--ui-border, #3a3f47);
-    border-color: var(--ui-border, #3a3f47);
-
-    &::after {
-      background: var(--ui-muted, #8b929a);
-    }
-
-    &:hover {
-      background: var(--ui-surface-hover, #2a2a3a);
-    }
-
-    &:active {
-      background: var(--ui-surface-hover, #333345);
-    }
-  }
-
-  &.ui-input--invalid {
-    input,
-    textarea {
-      border-color: var(--ui-error, #f28b82);
-
-      &:focus-visible {
-        outline-color: var(--ui-error, #f28b82);
-      }
-    }
-
-    .icon {
-      border-color: var(--ui-error, #f28b82);
-      color: var(--ui-error, #f28b82);
-    }
-  }
+.input-popup-anchor {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  margin-top: 0.25rem;
 }
+
+// Dark-mode

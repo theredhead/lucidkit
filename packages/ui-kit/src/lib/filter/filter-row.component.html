@@ -1,4 +1,4 @@
-<div class="ui-filter-row__controls" role="group" [attr.aria-label]="'Filter rule ' + rule().id">
+<div class="controls" role="group" [attr.aria-label]="'Filter rule ' + rule().id">
   <!-- Field selector -->
   <ui-dropdown-list
     ariaLabel="Filter field"
@@ -40,7 +40,7 @@
         [value]="rule().value"
         (valueChange)="onValueChange($event)"
       />
-      <span class="ui-filter-row__separator" aria-hidden="true">and</span>
+      <span class="separator" aria-hidden="true">and</span>
       <ui-input
         ariaLabel="To value"
         [type]="inputType()"
@@ -76,5 +76,5 @@
   }
 
   <!-- Remove rule -->
-  <ui-button variant="ghost" size="sm" ariaLabel="Remove filter rule" (click)="remove.emit()">✕</ui-button>
+  <ui-button variant="ghost" size="small" ariaLabel="Remove filter rule" (click)="remove.emit()">✕</ui-button>
 </div>

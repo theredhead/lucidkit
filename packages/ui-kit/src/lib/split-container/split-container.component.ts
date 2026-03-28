@@ -11,7 +11,7 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { StorageService } from "@theredhead/foundation";
+import { StorageService, UISurface } from "@theredhead/foundation";
 
 import type {
   SplitCollapseTarget,
@@ -69,6 +69,7 @@ const STORAGE_PREFIX = "ui-split-container:";
   templateUrl: "./split-container.component.html",
   styleUrl: "./split-container.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-split-container",
     "[class.ui-split-container--horizontal]": "orientation() === 'horizontal'",

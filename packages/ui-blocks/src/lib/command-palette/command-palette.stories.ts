@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIIcons } from "@theredhead/ui-kit";
+import { UIIcons, UIButton } from "@theredhead/ui-kit";
 
 import { UICommandPalette } from "./command-palette.component";
 import type {
@@ -101,15 +101,6 @@ const outputStyles = `
     border-radius: 4px;
     font-family: var(--ui-font, monospace);
   }
-  .trigger-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 16px; border-radius: 8px;
-    background: var(--ui-surface, #f4f5f7);
-    color: var(--ui-text, #1d232b);
-    border: 1px solid var(--ui-border, #d7dce2);
-    cursor: pointer; font: inherit; font-size: 14px;
-  }
-  .trigger-btn:hover { background: var(--ui-surface-2, #ebedf0); }
   .trigger-btn kbd {
     font-size: 11px; padding: 2px 6px; border-radius: 4px;
     background: var(--ui-surface-2, #e8eaed);
@@ -121,13 +112,13 @@ const outputStyles = `
 @Component({
   selector: "ui-command-palette-default-demo",
   standalone: true,
-  imports: [UICommandPalette],
+  imports: [UICommandPalette, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [outputStyles],
   template: `
-    <button class="trigger-btn" (click)="open.set(true)">
+    <ui-button class="trigger-btn" variant="outlined" (click)="open.set(true)">
       Open Command Palette <kbd>Cmd+K</kbd>
-    </button>
+    </ui-button>
 
     <ui-command-palette
       [commands]="commands"
@@ -158,13 +149,13 @@ class DefaultDemo {
 @Component({
   selector: "ui-command-palette-no-recent-demo",
   standalone: true,
-  imports: [UICommandPalette],
+  imports: [UICommandPalette, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [outputStyles],
   template: `
-    <button class="trigger-btn" (click)="open.set(true)">
+    <ui-button class="trigger-btn" variant="outlined" (click)="open.set(true)">
       Open (No Recent) <kbd>Cmd+K</kbd>
-    </button>
+    </ui-button>
 
     <ui-command-palette
       [commands]="commands"
@@ -196,13 +187,13 @@ class NoRecentDemo {
 @Component({
   selector: "ui-command-palette-minimal-demo",
   standalone: true,
-  imports: [UICommandPalette],
+  imports: [UICommandPalette, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [outputStyles],
   template: `
-    <button class="trigger-btn" (click)="open.set(true)">
+    <ui-button class="trigger-btn" variant="outlined" (click)="open.set(true)">
       Open Minimal Palette
-    </button>
+    </ui-button>
 
     <ui-command-palette
       [commands]="commands"
@@ -266,6 +257,24 @@ const meta: Meta = {
           "`--cp-bg`, `--cp-text`, `--cp-border`, `--cp-item-active`, `--cp-kbd-bg`",
         ].join("\n"),
       },
+    },
+  },
+  argTypes: {
+    placeholder: {
+      control: "text",
+      description: "Placeholder text for the search input.",
+    },
+    globalShortcut: {
+      control: "boolean",
+      description: "Enable Cmd+K / Ctrl+K global shortcut.",
+    },
+    maxRecent: {
+      control: "number",
+      description: "Max recent commands to track (0 = disabled).",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the command palette.",
     },
   },
   decorators: [

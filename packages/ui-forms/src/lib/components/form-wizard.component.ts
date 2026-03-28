@@ -14,6 +14,7 @@ import { FormEngine, type GroupState } from "../engine/form-engine";
 import type { FormValues } from "../types/form-schema.types";
 import { FORM_SETTINGS } from "./form-settings";
 import { UIFormGroup } from "./form-group.component";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Renders a {@link FormEngine}'s groups as wizard steps — one group
@@ -35,6 +36,7 @@ import { UIFormGroup } from "./form-group.component";
   standalone: true,
   imports: [UIFormGroup],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-form-wizard",
   },

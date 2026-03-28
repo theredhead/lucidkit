@@ -20,6 +20,7 @@ import type {
   CarouselStrategy,
 } from "./carousel.types";
 import { CoverflowCarouselStrategy } from "./coverflow-strategy";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A generic carousel that delegates layout and animation to a
@@ -51,6 +52,7 @@ import { CoverflowCarouselStrategy } from "./coverflow-strategy";
   templateUrl: "./carousel.component.html",
   styleUrl: "./carousel.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-carousel",
     "(keydown.arrowLeft)": "prev()",

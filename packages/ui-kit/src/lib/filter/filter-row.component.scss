@@ -4,17 +4,14 @@
   padding: 0.3rem 0;
 }
 
-.ui-filter-row {
-  &__controls {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
 
-  &__separator {
-    font-size: var(--ui-font-body, 0.875rem);
-    color: var(--ui-muted, #5a6470);
-    user-select: none;
-  }
+.separator {
+  font-size: var(--ui-font-body, 0.875rem);
+  user-select: none;
 }

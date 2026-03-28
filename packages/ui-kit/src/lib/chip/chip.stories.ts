@@ -1,7 +1,7 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
-import { UIChip } from "./chip.component";
+import { type ChipColor, UIChip } from "./chip.component";
 
 @Component({
   selector: "ui-chip-demo",
@@ -62,6 +62,25 @@ const meta: Meta<UIChip> = {
   title: "@theredhead/UI Kit/Chip",
   component: UIChip,
   tags: ["autodocs"],
+  argTypes: {
+    color: {
+      control: "select",
+      options: ["primary", "success", "warning", "danger", "neutral"] satisfies ChipColor[],
+      description: "Colour preset.",
+    },
+    removable: {
+      control: "boolean",
+      description: "Shows a dismiss button and emits `removed` on click.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the chip.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -78,6 +97,27 @@ const meta: Meta<UIChip> = {
 };
 export default meta;
 type Story = StoryObj<UIChip>;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-chip
+      [color]="color"
+      [removable]="removable"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    >Sample chip</ui-chip>`,
+  }),
+  args: {
+    color: "primary",
+    removable: false,
+    disabled: false,
+    ariaLabel: "Sample chip",
+  },
+};
 
 /**
  * Interactive demo showing all chip features: five colour presets,

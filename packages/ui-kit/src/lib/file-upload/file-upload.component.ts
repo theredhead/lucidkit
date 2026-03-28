@@ -9,6 +9,7 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /** A single file entry tracked by the upload component. */
 export interface UIFileEntry {
@@ -41,6 +42,8 @@ export interface UIFileEntry {
   templateUrl: "./file-upload.component.html",
   styleUrl: "./file-upload.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
   host: {
     class: "ui-file-upload",
     "[class.ui-file-upload--dragging]": "isDragging()",

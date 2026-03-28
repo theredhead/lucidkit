@@ -8,48 +8,46 @@
   overflow: hidden;
   flex-shrink: 0;
   user-select: none;
-
-  --ui-bg: #d7dce2;
-  --ui-text: #3a3f47;
-  --ui-fallback: #5a6470;
-}
-
-@include mix.dark-mode {
-  --ui-bg: #505d6d;
-  --ui-text: #f2f6fb;
-  --ui-fallback: #d0d8e3;
 }
 
 /* ── Sizes ── */
 
-:host(.ui-avatar--xs) {
+:host(.ui-avatar--extra-small) {
   width: 1.5rem;
   height: 1.5rem;
   font-size: 0.625rem;
 }
 
-:host(.ui-avatar--sm) {
+:host(.ui-avatar--small) {
   width: 2rem;
   height: 2rem;
   font-size: 0.75rem;
 }
 
-:host(.ui-avatar--md) {
+:host(.ui-avatar--medium) {
   width: 2.5rem;
   height: 2.5rem;
   font-size: 0.875rem;
 }
 
-:host(.ui-avatar--lg) {
+:host(.ui-avatar--large) {
   width: 3.5rem;
   height: 3.5rem;
   font-size: 1.125rem;
 }
 
-:host(.ui-avatar--xl) {
+:host(.ui-avatar--extra-large) {
   width: 5rem;
   height: 5rem;
   font-size: 1.5rem;
+}
+
+/* ── Custom pixel size ── */
+
+:host(.ui-avatar--custom) {
+  width: var(--avatar-custom-size);
+  height: var(--avatar-custom-size);
+  font-size: calc(var(--avatar-custom-size) * 0.35);
 }
 
 /* ── Image ── */
@@ -69,8 +67,6 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: var(--ui-bg);
-  color: var(--ui-text);
   font-weight: 600;
   font-family: system-ui, sans-serif;
   line-height: 1;
@@ -81,8 +77,6 @@
 .fallback {
   width: 60%;
   height: 60%;
-  color: var(--ui-fallback);
-  background: var(--ui-bg);
   border-radius: 50%;
   padding: 20%;
 }

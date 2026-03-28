@@ -20,6 +20,8 @@ import {
   type Predicate,
   isFilterableDatasource,
   isSortableDatasource,
+  UISurface,
+  UI_DEFAULT_SURFACE_TYPE,
 } from "@theredhead/foundation";
 
 import { ColumnResizeService } from "./column-resize.service";
@@ -45,6 +47,8 @@ import { type SelectionMode, SelectionModel } from "../core/selection-model";
   selector: "ui-table-view",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "table" }],
   imports: [UITableHeader, UITableBody, UITableFooter],
   templateUrl: "./table-view.component.html",
   styleUrl: "./table-view.component.scss",

@@ -20,3 +20,4 @@ Angular UI library in [MADR](https://adr.github.io/madr/) format.
 | [ADR-0011](0011-explicit-access-modifiers.md)                 | Explicit Access Modifiers on All Members        | Accepted |
 | [ADR-0012](0012-colour-pairing-rule.md)                       | Colour Pairing Rule for Accessibility           | Accepted |
 | [ADR-0013](0013-simple-extensible-datasource-architecture.md) | Simple Extensible Datasource Architecture       | Accepted |
+| [ADR-0014](0014-surface-type-directive.md)                    | Surface Type Directive for Declarative Styling  | Accepted |

@@ -20,6 +20,7 @@ import {
   isReorderableDatasource,
   isRemovableDatasource,
   isInsertableDatasource,
+  UISurface,
 } from "@theredhead/foundation";
 import type {
   RepeaterItemContext,
@@ -75,6 +76,7 @@ import { RepeaterDragHandler } from "./repeater-drag-handler";
   templateUrl: "./repeater.component.html",
   styleUrl: "./repeater.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-repeater",
     "[class.ui-repeater--reorderable]": "reorderable()",

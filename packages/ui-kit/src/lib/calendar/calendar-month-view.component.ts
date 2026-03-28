@@ -9,7 +9,7 @@ import {
   signal,
 } from "@angular/core";
 import { SlicePipe } from "@angular/common";
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 import { PopoverService } from "../popover/popover.service";
 import { UICalendarDayPopover } from "./calendar-day-popover.component";
 import type {
@@ -51,6 +51,7 @@ import type { PopoverRef } from "../popover/popover.types";
   standalone: true,
   imports: [SlicePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./calendar-month-view.component.html",
   styleUrl: "./calendar-month-view.component.scss",
   host: {

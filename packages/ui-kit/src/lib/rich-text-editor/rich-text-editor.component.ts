@@ -16,7 +16,7 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
@@ -105,6 +105,7 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
   standalone: true,
   imports: [UIIcon, UIEmojiPicker],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./rich-text-editor.component.html",
   styleUrl: "./rich-text-editor.component.scss",
   host: {

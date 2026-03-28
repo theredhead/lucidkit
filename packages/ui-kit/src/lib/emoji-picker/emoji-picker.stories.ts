@@ -6,6 +6,20 @@ const meta: Meta<UIEmojiPicker> = {
   title: "@theredhead/UI Kit/Emoji Picker",
   component: UIEmojiPicker,
   tags: ["autodocs"],
+  argTypes: {
+    searchPlaceholder: {
+      control: "text",
+      description: "Placeholder text for the search input.",
+    },
+    previewSize: {
+      control: "number",
+      description: "Size of the emoji preview in pixels.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<UIEmojiPicker>;
@@ -13,9 +27,18 @@ type Story = StoryObj<UIEmojiPicker>;
 export const Default: Story = {
   render: (args) => ({
     props: args,
-    template: `<ui-emoji-picker (emojiSelected)="onEmoji($event)" />`,
+    template: `<ui-emoji-picker
+      [searchPlaceholder]="searchPlaceholder"
+      [previewSize]="previewSize"
+      [ariaLabel]="ariaLabel"
+      (emojiSelected)="onEmoji($event)"
+    />`,
   }),
-  args: {},
+  args: {
+    searchPlaceholder: "Search emoji\u2026",
+    previewSize: 64,
+    ariaLabel: "Emoji picker",
+  },
   parameters: {
     docs: {
       source: {

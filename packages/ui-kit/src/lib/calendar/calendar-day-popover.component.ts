@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { PopoverRef } from "../popover/popover.types";
 import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Popover content component that displays all events for a given
@@ -19,6 +20,7 @@ import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
   selector: "ui-calendar-day-popover",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-calendar-day-popover" },
   styleUrl: "./calendar-day-popover.component.scss",
   templateUrl: "./calendar-day-popover.component.html",

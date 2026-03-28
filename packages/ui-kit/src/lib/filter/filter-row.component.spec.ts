@@ -151,7 +151,7 @@ describe("UIFilterRow", () => {
       component.remove.subscribe(() => (removed = true));
 
       const removeBtn = fixture.nativeElement.querySelector(
-        ".ui-filter-row__controls > ui-button",
+        ".controls > ui-button",
       );
       removeBtn?.click();
 
@@ -226,16 +226,12 @@ describe("UIFilterRow", () => {
 
   describe("accessibility", () => {
     it('should have role="group" on the controls container', () => {
-      const controls = fixture.nativeElement.querySelector(
-        ".ui-filter-row__controls",
-      );
+      const controls = fixture.nativeElement.querySelector(".controls");
       expect(controls.getAttribute("role")).toBe("group");
     });
 
     it("should have aria-label on the controls group", () => {
-      const controls = fixture.nativeElement.querySelector(
-        ".ui-filter-row__controls",
-      );
+      const controls = fixture.nativeElement.querySelector(".controls");
       expect(controls.getAttribute("aria-label")).toBe("Filter rule 1");
     });
 
@@ -260,7 +256,7 @@ describe("UIFilterRow", () => {
 
     it("should have aria-label on the remove button", () => {
       const btn = fixture.nativeElement.querySelector(
-        ".ui-filter-row__controls > ui-button button",
+        ".controls > ui-button button",
       );
       expect(btn.getAttribute("aria-label")).toBe("Remove filter rule");
     });
@@ -274,9 +270,7 @@ describe("UIFilterRow", () => {
       });
       fixture.detectChanges();
 
-      const separator = fixture.nativeElement.querySelector(
-        ".ui-filter-row__separator",
-      );
+      const separator = fixture.nativeElement.querySelector(".separator");
       expect(separator.getAttribute("aria-hidden")).toBe("true");
     });
   });

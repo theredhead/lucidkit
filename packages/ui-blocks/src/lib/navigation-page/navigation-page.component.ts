@@ -24,7 +24,7 @@ import {
   UISidebarItem,
   UISidebarNav,
 } from "@theredhead/ui-kit";
-import { ArrayTreeDatasource } from "@theredhead/foundation";
+import { ArrayTreeDatasource, UISurface } from "@theredhead/foundation";
 
 import type { NavigationNode } from "./navigation-page.utils";
 
@@ -119,6 +119,7 @@ export interface NavigationPageContext {
     UIBreadcrumb,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./navigation-page.component.html",
   styleUrl: "./navigation-page.component.scss",
   host: {

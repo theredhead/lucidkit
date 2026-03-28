@@ -21,7 +21,7 @@
     <button
       type="button"
       class="icon icon--prefix"
-      [attr.aria-label]="'Prefix action'"
+      [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Prefix action'"
       (click)="onPrefixClick()"
     >
       <ui-icon [svg]="icon" [size]="16" />
@@ -33,16 +33,32 @@
     [disabled]="disabled()"
     [placeholder]="placeholder()"
     [attr.aria-label]="ariaLabel()"
+    [attr.aria-expanded]="hasPopup() ? isPopupOpen() : null"
+    [attr.aria-controls]="hasPopup() && isPopupOpen() ? popupId : null"
+    [attr.role]="hasPopup() ? 'combobox' : null"
     (input)="onInput($event)"
+    (keydown)="onInputKeydown($event)"
   />
   @if (suffixIcon(); as icon) {
     <button
       type="button"
       class="icon icon--suffix"
-      [attr.aria-label]="'Suffix action'"
+      [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Suffix action'"
       (click)="onSuffixClick()"
     >
       <ui-icon [svg]="icon" [size]="16" />
     </button>
+  }
+  @if (isPopupOpen()) {
+    <div
+      class="input-popup-anchor"
+      role="dialog"
+      aria-modal="true"
+      [id]="popupId"
+      (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()"
+    >
+      <ng-container #popupContainer />
+    </div>
   }
 }

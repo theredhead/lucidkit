@@ -2,24 +2,10 @@
 
 /* ── Light defaults ── */
 :host {
-  --ui-text: #1d232b;
-  --ui-text-muted: #5a6470;
-  --ui-surface: #ffffff;
-  --ui-border: #d7dce2;
-  --ui-group-bg: #f3f4f6;
 
   display: block;
-  color: var(--ui-text);
   font-family: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
   font-size: 0.8125rem;
-}
-
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-text-muted: #a0aab6;
-  --ui-surface: #242b33;
-  --ui-border: #3a3f47;
-  --ui-group-bg: #2a3240;
 }
 
 /* ── Sheet container ── */
@@ -38,10 +24,6 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--ui-text-muted);
-  background: var(--ui-group-bg);
-  border-top: 1px solid var(--ui-border);
-  border-bottom: 1px solid var(--ui-border);
 
   &:first-child {
     border-top: none;
@@ -55,7 +37,6 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.75rem;
-  border-bottom: 1px solid var(--ui-border);
   min-height: 2rem;
 
   &:last-child {
@@ -73,7 +54,6 @@
   flex: 0 0 38%;
   max-width: 38%;
   font-size: 0.78rem;
-  color: var(--ui-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

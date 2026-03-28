@@ -10,13 +10,13 @@
 @if (showLegend() && legendEntries().length > 0) {
   <ul class="legend" role="list" aria-label="Chart legend">
     @for (entry of legendEntries(); track entry.label) {
-      <li class="legend__item">
+      <li class="legend-item">
         <span
-          class="legend__swatch"
+          class="legend-swatch"
           [style.background-color]="entry.color"
         ></span>
-        <span class="legend__label">{{ entry.label }}</span>
-        <span class="legend__value">{{ entry.value }}</span>
+        <span class="legend-label">{{ entry.label }}</span>
+        <span class="legend-value">{{ entry.value }}</span>
       </li>
     }
   </ul>

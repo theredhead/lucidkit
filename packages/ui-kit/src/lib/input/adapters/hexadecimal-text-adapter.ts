@@ -18,9 +18,11 @@ export class HexadecimalTextAdapter implements TextAdapter {
   public readonly prefixIcon = UIIcons.Lucide.Development.Binary;
 
   public toValue(text: string): string {
-    const trimmed = text.trim();
-    const stripped = trimmed.replace(/^0[xX]/, "");
-    return stripped.toLowerCase();
+    return text
+      .trim()
+      .replace(/^0[xX]/, "")
+      .replace(/[^0-9a-fA-F]/g, "")
+      .toLowerCase();
   }
 
   public validate(text: string): TextAdapterValidationResult {

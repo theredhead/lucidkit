@@ -12,6 +12,7 @@ import {
   UIDialogFooter,
   ModalRef,
 } from "@theredhead/ui-kit";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Content component for a simple alert dialog.
@@ -26,6 +27,7 @@ import {
   standalone: true,
   imports: [UIButton, UIDialogHeader, UIDialogBody, UIDialogFooter],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-alert-dialog" },
   template: `
     <ui-dialog-header>{{ title() }}</ui-dialog-header>

@@ -9,17 +9,17 @@
       class="task-list"
       [style.width.px]="taskListWidth()"
     >
-      <div class="task-list__header">
-        <span class="task-list__title">Task</span>
+      <div class="task-list-header">
+        <span class="task-list-title">Task</span>
       </div>
-      <div class="task-list__body">
+      <div class="task-list-body">
         @for (row of rows(); track row.task.id) {
           <div
-            class="task-list__row"
+            class="task-list-row"
             [style.height.px]="rowHeight()"
             [style.padding-left.px]="12 + row.depth * 16"
           >
-            <span class="task-list__label" [title]="row.task.title">
+            <span class="task-list-label" [title]="row.task.title">
               {{ row.task.title }}
             </span>
           </div>
@@ -33,22 +33,22 @@
     <!-- Header (sticky, scroll-synced) -->
     <div class="header" [style.transform]="'translateX(-' + scrollLeft() + 'px)'">
       <!-- Group row (months / years) -->
-      <div class="header__groups" [style.grid-template-columns]="groupGridColumns()">
+      <div class="header-groups" [style.grid-template-columns]="groupGridColumns()">
         @for (group of timeline().groups; track group.label) {
-          <div class="header__group-cell">{{ group.label }}</div>
+          <div class="header-group-cell">{{ group.label }}</div>
         }
       </div>
       <!-- Column row (days / weeks / months) -->
-      <div class="header__columns" [style.grid-template-columns]="headerGridColumns()">
+      <div class="header-columns" [style.grid-template-columns]="headerGridColumns()">
         @for (col of timeline().columns; track col.date) {
-          <div class="header__col-cell">{{ col.label }}</div>
+          <div class="header-col-cell">{{ col.label }}</div>
         }
       </div>
     </div>
 
     <!-- Body (scrollable) -->
     <div class="body" (scroll)="onBodyScroll($event)">
-      <div class="body__canvas">
+      <div class="body-canvas">
         <!-- Today marker -->
         @if (todayPosition() !== null) {
           <div
@@ -77,7 +77,7 @@
                 (click)="onTaskClick(row.task)"
               >
                 <span
-                  class="milestone__diamond"
+                  class="milestone-diamond"
                   [style.background-color]="row.color"
                 ></span>
               </button>
@@ -97,11 +97,11 @@
                 <!-- Progress overlay -->
                 @if (row.progressWidth !== null) {
                   <div
-                    class="bar__progress"
+                    class="bar-progress"
                     [style.width.%]="row.progressWidth"
                   ></div>
                 }
-                <span class="bar__label">{{ row.task.title }}</span>
+                <span class="bar-label">{{ row.task.title }}</span>
               </button>
             }
           </div>

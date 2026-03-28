@@ -2,11 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
+  input,
   signal,
 } from "@angular/core";
 import { type Meta, type StoryObj, moduleMetadata } from "@storybook/angular";
 
 import { UIInput } from "./input.component";
+import { UIDropdownList } from "../dropdown-list/dropdown-list.component";
+import type { TextAdapter } from "./adapters/text-adapter";
 import {
   ColorTextAdapter,
   CreditCardTextAdapter,
@@ -16,16 +20,178 @@ import {
   EmailTextAdapter,
   FloatTextAdapter,
   HexadecimalTextAdapter,
+  IbanTextAdapter,
   IntegerTextAdapter,
   IPAddressTextAdapter,
+  LowercaseTextAdapter,
+  MacAddressTextAdapter,
   MoneyTextAdapter,
+  PasswordTextAdapter,
   PercentageTextAdapter,
   PhoneTextAdapter,
   SlugTextAdapter,
   TimeTextAdapter,
+  TrimTextAdapter,
+  UppercaseTextAdapter,
   UrlTextAdapter,
   UuidTextAdapter,
 } from "./adapters";
+
+// ── Adapter registry for the interactive demo ────────────────────────
+
+interface AdapterEntry {
+  readonly label: string;
+  readonly type: string;
+  readonly placeholder: string;
+  readonly adapter: TextAdapter;
+}
+
+const ADAPTER_MAP: Record<string, AdapterEntry> = {
+  none: {
+    label: "(no adapter)",
+    type: "text",
+    placeholder: "Type something…",
+    adapter: undefined!,
+  },
+  email: {
+    label: "Email",
+    type: "email",
+    placeholder: "user@example.com",
+    adapter: new EmailTextAdapter(),
+  },
+  url: {
+    label: "URL",
+    type: "url",
+    placeholder: "example.com",
+    adapter: new UrlTextAdapter(),
+  },
+  ip: {
+    label: "IP Address",
+    type: "text",
+    placeholder: "192.168.1.1",
+    adapter: new IPAddressTextAdapter(),
+  },
+  phone: {
+    label: "Phone",
+    type: "tel",
+    placeholder: "+1 (555) 123-4567",
+    adapter: new PhoneTextAdapter(),
+  },
+  creditCard: {
+    label: "Credit Card",
+    type: "text",
+    placeholder: "4111 1111 1111 1111",
+    adapter: new CreditCardTextAdapter(),
+  },
+  money: {
+    label: "Money",
+    type: "text",
+    placeholder: "1,234.56",
+    adapter: new MoneyTextAdapter(),
+  },
+  integer: {
+    label: "Integer",
+    type: "text",
+    placeholder: "42",
+    adapter: new IntegerTextAdapter(),
+  },
+  float: {
+    label: "Float",
+    type: "text",
+    placeholder: "3.14",
+    adapter: new FloatTextAdapter(),
+  },
+  decimal: {
+    label: "Decimal (2)",
+    type: "text",
+    placeholder: "9.99",
+    adapter: new DecimalTextAdapter(2),
+  },
+  hex: {
+    label: "Hexadecimal",
+    type: "text",
+    placeholder: "0xFF",
+    adapter: new HexadecimalTextAdapter(),
+  },
+  percentage: {
+    label: "Percentage",
+    type: "text",
+    placeholder: "75%",
+    adapter: new PercentageTextAdapter(),
+  },
+  date: {
+    label: "Date",
+    type: "text",
+    placeholder: "2026-03-28",
+    adapter: new DateTextAdapter(),
+  },
+  time: {
+    label: "Time",
+    type: "text",
+    placeholder: "14:30",
+    adapter: new TimeTextAdapter(),
+  },
+  color: {
+    label: "Color",
+    type: "text",
+    placeholder: "#FF5733",
+    adapter: new ColorTextAdapter(),
+  },
+  slug: {
+    label: "Slug",
+    type: "text",
+    placeholder: "my-page-slug",
+    adapter: new SlugTextAdapter(),
+  },
+  uuid: {
+    label: "UUID",
+    type: "text",
+    placeholder: "550e8400-e29b-41d4-a716-446655440000",
+    adapter: new UuidTextAdapter(),
+  },
+  cron: {
+    label: "Cron",
+    type: "text",
+    placeholder: "*/5 * * * *",
+    adapter: new CronTextAdapter(),
+  },
+  uppercase: {
+    label: "Uppercase",
+    type: "text",
+    placeholder: "type anything…",
+    adapter: new UppercaseTextAdapter(),
+  },
+  lowercase: {
+    label: "Lowercase",
+    type: "text",
+    placeholder: "type anything…",
+    adapter: new LowercaseTextAdapter(),
+  },
+  trim: {
+    label: "Trim / Normalise",
+    type: "text",
+    placeholder: "  extra   spaces  ",
+    adapter: new TrimTextAdapter(),
+  },
+  password: {
+    label: "Password",
+    type: "text",
+    placeholder: "Enter password…",
+    adapter: new PasswordTextAdapter(),
+  },
+  iban: {
+    label: "IBAN",
+    type: "text",
+    placeholder: "DE89 3704 0044 0532 0130 00",
+    adapter: new IbanTextAdapter(),
+  },
+  mac: {
+    label: "MAC Address",
+    type: "text",
+    placeholder: "AA:BB:CC:DD:EE:FF",
+    adapter: new MacAddressTextAdapter(),
+  },
+};
 
 // ── Demo wrapper components ──────────────────────────────────────────
 
@@ -665,7 +831,9 @@ class CronAdapterDemo {
       style="display: flex; flex-direction: column; gap: 16px; max-width: 360px;"
     >
       @for (entry of entries; track entry.label) {
-        <div style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);">
+        <div
+          style="font-size: 0.8125rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa);"
+        >
           <span>{{ entry.label }}</span>
           <ui-input
             [type]="entry.type"
@@ -824,6 +992,128 @@ class AllAdaptersDemo {
   ];
 }
 
+// ── Demo: Interactive adapter picker ─────────────────────────────────
+
+@Component({
+  selector: "ui-story-adapter-picker-demo",
+  standalone: true,
+  imports: [UIInput, UIDropdownList],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+        max-width: 400px;
+      }
+      .picker {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .info {
+        font-size: 0.8125rem;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #f7f8fa);
+        padding: 8px 12px;
+        border-radius: 4px;
+        line-height: 1.5;
+      }
+      .validation-hint {
+        font-size: 0.75rem;
+        color: var(--ui-danger, #d93025);
+        background: color-mix(
+          in srgb,
+          var(--ui-danger, #d93025) 6%,
+          transparent
+        );
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin: -4px 0;
+      }
+    `,
+  ],
+  template: `
+    <div class="picker">
+      <ui-dropdown-list
+        [options]="adapterOptions"
+        [(value)]="adapterKey"
+        ariaLabel="Select adapter"
+      />
+
+      <ui-input
+        [type]="activeType()"
+        [placeholder]="activePlaceholder()"
+        [disabled]="disabled()"
+        [ariaLabel]="activeLabel()"
+        [adapter]="activeAdapter()"
+        [(text)]="rawText"
+        [(value)]="processedValue"
+      />
+
+      @if (touched() && !isValid()) {
+        <div class="validation-hint">{{ validationMessage() }}</div>
+      }
+
+      <div class="info">
+        <div><strong>text:</strong> {{ rawText() || "(empty)" }}</div>
+        <div><strong>value:</strong> {{ processedValue() || "(empty)" }}</div>
+      </div>
+    </div>
+  `,
+})
+class AdapterPickerDemo {
+  public readonly disabled = input(false);
+
+  protected readonly adapterOptions = Object.entries(ADAPTER_MAP).map(
+    ([key, entry]) => ({ value: key, label: entry.label }),
+  );
+
+  protected readonly adapterKey = signal("none");
+  protected readonly rawText = signal("");
+  protected readonly processedValue = signal("");
+  protected readonly touched = signal(false);
+
+  protected readonly activeEntry = computed(
+    () => ADAPTER_MAP[this.adapterKey()] ?? ADAPTER_MAP["none"],
+  );
+  protected readonly activeAdapter = computed(() => {
+    const entry = this.activeEntry();
+    return entry.adapter || undefined;
+  });
+  protected readonly activeType = computed(() => this.activeEntry().type);
+  protected readonly activePlaceholder = computed(
+    () => this.activeEntry().placeholder,
+  );
+  protected readonly activeLabel = computed(() => this.activeEntry().label);
+  protected readonly isValid = computed(() => {
+    const adapter = this.activeAdapter();
+    const text = this.rawText();
+    if (!adapter?.validate || !text) return true;
+    return adapter.validate(text).valid;
+  });
+  protected readonly validationMessage = computed(() => {
+    const adapter = this.activeAdapter();
+    const text = this.rawText();
+    if (!adapter?.validate || !text) return "";
+    const result = adapter.validate(text);
+    return result.valid ? "" : (result.errors[0] ?? "Invalid input");
+  });
+
+  public constructor() {
+    effect(() => {
+      this.adapterKey();
+      this.rawText.set("");
+      this.processedValue.set("");
+      this.touched.set(false);
+    });
+    effect(() => {
+      if (this.rawText()) {
+        this.touched.set(true);
+      }
+    });
+  }
+}
+
 // ── Meta ─────────────────────────────────────────────────────────────
 
 const meta: Meta<UIInput> = {
@@ -833,6 +1123,7 @@ const meta: Meta<UIInput> = {
   decorators: [
     moduleMetadata({
       imports: [
+        AdapterPickerDemo,
         EmailAdapterDemo,
         UrlAdapterDemo,
         IPAdapterDemo,
@@ -906,12 +1197,75 @@ type Story = StoryObj<UIInput>;
 // ── Stories ──────────────────────────────────────────────────────────
 
 /**
- * The default input — a plain single-line text field with `[(value)]`.
- *
+ * **Default** — An interactive demo with an adapter selector dropdown.
+ * Pick any adapter from the list to see how it transforms, validates,
+ * and formats text input. The info panel shows raw text, processed
+ * value, and validation state.
+ */
+export const Default: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-story-adapter-picker-demo [disabled]="disabled" />`,
+  }),
+  args: {
+    disabled: false,
+  },
+  argTypes: {
+    disabled: { control: "boolean" },
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-input
+  type="email"
+  placeholder="user@example.com"
+  ariaLabel="Email address"
+  [adapter]="adapter"
+  [(text)]="rawText"
+  [(value)]="processedValue"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UIInput, EmailTextAdapter } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIInput],
+  template: \\\`
+    <ui-input
+      type="email"
+      placeholder="user@example.com"
+      [adapter]="adapter"
+      [(text)]="rawText"
+      [(value)]="processedValue"
+    />
+  \\\`,
+})
+export class ExampleComponent {
+  readonly adapter = new EmailTextAdapter();
+  readonly rawText = signal('');
+  readonly processedValue = signal('');
+}
+
+// ── SCSS ──
+/* No custom styles needed — UIInput tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * A plain single-line text field with `[(value)]` and no adapter.
  * Use the controls panel to change the `type`, `placeholder`, and
  * `disabled` state.
  */
-export const Default: Story = {
+export const Plain: Story = {
   render: (args) => ({
     props: args,
     template: `<ui-input

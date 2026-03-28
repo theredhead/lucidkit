@@ -99,16 +99,13 @@ describe("UIChart", () => {
     });
 
     it("should render bar rects matching data length", () => {
-      const rects = fixture.nativeElement.querySelectorAll(
-        ".viewport svg rect",
-      );
+      const rects =
+        fixture.nativeElement.querySelectorAll(".viewport svg rect");
       expect(rects.length).toBe(testData.length);
     });
 
     it("should render legend entries matching data length", () => {
-      const items = fixture.nativeElement.querySelectorAll(
-        ".legend__item",
-      );
+      const items = fixture.nativeElement.querySelectorAll(".legend-item");
       expect(items.length).toBe(testData.length);
     });
 
@@ -124,18 +121,16 @@ describe("UIChart", () => {
     it("should re-render with line strategy", () => {
       host.strategy.set(new LineGraphStrategy());
       fixture.detectChanges();
-      const paths = fixture.nativeElement.querySelectorAll(
-        ".viewport svg path",
-      );
+      const paths =
+        fixture.nativeElement.querySelectorAll(".viewport svg path");
       expect(paths.length).toBeGreaterThanOrEqual(1);
     });
 
     it("should re-render with pie strategy", () => {
       host.strategy.set(new PieChartStrategy());
       fixture.detectChanges();
-      const paths = fixture.nativeElement.querySelectorAll(
-        ".viewport svg path",
-      );
+      const paths =
+        fixture.nativeElement.querySelectorAll(".viewport svg path");
       expect(paths.length).toBe(testData.length);
     });
 
@@ -156,9 +151,8 @@ describe("UIChart", () => {
         { name: "Y", count: 10, cost: 7 },
       ]);
       fixture.detectChanges();
-      const rects = fixture.nativeElement.querySelectorAll(
-        ".viewport svg rect",
-      );
+      const rects =
+        fixture.nativeElement.querySelectorAll(".viewport svg rect");
       expect(rects.length).toBe(2);
     });
 
@@ -195,9 +189,8 @@ describe("UIChart", () => {
         { name: "Cost", valueProperty: "cost" },
       ]);
       fixture.detectChanges();
-      const rects = fixture.nativeElement.querySelectorAll(
-        ".viewport svg rect",
-      );
+      const rects =
+        fixture.nativeElement.querySelectorAll(".viewport svg rect");
       // 3 data points × 2 layers = 6 bars
       expect(rects.length).toBe(6);
     });
@@ -208,9 +201,7 @@ describe("UIChart", () => {
         { name: "Cost", valueProperty: "cost" },
       ]);
       fixture.detectChanges();
-      const items = fixture.nativeElement.querySelectorAll(
-        ".legend__item",
-      );
+      const items = fixture.nativeElement.querySelectorAll(".legend-item");
       // One legend entry per series
       expect(items.length).toBe(2);
     });
@@ -218,9 +209,7 @@ describe("UIChart", () => {
     it("should use per-point legend when layers is empty", () => {
       host.sources.set([]);
       fixture.detectChanges();
-      const items = fixture.nativeElement.querySelectorAll(
-        ".legend__item",
-      );
+      const items = fixture.nativeElement.querySelectorAll(".legend-item");
       expect(items.length).toBe(testData.length);
     });
 
@@ -231,9 +220,8 @@ describe("UIChart", () => {
         { name: "Cost", valueProperty: "cost" },
       ]);
       fixture.detectChanges();
-      const paths = fixture.nativeElement.querySelectorAll(
-        ".viewport svg path",
-      );
+      const paths =
+        fixture.nativeElement.querySelectorAll(".viewport svg path");
       // 2 series = 2 line paths
       expect(paths.length).toBe(2);
     });
@@ -262,9 +250,8 @@ describe("UIChart", () => {
         { name: "Alt Data", data: altData },
       ]);
       fixture.detectChanges();
-      const rects = fixture.nativeElement.querySelectorAll(
-        ".viewport svg rect",
-      );
+      const rects =
+        fixture.nativeElement.querySelectorAll(".viewport svg rect");
       // 3 bars (original) + 2 bars (altData) = 5
       expect(rects.length).toBe(5);
     });

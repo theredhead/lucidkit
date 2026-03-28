@@ -4,6 +4,7 @@ import {
   computed,
   input,
 } from "@angular/core";
+import { UISurface } from '@theredhead/foundation';
 
 /** Visual variant of the badge. */
 export type BadgeVariant = "count" | "dot" | "label";
@@ -32,6 +33,7 @@ export type BadgeColor =
   templateUrl: "./badge.component.html",
   styleUrl: "./badge.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-badge",
     "[class.ui-badge--count]": "variant() === 'count'",

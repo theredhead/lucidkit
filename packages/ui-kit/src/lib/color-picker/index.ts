@@ -1,4 +1,5 @@
 export { UIColorPicker } from "./color-picker.component";
+export { UIColorPanel } from "./color-panel.component";
 export { UIColorPickerPopover } from "./color-picker-popover.component";
 export {
   type ColorPickerMode,

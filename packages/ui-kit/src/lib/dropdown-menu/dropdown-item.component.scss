@@ -13,7 +13,6 @@
 
 :host(:hover:not(.ui-dropdown-item--disabled)),
 :host(:focus-visible) {
-  background: rgba(128, 128, 128, 0.12);
   outline: none;
 }
 

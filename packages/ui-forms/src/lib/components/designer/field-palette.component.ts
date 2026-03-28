@@ -2,6 +2,7 @@
 
 import { ChangeDetectionStrategy, Component, output } from "@angular/core";
 import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Metadata for a draggable field type shown in the palette.
@@ -136,6 +137,7 @@ const PALETTE_FLAIR: readonly PaletteFieldType[] = [
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-field-palette" },
   templateUrl: "./field-palette.component.html",
   styleUrl: "./field-palette.component.scss",

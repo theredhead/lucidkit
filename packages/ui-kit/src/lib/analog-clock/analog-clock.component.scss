@@ -1,62 +1,65 @@
 @use "mixins" as mix;
 
-// ── Light defaults ───────────────────────────────────────────────
-:host {
-  --ui-clock-rim: #b0b8c4;
-  --ui-clock-bg: #ffffff;
-  --ui-clock-text: #1d232b;
-  --ui-clock-tick: #6b7280;
-  --ui-clock-tick-hour: #1d232b;
-  --ui-clock-hand-hour: #1d232b;
-  --ui-clock-hand-minute: #374151;
-  --ui-clock-hand-second: #dc2626;
-  --ui-clock-center: #1d232b;
+// ── Overridable tokens ───────────────────────────────────────────
+//
+// The clock exposes two sets of colour tokens — one for AM (daytime)
+// and one for PM (nighttime, applied via the `--night` host class).
+//
+// Each property resolves in this order:
+//   1. `--clock-<prop>`     — shared override (always wins)
+//   2. `--clock-am-<prop>`  — AM-specific (daytime, 06:00–17:59)
+//      `--clock-pm-<prop>`  — PM-specific (nighttime, 18:00–05:59)
+//   3. `--ui-*`             — global theme token
+//   4. hardcoded fallback
+//
+// Examples:
+//   /* Warm face during the day, dark at night */
+//   ui-analog-clock {
+//     --clock-am-face: #fffff0;
+//     --clock-pm-face: #1a1a2e;
+//   }
+//   /* Red second hand always */
+//   ui-analog-clock { --clock-second: #e53935; }
+// ─────────────────────────────────────────────────────────────────
 
+:host {
   display: inline-block;
   line-height: 0;
 }
 
-// ── Dark mode ────────────────────────────────────────────────────
-@include mix.dark-mode {
-  --ui-clock-rim: #4b5563;
-  --ui-clock-bg: #1f2937;
-  --ui-clock-text: #f2f6fb;
-  --ui-clock-tick: #9ca3af;
-  --ui-clock-tick-hour: #f2f6fb;
-  --ui-clock-hand-hour: #f2f6fb;
-  --ui-clock-hand-minute: #d1d5db;
-  --ui-clock-hand-second: #ef4444;
-  --ui-clock-center: #f2f6fb;
-}
-
-// ── SVG elements ─────────────────────────────────────────────────
+// ── SVG elements (AM / daytime defaults — darker face) ──────────
 
 .rim {
   fill: none;
-  stroke: var(--ui-clock-rim);
+  stroke: var(
+    --clock-rim,
+    var(--clock-am-rim, var(--ui-border-strong, #505d6d))
+  );
   stroke-width: 1;
 }
 
 .bg {
-  fill: var(--ui-clock-bg);
+  fill: var(--clock-face, var(--clock-am-face, var(--ui-surface-2, #353a44)));
 }
 
 .tick {
+  stroke: var(
+    --clock-tick,
+    var(--clock-am-tick, var(--ui-text-muted, #9ba4ae))
+  );
   stroke-linecap: round;
 
   &--hour {
-    stroke: var(--ui-clock-tick-hour);
     stroke-width: 1.2;
   }
 
   &--minute {
-    stroke: var(--ui-clock-tick);
     stroke-width: 0.5;
   }
 }
 
 .number {
-  fill: var(--ui-clock-text);
+  fill: var(--clock-number, var(--clock-am-number, var(--ui-text, #f2f6fb)));
   font-size: 7px;
   font-weight: 600;
   font-family:
@@ -71,71 +74,77 @@
   transform-origin: 50px 50px;
 
   &--hour {
-    stroke: var(--ui-clock-hand-hour);
+    stroke: var(--clock-hand, var(--clock-am-hand, var(--ui-text, #f2f6fb)));
     stroke-width: 2.5;
   }
 
   &--minute {
-    stroke: var(--ui-clock-hand-minute);
+    stroke: var(--clock-hand, var(--clock-am-hand, var(--ui-text, #f2f6fb)));
     stroke-width: 1.8;
   }
 
   &--second {
-    stroke: var(--ui-clock-hand-second);
+    stroke: var(
+      --clock-second,
+      var(--clock-am-second, var(--ui-accent, #7ab0ff))
+    );
     stroke-width: 0.8;
   }
 }
 
 .cap {
-  fill: var(--ui-clock-center);
+  fill: var(--clock-cap, var(--clock-am-cap, var(--ui-text, #f2f6fb)));
+}
+
+// ── PM / nighttime overrides (lighter face) ──────────────────────
+
+:host(.ui-analog-clock--night) {
+  .rim {
+    stroke: var(
+      --clock-rim,
+      var(--clock-pm-rim, var(--ui-border-strong, #505d6d))
+    );
+  }
+
+  .bg {
+    fill: var(--clock-face, var(--clock-pm-face, var(--ui-surface, #ffffff)));
+  }
+
+  .tick {
+    stroke: var(
+      --clock-tick,
+      var(--clock-pm-tick, var(--ui-text-muted, #5a6470))
+    );
+  }
+
+  .number {
+    fill: var(--clock-number, var(--clock-pm-number, var(--ui-text, #1d232b)));
+  }
+
+  .hand {
+    &--hour {
+      stroke: var(--clock-hand, var(--clock-pm-hand, var(--ui-text, #1d232b)));
+    }
+
+    &--minute {
+      stroke: var(--clock-hand, var(--clock-pm-hand, var(--ui-text, #1d232b)));
+    }
+
+    &--second {
+      stroke: var(
+        --clock-second,
+        var(--clock-pm-second, var(--ui-accent, #3584e4))
+      );
+    }
+  }
+
+  .cap {
+    fill: var(--clock-cap, var(--clock-pm-cap, var(--ui-text, #f2f6fb)));
+  }
 }
 
 // ── Day/night indicator ──────────────────────────────────────────
 
 .indicator {
   pointer-events: none;
-}
-
-// ── Night face (light theme) ─────────────────────────────────────
-
-:host(.ui-analog-clock--night) {
-  --ui-clock-bg: #1a1f3a;
-  --ui-clock-rim: #2d3561;
-  --ui-clock-text: #c4cae0;
-  --ui-clock-tick: #4a5280;
-  --ui-clock-tick-hour: #8890b5;
-  --ui-clock-hand-hour: #e0e4f0;
-  --ui-clock-hand-minute: #b8bdd5;
-  --ui-clock-hand-second: #ef4444;
-  --ui-clock-center: #e0e4f0;
-}
-
-// ── Night face (explicit dark theme) ─────────────────────────────
-
-:host-context(html.dark-theme):host(.ui-analog-clock--night) {
-  --ui-clock-bg: #0f1229;
-  --ui-clock-rim: #1e2248;
-  --ui-clock-text: #9098c0;
-  --ui-clock-tick: #3a4070;
-  --ui-clock-tick-hour: #6870a0;
-  --ui-clock-hand-hour: #c4cae0;
-  --ui-clock-hand-minute: #9098c0;
-  --ui-clock-center: #c4cae0;
-}
-
-// ── Night face (system dark preference) ──────────────────────────
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)):host(
-    .ui-analog-clock--night
-  ) {
-    --ui-clock-bg: #0f1229;
-    --ui-clock-rim: #1e2248;
-    --ui-clock-text: #9098c0;
-    --ui-clock-tick: #3a4070;
-    --ui-clock-tick-hour: #6870a0;
-    --ui-clock-hand-hour: #c4cae0;
-    --ui-clock-hand-minute: #9098c0;
-    --ui-clock-center: #c4cae0;
-  }
 }

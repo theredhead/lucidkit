@@ -13,6 +13,7 @@ import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 
 import { UIWizardStep } from "./wizard-step.component";
 import type { StepChangeEvent } from "./wizard.types";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /**
  * A multi-step workflow shell with a step indicator, navigation
@@ -46,6 +47,8 @@ import type { StepChangeEvent } from "./wizard.types";
   standalone: true,
   imports: [NgTemplateOutlet, UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   templateUrl: "./wizard.component.html",
   styleUrl: "./wizard.component.scss",
   host: {

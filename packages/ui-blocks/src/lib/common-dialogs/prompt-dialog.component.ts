@@ -14,6 +14,7 @@ import {
   UIDialogFooter,
   ModalRef,
 } from "@theredhead/ui-kit";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Content component for a prompt dialog.
@@ -29,6 +30,7 @@ import {
   standalone: true,
   imports: [UIButton, UIInput, UIDialogHeader, UIDialogBody, UIDialogFooter],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-prompt-dialog" },
   template: `
     <ui-dialog-header>{{ title() }}</ui-dialog-header>

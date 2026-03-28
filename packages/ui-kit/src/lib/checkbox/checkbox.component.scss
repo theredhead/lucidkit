@@ -7,20 +7,7 @@
   gap: 0.5rem;
   cursor: pointer;
   user-select: none;
-
-  --ui-text: #1d232b;
-  --ui-border: #d7dce2;
-  --ui-border-strong: #b0b7c0;
-  --ui-surface: #ffffff;
-  --ui-muted: #5a6470;
-}
-
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-border: #505d6d;
-  --ui-border-strong: #617184;
-  --ui-surface: #2a2f38;
-  --ui-muted: #d0d8e3;
+  color: var(--ui-text);
 }
 
 :host(.ui-checkbox--disabled) {
@@ -48,7 +35,7 @@
   height: 1.125rem;
   border: 2px solid var(--ui-border-strong);
   border-radius: 0.25rem;
-  background: var(--ui-surface);
+  background-color: var(--ui-surface);
   transition:
     background-color anim.$duration-normal anim.$easing-default,
     border-color anim.$duration-normal anim.$easing-default;
@@ -57,18 +44,14 @@
 
 :host(.ui-checkbox--checked) .box,
 :host(.ui-checkbox--indeterminate) .box {
-  background: var(--ui-accent);
+  background-color: var(--ui-accent);
   border-color: var(--ui-accent);
-}
-
-:host(:not(.ui-checkbox--disabled)) .control:hover .box {
-  border-color: var(--ui-accent-hover);
 }
 
 .icon {
   width: 0.875rem;
   height: 0.875rem;
-  color: #ffffff;
+  color: var(--ui-accent-contrast);
 }
 
 /* ── Switch variant ── */
@@ -79,33 +62,22 @@
   width: 2.25rem;
   height: 1.25rem;
   border-radius: 0.625rem;
-  background: var(--ui-border-strong);
   padding: 0.125rem;
+  background-color: var(--ui-border-strong);
   transition: background-color anim.$duration-medium anim.$easing-default;
   flex-shrink: 0;
 }
 
 :host(.ui-checkbox--checked) .track {
-  background: var(--ui-accent);
-}
-
-:host(:not(.ui-checkbox--disabled)) .control:hover .track {
-  background: var(--ui-accent-hover);
-}
-
-:host(:not(.ui-checkbox--disabled):not(.ui-checkbox--checked))
-  .control:hover
-  .track {
-  background: var(--ui-muted);
+  background-color: var(--ui-accent);
 }
 
 .thumb {
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
-  background: #ffffff;
+  background-color: var(--ui-surface);
   transition: transform anim.$duration-medium anim.$easing-default;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 :host(.ui-checkbox--checked) .thumb {
@@ -115,7 +87,6 @@
 /* ── Label ── */
 
 .label {
-  color: var(--ui-text);
   font-size: var(--ui-font-body, 0.875rem);
   cursor: inherit;
   line-height: 1.4;

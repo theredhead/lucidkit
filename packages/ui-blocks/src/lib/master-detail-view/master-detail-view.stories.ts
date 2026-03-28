@@ -235,7 +235,7 @@ class DefaultDemo {
       <ui-template-column key="name" headerText="Employee">
         <ng-template let-row>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+            <ui-avatar [email]="row.email" [name]="row.name" size="small" />
             <div
               style="display: flex; flex-direction: column; gap: 0.1rem; min-width: 0;"
             >
@@ -297,7 +297,7 @@ class FilterDemo {
       <ui-template-column key="name" headerText="Employee">
         <ng-template let-row>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+            <ui-avatar [email]="row.email" [name]="row.name" size="small" />
             <div
               style="display: flex; flex-direction: column; gap: 0.1rem; min-width: 0;"
             >
@@ -359,7 +359,7 @@ class FilterExpandedDemo {
       <ui-template-column key="name" headerText="Employee">
         <ng-template let-row>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+            <ui-avatar [email]="row.email" [name]="row.name" size="small" />
             <div
               style="display: flex; flex-direction: column; gap: 0.1rem; min-width: 0;"
             >
@@ -651,6 +651,48 @@ const meta: Meta = {
       },
     },
   },
+  argTypes: {
+    title: {
+      control: "text",
+      description: "Title displayed above the list panel.",
+    },
+    placeholder: {
+      control: "text",
+      description: "Text shown when no item is selected.",
+    },
+    showFilter: {
+      control: "boolean",
+      description: "Show the collapsible filter bar.",
+    },
+    filterExpanded: {
+      control: "boolean",
+      description: "Whether the filter starts expanded.",
+    },
+    filterModeLocked: {
+      control: "boolean",
+      description: "Hide the filter toggle button.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disable the embedded table.",
+    },
+    showBuiltInPaginator: {
+      control: "boolean",
+      description: "Show the built-in paginator.",
+    },
+    showRowIndexIndicator: {
+      control: "boolean",
+      description: "Show row index numbers.",
+    },
+    resizable: {
+      control: "boolean",
+      description: "Allow column resizing.",
+    },
+    caption: {
+      control: "text",
+      description: "Accessible caption for the table.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -726,7 +768,7 @@ export const WithFilter: Story = {
         code: `<ui-master-detail-view [datasource]="adapter" title="Employees" [showFilter]="true">
   <ui-template-column key="name" headerText="Employee">
     <ng-template let-row>
-      <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+      <ui-avatar [email]="row.email" [name]="row.name" size="small" />
       {{ row.name }}
     </ng-template>
   </ui-template-column>

@@ -1,6 +1,7 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
+import { type ProgressMode, type ProgressVariant } from "./progress.types";
 import { UIProgress } from "./progress.component";
 import { UISlider } from "../slider/slider.component";
 
@@ -48,6 +49,26 @@ const meta: Meta<UIProgress> = {
   title: "@theredhead/UI Kit/Progress",
   component: UIProgress,
   tags: ["autodocs"],
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["linear", "circular"] satisfies ProgressVariant[],
+      description: "Shape of the progress indicator.",
+    },
+    mode: {
+      control: "select",
+      options: ["determinate", "indeterminate"] satisfies ProgressMode[],
+      description: "Determinate shows a value; indeterminate animates continuously.",
+    },
+    value: {
+      control: { type: "range", min: 0, max: 100, step: 1 },
+      description: "Progress value (0–100). Only used in determinate mode.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -64,6 +85,27 @@ const meta: Meta<UIProgress> = {
 };
 export default meta;
 type Story = StoryObj<UIProgress>;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-progress
+      [variant]="variant"
+      [mode]="mode"
+      [value]="value"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    variant: "linear",
+    mode: "determinate",
+    value: 65,
+    ariaLabel: "Progress",
+  },
+};
 
 /**
  * All progress combinations in one view: linear (determinate &

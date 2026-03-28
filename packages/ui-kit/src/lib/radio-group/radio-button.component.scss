@@ -7,18 +7,7 @@
   gap: 0.5rem;
   cursor: pointer;
   user-select: none;
-
-  --ui-text: #1d232b;
-  --ui-border: #d7dce2;
-  --ui-border-strong: #b0b7c0;
-  --ui-surface: #ffffff;
-}
-
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-border: #505d6d;
-  --ui-border-strong: #617184;
-  --ui-surface: #2a2f38;
+  color: var(--ui-text);
 }
 
 :host(.ui-radio-button--disabled) {
@@ -32,7 +21,7 @@
   outline: none;
 
   &:focus-visible .circle {
-    outline: 2px solid var(--ui-focus-ring);
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent));
     outline-offset: 2px;
   }
 }
@@ -45,7 +34,7 @@
   height: 1.125rem;
   border: 2px solid var(--ui-border-strong);
   border-radius: 50%;
-  background: var(--ui-surface);
+  background-color: var(--ui-surface);
   transition:
     border-color 120ms ease,
     background-color 120ms ease;
@@ -56,19 +45,14 @@
   border-color: var(--ui-accent);
 }
 
-:host(:not(.ui-radio-button--disabled)) .control:hover .circle {
-  border-color: var(--ui-accent-hover);
-}
-
 .dot {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: var(--ui-accent);
+  background-color: var(--ui-accent);
 }
 
 .label {
-  color: var(--ui-text);
   font-size: var(--ui-font-body, 0.875rem);
   cursor: inherit;
   line-height: 1.4;

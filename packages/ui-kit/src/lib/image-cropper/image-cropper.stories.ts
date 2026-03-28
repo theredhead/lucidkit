@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIImageCropper } from "./image-cropper.component";
+import { UIButton } from "../button/button.component";
 import type { CropRegion, ImageExportFormat } from "./image-cropper.types";
 
 // ── Sample image generator ──────────────────────────────────────
@@ -53,7 +54,7 @@ function createSampleImage(width = 800, height = 600): string {
 @Component({
   selector: "ui-cropper-demo",
   standalone: true,
-  imports: [UIImageCropper],
+  imports: [UIImageCropper, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div style="display: flex; flex-direction: column; gap: 0.75rem">
@@ -68,8 +69,8 @@ function createSampleImage(width = 800, height = 600): string {
       </div>
 
       <div style="display: flex; gap: 0.5rem; align-items: center">
-        <button (click)="onCrop()">Export crop</button>
-        <button (click)="onReset()">Reset</button>
+        <ui-button (click)="onCrop()">Export crop</ui-button>
+        <ui-button variant="outlined" (click)="onReset()">Reset</ui-button>
         @if (regionInfo()) {
           <span style="font-size: 0.8125rem; opacity: 0.65">
             {{ regionInfo() }}
@@ -160,7 +161,7 @@ function createSampleImageData(width = 800, height = 600): ImageData {
 @Component({
   selector: "ui-cropper-imagedata-demo",
   standalone: true,
-  imports: [UIImageCropper],
+  imports: [UIImageCropper, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div style="display: flex; flex-direction: column; gap: 0.75rem">
@@ -173,8 +174,8 @@ function createSampleImageData(width = 800, height = 600): ImageData {
       </div>
 
       <div style="display: flex; gap: 0.5rem; align-items: center">
-        <button (click)="onCropToImageData()">Export as ImageData</button>
-        <button (click)="onReset()">Reset</button>
+        <ui-button (click)="onCropToImageData()">Export as ImageData</ui-button>
+        <ui-button variant="outlined" (click)="onReset()">Reset</ui-button>
         @if (regionInfo()) {
           <span style="font-size: 0.8125rem; opacity: 0.65">
             {{ regionInfo() }}
@@ -225,6 +226,25 @@ const meta: Meta<UIImageCropper> = {
   title: "@theredhead/UI Kit/Image Cropper",
   component: UIImageCropper,
   tags: ["autodocs"],
+  argTypes: {
+    outputFormat: {
+      control: "select",
+      options: ["image/png", "image/jpeg", "image/webp"],
+      description: "Export image MIME type.",
+    },
+    outputQuality: {
+      control: { type: "range", min: 0, max: 1, step: 0.01 },
+      description: "JPEG/WebP quality (0–1).",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the cropper.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the cropper.",
+    },
+  },
   parameters: {
     docs: {
       description: {

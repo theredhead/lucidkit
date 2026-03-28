@@ -483,6 +483,35 @@ const meta: Meta<UITabGroup> = {
   title: "@theredhead/UI Kit/Tabs",
   component: UITabGroup,
   tags: ["autodocs"],
+  argTypes: {
+    tabPosition: {
+      control: "select",
+      options: ["top", "bottom", "left", "right"],
+      description: "Position of the tab strip relative to the panel content.",
+    },
+    panelStyle: {
+      control: "select",
+      options: ["flat", "outline", "raised"],
+      description: "Visual style of the active panel.",
+    },
+    tabAlign: {
+      control: "select",
+      options: ["start", "center", "end"],
+      description: "Alignment of tabs within the tab strip.",
+    },
+    selectedIndex: {
+      control: "number",
+      description: "Zero-based index of the initially selected tab.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the entire tab group.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the tab group.",
+    },
+  },
   parameters: {
     docs: {
       description: {

@@ -4,6 +4,7 @@ import {
   input,
   output,
 } from "@angular/core";
+import { UISurface } from '@theredhead/foundation';
 
 /** Color preset for the chip. */
 export type ChipColor =
@@ -31,6 +32,7 @@ export type ChipColor =
   templateUrl: "./chip.component.html",
   styleUrl: "./chip.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-chip",
     "[class.ui-chip--primary]": "color() === 'primary'",

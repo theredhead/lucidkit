@@ -3,29 +3,13 @@
 
 /* ── Light defaults ── */
 
-:host {
-  --ui-drawer-bg: #ffffff;
-  --ui-drawer-text: #1d232b;
-  --ui-drawer-border: #d7dce2;
-  --ui-drawer-backdrop: rgba(0, 0, 0, 0.35);
-  --ui-drawer-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
-}
-
-@include mix.dark-mode {
-  --ui-drawer-bg: #2a2f38;
-  --ui-drawer-text: #f2f6fb;
-  --ui-drawer-border: #3a3f47;
-  --ui-drawer-backdrop: rgba(0, 0, 0, 0.55);
-  --ui-drawer-shadow: -4px 0 16px rgba(0, 0, 0, 0.4);
-}
-
 /* ── Backdrop ── */
 
 .backdrop {
   position: fixed;
   inset: 0;
   z-index: 999;
-  background: var(--ui-drawer-backdrop);
+  background-color: rgba(0, 0, 0, 0.4);
   animation: ui-drawer-backdrop-in anim.$duration-slow anim.$easing-out;
 }
 
@@ -36,24 +20,21 @@
   top: 0;
   bottom: 0;
   z-index: 1000;
-  background: var(--ui-drawer-bg);
-  color: var(--ui-drawer-text);
   overflow-y: auto;
   outline: none;
   padding: 1.25rem;
+  color: var(--ui-text);
+  background-color: var(--ui-surface);
+  box-shadow: var(--ui-shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.14));
 }
 
 :host(.ui-drawer--left) .panel {
   left: 0;
-  border-right: 1px solid var(--ui-drawer-border);
-  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
   animation: ui-drawer-slide-left anim.$duration-slow anim.$easing-out;
 }
 
 :host(.ui-drawer--right) .panel {
   right: 0;
-  border-left: 1px solid var(--ui-drawer-border);
-  box-shadow: var(--ui-drawer-shadow);
   animation: ui-drawer-slide-right anim.$duration-slow anim.$easing-out;
 }
 

@@ -190,6 +190,12 @@ const meta: Meta = {
       },
     },
   },
+  argTypes: {
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the property sheet.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [DefaultDemo, ReadonlyDemo, FlatDemo],

@@ -32,8 +32,8 @@ describe("UIToggle", () => {
       expect(component.disabled()).toBe(false);
     });
 
-    it('should default size to "md"', () => {
-      expect(component.size()).toBe("md");
+    it('should default size to "medium"', () => {
+      expect(component.size()).toBe("medium");
     });
 
     it("should default onLabel to empty string", () => {
@@ -73,7 +73,7 @@ describe("UIToggle", () => {
     });
 
     describe("sizes", () => {
-      const sizes: ToggleSize[] = ["sm", "md", "lg"];
+      const sizes: ToggleSize[] = ["small", "medium", "large"];
 
       for (const size of sizes) {
         it(`should apply ui-toggle--${size} host class`, () => {

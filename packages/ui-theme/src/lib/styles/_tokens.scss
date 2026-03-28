@@ -210,6 +210,8 @@
   // 7. Table
   --ui-caption-bg: #26303a;
   --ui-caption-text: #dbe5f1;
+  --ui-selected-bg: color-mix(in srgb, var(--ui-accent) 15%, transparent);
+  --ui-selected-hover-bg: color-mix(in srgb, var(--ui-accent) 22%, transparent);
 
   // 8. Slider / Progress
   --ui-track: #505d6d;

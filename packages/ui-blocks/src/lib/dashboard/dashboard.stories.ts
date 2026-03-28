@@ -11,7 +11,13 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIDashboard } from "./dashboard.component";
 import { UIDashboardPanel } from "./dashboard-panel.component";
 import type { DashboardPanelConfig } from "./dashboard.types";
-import { UIIcon, UIIcons, UIChart, BarGraphStrategy } from "@theredhead/ui-kit";
+import {
+  UIIcon,
+  UIIcons,
+  UIChart,
+  BarGraphStrategy,
+  UIButton,
+} from "@theredhead/ui-kit";
 
 // ── Shared fixtures ──────────────────────────────────────────────
 
@@ -314,44 +320,15 @@ class DashboardAutoDemo {
 @Component({
   selector: "ui-dashboard-restore-demo",
   standalone: true,
-  imports: [UIDashboard, UIDashboardPanel],
+  imports: [UIDashboard, UIDashboardPanel, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
-      :host {
-        --demo-ctrl-bg: #f9fafb;
-        --demo-ctrl-bg-hover: #e5e7eb;
-        --demo-ctrl-border: #d1d5db;
-      }
-      :host-context(html.dark-theme) {
-        --demo-ctrl-bg: #2a3040;
-        --demo-ctrl-bg-hover: #3a3f47;
-        --demo-ctrl-border: #4a5060;
-      }
-      @media (prefers-color-scheme: dark) {
-        :host-context(html:not(.light-theme):not(.dark-theme)) {
-          --demo-ctrl-bg: #2a3040;
-          --demo-ctrl-bg-hover: #3a3f47;
-          --demo-ctrl-border: #4a5060;
-        }
-      }
       .controls {
         display: flex;
         gap: 0.5rem;
         margin-bottom: 1rem;
         flex-wrap: wrap;
-      }
-      .controls button {
-        padding: 0.4rem 0.8rem;
-        border: 1px solid var(--demo-ctrl-border);
-        border-radius: 4px;
-        background: var(--demo-ctrl-bg);
-        color: inherit;
-        cursor: pointer;
-        font-size: 0.8rem;
-      }
-      .controls button:hover {
-        background: var(--demo-ctrl-bg-hover);
       }
       .placeholder {
         display: flex;
@@ -372,7 +349,9 @@ class DashboardAutoDemo {
   ],
   template: `
     <div class="controls">
-      <button (click)="dashboard().restoreAll()">Restore all panels</button>
+      <ui-button variant="outlined" (click)="dashboard().restoreAll()"
+        >Restore all panels</ui-button
+      >
     </div>
 
     <ui-dashboard [columns]="3" [gap]="16" (panelRemoved)="onRemoved($event)">
@@ -487,47 +466,15 @@ class DashboardSpanningDemo {}
 @Component({
   selector: "ui-dashboard-notification-demo",
   standalone: true,
-  imports: [UIDashboard, UIDashboardPanel, UIIcon],
+  imports: [UIDashboard, UIDashboardPanel, UIIcon, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
-      :host {
-        --demo-ctrl-bg: #f9fafb;
-        --demo-ctrl-bg-hover: #e5e7eb;
-        --demo-ctrl-border: #d1d5db;
-        --demo-ctrl-text: #1d232b;
-      }
-      :host-context(html.dark-theme) {
-        --demo-ctrl-bg: #2a3040;
-        --demo-ctrl-bg-hover: #3a3f47;
-        --demo-ctrl-border: #4a5060;
-        --demo-ctrl-text: #f2f6fb;
-      }
-      @media (prefers-color-scheme: dark) {
-        :host-context(html:not(.light-theme):not(.dark-theme)) {
-          --demo-ctrl-bg: #2a3040;
-          --demo-ctrl-bg-hover: #3a3f47;
-          --demo-ctrl-border: #4a5060;
-          --demo-ctrl-text: #f2f6fb;
-        }
-      }
       .controls {
         display: flex;
         gap: 0.5rem;
         margin-bottom: 1rem;
         flex-wrap: wrap;
-      }
-      .controls button {
-        padding: 0.4rem 0.8rem;
-        border: 1px solid var(--demo-ctrl-border);
-        border-radius: 4px;
-        background: var(--demo-ctrl-bg);
-        color: var(--demo-ctrl-text);
-        cursor: pointer;
-        font-size: 0.8rem;
-      }
-      .controls button:hover {
-        background: var(--demo-ctrl-bg-hover);
       }
       .demo-list {
         list-style: none;
@@ -547,9 +494,13 @@ class DashboardSpanningDemo {}
   ],
   template: `
     <div class="controls">
-      <button (click)="notifyFeed()">Notify Activity (persists)</button>
-      <button (click)="notifyTasks()">Notify Tasks (5 s timeout)</button>
-      <button (click)="clearAll()">Clear all</button>
+      <ui-button variant="outlined" (click)="notifyFeed()"
+        >Notify Activity (persists)</ui-button
+      >
+      <ui-button variant="outlined" (click)="notifyTasks()"
+        >Notify Tasks (5 s timeout)</ui-button
+      >
+      <ui-button variant="outlined" (click)="clearAll()">Clear all</ui-button>
     </div>
 
     <ui-dashboard [columns]="3" [gap]="16">
@@ -628,11 +579,26 @@ const meta: Meta<UIDashboard> = {
   title: "@theredhead/UI Blocks/Dashboard",
   component: UIDashboard,
   tags: ["autodocs"],
+  argTypes: {
+    columns: {
+      control: "text",
+      description: "Number of fixed columns or `'auto'` for responsive auto-fill.",
+    },
+    gap: {
+      control: "number",
+      description: "Gap between panels in pixels.",
+    },
+    dockPosition: {
+      control: "select",
+      options: ["bottom", "left", "right"],
+      description: "Position of the panel dock.",
+    },
+  },
   parameters: {
     docs: {
       description: {
         component:
-          "`UIDashboard` is a CSS-grid–based layout host for building " +
+          "`UIDashboard` is a CSS-grid\u2013based layout host for building " +
           "data dashboards. It renders projected `<ui-dashboard-panel>` " +
           "children in a responsive (or fixed-column) grid.",
       },

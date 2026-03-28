@@ -1,0 +1,250 @@
+<div class="header">
+  <div class="tabs" role="tablist" aria-label="Colour picker modes">
+    @for (m of modes; track m.key) {
+      <button
+        type="button"
+        role="tab"
+        class="tab"
+        [class.tab--active]="activeMode() === m.key"
+        [attr.aria-selected]="activeMode() === m.key"
+        (click)="setMode(m.key)"
+      >
+        {{ m.label }}
+      </button>
+    }
+  </div>
+</div>
+
+<div class="cp-body">
+  <!-- ── Preview + Hex input ──────────────────────────────── -->
+  <div class="preview-row">
+    <div class="swatch-wrap">
+      <div class="swatch" [style.background]="previewCss()"></div>
+    </div>
+    <input
+      type="text"
+      class="hex-input"
+      [value]="hexInput()"
+      (input)="onHexInput($event)"
+      (keydown.enter)="apply()"
+      aria-label="Hex colour value"
+      spellcheck="false"
+    />
+  </div>
+
+  <!-- ── Mode: Theme palette ──────────────────────────────── -->
+  @if (activeMode() === 'theme') {
+    <div class="theme" role="tabpanel">
+      @for (group of themePalette; track trackByLabel($index, group)) {
+        <div class="palette-row">
+          <span class="palette-label">{{ group.label }}</span>
+          <div class="palette-swatches">
+            @for (color of group.colors; track trackByIndex($index)) {
+              <button
+                type="button"
+                class="palette-swatch"
+                [style.background]="color"
+                [class.palette-swatch--selected]="hexValue() === color"
+                [attr.aria-label]="color"
+                [title]="color"
+                (click)="selectHex(color)"
+              ></button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ── Mode: Colour grid ────────────────────────────────── -->
+  @if (activeMode() === 'grid') {
+    <div class="grid" role="tabpanel">
+      @for (color of colorGrid; track trackByIndex($index)) {
+        <button
+          type="button"
+          class="grid-swatch"
+          [style.background]="color"
+          [class.grid-swatch--selected]="hexValue() === color"
+          [attr.aria-label]="color"
+          [title]="color"
+          (click)="selectHex(color)"
+        ></button>
+      }
+    </div>
+  }
+
+  <!-- ── Mode: Named colours ───────────────────────────────── -->
+  @if (activeMode() === 'named') {
+    <div class="cp-named" role="tabpanel">
+      <input
+        type="text"
+        class="cp-named-search"
+        placeholder="Search colours…"
+        aria-label="Filter named colours"
+        [value]="namedFilter()"
+        (input)="onNamedFilterInput($event)"
+      />
+      <div class="cp-named-list" role="listbox" aria-label="Named colours">
+        @for (c of filteredNamedColors(); track c.hex) {
+          <button
+            type="button"
+            class="cp-named-item"
+            role="option"
+            [class.cp-named-item--selected]="hexValue() === c.hex"
+            [attr.aria-selected]="hexValue() === c.hex"
+            (click)="selectHex(c.hex)"
+          >
+            <span
+              class="cp-named-swatch"
+              [style.background]="c.hex"
+            ></span>
+            <span class="cp-named-label">{{ c.name }}</span>
+          </button>
+        } @empty {
+          <span class="cp-named-empty">No matching colors</span>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ── Mode: RGBA sliders ───────────────────────────────── -->
+  @if (activeMode() === 'rgba') {
+    <div class="sliders" role="tabpanel">
+      <div class="slider-row">
+        <span class="slider-label">R</span>
+        <div class="slider-track" [style.background]="rgbaRedGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="255"
+            [value]="rgba().r"
+            (input)="setRgbaChannel('r', $event)"
+            aria-label="Red"
+          />
+        </div>
+        <span class="slider-value">{{ rgba().r }}</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">G</span>
+        <div class="slider-track" [style.background]="rgbaGreenGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="255"
+            [value]="rgba().g"
+            (input)="setRgbaChannel('g', $event)"
+            aria-label="Green"
+          />
+        </div>
+        <span class="slider-value">{{ rgba().g }}</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">B</span>
+        <div class="slider-track" [style.background]="rgbaBlueGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="255"
+            [value]="rgba().b"
+            (input)="setRgbaChannel('b', $event)"
+            aria-label="Blue"
+          />
+        </div>
+        <span class="slider-value">{{ rgba().b }}</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">A</span>
+        <div class="slider-track slider-track--alpha" [style.background]="rgbaAlphaGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="100"
+            [value]="rgba().a * 100"
+            (input)="setAlpha($event)"
+            aria-label="Alpha"
+          />
+        </div>
+        <span class="slider-value">{{ rgba().a * 100 | number:'1.0-0' }}%</span>
+      </div>
+    </div>
+  }
+
+  <!-- ── Mode: HSLA sliders ───────────────────────────────── -->
+  @if (activeMode() === 'hsla') {
+    <div class="sliders" role="tabpanel">
+      <div class="slider-row">
+        <span class="slider-label">H</span>
+        <div class="slider-track" [style.background]="hslaHueGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="360"
+            [value]="hsla().h"
+            (input)="setHslaChannel('h', $event)"
+            aria-label="Hue"
+          />
+        </div>
+        <span class="slider-value">{{ hsla().h }}°</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">S</span>
+        <div class="slider-track" [style.background]="hslaSatGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="100"
+            [value]="hsla().s"
+            (input)="setHslaChannel('s', $event)"
+            aria-label="Saturation"
+          />
+        </div>
+        <span class="slider-value">{{ hsla().s }}%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">L</span>
+        <div class="slider-track" [style.background]="hslaLightGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="100"
+            [value]="hsla().l"
+            (input)="setHslaChannel('l', $event)"
+            aria-label="Lightness"
+          />
+        </div>
+        <span class="slider-value">{{ hsla().l }}%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">A</span>
+        <div class="slider-track slider-track--alpha" [style.background]="hslaAlphaGradient()">
+          <input
+            type="range"
+            class="slider"
+            min="0"
+            max="100"
+            [value]="hsla().a * 100"
+            (input)="setHslaAlpha($event)"
+            aria-label="Alpha"
+          />
+        </div>
+        <span class="slider-value">{{ hsla().a * 100 | number:'1.0-0' }}%</span>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="cp-footer">
+  <button type="button" class="cp-btn cp-btn--cancel" (click)="cancel()">
+    Cancel
+  </button>
+  <button type="button" class="cp-btn cp-btn--apply" (click)="apply()">
+    Apply
+  </button>
+</div>

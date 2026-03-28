@@ -367,6 +367,16 @@ const meta: Meta<UISidebarNav> = {
   title: "@theredhead/UI Kit/Sidebar Nav",
   component: UISidebarNav,
   tags: ["autodocs"],
+  argTypes: {
+    collapsed: {
+      control: "boolean",
+      description: "Collapses the sidebar to icon-only mode.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the navigation landmark.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [

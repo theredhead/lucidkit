@@ -5,6 +5,7 @@ import {
   model,
   output,
 } from "@angular/core";
+import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/foundation";
 
 /** Side from which the drawer slides in. */
 export type DrawerPosition = "left" | "right";
@@ -32,6 +33,8 @@ export type DrawerWidth = "narrow" | "medium" | "wide" | string;
   templateUrl: "./drawer.component.html",
   styleUrl: "./drawer.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   host: {
     class: "ui-drawer",
     "[class.ui-drawer--open]": "open()",

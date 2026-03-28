@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 import { TAB_HEADER_ITEM } from "./tab-header-item";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A small visual gap between tabs in a `<ui-tab-group>` header.
@@ -21,6 +22,7 @@ import { TAB_HEADER_ITEM } from "./tab-header-item";
   selector: "ui-tab-separator",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   template: "",
   providers: [{ provide: TAB_HEADER_ITEM, useExisting: UITabSeparator }],
   host: {

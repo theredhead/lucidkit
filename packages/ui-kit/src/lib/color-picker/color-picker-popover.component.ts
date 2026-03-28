@@ -26,6 +26,7 @@ import {
   rgbaToHex,
   rgbaToHsla,
 } from "./color-picker.utils";
+import { UISurface } from '@theredhead/foundation';
 
 // ── Modes ──────────────────────────────────────────────────────────
 
@@ -55,6 +56,7 @@ const MODES: readonly {
   standalone: true,
   imports: [DecimalPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-color-picker-popover" },
   templateUrl: "./color-picker-popover.component.html",
   styleUrl: "./color-picker-popover.component.scss",

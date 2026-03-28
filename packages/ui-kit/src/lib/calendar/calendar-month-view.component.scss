@@ -1,50 +1,23 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 // ── Light defaults ───────────────────────────────────────────────
 :host {
-  --ui-cal-bg: #ffffff;
-  --ui-cal-text: #1d232b;
-  --ui-cal-text-muted: #9ca3af;
-  --ui-cal-border: #e5e7eb;
-  --ui-header-bg: transparent;
-  --ui-cal-today-bg: #eef4ff;
-  --ui-cal-today-text: #1d4ed8;
-  --ui-cal-selected-bg: #3b82f6;
-  --ui-cal-selected-text: #ffffff;
-  --ui-cal-hover-bg: #f3f4f6;
-  --ui-event-text: #ffffff;
-  --ui-cal-nav-hover: #e5e7eb;
-
   display: block;
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
-}
-
-@include mix.dark-mode {
-  --ui-cal-bg: #1f2937;
-  --ui-cal-text: #f2f6fb;
-  --ui-cal-text-muted: #6b7280;
-  --ui-cal-border: #374151;
-  --ui-cal-today-bg: #1e3a5f;
-  --ui-cal-today-text: #60a5fa;
-  --ui-cal-selected-bg: #2563eb;
-  --ui-cal-selected-text: #ffffff;
-  --ui-cal-hover-bg: #374151;
-  --ui-event-text: #ffffff;
-  --ui-cal-nav-hover: #374151;
+  color: var(--ui-text);
 }
 
 // ── Layout ───────────────────────────────────────────────────────
 
 .container {
-  background: var(--ui-cal-bg);
-  color: var(--ui-cal-text);
-  border: 1px solid var(--ui-cal-border);
+  border: 1px solid var(--ui-border);
   border-radius: 8px;
   overflow: hidden;
   max-width: 560px;
+  background-color: var(--ui-surface);
 
   &--week-numbers {
     max-width: 600px;
@@ -63,7 +36,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--ui-cal-border);
+  background-color: var(--ui-surface-raised, var(--ui-surface));
+  border-bottom: 1px solid var(--ui-border);
 }
 
 .month-label {
@@ -72,13 +46,13 @@
   cursor: pointer;
   background: none;
   border: none;
-  color: var(--ui-cal-text);
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
+  color: var(--ui-text);
   transition: background-color 0.15s;
 
   &:hover {
-    background: var(--ui-cal-nav-hover);
+    background-color: var(--ui-hover-bg);
   }
 }
 
@@ -91,13 +65,14 @@
   border: none;
   border-radius: 4px;
   background: none;
-  color: var(--ui-cal-text);
   cursor: pointer;
   font-size: 0.75rem;
+  color: var(--ui-text-muted);
   transition: background-color 0.15s;
 
   &:hover {
-    background: var(--ui-cal-nav-hover);
+    color: var(--ui-text);
+    background-color: var(--ui-hover-bg);
   }
 }
 
@@ -106,7 +81,8 @@
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  border-bottom: 1px solid var(--ui-cal-border);
+  background-color: var(--ui-surface-raised, var(--ui-surface));
+  border-bottom: 1px solid var(--ui-border);
 }
 
 .weekday {
@@ -114,9 +90,9 @@
   text-align: center;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--ui-cal-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  color: var(--ui-text-muted);
 }
 
 // ── Week rows ────────────────────────────────────────────────────
@@ -124,12 +100,17 @@
 .week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--ui-border);
+  }
 }
 
 // ── Week number column ───────────────────────────────────────────
 
 .weekday--wk {
   font-size: 0.65rem;
+  color: var(--ui-text-muted);
 }
 
 .week-number {
@@ -139,10 +120,9 @@
   padding-top: 0.45rem;
   font-size: 0.65rem;
   font-weight: 600;
-  color: var(--ui-cal-text-muted);
-  border-right: 1px solid var(--ui-cal-border);
-  border-bottom: 1px solid var(--ui-cal-border);
+  color: var(--ui-text-muted);
   user-select: none;
+  border-right: 1px solid var(--ui-border);
 }
 
 // ── Day cells ────────────────────────────────────────────────────
@@ -153,48 +133,43 @@
   min-width: 0;
   padding: 0.25rem;
   border: none;
-  border-right: 1px solid var(--ui-cal-border);
-  border-bottom: 1px solid var(--ui-cal-border);
-  background: var(--ui-cal-bg);
-  color: var(--ui-cal-text);
+  background: none;
   cursor: pointer;
   text-align: left;
   font: inherit;
+  color: var(--ui-text);
   transition: background-color 0.15s;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 
-  &:nth-child(7) {
-    border-right: none;
+  &:not(:last-child) {
+    border-right: 1px solid var(--ui-border);
   }
 
   &:hover {
-    background: var(--ui-cal-hover-bg);
+    background-color: var(--ui-hover-bg);
   }
 
   &--outside {
-    color: var(--ui-cal-text-muted);
-    background: color-mix(in srgb, var(--ui-cal-bg) 95%, transparent);
+    color: var(--ui-text-muted);
+    opacity: 0.5;
   }
 
   &--today {
-    .day__number {
-      background: var(--ui-cal-today-bg);
-      color: var(--ui-cal-today-text);
+    .day-number {
       font-weight: 700;
+      color: var(--ui-accent-contrast, #fff);
+      background-color: var(--ui-accent);
     }
   }
 
   &--selected {
-    .day__number {
-      background: var(--ui-cal-selected-bg);
-      color: var(--ui-cal-selected-text);
-    }
+    background-color: color-mix(in srgb, var(--ui-accent) 10%, transparent);
   }
 }
 
-.day__number {
+.day-number {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -211,7 +186,7 @@
 
 // ── Events ───────────────────────────────────────────────────────
 
-.day__events {
+.day-events {
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -228,20 +203,19 @@
   font-size: 0.68rem;
   font-weight: 500;
   line-height: 1.4;
-  color: var(--ui-event-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
   font-family: inherit;
+  color: #fff;
   pointer-events: none;
 
   &--overflow {
-    background: transparent !important;
-    color: var(--ui-cal-text-muted);
     font-weight: 600;
     font-size: 0.65rem;
     padding-left: 2px;
+    color: var(--ui-text-muted);
     cursor: default;
     pointer-events: none;
   }

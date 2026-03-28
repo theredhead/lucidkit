@@ -2,6 +2,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   inject,
   input,
@@ -217,7 +218,7 @@ const DEMO_STYLES = `
   styles: [DEMO_STYLES],
   template: `
     <ui-button #anchor variant="outlined" (click)="open()">
-      Hover info <ui-icon [svg]="icons.Accessibility.Info" [size]="16" />
+      Click for info <ui-icon [svg]="icons.Accessibility.Info" [size]="16" />
     </ui-button>
     <p style="margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;">
       Click the button to show a rich tooltip popover.
@@ -543,6 +544,65 @@ class ArrowDemo {
 
 // ── Storybook meta & stories ───────────────────────────────────────
 
+@Component({
+  selector: "ui-popover-hover-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UIButton, UIIcon],
+  styles: [DEMO_STYLES],
+  template: `
+    <ui-button
+      #anchor
+      variant="outlined"
+      (mouseenter)="show()"
+      (mouseleave)="hide()"
+    >
+      Hover me <ui-icon [svg]="icons.Accessibility.Info" [size]="16" />
+    </ui-button>
+    <p style="margin-top: 0.5rem; font-size: 0.8125rem; opacity: 0.7;">
+      Hover over the button to reveal a rich tooltip. It closes automatically
+      when the pointer leaves.
+    </p>
+  `,
+})
+class HoverDemo {
+  protected readonly icons = UIIcons.Lucide;
+  private readonly popover = inject(PopoverService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly anchorRef = viewChild.required("anchor", {
+    read: ElementRef,
+  });
+  private currentRef: PopoverRef | null = null;
+
+  public constructor() {
+    this.destroyRef.onDestroy(() => this.hide());
+  }
+
+  protected show(): void {
+    if (this.currentRef && !this.currentRef.isClosed) return;
+    this.currentRef = this.popover.openPopover({
+      component: StoryTooltipContent,
+      anchor: this.anchorRef().nativeElement,
+      verticalAxisAlignment: "bottom",
+      horizontalAxisAlignment: "center",
+      closeOnOutsideClick: false,
+      showArrow: true,
+      inputs: {
+        title: "Hover Tooltip",
+        body: "This popover appeared on hover and will close when you move your pointer away.",
+      },
+      ariaLabel: "Hover tooltip",
+    });
+  }
+
+  protected hide(): void {
+    if (this.currentRef && !this.currentRef.isClosed) {
+      this.currentRef.close();
+    }
+    this.currentRef = null;
+  }
+}
+
 const meta: Meta = {
   title: "@theredhead/UI Kit/Popover",
   tags: ["autodocs"],
@@ -558,6 +618,7 @@ const meta: Meta = {
     moduleMetadata({
       imports: [
         TooltipDemo,
+        HoverDemo,
         ContextMenuDemo,
         ActionMenuDemo,
         PlacementDemo,
@@ -589,6 +650,68 @@ this.popover.openPopover({
   ariaLabel: 'Keyboard shortcut tooltip',
 });`,
         language: "typescript",
+      },
+    },
+  },
+};
+
+/**
+ * **Hover tooltip** — The popover opens when the pointer enters the
+ * button and closes when it leaves. Uses `closeOnOutsideClick: false`
+ * so the popover stays under programmatic control and is dismissed
+ * via `ref.close()` on `mouseleave`.
+ */
+export const HoverTooltip: Story = {
+  render: () => ({
+    template: `<ui-popover-hover-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-button
+  #anchor
+  variant="outlined"
+  (mouseenter)="show()"
+  (mouseleave)="hide()"
+>
+  Hover me
+</ui-button>
+
+// ── TypeScript ──
+import { Component, inject, ElementRef, viewChild, DestroyRef } from '@angular/core';
+import { PopoverService, PopoverRef, UIButton } from '@theredhead/ui-kit';
+
+@Component({ ... })
+export class HoverTooltipExample {
+  private readonly popover = inject(PopoverService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly anchor = viewChild.required('anchor', { read: ElementRef });
+  private ref: PopoverRef | null = null;
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.hide());
+  }
+
+  show(): void {
+    if (this.ref && !this.ref.isClosed) return;
+    this.ref = this.popover.openPopover({
+      component: MyTooltipContent,
+      anchor: this.anchor().nativeElement,
+      closeOnOutsideClick: false,
+      showArrow: true,
+      ariaLabel: 'Hover tooltip',
+    });
+  }
+
+  hide(): void {
+    this.ref?.close();
+    this.ref = null;
+  }
+}
+`,
       },
     },
   },

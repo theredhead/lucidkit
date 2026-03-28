@@ -5,6 +5,28 @@ const meta: Meta<UIImage> = {
   title: "@theredhead/UI Kit/Image",
   component: UIImage,
   tags: ["autodocs"],
+  argTypes: {
+    src: {
+      control: "text",
+      description: "Image source URL.",
+    },
+    alt: {
+      control: "text",
+      description: "Alternative text for accessibility.",
+    },
+    width: {
+      control: "number",
+      description: "Width in pixels.",
+    },
+    height: {
+      control: "number",
+      description: "Height in pixels.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<UIImage>;

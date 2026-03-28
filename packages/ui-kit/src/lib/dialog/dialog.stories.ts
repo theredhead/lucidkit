@@ -382,6 +382,20 @@ class ServiceForcedDemo {
 const meta: Meta = {
   title: "@theredhead/UI Kit/Dialog",
   tags: ["autodocs"],
+  argTypes: {
+    closeOnBackdropClick: {
+      control: "boolean",
+      description: "Close when clicking the backdrop overlay.",
+    },
+    closeOnEscape: {
+      control: "boolean",
+      description: "Close on Escape key.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the dialog.",
+    },
+  },
   parameters: {
     docs: {
       description: {

@@ -57,10 +57,36 @@ class UIFilterStoryDemo {
 // Story meta
 // ---------------------------------------------------------------------------
 
-const meta: Meta<UIFilterStoryDemo> = {
+const meta: Meta = {
   title: "@theredhead/UI Kit/Filter",
   component: UIFilterStoryDemo,
   tags: ["autodocs"],
+  argTypes: {
+    disabled: {
+      control: "boolean",
+      description: "Disables the filter UI.",
+    },
+    allowJunction: {
+      control: "boolean",
+      description: "Enable AND/OR junction between filter rows.",
+    },
+    allowSimple: {
+      control: "boolean",
+      description: "Allow the simple (single-field) filter mode.",
+    },
+    allowAdvanced: {
+      control: "boolean",
+      description: "Allow the advanced (multi-field) filter mode.",
+    },
+    modeLocked: {
+      control: "boolean",
+      description: "Lock the current filter mode (prevent switching).",
+    },
+    showSaveButton: {
+      control: "boolean",
+      description: "Show a Save button to persist the filter.",
+    },
+  },
   parameters: {
     docs: {
       description: {

@@ -57,11 +57,36 @@ const meta: Meta<UIPagination> = {
       control: "boolean",
       description: "Disables all pagination controls, preventing page changes.",
     },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<UIPagination>;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-pagination
+      [totalItems]="totalItems"
+      [pageSize]="pageSize"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    totalItems: 250,
+    pageSize: 10,
+    disabled: false,
+    ariaLabel: "Pagination",
+  },
+};
 
 /**
  * Interactive pagination with 250 items at 10 per page. Click page

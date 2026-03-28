@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
 
 import { UIDensityDirective } from "../ui-density";
+import { UIButton } from "../button/button.component";
 import { UIMapView } from "./map-view.component";
 import type {
   MapLatLng,
@@ -302,14 +303,14 @@ class MapViewCombinedDemo {
   selector: "ui-map-view-toggle-highlight-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView],
+  imports: [UIMapView, UIButton],
   template: `
     <div
       style="display:flex;justify-content:flex-end;gap:0.5rem;margin:0 0 0.75rem;"
     >
-      <button (click)="toggle()">
+      <ui-button variant="outlined" (click)="toggle()">
         {{ highlighted() ? "Remove highlight" : "Highlight route" }}
-      </button>
+      </ui-button>
     </div>
     <ui-map-view
       [center]="center"
@@ -349,6 +350,24 @@ const meta: Meta<object> = {
   title: "@theredhead/UI Kit/Map View",
   component: MapViewBasicDemo,
   tags: ["autodocs"],
+  argTypes: {
+    zoom: {
+      control: { type: "range", min: 1, max: 19, step: 1 },
+      description: "Zoom level (1–19).",
+    },
+    width: {
+      control: "text",
+      description: "CSS width of the map container.",
+    },
+    height: {
+      control: "text",
+      description: "CSS height of the map container.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the map.",
+    },
+  },
   parameters: {
     layout: "fullscreen",
     docs: {

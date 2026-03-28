@@ -1,6 +1,6 @@
 @if (mode() === 'simple') {
   <!-- ── Simple mode: single search textbox ── -->
-  <div class="filter__simple">
+  <div class="simple-bar">
     <ui-input
       type="text"
       ariaLabel="Search all fields"
@@ -11,7 +11,7 @@
     @if (showModeToggle()) {
       <ui-button
         variant="ghost"
-        size="sm"
+        size="small"
         ariaLabel="Switch to advanced filter"
         (click)="toggleMode()"
       ><ui-icon [svg]="advancedIcon" [size]="14" /> Advanced</ui-button>
@@ -19,7 +19,7 @@
   </div>
 } @else {
   <!-- ── Advanced mode: full predicate builder ── -->
-  <div class="filter__header" role="group" aria-label="Filter junction">
+  <div class="header" role="group" aria-label="Filter junction">
     @if (allowJunction()) {
       <span id="filter-junction-label">Match</span>
       <ui-dropdown-list
@@ -32,28 +32,28 @@
     } @else {
       <span>Match <strong>all</strong> of the following rules:</span>
     }
-    <span class="filter__header-spacer"></span>
+    <span class="header-spacer"></span>
     @if (showSaveButton()) {
       <ui-button
-        class="filter__save-button"
+        class="save-button"
         variant="ghost"
-        size="sm"
+        size="small"
         ariaLabel="Save filter"
         (click)="saveFilter.emit()"
       ><ui-icon [svg]="saveIcon" [size]="14" /> Save Filter</ui-button>
     }
     @if (showModeToggle()) {
       <ui-button
-        class="filter__mode-toggle"
+        class="mode-toggle"
         variant="ghost"
-        size="sm"
+        size="small"
         ariaLabel="Switch to simple search"
         (click)="toggleMode()"
       ><ui-icon [svg]="simpleIcon" [size]="14" /> Simple</ui-button>
     }
   </div>
 
-  <div class="filter__rules" role="list" aria-label="Filter rules" aria-live="polite">
+  <div class="rules" role="list" aria-label="Filter rules" aria-live="polite">
     @for (rule of rules(); track rule.id; let idx = $index) {
       <ui-filter-row
         role="listitem"
@@ -66,7 +66,7 @@
     }
   </div>
 
-  <div class="filter__actions">
-    <ui-button variant="ghost" size="sm" ariaLabel="Add filter rule" (click)="addRule()">+ Add Rule</ui-button>
+  <div class="actions">
+    <ui-button variant="ghost" size="small" ariaLabel="Add filter rule" (click)="addRule()">+ Add Rule</ui-button>
   </div>
 }

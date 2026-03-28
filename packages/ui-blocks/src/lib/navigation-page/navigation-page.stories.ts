@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIIcons, UIIcon } from "@theredhead/ui-kit";
+import { UIIcons, UIIcon, UIButton } from "@theredhead/ui-kit";
 
 import { UINavigationPage } from "./navigation-page.component";
 import {
@@ -196,7 +196,7 @@ class DemoNavPageDefaultComponent {
 @Component({
   selector: "ui-demo-nav-page-drawer",
   standalone: true,
-  imports: [UINavigationPage, UIIcon],
+  imports: [UINavigationPage, UIIcon, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -206,18 +206,6 @@ class DemoNavPageDefaultComponent {
         border: 1px solid #d7dce2;
         border-radius: 0.5rem;
         overflow: hidden;
-      }
-      .open-btn {
-        margin-bottom: 1rem;
-        padding: 0.5rem 1rem;
-        border: 1px solid #d7dce2;
-        border-radius: 0.375rem;
-        background: white;
-        cursor: pointer;
-        font-size: 0.85rem;
-      }
-      .open-btn:hover {
-        background: #f5f7fa;
       }
       .page-header {
         display: flex;
@@ -246,9 +234,9 @@ class DemoNavPageDefaultComponent {
       [(drawerOpen)]="drawerOpen"
     >
       <ng-template #content let-node>
-        <button class="open-btn" (click)="drawerOpen.set(true)">
-          ☰ Open Sidebar
-        </button>
+        <ui-button variant="outlined" (click)="drawerOpen.set(true)"
+          >Open Sidebar</ui-button
+        >
         <div class="page-header">
           @if (node.icon) {
             <ui-icon [svg]="node.icon" [size]="28" />
@@ -413,6 +401,22 @@ const meta: Meta<UINavigationPage> = {
   title: "@theredhead/UI Blocks/Navigation Page",
   component: UINavigationPage,
   tags: ["autodocs"],
+  argTypes: {
+    drawerPosition: {
+      control: "select",
+      options: ["left", "right"],
+      description: "Side from which the navigation drawer slides in.",
+    },
+    drawerWidth: {
+      control: "select",
+      options: ["narrow", "wide", "full"],
+      description: "Width preset for the navigation drawer.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the navigation page.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [

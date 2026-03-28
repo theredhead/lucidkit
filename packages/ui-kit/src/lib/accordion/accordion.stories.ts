@@ -77,6 +77,25 @@ const meta: Meta<UIAccordion> = {
   title: "@theredhead/UI Kit/Accordion",
   component: UIAccordion,
   tags: ["autodocs"],
+  argTypes: {
+    mode: {
+      control: "select",
+      options: ["single", "multi"],
+      description: "Single: one panel at a time. Multi: multiple panels open simultaneously.",
+    },
+    requireOpen: {
+      control: "boolean",
+      description: "When true, at least one panel stays open (single mode).",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the entire accordion.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the accordion.",
+    },
+  },
   parameters: {
     docs: {
       description: {

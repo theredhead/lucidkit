@@ -31,6 +31,7 @@ import type {
   ValidationRule,
   ValidationRuleType,
 } from "../../types/validation.types";
+import { UISurface } from '@theredhead/foundation';
 
 /** Available component keys for the component selector. */
 const COMPONENT_OPTIONS: SelectOption[] = [
@@ -79,6 +80,7 @@ const VALIDATION_TYPE_OPTIONS: SelectOption[] = (
   standalone: true,
   imports: [UIIcon, UIInput, UISelect, UICheckbox],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-property-inspector" },
   templateUrl: "./property-inspector.component.html",
   styleUrl: "./property-inspector.component.scss",

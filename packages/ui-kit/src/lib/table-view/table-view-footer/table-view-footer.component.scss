@@ -1,5 +1,8 @@
 :host {
   display: block;
+  color: var(--ui-text-muted);
+  background-color: var(--ui-surface-2);
+  border-top: 1px solid var(--ui-border);
 }
 
 .table-footer {
@@ -8,13 +11,10 @@
   justify-content: flex-end;
   gap: var(--ui-gap, 0.75rem);
   padding: var(--ui-block-padding, 0.65rem) var(--ui-inline-padding, 0.85rem);
-  border-top: 1px solid var(--ui-border);
-  background: var(--ui-surface-2);
 }
 
 .page-info {
   font-size: calc(var(--ui-font-footer) * var(--ui-density-scale, 1));
-  color: var(--ui-muted);
   margin-right: 0.25rem;
 }
 
@@ -26,9 +26,9 @@
 .page-btn {
   min-width: var(--ui-control-height, 2.05rem);
   height: var(--ui-control-height, 2.05rem);
+  border: 1px solid var(--ui-border);
   border-radius: var(--ui-radius, 0.55rem);
-  border: 1px solid var(--ui-border-strong);
-  background: var(--ui-surface);
+  background-color: var(--ui-surface);
   color: var(--ui-text);
   cursor: pointer;
   transition:
@@ -37,8 +37,8 @@
 }
 
 .page-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--ui-accent) 18%, var(--ui-surface));
-  border-color: var(--ui-accent);
+  background-color: var(--ui-hover-bg);
+  border-color: var(--ui-border-strong);
 }
 
 .page-btn:disabled {
