@@ -1,7 +1,8 @@
 import { TestBed, type ComponentFixture } from "@angular/core/testing";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { Subject } from "rxjs";
 
-import { ModalRef } from "@theredhead/ui-kit";
+import { ModalRef, ModalService } from "@theredhead/ui-kit";
 
 import { UIAlertDialog } from "./alert-dialog.component";
 import { UIConfirmDialog } from "./confirm-dialog.component";
@@ -333,6 +334,166 @@ describe("CommonDialogService", () => {
     // Close via native dialog close event
     dialog?.dispatchEvent(new Event("close"));
 
+    await promise;
+  });
+});
+
+// ── CommonDialogService (mocked ModalService) ─────────────────────
+describe("CommonDialogService — mocked modal", () => {
+  let service: CommonDialogService;
+  let closedSubject: Subject<unknown>;
+  let openModalSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    closedSubject = new Subject<unknown>();
+    openModalSpy = vi.fn().mockReturnValue({
+      closed: closedSubject.asObservable(),
+    });
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ModalService, useValue: { openModal: openModalSpy } },
+      ],
+    });
+    service = TestBed.inject(CommonDialogService);
+  });
+
+  it("openFile should resolve with file result", async () => {
+    const ds = {} as never;
+    const promise = service.openFile({ datasource: ds });
+    expect(openModalSpy).toHaveBeenCalledOnce();
+
+    const inputs = openModalSpy.mock.calls[0][0].inputs;
+    expect(inputs.title).toBe("Open File");
+    expect(inputs.openLabel).toBe("Open");
+    expect(inputs.datasource).toBe(ds);
+
+    const fileResult = { files: [{ name: "test.txt" }] };
+    closedSubject.next(fileResult);
+    closedSubject.complete();
+
+    const result = await promise;
+    expect(result).toEqual(fileResult);
+  });
+
+  it("openFile should resolve null when cancelled", async () => {
+    const ds = {} as never;
+    const promise = service.openFile({ datasource: ds });
+
+    closedSubject.next(null);
+    closedSubject.complete();
+
+    const result = await promise;
+    expect(result).toBe(null);
+  });
+
+  it("openFile should use custom title and openLabel", async () => {
+    const ds = {} as never;
+    const promise = service.openFile({
+      datasource: ds,
+      title: "Pick a file",
+      openLabel: "Select",
+      ariaLabel: "Custom aria",
+    });
+
+    const opts = openModalSpy.mock.calls[0][0];
+    expect(opts.inputs.title).toBe("Pick a file");
+    expect(opts.inputs.openLabel).toBe("Select");
+    expect(opts.ariaLabel).toBe("Custom aria");
+
+    closedSubject.next(null);
+    closedSubject.complete();
+    await promise;
+  });
+
+  it("saveFile should resolve with directory and name", async () => {
+    const ds = {} as never;
+    const promise = service.saveFile({ datasource: ds });
+    expect(openModalSpy).toHaveBeenCalledOnce();
+
+    const inputs = openModalSpy.mock.calls[0][0].inputs;
+    expect(inputs.title).toBe("Save File");
+    expect(inputs.saveLabel).toBe("Save");
+    expect(inputs.defaultName).toBe("");
+
+    const saveResult = { directory: null, name: "doc.txt" };
+    closedSubject.next(saveResult);
+    closedSubject.complete();
+
+    const result = await promise;
+    expect(result).toEqual(saveResult);
+  });
+
+  it("saveFile should resolve null when cancelled", async () => {
+    const ds = {} as never;
+    const promise = service.saveFile({ datasource: ds });
+
+    closedSubject.next(null);
+    closedSubject.complete();
+
+    const result = await promise;
+    expect(result).toBe(null);
+  });
+
+  it("saveFile should use custom options", async () => {
+    const ds = {} as never;
+    const promise = service.saveFile({
+      datasource: ds,
+      title: "Export",
+      saveLabel: "Export",
+      defaultName: "report.csv",
+      ariaLabel: "Export file",
+    });
+
+    const opts = openModalSpy.mock.calls[0][0];
+    expect(opts.inputs.title).toBe("Export");
+    expect(opts.inputs.saveLabel).toBe("Export");
+    expect(opts.inputs.defaultName).toBe("report.csv");
+    expect(opts.ariaLabel).toBe("Export file");
+
+    closedSubject.next(null);
+    closedSubject.complete();
+    await promise;
+  });
+
+  it("confirm should default to false when result is null", async () => {
+    const promise = service.confirm({ title: "X", message: "Y" });
+
+    closedSubject.next(null);
+    closedSubject.complete();
+
+    const result = await promise;
+    expect(result).toBe(false);
+  });
+
+  it("prompt should default to null when result is undefined", async () => {
+    const promise = service.prompt({ title: "X", message: "Y" });
+
+    closedSubject.next(undefined);
+    closedSubject.complete();
+
+    const result = await promise;
+    expect(result).toBe(null);
+  });
+
+  it("about should pass all options", async () => {
+    const promise = service.about({
+      appName: "MyApp",
+      version: "3.0",
+      description: "A great app",
+      logoUrl: "https://example.com/logo.png",
+      copyright: "2024 Test",
+      credits: ["Alice"],
+    });
+
+    const inputs = openModalSpy.mock.calls[0][0].inputs;
+    expect(inputs.appName).toBe("MyApp");
+    expect(inputs.version).toBe("3.0");
+    expect(inputs.description).toBe("A great app");
+    expect(inputs.credits).toEqual(["Alice"]);
+
+    closedSubject.next(undefined);
+    closedSubject.complete();
     await promise;
   });
 });

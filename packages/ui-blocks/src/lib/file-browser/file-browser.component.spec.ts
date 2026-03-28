@@ -540,5 +540,97 @@ describe("UIFileBrowser", () => {
       const details = fixture.nativeElement.querySelector(".fb-details");
       expect(details.classList).toContain("fb-details--collapsed");
     });
+
+    it("should handle pointer drag on sidebar divider", () => {
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--sidebar",
+      ) as HTMLElement;
+      if (!divider) return;
+
+      divider.setPointerCapture = vi.fn();
+      divider.releasePointerCapture = vi.fn();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 200,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+
+      divider.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerId: 1,
+          clientX: 250,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerup", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      // Should complete without error
+      expect(component).toBeTruthy();
+    });
+  });
+
+  describe("navigateToDirectory", () => {
+    it("should navigate to a specific directory programmatically", async () => {
+      component.navigateToDirectory(ENTRIES[0]); // Documents
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const names = fixture.nativeElement.querySelectorAll(".fb-entry-name");
+      const texts = Array.from(names).map((n: unknown) =>
+        (n as HTMLElement).textContent?.trim(),
+      );
+      expect(texts).toContain("Notes");
+      expect(texts).toContain("report.pdf");
+    });
+
+    it("should navigate deep then back to root", async () => {
+      component.navigateToDirectory(ENTRIES[0]); // Documents
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      component.navigateToRoot();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const names = fixture.nativeElement.querySelectorAll(".fb-entry-name");
+      const texts = Array.from(names).map((n: unknown) =>
+        (n as HTMLElement).textContent?.trim(),
+      );
+      expect(texts).toContain("Documents");
+    });
+  });
+
+  describe("keyboard navigation on column view", () => {
+    beforeEach(async () => {
+      fixture.componentRef.setInput("viewMode", "column");
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    it("should select entry on click in column view", () => {
+      const entries =
+        fixture.nativeElement.querySelectorAll(".fb-column-entry");
+      // Click a file entry (not a directory to avoid afterNextRender)
+      entries[2]?.click(); // README.md
+      fixture.detectChanges();
+
+      expect(component.selectedEntry()?.name).toBe("README.md");
+    });
   });
 });

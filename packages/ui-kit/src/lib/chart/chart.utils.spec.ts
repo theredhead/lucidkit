@@ -10,9 +10,13 @@ import {
   buildSeriesLegendEntries,
   computeChartArea,
   computeYScale,
+  createSvgRoot,
+  drawYAxis,
   extractDataPoints,
   extractSeriesData,
   formatTickLabel,
+  svgEl,
+  svgText,
 } from "./chart.utils";
 
 interface SampleRow {
@@ -288,6 +292,60 @@ describe("chart utils", () => {
 
     it("should return empty for empty series", () => {
       expect(buildSeriesLegendEntries([])).toHaveLength(0);
+    });
+  });
+
+  describe("svgEl", () => {
+    it("should create an SVG element with the given tag", () => {
+      const rect = svgEl("rect", { x: 10, y: 20, width: 100, height: 50 });
+      expect(rect.tagName).toBe("rect");
+      expect(rect.getAttribute("x")).toBe("10");
+      expect(rect.getAttribute("width")).toBe("100");
+    });
+
+    it("should create element with no attributes when omitted", () => {
+      const g = svgEl("g");
+      expect(g.tagName).toBe("g");
+    });
+  });
+
+  describe("createSvgRoot", () => {
+    it("should create an SVG root with viewBox matching size", () => {
+      const svg = createSvgRoot({ width: 400, height: 300 });
+      expect(svg.tagName).toBe("svg");
+      expect(svg.getAttribute("width")).toBe("400");
+      expect(svg.getAttribute("height")).toBe("300");
+      expect(svg.getAttribute("viewBox")).toBe("0 0 400 300");
+    });
+  });
+
+  describe("svgText", () => {
+    it("should create a text element with content", () => {
+      const el = svgText("hello", 10, 20, { fill: "red" });
+      expect(el.tagName).toBe("text");
+      expect(el.textContent).toBe("hello");
+      expect(el.getAttribute("x")).toBe("10");
+      expect(el.getAttribute("y")).toBe("20");
+      expect(el.getAttribute("fill")).toBe("red");
+    });
+  });
+
+  describe("drawYAxis", () => {
+    it("should draw grid lines and labels", () => {
+      const svg = createSvgRoot({ width: 400, height: 300 });
+      const area = { x: 50, y: 20, width: 330, height: 260 };
+      drawYAxis(svg, [0, 50, 100], area, 100, 0, "#333", "#ccc");
+      const lines = svg.querySelectorAll("line");
+      const texts = svg.querySelectorAll("text");
+      expect(lines.length).toBe(3);
+      expect(texts.length).toBe(3);
+    });
+
+    it("should handle zero range gracefully", () => {
+      const svg = createSvgRoot({ width: 400, height: 300 });
+      const area = { x: 50, y: 20, width: 330, height: 260 };
+      drawYAxis(svg, [0], area, 0, 0, "#333", "#ccc");
+      expect(svg.querySelectorAll("line").length).toBe(1);
     });
   });
 });

@@ -1,11 +1,15 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { Component, signal } from "@angular/core";
+import { Component, signal, viewChild } from "@angular/core";
 
 import { UIRepeater } from "./repeater.component";
 import { ArrayDatasource } from "../table-view/datasources/array-datasource";
 import { FilterableArrayDatasource } from "../table-view/datasources/filterable-array-datasource";
 import { SortableArrayDatasource } from "@theredhead/foundation";
 import type { IDatasource } from "../table-view/datasources/datasource";
+import type {
+  RepeaterReorderEvent,
+  RepeaterTransferEvent,
+} from "./repeater.types";
 
 interface TestItem {
   id: number;
@@ -242,4 +246,238 @@ describe("UIRepeater", () => {
       expect(items[2].textContent.trim()).toBe("Charlie");
     });
   });
+
+  describe("reorderable", () => {
+    it("should apply reorderable host class when reorderable is true", async () => {
+      const reorderFixture = TestBed.createComponent(ReorderableHost);
+      reorderFixture.detectChanges();
+      await reorderFixture.whenStable();
+      reorderFixture.detectChanges();
+
+      const el = reorderFixture.nativeElement.querySelector("ui-repeater");
+      expect(el.classList.contains("ui-repeater--reorderable")).toBe(true);
+    });
+
+    it("should not apply reorderable host class by default", () => {
+      const el = fixture.nativeElement.querySelector("ui-repeater");
+      expect(el.classList.contains("ui-repeater--reorderable")).toBe(false);
+    });
+
+    it("should enable drag handler when reorderable", async () => {
+      const reorderFixture = TestBed.createComponent(ReorderableHost);
+      reorderFixture.detectChanges();
+      await reorderFixture.whenStable();
+      reorderFixture.detectChanges();
+
+      const repeater = reorderFixture.componentInstance.repeater();
+      expect(repeater.dragHandler.enabled).toBe(true);
+    });
+
+    it("should disable drag handler by default", () => {
+      const repeater = fixture.debugElement.children[0]
+        .componentInstance as UIRepeater<TestItem>;
+      expect(repeater.dragHandler.enabled).toBe(false);
+    });
+  });
+
+  describe("handleReorder", () => {
+    it("should reorder items via the datasource moveItem", async () => {
+      const reorderFixture = TestBed.createComponent(ReorderableHost);
+      const reorderHost = reorderFixture.componentInstance;
+      reorderFixture.detectChanges();
+      await reorderFixture.whenStable();
+      reorderFixture.detectChanges();
+
+      const repeater = reorderHost.repeater();
+
+      // Invoke the reorder callback directly through the drag handler's callback
+      (repeater as any).handleReorder(0, 2);
+      reorderFixture.detectChanges();
+      await reorderFixture.whenStable();
+      reorderFixture.detectChanges();
+
+      expect(reorderHost.reorderEvents.length).toBe(1);
+      expect(reorderHost.reorderEvents[0].previousIndex).toBe(0);
+      expect(reorderHost.reorderEvents[0].currentIndex).toBe(2);
+    });
+
+    it("should throw if datasource is not reorderable", async () => {
+      // Use a non-reorderable datasource
+      const ds: IDatasource<TestItem> = {
+        getNumberOfItems: () => 3,
+        getObjectAtRowIndex: (i: number) => TEST_DATA[i],
+      };
+
+      const reorderFixture = TestBed.createComponent(ReorderableHost);
+      reorderFixture.componentInstance.ds.set(ds);
+      reorderFixture.detectChanges();
+      await reorderFixture.whenStable();
+      reorderFixture.detectChanges();
+
+      const repeater = reorderFixture.componentInstance.repeater();
+      expect(() => (repeater as any).handleReorder(0, 1)).toThrow(
+        /does not implement IReorderableDatasource/,
+      );
+    });
+  });
+
+  describe("handleTransfer", () => {
+    it("should throw if source datasource is not removable", async () => {
+      const nonRemovable: IDatasource<TestItem> = {
+        getNumberOfItems: () => TEST_DATA.length,
+        getObjectAtRowIndex: (i: number) => TEST_DATA[i],
+      };
+
+      const transferFixture = TestBed.createComponent(TransferHost);
+      transferFixture.componentInstance.ds1.set(nonRemovable);
+      transferFixture.detectChanges();
+      await transferFixture.whenStable();
+      transferFixture.detectChanges();
+
+      const repeater1 = transferFixture.componentInstance.repeater1();
+      const repeater2 = transferFixture.componentInstance.repeater2();
+      expect(() =>
+        (repeater1 as any).handleTransfer(repeater2.dragHandler, 0, 0),
+      ).toThrow(/does not implement IRemovableDatasource/);
+    });
+
+    it("should throw if target datasource is not insertable", async () => {
+      const nonInsertable: IDatasource<TestItem> = {
+        getNumberOfItems: () => 1,
+        getObjectAtRowIndex: (i: number) => ({ id: 99, name: "Z" }),
+      };
+
+      const transferFixture = TestBed.createComponent(TransferHost);
+      transferFixture.componentInstance.ds2.set(nonInsertable);
+      transferFixture.detectChanges();
+      await transferFixture.whenStable();
+      transferFixture.detectChanges();
+
+      const repeater1 = transferFixture.componentInstance.repeater1();
+      const repeater2 = transferFixture.componentInstance.repeater2();
+      expect(() =>
+        (repeater1 as any).handleTransfer(repeater2.dragHandler, 0, 0),
+      ).toThrow(/does not implement IInsertableDatasource/);
+    });
+
+    it("should transfer an item between two repeaters", async () => {
+      const transferFixture = TestBed.createComponent(TransferHost);
+      const transferHost = transferFixture.componentInstance;
+      transferFixture.detectChanges();
+      await transferFixture.whenStable();
+      transferFixture.detectChanges();
+
+      const repeater1 = transferHost.repeater1();
+      const repeater2 = transferHost.repeater2();
+
+      // Transfer item from repeater1 index 0 to repeater2 index 0
+      (repeater1 as any).handleTransfer(repeater2.dragHandler, 0, 0);
+      transferFixture.detectChanges();
+      await transferFixture.whenStable();
+      transferFixture.detectChanges();
+
+      expect(transferHost.transferEvents.length).toBe(1);
+      expect(transferHost.transferEvents[0].item).toEqual({
+        id: 1,
+        name: "Alpha",
+      });
+    });
+  });
+
+  describe("buildContext", () => {
+    it("should produce correct context for first item", () => {
+      const repeater = fixture.debugElement.children[0]
+        .componentInstance as UIRepeater<TestItem>;
+      const ctx = (repeater as any).buildContext(TEST_DATA[0], 0);
+      expect(ctx.$implicit).toBe(TEST_DATA[0]);
+      expect(ctx.index).toBe(0);
+      expect(ctx.first).toBe(true);
+      expect(ctx.last).toBe(false);
+      expect(ctx.even).toBe(true);
+      expect(ctx.odd).toBe(false);
+    });
+
+    it("should produce correct context for last item", () => {
+      const repeater = fixture.debugElement.children[0]
+        .componentInstance as UIRepeater<TestItem>;
+      const ctx = (repeater as any).buildContext(TEST_DATA[4], 4);
+      expect(ctx.last).toBe(true);
+      expect(ctx.first).toBe(false);
+      expect(ctx.even).toBe(true);
+      expect(ctx.odd).toBe(false);
+    });
+  });
 });
+
+@Component({
+  standalone: true,
+  imports: [UIRepeater],
+  template: `
+    <ui-repeater
+      [datasource]="ds()"
+      [reorderable]="true"
+      (reordered)="onReorder($event)"
+    >
+      <ng-template let-item>
+        <div class="reorder-item">{{ item.name }}</div>
+      </ng-template>
+    </ui-repeater>
+  `,
+})
+class ReorderableHost {
+  public readonly ds = signal<IDatasource<TestItem>>(
+    new ArrayDatasource(TEST_DATA),
+  );
+  public readonly reorderEvents: RepeaterReorderEvent[] = [];
+  public readonly repeater =
+    viewChild.required<UIRepeater<TestItem>>(UIRepeater);
+
+  public onReorder(event: RepeaterReorderEvent): void {
+    this.reorderEvents.push(event);
+  }
+}
+
+@Component({
+  standalone: true,
+  imports: [UIRepeater],
+  template: `
+    <ui-repeater
+      #r1
+      [datasource]="ds1()"
+      [reorderable]="true"
+      [connectedTo]="[r2]"
+    >
+      <ng-template let-item>
+        <div class="item-1">{{ item.name }}</div>
+      </ng-template>
+    </ui-repeater>
+    <ui-repeater
+      #r2
+      [datasource]="ds2()"
+      [reorderable]="true"
+      [connectedTo]="[r1]"
+      (transferred)="onTransfer($event)"
+    >
+      <ng-template let-item>
+        <div class="item-2">{{ item.name }}</div>
+      </ng-template>
+    </ui-repeater>
+  `,
+})
+class TransferHost {
+  public readonly ds1 = signal<IDatasource<TestItem>>(
+    new ArrayDatasource([...TEST_DATA]),
+  );
+  public readonly ds2 = signal<IDatasource<TestItem>>(
+    new ArrayDatasource([{ id: 99, name: "Target" }]),
+  );
+  public readonly transferEvents: RepeaterTransferEvent<TestItem>[] = [];
+  public readonly repeater1 =
+    viewChild.required<UIRepeater<TestItem>>("r1");
+  public readonly repeater2 =
+    viewChild.required<UIRepeater<TestItem>>("r2");
+
+  public onTransfer(event: RepeaterTransferEvent<TestItem>): void {
+    this.transferEvents.push(event);
+  }
+}

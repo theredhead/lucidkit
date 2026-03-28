@@ -58,7 +58,8 @@ const meta: Meta<UIProgress> = {
     mode: {
       control: "select",
       options: ["determinate", "indeterminate"] satisfies ProgressMode[],
-      description: "Determinate shows a value; indeterminate animates continuously.",
+      description:
+        "Determinate shows a value; indeterminate animates continuously.",
     },
     value: {
       control: { type: "range", min: 0, max: 100, step: 1 },

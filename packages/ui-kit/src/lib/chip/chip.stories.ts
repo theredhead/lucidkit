@@ -65,7 +65,13 @@ const meta: Meta<UIChip> = {
   argTypes: {
     color: {
       control: "select",
-      options: ["primary", "success", "warning", "danger", "neutral"] satisfies ChipColor[],
+      options: [
+        "primary",
+        "success",
+        "warning",
+        "danger",
+        "neutral",
+      ] satisfies ChipColor[],
       description: "Colour preset.",
     },
     removable: {

@@ -81,7 +81,8 @@ const meta: Meta<UIAccordion> = {
     mode: {
       control: "select",
       options: ["single", "multi"],
-      description: "Single: one panel at a time. Multi: multiple panels open simultaneously.",
+      description:
+        "Single: one panel at a time. Multi: multiple panels open simultaneously.",
     },
     requireOpen: {
       control: "boolean",

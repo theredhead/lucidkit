@@ -521,3 +521,71 @@ describe("UIMasterDetailView (tree mode)", () => {
     expect(treeEl.querySelector(".table-wrapper")).toBeNull();
   });
 });
+
+describe("UIMasterDetailView — filter mode", () => {
+  let fixture: ComponentFixture<TestHost>;
+  let host: TestHost;
+  let el: HTMLElement;
+
+  function detectAndFlush(): void {
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    fixture.detectChanges();
+  }
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TestHost],
+    }).compileComponents();
+    fixture = TestBed.createComponent(TestHost);
+    host = fixture.componentInstance;
+    el = fixture.nativeElement;
+    detectAndFlush();
+  });
+
+  it("should show filter when showFilter is true", () => {
+    host.showFilter.set(true);
+    detectAndFlush();
+
+    const filterContent = el.querySelector(".test-filter-content");
+    expect(filterContent).toBeTruthy();
+  });
+
+  it("should hide filter when showFilter is false", () => {
+    host.showFilter.set(false);
+    detectAndFlush();
+
+    const filterContent = el.querySelector(".test-filter-content");
+    expect(filterContent).toBeNull();
+  });
+
+  it("should render with a filterable datasource and allow filtering", () => {
+    const fds = host.ds();
+    fds.filterBy([
+      { predicate: ((item: Person) => item.role === "Admin") as any },
+    ]);
+    detectAndFlush();
+
+    expect(fds.getNumberOfItems()).toBe(1);
+  });
+
+  it("should clear selection when datasource changes", () => {
+    // Select an item first
+    const rows = el.querySelectorAll("ui-table-view .row");
+    if (rows.length > 0) {
+      (rows[0] as HTMLElement).click();
+      detectAndFlush();
+    }
+
+    // Change datasource
+    host.ds.set(
+      new FilterableArrayDatasource([
+        { name: "Dave", email: "dave@example.com", role: "Admin" },
+      ]),
+    );
+    detectAndFlush();
+
+    // Selection should be cleared
+    expect(host.selected()).toBeUndefined();
+  });
+});

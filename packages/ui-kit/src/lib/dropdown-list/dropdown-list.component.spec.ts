@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { Subject } from "rxjs";
 
 import { UIDropdownList } from "./dropdown-list.component";
+import { PopoverService } from "../popover/popover.service";
 
 describe("UIDropdownList", () => {
   let component: UIDropdownList;
@@ -109,6 +111,86 @@ describe("UIDropdownList", () => {
       fixture.detectChanges();
       const btn = fixture.nativeElement.querySelector("button");
       expect(btn?.disabled).toBe(true);
+    });
+  });
+
+  describe("toggle", () => {
+    let closedSubject: Subject<string | undefined>;
+    let openPopoverSpy: ReturnType<typeof vi.fn>;
+
+    beforeEach(() => {
+      closedSubject = new Subject<string | undefined>();
+      openPopoverSpy = vi.fn().mockReturnValue({ closed: closedSubject.asObservable() });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).popover = { openPopover: openPopoverSpy } as unknown as PopoverService;
+      // Provide a fake triggerRef so the popover has an anchor
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).triggerRef = () => ({ nativeElement: document.createElement("div") });
+    });
+
+    it("should not open when disabled", () => {
+      fixture.componentRef.setInput("disabled", true);
+      fixture.detectChanges();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      expect(openPopoverSpy).not.toHaveBeenCalled();
+    });
+
+    it("should not open when already open", () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).isOpen.set(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      expect(openPopoverSpy).not.toHaveBeenCalled();
+    });
+
+    it("should call openPopover with correct inputs", () => {
+      fixture.componentRef.setInput("value", "b");
+      fixture.detectChanges();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      expect(openPopoverSpy).toHaveBeenCalledTimes(1);
+      const callArgs = openPopoverSpy.mock.calls[0][0];
+      expect(callArgs.inputs.options).toBe(component.options());
+      expect(callArgs.inputs.selectedValue).toBe("b");
+    });
+
+    it("should set isOpen to true on toggle", () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      expect((component as any).isOpen()).toBe(true);
+    });
+
+    it("should apply open host class", () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.classList.contains("ui-dropdown-list--open")).toBe(true);
+    });
+
+    it("should set isOpen to false when popover closes", () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      closedSubject.next(undefined);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      expect((component as any).isOpen()).toBe(false);
+    });
+
+    it("should update value when popover returns a result", () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      closedSubject.next("c");
+      expect(component.value()).toBe("c");
+    });
+
+    it("should NOT update value when popover returns undefined", () => {
+      fixture.componentRef.setInput("value", "a");
+      fixture.detectChanges();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component as any).toggle();
+      closedSubject.next(undefined);
+      expect(component.value()).toBe("a");
     });
   });
 });

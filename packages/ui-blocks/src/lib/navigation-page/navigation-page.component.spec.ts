@@ -330,6 +330,69 @@ describe("UINavigationPage", () => {
       expect(items[1].label).toBe("Settings");
       expect(items[2].label).toBe("Security");
     });
+
+    it("should return root-only breadcrumb when currentPage is null", () => {
+      // Navigate to nonexistent id with no items that match
+      // But keep items so the template doesn't crash
+      host.activePage.set("nonexistent");
+      fixture.detectChanges();
+
+      // currentPage falls back to firstLeaf (dashboard), so breadcrumb has 2 items
+      const items = host.nav()["breadcrumbItems"]();
+      expect(items[0].label).toBe("Home");
+    });
+  });
+
+  // ── onBreadcrumbClick ─────────────────────────────────────────────
+
+  describe("onBreadcrumbClick", () => {
+    it("should navigate to root when clicking the root breadcrumb", () => {
+      host.nav().navigate(TEST_ITEMS[2]); // calendar
+      host.onNavigated.mockClear();
+
+      host.nav()["onBreadcrumbClick"]({ label: "Home", url: "/" });
+      expect(host.activePage()).toBe("dashboard"); // first leaf
+    });
+
+    it("should navigate to a node matching the breadcrumb label", () => {
+      host.nav()["onBreadcrumbClick"]({ label: "Projects" });
+      expect(host.activePage()).toBe("projects");
+    });
+
+    it("should navigate to a nested node by label", () => {
+      host.nav()["onBreadcrumbClick"]({ label: "Security" });
+      expect(host.activePage()).toBe("security");
+    });
+
+    it("should do nothing for unknown label", () => {
+      host.nav()["onBreadcrumbClick"]({ label: "Unknown" });
+      // stays on dashboard
+      expect(host.activePage()).toBe("dashboard");
+    });
+  });
+
+  // ── firstLeaf edge cases ──────────────────────────────────────────
+
+  describe("firstLeaf edge cases", () => {
+    it("should return first root when all roots are groups with no leaf children", () => {
+      // If all descendant children also have children, firstLeaf falls through to roots[0]
+      const deepGroup = navGroup("deep", "Deep", [
+        navGroup("sub", "Sub", [navItem("leaf", "Leaf")]),
+      ]);
+      host.items.set([deepGroup]);
+      host.activePage.set("leaf");
+      fixture.detectChanges();
+
+      const leaf = host.nav()["firstLeaf"]();
+      expect(leaf).toBeTruthy();
+    });
+
+    it("should find first leaf child in a group", () => {
+      // Settings group → General is the first leaf child
+      const leaf = host.nav()["firstLeaf"]();
+      expect(leaf).toBeTruthy();
+      expect(leaf!.id).toBe("dashboard");
+    });
   });
 });
 

@@ -1,10 +1,14 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, input as ngInput } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { UITimeline } from "./timeline.component";
 import { ArrayDatasource } from "../table-view/datasources/array-datasource";
 import type { IDatasource } from "../table-view/datasources/datasource";
-import type { TimelineAlignment, TimelineOrientation } from "./timeline.types";
+import type {
+  TimelineAlignment,
+  TimelineComponentResolver,
+  TimelineOrientation,
+} from "./timeline.types";
 
 interface TestEvent {
   id: number;
@@ -211,5 +215,79 @@ describe("UITimeline", () => {
       expect(clicked.length).toBe(1);
       expect(clicked[0].title).toBe("Project started");
     });
+  });
+});
+
+// ── Component-based rendering ──────────────────────────────
+
+@Component({
+  standalone: true,
+  selector: "ui-test-event-card",
+  template: `<span class="card-title">{{ event().title }}</span>`,
+})
+class TestEventCard {
+  public readonly event = ngInput.required<TestEvent>();
+  public readonly index = ngInput<number>(0);
+  public readonly first = ngInput<boolean>(false);
+  public readonly last = ngInput<boolean>(false);
+}
+
+@Component({
+  standalone: true,
+  imports: [UITimeline],
+  template: `
+    <ui-timeline [datasource]="ds()" [withComponent]="resolver" />
+  `,
+})
+class ComponentHost {
+  public readonly ds = signal<IDatasource<TestEvent>>(
+    new ArrayDatasource(TEST_EVENTS),
+  );
+  public readonly resolver: TimelineComponentResolver<TestEvent> = () =>
+    TestEventCard;
+}
+
+describe("UITimeline — component rendering", () => {
+  let fixture: ComponentFixture<ComponentHost>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ComponentHost, TestEventCard],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ComponentHost);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  it("should render events using the component resolver", () => {
+    const cards = fixture.nativeElement.querySelectorAll("test-event-card");
+    expect(cards.length).toBe(4);
+  });
+
+  it("should pass event data to the rendered component", () => {
+    const card = fixture.nativeElement.querySelector(".card-title");
+    expect(card?.textContent.trim()).toBe("Project started");
+  });
+
+  it("should use resolveComponent to get the component class", () => {
+    const timeline = fixture.debugElement.children[0]
+      .componentInstance as UITimeline<TestEvent>;
+    const comp = (timeline as never)["resolveComponent"](TEST_EVENTS[0]);
+    expect(comp).toBe(TestEventCard);
+  });
+
+  it("should build component inputs with index and first/last flags", () => {
+    const timeline = fixture.debugElement.children[0]
+      .componentInstance as UITimeline<TestEvent>;
+    const inputs = (timeline as never)["buildComponentInputs"](
+      TEST_EVENTS[0],
+      0,
+    ) as Record<string, unknown>;
+    expect(inputs["event"]).toBe(TEST_EVENTS[0]);
+    expect(inputs["index"]).toBe(0);
+    expect(inputs["first"]).toBe(true);
+    expect(inputs["last"]).toBe(false);
   });
 });

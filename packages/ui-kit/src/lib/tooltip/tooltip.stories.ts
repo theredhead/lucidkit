@@ -63,7 +63,11 @@ export const Default: Story = {
       </div>
     `,
   }),
-  args: { uiTooltip: "This is a tooltip", tooltipPosition: "top", tooltipDelay: 200 },
+  args: {
+    uiTooltip: "This is a tooltip",
+    tooltipPosition: "top",
+    tooltipDelay: 200,
+  },
   parameters: {
     docs: {
       description: {

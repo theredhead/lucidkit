@@ -20,6 +20,11 @@ export default defineConfig({
     exclude: ["node_modules", "dist"],
     setupFiles: ["./vitest.setup.ts"],
     reporters: ["default"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json-summary"],
+      reportsDirectory: "coverage",
+    },
   },
   resolve: {
     alias: {

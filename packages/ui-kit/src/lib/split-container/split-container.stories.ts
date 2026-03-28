@@ -221,7 +221,8 @@ const meta: Meta<UISplitContainer> = {
     collapseTarget: {
       control: "select",
       options: ["none", "first", "second"],
-      description: "Which panel can be collapsed via double-click on the divider.",
+      description:
+        "Which panel can be collapsed via double-click on the divider.",
     },
     disabled: {
       control: "boolean",
