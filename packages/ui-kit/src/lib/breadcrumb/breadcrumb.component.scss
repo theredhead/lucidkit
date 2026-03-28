@@ -3,18 +3,6 @@
 
 :host {
   display: block;
-
-  --ui-text: #1d232b;
-  --ui-link: var(--ui-accent, #3584e4);
-  --ui-link-hover: var(--ui-accent-hover, #2b6fc4);
-  --ui-muted: #5a6470;
-}
-
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-link: var(--ui-accent, #7ab0ff);
-  --ui-link-hover: var(--ui-accent-hover, #5a9aef);
-  --ui-muted: #d0d8e3;
 }
 
 .list {
@@ -33,17 +21,17 @@
 }
 
 .link {
-  color: var(--ui-link);
   text-decoration: none;
   font-size: 0.875rem;
   line-height: 1.4;
   cursor: pointer;
   border-radius: 0.25rem;
   padding: 0.125rem 0.25rem;
+  color: var(--ui-link);
 
   &:hover {
-    color: var(--ui-link-hover);
     text-decoration: underline;
+    color: var(--ui-link-hover);
   }
 
   &:focus-visible {
@@ -52,21 +40,20 @@
 }
 
 .link--current {
-  color: var(--ui-text);
   cursor: default;
   font-weight: 500;
+  color: var(--ui-text-muted);
 
   &:hover {
     text-decoration: none;
-    color: var(--ui-text);
   }
 }
 
 .separator {
   margin: 0 0.375rem;
-  color: var(--ui-muted);
   font-size: 0.875rem;
   user-select: none;
+  color: var(--ui-text-muted);
 }
 
 /* ── Chevron separator (button variant) ── */
@@ -74,7 +61,6 @@
 .chevron {
   width: 1rem;
   height: 1rem;
-  color: var(--ui-muted);
   flex-shrink: 0;
 }
 
@@ -83,13 +69,13 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--ui-border, #d7dce2);
+  border: none;
   border-radius: 0.375rem;
   padding: 0.25rem 0.625rem;
   font-size: 0.8125rem;
   line-height: 1.4;
   font-family: inherit;
-  color: var(--ui-link);
+  color: var(--ui-text);
   background: transparent;
   cursor: pointer;
   transition:
@@ -97,8 +83,7 @@
     color anim.$duration-normal anim.$easing-default;
 
   &:hover:not(:disabled) {
-    background: var(--ui-link);
-    color: #fff;
+    background-color: var(--ui-hover-bg);
   }
 
   &:focus-visible {
@@ -111,8 +96,6 @@
 }
 
 .btn--current {
-  color: var(--ui-text);
-  border-color: transparent;
-  background: transparent;
   font-weight: 500;
+  color: var(--ui-text-muted);
 }

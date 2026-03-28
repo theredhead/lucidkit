@@ -208,6 +208,30 @@ const meta: Meta<UISplitContainer> = {
   title: "@Theredhead/UI Kit/Split Container",
   component: UISplitContainer,
   tags: ["autodocs"],
+  argTypes: {
+    orientation: {
+      control: "select",
+      options: ["horizontal", "vertical"],
+      description: "Layout direction of the two panels.",
+    },
+    dividerWidth: {
+      control: "number",
+      description: "Width of the draggable divider in pixels.",
+    },
+    collapseTarget: {
+      control: "select",
+      options: ["none", "first", "second"],
+      description: "Which panel can be collapsed via double-click on the divider.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables resizing.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the resize handle.",
+    },
+  },
   parameters: {
     docs: {
       description: {

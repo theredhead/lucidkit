@@ -13,6 +13,7 @@ import {
   UITableViewCellContext,
   UITableViewColumn,
 } from "./table-column.directive";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Internal text column component used by UIAutogenerateColumns.
@@ -30,6 +31,7 @@ import {
     },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { style: "display: none" },
   templateUrl: "./text-column-generated.component.html",
 })

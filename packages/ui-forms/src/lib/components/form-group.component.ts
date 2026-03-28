@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 import type { GroupState } from "../engine/form-engine";
 import { UIFormField } from "./form-field/form-field.component";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Renders a group of form fields as a visual section (fieldset).
@@ -22,6 +23,7 @@ import { UIFormField } from "./form-field/form-field.component";
   standalone: true,
   imports: [UIFormField],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-form-group",
     "[class.ui-form-group--hidden]": "!state().visible()",

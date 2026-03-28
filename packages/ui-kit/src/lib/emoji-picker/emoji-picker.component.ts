@@ -11,6 +11,7 @@ import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
 import { DEFAULT_EMOJI_CATEGORIES } from "./emoji-picker.data";
 import type { EmojiCategory } from "./emoji-picker.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A categorised, searchable emoji picker.
@@ -36,6 +37,7 @@ import type { EmojiCategory } from "./emoji-picker.types";
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./emoji-picker.component.html",
   styleUrl: "./emoji-picker.component.scss",
   host: {

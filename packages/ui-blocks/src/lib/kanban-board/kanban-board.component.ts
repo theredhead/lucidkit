@@ -24,6 +24,7 @@ import type {
   KanbanCardMoveEvent,
   KanbanCardContext,
 } from "./kanban-board.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Column-based kanban board with drag-and-drop card reordering.
@@ -53,6 +54,7 @@ import type {
     CdkDragPlaceholder,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./kanban-board.component.html",
   styleUrl: "./kanban-board.component.scss",
   host: {

@@ -112,6 +112,20 @@ const meta: Meta<UIDropdownList> = {
   title: "@Theredhead/UI Kit/Dropdown List",
   component: UIDropdownList,
   tags: ["autodocs"],
+  argTypes: {
+    placeholder: {
+      control: "text",
+      description: "Text shown when no option is selected.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the trigger button.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the dropdown.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
@@ -151,6 +165,34 @@ export default meta;
 type Story = StoryObj<UIDropdownList>;
 
 // ── Stories ───────────────────────────────────────────────────────
+
+/**
+ * Interactive playground — adjust scalar inputs via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: {
+      ...args,
+      options: [
+        { label: "Apple", value: "apple" },
+        { label: "Banana", value: "banana" },
+        { label: "Cherry", value: "cherry" },
+        { label: "Mango", value: "mango" },
+      ],
+    },
+    template: `<ui-dropdown-list
+      [options]="options"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    placeholder: "— Select —",
+    disabled: false,
+    ariaLabel: "Choose a fruit",
+  },
+};
 
 export const Default: Story = {
   render: () => ({

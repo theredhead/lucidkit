@@ -41,10 +41,46 @@ const meta: Meta<UIRadioGroup> = {
       imports: [UIRadioButton, RadioDemo],
     }),
   ],
+  argTypes: {
+    disabled: {
+      control: "boolean",
+      description: "Disables the entire radio group.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the radio group.",
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<UIRadioGroup>;
+
+/**
+ * Interactive playground — adjust scalar inputs via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: {
+      ...args,
+      options: [
+        { label: "Apple", value: "apple" },
+        { label: "Banana", value: "banana" },
+        { label: "Cherry", value: "cherry" },
+      ],
+    },
+    template: `<ui-radio-group
+      name="fruit"
+      [options]="options"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    disabled: false,
+    ariaLabel: "Choose a fruit",
+  },
+};
 
 /**
  * Interactive radio group with three fruit options. The selected

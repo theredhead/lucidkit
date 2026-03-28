@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UICalendarMonthView } from "./calendar-month-view.component";
 import { ArrayCalendarDatasource } from "./array-calendar-datasource";
 import type { CalendarEvent } from "./calendar.types";
+import { UIButton } from "../button/button.component";
 
 // ── Shared fixtures ──────────────────────────────────────────────
 
@@ -106,7 +112,7 @@ function busyDayEvents(): CalendarEvent[] {
   ];
 }
 
-// ── Demo: Default (empty calendar) ───────────────────────────────
+// ── Demo: Empty calendar ─────────────────────────────────────────
 
 @Component({
   selector: "ui-cal-empty-demo",
@@ -119,7 +125,7 @@ class CalendarEmptyDemo {
   public readonly ds = new ArrayCalendarDatasource([]);
 }
 
-// ── Demo: With events ────────────────────────────────────────────
+// ── Demo: With events (interactive) ──────────────────────────────
 
 @Component({
   selector: "ui-cal-events-demo",
@@ -139,6 +145,8 @@ class CalendarEmptyDemo {
     <ui-calendar-month-view
       [datasource]="ds"
       [(selectedDate)]="selected"
+      [showWeekNumbers]="showWeekNumbers()"
+      [maxEventsPerDay]="maxEventsPerDay()"
       (dateSelected)="onDate($event)"
       (eventSelected)="onEvent($event)"
     />
@@ -151,6 +159,8 @@ class CalendarEmptyDemo {
   `,
 })
 class CalendarEventsDemo {
+  public readonly showWeekNumbers = input<boolean>(false);
+  public readonly maxEventsPerDay = input<number>(3);
   public readonly ds = new ArrayCalendarDatasource(sampleEvents());
   public readonly selected = signal(new Date());
   public lastEvent: string | null = null;
@@ -224,35 +234,16 @@ class CalendarPaletteDemo {
 @Component({
   selector: "ui-cal-dynamic-demo",
   standalone: true,
-  imports: [UICalendarMonthView],
+  imports: [UICalendarMonthView, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      .controls {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 1rem;
-        flex-wrap: wrap;
-      }
-      .controls button {
-        padding: 0.4rem 0.8rem;
-        border: 1px solid #d1d5db;
-        border-radius: 4px;
-        background: #f9fafb;
-        cursor: pointer;
-        font-size: 0.8rem;
-      }
-      .controls button:hover {
-        background: #e5e7eb;
-      }
-    `,
-  ],
   template: `
     <ui-calendar-month-view [datasource]="ds" />
 
-    <div class="controls">
-      <button (click)="addEvent()">+ Add random event</button>
-      <button (click)="clear()">Clear all</button>
+    <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+      <ui-button variant="outlined" (click)="addEvent()"
+        >+ Add random event</ui-button
+      >
+      <ui-button variant="outlined" (click)="clear()">Clear all</ui-button>
     </div>
   `,
 })
@@ -340,6 +331,24 @@ const meta: Meta<UICalendarMonthView> = {
   title: "@Theredhead/UI Kit/Calendar Month View",
   component: UICalendarMonthView,
   tags: ["autodocs"],
+  argTypes: {
+    showWeekNumbers: {
+      control: "boolean",
+      description: "Show ISO week numbers in the first column.",
+    },
+    maxEventsPerDay: {
+      control: "number",
+      description: "Maximum events shown per day before an overflow indicator.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables date selection.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the calendar.",
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -369,10 +378,81 @@ type Story = StoryObj<UICalendarMonthView>;
 // ── Stories ──────────────────────────────────────────────────────
 
 /**
- * **Empty calendar** — A month grid with no events, showing the basic
- * structure with day numbers, weekday headers, and navigation controls.
+ * **Default** — A populated calendar showing event badges, day
+ * selection, and event click handling. Use the controls to toggle
+ * week numbers and adjust the max events per day. Click a day to
+ * select it, click an event badge to see its details below.
  */
 export const Default: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-cal-events-demo
+      [showWeekNumbers]="showWeekNumbers"
+      [maxEventsPerDay]="maxEventsPerDay"
+    />`,
+  }),
+  args: {
+    showWeekNumbers: false,
+    maxEventsPerDay: 3,
+  },
+  argTypes: {
+    showWeekNumbers: { control: "boolean" },
+    maxEventsPerDay: { control: { type: "number", min: 1, max: 10, step: 1 } },
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-calendar-month-view
+  [datasource]="ds"
+  [(selectedDate)]="selected"
+  (dateSelected)="onDate($event)"
+  (eventSelected)="onEvent($event)"
+/>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UICalendarMonthView, ArrayCalendarDatasource } from '@theredhead/ui-kit';
+import type { CalendarEvent } from '@theredhead/ui-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UICalendarMonthView],
+  template: \\\`
+    <ui-calendar-month-view
+      [datasource]="ds"
+      [(selectedDate)]="selected"
+      (dateSelected)="onDate($event)"
+      (eventSelected)="onEvent($event)"
+    />
+  \\\`,
+})
+export class ExampleComponent {
+  readonly ds = new ArrayCalendarDatasource([
+    { id: '1', title: 'Team standup', start: new Date(), color: '#4285f4' },
+  ]);
+  readonly selected = signal(new Date());
+
+  onDate(d: Date) { this.selected.set(d); }
+  onEvent(e: CalendarEvent) { console.log(e.title); }
+}
+
+// ── SCSS ──
+/* No custom styles needed — calendar tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Empty** — A month grid with no events, showing the basic
+ * structure with day numbers, weekday headers, and navigation controls.
+ */
+export const Empty: Story = {
   render: () => ({ template: `<ui-cal-empty-demo />` }),
   parameters: {
     docs: {
@@ -380,27 +460,6 @@ export const Default: Story = {
         code: `const ds = new ArrayCalendarDatasource([]);
 
 <ui-calendar-month-view [datasource]="ds" />`,
-      },
-    },
-  },
-};
-
-/**
- * **With events** — A populated calendar showing event badges, day
- * selection, and event click handling. Click a day to select it,
- * click an event badge to see its details below.
- */
-export const WithEvents: Story = {
-  render: () => ({ template: `<ui-cal-events-demo />` }),
-  parameters: {
-    docs: {
-      source: {
-        code: `<ui-calendar-month-view
-  [datasource]="ds"
-  [(selectedDate)]="selected"
-  (dateSelected)="onDate($event)"
-  (eventSelected)="onEvent($event)"
-/>`,
       },
     },
   },

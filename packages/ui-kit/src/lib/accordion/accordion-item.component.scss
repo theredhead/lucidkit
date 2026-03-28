@@ -3,18 +3,10 @@
 
 :host {
   display: block;
-
-  --ui-text: #1d232b;
-  --ui-border: #d7dce2;
-  --ui-surface: #ffffff;
-  --ui-muted: #5a6470;
 }
 
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-border: #3a3f47;
-  --ui-surface: #2a2f38;
-  --ui-muted: #d0d8e3;
+:host + :host {
+  border-top: 1px solid var(--ui-border);
 }
 
 :host(.ui-accordion-item--disabled) {
@@ -31,12 +23,13 @@
   padding: 0.75rem 1rem;
   cursor: pointer;
   user-select: none;
-  border-bottom: 1px solid var(--ui-border);
-  color: var(--ui-text);
   outline: none;
+  color: var(--ui-text);
+  background-color: var(--ui-surface-2);
+  transition: background-color 120ms ease;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.03);
+    background-color: var(--ui-hover-bg);
   }
 
   &:focus-visible {
@@ -45,14 +38,10 @@
   }
 }
 
-@include mix.dark-mode(".header:hover") {
-  background: rgba(255, 255, 255, 0.04);
-}
-
 .title {
-  font:
-    500 0.875rem/1.4 system-ui,
-    sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
 /* ── Chevron ── */
@@ -61,7 +50,7 @@
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
-  color: var(--ui-muted);
+  color: var(--ui-text-muted);
   transition: transform anim.$duration-slow anim.$easing-default;
 }
 
@@ -73,12 +62,12 @@
 
 .panel {
   overflow: hidden;
-  border-bottom: 1px solid var(--ui-border);
 }
 
 .content {
   padding: 0.75rem 1rem;
-  color: var(--ui-text);
   font-size: 0.875rem;
   line-height: 1.5;
+  color: var(--ui-text);
+  background-color: var(--ui-surface);
 }

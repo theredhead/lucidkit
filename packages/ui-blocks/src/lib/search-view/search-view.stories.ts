@@ -317,6 +317,45 @@ const meta: Meta = {
       },
     },
   },
+  argTypes: {
+    title: {
+      control: "text",
+      description: "Title displayed in the header area.",
+    },
+    layout: {
+      control: "select",
+      options: ["table", "custom"],
+      description: "Layout mode for results.",
+    },
+    showFilter: {
+      control: "boolean",
+      description: "Show the filter section.",
+    },
+    filterExpanded: {
+      control: "boolean",
+      description: "Whether the filter starts expanded.",
+    },
+    filterModeLocked: {
+      control: "boolean",
+      description: "Hide the filter toggle button.",
+    },
+    showPagination: {
+      control: "boolean",
+      description: "Show the pagination footer.",
+    },
+    pageSize: {
+      control: "number",
+      description: "Items per page.",
+    },
+    placeholder: {
+      control: "text",
+      description: "Empty-state text.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the search view.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [

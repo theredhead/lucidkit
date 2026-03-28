@@ -2,11 +2,7 @@
 
 :host {
   display: block;
-  border: 1px solid var(--ui-border, #d7dce2);
+  border: 1px solid var(--ui-border);
   border-radius: 0.5rem;
   overflow: hidden;
-}
-
-@include mix.dark-mode {
-  border-color: var(--ui-border, #3a3f47);
 }

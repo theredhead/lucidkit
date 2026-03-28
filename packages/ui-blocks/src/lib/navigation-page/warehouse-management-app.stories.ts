@@ -1182,7 +1182,7 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="outlined" size="sm"> Export CSV </ui-button>
+                <ui-button variant="outlined" size="small"> Export CSV </ui-button>
               </div>
             </div>
 
@@ -1319,7 +1319,7 @@ function formatQty(n: number): string {
                           </div>
                         }
                         <div style="margin-top: 1rem">
-                          <ui-button variant="outlined" size="sm">
+                          <ui-button variant="outlined" size="small">
                             Create Reorder
                           </ui-button>
                         </div>
@@ -1332,10 +1332,10 @@ function formatQty(n: number): string {
                           Scan this part's barcode to update inventory:
                         </p>
                         <div style="display: flex; gap: 0.5rem">
-                          <ui-button variant="outlined" size="sm">
+                          <ui-button variant="outlined" size="small">
                             Print Label
                           </ui-button>
-                          <ui-button variant="ghost" size="sm">
+                          <ui-button variant="ghost" size="small">
                             Show QR Code
                           </ui-button>
                         </div>
@@ -1443,7 +1443,7 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="filled" size="sm"> Reorder All </ui-button>
+                <ui-button variant="filled" size="small"> Reorder All </ui-button>
               </div>
             </div>
 
@@ -1519,10 +1519,10 @@ function formatQty(n: number): string {
                     </dd>
                   </dl>
                   <div style="margin-top: 1rem; display: flex; gap: 0.5rem">
-                    <ui-button variant="filled" size="sm">
+                    <ui-button variant="filled" size="small">
                       Create Purchase Order
                     </ui-button>
-                    <ui-button variant="ghost" size="sm">
+                    <ui-button variant="ghost" size="small">
                       Dismiss Alert
                     </ui-button>
                   </div>
@@ -1546,7 +1546,7 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="filled" size="sm"> Auto-Assign </ui-button>
+                <ui-button variant="filled" size="small"> Auto-Assign </ui-button>
               </div>
             </div>
 
@@ -1649,10 +1649,10 @@ function formatQty(n: number): string {
                           Scan items as you pick them:
                         </p>
                         <div style="display: flex; gap: 0.5rem">
-                          <ui-button variant="filled" size="sm">
+                          <ui-button variant="filled" size="small">
                             Start Picking
                           </ui-button>
-                          <ui-button variant="outlined" size="sm">
+                          <ui-button variant="outlined" size="small">
                             Print Pick List
                           </ui-button>
                         </div>
@@ -1699,7 +1699,7 @@ function formatQty(n: number): string {
 
                 <ng-template #detail let-order>
                   <div class="detail-header">
-                    <ui-avatar [name]="order.assignee" size="md" />
+                    <ui-avatar [name]="order.assignee" size="medium" />
                     <div>
                       <h3 class="detail-name">
                         {{ order.orderNumber }}
@@ -1733,10 +1733,10 @@ function formatQty(n: number): string {
                     <dd>{{ order.created }}</dd>
                   </dl>
                   <div style="margin-top: 1rem; display: flex; gap: 0.5rem">
-                    <ui-button variant="filled" size="sm">
+                    <ui-button variant="filled" size="small">
                       Mark Complete
                     </ui-button>
-                    <ui-button variant="outlined" size="sm">
+                    <ui-button variant="outlined" size="small">
                       Reassign
                     </ui-button>
                   </div>
@@ -1885,10 +1885,10 @@ function formatQty(n: number): string {
                 </ui-card-body>
                 <ui-card-footer>
                   <div style="display: flex; gap: 0.5rem">
-                    <ui-button variant="ghost" size="sm">
+                    <ui-button variant="ghost" size="small">
                       View Racks
                     </ui-button>
-                    <ui-button variant="ghost" size="sm"> Zone Map </ui-button>
+                    <ui-button variant="ghost" size="small"> Zone Map </ui-button>
                   </div>
                 </ui-card-footer>
               </ui-card>
@@ -1910,7 +1910,7 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="outlined" size="sm">
+                <ui-button variant="outlined" size="small">
                   Add Supplier
                 </ui-button>
               </div>
@@ -1932,7 +1932,7 @@ function formatQty(n: number): string {
                         gap: 0.5rem;
                       "
                     >
-                      <ui-avatar [name]="row.name" size="sm" />
+                      <ui-avatar [name]="row.name" size="small" />
                       <span style="font-weight: 600">{{ row.name }}</span>
                     </div>
                   </ng-template>
@@ -1942,7 +1942,7 @@ function formatQty(n: number): string {
 
                 <ng-template #detail let-sup>
                   <div class="detail-header">
-                    <ui-avatar [name]="sup.name" size="lg" />
+                    <ui-avatar [name]="sup.name" size="large" />
                     <div>
                       <h3 class="detail-name">{{ sup.name }}</h3>
                       <p class="detail-sub">
@@ -2002,7 +2002,7 @@ function formatQty(n: number): string {
                         <p style="margin: 0 0 0.5rem">
                           Pricing information and purchase history.
                         </p>
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           View Price Sheet
                         </ui-button>
                       </div>
@@ -2191,13 +2191,13 @@ function formatQty(n: number): string {
                         These actions are destructive and cannot be undone.
                       </p>
                       <div style="display: flex; gap: 0.5rem">
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           Export Full Inventory
                         </ui-button>
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           Reset All Zones
                         </ui-button>
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           Purge Cancelled Orders
                         </ui-button>
                       </div>

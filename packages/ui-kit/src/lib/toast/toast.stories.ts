@@ -121,6 +121,13 @@ const meta: Meta<UIToastContainer> = {
   title: "@Theredhead/UI Kit/Toast",
   component: UIToastContainer,
   tags: ["autodocs"],
+  argTypes: {
+    position: {
+      control: "select",
+      options: ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"],
+      description: "Screen corner where toasts appear.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [

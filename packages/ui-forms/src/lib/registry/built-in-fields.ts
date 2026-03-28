@@ -10,9 +10,8 @@ import {
   UIRadioGroup,
   UIRichTextView,
   UIAutocomplete,
-  UIDatePicker,
-  UITimePicker,
-  UIDateTimePicker,
+  DateInputAdapter,
+  TimeTextAdapter,
   UIColorPicker,
   UISlider,
   UIRichTextEditor,
@@ -39,9 +38,9 @@ import { resolveTextAdapter } from "./text-adapter-resolver";
  * | `"toggle"`      | `UIToggle`          | `value`        |
  * | `"radio"`       | `UIRadioGroup`      | `value`        |
  * | `"autocomplete"`| `UIAutocomplete`    | `value`        |
- * | `"date"`        | `UIDatePicker`      | `value`        |
- * | `"time"`        | `UITimePicker`      | `value`        |
- * | `"datetime"`    | `UIDateTimePicker`  | `value`        |
+ * | `"date"`        | `UIInput` + `DateInputAdapter`  | `value` |
+ * | `"time"`        | `UIInput` + `TimeTextAdapter`   | `value` |
+ * | `"datetime"`    | `UIInput` + `DateInputAdapter`  | `value` |
  * | `"color"`       | `UIColorPicker`     | `value`        |
  * | `"slider"`      | `UISlider`          | `value`        |
  * | `"richtext"`    | `UIRichTextEditor`  | `value`        |
@@ -67,9 +66,21 @@ export const BUILT_IN_FIELDS: Readonly<Record<string, FormFieldRegistration>> =
     toggle: { component: UIToggle, modelProperty: "value" },
     radio: { component: UIRadioGroup, modelProperty: "value" },
     autocomplete: { component: UIAutocomplete, modelProperty: "value" },
-    date: { component: UIDatePicker, modelProperty: "value" },
-    time: { component: UITimePicker, modelProperty: "value" },
-    datetime: { component: UIDateTimePicker, modelProperty: "value" },
+    date: {
+      component: UIInput,
+      modelProperty: "value",
+      defaultConfig: { adapter: new DateInputAdapter() },
+    },
+    time: {
+      component: UIInput,
+      modelProperty: "value",
+      defaultConfig: { adapter: new TimeTextAdapter() },
+    },
+    datetime: {
+      component: UIInput,
+      modelProperty: "value",
+      defaultConfig: { adapter: new DateInputAdapter() },
+    },
     color: { component: UIColorPicker, modelProperty: "value" },
     slider: {
       component: UISlider,

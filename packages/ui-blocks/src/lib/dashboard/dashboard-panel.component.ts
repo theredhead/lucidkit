@@ -8,7 +8,11 @@ import {
   output,
   signal,
 } from "@angular/core";
-import { LoggerFactory } from "@theredhead/foundation";
+import {
+  LoggerFactory,
+  UISurface,
+  UI_DEFAULT_SURFACE_TYPE,
+} from "@theredhead/foundation";
 import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 import type { DashboardPanelConfig } from "./dashboard.types";
 
@@ -30,6 +34,8 @@ import type { DashboardPanelConfig } from "./dashboard.types";
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   templateUrl: "./dashboard-panel.component.html",
   styleUrl: "./dashboard-panel.component.scss",
   host: {

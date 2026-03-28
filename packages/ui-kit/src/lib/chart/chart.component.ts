@@ -8,7 +8,7 @@ import {
   input,
   viewChild,
 } from "@angular/core";
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 import type {
   ChartLayer,
   ChartLegendEntry,
@@ -77,6 +77,7 @@ import type { GraphPresentationStrategy } from "./strategies/graph-presentation-
   selector: "ui-chart",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./chart.component.html",
   styleUrl: "./chart.component.scss",
   host: {

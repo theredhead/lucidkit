@@ -18,6 +18,7 @@ import type {
   CommandGroup,
   CommandPaletteItem,
 } from "./command-palette.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A keyboard-triggered command palette that provides quick access
@@ -50,6 +51,7 @@ import type {
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./command-palette.component.html",
   styleUrl: "./command-palette.component.scss",
   host: {

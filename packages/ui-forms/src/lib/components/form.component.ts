@@ -13,6 +13,7 @@ import { FormEngine } from "../engine/form-engine";
 import type { FormValues } from "../types/form-schema.types";
 import { FORM_SETTINGS } from "./form-settings";
 import { UIFormGroup } from "./form-group.component";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Top-level form component that renders all groups sequentially.
@@ -30,6 +31,7 @@ import { UIFormGroup } from "./form-group.component";
   standalone: true,
   imports: [UIFormGroup],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-form",
   },

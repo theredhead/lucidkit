@@ -1,14 +1,15 @@
 :host {
   display: inline-flex;
+  color: var(--ui-text);
 }
 
 select {
   appearance: auto;
   font-family: var(--ui-font, inherit);
   font-size: var(--ui-font-body, 0.875rem);
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #ffffff);
-  border: 1px solid var(--ui-border, #d7dce2);
+  color: var(--ui-text);
+  background-color: var(--ui-surface);
+  border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
   padding: 0.3rem 0.5rem;
   cursor: pointer;
@@ -18,7 +19,7 @@ select {
     background-color 120ms ease;
 
   &:hover:not(:disabled) {
-    border-color: var(--ui-border-strong, #c2c8cf);
+    border-color: var(--ui-border-strong);
   }
 
   &:disabled {
@@ -27,7 +28,7 @@ select {
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring);
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent));
     outline-offset: -1px;
   }
 }

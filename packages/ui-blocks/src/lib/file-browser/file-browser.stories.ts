@@ -431,6 +431,16 @@ class DetailsPaneDemo {
 const meta: Meta = {
   title: "@Theredhead/UI Blocks/File Browser",
   tags: ["autodocs"],
+  argTypes: {
+    showSidebar: {
+      control: "boolean",
+      description: "Show the tree sidebar.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the file browser.",
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -439,13 +449,13 @@ const meta: Meta = {
           "",
           "## Features",
           "",
-          "- **Tree sidebar** — shows the folder hierarchy with expand/collapse.",
-          "- **Contents panel** — displays files and sub-folders in the selected directory.",
-          "- **Breadcrumb bar** — shows the current path with click-to-navigate.",
-          "- **Datasource-driven** — implement `FileBrowserDatasource` to connect any storage backend.",
-          "- **Custom templates** — project an `#entryTemplate` to customise how entries are rendered.",
-          "- **File activation** — double-click or Enter on a file emits `fileActivated`.",
-          "- **Accessible** — full keyboard navigation, ARIA roles.",
+          "- **Tree sidebar** \u2014 shows the folder hierarchy with expand/collapse.",
+          "- **Contents panel** \u2014 displays files and sub-folders in the selected directory.",
+          "- **Breadcrumb bar** \u2014 shows the current path with click-to-navigate.",
+          "- **Datasource-driven** \u2014 implement `FileBrowserDatasource` to connect any storage backend.",
+          "- **Custom templates** \u2014 project an `#entryTemplate` to customise how entries are rendered.",
+          "- **File activation** \u2014 double-click or Enter on a file emits `fileActivated`.",
+          "- **Accessible** \u2014 full keyboard navigation, ARIA roles.",
           "",
           "## CSS Custom Properties",
           "",

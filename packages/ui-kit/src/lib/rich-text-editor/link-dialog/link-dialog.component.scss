@@ -1,5 +1,5 @@
-@use 'mixins' as mix;
-@use 'animation' as anim;
+@use "mixins" as mix;
+@use "animation" as anim;
 
 :host {
   display: block;
@@ -24,40 +24,29 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ui-text-muted);
-}
-
-@include mix.dark-mode('.label') {
-  color: var(--ui-text-muted);
+  color: var(--ui-text-muted, #5a6470);
 }
 
 .input {
   appearance: none;
-  border: 1px solid var(--ui-border);
   border-radius: 0.2rem;
   padding: 0.3rem 0.45rem;
-  background: var(--ui-surface);
-  color: var(--ui-text);
   font-family: inherit;
   font-size: 0.8125rem;
   outline: none;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+  border: 1px solid var(--ui-border, #d4d8dd);
   transition: border-color 120ms ease;
 
+  &:focus {
+    border-color: var(--ui-accent, #3584e4);
+  }
+
   &::placeholder {
-    color: var(--ui-text-muted);
+    color: var(--ui-text-muted, #5a6470);
     opacity: 0.7;
   }
-
-  &:focus {
-    border-color: var(--ui-accent);
-    box-shadow: 0 0 0 1px var(--ui-accent);
-  }
-}
-
-@include mix.dark-mode('.input') {
-  background: var(--ui-surface);
-  color: var(--ui-text);
-  border-color: var(--ui-border);
 }
 
 .actions {
@@ -69,7 +58,6 @@
 
 .btn {
   appearance: none;
-  border: 1px solid var(--ui-border);
   border-radius: 0.2rem;
   padding: 0.3rem 0.6rem;
   font-family: inherit;
@@ -79,16 +67,23 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+  border: 1px solid var(--ui-border, #d4d8dd);
   transition:
     background-color 80ms ease,
     border-color 80ms ease;
   white-space: nowrap;
+
+  &:hover {
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+  }
 }
 
 .btn--apply {
-  background: var(--ui-accent);
-  color: #fff;
-  border-color: var(--ui-accent);
+  color: var(--ui-accent-contrast, #ffffff);
+  background: var(--ui-accent, #3584e4);
+  border-color: var(--ui-accent, #3584e4);
 
   &:hover:not(:disabled) {
     opacity: 0.9;
@@ -98,19 +93,4 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
-}
-
-.btn--cancel {
-  background: var(--ui-surface);
-  color: var(--ui-text);
-
-  &:hover {
-    background: var(--ui-surface-2);
-    border-color: var(--ui-border-strong);
-  }
-}
-
-@include mix.dark-mode('.btn--cancel') {
-  background: var(--ui-surface);
-  color: var(--ui-text);
 }

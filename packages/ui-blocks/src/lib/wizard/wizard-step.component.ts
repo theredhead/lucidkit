@@ -5,6 +5,7 @@ import {
   TemplateRef,
   viewChild,
 } from "@angular/core";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /**
  * A single step inside a {@link UIWizard}.
@@ -25,6 +26,8 @@ import {
   selector: "ui-wizard-step",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   template: "<ng-template #stepContent><ng-content /></ng-template>",
   host: {
     class: "ui-wizard-step",

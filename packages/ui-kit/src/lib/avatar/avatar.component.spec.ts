@@ -28,7 +28,7 @@ class TestHost {
   public readonly src = signal<string | undefined>(undefined);
   public readonly email = signal<string | undefined>(undefined);
   public readonly name = signal("Jane Doe");
-  public readonly size = signal<AvatarSize>("md");
+  public readonly size = signal<AvatarSize>("medium");
   public readonly ariaLabel = signal<string | undefined>(undefined);
 }
 
@@ -107,7 +107,13 @@ describe("UIAvatar", () => {
   });
 
   describe("sizes", () => {
-    const sizes: AvatarSize[] = ["xs", "sm", "md", "lg", "xl"];
+    const sizes: AvatarSize[] = [
+      "extra-small",
+      "small",
+      "medium",
+      "large",
+      "extra-large",
+    ];
 
     for (const size of sizes) {
       it(`should apply ${size} size class`, () => {
@@ -147,13 +153,13 @@ describe("UIAvatar", () => {
 
     it("should include retina size parameter in gravatar URL", async () => {
       host.email.set("test@example.com");
-      host.size.set("lg");
+      host.size.set("large");
       fixture.detectChanges();
       await flushAsync();
       fixture.detectChanges();
 
       const img = fixture.nativeElement.querySelector(".image");
-      // lg = 56px × 2 = 112
+      // large = 56px × 2 = 112
       expect(img.getAttribute("src")).toContain("s=112");
     });
 
@@ -440,10 +446,10 @@ describe("UIAvatar", () => {
   });
 
   describe("defaults", () => {
-    it("should default to md size", () => {
+    it("should default to medium size", () => {
       expect(
         fixture.nativeElement.querySelector("ui-avatar").classList,
-      ).toContain("ui-avatar--md");
+      ).toContain("ui-avatar--medium");
     });
 
     it("should show initials by default (no src, no email)", () => {

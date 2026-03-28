@@ -13,29 +13,39 @@ export interface TextAdapterValidationResult {
  * Adapter interface for transforming raw text in a {@link UIInput}.
  *
  * When an adapter is attached to `UIInput`, the component exposes two models:
- * - `text` – the raw string displayed in the native element
- * - `value` – the processed string produced by the adapter
+ * - `text` – the raw, unaltered string as typed by the user
+ * - `value` – the processed string produced by {@link toValue}, also what
+ *   is displayed in the native input element
+ *
+ * The `value` model is the primary output: it is the adapted version of the
+ * raw input and should be used by all consuming code (forms, bindings,
+ * persistence). The `text` model is a backing store that preserves the
+ * original keystrokes for adapters that need access to the unprocessed input
+ * (e.g. for validation or undo).
  *
  * Adapters may also provide prefix/suffix icons, respond to clicks on them,
  * and expose validation via {@link validate}.
  *
  * @example
  * ```ts
- * readonly adapter = new EmailTextAdapter();
+ * readonly adapter = new UppercaseTextAdapter();
+ * // User types "hello" → text() = "hello", value() = "HELLO"
+ * // The input field displays "HELLO"
  * ```
  * ```html
- * <ui-input [adapter]="adapter" [(text)]="email" />
+ * <ui-input [adapter]="adapter" [(value)]="name" />
  * ```
  */
 export interface TextAdapter {
   /**
-   * Transform the raw text into a processed value.
+   * Transform the raw text into the adapted value.
    *
-   * Called whenever the `text` model changes. The result is emitted via the
-   * `value` model.
+   * Called on every input event. The result is stored in the `value` model
+   * **and** written back to the native input element, so the user sees the
+   * adapted text. The original keystrokes are preserved in the `text` model.
    *
    * @param text Raw text from the input element.
-   * @returns Processed value string.
+   * @returns Adapted value string (displayed in the field and emitted via `value`).
    */
   toValue(text: string): string;
 
@@ -86,4 +96,17 @@ export interface TextAdapter {
    * (e.g. `"email"`, `"tel"`, `"url"`).
    */
   inputType?: string;
+
+  /**
+   * Optional display formatter.
+   *
+   * When present, the native input element shows the string returned by
+   * this method instead of the raw {@link toValue} result. Use this to
+   * add locale-specific formatting (e.g. thousands separators) while
+   * keeping `value()` as the clean programmatic output.
+   *
+   * @param value The adapted value produced by {@link toValue}.
+   * @returns Formatted string to display in the input element.
+   */
+  toDisplayValue?(value: string): string;
 }

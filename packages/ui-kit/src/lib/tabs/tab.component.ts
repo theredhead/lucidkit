@@ -7,7 +7,7 @@ import {
   TemplateRef,
   viewChild,
 } from "@angular/core";
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 
 import { TAB_HEADER_ITEM } from "./tab-header-item";
 
@@ -38,6 +38,7 @@ import { TAB_HEADER_ITEM } from "./tab-header-item";
   standalone: true,
   templateUrl: "./tab.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   providers: [{ provide: TAB_HEADER_ITEM, useExisting: UITab }],
 })
 export class UITab {

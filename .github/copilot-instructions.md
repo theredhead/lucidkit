@@ -8,7 +8,7 @@ Read and apply `AGENTS.md` before generating or modifying any code in this
 workspace. It covers:
 
 - Component conventions (standalone, OnPush, signal APIs, `UI<Name>` naming)
-- CSS token namespaces (`--ui-*`, `--theredhead-*`, `--ui-*`) and three-tier dark mode
+- CSS token namespace (`--ui-*`), centralised dark mode, and UISurface directive
 - File structure, barrel exports, and public API surface
 - Table-view column inheritance and DI forwarding pattern
 - Testing conventions (Vitest + Analog, signal assertions)

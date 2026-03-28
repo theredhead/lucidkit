@@ -15,32 +15,10 @@
             {{ message.content }}
           </div>
         } @else {
-          <div class="chat-message" [class.chat-message--mine]="isMine(message)">
-            @if (!isMine(message)) {
-              <ui-avatar
-                [name]="message.sender.name"
-                [src]="message.sender.avatarSrc"
-                [email]="message.sender.avatarEmail"
-                size="sm"
-              />
-            }
-
-            <div class="chat-message-body">
-              @if (!isMine(message)) {
-                <span class="chat-sender-name">{{ message.sender.name }}</span>
-              }
-
-              @if ((message.type ?? 'text') === 'rich-text') {
-                <div class="chat-bubble" [innerHTML]="message.content"></div>
-              } @else {
-                <div class="chat-bubble">{{ message.content }}</div>
-              }
-
-              <time class="chat-timestamp">
-                {{ message.timestamp | date:'shortTime' }}
-              </time>
-            </div>
-          </div>
+          <ui-message-bubble
+            [message]="message"
+            [isMine]="isMine(message)"
+          />
         }
       }
     }

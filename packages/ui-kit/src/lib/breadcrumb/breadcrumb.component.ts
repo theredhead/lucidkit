@@ -4,6 +4,7 @@ import {
   input,
   output,
 } from "@angular/core";
+import { UISurface } from '@theredhead/foundation';
 
 /** A single item in the breadcrumb trail. */
 export interface BreadcrumbItem {
@@ -36,6 +37,7 @@ export type BreadcrumbVariant = "link" | "button";
   templateUrl: "./breadcrumb.component.html",
   styleUrl: "./breadcrumb.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-breadcrumb",
     "[class.ui-breadcrumb--button]": "variant() === 'button'",

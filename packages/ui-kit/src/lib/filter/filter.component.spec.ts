@@ -80,9 +80,7 @@ describe("UIFilter", () => {
 
   describe("simple mode", () => {
     it("should render a search input in simple mode", () => {
-      const input = fixture.nativeElement.querySelector(
-        ".filter__simple ui-input",
-      );
+      const input = fixture.nativeElement.querySelector(".simple-bar ui-input");
       expect(input).toBeTruthy();
     });
 
@@ -113,9 +111,7 @@ describe("UIFilter", () => {
     });
 
     it("should show mode toggle when both modes allowed", () => {
-      const btn = fixture.nativeElement.querySelector(
-        ".filter__simple ui-button",
-      );
+      const btn = fixture.nativeElement.querySelector(".simple-bar ui-button");
       expect(btn).toBeTruthy();
     });
 
@@ -123,9 +119,7 @@ describe("UIFilter", () => {
       fixture.componentRef.setInput("allowAdvanced", false);
       fixture.detectChanges();
 
-      const btn = fixture.nativeElement.querySelector(
-        ".filter__simple ui-button",
-      );
+      const btn = fixture.nativeElement.querySelector(".simple-bar ui-button");
       expect(btn).toBeFalsy();
     });
   });
@@ -325,9 +319,7 @@ describe("UIFilter", () => {
     });
 
     it("should render an add-rule button", () => {
-      const btn = fixture.nativeElement.querySelector(
-        ".filter__actions ui-button",
-      );
+      const btn = fixture.nativeElement.querySelector(".actions ui-button");
       expect(btn).toBeTruthy();
     });
 
@@ -341,7 +333,7 @@ describe("UIFilter", () => {
 
     it("should not show junction selector when allowJunction is false", () => {
       const select = fixture.nativeElement.querySelector(
-        ".filter__header ui-dropdown-list",
+        ".header ui-dropdown-list",
       );
       expect(select).toBeFalsy();
     });
@@ -351,7 +343,7 @@ describe("UIFilter", () => {
       fixture.detectChanges();
 
       const select = fixture.nativeElement.querySelector(
-        ".filter__header ui-dropdown-list",
+        ".header ui-dropdown-list",
       );
       expect(select).toBeTruthy();
     });
@@ -392,7 +384,7 @@ describe("UIFilter", () => {
       component.toggleMode(); // → advanced
       fixture.detectChanges();
 
-      const rules = fixture.nativeElement.querySelector(".filter__rules");
+      const rules = fixture.nativeElement.querySelector(".rules");
       expect(rules.getAttribute("aria-live")).toBe("polite");
     });
 
@@ -400,7 +392,7 @@ describe("UIFilter", () => {
       component.toggleMode(); // → advanced
       fixture.detectChanges();
 
-      const rules = fixture.nativeElement.querySelector(".filter__rules");
+      const rules = fixture.nativeElement.querySelector(".rules");
       expect(rules.getAttribute("role")).toBe("list");
     });
 
@@ -409,7 +401,7 @@ describe("UIFilter", () => {
       fixture.detectChanges();
 
       const btn = fixture.nativeElement.querySelector(
-        ".filter__actions ui-button button",
+        ".actions ui-button button",
       );
       expect(btn.getAttribute("aria-label")).toBe("Add filter rule");
     });

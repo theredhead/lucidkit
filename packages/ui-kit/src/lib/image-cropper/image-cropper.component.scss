@@ -6,14 +6,7 @@
   position: relative;
   overflow: hidden;
   min-height: 200px;
-  background: var(--ui-surface, #f0f0f0);
-  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 4px;
-}
-
-@include mix.dark-mode {
-  background: var(--ui-surface, #1a1a1a);
-  border-color: var(--ui-border, #3a3f47);
 }
 
 canvas {

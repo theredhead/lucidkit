@@ -4,26 +4,6 @@
   display: block;
   position: relative;
   overflow: hidden;
-
-  --ui-surface: #ffffff;
-  --ui-text: #1d232b;
-  --ui-border: #d7dce2;
-  --ui-indicator: #bbc3cc;
-  --ui-indicator-active: var(--ui-accent, #3584e4);
-  --ui-btn-bg: rgba(255, 255, 255, 0.85);
-  --ui-btn-hover: rgba(255, 255, 255, 1);
-  --ui-btn-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-}
-
-@include mix.dark-mode {
-  --ui-surface: #1e2228;
-  --ui-text: #f2f6fb;
-  --ui-border: #3a3f47;
-  --ui-indicator: #505d6d;
-  --ui-indicator-active: var(--ui-accent, #7ab0ff);
-  --ui-btn-bg: rgba(30, 34, 40, 0.85);
-  --ui-btn-hover: rgba(30, 34, 40, 1);
-  --ui-btn-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Viewport & track ── */
@@ -68,21 +48,13 @@
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid var(--ui-border);
   border-radius: 50%;
-  background: var(--ui-btn-bg);
-  color: var(--ui-text);
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
-  box-shadow: var(--ui-btn-shadow);
   transition:
     background 0.15s ease,
     opacity 0.15s ease;
-}
-
-.btn:hover:not(:disabled) {
-  background: var(--ui-btn-hover);
 }
 
 .btn:disabled {
@@ -113,7 +85,6 @@
   border-radius: 50%;
   border: none;
   padding: 0;
-  background: var(--ui-indicator);
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -125,14 +96,12 @@
 }
 
 .dot--active {
-  background: var(--ui-indicator-active);
   transform: scale(1.25);
 }
 
 /* ── Focus ── */
 
 :host:focus-visible {
-  outline: 2px solid var(--ui-focus-ring);
   outline-offset: 2px;
   border-radius: 0.25rem;
 }

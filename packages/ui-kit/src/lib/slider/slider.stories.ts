@@ -2,7 +2,7 @@ import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
 import { UISlider } from "./slider.component";
-import type { SliderTick } from "./slider.types";
+import type { SliderMode, SliderTick } from "./slider.types";
 
 @Component({
   selector: "ui-slider-demo",
@@ -144,6 +144,45 @@ const meta: Meta<UISlider> = {
   title: "@Theredhead/UI Kit/Slider",
   component: UISlider,
   tags: ["autodocs"],
+  argTypes: {
+    mode: {
+      control: "select",
+      options: ["single", "range"] satisfies SliderMode[],
+      description: "Selection mode: one thumb or two.",
+    },
+    min: {
+      control: "number",
+      description: "Minimum bound.",
+    },
+    max: {
+      control: "number",
+      description: "Maximum bound.",
+    },
+    step: {
+      control: "number",
+      description: "Step increment.",
+    },
+    showValue: {
+      control: "boolean",
+      description: "Show the current value label above the thumb.",
+    },
+    showMinMax: {
+      control: "boolean",
+      description: "Show min/max labels at either end of the track.",
+    },
+    showTicks: {
+      control: "boolean",
+      description: "Show tick marks at each step.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables interaction.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -161,6 +200,37 @@ const meta: Meta<UISlider> = {
 };
 export default meta;
 type Story = StoryObj<UISlider>;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-slider
+      [mode]="mode"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      [showValue]="showValue"
+      [showMinMax]="showMinMax"
+      [showTicks]="showTicks"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    mode: "single",
+    min: 0,
+    max: 100,
+    step: 1,
+    showValue: true,
+    showMinMax: false,
+    showTicks: false,
+    disabled: false,
+    ariaLabel: "Slider",
+  },
+};
 
 /**
  * Single-thumb sliders with three configurations: a basic slider

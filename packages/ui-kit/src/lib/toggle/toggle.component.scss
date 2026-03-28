@@ -3,31 +3,13 @@
 
 // ── Light defaults ───────────────────────────────────────────────────
 :host {
-  --ui-toggle-track-bg: #d1d5db;
-  --ui-toggle-track-bg-on: var(--ui-accent, #3b82f6);
-  --ui-toggle-thumb-bg: #ffffff;
-  --ui-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  --ui-toggle-label-color: #ffffff;
-  --ui-toggle-text-color: var(--ui-text, #1d232b);
-  --ui-toggle-focus-ring: 0 0 0 2px
-    color-mix(in srgb, var(--ui-focus-ring) 40%, transparent);
-
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
   user-select: none;
   vertical-align: middle;
-}
-
-@include mix.dark-mode {
-  --ui-toggle-track-bg: #4b5563;
-  --ui-toggle-track-bg-on: var(--ui-accent, #60a5fa);
-  --ui-toggle-thumb-bg: #f3f4f6;
-  --ui-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --ui-toggle-text-color: var(--ui-text, #f2f6fb);
-  --ui-toggle-focus-ring: 0 0 0 2px
-    color-mix(in srgb, var(--ui-focus-ring) 40%, transparent);
+  color: var(--ui-text);
 }
 
 // ── Disabled ────────────────────────────────────────────────────────
@@ -41,23 +23,27 @@
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  background: var(--ui-toggle-track-bg);
+  background-color: var(--ui-border-strong);
   transition: background-color anim.$duration-slow anim.$easing-default;
   outline: none;
   flex-shrink: 0;
   overflow: hidden;
 
   &:focus-visible {
-    box-shadow: var(--ui-toggle-focus-ring);
+    @include mix.focus-ring($offset: 2px);
   }
+}
+
+// ── On state track ──────────────────────────────────────────────────
+:host(.ui-toggle--on) .track {
+  background-color: var(--ui-accent);
 }
 
 // ── Thumb ───────────────────────────────────────────────────────────
 .thumb {
   position: absolute;
   border-radius: 50%;
-  background: var(--ui-toggle-thumb-bg);
-  box-shadow: var(--ui-toggle-thumb-shadow);
+  background-color: var(--ui-surface);
   transition: transform anim.$duration-slow anim.$easing-default;
 }
 
@@ -66,7 +52,6 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: var(--ui-toggle-label-color);
   pointer-events: none;
   transition: opacity anim.$duration-medium anim.$easing-default;
   white-space: nowrap;
@@ -82,10 +67,6 @@
 
 // ── On state ────────────────────────────────────────────────────────
 :host(.ui-toggle--on) {
-  .track {
-    background: var(--ui-toggle-track-bg-on);
-  }
-
   .label--on {
     opacity: 1;
   }
@@ -98,7 +79,6 @@
 // ── Projected text label ────────────────────────────────────────────
 .text {
   font-size: 0.875rem;
-  color: var(--ui-toggle-text-color);
   line-height: 1.4;
 
   &:empty {
@@ -109,7 +89,7 @@
 // ── Sizes ───────────────────────────────────────────────────────────
 
 // Small
-:host(.ui-toggle--sm) {
+:host(.ui-toggle--small) {
   .track {
     width: 2rem;
     height: 1.125rem;
@@ -149,7 +129,7 @@
 }
 
 // Medium (default)
-:host(.ui-toggle--md) {
+:host(.ui-toggle--medium) {
   .track {
     width: 2.75rem;
     height: 1.5rem;
@@ -190,7 +170,7 @@
 }
 
 // Large
-:host(.ui-toggle--lg) {
+:host(.ui-toggle--large) {
   .track {
     width: 3.5rem;
     height: 2rem;

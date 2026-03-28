@@ -1,11 +1,6 @@
 @use "mixins" as mix;
 
 :host {
-  --ui-gauge-text: #555;
-  --ui-gauge-face: #e8eaed;
-  --ui-gauge-needle: #ea4335;
-  --ui-gauge-tick: #888;
-  --ui-gauge-accent: var(--ui-brand, #4285f4);
 
   display: inline-block;
   font-family: inherit;
@@ -15,14 +10,6 @@
   display: block;
   width: 100%;
   height: 100%;
-}
-
-@include mix.dark-mode {
-  --ui-gauge-text: #ccc;
-  --ui-gauge-face: #2a2d32;
-  --ui-gauge-needle: #f28b82;
-  --ui-gauge-tick: #777;
-  --ui-gauge-accent: var(--ui-brand, #8ab4f8);
 }
 
 .viewport {

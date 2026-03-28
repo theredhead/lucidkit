@@ -3,20 +3,6 @@
 
 :host {
   display: block;
-
-  --ui-text: #1d232b;
-  --ui-border: #d7dce2;
-  --ui-surface: #ffffff;
-  --ui-muted: #5a6470;
-  --ui-hover-bg: #f0f2f5;
-}
-
-@include mix.dark-mode {
-  --ui-text: #f2f6fb;
-  --ui-border: #3a3f47;
-  --ui-surface: #2a2f38;
-  --ui-muted: #d0d8e3;
-  --ui-hover-bg: #353a44;
 }
 
 .container {
@@ -24,7 +10,6 @@
   align-items: center;
   gap: 1rem;
   font-size: var(--ui-font-body, 0.875rem);
-  color: var(--ui-text);
   flex-wrap: wrap;
 }
 
@@ -35,16 +20,12 @@
 }
 
 .size-label {
-  color: var(--ui-muted);
   white-space: nowrap;
 }
 
 .size-select {
   appearance: auto;
-  border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
-  background: var(--ui-surface);
-  color: var(--ui-text);
   padding: 0.25rem 0.375rem;
   font-size: inherit;
   cursor: pointer;
@@ -55,7 +36,6 @@
 }
 
 .summary {
-  color: var(--ui-muted);
   white-space: nowrap;
 }
 
@@ -71,9 +51,7 @@
 
 .btn {
   @include mix.control-reset;
-  border: 1px solid transparent;
   cursor: pointer;
-  color: var(--ui-text);
   font-family: var(--ui-font, inherit);
   font-size: inherit;
   min-width: 2rem;
@@ -86,10 +64,6 @@
     background-color anim.$duration-normal anim.$easing-default,
     border-color anim.$duration-normal anim.$easing-default;
 
-  &:hover:not(:disabled) {
-    background: var(--ui-hover-bg);
-  }
-
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
@@ -100,22 +74,7 @@
   }
 }
 
-.btn--page {
-  border-color: var(--ui-border);
-}
-
-.btn--active {
-  background: var(--ui-accent);
-  color: #ffffff;
-  border-color: var(--ui-accent);
-
-  &:hover:not(:disabled) {
-    background: var(--ui-accent);
-  }
-}
-
 .ellipsis {
   min-width: 2rem;
   text-align: center;
-  color: var(--ui-muted);
 }

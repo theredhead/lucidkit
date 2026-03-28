@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIChart } from "./chart.component";
+import { UIButton } from "../button/button.component";
 import type { ChartLayer } from "./chart.types";
 import { BarGraphStrategy } from "./strategies/bar-graph.strategy";
 import { LineGraphStrategy } from "./strategies/line-graph.strategy";
@@ -615,7 +616,7 @@ class ChartSmallDemo {
 @Component({
   selector: "ui-chart-switcher-demo",
   standalone: true,
-  imports: [UIChart],
+  imports: [UIChart, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -635,19 +636,6 @@ class ChartSmallDemo {
         margin-bottom: 0.75rem;
         flex-wrap: wrap;
       }
-      button {
-        padding: 0.35rem 0.75rem;
-        border: 1px solid var(--ui-border, #d7dce2);
-        border-radius: 4px;
-        background: var(--ui-chart-bg, #fff);
-        cursor: pointer;
-        font-size: 0.8125rem;
-      }
-      button.active {
-        background: var(--theredhead-primary, #4285f4);
-        color: #fff;
-        border-color: transparent;
-      }
       p {
         margin: 0.75rem 0 0;
         font-size: 0.8125rem;
@@ -659,12 +647,12 @@ class ChartSmallDemo {
     <h3>Interactive Strategy Switcher</h3>
     <div class="controls">
       @for (name of strategyNames; track name) {
-        <button
-          [class.active]="activeName() === name"
+        <ui-button
+          [variant]="activeName() === name ? 'filled' : 'outlined'"
           (click)="setStrategy(name)"
         >
           {{ name }}
-        </button>
+        </ui-button>
       }
     </div>
     <ui-chart
@@ -1133,6 +1121,24 @@ const meta: Meta<UIChart<unknown>> = {
   title: "@Theredhead/UI Kit/Chart",
   component: UIChart,
   tags: ["autodocs"],
+  argTypes: {
+    width: {
+      control: "number",
+      description: "Chart width in pixels.",
+    },
+    height: {
+      control: "number",
+      description: "Chart height in pixels.",
+    },
+    showLegend: {
+      control: "boolean",
+      description: "Show the colour-coded legend below the chart.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the chart.",
+    },
+  },
   parameters: {
     docs: {
       description: {

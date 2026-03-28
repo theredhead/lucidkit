@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 import { TAB_HEADER_ITEM } from "./tab-header-item";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A flexible spacer in the `<ui-tab-group>` header that pushes
@@ -19,6 +20,7 @@ import { TAB_HEADER_ITEM } from "./tab-header-item";
   selector: "ui-tab-spacer",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   template: "",
   providers: [{ provide: TAB_HEADER_ITEM, useExisting: UITabSpacer }],
   host: {

@@ -3,12 +3,13 @@ import { moduleMetadata } from "@storybook/angular";
 
 import { UITooltip } from "./tooltip.directive";
 import type { TooltipPosition } from "./tooltip.types";
+import { UIButton } from "../button/button.component";
 
 const meta: Meta = {
   title: "@Theredhead/UI Kit/Tooltip",
   decorators: [
     moduleMetadata({
-      imports: [UITooltip],
+      imports: [UITooltip, UIButton],
     }),
   ],
   tags: ["autodocs"],
@@ -21,12 +22,20 @@ const meta: Meta = {
     },
   },
   argTypes: {
+    uiTooltip: {
+      control: "text",
+      description: "Tooltip text content.",
+    },
     tooltipPosition: {
       control: "select",
       options: ["top", "bottom", "left", "right"] satisfies TooltipPosition[],
       description:
         "Controls where the tooltip appears relative to the anchor element. " +
         "The tooltip will reposition if it overflows the viewport.",
+    },
+    tooltipDelay: {
+      control: "number",
+      description: "Show delay in milliseconds.",
     },
   },
 };
@@ -44,17 +53,17 @@ export const Default: Story = {
     props: args,
     template: `
       <div style="display: flex; justify-content: center; padding: 80px;">
-        <button
-          uiTooltip="This is a tooltip"
+        <ui-button
+          [uiTooltip]="uiTooltip"
           [tooltipPosition]="tooltipPosition"
-          style="padding: 8px 16px;"
+          [tooltipDelay]="tooltipDelay"
         >
           Hover me
-        </button>
+        </ui-button>
       </div>
     `,
   }),
-  args: { tooltipPosition: "top" },
+  args: { uiTooltip: "This is a tooltip", tooltipPosition: "top", tooltipDelay: 200 },
   parameters: {
     docs: {
       description: {
@@ -116,10 +125,10 @@ export const AllPositions: Story = {
   render: () => ({
     template: `
       <div style="display: flex; gap: 32px; justify-content: center; padding: 80px; flex-wrap: wrap;">
-        <button uiTooltip="Top tooltip" tooltipPosition="top" style="padding: 8px 16px;">Top</button>
-        <button uiTooltip="Bottom tooltip" tooltipPosition="bottom" style="padding: 8px 16px;">Bottom</button>
-        <button uiTooltip="Left tooltip" tooltipPosition="left" style="padding: 8px 16px;">Left</button>
-        <button uiTooltip="Right tooltip" tooltipPosition="right" style="padding: 8px 16px;">Right</button>
+        <ui-button uiTooltip="Top tooltip" tooltipPosition="top">Top</ui-button>
+        <ui-button uiTooltip="Bottom tooltip" tooltipPosition="bottom">Bottom</ui-button>
+        <ui-button uiTooltip="Left tooltip" tooltipPosition="left">Left</ui-button>
+        <ui-button uiTooltip="Right tooltip" tooltipPosition="right">Right</ui-button>
       </div>
     `,
   }),

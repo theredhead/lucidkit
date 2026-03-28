@@ -17,6 +17,7 @@ import { NgTemplateOutlet } from "@angular/common";
 import {
   FilterableArrayDatasource,
   type IDatasource,
+  UISurface,
 } from "@theredhead/foundation";
 import {
   UIButton,
@@ -99,6 +100,7 @@ import type {
   templateUrl: "./search-view.component.html",
   styleUrl: "./search-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-search-view",
   },

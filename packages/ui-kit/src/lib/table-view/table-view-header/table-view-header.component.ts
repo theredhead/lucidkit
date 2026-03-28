@@ -11,6 +11,7 @@ import {
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { MIN_COLUMN_WIDTH } from "../table-view.constants";
 import type { SelectionMode } from "../../core/selection-model";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 export interface SortState {
   key: string;
@@ -26,6 +27,8 @@ export interface ColumnResizeEvent {
   selector: "ui-table-header",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "table-header" }],
   templateUrl: "./table-view-header.component.html",
   styleUrl: "./table-view-header.component.scss",
 })
@@ -90,8 +93,7 @@ export class UITableHeader {
     const startX = event.clientX;
     const startWidth = cell.getBoundingClientRect().width;
     const root =
-      this.elRef.nativeElement.closest(".root") ??
-      this.elRef.nativeElement;
+      this.elRef.nativeElement.closest(".root") ?? this.elRef.nativeElement;
 
     root.classList.add("resizing");
     handle.setPointerCapture(event.pointerId);

@@ -4,27 +4,12 @@
 
 // ── Light defaults ───────────────────────────────────────────────
 :host {
-  --ui-panel-bg: #ffffff;
-  --ui-panel-text: #1d232b;
-  --ui-panel-text-muted: #5a6470;
-  --ui-panel-border: #e5e7eb;
-  --ui-panel-header-bg: #f6f7f8;
   --ui-panel-radius: 8px;
   --ui-panel-shadow: #{elev.$shadow-sm-light};
-  --ui-panel-action-hover: #e5e7eb;
-  --ui-panel-notify-accent: var(--ui-secondary);
-  --ui-panel-notify-glow: color-mix(
-    in srgb,
-    var(--ui-secondary) 22%,
-    transparent
-  );
 
   display: flex;
   flex-direction: column;
-  background: var(--ui-panel-bg);
-  border: 1px solid var(--ui-panel-border);
   border-radius: var(--ui-panel-radius);
-  box-shadow: var(--ui-panel-shadow);
   overflow: hidden;
   min-width: 0;
   min-height: 0;
@@ -35,19 +20,7 @@
 }
 
 @include mix.dark-mode {
-  --ui-panel-bg: #242b33;
-  --ui-panel-text: #f2f6fb;
-  --ui-panel-text-muted: #a0aab6;
-  --ui-panel-border: #3a3f47;
-  --ui-panel-header-bg: #1f242a;
   --ui-panel-shadow: #{elev.$shadow-sm-dark};
-  --ui-panel-action-hover: #3a3f47;
-  --ui-panel-notify-accent: var(--ui-secondary);
-  --ui-panel-notify-glow: color-mix(
-    in srgb,
-    var(--ui-secondary) 26%,
-    transparent
-  );
 }
 
 // ── Header ───────────────────────────────────────────────────────
@@ -57,8 +30,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.625rem 0.875rem;
-  background: var(--ui-panel-header-bg);
-  border-bottom: 1px solid var(--ui-panel-border);
   flex-shrink: 0;
 }
 
@@ -71,14 +42,12 @@
 
 .icon {
   flex-shrink: 0;
-  color: var(--ui-panel-text-muted);
 }
 
 .title {
   margin: 0;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--ui-panel-text);
   letter-spacing: 0.01em;
   @include mix.truncate;
 }
@@ -101,22 +70,10 @@
   width: 26px;
   height: 26px;
   border-radius: 4px;
-  color: var(--ui-panel-text-muted);
   font-size: 0.7rem;
   transition:
     background-color anim.$duration-medium,
-    color anim.$duration-medium;
-
-  &:hover {
-    background: var(--ui-panel-action-hover);
-    color: var(--ui-panel-text);
-  }
-
-  @include mix.focus-ring(-2px, var(--ui-panel-border));
-
-  &--remove:hover {
-    color: #dc2626;
-  }
+    color anim.$duration-medium
 }
 
 // ── Body ─────────────────────────────────────────────────────────
@@ -126,7 +83,6 @@
   overflow: auto;
   padding: 0.875rem;
   min-height: 0;
-  color: var(--ui-panel-text);
 }
 
 // ── Collapsed state ──────────────────────────────────────────────
@@ -138,33 +94,10 @@
 // ── Notified state ───────────────────────────────────────────────
 
 :host(.ui-dashboard-panel--notified) {
-  border-color: var(--ui-panel-notify-accent);
-  box-shadow:
-    0 0 0 1px var(--ui-panel-notify-accent),
-    0 0 8px var(--ui-panel-notify-glow);
   animation: ui-panel-pulse 2s anim.$easing-in-out infinite;
 
-  .header {
-    border-bottom-color: var(--ui-panel-notify-accent);
-  }
-
   .icon {
-    color: var(--ui-panel-notify-accent);
     animation: ui-icon-pulse 2s anim.$easing-in-out infinite;
-  }
-}
-
-@keyframes ui-panel-pulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 1px var(--ui-panel-notify-accent),
-      0 0 8px var(--ui-panel-notify-glow);
-  }
-  50% {
-    box-shadow:
-      0 0 0 2px var(--ui-panel-notify-accent),
-      0 0 14px var(--ui-panel-notify-glow);
   }
 }
 

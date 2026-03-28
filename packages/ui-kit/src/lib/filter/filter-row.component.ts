@@ -23,6 +23,7 @@ import {
   isNoValueOperator,
   operatorsForType,
 } from "./filter.types";
+import { UISurface } from '@theredhead/foundation';
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
@@ -61,6 +62,7 @@ type ValueInputMode = "select" | "autocomplete" | "text";
   templateUrl: "./filter-row.component.html",
   styleUrl: "./filter-row.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-filter-row" },
 })
 export class UIFilterRow {

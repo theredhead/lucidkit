@@ -1,19 +1,7 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 // ── Light defaults ───────────────────────────────────────────────
 :host {
-  --ui-gantt-bg: #ffffff;
-  --ui-gantt-text: #1d232b;
-  --ui-gantt-text-muted: #6b7280;
-  --ui-gantt-border: #e5e7eb;
-  --ui-header-bg: #f6f7f8;
-  --ui-row-hover: #f3f4f6;
-  --ui-row-alt: #fafbfc;
-  --ui-gantt-today: #3b82f6;
-  --ui-bar-text: #ffffff;
-  --ui-bar-progress: rgba(0, 0, 0, 0.18);
-  --ui-milestone-bg: #f59e0b;
-
   display: block;
   font-family:
     system-ui,
@@ -21,27 +9,10 @@
     sans-serif;
 }
 
-@include mix.dark-mode {
-  --ui-gantt-bg: #1f2937;
-  --ui-gantt-text: #f2f6fb;
-  --ui-gantt-text-muted: #9ca3af;
-  --ui-gantt-border: #374151;
-  --ui-header-bg: #1a1f28;
-  --ui-row-hover: #2a3040;
-  --ui-row-alt: #242b33;
-  --ui-gantt-today: #60a5fa;
-  --ui-bar-text: #ffffff;
-  --ui-bar-progress: rgba(0, 0, 0, 0.3);
-  --ui-milestone-bg: #fbbf24;
-}
-
 // ── Container ────────────────────────────────────────────────────
 
 .container {
   display: flex;
-  background: var(--ui-gantt-bg);
-  color: var(--ui-gantt-text);
-  border: 1px solid var(--ui-gantt-border);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -50,44 +21,31 @@
 
 .task-list {
   flex-shrink: 0;
-  border-right: 1px solid var(--ui-gantt-border);
   overflow: hidden;
 }
 
-.task-list__header {
+.task-list-header {
   display: flex;
   align-items: center;
   padding: 0 0.75rem;
   height: 56px; // matches two header rows (28px each)
-  background: var(--ui-header-bg);
-  border-bottom: 1px solid var(--ui-gantt-border);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ui-gantt-text-muted);
 }
 
-.task-list__body {
+.task-list-body {
   overflow-y: auto;
 }
 
-.task-list__row {
+.task-list-row {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--ui-gantt-border);
   transition: background-color 0.1s;
-
-  &:nth-child(even) {
-    background: var(--ui-row-alt);
-  }
-
-  &:hover {
-    background: var(--ui-row-hover);
-  }
 }
 
-.task-list__label {
+.task-list-label {
   font-size: 0.78rem;
   white-space: nowrap;
   overflow: hidden;
@@ -109,27 +67,22 @@
 
 .header {
   flex-shrink: 0;
-  border-bottom: 1px solid var(--ui-gantt-border);
-  background: var(--ui-header-bg);
   // min-width ensures columns don't collapse
   min-width: max-content;
 }
 
-.header__groups,
-.header__columns {
+.header-groups,
+.header-columns {
   display: grid;
 }
 
-.header__group-cell {
+.header-group-cell {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 28px;
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--ui-gantt-text);
-  border-right: 1px solid var(--ui-gantt-border);
-  border-bottom: 1px solid var(--ui-gantt-border);
   white-space: nowrap;
 
   &:last-child {
@@ -137,14 +90,12 @@
   }
 }
 
-.header__col-cell {
+.header-col-cell {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 28px;
   font-size: 0.68rem;
-  color: var(--ui-gantt-text-muted);
-  border-right: 1px solid var(--ui-gantt-border);
   white-space: nowrap;
 
   &:last-child {
@@ -159,7 +110,7 @@
   overflow: auto;
 }
 
-.body__canvas {
+.body-canvas {
   position: relative;
   min-width: max-content;
   // Ensure the canvas matches the header width
@@ -172,15 +123,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--ui-gantt-border);
-
-  &:nth-child(even) {
-    background: var(--ui-row-alt);
-  }
-
-  &:hover {
-    background: var(--ui-row-hover);
-  }
 }
 
 // ── Task bar ─────────────────────────────────────────────────────
@@ -204,32 +146,28 @@
 
   &:hover {
     filter: brightness(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-gantt-today);
     outline-offset: 2px;
   }
 }
 
-.bar__progress {
+.bar-progress {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background: var(--ui-bar-progress);
   border-radius: inherit;
   pointer-events: none;
 }
 
-.bar__label {
+.bar-label {
   position: relative;
   z-index: 1;
   padding: 0 6px;
   font-size: 0.65rem;
   font-weight: 500;
-  color: var(--ui-bar-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -253,13 +191,12 @@
   cursor: pointer;
 
   &:focus-visible {
-    outline: 2px solid var(--ui-gantt-today);
     outline-offset: 4px;
     border-radius: 2px;
   }
 }
 
-.milestone__diamond {
+.milestone-diamond {
   display: block;
   width: 12px;
   height: 12px;
@@ -274,7 +211,6 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--ui-gantt-today);
   opacity: 0.6;
   z-index: 2;
   pointer-events: none;

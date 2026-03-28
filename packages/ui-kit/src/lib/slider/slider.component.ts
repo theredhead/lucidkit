@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 
 import type { SliderMode, SliderTick, SliderValue } from "./slider.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A range slider with single-thumb and dual-thumb (range) modes.
@@ -28,6 +29,7 @@ import type { SliderMode, SliderTick, SliderValue } from "./slider.types";
   templateUrl: "./slider.component.html",
   styleUrl: "./slider.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-slider",
     "[class.ui-slider--single]": "mode() === 'single'",

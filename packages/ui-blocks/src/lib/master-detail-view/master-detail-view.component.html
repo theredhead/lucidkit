@@ -50,7 +50,7 @@
   ariaLabel="Resize list and detail panels"
 >
   <aside first class="list">
-    <header class="header">
+    <header class="ui-surface-type-panel">
       <h2 class="title">{{ title() }}</h2>
     </header>
 
@@ -75,8 +75,15 @@
         <ui-table-view
           [datasource]="resolvedTableDatasource()"
           [externalColumns]="columns()"
-          [showBuiltInPaginator]="false"
-          [showRowIndexIndicator]="false"
+          [disabled]="disabled()"
+          [pageSize]="pageSize()"
+          [pageIndex]="pageIndex()"
+          [showBuiltInPaginator]="showBuiltInPaginator()"
+          [caption]="caption()"
+          [showRowIndexIndicator]="showRowIndexIndicator()"
+          [rowIndexHeaderText]="rowIndexHeaderText()"
+          [tableId]="tableId()"
+          [resizable]="resizable()"
           selectionMode="single"
           [showSelectionColumn]="false"
           [rowClickSelect]="true"

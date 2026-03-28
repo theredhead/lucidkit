@@ -8,6 +8,7 @@ import {
   output,
   viewChild,
 } from "@angular/core";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /**
  * A declarative dialog component built on the native `<dialog>` element.
@@ -51,6 +52,8 @@ import {
   templateUrl: "./dialog.component.html",
   styleUrl: "./dialog.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   host: {
     class: "ui-dialog",
   },

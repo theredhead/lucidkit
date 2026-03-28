@@ -12,7 +12,7 @@ import {
   signal,
   untracked,
 } from "@angular/core";
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 import { UIDashboardPanel } from "./dashboard-panel.component";
 import { UIIcon, UIIcons } from "@theredhead/ui-kit";
 import type {
@@ -54,6 +54,7 @@ import type {
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.scss",
   host: {

@@ -6,6 +6,7 @@ import {
   input,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
+import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/foundation";
 
 /**
  * Inline SVG icon component.
@@ -86,6 +87,8 @@ import { DomSanitizer } from "@angular/platform-browser";
   selector: "ui-icon",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "" }],
   host: {
     class: "ui-icon",
     "[style.width.px]": "size()",

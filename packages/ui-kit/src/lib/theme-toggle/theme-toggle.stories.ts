@@ -60,6 +60,10 @@ const meta: Meta<UIThemeToggle> = {
         "Visual style: `icon` for a compact icon-only button, `button` " +
         "for a wider button with a text label alongside the icon.",
     },
+    disabled: {
+      control: "boolean",
+      description: "Disables the toggle button.",
+    },
     ariaLabel: {
       control: "text",
       description:
@@ -71,6 +75,25 @@ const meta: Meta<UIThemeToggle> = {
 
 export default meta;
 type Story = StoryObj<UIThemeToggle>;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-theme-toggle
+      [variant]="variant"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    variant: "icon",
+    disabled: false,
+    ariaLabel: "Toggle theme",
+  },
+};
 
 /**
  * Both theme toggle variants side by side. Click either to cycle

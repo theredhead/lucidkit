@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Footer section for a dialog, typically containing action buttons.
@@ -18,6 +19,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   selector: "ui-dialog-footer",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-dialog-footer" },
   templateUrl: "./dialog-footer.component.html",
   styleUrl: "./dialog-footer.component.scss",

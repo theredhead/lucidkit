@@ -311,40 +311,80 @@ export class UIExample {
 
 ## CSS / SCSS Conventions
 
-### Token namespaces
+### Token namespace
 
-| Namespace        | Scope                            | Examples                                                                  |
-| ---------------- | -------------------------------- | ------------------------------------------------------------------------- |
-| `--ui-*`         | Component-level design tokens    | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`, `--ui-density` |
-| `--theredhead-*` | Global theme tokens (Material 3) | `--theredhead-background`, `--theredhead-primary`, `--theredhead-surface` |
+| Namespace | Scope                              | Examples                                                                  |
+| --------- | ---------------------------------- | ------------------------------------------------------------------------- |
+| `--ui-*`  | All design tokens (global + local) | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`, `--ui-density` |
 
-### Dark mode (three-tier pattern — use in every component)
+All tokens live under the `--ui-*` namespace. They are declared centrally in
+`_tokens.scss` and emitted on `html` by the `theredhead-theme()` mixin.
+
+### Dark mode (centralised — do NOT add per-component three-tier blocks)
+
+Dark mode is handled **globally** in `_theme.scss`. The `theredhead-theme()`
+mixin emits all `--ui-*` tokens on three selectors:
 
 ```scss
-// 1. Light defaults
-:host {
-  --ui-text: #1d232b;
-  --ui-border: #d7dce2;
+html {
+  @include tokens.ui-tokens-light;
+}
+html.dark-theme {
+  @include tokens.ui-tokens-dark;
 }
 
-// 2. Explicit dark class
-:host-context(html.dark-theme) {
-  --ui-text: #f2f6fb;
-  --ui-border: #3a3f47;
-}
-
-// 3. System preference fallback
 @media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-text: #f2f6fb;
-    --ui-border: #3a3f47;
+  html:not(.light-theme):not(.dark-theme) {
+    @include tokens.ui-tokens-dark;
   }
 }
 ```
 
+**Components never declare their own three-tier blocks.** They consume tokens
+via `var(--ui-text)`, `var(--ui-surface)` etc. and the cascade handles
+light/dark switching automatically.
+
+### UISurface directive — surface types
+
+Components acquire background, border, and text colour through the `UISurface`
+host directive (from `@theredhead/foundation`). The directive maps a
+`surfaceType` input to CSS classes (`ui-surface-type-<value>`) defined in
+`_surfaces.scss`.
+
+Built-in types: `transparent`, `raised`, `sunken`, `panel`, `table`,
+`table-header`, `table-body`, `table-footer`, `input`, `input-popup`,
+`button`, `button-primary`.
+
+Components that have an inherent surface role provide a DI default:
+
+```ts
+providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }];
+```
+
+Components that must **not** inherit a parent's surface type reset it:
+
+```ts
+providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "" }];
+```
+
+### Component-specific overridable tokens
+
+When a component needs fine-grained control beyond `--ui-*`, declare its own
+tokens with a nested fallback chain:
+
+```scss
+:host {
+  --clock-rim: var(--ui-border-strong, #505d6d);
+}
+```
+
+This allows override at three levels: component token → theme token → hardcoded
+default. Do not add three-tier dark-mode blocks for these — the `--ui-*`
+fallback handles dark mode.
+
 ### Selectors
 
-- Host element variant/state classes: `ui-<name>--<variant>` (BEM-like)
+- Host element variant/state classes: `ui-<name>--<variant>`
 - Inner element classes: plain descriptive names (`.ac-chip`, `.table-cell`, `.badge-cell`)
 
 ---

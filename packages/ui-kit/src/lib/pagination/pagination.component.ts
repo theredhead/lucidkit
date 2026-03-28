@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 
 import type { PageChangeEvent } from "./pagination.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A pagination control for navigating through pages of data.
@@ -28,6 +29,7 @@ import type { PageChangeEvent } from "./pagination.types";
   templateUrl: "./pagination.component.html",
   styleUrl: "./pagination.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-pagination",
     role: "navigation",

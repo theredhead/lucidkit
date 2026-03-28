@@ -7,6 +7,7 @@ import {
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
 import { UIMediaPlayer } from "./media-player.component";
+import { UIButton } from "../button/button.component";
 import {
   provideMediaEmbedProviders,
   youTubeEmbedProvider,
@@ -113,7 +114,7 @@ class MediaPlayerTracksDemo {
 @Component({
   selector: "ui-media-player-blob-demo",
   standalone: true,
-  imports: [UIMediaPlayer],
+  imports: [UIMediaPlayer, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div style="max-width: 480px">
@@ -121,9 +122,9 @@ class MediaPlayerTracksDemo {
       <p style="font-size: 0.875rem; opacity: 0.7; margin: 0 0 12px">
         Click "Generate" to create a synthesised tone Blob and play it.
       </p>
-      <button (click)="generateTone()" style="margin-bottom: 12px">
+      <ui-button (click)="generateTone()" style="margin-bottom: 12px">
         Generate tone
-      </button>
+      </ui-button>
       @if (blobSource()) {
         <ui-media-player
           type="audio"
@@ -164,7 +165,7 @@ class MediaPlayerBlobDemo {
 @Component({
   selector: "ui-media-player-no-controls-demo",
   standalone: true,
-  imports: [UIMediaPlayer],
+  imports: [UIMediaPlayer, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div style="max-width: 640px">
@@ -178,10 +179,18 @@ class MediaPlayerBlobDemo {
         ariaLabel="Programmatic player"
       />
       <div style="margin-top: 8px; display: flex; gap: 8px">
-        <button (click)="player.playMedia()">Play</button>
-        <button (click)="player.pauseMedia()">Pause</button>
-        <button (click)="player.seekTo(0)">Restart</button>
-        <button (click)="player.toggleMute()">Toggle Mute</button>
+        <ui-button variant="outlined" (click)="player.playMedia()"
+          >Play</ui-button
+        >
+        <ui-button variant="outlined" (click)="player.pauseMedia()"
+          >Pause</ui-button
+        >
+        <ui-button variant="outlined" (click)="player.seekTo(0)"
+          >Restart</ui-button
+        >
+        <ui-button variant="outlined" (click)="player.toggleMute()"
+          >Toggle Mute</ui-button
+        >
       </div>
     </div>
   `,

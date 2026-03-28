@@ -1,24 +1,12 @@
 // ── Light defaults ─────────────────────────────────────────────────
 :host {
-  --ui-dropdown-text: #1d232b;
-  --ui-dropdown-placeholder: #8b95a1;
 
   display: inline-flex;
 }
 
 // ── Explicit dark class ───────────────────────────────────────────
-:host-context(html.dark-theme) {
-  --ui-dropdown-text: #f2f6fb;
-  --ui-dropdown-placeholder: #8b95a1;
-}
 
 // ── System preference fallback ────────────────────────────────────
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)) {
-    --ui-dropdown-text: #f2f6fb;
-    --ui-dropdown-placeholder: #8b95a1;
-  }
-}
 
 // ── Disabled state ────────────────────────────────────────────────
 :host(.ui-dropdown-list--disabled) {
@@ -30,15 +18,10 @@
 .dropdown-label {
   font-family: var(--ui-font, inherit);
   font-size: var(--ui-font-body, 0.875rem);
-  color: var(--ui-dropdown-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 14rem;
-}
-
-.dropdown-label--placeholder {
-  color: var(--ui-dropdown-placeholder);
 }
 
 // ── Chevron indicator ─────────────────────────────────────────────

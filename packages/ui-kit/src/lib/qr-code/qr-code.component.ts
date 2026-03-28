@@ -5,11 +5,13 @@ import {
   computed,
 } from "@angular/core";
 import { generateQRCodeMatrix } from "./qr-code.utils";
+import { UISurface } from '@theredhead/foundation';
 
 @Component({
   selector: "ui-qr-code",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   template: `
     <svg
       [attr.width]="size()"

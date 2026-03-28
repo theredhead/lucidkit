@@ -12,6 +12,7 @@ import {
   UIDialogFooter,
   ModalRef,
 } from "@theredhead/ui-kit";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Content component for an "About" dialog.
@@ -27,6 +28,7 @@ import {
   standalone: true,
   imports: [UIButton, UIDialogHeader, UIDialogBody, UIDialogFooter],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-about-dialog" },
   template: `
     <ui-dialog-header>About {{ appName() }}</ui-dialog-header>

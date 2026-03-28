@@ -28,6 +28,7 @@ import type {
 } from "./filter.types";
 import { ANY_FIELD_KEY } from "./filter.types";
 import { toFilterExpression } from "./filter.utils";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 const JUNCTION_OPTIONS: SelectOption[] = [
   { value: "and", label: "all" },
@@ -59,6 +60,8 @@ const JUNCTION_OPTIONS: SelectOption[] = [
   templateUrl: "./filter.component.html",
   styleUrl: "./filter.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   host: {
     class: "ui-filter",
     role: "region",

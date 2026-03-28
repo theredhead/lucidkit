@@ -1,11 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  type ComponentRef,
   ElementRef,
+  Injector,
+  type OnDestroy,
+  ViewContainerRef,
+  afterNextRender,
   computed,
   effect,
+  inject,
   input,
   model,
+  signal,
   untracked,
   viewChild,
 } from "@angular/core";
@@ -15,6 +22,16 @@ import type {
   TextAdapter,
   TextAdapterValidationResult,
 } from "./adapters/text-adapter";
+import {
+  type InputPopupPanel,
+  type PopupTextAdapter,
+  isPopupAdapter,
+} from "./adapters/popup-text-adapter";
+import {
+  LoggerFactory,
+  UISurface,
+  UI_DEFAULT_SURFACE_TYPE,
+} from "@theredhead/foundation";
 
 /**
  * Thin wrapper around a native `<input>` or `<textarea>` element.
@@ -41,6 +58,9 @@ import type {
  * <!-- with adapter: [(text)] for raw, [(value)] for processed -->
  * <ui-input [adapter]="emailAdapter" [(text)]="email" [(value)]="normalized" />
  *
+ * <!-- with popup adapter: suffix icon toggles a popup panel -->
+ * <ui-input [adapter]="dateAdapter" [(text)]="date" placeholder="yyyy-MM-dd" />
+ *
  * <ui-input multiline [rows]="4" [(text)]="description" />
  * ```
  */
@@ -51,6 +71,8 @@ import type {
   templateUrl: "./input.component.html",
   styleUrl: "./input.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
   host: {
     class: "ui-input",
     "[class.ui-input--multiline]": "multiline()",
@@ -60,7 +82,7 @@ import type {
     "[class.ui-input--invalid]": "!valid()",
   },
 })
-export class UIInput {
+export class UIInput implements OnDestroy {
   /** Native input type (ignored when {@link multiline} is `true`). */
   public readonly type = input<
     "text" | "number" | "date" | "email" | "password" | "tel" | "url"
@@ -124,6 +146,11 @@ export class UIInput {
       "nativeInput",
     );
 
+  /** @internal ViewContainerRef for dynamic popup component creation. */
+  private readonly popupVcr = viewChild("popupContainer", {
+    read: ViewContainerRef,
+  });
+
   /**
    * Effective input type: adapter's {@link TextAdapter.inputType}
    * takes precedence over the {@link type} input.
@@ -138,6 +165,39 @@ export class UIInput {
 
   /** @internal Suffix icon SVG from adapter. */
   protected readonly suffixIcon = computed(() => this.adapter()?.suffixIcon);
+
+  /** Whether the current adapter supports a popup panel. */
+  public readonly hasPopup = computed(() => {
+    const a = this.adapter();
+    return a ? isPopupAdapter(a) : false;
+  });
+
+  /** Whether the popup panel is currently open. */
+  public readonly isPopupOpen = signal(false);
+
+  /**
+   * Unique id for ARIA linkage between the input and its popup.
+   * @internal
+   */
+  protected readonly popupId: string;
+
+  /** @internal Host element reference for document click detection. */
+  private readonly elRef = inject(ElementRef<HTMLElement>);
+
+  /** @internal */
+  private readonly injector = inject(Injector);
+
+  /** @internal */
+  private readonly log = inject(LoggerFactory).createLogger("UIInput");
+
+  /** @internal Active popup component reference. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private popupRef: ComponentRef<InputPopupPanel<any>> | null = null;
+
+  /** @internal Subscription cleanup handles for popup outputs. */
+  private popupSubs: { unsubscribe(): void }[] = [];
+
+  private static _nextPopupId = 0;
 
   /**
    * Validation result from the adapter's `validate()` method.
@@ -168,17 +228,26 @@ export class UIInput {
    */
   public readonly errors = computed(() => this.validation().errors);
 
+  /** @internal */
+  public constructor() {
+    this.popupId = `ui-input-popup-${UIInput._nextPopupId++}`;
+  }
+
   /**
-   * DOM sync: push {@link text} to the native element only when the
-   * DOM value actually differs. This replaces the `[value]` template
-   * binding to avoid resetting the cursor position on every keystroke.
+   * DOM sync: push the display value to the native element.
+   *
+   * When an adapter is present, shows the display-formatted value
+   * (via {@link TextAdapter.toDisplayValue}) or falls back to the
+   * adapted value. Without an adapter, shows the raw text.
    * @internal
    */
   private readonly _syncDomValue = effect(() => {
-    const t = this.text();
+    const a = this.adapter();
+    const val = a ? this.value() : this.text();
+    const display = a?.toDisplayValue ? a.toDisplayValue(val) : val;
     const el = this.nativeInput()?.nativeElement;
-    if (el && el.value !== t) {
-      el.value = t;
+    if (el && el.value !== display) {
+      el.value = display;
     }
   });
 
@@ -222,20 +291,159 @@ export class UIInput {
 
   /** @internal */
   protected onInput(event: Event): void {
-    const raw = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
-    this.text.set(raw);
+    const el = event.target as HTMLInputElement | HTMLTextAreaElement;
+    const raw = el.value;
     const a = this.adapter();
-    this.value.set(a ? a.toValue(raw) : raw);
+    this.text.set(raw);
+    const adapted = a ? a.toValue(raw) : raw;
+    this.value.set(adapted);
+    // Write the display value back immediately to avoid flicker
+    if (a) {
+      const display = a.toDisplayValue ? a.toDisplayValue(adapted) : adapted;
+      if (el.value !== display) {
+        const pos = el.selectionStart;
+        el.value = display;
+        if (pos !== null) {
+          const newPos = Math.min(pos, display.length);
+          el.setSelectionRange(newPos, newPos);
+        }
+      }
+    }
   }
 
   /** @internal */
   protected onPrefixClick(): void {
-    this.adapter()?.onPrefixClick?.(this.text());
+    const a = this.adapter();
+    this.log.debug("prefix click", [a?.constructor.name ?? "no adapter"]);
+    if (a && isPopupAdapter(a)) {
+      this.togglePopup();
+      return;
+    }
+    a?.onPrefixClick?.(this.text());
   }
 
   /** @internal */
   protected onSuffixClick(): void {
-    this.adapter()?.onSuffixClick?.(this.text());
+    const a = this.adapter();
+    this.log.debug("suffix click", [a?.constructor.name ?? "no adapter"]);
+    if (a && isPopupAdapter(a)) {
+      this.togglePopup();
+      return;
+    }
+    a?.onSuffixClick?.(this.text());
+  }
+
+  /** @internal Handle keyboard events on the input element. */
+  protected onInputKeydown(event: KeyboardEvent): void {
+    if (!this.hasPopup()) return;
+    if (event.key === "ArrowDown" && !this.isPopupOpen()) {
+      event.preventDefault();
+      this.openPopup();
+    }
+  }
+
+  // ── Popup lifecycle ──────────────────────────────────────────
+
+  /** Toggle the popup open/closed. */
+  public togglePopup(): void {
+    if (this.isPopupOpen()) {
+      this.closePopup();
+    } else {
+      this.openPopup();
+    }
+  }
+
+  /** Open the popup panel. */
+  public openPopup(): void {
+    const a = this.adapter();
+    if (!a || !isPopupAdapter(a) || this.disabled()) return;
+    this.isPopupOpen.set(true);
+
+    // Wait for the @if block to render the popup container
+    afterNextRender(() => this.createPopupComponent(a), {
+      injector: this.injector,
+    });
+  }
+
+  /** Close the popup panel and destroy the component. */
+  public closePopup(): void {
+    this.destroyPopupComponent();
+    this.isPopupOpen.set(false);
+    this.removeDocumentListeners();
+  }
+
+  /** @internal */
+  public ngOnDestroy(): void {
+    this.closePopup();
+  }
+
+  /** @internal */
+  private createPopupComponent(adapter: PopupTextAdapter): void {
+    const vcr = this.popupVcr();
+    if (!vcr) return;
+
+    vcr.clear();
+    const ref = vcr.createComponent(adapter.popupPanel);
+
+    // Set adapter-specific inputs
+    const inputs = adapter.popupInputs?.(this.text()) ?? {};
+    for (const [key, val] of Object.entries(inputs)) {
+      ref.setInput(key, val);
+    }
+
+    // Subscribe to popup outputs
+    this.popupSubs.push(
+      ref.instance.valueSelected.subscribe((val: unknown) => {
+        const newText = adapter.fromPopupValue(val);
+        this.text.set(newText);
+        this.value.set(adapter.toValue(newText));
+        this.closePopup();
+      }),
+    );
+    this.popupSubs.push(
+      ref.instance.closeRequested.subscribe(() => {
+        this.closePopup();
+      }),
+    );
+
+    this.popupRef = ref;
+    this.addDocumentListeners();
+  }
+
+  /** @internal */
+  private destroyPopupComponent(): void {
+    for (const sub of this.popupSubs) {
+      sub.unsubscribe();
+    }
+    this.popupSubs = [];
+    this.popupRef?.destroy();
+    this.popupRef = null;
+  }
+
+  // ── Document listeners (only when popup is open) ─────────────
+
+  private readonly onDocumentClick = (event: Event): void => {
+    if (!this.elRef.nativeElement.contains(event.target as Node)) {
+      this.closePopup();
+    }
+  };
+
+  private readonly onEscapeKey = (event: Event): void => {
+    if ((event as KeyboardEvent).key === "Escape") {
+      this.closePopup();
+    }
+  };
+
+  /** @internal */
+  private addDocumentListeners(): void {
+    document.addEventListener("click", this.onDocumentClick);
+    document.addEventListener("keydown", this.onEscapeKey);
+  }
+
+  /** @internal */
+  private removeDocumentListeners(): void {
+    document.removeEventListener("click", this.onDocumentClick);
+    document.removeEventListener("keydown", this.onEscapeKey);
   }
 
   /** @internal Handle pointer-driven vertical resize of the textarea. */

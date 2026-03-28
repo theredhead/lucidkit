@@ -1,5 +1,5 @@
-@use 'mixins' as mix;
-@use 'animation' as anim;
+@use "mixins" as mix;
+@use "animation" as anim;
 
 :host {
   display: block;
@@ -24,41 +24,27 @@
   min-height: 1.75rem;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.04);
+    background-color: var(--ui-hover-bg);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring);
+    outline: 2px solid var(--ui-accent);
     outline-offset: -2px;
   }
 }
 
 :host(.ui-tree-node--selected) > .node-row {
-  background: var(--ui-selection, rgba(53, 132, 228, 0.12));
-  color: var(--ui-accent, #3584e4);
+  color: var(--ui-accent);
+  background-color: var(--ui-selected-bg);
+
+  &:hover {
+    background-color: var(--ui-selected-hover-bg);
+  }
 }
 
 :host(.ui-tree-node--focused) > .node-row {
-  outline: 2px solid var(--ui-focus-ring);
+  outline: 2px solid var(--ui-accent);
   outline-offset: -2px;
-}
-
-@include mix.dark-mode('.node-row:hover') {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-:host-context(html.dark-theme) :host(.ui-tree-node--selected) > .node-row,
-:host-context(html.dark-theme).ui-tree-node--selected > .node-row {
-  background: var(--ui-selection, rgba(122, 176, 255, 0.15));
-  color: var(--ui-accent, #7ab0ff);
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not(.light-theme):not(.dark-theme)).ui-tree-node--selected
-    > .node-row {
-    background: var(--ui-selection, rgba(122, 176, 255, 0.15));
-    color: var(--ui-accent, #7ab0ff);
-  }
 }
 
 /* ── Toggle button ── */
@@ -74,23 +60,11 @@
   border: none;
   background: none;
   cursor: pointer;
-  color: var(--ui-muted, #5a6470);
   border-radius: 0.2rem;
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.08);
-    color: var(--ui-text, #1d232b);
-  }
-
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring);
     outline-offset: -1px;
   }
-}
-
-@include mix.dark-mode('.toggle:hover') {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--ui-text, #f2f6fb);
 }
 
 .toggle-spacer {

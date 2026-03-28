@@ -20,7 +20,7 @@ export class CreditCardTextAdapter implements TextAdapter {
   public readonly prefixIcon = UIIcons.Lucide.Account.CreditCard;
 
   public toValue(text: string): string {
-    return text.trim().replace(/[\s-]/g, "");
+    return text.replace(/\D/g, "");
   }
 
   public validate(text: string): TextAdapterValidationResult {

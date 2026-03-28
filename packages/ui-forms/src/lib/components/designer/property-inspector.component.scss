@@ -3,8 +3,6 @@
 :host {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--ui-border, #d7dce2);
-  background: var(--ui-surface, #f7f8fa);
   padding: 12px;
   overflow-y: auto;
   min-width: 260px;
@@ -17,7 +15,6 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0 0 12px;
-  color: var(--ui-text, #1d232b);
   opacity: 0.6;
 }
 
@@ -27,7 +24,6 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 16px 0 8px;
-  color: var(--ui-text, #1d232b);
   opacity: 0.5;
 }
 
@@ -43,7 +39,6 @@
   gap: 3px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--ui-text, #1d232b);
 }
 
 .label--row {
@@ -57,19 +52,15 @@
 .textarea,
 .select {
   appearance: none;
-  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 5px;
   padding: 6px 8px;
   font-size: 0.8125rem;
-  background: var(--ui-surface-alt, #ffffff);
-  color: var(--ui-text, #1d232b);
   font-family: inherit;
 }
 
 .input:focus,
 .textarea:focus,
 .select:focus {
-  outline: 2px solid var(--ui-focus-ring);
   outline-offset: -1px;
 }
 
@@ -111,7 +102,6 @@
 .icon-btn {
   appearance: none;
   border: none;
-  background: transparent;
   cursor: pointer;
   font-size: 0.75rem;
   width: 24px;
@@ -120,32 +110,15 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  color: var(--ui-text, #1d232b);
-}
-
-.icon-btn:hover {
-  background: rgba(0, 0, 0, 0.08);
-}
-
-.icon-btn--danger:hover {
-  background: var(--ui-error);
-  color: #ffffff;
 }
 
 .add-btn {
   appearance: none;
-  border: 1px dashed var(--ui-border, #d7dce2);
-  background: transparent;
   border-radius: 5px;
   padding: 5px 8px;
   cursor: pointer;
   font-size: 0.75rem;
-  color: var(--ui-accent);
   font-weight: 500;
-}
-
-.add-btn:hover {
-  background: var(--ui-primary-container);
 }
 
 .edit-content-btn {
@@ -153,28 +126,19 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid var(--ui-accent);
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 500;
   font-family: inherit;
-  color: var(--ui-accent);
-  background: transparent;
   transition:
     background-color 80ms ease,
     color 80ms ease;
 }
 
-.edit-content-btn:hover {
-  background: var(--ui-accent);
-  color: #ffffff;
-}
-
 .error {
   font-size: 0.75rem;
-  color: var(--ui-error);
   margin: 2px 0 0;
 }
 
@@ -185,62 +149,7 @@
   justify-content: center;
   text-align: center;
   font-size: 0.8125rem;
-  color: var(--ui-text-muted, #5a6270);
   padding: 24px;
 }
 
 /* Dark mode */
-
-@include mix.dark-mode {
-  background: var(--ui-surface, #1e2128);
-  border-left-color: var(--ui-border, #3a3f47);
-
-  .heading,
-  .subheading,
-  .label {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .input,
-  .textarea,
-  .select {
-    background: var(--ui-surface-alt, #2a2e36);
-    border-color: var(--ui-border, #3a3f47);
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .icon-btn {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .icon-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .add-btn {
-    border-color: var(--ui-border, #3a3f47);
-    color: var(--ui-accent);
-  }
-
-  .add-btn:hover {
-    background: var(--ui-primary-container);
-  }
-
-  .edit-content-btn {
-    border-color: var(--ui-accent);
-    color: var(--ui-accent);
-  }
-
-  .edit-content-btn:hover {
-    background: var(--ui-accent);
-    color: #ffffff;
-  }
-
-  .error {
-    color: var(--ui-error);
-  }
-
-  .empty {
-    color: var(--ui-text-muted, #a0a8b4);
-  }
-}

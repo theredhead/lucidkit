@@ -5,6 +5,7 @@ import {
   input,
   model,
 } from "@angular/core";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /** A single option rendered inside a {@link UISelect}. */
 export interface SelectOption {
@@ -30,6 +31,8 @@ export interface SelectOption {
   templateUrl: "./select.component.html",
   styleUrl: "./select.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
   host: { class: "ui-select" },
 })
 export class UISelect {

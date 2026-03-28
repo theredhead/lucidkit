@@ -4,6 +4,11 @@ Light/dark mode theming with CSS custom properties for Theredhead Angular
 applications. **No Angular Material dependency** — colours and typography are
 defined as standalone SCSS variables derived from Material 3 tonal palettes.
 
+All colour, surface, and spacing decisions flow through a single set of
+`--ui-*` CSS custom properties defined in `_tokens.scss` and applied globally
+by the `theredhead-theme()` SCSS mixin. Individual components consume these
+tokens via `var(--ui-*)` — they never redeclare their own dark-mode tiers.
+
 ---
 
 ## Installation
@@ -23,7 +28,7 @@ In your application's main `styles.scss`:
 ```scss
 @use "@theredhead/ui-theme" as theme;
 
-// Apply the full theme (sets all --theredhead-* and --ui-* custom properties)
+// Apply the full theme (sets all --ui-* custom properties on html)
 @include theme.theredhead-theme();
 ```
 
@@ -69,56 +74,161 @@ const mode = themeService.themeMode(); // Signal<'light'|'dark'|'system'>
 
 ---
 
-## CSS custom property namespaces
+## CSS Custom Property Namespaces
 
-| Namespace        | Scope                         | Examples                                                                  |
-| ---------------- | ----------------------------- | ------------------------------------------------------------------------- |
-| `--theredhead-*` | Global theme colours          | `--theredhead-primary`, `--theredhead-surface`, `--theredhead-background` |
-| `--ui-*`         | Component-level design tokens | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`                 |
+| Namespace | Scope                              | Examples                                                  |
+| --------- | ---------------------------------- | --------------------------------------------------------- |
+| `--ui-*`  | All design tokens (global + local) | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface` |
+
+All tokens live under the `--ui-*` namespace. They are declared once in
+`_tokens.scss` and emitted on `html` by the `theredhead-theme()` mixin.
+Components consume them with `var(--ui-text)` etc., inheriting the correct
+light or dark value automatically.
 
 ---
 
-## Dark mode (three-tier pattern)
+## Dark Mode — Centralised Three-Tier Pattern
 
-All components and the theme mixin follow a three-tier dark-mode strategy:
+Dark mode is handled **centrally** in `_theme.scss` and `_tokens.scss`. The
+`theredhead-theme()` mixin emits the full token set on three selectors:
 
 ```scss
 // 1. Light defaults
 html {
-  --theredhead-primary: #0061a4;
+  @include tokens.ui-tokens-light; // --ui-text: #1d232b; --ui-surface: #fff; …
+  line-height: 1.5;
 }
 
 // 2. Explicit dark class (toggled by ThemeService)
 html.dark-theme {
-  --theredhead-primary: #9ecaff;
+  @include tokens.ui-tokens-dark; // --ui-text: #f2f6fb; --ui-surface: #2a2f38; …
 }
 
 // 3. System preference fallback (no class set)
 @media (prefers-color-scheme: dark) {
   html:not(.light-theme):not(.dark-theme) {
-    --theredhead-primary: #9ecaff;
+    @include tokens.ui-tokens-dark;
   }
 }
 ```
+
+**Components never declare their own three-tier blocks.** They consume tokens
+via `var(--ui-*)` and the cascade handles light/dark switching. This eliminates
+the duplication that the original per-component pattern required.
+
+---
+
+## UISurface — Declarative Surface Styling
+
+The `UISurface` host directive (from `@theredhead/foundation`) maps a
+`surfaceType` input to CSS classes on the host element. The theme stylesheet
+(`_surfaces.scss`) provides the visual treatment for each type.
+
+### Built-in surface types
+
+| Type             | CSS Class                         | Visual Treatment                                 |
+| ---------------- | --------------------------------- | ------------------------------------------------ |
+| `transparent`    | `.ui-surface-type-transparent`    | Fully transparent background                     |
+| `raised`         | `.ui-surface-type-raised`         | Surface background + elevation shadow            |
+| `sunken`         | `.ui-surface-type-sunken`         | Secondary surface + inset shadow                 |
+| `panel`          | `.ui-surface-type-panel`          | Surface background                               |
+| `table`          | `.ui-surface-type-table`          | Border + radius + full table container treatment |
+| `table-header`   | `.ui-surface-type-table-header`   | Muted text, surface-2 bg, bottom border          |
+| `table-body`     | `.ui-surface-type-table-body`     | Standard surface with text colour                |
+| `table-footer`   | `.ui-surface-type-table-footer`   | Muted text, surface-2 bg, top border             |
+| `input`          | `.ui-surface-type-input`          | Standard text + surface background               |
+| `input-popup`    | `.ui-surface-type-input-popup`    | Border + dropdown shadow                         |
+| `button`         | `.ui-surface-type-button`         | Transparent background with text colour          |
+| `button-primary` | `.ui-surface-type-button-primary` | Accent background + contrast text                |
+
+### Providing a default surface type via DI
+
+Components can declare a default surface type with `UI_DEFAULT_SURFACE_TYPE`:
+
+```typescript
+import { UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+
+@Component({
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
+})
+export class UIMyPanel {}
+```
+
+The directive falls back to this token when no explicit `surfaceType` is
+passed by the consumer.
+
+### Custom surface types
+
+Define a CSS class with the `ui-surface-type-` prefix and pass the suffix:
+
+```scss
+.ui-surface-type-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+```
+
+```html
+<ui-card surfaceType="glass">…</ui-card>
+```
+
+Multiple types can be combined (space-separated or array):
+
+```html
+<ui-card surfaceType="raised glass">…</ui-card>
+<ui-card [surfaceType]="['raised', 'glass']">…</ui-card>
+```
+
+---
+
+## Component-Specific Overridable Tokens
+
+Some components define their own CSS custom properties that map down to the
+`--ui-*` theme tokens via nested fallback chains. This gives consumers fine-
+grained control without needing to know the component internals.
+
+### Pattern: nested fallback chain
+
+```scss
+// In the component SCSS:
+:host {
+  --clock-rim: var(--ui-border-strong, #505d6d);
+  --clock-face: var(--ui-surface, #ffffff);
+}
+```
+
+| Layer                    | Override method                 | Example                                      |
+| ------------------------ | ------------------------------- | -------------------------------------------- |
+| Component-specific token | Set `--clock-rim` on the host   | `<ui-analog-clock style="--clock-rim: red">` |
+| Theme token              | Override `--ui-border-strong`   | `:root { --ui-border-strong: #888; }`        |
+| Hardcoded fallback       | Always available as last resort | `#505d6d`                                    |
+
+This pattern keeps components themeable at multiple granularity levels.
 
 ---
 
 ## Customisation
 
-Override the default palette by setting SCSS variables before importing:
+Override colours by passing parameters to the `theredhead-theme()` mixin:
 
 ```scss
-@use "@theredhead/ui-theme/lib/styles/palettes" as palettes with (
-  $light-primary: #006b5e,
-  $dark-primary: #6bdbcb
-);
-
 @use "@theredhead/ui-theme" as theme;
-@include theme.theredhead-theme();
+
+@include theme.theredhead-theme(
+  $primary-color: #006b5e,
+  $brand-color: #004d40,
+  $error-color: #c62828
+);
 ```
 
-All palette variables are declared `!default` so consumer overrides take
-precedence.
+Or override individual `--ui-*` tokens directly in your stylesheet:
+
+```scss
+html {
+  --ui-accent: #006b5e;
+  --ui-border: #ccc;
+}
+```
 
 ---
 
@@ -229,13 +339,13 @@ const accent = getComputedStyle(el).getPropertyValue(UI_TOKENS.accent);
 ## Architecture
 
 ```text
-_palettes.scss      ← standalone colour variables (light + dark, Material 3)
+_tokens.scss        ← all --ui-* CSS custom property definitions (light + dark mixins)
+_surfaces.scss      ← UISurface visual treatment classes (.ui-surface-type-*)
+_theme.scss         ← theredhead-theme() mixin (three-tier dark mode, wires everything)
 _typography.scss    ← font family, sizes, weights, line heights
-_tokens.scss        ← all --ui-* CSS custom property definitions
 _mixins.scss        ← dark-mode, focus-ring, control-reset, truncate, etc.
 _elevation.scss     ← shadow scale (sm / md / lg / xl / dropdown)
 _animation.scss     ← duration & easing tokens
-_theme.scss         ← theredhead-theme() mixin (wires everything together)
 _index.scss         ← barrel (@forward)
 
 services/
@@ -245,4 +355,24 @@ tokens/
   theme.tokens.ts   ← ThemeMode type, ThemeConfig, THEME_CONFIG DI token
   ui-tokens.ts      ← UI_TOKENS constant mapping all --ui-* property names
   colors.ts         ← RgbColor / HslColor utility classes
+```
+
+### Token flow
+
+```text
+_tokens.scss                   _surfaces.scss
+  ├─ ui-tokens-light mixin       ├─ .ui-surface-type-panel
+  └─ ui-tokens-dark mixin        ├─ .ui-surface-type-raised
+         │                        ├─ .ui-surface-type-table
+         ▼                        └─ …
+  _theme.scss
+    theredhead-theme() ──┐
+                         ├──▶ html           { @include ui-tokens-light }
+                         ├──▶ html.dark-theme { @include ui-tokens-dark  }
+                         └──▶ @media(dark)   { @include ui-tokens-dark  }
+
+Component SCSS:
+  color: var(--ui-text);
+  background: var(--ui-surface);
+  ↑ inherits correct value from the html-level declarations
 ```

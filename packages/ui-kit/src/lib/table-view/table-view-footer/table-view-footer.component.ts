@@ -5,11 +5,14 @@ import {
   input,
   output,
 } from "@angular/core";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 @Component({
   selector: "ui-table-footer",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "table-footer" }],
   templateUrl: "./table-view-footer.component.html",
   styleUrl: "./table-view-footer.component.scss",
 })

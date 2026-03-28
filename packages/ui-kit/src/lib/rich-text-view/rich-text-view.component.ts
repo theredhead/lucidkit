@@ -4,6 +4,7 @@ import {
   input,
   model,
 } from "@angular/core";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * A read-only rich text renderer.
@@ -20,6 +21,7 @@ import {
   selector: "ui-rich-text-view",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-rich-text-view",
   },

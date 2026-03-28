@@ -26,6 +26,7 @@ import {
   pointsToPolylinePath,
   type TileDescriptor,
 } from "./map-view.utils";
+import { UISurface } from '@theredhead/foundation';
 
 // ── Internal rendered-element types ─────────────────────────────────
 
@@ -85,6 +86,7 @@ interface RenderedMarker {
   templateUrl: "./map-view.component.html",
   styleUrl: "./map-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-map-view",
     "[style.width]": "width()",

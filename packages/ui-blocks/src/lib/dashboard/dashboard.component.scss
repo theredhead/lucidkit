@@ -3,43 +3,12 @@
 
 // ── Light defaults ───────────────────────────────────────────────
 :host {
-  --ui-dashboard-bg: transparent;
-  --ui-dashboard-text: #1d232b;
-  --ui-dock-bg: #f0f1f3;
-  --ui-dock-chip-bg: #ffffff;
-  --ui-dock-chip-text: #1d232b;
-  --ui-dock-chip-border: #d7dce2;
-  --ui-dock-chip-hover-bg: #e5e7eb;
-  --ui-dock-chip-shadow: 0 1px 2px rgba(18, 24, 33, 0.06);
-  --ui-dock-notify-accent: var(--ui-secondary);
-  --ui-dock-notify-glow: color-mix(
-    in srgb,
-    var(--ui-secondary) 22%,
-    transparent
-  );
 
   display: block;
-  color: var(--ui-dashboard-text);
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
-}
-
-@include mix.dark-mode {
-  --ui-dashboard-text: #f2f6fb;
-  --ui-dock-bg: #1a1f25;
-  --ui-dock-chip-bg: #242b33;
-  --ui-dock-chip-text: #f2f6fb;
-  --ui-dock-chip-border: #3a3f47;
-  --ui-dock-chip-hover-bg: #3a3f47;
-  --ui-dock-chip-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
-  --ui-dock-notify-accent: var(--ui-secondary);
-  --ui-dock-notify-glow: color-mix(
-    in srgb,
-    var(--ui-secondary) 26%,
-    transparent
-  );
 }
 
 // ── Grid ─────────────────────────────────────────────────────────
@@ -56,7 +25,6 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--ui-dock-bg);
   border-radius: 8px;
   margin-top: 12px;
 
@@ -72,23 +40,13 @@
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  border: 1px solid var(--ui-dock-chip-border);
   border-radius: 6px;
-  background: var(--ui-dock-chip-bg);
-  color: var(--ui-dock-chip-text);
-  box-shadow: var(--ui-dock-chip-shadow);
   font-size: 0.78rem;
   font-weight: 500;
   white-space: nowrap;
   transition:
     background-color anim.$duration-medium,
     box-shadow anim.$duration-medium;
-
-  &:hover {
-    background: var(--ui-dock-chip-hover-bg);
-  }
-
-  @include mix.focus-ring(2px, var(--ui-dock-chip-border));
 }
 
 .chip-label {
@@ -96,29 +54,10 @@
 }
 
 .chip--notified {
-  border-color: var(--ui-dock-notify-accent);
-  box-shadow:
-    0 0 0 1px var(--ui-dock-notify-accent),
-    0 0 6px var(--ui-dock-notify-glow);
   animation: ui-dock-chip-pulse 2s anim.$easing-in-out infinite;
 
   ui-icon {
-    color: var(--ui-dock-notify-accent);
     animation: ui-dock-icon-pulse 2s anim.$easing-in-out infinite;
-  }
-}
-
-@keyframes ui-dock-chip-pulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 1px var(--ui-dock-notify-accent),
-      0 0 6px var(--ui-dock-notify-glow);
-  }
-  50% {
-    box-shadow:
-      0 0 0 2px var(--ui-dock-notify-accent),
-      0 0 12px var(--ui-dock-notify-glow);
   }
 }
 
@@ -139,22 +78,14 @@
   justify-content: center;
   padding: 6px;
   border-radius: 6px;
-  color: var(--ui-dock-chip-text);
   transition:
     background-color anim.$duration-medium,
     color anim.$duration-medium;
-
-  &:hover {
-    background: var(--ui-dock-chip-hover-bg);
-  }
-
-  @include mix.focus-ring(2px, var(--ui-dock-chip-border));
 }
 
 .separator {
   width: 1px;
   height: 20px;
-  background: var(--ui-dock-chip-border);
   flex-shrink: 0;
 }
 
@@ -164,10 +95,6 @@
   position: relative;
 }
 
-.menu-btn--active {
-  background: var(--ui-dock-chip-hover-bg);
-}
-
 .menu {
   position: absolute;
   top: calc(100% + 6px);
@@ -175,15 +102,7 @@
   z-index: 100;
   min-width: 200px;
   padding: 4px;
-  background: var(--ui-dock-chip-bg);
-  border: 1px solid var(--ui-dock-chip-border);
   border-radius: 8px;
-  box-shadow: var(
-    --ui-shadow-dropdown,
-    0 4px 16px rgba(0, 0, 0, 0.12),
-    0 1px 4px rgba(0, 0, 0, 0.08)
-  );
-  color: var(--ui-dock-chip-text);
 
   &--above {
     top: auto;
@@ -193,7 +112,6 @@
   hr {
     border: none;
     height: 1px;
-    background: var(--ui-dock-chip-border);
     margin: 4px 0;
   }
 }
@@ -206,18 +124,11 @@
   width: 100%;
   padding: 8px 10px;
   border-radius: 6px;
-  color: var(--ui-dock-chip-text);
   font-size: 0.8rem;
   font-weight: 500;
   white-space: nowrap;
   text-align: left;
   transition: background-color anim.$duration-medium;
-
-  &:hover {
-    background: var(--ui-dock-chip-hover-bg);
-  }
-
-  @include mix.focus-ring(-2px, var(--ui-dock-chip-border));
 
   &--hidden {
     opacity: 0.5;
@@ -244,7 +155,5 @@
   letter-spacing: 0.04em;
   padding: 2px 6px;
   border-radius: 4px;
-  background: var(--ui-dock-chip-hover-bg);
-  color: var(--ui-dock-chip-text);
   opacity: 0.7;
 }

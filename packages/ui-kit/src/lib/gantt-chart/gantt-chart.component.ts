@@ -18,6 +18,7 @@ import {
   computeDateRange,
   computeTodayPosition,
 } from "./gantt-chart.utils";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Processed task row ready for template rendering.
@@ -57,6 +58,7 @@ interface GanttRow {
   selector: "ui-gantt-chart",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./gantt-chart.component.html",
   styleUrl: "./gantt-chart.component.scss",
   host: {

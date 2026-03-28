@@ -3,13 +3,6 @@
 :host {
   /* ── Light-theme tokens (match table-view) ── */
   --ui-font: "Cantarell", "Noto Sans", "Segoe UI", sans-serif;
-  --ui-bg: #f6f7f8;
-  --ui-surface: #ffffff;
-  --ui-surface-2: #fbfbfc;
-  --ui-border: #d7dce2;
-  --ui-border-strong: #c2c8cf;
-  --ui-text: #1d232b;
-  --ui-muted: #5a6470;
 
   --ui-font-body: 0.9rem;
   --ui-font-header: 0.74rem;
@@ -17,68 +10,50 @@
 
   display: block;
   font-family: var(--ui-font);
-  color: var(--ui-text);
-  background: var(--ui-surface);
-  border: 1px solid var(--ui-border);
   border-radius: 0;
   padding: 0.75rem 0.85rem;
 }
 
 /* ── Dark theme ── */
 
-@include mix.dark-mode {
-  --ui-bg: #1f242a;
-  --ui-surface: #242b33;
-  --ui-surface-2: #2d3641;
-  --ui-border: #505d6d;
-  --ui-border-strong: #617184;
-  --ui-text: #f2f6fb;
-  --ui-muted: #d0d8e3;
-}
+.simple-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 
-.filter {
-  &__simple {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    ui-input {
-      flex: 1;
-    }
-  }
-
-  &__header {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: calc(var(--ui-font-header) * 1.15);
-    font-weight: 600;
-    color: var(--ui-muted);
-    text-transform: uppercase;
-    letter-spacing: var(--ui-ls-header);
-    padding-bottom: 0.625rem;
-    border-bottom: 1px solid var(--ui-border);
-    margin-bottom: 0.625rem;
-    user-select: none;
-  }
-
-  &__header-spacer {
+  ui-input {
     flex: 1;
   }
+}
 
-  &__mode-toggle {
-    margin-left: auto;
-  }
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: calc(var(--ui-font-header) * 1.15);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ui-ls-header);
+  padding-bottom: 0.625rem;
+  margin-bottom: 0.625rem;
+  user-select: none;
+}
 
-  &__rules {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+.header-spacer {
+  flex: 1;
+}
 
-  &__actions {
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--ui-border);
-    margin-top: 0.5rem;
-  }
+.mode-toggle {
+  margin-left: auto;
+}
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.actions {
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
 }

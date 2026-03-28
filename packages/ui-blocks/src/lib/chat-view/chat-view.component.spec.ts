@@ -76,7 +76,7 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      const bubbles = el.querySelectorAll(".chat-bubble");
+      const bubbles = el.querySelectorAll(".bubble-content");
       expect(bubbles.length).toBe(2);
       expect(bubbles[0].textContent!.trim()).toBe("Hello");
       expect(bubbles[1].textContent!.trim()).toBe("Hi there");
@@ -91,11 +91,13 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      const messageEls = el.querySelectorAll(".chat-message");
-      expect(messageEls[0].classList.contains("chat-message--mine")).toBe(
+      const messageEls = el.querySelectorAll("ui-message-bubble");
+      expect(messageEls[0].classList.contains("ui-message-bubble--mine")).toBe(
         false,
       );
-      expect(messageEls[1].classList.contains("chat-message--mine")).toBe(true);
+      expect(messageEls[1].classList.contains("ui-message-bubble--mine")).toBe(
+        true,
+      );
     });
 
     it("should show avatar for other users only", () => {
@@ -107,7 +109,7 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      const messageEls = el.querySelectorAll(".chat-message");
+      const messageEls = el.querySelectorAll("ui-message-bubble");
       expect(messageEls[0].querySelector("ui-avatar")).toBeTruthy();
       expect(messageEls[1].querySelector("ui-avatar")).toBeNull();
     });
@@ -121,7 +123,7 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      const names = el.querySelectorAll(".chat-sender-name");
+      const names = el.querySelectorAll(".bubble-sender");
       expect(names.length).toBe(1);
       expect(names[0].textContent!.trim()).toBe("Bob");
     });
@@ -149,7 +151,7 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      const bubble = el.querySelector(".chat-bubble");
+      const bubble = el.querySelector(".bubble-content");
       expect(bubble!.querySelector("strong")).toBeTruthy();
     });
   });
@@ -353,8 +355,8 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      const msgEl = el.querySelector(".chat-message");
-      expect(msgEl!.classList.contains("chat-message--mine")).toBe(true);
+      const msgEl = el.querySelector("ui-message-bubble");
+      expect(msgEl!.classList.contains("ui-message-bubble--mine")).toBe(true);
     });
 
     it("should left-align other messages", () => {
@@ -364,8 +366,8 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      const msgEl = el.querySelector(".chat-message");
-      expect(msgEl!.classList.contains("chat-message--mine")).toBe(false);
+      const msgEl = el.querySelector("ui-message-bubble");
+      expect(msgEl!.classList.contains("ui-message-bubble--mine")).toBe(false);
     });
   });
 });

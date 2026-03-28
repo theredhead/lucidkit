@@ -6,9 +6,10 @@ import {
   model,
   output,
 } from "@angular/core";
+import { UISurface } from "@theredhead/foundation";
 
 /** Size variant for the toggle switch. */
-export type ToggleSize = "sm" | "md" | "lg";
+export type ToggleSize = "small" | "medium" | "large";
 
 /**
  * A toggle switch with customisable on/off labels.
@@ -38,13 +39,14 @@ export type ToggleSize = "sm" | "md" | "lg";
   templateUrl: "./toggle.component.html",
   styleUrl: "./toggle.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-toggle",
     "[class.ui-toggle--on]": "value()",
     "[class.ui-toggle--disabled]": "disabled()",
-    "[class.ui-toggle--sm]": "size() === 'sm'",
-    "[class.ui-toggle--md]": "size() === 'md'",
-    "[class.ui-toggle--lg]": "size() === 'lg'",
+    "[class.ui-toggle--small]": "size() === 'small'",
+    "[class.ui-toggle--medium]": "size() === 'medium'",
+    "[class.ui-toggle--large]": "size() === 'large'",
     "[class.ui-toggle--labelled]": "hasTrackLabels()",
   },
 })
@@ -62,7 +64,7 @@ export class UIToggle {
   public readonly disabled = input(false);
 
   /** Size variant. */
-  public readonly size = input<ToggleSize>("md");
+  public readonly size = input<ToggleSize>("medium");
 
   /** Accessible label forwarded to `aria-label`. */
   public readonly ariaLabel = input<string>("");

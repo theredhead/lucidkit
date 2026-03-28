@@ -53,10 +53,10 @@
           role="gridcell"
           (click)="onDayClick(day, $event)"
         >
-          <span class="day__number">{{ day.day }}</span>
+          <span class="day-number">{{ day.day }}</span>
 
           @if (day.events.length > 0) {
-            <div class="day__events">
+            <div class="day-events">
               @for (evt of day.events | slice:0:maxEventsPerDay(); track evt.id) {
                 <span
                   class="event"

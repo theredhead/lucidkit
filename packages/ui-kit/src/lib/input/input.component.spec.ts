@@ -3,6 +3,7 @@ import { Component } from "@angular/core";
 
 import { UIInput } from "./input.component";
 import type { TextAdapter } from "./adapters/text-adapter";
+import { isPopupAdapter } from "./adapters/popup-text-adapter";
 import {
   DecimalTextAdapter,
   EmailTextAdapter,
@@ -360,9 +361,7 @@ describe("UIInput", () => {
       fixture.componentRef.setInput("adapter", new EmailTextAdapter());
       fixture.detectChanges();
 
-      const prefixBtn = fixture.nativeElement.querySelector(
-        ".icon--prefix",
-      );
+      const prefixBtn = fixture.nativeElement.querySelector(".icon--prefix");
       expect(prefixBtn).toBeTruthy();
       expect(prefixBtn.querySelector("ui-icon")).toBeTruthy();
     });
@@ -371,9 +370,7 @@ describe("UIInput", () => {
       fixture.componentRef.setInput("adapter", new UrlTextAdapter());
       fixture.detectChanges();
 
-      const suffixBtn = fixture.nativeElement.querySelector(
-        ".icon--suffix",
-      );
+      const suffixBtn = fixture.nativeElement.querySelector(".icon--suffix");
       expect(suffixBtn).toBeTruthy();
     });
 
@@ -467,9 +464,8 @@ describe("UIInput", () => {
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      const prefixBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".icon--prefix",
-      );
+      const prefixBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector(".icon--prefix");
       prefixBtn.click();
 
       expect(adapter.onPrefixClick).toHaveBeenCalledWith("test");
@@ -490,9 +486,8 @@ describe("UIInput", () => {
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      const suffixBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".icon--suffix",
-      );
+      const suffixBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector(".icon--suffix");
       suffixBtn.click();
 
       expect(adapter.onSuffixClick).toHaveBeenCalledWith("test");
@@ -1095,6 +1090,28 @@ describe("UIInput", () => {
 
     it("should accept empty string", () => {
       expect(adapter.validate("").valid).toBe(true);
+    });
+
+    it("should be detected as a popup adapter", () => {
+      expect(isPopupAdapter(adapter)).toBe(true);
+    });
+
+    it("should have popupPanel", () => {
+      expect((adapter as any).popupPanel).toBeTruthy();
+      expect(typeof (adapter as any).popupPanel).toBe("function");
+    });
+
+    it("should expose hasPopup when set on UIInput", () => {
+      fixture.componentRef.setInput("adapter", adapter);
+      fixture.detectChanges();
+      expect(component.hasPopup()).toBe(true);
+    });
+
+    it("should render prefix icon as clickable button", () => {
+      fixture.componentRef.setInput("adapter", adapter);
+      fixture.detectChanges();
+      const prefixBtn = fixture.nativeElement.querySelector(".icon--prefix");
+      expect(prefixBtn).toBeTruthy();
     });
   });
 

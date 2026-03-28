@@ -13,7 +13,7 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 
 import type { FieldState } from "../../engine/form-engine";
 import { FormFieldRegistry } from "../../registry/field-registry";
@@ -37,6 +37,7 @@ import { FORM_SETTINGS } from "../form-settings";
   selector: "ui-form-field",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-form-field",
     "[class.ui-form-field--invalid]": "showErrors()",

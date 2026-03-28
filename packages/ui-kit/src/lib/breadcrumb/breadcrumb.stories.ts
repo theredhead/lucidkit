@@ -1,7 +1,7 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 
-import { UIBreadcrumb, type BreadcrumbItem } from "./breadcrumb.component";
+import { UIBreadcrumb, type BreadcrumbItem, type BreadcrumbVariant } from "./breadcrumb.component";
 
 @Component({
   selector: "ui-breadcrumb-demo",
@@ -61,6 +61,25 @@ const meta: Meta<UIBreadcrumb> = {
   title: "@Theredhead/UI Kit/Breadcrumb",
   component: UIBreadcrumb,
   tags: ["autodocs"],
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["link", "button"] satisfies BreadcrumbVariant[],
+      description: "Visual style: links or styled buttons.",
+    },
+    separator: {
+      control: "text",
+      description: "Separator character between crumbs (link variant).",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables all breadcrumb items.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the navigation landmark.",
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -78,6 +97,35 @@ const meta: Meta<UIBreadcrumb> = {
 };
 export default meta;
 type Story = StoryObj<UIBreadcrumb>;
+
+/**
+ * Interactive playground — adjust scalar inputs via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: {
+      ...args,
+      items: [
+        { label: "Home", url: "/" },
+        { label: "Products", url: "/products" },
+        { label: "Detail" },
+      ],
+    },
+    template: `<ui-breadcrumb
+      [items]="items"
+      [variant]="variant"
+      [separator]="separator"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
+  args: {
+    variant: "link",
+    separator: "/",
+    disabled: false,
+    ariaLabel: "Breadcrumb",
+  },
+};
 
 /**
  * The link variant with three different separators: the default `/`,

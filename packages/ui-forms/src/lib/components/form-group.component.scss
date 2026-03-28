@@ -12,7 +12,6 @@
   font-size: 1.125rem;
   font-weight: 600;
   margin: 0 0 4px;
-  color: var(--ui-text, #1d232b);
 }
 
 .description {
@@ -26,10 +25,4 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-@include mix.dark-mode {
-  .title {
-    color: var(--ui-text, #f2f6fb);
-  }
 }

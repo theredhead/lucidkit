@@ -9,7 +9,7 @@ import {
   signal,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 import { UIIcons } from "../icon";
 
 /**
@@ -49,6 +49,7 @@ interface ClockTime {
   selector: "ui-analog-clock",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./analog-clock.component.html",
   styleUrl: "./analog-clock.component.scss",
   host: {

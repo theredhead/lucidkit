@@ -72,6 +72,17 @@ const meta: Meta<UIDropdownMenu> = {
   title: "@Theredhead/UI Kit/Dropdown Menu",
   component: UIDropdownMenu,
   tags: ["autodocs"],
+  argTypes: {
+    align: {
+      control: "select",
+      options: ["start", "end"],
+      description: "Horizontal alignment of the menu relative to the trigger.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the menu.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [

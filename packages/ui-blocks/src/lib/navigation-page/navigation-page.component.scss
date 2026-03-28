@@ -3,26 +3,11 @@
 /* ── Light defaults ── */
 
 :host {
-  --ui-sidebar-bg: #ffffff;
-  --ui-sidebar-border: #e5e7eb;
   --ui-sidebar-width: 16rem;
-  --ui-content-bg: #f9fafb;
-  --ui-breadcrumb-bg: #ffffff;
-  --ui-breadcrumb-border: #e5e7eb;
-  --ui-text: #1d232b;
 
   display: block;
   height: 100%;
   width: 100%;
-}
-
-@include mix.dark-mode {
-  --ui-sidebar-bg: #1f2937;
-  --ui-sidebar-border: #374151;
-  --ui-content-bg: #111827;
-  --ui-breadcrumb-bg: #1f2937;
-  --ui-breadcrumb-border: #374151;
-  --ui-text: #f2f6fb;
 }
 
 /* ── Layout ── */
@@ -31,7 +16,6 @@
   display: flex;
   height: 100%;
   width: 100%;
-  color: var(--ui-text);
 }
 
 /* ── Sidebar (pinned) ── */
@@ -39,8 +23,6 @@
 .sidebar {
   flex-shrink: 0;
   width: var(--ui-sidebar-width);
-  background: var(--ui-sidebar-bg);
-  border-right: 1px solid var(--ui-sidebar-border);
   @include mix.scrollable(y);
   overflow-x: hidden;
 }
@@ -60,8 +42,6 @@
 .breadcrumb {
   flex-shrink: 0;
   padding: 0.75rem 1.25rem;
-  background: var(--ui-breadcrumb-bg);
-  border-bottom: 1px solid var(--ui-breadcrumb-border);
 }
 
 /* ── Content ── */
@@ -70,5 +50,4 @@
   flex: 1;
   padding: 1.5rem;
   overflow-y: auto;
-  background: var(--ui-content-bg);
 }

@@ -21,6 +21,7 @@ import { FormDesignerEngine } from "./designer-engine";
 import { UIFieldPalette } from "./field-palette.component";
 import { UIDesignerCanvas } from "./designer-canvas.component";
 import { UIPropertyInspector } from "./property-inspector.component";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Full-featured form designer that lets users visually build
@@ -49,6 +50,7 @@ import { UIPropertyInspector } from "./property-inspector.component";
     UIForm,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-form-designer" },
   templateUrl: "./form-designer.component.html",
   styleUrl: "./form-designer.component.scss",

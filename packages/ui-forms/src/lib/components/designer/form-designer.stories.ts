@@ -25,13 +25,14 @@ import {
   AngularComponentExportStrategy,
 } from "../../export";
 import { UIFormDesigner } from "./form-designer.component";
+import { UIButton } from "@theredhead/ui-kit";
 
 // ── Demo wrapper ────────────────────────────────────────────────────
 
 @Component({
   selector: "ui-story-designer-demo",
   standalone: true,
-  imports: [UIFormDesigner, JsonPipe],
+  imports: [UIFormDesigner, JsonPipe, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div style="height: 700px">
@@ -59,13 +60,9 @@ import { UIFormDesigner } from "./form-designer.component";
               <option [value]="i">{{ s.label }}</option>
             }
           </select>
-          <button
-            type="button"
-            style="color: var(--ui-accent, #3584e4); background: transparent; border: 1px solid var(--ui-accent, #3584e4); padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer"
-            (click)="onExport()"
-          >
+          <ui-button variant="outlined" size="small" (click)="onExport()">
             Export
-          </button>
+          </ui-button>
         </div>
       </div>
     }

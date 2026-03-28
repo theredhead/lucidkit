@@ -7,19 +7,6 @@
   height: 100%;
 
   --ui-divider-width: 6px;
-  --ui-divider-bg: #e2e6eb;
-  --ui-divider-bg-hover: #c8cdd4;
-  --ui-divider-bg-active: var(--ui-accent, #3584e4);
-  --ui-divider-handle: #a0a8b4;
-  --ui-divider-handle-hover: #6b7685;
-}
-
-@include mix.dark-mode {
-  --ui-divider-bg: #3a3f47;
-  --ui-divider-bg-hover: #505860;
-  --ui-divider-bg-active: var(--ui-accent, #7ab0ff);
-  --ui-divider-handle: #6b7685;
-  --ui-divider-handle-hover: #a0a8b4;
 }
 
 /* ── Container ── */
@@ -50,7 +37,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--ui-divider-bg);
   border: none;
   outline: none;
   user-select: none;
@@ -68,39 +54,28 @@
   cursor: row-resize;
 }
 
-.divider:hover,
 .divider:focus-visible {
-  background: var(--ui-divider-bg-hover);
-}
-
-.divider:focus-visible {
-  outline: 2px solid var(--ui-divider-bg-active);
   outline-offset: -2px;
-}
-
-:host(.ui-split-container--dragging) .divider {
-  background: var(--ui-divider-bg-active);
 }
 
 /* ── Divider handle grip ── */
 
-.divider__handle {
+.divider-handle {
   border-radius: 2px;
-  background: var(--ui-divider-handle);
+  background: var(--ui-border-strong, #505d6d);
   transition: background-color 0.15s ease;
 }
 
-.divider:hover .divider__handle,
-.divider:focus-visible .divider__handle {
-  background: var(--ui-divider-handle-hover);
+.divider:hover .divider-handle {
+  background: var(--ui-accent, #3584e4);
 }
 
-:host(.ui-split-container--horizontal) .divider__handle {
+:host(.ui-split-container--horizontal) .divider-handle {
   width: 2px;
   height: 24px;
 }
 
-:host(.ui-split-container--vertical) .divider__handle {
+:host(.ui-split-container--vertical) .divider-handle {
   width: 24px;
   height: 2px;
 }

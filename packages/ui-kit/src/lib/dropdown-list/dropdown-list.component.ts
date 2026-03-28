@@ -17,6 +17,7 @@ import { UIIcons } from "../icon/lucide-icons.generated";
 import { PopoverRef, type UIPopoverContent } from "../popover/popover.types";
 import { PopoverService } from "../popover/popover.service";
 import type { SelectOption } from "../select/select.component";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Popover content that renders the option list for {@link UIDropdownList}.
@@ -27,6 +28,7 @@ import type { SelectOption } from "../select/select.component";
   selector: "ui-dropdown-list-panel",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   styles: [
     `
       :host {

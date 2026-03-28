@@ -14,6 +14,7 @@ import type { GanttTask, GanttViewMode } from "./gantt-chart.types";
 import { PopoverService } from "../popover/popover.service";
 import { PopoverRef, type UIPopoverContent } from "../popover/popover.types";
 import { UIIcon } from "../icon/icon.component";
+import { UIButton } from "../button/button.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
 
 // ── Shared fixtures ──────────────────────────────────────────────────
@@ -270,62 +271,26 @@ class GanttMonthDemo {
 @Component({
   selector: "ui-gantt-switcher-demo",
   standalone: true,
-  imports: [UIGanttChart, TitleCasePipe],
+  imports: [UIGanttChart, UIButton, TitleCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
-      :host {
-        --demo-btn-bg: #f3f4f6;
-        --demo-btn-bg-active: #3b82f6;
-        --demo-btn-text: inherit;
-        --demo-btn-text-active: #ffffff;
-        --demo-btn-border: #d1d5db;
-      }
-      :host-context(html.dark-theme) {
-        --demo-btn-bg: #2a3040;
-        --demo-btn-bg-active: #2563eb;
-        --demo-btn-border: #4a5060;
-      }
-      @media (prefers-color-scheme: dark) {
-        :host-context(html:not(.light-theme):not(.dark-theme)) {
-          --demo-btn-bg: #2a3040;
-          --demo-btn-bg-active: #2563eb;
-          --demo-btn-border: #4a5060;
-        }
-      }
       .controls {
         display: flex;
         gap: 0.5rem;
         margin-bottom: 1rem;
-      }
-      .controls button {
-        padding: 0.4rem 0.8rem;
-        border: 1px solid var(--demo-btn-border);
-        border-radius: 4px;
-        background: var(--demo-btn-bg);
-        color: var(--demo-btn-text);
-        cursor: pointer;
-        font-size: 0.8rem;
-        transition:
-          background-color 0.15s,
-          color 0.15s;
-      }
-      .controls button.active {
-        background: var(--demo-btn-bg-active);
-        color: var(--demo-btn-text-active);
-        border-color: var(--demo-btn-bg-active);
       }
     `,
   ],
   template: `
     <div class="controls">
       @for (mode of modes; track mode) {
-        <button
-          [class.active]="viewMode() === mode"
+        <ui-button
+          [variant]="viewMode() === mode ? 'filled' : 'outlined'"
           (click)="viewMode.set(mode)"
         >
           {{ mode | titlecase }}
-        </button>
+        </ui-button>
       }
     </div>
     <ui-gantt-chart
@@ -572,6 +537,37 @@ const meta: Meta<UIGanttChart> = {
   title: "@Theredhead/UI Kit/Gantt Chart",
   component: UIGanttChart,
   tags: ["autodocs"],
+  argTypes: {
+    viewMode: {
+      control: "select",
+      options: ["day", "week", "month"],
+      description: "Time granularity for the timeline columns.",
+    },
+    rowHeight: {
+      control: "number",
+      description: "Height of each task row in pixels.",
+    },
+    showToday: {
+      control: "boolean",
+      description: "Show a vertical marker for the current date.",
+    },
+    showTaskList: {
+      control: "boolean",
+      description: "Show the task-name sidebar.",
+    },
+    taskListWidth: {
+      control: "number",
+      description: "Width of the task-name sidebar in pixels.",
+    },
+    paddingDays: {
+      control: "number",
+      description: "Extra days before the first task and after the last.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the chart.",
+    },
+  },
   parameters: {
     docs: {
       description: {

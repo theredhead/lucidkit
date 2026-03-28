@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Scrollable body section for a dialog.
@@ -17,6 +18,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   selector: "ui-dialog-body",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-dialog-body" },
   templateUrl: "./dialog-body.component.html",
   styleUrl: "./dialog-body.component.scss",

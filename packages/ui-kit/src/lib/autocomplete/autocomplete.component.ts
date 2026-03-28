@@ -14,6 +14,7 @@ import {
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import type { AutocompleteDatasource } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 // Re-export so consumers importing from @theredhead/ui-kit keep working.
 export type { AutocompleteDatasource } from "@theredhead/foundation";
@@ -50,6 +51,8 @@ export type { AutocompleteDatasource } from "@theredhead/foundation";
   standalone: true,
   imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
   templateUrl: "./autocomplete.component.html",
   styleUrl: "./autocomplete.component.scss",
   host: {

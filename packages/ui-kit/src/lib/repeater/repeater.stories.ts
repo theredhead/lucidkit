@@ -728,6 +728,16 @@ const meta: Meta<UIRepeater> = {
   title: "@Theredhead/UI Kit/Repeater",
   component: UIRepeater,
   tags: ["autodocs"],
+  argTypes: {
+    reorderable: {
+      control: "boolean",
+      description: "Enables drag-and-drop reordering of items.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the repeater list.",
+    },
+  },
   parameters: {
     docs: {
       description: {

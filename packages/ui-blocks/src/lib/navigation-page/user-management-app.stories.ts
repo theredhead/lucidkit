@@ -719,7 +719,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
               <div class="page-actions">
                 <ui-button
                   variant="outlined"
-                  size="sm"
+                  size="small"
                   (click)="activePage.set('invite')"
                 >
                   Add User
@@ -743,7 +743,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                       <ui-avatar
                         [email]="row.email"
                         [name]="row.name"
-                        size="sm"
+                        size="small"
                       />
                       <span style="font-weight: 600">{{ row.name }}</span>
                     </div>
@@ -757,7 +757,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                     <ui-avatar
                       [email]="person.email"
                       [name]="person.name"
-                      size="lg"
+                      size="large"
                     />
                     <div>
                       <h3 class="detail-name">{{ person.name }}</h3>
@@ -899,7 +899,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
               <h2>Roles &amp; Privileges</h2>
             </div>
             <div class="page-actions">
-              <ui-button variant="outlined" size="sm">Create Role</ui-button>
+              <ui-button variant="outlined" size="small">Create Role</ui-button>
             </div>
           </div>
 
@@ -936,8 +936,10 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                 </ui-card-body>
                 <ui-card-footer>
                   <div style="display: flex; gap: 0.5rem">
-                    <ui-button variant="ghost" size="sm">Edit</ui-button>
-                    <ui-button variant="ghost" size="sm">Duplicate</ui-button>
+                    <ui-button variant="ghost" size="small">Edit</ui-button>
+                    <ui-button variant="ghost" size="small"
+                      >Duplicate</ui-button
+                    >
                   </div>
                 </ui-card-footer>
               </ui-card>
@@ -1229,10 +1231,10 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                         organisation. Proceed with extreme caution.
                       </p>
                       <div style="display: flex; gap: 0.5rem">
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           Export All Data
                         </ui-button>
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           Purge Inactive Users
                         </ui-button>
                       </div>
@@ -1366,7 +1368,7 @@ export const Default: Story = {
       <ui-master-detail-view [datasource]="usersDs" title="Users" [showFilter]="true">
         <ui-template-column key="name" headerText="User">
           <ng-template let-row>
-            <ui-avatar [email]="row.email" [name]="row.name" size="sm" />
+            <ui-avatar [email]="row.email" [name]="row.name" size="small" />
             {{ row.name }}
           </ng-template>
         </ui-template-column>

@@ -122,12 +122,12 @@ describe("UIGanttChart", () => {
     });
 
     it("should render timeline header with groups", () => {
-      const groups = el.querySelectorAll(".header__group-cell");
+      const groups = el.querySelectorAll(".header-group-cell");
       expect(groups.length).toBeGreaterThan(0);
     });
 
     it("should render timeline header with columns", () => {
-      const cols = el.querySelectorAll(".header__col-cell");
+      const cols = el.querySelectorAll(".header-col-cell");
       expect(cols.length).toBeGreaterThan(0);
     });
 
@@ -147,7 +147,7 @@ describe("UIGanttChart", () => {
     });
 
     it("should render progress overlays for tasks with progress", () => {
-      const progress = el.querySelectorAll(".bar__progress");
+      const progress = el.querySelectorAll(".bar-progress");
       expect(progress.length).toBe(2); // design (100%) and build (60%)
     });
   });
@@ -156,7 +156,7 @@ describe("UIGanttChart", () => {
 
   describe("task list", () => {
     it("should display task titles", () => {
-      const labels = el.querySelectorAll(".task-list__label");
+      const labels = el.querySelectorAll(".task-list-label");
       const texts = Array.from(labels).map((l) => l.textContent?.trim());
       expect(texts).toContain("Design Phase");
       expect(texts).toContain("Build Phase");
@@ -164,7 +164,7 @@ describe("UIGanttChart", () => {
     });
 
     it("should indent child tasks", () => {
-      const rows = el.querySelectorAll(".task-list__row");
+      const rows = el.querySelectorAll(".task-list-row");
       // child task (index 3) should have more padding than top-level (index 0)
       const topLevelPadding =
         (rows[0] as HTMLElement).style.paddingLeft || "12px";
@@ -225,14 +225,12 @@ describe("UIGanttChart", () => {
 
   describe("view modes", () => {
     it("should update columns when viewMode changes to week", () => {
-      const dayColCount = el.querySelectorAll(".header__col-cell").length;
+      const dayColCount = el.querySelectorAll(".header-col-cell").length;
 
       host.viewMode.set("week");
       fixture.detectChanges();
 
-      const weekColCount = el.querySelectorAll(
-        ".header__col-cell",
-      ).length;
+      const weekColCount = el.querySelectorAll(".header-col-cell").length;
       // Week mode should have fewer columns than day mode
       expect(weekColCount).toBeLessThan(dayColCount);
     });
@@ -241,9 +239,7 @@ describe("UIGanttChart", () => {
       host.viewMode.set("month");
       fixture.detectChanges();
 
-      const monthColCount = el.querySelectorAll(
-        ".header__col-cell",
-      ).length;
+      const monthColCount = el.querySelectorAll(".header-col-cell").length;
       // Month mode should have very few columns
       expect(monthColCount).toBeLessThanOrEqual(3);
     });

@@ -4,12 +4,6 @@
 :host {
   display: inline-flex;
   align-items: center;
-
-  --ui-track: #d7dce2;
-}
-
-@include mix.dark-mode {
-  --ui-track: #505d6d;
 }
 
 /* ── Linear ── */
@@ -22,7 +16,6 @@
   width: 100%;
   height: 4px;
   border-radius: 2px;
-  background: var(--ui-track);
   overflow: hidden;
   position: relative;
 }
@@ -30,7 +23,6 @@
 .fill {
   height: 100%;
   border-radius: 2px;
-  background: var(--ui-accent);
   transition: width 250ms ease;
 }
 
@@ -61,14 +53,10 @@
 }
 
 .ring-track {
-  fill: none;
-  stroke: var(--ui-track);
   stroke-width: 4;
 }
 
 .ring-fill {
-  fill: none;
-  stroke: var(--ui-accent);
   stroke-width: 4;
   stroke-linecap: round;
   transform: rotate(-90deg);

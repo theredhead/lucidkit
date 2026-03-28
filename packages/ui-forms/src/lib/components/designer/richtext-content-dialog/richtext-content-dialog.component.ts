@@ -13,6 +13,7 @@ import {
   type UIModalContent,
   UIRichTextEditor,
 } from "@theredhead/ui-kit";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Modal dialog for editing the HTML content of a `flair:richtext`
@@ -28,6 +29,7 @@ import {
   standalone: true,
   imports: [UIRichTextEditor],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: { class: "ui-richtext-content-dialog" },
   templateUrl: "./richtext-content-dialog.component.html",
   styleUrl: "./richtext-content-dialog.component.scss",

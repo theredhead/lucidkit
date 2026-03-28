@@ -19,6 +19,7 @@ import type {
   PropertyChangeEvent,
   PropertyFieldDefinition,
 } from "./property-sheet.types";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /**
  * Grouped field set used internally to organise fields by group.
@@ -62,6 +63,8 @@ interface FieldGroup<T> {
   templateUrl: "./property-sheet.component.html",
   styleUrl: "./property-sheet.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   host: {
     class: "ui-property-sheet",
   },

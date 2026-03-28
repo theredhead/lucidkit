@@ -11,7 +11,7 @@ import {
   untracked,
   viewChild,
 } from "@angular/core";
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/foundation";
 import type {
   CropHandle,
   CropRegion,
@@ -56,6 +56,7 @@ import {
   selector: "ui-image-cropper",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./image-cropper.component.html",
   styleUrl: "./image-cropper.component.scss",
   host: {

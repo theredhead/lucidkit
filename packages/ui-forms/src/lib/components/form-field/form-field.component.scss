@@ -13,11 +13,9 @@
   font-weight: 600;
   font-size: 0.875rem;
   margin-bottom: 4px;
-  color: var(--ui-text, #1d232b);
 }
 
 .required {
-  color: var(--ui-error);
   margin-left: 2px;
 }
 
@@ -45,17 +43,5 @@
 
 .error {
   font-size: 0.8125rem;
-  color: var(--ui-error);
   line-height: 1.4;
-}
-
-@include mix.dark-mode {
-  .label {
-    color: var(--ui-text, #f2f6fb);
-  }
-
-  .required,
-  .error {
-    color: var(--ui-error);
-  }
 }

@@ -1122,7 +1122,7 @@ function formatNumber(n: number): string {
                   <span class="video-duration">{{ video.duration }}</span>
                 </div>
                 <div class="video-meta">
-                  <ui-avatar [name]="video.channel" size="sm" />
+                  <ui-avatar [name]="video.channel" size="small" />
                   <div class="video-info">
                     <p class="video-title">{{ video.title }}</p>
                     <p class="video-channel-name">{{ video.channel }}</p>
@@ -1266,7 +1266,7 @@ function formatNumber(n: number): string {
                 <ui-card variant="outlined">
                   <ui-card-body>
                     <div class="detail-header">
-                      <ui-avatar [name]="ch.name" size="md" />
+                      <ui-avatar [name]="ch.name" size="medium" />
                       <div>
                         <h4 class="detail-name">
                           {{ ch.name }}
@@ -1314,7 +1314,7 @@ function formatNumber(n: number): string {
               <div class="page-actions">
                 <ui-button
                   variant="outlined"
-                  size="sm"
+                  size="small"
                   (click)="activePage.set('upload')"
                 >
                   Upload New
@@ -1424,10 +1424,10 @@ function formatNumber(n: number): string {
                       <div style="padding-top: 0.75rem; font-size: 0.88rem">
                         <p style="margin: 0 0 0.5rem">Share this video:</p>
                         <div style="display: flex; gap: 0.5rem">
-                          <ui-button variant="outlined" size="sm">
+                          <ui-button variant="outlined" size="small">
                             Copy Link
                           </ui-button>
-                          <ui-button variant="ghost" size="sm">
+                          <ui-button variant="ghost" size="small">
                             Embed
                           </ui-button>
                         </div>
@@ -1527,7 +1527,9 @@ function formatNumber(n: number): string {
               />
             </div>
             <div class="page-actions">
-              <ui-button variant="outlined" size="sm">New Playlist</ui-button>
+              <ui-button variant="outlined" size="small"
+                >New Playlist</ui-button
+              >
             </div>
           </div>
 
@@ -1551,8 +1553,8 @@ function formatNumber(n: number): string {
                 </ui-card-body>
                 <ui-card-footer>
                   <div style="display: flex; gap: 0.5rem">
-                    <ui-button variant="ghost" size="sm">Play All</ui-button>
-                    <ui-button variant="ghost" size="sm">Edit</ui-button>
+                    <ui-button variant="ghost" size="small">Play All</ui-button>
+                    <ui-button variant="ghost" size="small">Edit</ui-button>
                   </div>
                 </ui-card-footer>
               </ui-card>
@@ -1569,7 +1571,9 @@ function formatNumber(n: number): string {
                 <h2>Watch History</h2>
               </div>
               <div class="page-actions">
-                <ui-button variant="ghost" size="sm">Clear History</ui-button>
+                <ui-button variant="ghost" size="small"
+                  >Clear History</ui-button
+                >
               </div>
             </div>
 
@@ -1698,7 +1702,7 @@ function formatNumber(n: number): string {
                     <div
                       style="display: flex; align-items: center; gap: 0.5rem"
                     >
-                      <ui-avatar [name]="row.name" size="sm" />
+                      <ui-avatar [name]="row.name" size="small" />
                       <span style="font-weight: 600">{{ row.name }}</span>
                       @if (row.verified) {
                         <ui-chip color="primary">verified</ui-chip>
@@ -1711,7 +1715,7 @@ function formatNumber(n: number): string {
 
                 <ng-template #detail let-ch>
                   <div class="detail-header">
-                    <ui-avatar [name]="ch.name" size="lg" />
+                    <ui-avatar [name]="ch.name" size="large" />
                     <div>
                       <h3 class="detail-name">
                         {{ ch.name }}
@@ -1722,7 +1726,7 @@ function formatNumber(n: number): string {
                       <p class="detail-sub">{{ ch.handle }}</p>
                     </div>
                     <div style="margin-left: auto">
-                      <ui-button variant="filled" size="sm">
+                      <ui-button variant="filled" size="small">
                         Subscribe
                       </ui-button>
                     </div>
@@ -1750,7 +1754,7 @@ function formatNumber(n: number): string {
                         </h4>
                         @for (comment of recentComments; track comment.id) {
                           <div class="comment-item">
-                            <ui-avatar [name]="comment.author" size="sm" />
+                            <ui-avatar [name]="comment.author" size="small" />
                             <div class="comment-body">
                               <span class="comment-author">
                                 {{ comment.author }}
@@ -1985,10 +1989,10 @@ function formatNumber(n: number): string {
                         These actions are irreversible. Proceed with caution.
                       </p>
                       <div style="display: flex; gap: 0.5rem">
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           Download All Data
                         </ui-button>
-                        <ui-button variant="outlined" size="sm">
+                        <ui-button variant="outlined" size="small">
                           Delete Channel
                         </ui-button>
                       </div>

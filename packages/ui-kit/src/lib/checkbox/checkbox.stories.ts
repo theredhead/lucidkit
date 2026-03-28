@@ -94,6 +94,29 @@ export default meta;
 type Story = StoryObj<UICheckbox>;
 
 /**
+ * Interactive playground — adjust every input via the Controls panel.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-checkbox
+      [variant]="variant"
+      [checked]="checked"
+      [disabled]="disabled"
+      [indeterminate]="indeterminate"
+      [ariaLabel]="ariaLabel"
+    >Accept terms</ui-checkbox>`,
+  }),
+  args: {
+    variant: "checkbox",
+    checked: false,
+    disabled: false,
+    indeterminate: false,
+    ariaLabel: "Accept terms",
+  },
+};
+
+/**
  * All checkbox and switch states at a glance: unchecked, checked,
  * indeterminate, and disabled — for both visual variants.
  */

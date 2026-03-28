@@ -8,6 +8,7 @@ import {
 
 import { ToastService } from "./toast.service";
 import type { ToastInstance, ToastPosition } from "./toast.types";
+import { UISurface } from '@theredhead/foundation';
 
 /**
  * Renders active toasts at the specified screen position.
@@ -28,6 +29,7 @@ import type { ToastInstance, ToastPosition } from "./toast.types";
   templateUrl: "./toast.component.html",
   styleUrl: "./toast.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-toast-container",
     "[class.ui-toast-container--top-right]": "position() === 'top-right'",

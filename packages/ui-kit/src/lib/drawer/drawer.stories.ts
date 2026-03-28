@@ -85,9 +85,34 @@ const meta: Meta<UIDrawer> = {
   title: "@Theredhead/UI Kit/Drawer",
   component: UIDrawer,
   tags: ["autodocs"],
+  argTypes: {
+    position: {
+      control: "select",
+      options: ["left", "right"],
+      description: "Which edge the drawer slides in from.",
+    },
+    width: {
+      control: "select",
+      options: ["narrow", "medium", "wide"],
+      description: "Width preset or a custom CSS value.",
+    },
+    closeOnBackdropClick: {
+      control: "boolean",
+      description: "Close when the backdrop overlay is clicked.",
+    },
+    closeOnEscape: {
+      control: "boolean",
+      description: "Close on Escape key.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the drawer panel.",
+    },
+  },
   decorators: [
     moduleMetadata({
       imports: [
+        UIButton,
         DemoDrawerLeftComponent,
         DemoDrawerRightComponent,
         DemoDrawerWidthsComponent,
@@ -106,6 +131,36 @@ const meta: Meta<UIDrawer> = {
 
 export default meta;
 type Story = StoryObj<UIDrawer>;
+
+/**
+ * Interactive playground — adjust every input via the Controls panel.
+ * Click the button to open the drawer.
+ */
+export const Playground: Story = {
+  render: (args) => ({
+    props: { ...args, open: false },
+    template: `
+      <ui-button (click)="open = !open">Toggle drawer</ui-button>
+      <ui-drawer
+        [(open)]="open"
+        [position]="position"
+        [width]="width"
+        [closeOnBackdropClick]="closeOnBackdropClick"
+        [closeOnEscape]="closeOnEscape"
+        [ariaLabel]="ariaLabel"
+      >
+        <p style="padding: 16px">Drawer content goes here.</p>
+      </ui-drawer>
+    `,
+  }),
+  args: {
+    position: "left",
+    width: "medium",
+    closeOnBackdropClick: true,
+    closeOnEscape: true,
+    ariaLabel: "Side panel",
+  },
+};
 
 export const Left: Story = {
   render: () => ({

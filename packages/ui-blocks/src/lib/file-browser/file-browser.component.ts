@@ -26,7 +26,7 @@ import {
   type ITreeDatasource,
 } from "@theredhead/ui-kit";
 
-import { StorageService } from "@theredhead/foundation";
+import { StorageService, UISurface } from "@theredhead/foundation";
 
 import { NgTemplateOutlet } from "@angular/common";
 
@@ -79,6 +79,7 @@ export interface EntryTemplateContext<M = unknown> {
   standalone: true,
   imports: [UITreeView, UIBreadcrumb, UIIcon, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   templateUrl: "./file-browser.component.html",
   styleUrl: "./file-browser.component.scss",
   host: {

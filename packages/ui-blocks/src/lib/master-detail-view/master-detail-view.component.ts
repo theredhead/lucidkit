@@ -19,6 +19,7 @@ import {
   isTreeDatasource,
   type IDatasource,
   type Predicate,
+  UISurface,
 } from "@theredhead/foundation";
 import {
   FilterableArrayDatasource,
@@ -115,6 +116,7 @@ export interface MasterDetailContext<T> {
   templateUrl: "./master-detail-view.component.html",
   styleUrl: "./master-detail-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-master-detail-view",
   },
@@ -217,6 +219,50 @@ export class UIMasterDetailView<T = unknown> {
   public readonly listConstraints = input<SplitPanelConstraints>({
     min: 200,
   });
+
+  // ── Table pass-through inputs ─────────────────────────────────
+
+  /** Whether the embedded table view is disabled. */
+  public readonly disabled = input<boolean>(false);
+
+  /**
+   * Page size for the embedded table view's paginator.
+   * Leave `undefined` to use the table's default.
+   */
+  public readonly pageSize = input<number | undefined>(undefined);
+
+  /**
+   * External page index (zero-based) for the embedded table view.
+   * Leave `undefined` to let the built-in paginator manage it.
+   */
+  public readonly pageIndex = input<number | undefined>(undefined);
+
+  /**
+   * Whether to show the table's built-in paginator.
+   * Defaults to `false`.
+   */
+  public readonly showBuiltInPaginator = input<boolean>(false);
+
+  /** Accessible caption for the embedded table. */
+  public readonly caption = input<string>("");
+
+  /** Whether to show row-index numbers in the table. */
+  public readonly showRowIndexIndicator = input<boolean>(false);
+
+  /** Header text for the row-index column.  Defaults to `"#"`. */
+  public readonly rowIndexHeaderText = input<string>("#");
+
+  /**
+   * Unique table identifier used for persisting column widths.
+   * When set, column widths are stored in localStorage.
+   */
+  public readonly tableId = input<string>("");
+
+  /**
+   * Whether table columns can be resized by dragging header borders.
+   * Defaults to `true`.
+   */
+  public readonly resizable = input<boolean>(true);
 
   // ── Outputs ───────────────────────────────────────────────────────
 

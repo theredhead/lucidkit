@@ -1,0 +1,83 @@
+<!-- Calendar header -->
+<div class="cal-header">
+  <button
+    class="cal-nav"
+    type="button"
+    aria-label="Previous year"
+    (mousedown)="$event.preventDefault()"
+    (click)="prevYear()"
+  >
+    «
+  </button>
+  <button
+    class="cal-nav"
+    type="button"
+    aria-label="Previous month"
+    (mousedown)="$event.preventDefault()"
+    (click)="prevMonth()"
+  >
+    ‹
+  </button>
+  <span class="cal-title">{{ monthYearLabel() }}</span>
+  <button
+    class="cal-nav"
+    type="button"
+    aria-label="Next month"
+    (mousedown)="$event.preventDefault()"
+    (click)="nextMonth()"
+  >
+    ›
+  </button>
+  <button
+    class="cal-nav"
+    type="button"
+    aria-label="Next year"
+    (mousedown)="$event.preventDefault()"
+    (click)="nextYear()"
+  >
+    »
+  </button>
+</div>
+
+<!-- Weekday headers -->
+<div class="cal-weekdays" role="row">
+  @for (wd of weekdayLabels(); track wd.long) {
+    <span class="cal-weekday" role="columnheader" [title]="wd.long">
+      {{ wd.short }}
+    </span>
+  }
+</div>
+
+<!-- Day grid -->
+<div class="cal-grid" role="grid">
+  @for (day of calendarDays(); track day.date.getTime()) {
+    <button
+      class="cal-day"
+      type="button"
+      role="gridcell"
+      [class.cal-day--outside]="!day.isCurrentMonth"
+      [class.cal-day--today]="day.isToday"
+      [class.cal-day--selected]="day.isSelected"
+      [class.cal-day--disabled]="day.isDisabled"
+      [disabled]="day.isDisabled"
+      [attr.aria-selected]="day.isSelected"
+      [attr.aria-label]="day.date.toDateString()"
+      (mousedown)="$event.preventDefault()"
+      (click)="selectDay(day)"
+    >
+      {{ day.day }}
+    </button>
+  }
+</div>
+
+<!-- Footer -->
+<div class="cal-footer">
+  <button
+    class="cal-today"
+    type="button"
+    (mousedown)="$event.preventDefault()"
+    (click)="goToToday()"
+  >
+    Today
+  </button>
+</div>

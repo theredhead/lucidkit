@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 
 import { UIRadioButton } from "./radio-button.component";
+import { UISurface } from '@theredhead/foundation';
 
 /** Option definition for data-driven radio groups. */
 export interface RadioOption {
@@ -37,6 +38,7 @@ export interface RadioOption {
   templateUrl: "./radio-group.component.html",
   styleUrl: "./radio-group.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-radio-group",
     role: "radiogroup",

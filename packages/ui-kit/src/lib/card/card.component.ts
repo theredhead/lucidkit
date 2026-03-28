@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 /** Visual variant of the card. */
 export type CardVariant = "elevated" | "outlined" | "filled";
@@ -27,6 +28,8 @@ export type CardVariant = "elevated" | "outlined" | "filled";
   templateUrl: "./card.component.html",
   styleUrl: "./card.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   host: {
     class: "ui-card",
     "[class.ui-card--elevated]": "variant() === 'elevated'",
