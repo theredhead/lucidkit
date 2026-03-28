@@ -120,12 +120,18 @@ describe("UIDropdownList", () => {
 
     beforeEach(() => {
       closedSubject = new Subject<string | undefined>();
-      openPopoverSpy = vi.fn().mockReturnValue({ closed: closedSubject.asObservable() });
+      openPopoverSpy = vi
+        .fn()
+        .mockReturnValue({ closed: closedSubject.asObservable() });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (component as any).popover = { openPopover: openPopoverSpy } as unknown as PopoverService;
+      (component as any).popover = {
+        openPopover: openPopoverSpy,
+      } as unknown as PopoverService;
       // Provide a fake triggerRef so the popover has an anchor
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (component as any).triggerRef = () => ({ nativeElement: document.createElement("div") });
+      (component as any).triggerRef = () => ({
+        nativeElement: document.createElement("div"),
+      });
     });
 
     it("should not open when disabled", () => {
@@ -166,7 +172,9 @@ describe("UIDropdownList", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).toggle();
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList.contains("ui-dropdown-list--open")).toBe(true);
+      expect(
+        fixture.nativeElement.classList.contains("ui-dropdown-list--open"),
+      ).toBe(true);
     });
 
     it("should set isOpen to false when popover closes", () => {

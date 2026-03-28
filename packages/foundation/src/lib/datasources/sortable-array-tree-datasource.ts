@@ -1,5 +1,6 @@
 import type { ISortableTreeDatasource, TreeNode } from "./datasource";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
+import { type SortExpression, compileTreeSortExpression } from "../types/sort";
 
 /**
  * An in-memory tree datasource that supports sorting via a comparator function.
@@ -64,8 +65,30 @@ export class SortableArrayTreeDatasource<T = unknown>
 
   // ── ISortableTreeDatasource ──────────────────────────────────────
 
-  /**
-   * Applies a comparator function to sort the tree at all levels.
+  /**   * Applies a serializable sort expression to the tree.
+   *
+   * The expression is compiled into a tree-node comparator that sorts by
+   * `node.data` properties. Sorting is applied recursively at all levels.
+   * Pass `null` to clear sorting and restore the original insertion order.
+   *
+   * @param expression - Sort criteria, or `null` to clear.
+   */
+  public sortBy(expression: SortExpression<T> | null): void {
+    if (!expression || expression.length === 0) {
+      this.applyComparator(null);
+      return;
+    }
+    this.applyComparator(
+      compileTreeSortExpression<T>(expression) as (
+        a: TreeNode<T>,
+        b: TreeNode<T>,
+      ) => number,
+    );
+  }
+
+  // ── ISortableTreeDatasource (legacy) ──────────────────────────────
+
+  /**   * Applies a comparator function to sort the tree at all levels.
    *
    * The comparator is applied recursively to root nodes and all descendants.
    * Pass `null` or `undefined` to clear the sort and restore the original

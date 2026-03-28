@@ -210,9 +210,7 @@ describe("UIDialog", () => {
       fixture.detectChanges();
 
       const dialogEl = fixture.nativeElement.querySelector("dialog");
-      dialogEl.dispatchEvent(
-        new MouseEvent("click", { bubbles: true }),
-      );
+      dialogEl.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       fixture.detectChanges();
 
       expect(host.isOpen()).toBe(false);
@@ -237,9 +235,7 @@ describe("UIDialog", () => {
       f.detectChanges();
 
       const dialogEl = f.nativeElement.querySelector("dialog");
-      dialogEl.dispatchEvent(
-        new MouseEvent("click", { bubbles: true }),
-      );
+      dialogEl.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       f.detectChanges();
 
       expect(h.isOpen()).toBe(true);

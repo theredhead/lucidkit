@@ -8,6 +8,7 @@ import {
   effect,
   ElementRef,
   inject,
+  Injector,
   input,
   model,
   output,
@@ -79,7 +80,7 @@ export interface EntryTemplateContext<M = unknown> {
   standalone: true,
   imports: [UITreeView, UIBreadcrumb, UIIcon, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./file-browser.component.html",
   styleUrl: "./file-browser.component.scss",
   host: {
@@ -197,6 +198,9 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
 
   /** @internal */
   private readonly elRef = inject(ElementRef);
+
+  /** @internal */
+  private readonly injector = inject(Injector);
 
   /** @internal */
   private readonly storage = inject(StorageService);
@@ -637,19 +641,24 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
 
   /** @internal — scroll the rightmost column pane into view after DOM update. */
   private scrollLastColumnPaneIntoView(): void {
-    afterNextRender(() => {
-      const container = (this.elRef.nativeElement as HTMLElement).querySelector(
-        ".fb-contents--column",
-      );
-      if (container) {
-        const lastPane = container.querySelector(".fb-column-pane:last-child");
-        lastPane?.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "end",
-        });
-      }
-    });
+    afterNextRender(
+      () => {
+        const container = (
+          this.elRef.nativeElement as HTMLElement
+        ).querySelector(".fb-contents--column");
+        if (container) {
+          const lastPane = container.querySelector(
+            ".fb-column-pane:last-child",
+          );
+          lastPane?.scrollIntoView?.({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "end",
+          });
+        }
+      },
+      { injector: this.injector },
+    );
   }
 
   // ── Panel width persistence ───────────────────────────────────────

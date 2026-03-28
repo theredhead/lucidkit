@@ -1,4 +1,6 @@
 import { ArrayDatasource } from "./array-datasource";
+import type { ISortableDatasource } from "./datasource";
+import { type SortExpression, compileSortExpression } from "../types/sort";
 
 /**
  * An in-memory array datasource that supports sorting via a comparator function.
@@ -14,7 +16,10 @@ import { ArrayDatasource } from "./array-datasource";
  * ds.applyComparator((a, b) => a.age - b.age);
  * ```
  */
-export class SortableArrayDatasource<T> extends ArrayDatasource<T> {
+export class SortableArrayDatasource<T>
+  extends ArrayDatasource<T>
+  implements ISortableDatasource<T>
+{
   /** The full, unsorted dataset. */
   private readonly _allRows: readonly T[];
 
@@ -50,6 +55,24 @@ export class SortableArrayDatasource<T> extends ArrayDatasource<T> {
       );
     }
     return this._sortedRows[rowIndex];
+  }
+
+  // ── ISortableDatasource ───────────────────────────────────────────
+
+  /**
+   * Applies a serializable sort expression to the datasource.
+   *
+   * The expression is compiled into a comparator function internally.
+   * Pass `null` to clear the sort and restore the original insertion order.
+   *
+   * @param expression - Sort criteria, or `null` to clear.
+   */
+  public sortBy(expression: SortExpression<T> | null): void {
+    if (!expression || expression.length === 0) {
+      this.applyComparator(null);
+      return;
+    }
+    this.applyComparator(compileSortExpression<T>(expression));
   }
 
   // ── Convenience: raw comparator ───────────────────────────────────

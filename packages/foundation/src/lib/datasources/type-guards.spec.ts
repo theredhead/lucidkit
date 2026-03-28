@@ -102,13 +102,11 @@ describe("datasource type-guards", () => {
   });
 
   describe("isSortableTreeDatasource", () => {
-    it("should return true when applyComparator is a function", () => {
-      expect(
-        isSortableTreeDatasource({ applyComparator: () => {} }),
-      ).toBe(true);
+    it("should return true when sortBy is a function", () => {
+      expect(isSortableTreeDatasource({ sortBy: () => {} })).toBe(true);
     });
 
-    it("should return false when applyComparator is missing", () => {
+    it("should return false when sortBy is missing", () => {
       expect(isSortableTreeDatasource({})).toBe(false);
     });
 

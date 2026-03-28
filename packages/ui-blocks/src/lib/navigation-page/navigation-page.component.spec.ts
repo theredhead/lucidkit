@@ -222,9 +222,7 @@ describe("UINavigationPage", () => {
 
   describe("content area", () => {
     it("should render the content template with current page", () => {
-      const title = fixture.nativeElement.querySelector(
-        ".content .test-title",
-      );
+      const title = fixture.nativeElement.querySelector(".content .test-title");
       expect(title).toBeTruthy();
       expect(title.textContent).toContain("Dashboard");
     });
@@ -233,9 +231,7 @@ describe("UINavigationPage", () => {
       host.nav().navigate(TEST_ITEMS[1]); // projects
       fixture.detectChanges();
 
-      const title = fixture.nativeElement.querySelector(
-        ".content .test-title",
-      );
+      const title = fixture.nativeElement.querySelector(".content .test-title");
       expect(title.textContent).toContain("Projects");
     });
   });

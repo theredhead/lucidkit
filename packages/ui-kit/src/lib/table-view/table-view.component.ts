@@ -18,6 +18,8 @@ import {
 import {
   type IDatasource,
   type Predicate,
+  SortDirection,
+  type SortExpression,
   isFilterableDatasource,
   isSortableDatasource,
   UISurface,
@@ -40,7 +42,6 @@ import {
   SortState,
   UITableHeader,
 } from "./table-view-header/table-view-header.component";
-import { toComparator } from "./table-view.utils";
 import { type SelectionMode, SelectionModel } from "../core/selection-model";
 
 @Component({
@@ -526,7 +527,18 @@ export class UITableView implements OnInit, AfterViewInit {
     if (this.supportsSorting()) {
       const ds = this.datasource();
       if (isSortableDatasource(ds)) {
-        ds.sortBy(toComparator(state));
+        const expression = state
+          ? [
+              {
+                columnKey: state.key as keyof unknown,
+                direction:
+                  state.direction === "asc"
+                    ? SortDirection.Ascending
+                    : SortDirection.Descending,
+              },
+            ]
+          : null;
+        ds.sortBy(expression);
         this.refreshDatasource();
       }
     }

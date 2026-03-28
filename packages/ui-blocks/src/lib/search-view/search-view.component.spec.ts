@@ -327,9 +327,7 @@ describe("UISearchView", () => {
 
       // Apply a filter via the public method
       const ds = host.ds() as FilterableArrayDatasource<Product>;
-      ds.filterBy([
-        { predicate: ((item: Product) => item.price > 50) as any },
-      ]);
+      ds.filterBy([{ predicate: ((item: Product) => item.price > 50) as any }]);
       detectAndFlush(fixture);
 
       // Count should update

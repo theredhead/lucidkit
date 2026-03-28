@@ -472,10 +472,8 @@ class TransferHost {
     new ArrayDatasource([{ id: 99, name: "Target" }]),
   );
   public readonly transferEvents: RepeaterTransferEvent<TestItem>[] = [];
-  public readonly repeater1 =
-    viewChild.required<UIRepeater<TestItem>>("r1");
-  public readonly repeater2 =
-    viewChild.required<UIRepeater<TestItem>>("r2");
+  public readonly repeater1 = viewChild.required<UIRepeater<TestItem>>("r1");
+  public readonly repeater2 = viewChild.required<UIRepeater<TestItem>>("r2");
 
   public onTransfer(event: RepeaterTransferEvent<TestItem>): void {
     this.transferEvents.push(event);
