@@ -220,4 +220,153 @@ describe("UISearchView", () => {
       expect(cards.length).toBe(5);
     });
   });
+
+  describe("saved searches", () => {
+    let fixture: ComponentFixture<SavedSearchHost>;
+    let host: SavedSearchHost;
+    let el: HTMLElement;
+
+    beforeEach(async () => {
+      localStorage.clear();
+      await TestBed.configureTestingModule({
+        imports: [SavedSearchHost],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(SavedSearchHost);
+      host = fixture.componentInstance;
+      detectAndFlush(fixture);
+      el = fixture.nativeElement;
+    });
+
+    afterEach(() => {
+      localStorage.clear();
+    });
+
+    it("should show saved search controls when storageKey is set", () => {
+      const searchView = fixture.debugElement.children[0]
+        .componentInstance as UISearchView<Product>;
+      expect(searchView.storageKey()).toBe("test-searches");
+    });
+
+    it("should save and load a search", () => {
+      const searchView = fixture.debugElement.children[0]
+        .componentInstance as UISearchView<Product>;
+
+      searchView.saveNewSearch("My Filter");
+      detectAndFlush(fixture);
+
+      const list = searchView.savedSearches();
+      expect(list.length).toBe(1);
+      expect(list[0].name).toBe("My Filter");
+
+      const savedId = list[0].id;
+      searchView.loadSavedSearch(savedId);
+      detectAndFlush(fixture);
+
+      expect(searchView.selectedSearchId()).toBe(savedId);
+    });
+
+    it("should delete a saved search", () => {
+      const searchView = fixture.debugElement.children[0]
+        .componentInstance as UISearchView<Product>;
+
+      searchView.saveNewSearch("Temp Filter");
+      detectAndFlush(fixture);
+
+      const savedId = searchView.savedSearches()[0].id;
+      searchView.deleteSavedSearch(savedId);
+      detectAndFlush(fixture);
+
+      expect(searchView.savedSearches().length).toBe(0);
+      expect(searchView.selectedSearchId()).toBe("");
+    });
+
+    it("should not save with empty name", () => {
+      const searchView = fixture.debugElement.children[0]
+        .componentInstance as UISearchView<Product>;
+
+      searchView.saveNewSearch("   ");
+      detectAndFlush(fixture);
+
+      expect(searchView.savedSearches().length).toBe(0);
+    });
+
+    it("should load empty string to reset selection", () => {
+      const searchView = fixture.debugElement.children[0]
+        .componentInstance as UISearchView<Product>;
+
+      searchView.saveNewSearch("Test");
+      detectAndFlush(fixture);
+
+      const savedId = searchView.savedSearches()[0].id;
+      searchView.loadSavedSearch(savedId);
+      detectAndFlush(fixture);
+
+      searchView.loadSavedSearch("");
+      expect(searchView.selectedSearchId()).toBe("");
+    });
+  });
+
+  describe("filter expression change", () => {
+    let fixture: ComponentFixture<TestHost>;
+    let host: TestHost;
+
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [TestHost],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(TestHost);
+      host = fixture.componentInstance;
+      detectAndFlush(fixture);
+    });
+
+    it("should update total items after filter application", () => {
+      const searchView = fixture.debugElement.children[0]
+        .componentInstance as UISearchView<Product>;
+
+      // Apply a filter via the public method
+      const ds = host.ds() as FilterableArrayDatasource<Product>;
+      ds.filterBy([
+        { predicate: ((item: Product) => item.price > 50) as any },
+      ]);
+      detectAndFlush(fixture);
+
+      // Count should update
+      expect(ds.getNumberOfItems()).toBe(2);
+    });
+
+    it("should toggle filter panel via toggleFilter", () => {
+      const searchView = fixture.debugElement.children[0]
+        .componentInstance as UISearchView<Product>;
+      const initial = searchView.filterCollapsed();
+
+      searchView.toggleFilter();
+      expect(searchView.filterCollapsed()).toBe(!initial);
+
+      searchView.toggleFilter();
+      expect(searchView.filterCollapsed()).toBe(initial);
+    });
+  });
 });
+
+@Component({
+  standalone: true,
+  imports: [UISearchView, UITextColumn],
+  template: `
+    <ui-search-view
+      [datasource]="ds()"
+      storageKey="test-searches"
+      [showFilter]="true"
+      [filterExpanded]="true"
+    >
+      <ui-text-column key="name" headerText="Name" />
+      <ui-text-column key="category" headerText="Category" />
+    </ui-search-view>
+  `,
+})
+class SavedSearchHost {
+  public readonly ds = signal<FilterableArrayDatasource<Product>>(
+    new FilterableArrayDatasource(PRODUCTS),
+  );
+}

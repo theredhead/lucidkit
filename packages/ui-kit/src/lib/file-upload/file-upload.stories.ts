@@ -200,7 +200,8 @@ const meta: Meta = {
   argTypes: {
     accept: {
       control: "text",
-      description: "Accepted file types (MIME or extension, e.g. `image/*`, `.pdf,.docx`).",
+      description:
+        "Accepted file types (MIME or extension, e.g. `image/*`, `.pdf,.docx`).",
     },
     multiple: {
       control: "boolean",

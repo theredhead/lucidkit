@@ -26,7 +26,7 @@ export class FloatTextAdapter implements TextAdapter {
     let s = text;
     if (this.thousands) s = s.split(this.thousands).join("");
     if (this.decimal !== ".") s = s.replace(this.decimal, ".");
-  const cleaned = s.replace(/[^0-9.eE+-]/g, "");
+    const cleaned = s.replace(/[^0-9.eE+-]/g, "");
     if (!cleaned || cleaned === "-" || cleaned === "." || cleaned === "-.")
       return cleaned;
     const n = Number(cleaned);

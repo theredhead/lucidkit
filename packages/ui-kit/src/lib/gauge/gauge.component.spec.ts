@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it, beforeEach, vi, afterEach } from "vitest";
 
 import { UIGauge } from "./gauge.component";
 import type {
@@ -27,9 +27,11 @@ function asSvg(output: GaugeRenderOutput): SVGSVGElement {
 class StubStrategy extends GaugePresentationStrategy {
   public readonly name = "Stub";
   public lastCtx: GaugeRenderContext | undefined;
+  public renderCount = 0;
 
   public render(ctx: GaugeRenderContext): GaugeRenderOutput {
     this.lastCtx = ctx;
+    this.renderCount++;
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     return { kind: "svg", element: svg };
   }
@@ -260,7 +262,114 @@ describe("UIGauge", () => {
       expect(strategy.lastCtx!.size).toEqual({ width: 400, height: 300 });
     });
   });
+
+  describe("animation", () => {
+    it("should call requestAnimationFrame when animated value changes", () => {
+      const rafSpy = vi.spyOn(globalThis, "requestAnimationFrame");
+
+      fixture.componentRef.setInput("animated", true);
+      fixture.componentRef.setInput("value", 20);
+      fixture.detectChanges();
+
+      rafSpy.mockClear();
+
+      // Change value — should trigger animation
+      fixture.componentRef.setInput("value", 80);
+      fixture.detectChanges();
+
+      expect(rafSpy).toHaveBeenCalled();
+
+      rafSpy.mockRestore();
+    });
+
+    it("should not animate when fromValue equals targetValue", () => {
+      const rafSpy = vi.spyOn(globalThis, "requestAnimationFrame");
+
+      fixture.componentRef.setInput("animated", true);
+      fixture.componentRef.setInput("value", 50);
+      fixture.detectChanges();
+
+      rafSpy.mockClear();
+
+      // Same value — should NOT trigger animation
+      fixture.componentRef.setInput("value", 50);
+      fixture.detectChanges();
+
+      expect(rafSpy).not.toHaveBeenCalled();
+      expect(strategy.lastCtx!.value).toBe(50);
+
+      rafSpy.mockRestore();
+    });
+
+    it("should cancel running animation when value changes again", () => {
+      const cancelSpy = vi.spyOn(globalThis, "cancelAnimationFrame");
+
+      fixture.componentRef.setInput("animated", true);
+      fixture.componentRef.setInput("value", 20);
+      fixture.detectChanges();
+
+      cancelSpy.mockClear();
+
+      fixture.componentRef.setInput("value", 80);
+      fixture.detectChanges();
+
+      // cancelAnimationFrame is called to cancel prior animation
+      expect(cancelSpy).toHaveBeenCalled();
+
+      cancelSpy.mockRestore();
+    });
+  });
+
+  describe("imagedata rendering", () => {
+    it("should render imagedata output to a canvas", () => {
+      // Mock canvas.getContext to provide putImageData
+      const putSpy = vi.fn();
+      const origGetContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue({
+        putImageData: putSpy,
+      }) as never;
+
+      const imageStrategy = new ImageDataStubStrategy();
+      fixture.componentRef.setInput("strategy", imageStrategy);
+      fixture.detectChanges();
+
+      const container = fixture.nativeElement.querySelector(".viewport");
+      const canvas = container?.querySelector("canvas");
+      expect(canvas).toBeTruthy();
+      expect(canvas?.width).toBe(100);
+      expect(canvas?.height).toBe(100);
+      expect(putSpy).toHaveBeenCalled();
+
+      HTMLCanvasElement.prototype.getContext = origGetContext;
+    });
+  });
+
+  describe("resolveTokens", () => {
+    it("should provide fallback token values when CSS vars are empty", () => {
+      fixture.componentRef.setInput("value", 42);
+      fixture.detectChanges();
+
+      // jsdom doesn't resolve CSS vars, so fallbacks kick in
+      const tokens = strategy.lastCtx!.tokens;
+      expect(tokens.text).toBe("#555");
+      expect(tokens.face).toBe("#e8eaed");
+      expect(tokens.needle).toBe("#ea4335");
+      expect(tokens.tick).toBe("#888");
+      expect(tokens.accent).toBe("#4285f4");
+    });
+  });
 });
+
+/** Strategy that returns ImageData output for testing the imagedata branch. */
+class ImageDataStubStrategy extends GaugePresentationStrategy {
+  public readonly name = "ImageDataStub";
+
+  public render(_ctx: GaugeRenderContext): GaugeRenderOutput {
+    // jsdom doesn't have ImageData — create a minimal duck-typed stand-in
+    const data = { width: 100, height: 100, data: new Uint8ClampedArray(100 * 100 * 4) } as unknown as ImageData;
+    return { kind: "imagedata", data };
+  }
+}
 
 // ── AnalogGaugeStrategy ────────────────────────────────────────────
 

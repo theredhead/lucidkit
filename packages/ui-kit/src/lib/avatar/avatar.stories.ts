@@ -116,7 +116,8 @@ const meta: Meta<UIAvatar> = {
   argTypes: {
     src: {
       control: "text",
-      description: "Explicit image URL. Takes priority over Gravatar and initials.",
+      description:
+        "Explicit image URL. Takes priority over Gravatar and initials.",
     },
     email: {
       control: "text",
@@ -128,7 +129,13 @@ const meta: Meta<UIAvatar> = {
     },
     size: {
       control: "select",
-      options: ["extra-small", "small", "medium", "large", "extra-large"] satisfies AvatarSizeName[],
+      options: [
+        "extra-small",
+        "small",
+        "medium",
+        "large",
+        "extra-large",
+      ] satisfies AvatarSizeName[],
       description: "Named size preset or a pixel number.",
     },
     ariaLabel: {

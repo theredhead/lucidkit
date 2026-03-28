@@ -1,7 +1,11 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 
-import { UIBreadcrumb, type BreadcrumbItem, type BreadcrumbVariant } from "./breadcrumb.component";
+import {
+  UIBreadcrumb,
+  type BreadcrumbItem,
+  type BreadcrumbVariant,
+} from "./breadcrumb.component";
 
 @Component({
   selector: "ui-breadcrumb-demo",

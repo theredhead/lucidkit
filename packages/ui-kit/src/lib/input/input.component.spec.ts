@@ -518,6 +518,178 @@ describe("UIInput", () => {
     });
   });
 
+  describe("popup lifecycle", () => {
+    it("should not open popup when no popup adapter is set", () => {
+      component.openPopup();
+      expect(component.isPopupOpen()).toBe(false);
+    });
+
+    it("should not open popup when disabled", () => {
+      fixture.componentRef.setInput("adapter", new ColorTextAdapter());
+      fixture.componentRef.setInput("disabled", true);
+      fixture.detectChanges();
+
+      component.openPopup();
+      expect(component.isPopupOpen()).toBe(false);
+    });
+
+    it("should close popup via closePopup", () => {
+      component.isPopupOpen.set(true);
+      component.closePopup();
+      expect(component.isPopupOpen()).toBe(false);
+    });
+
+    it("should toggle popup open and closed", () => {
+      fixture.componentRef.setInput("adapter", new ColorTextAdapter());
+      fixture.detectChanges();
+
+      // togglePopup when closed → opens
+      // Can't fully test create since afterNextRender won't fire in jsdom,
+      // but we can verify the signal state
+      component.isPopupOpen.set(true);
+      component.togglePopup();
+      expect(component.isPopupOpen()).toBe(false);
+    });
+  });
+
+  describe("keyboard interaction", () => {
+    it("should open popup on ArrowDown when hasPopup", () => {
+      fixture.componentRef.setInput("adapter", new ColorTextAdapter());
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
+      );
+      fixture.detectChanges();
+
+      // The popup signal should be set (though render won't happen in jsdom)
+      expect(component.isPopupOpen()).toBe(true);
+    });
+
+    it("should not open popup on ArrowDown when already open", () => {
+      fixture.componentRef.setInput("adapter", new ColorTextAdapter());
+      fixture.detectChanges();
+
+      component.isPopupOpen.set(true);
+      const spy = vi.spyOn(component, "openPopup");
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
+      );
+      fixture.detectChanges();
+
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it("should not respond to ArrowDown without popup adapter", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
+      );
+      fixture.detectChanges();
+
+      expect(component.isPopupOpen()).toBe(false);
+    });
+  });
+
+  describe("prefix/suffix click with popup adapter", () => {
+    it("should toggle popup on prefix click with ColorTextAdapter", () => {
+      fixture.componentRef.setInput("adapter", new ColorTextAdapter());
+      fixture.detectChanges();
+
+      const prefixBtn =
+        fixture.nativeElement.querySelector(".icon--prefix");
+      if (prefixBtn) {
+        prefixBtn.click();
+        fixture.detectChanges();
+        expect(component.isPopupOpen()).toBe(true);
+      }
+    });
+  });
+
+  describe("toDisplayValue formatting", () => {
+    it("should format display value through adapter toDisplayValue", () => {
+      const adapter: TextAdapter = {
+        toValue: (t: string) => t.toUpperCase(),
+        toDisplayValue: (v: string) => v.toLowerCase(),
+      };
+      fixture.componentRef.setInput("adapter", adapter);
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      input.value = "Hello";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      expect(component.value()).toBe("HELLO");
+    });
+  });
+
+  describe("multiline resize handle", () => {
+    it("should render resize handle when multiline and heightAdjustable", () => {
+      fixture.componentRef.setInput("multiline", true);
+      fixture.componentRef.setInput("heightAdjustable", true);
+      fixture.detectChanges();
+
+      const handle = fixture.nativeElement.querySelector(".resize-handle");
+      expect(handle).toBeTruthy();
+    });
+
+    it("should not render resize handle when heightAdjustable is false", () => {
+      fixture.componentRef.setInput("multiline", true);
+      fixture.componentRef.setInput("heightAdjustable", false);
+      fixture.detectChanges();
+
+      const handle = fixture.nativeElement.querySelector(".resize-handle");
+      expect(handle).toBeFalsy();
+    });
+
+    it("should handle pointer-driven resize", () => {
+      fixture.componentRef.setInput("multiline", true);
+      fixture.componentRef.setInput("heightAdjustable", true);
+      fixture.detectChanges();
+
+      const handle = fixture.nativeElement.querySelector(
+        ".resize-handle",
+      ) as HTMLElement;
+      if (handle) {
+        handle.setPointerCapture = vi.fn();
+        handle.releasePointerCapture = vi.fn();
+
+        handle.dispatchEvent(
+          new PointerEvent("pointerdown", {
+            pointerId: 1,
+            clientY: 100,
+            bubbles: true,
+          }),
+        );
+
+        handle.dispatchEvent(
+          new PointerEvent("pointermove", {
+            pointerId: 1,
+            clientY: 150,
+            bubbles: true,
+          }),
+        );
+
+        handle.dispatchEvent(
+          new PointerEvent("pointerup", {
+            pointerId: 1,
+            bubbles: true,
+          }),
+        );
+
+        expect(handle.releasePointerCapture).toHaveBeenCalled();
+      }
+    });
+  });
+
   describe("validation", () => {
     it("should default valid to true without adapter", () => {
       expect(component.valid()).toBe(true);

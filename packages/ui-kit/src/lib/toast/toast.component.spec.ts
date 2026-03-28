@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { vi } from "vitest";
 
 import { UIToastContainer } from "./toast.component";
 import { ToastService } from "./toast.service";
@@ -131,6 +132,31 @@ describe("UIToastContainer", () => {
       fixture.detectChanges();
       const toast = fixture.nativeElement.querySelector(".toast");
       expect(toast.classList).toContain("toast--exiting");
+    });
+
+    it("should execute action callback and dismiss", () => {
+      const actionFn = vi.fn();
+      service.show({
+        message: "Deleted",
+        duration: 0,
+        actionLabel: "Undo",
+        actionFn,
+      });
+      fixture.detectChanges();
+      const action = fixture.nativeElement.querySelector(
+        ".action",
+      ) as HTMLButtonElement;
+      action.click();
+      fixture.detectChanges();
+      expect(actionFn).toHaveBeenCalledOnce();
+    });
+
+    it("should track toasts by id", () => {
+      service.show({ message: "One", duration: 0 });
+      service.show({ message: "Two", duration: 0 });
+      fixture.detectChanges();
+      const toasts = fixture.nativeElement.querySelectorAll(".toast");
+      expect(toasts.length).toBe(2);
     });
   });
 

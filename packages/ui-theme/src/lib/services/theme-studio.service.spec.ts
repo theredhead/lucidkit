@@ -160,6 +160,95 @@ describe("ThemeStudioService", () => {
       expect(features).toContain("width=800");
       expect(features).toContain("height=600");
     });
+
+    it("should handle popup being blocked by browser", async () => {
+      (mockDocument.defaultView!.open as ReturnType<typeof vi.fn>).mockReturnValue(null);
+      await service.open({ manifest: TEST_MANIFEST });
+      expect(service.isOpen).toBe(false);
+    });
+
+    it("should fetch manifest from URL when not provided", async () => {
+      const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(TEST_MANIFEST),
+      } as Response);
+
+      await service.open();
+
+      expect(fetchSpy).toHaveBeenCalledWith("assets/css-token-manifest.json");
+      expect(mockPopup.document.write).toHaveBeenCalledOnce();
+
+      fetchSpy.mockRestore();
+    });
+
+    it("should use custom manifestUrl for fetching", async () => {
+      const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(TEST_MANIFEST),
+      } as Response);
+
+      await service.open({ manifestUrl: "/custom/tokens.json" });
+
+      expect(fetchSpy).toHaveBeenCalledWith("/custom/tokens.json");
+      fetchSpy.mockRestore();
+    });
+
+    it("should cache fetched manifest for subsequent opens", async () => {
+      const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(TEST_MANIFEST),
+      } as Response);
+
+      await service.open();
+      fetchSpy.mockClear();
+
+      // Close and reopen — should use cache
+      mockPopup.closed = true;
+      await service.open();
+
+      expect(fetchSpy).not.toHaveBeenCalled();
+      fetchSpy.mockRestore();
+    });
+
+    it("should handle failed fetch gracefully", async () => {
+      const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: false,
+        status: 404,
+      } as Response);
+
+      await service.open();
+
+      // Open should not be called since manifest failed
+      expect(mockDocument.defaultView!.open).not.toHaveBeenCalled();
+      expect(service.isOpen).toBe(false);
+
+      fetchSpy.mockRestore();
+    });
+
+    it("should handle fetch exception gracefully", async () => {
+      const fetchSpy = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("network error"));
+
+      await service.open();
+
+      expect(mockDocument.defaultView!.open).not.toHaveBeenCalled();
+      expect(service.isOpen).toBe(false);
+
+      fetchSpy.mockRestore();
+    });
+
+    it("should remove message listener after receiving ready signal", async () => {
+      await service.open({ manifest: TEST_MANIFEST });
+
+      const readyEvent = {
+        data: { type: "theredhead-theme-studio-ready" },
+      } as MessageEvent;
+      messageListeners.forEach((fn) => fn(readyEvent));
+
+      expect(mockDocument.defaultView!.removeEventListener).toHaveBeenCalledWith(
+        "message",
+        expect.any(Function),
+      );
+    });
   });
 
   describe("close", () => {

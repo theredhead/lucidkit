@@ -173,4 +173,144 @@ describe("UIImageCropper", () => {
       expect(canvas.getAttribute("role")).toBe("img");
     });
   });
+
+  describe("reset", () => {
+    it("should not throw when no image is loaded", () => {
+      expect(() => component.reset()).not.toThrow();
+    });
+
+    it("should reset crop region to full image after loading", () => {
+      const spy = vi.fn();
+      component.regionChange.subscribe(spy);
+      component.loadImageData(new ImageData(100, 80));
+      spy.mockClear();
+
+      component.reset();
+      expect(spy).toHaveBeenCalled();
+      const region = spy.mock.calls[0][0];
+      expect(region.x).toBe(0);
+      expect(region.y).toBe(0);
+    });
+  });
+
+  describe("pointer events", () => {
+    let canvas: HTMLCanvasElement;
+
+    beforeEach(() => {
+      component.loadImageData(new ImageData(200, 150));
+      canvas = fixture.nativeElement.querySelector("canvas");
+      canvas.setPointerCapture = vi.fn();
+      canvas.releasePointerCapture = vi.fn();
+      canvas.getBoundingClientRect = () => ({
+        left: 0,
+        top: 0,
+        width: 400,
+        height: 300,
+        right: 400,
+        bottom: 300,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      });
+    });
+
+    it("should handle pointerdown on canvas", () => {
+      canvas.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 100,
+          clientY: 75,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      // Should set pointer capture
+      expect(canvas.setPointerCapture).toHaveBeenCalledWith(1);
+    });
+
+    it("should handle pointermove during drag", () => {
+      canvas.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 100,
+          clientY: 75,
+          bubbles: true,
+        }),
+      );
+
+      canvas.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerId: 1,
+          clientX: 150,
+          clientY: 100,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      expect(component).toBeTruthy();
+    });
+
+    it("should handle pointerup after drag", () => {
+      const regionSpy = vi.fn();
+      component.regionChange.subscribe(regionSpy);
+      regionSpy.mockClear();
+
+      canvas.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 100,
+          clientY: 75,
+          bubbles: true,
+        }),
+      );
+
+      canvas.dispatchEvent(
+        new PointerEvent("pointerup", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      expect(canvas.releasePointerCapture).toHaveBeenCalled();
+    });
+  });
+
+  describe("crop", () => {
+    it("should reject when no image is loaded", async () => {
+      await expect(component.crop()).rejects.toThrow();
+    });
+
+    it("should resolve after loading image data", async () => {
+      // Mock toBlob
+      vi.spyOn(
+        HTMLCanvasElement.prototype,
+        "toBlob",
+      ).mockImplementation(function (this: HTMLCanvasElement, cb: BlobCallback) {
+        cb(new Blob(["test"], { type: "image/png" }));
+      });
+
+      component.loadImageData(new ImageData(100, 80));
+
+      const blob = await component.crop();
+      expect(blob).toBeInstanceOf(Blob);
+    });
+  });
+
+  describe("aspect ratio", () => {
+    it("should accept an aspect ratio input", () => {
+      fixture.componentRef.setInput("aspectRatio", 16 / 9);
+      fixture.detectChanges();
+      expect(component.aspectRatio()).toBeCloseTo(16 / 9);
+    });
+  });
+
+  describe("output format", () => {
+    it("should accept image/jpeg format", () => {
+      fixture.componentRef.setInput("outputFormat", "image/jpeg");
+      fixture.detectChanges();
+      expect(component.outputFormat()).toBe("image/jpeg");
+    });
+  });
 });

@@ -34,7 +34,7 @@ export class PercentageTextAdapter implements TextAdapter {
     let s = text.replace(/%/g, "");
     if (this.thousands) s = s.split(this.thousands).join("");
     if (this.decimal !== ".") s = s.replace(this.decimal, ".");
-  const cleaned = s.replace(/[^0-9.+-]/g, "");
+    const cleaned = s.replace(/[^0-9.+-]/g, "");
     if (!cleaned || cleaned === "-" || cleaned === "." || cleaned === "-.")
       return cleaned;
     const n = Number(cleaned);

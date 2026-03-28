@@ -58,13 +58,79 @@ describe("ArrayDatasource", () => {
     });
   });
 
-  describe("IDatasource contract", () => {
-    it("should implement getNumberOfItems", () => {
-      expect(typeof ds.getNumberOfItems).toBe("function");
+  describe("moveItem", () => {
+    it("should move an item forward", () => {
+      ds.moveItem(0, 2);
+      expect(ds.getObjectAtRowIndex(0)).toEqual({ id: 2, name: "Bob" });
+      expect(ds.getObjectAtRowIndex(1)).toEqual({ id: 3, name: "Charlie" });
+      expect(ds.getObjectAtRowIndex(2)).toEqual({ id: 1, name: "Alice" });
     });
 
-    it("should implement getObjectAtRowIndex", () => {
-      expect(typeof ds.getObjectAtRowIndex).toBe("function");
+    it("should move an item backward", () => {
+      ds.moveItem(2, 0);
+      expect(ds.getObjectAtRowIndex(0)).toEqual({ id: 3, name: "Charlie" });
+      expect(ds.getObjectAtRowIndex(1)).toEqual({ id: 1, name: "Alice" });
+      expect(ds.getObjectAtRowIndex(2)).toEqual({ id: 2, name: "Bob" });
+    });
+
+    it("should be a no-op when from === to", () => {
+      ds.moveItem(1, 1);
+      expect(ds.getObjectAtRowIndex(0)).toEqual({ id: 1, name: "Alice" });
+      expect(ds.getObjectAtRowIndex(1)).toEqual({ id: 2, name: "Bob" });
+      expect(ds.getObjectAtRowIndex(2)).toEqual({ id: 3, name: "Charlie" });
+    });
+
+    it("should not change item count", () => {
+      ds.moveItem(0, 2);
+      expect(ds.getNumberOfItems()).toBe(3);
+    });
+  });
+
+  describe("insertItem", () => {
+    it("should insert at the beginning", () => {
+      ds.insertItem(0, { id: 99, name: "New" });
+      expect(ds.getNumberOfItems()).toBe(4);
+      expect(ds.getObjectAtRowIndex(0)).toEqual({ id: 99, name: "New" });
+      expect(ds.getObjectAtRowIndex(1)).toEqual({ id: 1, name: "Alice" });
+    });
+
+    it("should insert in the middle", () => {
+      ds.insertItem(1, { id: 99, name: "New" });
+      expect(ds.getNumberOfItems()).toBe(4);
+      expect(ds.getObjectAtRowIndex(1)).toEqual({ id: 99, name: "New" });
+      expect(ds.getObjectAtRowIndex(2)).toEqual({ id: 2, name: "Bob" });
+    });
+
+    it("should insert at the end", () => {
+      ds.insertItem(3, { id: 99, name: "New" });
+      expect(ds.getNumberOfItems()).toBe(4);
+      expect(ds.getObjectAtRowIndex(3)).toEqual({ id: 99, name: "New" });
+    });
+  });
+
+  describe("removeItem", () => {
+    it("should remove and return the item at the given index", () => {
+      const removed = ds.removeItem(1);
+      expect(removed).toEqual({ id: 2, name: "Bob" });
+      expect(ds.getNumberOfItems()).toBe(2);
+    });
+
+    it("should remove from the beginning", () => {
+      const removed = ds.removeItem(0);
+      expect(removed).toEqual({ id: 1, name: "Alice" });
+      expect(ds.getObjectAtRowIndex(0)).toEqual({ id: 2, name: "Bob" });
+    });
+
+    it("should remove from the end", () => {
+      const removed = ds.removeItem(2);
+      expect(removed).toEqual({ id: 3, name: "Charlie" });
+      expect(ds.getNumberOfItems()).toBe(2);
+    });
+
+    it("should shift subsequent items down", () => {
+      ds.removeItem(0);
+      expect(ds.getObjectAtRowIndex(0)).toEqual({ id: 2, name: "Bob" });
+      expect(ds.getObjectAtRowIndex(1)).toEqual({ id: 3, name: "Charlie" });
     });
   });
 });
