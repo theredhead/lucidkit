@@ -264,6 +264,13 @@ export class UIMasterDetailView<T = unknown> {
    */
   public readonly resizable = input<boolean>(true);
 
+  /**
+   * Row height in pixels for the internal table-view.
+   * Forwarded to `<ui-table-view [rowHeight]>`.
+   * Defaults to 36 px.
+   */
+  public readonly rowHeight = input<number>(36);
+
   // ── Outputs ───────────────────────────────────────────────────────
 
   /** Emits whenever the selection changes. Carries the selected item or `undefined`. */

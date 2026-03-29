@@ -343,6 +343,12 @@ describe("UIMasterDetailView", () => {
       bare.detectChanges();
       expect(bare.componentInstance.filterModeLocked()).toBe(false);
     });
+
+    it("should default rowHeight to 36", () => {
+      const bare = TestBed.createComponent(UIMasterDetailView);
+      bare.detectChanges();
+      expect(bare.componentInstance.rowHeight()).toBe(36);
+    });
   });
 
   // ── Datasource input ───────────────────────────────────────────

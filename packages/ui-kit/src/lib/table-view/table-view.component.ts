@@ -29,6 +29,7 @@ import { ColumnResizeService } from "./column-resize.service";
 import { UITableViewColumn } from "./columns/table-column.directive";
 import { DatasourceAdapter } from "./datasources/datasource-adapter";
 import {
+  DEFAULT_ROW_HEIGHT,
   FLEX_COLUMN_MIN_WIDTH,
   INITIAL_PAGE_SIZE,
   ROW_INDEX_COLUMN_WIDTH,
@@ -66,8 +67,14 @@ export class UITableView implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
 
   /** Whether the table view is disabled. */
-
   disabled = input<boolean>(false);
+
+  /**
+   * Row height in pixels for the virtual-scroll viewport.
+   * Each row is rendered at exactly this height.
+   * Defaults to {@link DEFAULT_ROW_HEIGHT} (36 px).
+   */
+  rowHeight = input<number>(DEFAULT_ROW_HEIGHT);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   datasource = input.required<IDatasource<any>>();

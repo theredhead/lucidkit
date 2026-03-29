@@ -82,6 +82,10 @@ describe("UITableView", () => {
     expect(tableView).toBeTruthy();
   });
 
+  it("should default rowHeight to 36", () => {
+    expect(tableView.rowHeight()).toBe(36);
+  });
+
   describe("host element", () => {
     it("should be focusable via tabindex", () => {
       expect(tableEl.getAttribute("tabindex")).toBe("0");
