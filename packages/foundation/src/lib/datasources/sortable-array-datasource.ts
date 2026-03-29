@@ -38,7 +38,7 @@ export class SortableArrayDatasource<T>
 
   public constructor(data: T[]) {
     super(data);
-    this._allRows = [...data];
+    this._allRows = this.rows;
     this._sortedRows = this._allRows;
   }
 

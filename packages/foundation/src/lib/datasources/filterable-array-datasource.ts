@@ -1,5 +1,6 @@
 import type { FilterExpression } from "../types/filter";
 import { ArrayDatasource } from "./array-datasource";
+import type { IFilterableDatasource } from "./datasource";
 
 /**
  * An in-memory array datasource that supports filtering via a
@@ -18,7 +19,10 @@ import { ArrayDatasource } from "./array-datasource";
  * ds.filterBy([{ predicate: row => row.age > 30 }]);
  * ```
  */
-export class FilterableArrayDatasource<T> extends ArrayDatasource<T> {
+export class FilterableArrayDatasource<T>
+  extends ArrayDatasource<T>
+  implements IFilterableDatasource<T>
+{
   /** The full, unfiltered dataset. */
   private readonly _allRows: readonly T[];
 
@@ -38,7 +42,7 @@ export class FilterableArrayDatasource<T> extends ArrayDatasource<T> {
 
   public constructor(data: T[]) {
     super(data);
-    this._allRows = [...data];
+    this._allRows = this.rows;
     this._filteredRows = this._allRows;
   }
 

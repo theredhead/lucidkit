@@ -169,11 +169,14 @@ export class FilterableArrayTreeDatasource<T = unknown>
   }
 
   /**
-   * Create a deep copy of tree nodes to avoid mutations to the original.
+   * Create a structural copy of tree nodes to avoid mutations to the
+   * original tree shape. Each {@link TreeNode} wrapper is shallow-copied
+   * (`{ ...node }`) so the `data` payload remains a shared reference.
+   * This is intentional — deep-cloning arbitrary `T` is not feasible.
    *
    * @param nodes - The nodes to copy.
    * @param childrenProp - The property name for children.
-   * @returns Deep-copied node tree.
+   * @returns Structurally-copied node tree (shared `data` references).
    */
   private deepCopyNodes(
     nodes: TreeNode<T>[],

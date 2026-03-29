@@ -17,7 +17,6 @@ import {
 
 import {
   type IDatasource,
-  type Predicate,
   SortDirection,
   type SortExpression,
   isFilterableDatasource,
@@ -206,7 +205,7 @@ export class UITableView implements OnInit, AfterViewInit {
 
   protected readonly resolvedRows = signal<unknown[]>([]);
   protected readonly sortState = signal<SortState | null>(null);
-  protected readonly filterPredicate = signal<Predicate<unknown> | null>(null);
+
   protected readonly captionAriaLabelledBy = computed(() =>
     this.caption().trim() ? this.captionId : null,
   );
@@ -363,18 +362,6 @@ export class UITableView implements OnInit, AfterViewInit {
     effect(() => {
       const rows = this.selection().selected();
       this.selectionChange.emit(rows);
-    });
-
-    // Apply filter predicate when it changes (if datasource supports filtering)
-    effect(() => {
-      if (this.supportsFiltering()) {
-        const ds = this.datasource();
-        const predicate = this.filterPredicate();
-        if (isFilterableDatasource(ds)) {
-          ds.filterBy(predicate);
-          untracked(() => this.refreshDatasource());
-        }
-      }
     });
   }
 

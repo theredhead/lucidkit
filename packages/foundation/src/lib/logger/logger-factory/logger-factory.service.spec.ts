@@ -20,7 +20,7 @@ describe("LoggerFactory", () => {
     expect(logger).toBeTruthy();
 
     // Verify it actually works end-to-end
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const spy = vi.spyOn(console, "info").mockImplementation(() => {});
     logger.info("hello");
     expect(spy).toHaveBeenCalledWith(
       expect.stringMatching(

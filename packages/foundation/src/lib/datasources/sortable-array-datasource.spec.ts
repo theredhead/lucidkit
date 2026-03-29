@@ -114,7 +114,7 @@ describe("SortableArrayDatasource", () => {
         { columnKey: "name", direction: SortDirection.Ascending },
         { columnKey: "age", direction: SortDirection.Ascending },
       ]);
-      // Both Alices grouped, younger first (string comparison: "25" < "30")
+      // Both Alices grouped, younger first (numeric comparison: 25 < 30)
       expect(multiDs.getObjectAtRowIndex(0).age).toBe(25);
       expect(multiDs.getObjectAtRowIndex(1).age).toBe(30);
       expect(multiDs.getObjectAtRowIndex(2).name).toBe("Bob");
@@ -130,6 +130,34 @@ describe("SortableArrayDatasource", () => {
       ds.sortBy([{ columnKey: "name", direction: SortDirection.Descending }]);
       ds.sortBy([]);
       expect(ds.getObjectAtRowIndex(0).name).toBe("Alice");
+    });
+
+    it("should sort numbers numerically, not lexicographically", () => {
+      const data = [
+        { id: 1, name: "A", age: 9 },
+        { id: 2, name: "B", age: 10 },
+        { id: 3, name: "C", age: 100 },
+        { id: 4, name: "D", age: 2 },
+      ];
+      const numDs = new SortableArrayDatasource(data);
+      numDs.sortBy([{ columnKey: "age", direction: SortDirection.Ascending }]);
+      expect(numDs.getObjectAtRowIndex(0).age).toBe(2);
+      expect(numDs.getObjectAtRowIndex(1).age).toBe(9);
+      expect(numDs.getObjectAtRowIndex(2).age).toBe(10);
+      expect(numDs.getObjectAtRowIndex(3).age).toBe(100);
+    });
+
+    it("should handle null/undefined values in sort (push to end)", () => {
+      const data = [
+        { id: 1, name: "Alice", age: 30 },
+        { id: 2, name: null as unknown as string, age: 25 },
+        { id: 3, name: "Bob", age: 35 },
+      ];
+      const nilDs = new SortableArrayDatasource(data);
+      nilDs.sortBy([{ columnKey: "name", direction: SortDirection.Ascending }]);
+      expect(nilDs.getObjectAtRowIndex(0).name).toBe("Alice");
+      expect(nilDs.getObjectAtRowIndex(1).name).toBe("Bob");
+      expect(nilDs.getObjectAtRowIndex(2).name).toBeNull();
     });
   });
 });

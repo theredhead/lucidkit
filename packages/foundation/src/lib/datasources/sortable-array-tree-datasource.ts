@@ -117,7 +117,8 @@ export class SortableArrayTreeDatasource<T = unknown>
   // ── Private helpers ──────────────────────────────────────────────
 
   /**
-   * Deep copy an array of tree nodes.
+   * Structural copy of tree nodes — each {@link TreeNode} wrapper is
+   * shallow-copied (`{ ...node }`) so `data` remains a shared reference.
    *
    * @internal
    */

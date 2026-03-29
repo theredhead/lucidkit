@@ -56,8 +56,8 @@ describe("Logger", () => {
 // ── ConsoleLoggingStrategy ─────────────────────────────────────────
 
 describe("ConsoleLoggingStrategy", () => {
-  it("should call console.log with formatted context", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+  it("should call console.info with formatted context", () => {
+    const spy = vi.spyOn(console, "info").mockImplementation(() => {});
     const strategy = new ConsoleLoggingStrategy();
 
     strategy.info("Ctx", "hello", [1, 2]);

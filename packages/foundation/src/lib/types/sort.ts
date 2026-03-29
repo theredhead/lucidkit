@@ -22,6 +22,38 @@ export type SortExpression<T> = {
 }[];
 
 /**
+ * Compare two raw values with type-aware ordering.
+ *
+ * - Two numbers → numeric comparison.
+ * - Two Dates → timestamp comparison.
+ * - Everything else → locale-aware string comparison via `String()`.
+ * - `null` / `undefined` sort after all other values (stable).
+ *
+ * @internal
+ */
+function compareValues(a: unknown, b: unknown): number {
+  // Treat null/undefined as empty — push to the end.
+  const isNilA = a === null || a === undefined;
+  const isNilB = b === null || b === undefined;
+  if (isNilA && isNilB) return 0;
+  if (isNilA) return 1;
+  if (isNilB) return -1;
+
+  // Both numbers → numeric.
+  if (typeof a === "number" && typeof b === "number") {
+    return a - b;
+  }
+
+  // Both Dates → timestamp.
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() - b.getTime();
+  }
+
+  // Fallback → locale-aware string comparison.
+  return String(a).localeCompare(String(b));
+}
+
+/**
  * Compiles a {@link SortExpression} into a comparator function.
  *
  * Uses locale-aware string comparison by default. The first entry is the
@@ -46,9 +78,9 @@ export function compileSortExpression<T>(
   return (a: T, b: T): number => {
     for (const criterion of expression) {
       const key = criterion.columnKey as string;
-      const va = String((a as Record<string, unknown>)[key] ?? "");
-      const vb = String((b as Record<string, unknown>)[key] ?? "");
-      const cmp = va.localeCompare(vb);
+      const ra = (a as Record<string, unknown>)[key];
+      const rb = (b as Record<string, unknown>)[key];
+      const cmp = compareValues(ra, rb);
       if (cmp !== 0) {
         return criterion.direction === SortDirection.Ascending ? cmp : -cmp;
       }
@@ -73,9 +105,9 @@ export function compileTreeSortExpression<T>(
   return (a: { data: T }, b: { data: T }): number => {
     for (const criterion of expression) {
       const key = criterion.columnKey as string;
-      const va = String((a.data as Record<string, unknown>)[key] ?? "");
-      const vb = String((b.data as Record<string, unknown>)[key] ?? "");
-      const cmp = va.localeCompare(vb);
+      const ra = (a.data as Record<string, unknown>)[key];
+      const rb = (b.data as Record<string, unknown>)[key];
+      const cmp = compareValues(ra, rb);
       if (cmp !== 0) {
         return criterion.direction === SortDirection.Ascending ? cmp : -cmp;
       }

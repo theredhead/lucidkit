@@ -51,12 +51,29 @@ describe("datasource type-guards", () => {
   });
 
   describe("isFilterableTreeDatasource", () => {
-    it("should return true when filterBy is a function", () => {
-      expect(isFilterableTreeDatasource({ filterBy: () => {} })).toBe(true);
+    it("should return true when filterBy and tree methods are present", () => {
+      expect(
+        isFilterableTreeDatasource({
+          filterBy: () => {},
+          getRootNodes: () => {},
+          getChildren: () => {},
+          hasChildren: () => {},
+        }),
+      ).toBe(true);
+    });
+
+    it("should return false when only filterBy is present (not a tree)", () => {
+      expect(isFilterableTreeDatasource({ filterBy: () => {} })).toBe(false);
     });
 
     it("should return false when filterBy is missing", () => {
-      expect(isFilterableTreeDatasource({})).toBe(false);
+      expect(
+        isFilterableTreeDatasource({
+          getRootNodes: () => {},
+          getChildren: () => {},
+          hasChildren: () => {},
+        }),
+      ).toBe(false);
     });
 
     it("should return false for null", () => {
@@ -102,12 +119,29 @@ describe("datasource type-guards", () => {
   });
 
   describe("isSortableTreeDatasource", () => {
-    it("should return true when sortBy is a function", () => {
-      expect(isSortableTreeDatasource({ sortBy: () => {} })).toBe(true);
+    it("should return true when sortBy and tree methods are present", () => {
+      expect(
+        isSortableTreeDatasource({
+          sortBy: () => {},
+          getRootNodes: () => {},
+          getChildren: () => {},
+          hasChildren: () => {},
+        }),
+      ).toBe(true);
+    });
+
+    it("should return false when only sortBy is present (not a tree)", () => {
+      expect(isSortableTreeDatasource({ sortBy: () => {} })).toBe(false);
     });
 
     it("should return false when sortBy is missing", () => {
-      expect(isSortableTreeDatasource({})).toBe(false);
+      expect(
+        isSortableTreeDatasource({
+          getRootNodes: () => {},
+          getChildren: () => {},
+          hasChildren: () => {},
+        }),
+      ).toBe(false);
     });
 
     it("should return false for null", () => {
