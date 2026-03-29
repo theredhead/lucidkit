@@ -31,6 +31,12 @@ export function moveItemInArray<T>(
   fromIndex: number,
   toIndex: number,
 ): void {
+  if (fromIndex < 0 || fromIndex >= array.length) {
+    throw new RangeError("fromIndex must be >= 0 and < the size of the array");
+  }
+  if (toIndex < 0 || toIndex >= array.length) {
+    throw new RangeError("toIndex must be >= 0 and < the size of the array");
+  }
   const [item] = array.splice(fromIndex, 1);
   array.splice(toIndex, 0, item);
 }
@@ -60,6 +66,16 @@ export function moveItemToArray<T>(
   target: T[],
   toIndex: number,
 ): void {
+  if (fromIndex < 0 || fromIndex >= source.length) {
+    throw new RangeError(
+      "fromIndex must be >= 0 and < the size of the source array",
+    );
+  }
+  if (toIndex < 0 || toIndex > target.length) {
+    throw new RangeError(
+      "toIndex must be >= 0 and <= the size of the target array",
+    );
+  }
   const [item] = source.splice(fromIndex, 1);
   target.splice(toIndex, 0, item);
 }
@@ -87,6 +103,12 @@ export function moveItemInArrayPure<T>(
   fromIndex: number,
   toIndex: number,
 ): T[] {
+  if (fromIndex < 0 || fromIndex >= array.length) {
+    throw new RangeError("fromIndex must be >= 0 and < the size of the array");
+  }
+  if (toIndex < 0 || toIndex >= array.length) {
+    throw new RangeError("toIndex must be >= 0 and < the size of the array");
+  }
   const result = [...array];
   const [item] = result.splice(fromIndex, 1);
   result.splice(toIndex, 0, item);
@@ -121,6 +143,16 @@ export function moveItemToArrayPure<T>(
   target: readonly T[],
   toIndex: number,
 ): [source: T[], target: T[]] {
+  if (fromIndex < 0 || fromIndex >= source.length) {
+    throw new RangeError(
+      "fromIndex must be >= 0 and < the size of the source array",
+    );
+  }
+  if (toIndex < 0 || toIndex > target.length) {
+    throw new RangeError(
+      "toIndex must be >= 0 and <= the size of the target array",
+    );
+  }
   const newSource = [...source];
   const [item] = newSource.splice(fromIndex, 1);
   const newTarget = [...target];

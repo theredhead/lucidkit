@@ -61,9 +61,13 @@ export interface IFilterableDatasource<T = unknown> extends IDatasource<T> {
   /**
    * Applies the given filter expression to the datasource.
    *
-   * @param expression - The filter criteria to apply (format is datasource-specific).
+   * The expression is a structured array of property-level or row-level
+   * predicates. Pass `null` or `undefined` to clear the filter and
+   * restore all rows.
+   *
+   * @param expression - The filter criteria to apply, or `null`/`undefined` to clear.
    */
-  filterBy(expression: unknown): void;
+  filterBy(expression: FilterExpression<T> | null | undefined): void;
 }
 
 /**

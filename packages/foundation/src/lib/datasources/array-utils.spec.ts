@@ -42,6 +42,22 @@ describe("array-utils", () => {
       moveItemInArray(arr, 0, 0);
       expect(arr).toEqual(["x"]);
     });
+
+    it("should throw RangeError for negative fromIndex", () => {
+      expect(() => moveItemInArray(["a", "b"], -1, 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds fromIndex", () => {
+      expect(() => moveItemInArray(["a", "b"], 2, 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for negative toIndex", () => {
+      expect(() => moveItemInArray(["a", "b"], 0, -1)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds toIndex", () => {
+      expect(() => moveItemInArray(["a", "b"], 0, 2)).toThrow(RangeError);
+    });
   });
 
   describe("moveItemToArray", () => {
@@ -76,6 +92,22 @@ describe("array-utils", () => {
       expect(src).toEqual([]);
       expect(tgt).toEqual(["x", "y", "a"]);
     });
+
+    it("should throw RangeError for negative fromIndex", () => {
+      expect(() => moveItemToArray(["a"], -1, ["x"], 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds fromIndex", () => {
+      expect(() => moveItemToArray(["a"], 1, ["x"], 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for negative toIndex", () => {
+      expect(() => moveItemToArray(["a"], 0, ["x"], -1)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds toIndex", () => {
+      expect(() => moveItemToArray(["a"], 0, ["x"], 2)).toThrow(RangeError);
+    });
   });
 
   describe("moveItemInArrayPure", () => {
@@ -95,6 +127,14 @@ describe("array-utils", () => {
     it("should handle same index", () => {
       const result = moveItemInArrayPure(["a", "b"], 0, 0);
       expect(result).toEqual(["a", "b"]);
+    });
+
+    it("should throw RangeError for out-of-bounds fromIndex", () => {
+      expect(() => moveItemInArrayPure(["a"], 1, 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds toIndex", () => {
+      expect(() => moveItemInArrayPure(["a"], 0, 1)).toThrow(RangeError);
     });
   });
 
@@ -119,6 +159,14 @@ describe("array-utils", () => {
       const [newSrc, newTgt] = moveItemToArrayPure(["a"], 0, [], 0);
       expect(newSrc).toEqual([]);
       expect(newTgt).toEqual(["a"]);
+    });
+
+    it("should throw RangeError for out-of-bounds fromIndex", () => {
+      expect(() => moveItemToArrayPure(["a"], 1, ["x"], 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds toIndex", () => {
+      expect(() => moveItemToArrayPure(["a"], 0, ["x"], 2)).toThrow(RangeError);
     });
   });
 });

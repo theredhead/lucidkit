@@ -38,7 +38,7 @@ export class Logger {
     private readonly context: string,
   ) {}
 
-  /** Log an informational message. */
+  /** Log a debug-level message. */
   public debug(message: string, args: unknown[] = []): void {
     this.strategy.debug(this.context, message, args);
   }
@@ -78,7 +78,7 @@ export class ConsoleLoggingStrategy implements ILoggingStrategy {
 
   /** @inheritdoc */
   public info(context: string, message: string, args: unknown[]): void {
-    console.log(
+    console.info(
       `[${new Date().toISOString()}] ${context}: ${message}`,
       ...args,
     );

@@ -134,8 +134,8 @@ export class UIMyComponent {
 Key rules:
 
 - The **context** string should be the class name (e.g. `"UIRichTextEditor"`).
-- Use `log.log()` for informational messages, `log.warn()` for warnings,
-  `log.error()` for errors.
+- Use `log.info()` for informational messages, `log.debug()` for verbose
+  output, `log.warn()` for warnings, `log.error()` for errors.
 - Pass additional data as an `unknown[]` in the second argument — do not
   concatenate into the message string.
 - The default `ConsoleLoggingStrategy` writes to the browser console. Custom

@@ -55,11 +55,21 @@ export class ArrayDatasource<T>
 
   /** @inheritdoc */
   public insertItem(index: number, item: T): void {
+    if (index < 0 || index > this.rows.length) {
+      throw new RangeError(
+        "index must be >= 0 and <= the size of the collection",
+      );
+    }
     this.rows.splice(index, 0, item);
   }
 
   /** @inheritdoc */
   public removeItem(index: number): T {
+    if (index < 0 || index >= this.rows.length) {
+      throw new RangeError(
+        "index must be >= 0 and < the size of the collection",
+      );
+    }
     const [item] = this.rows.splice(index, 1);
     return item;
   }

@@ -84,6 +84,22 @@ describe("ArrayDatasource", () => {
       ds.moveItem(0, 2);
       expect(ds.getNumberOfItems()).toBe(3);
     });
+
+    it("should throw RangeError for negative fromIndex", () => {
+      expect(() => ds.moveItem(-1, 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds fromIndex", () => {
+      expect(() => ds.moveItem(3, 0)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for negative toIndex", () => {
+      expect(() => ds.moveItem(0, -1)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for out-of-bounds toIndex", () => {
+      expect(() => ds.moveItem(0, 3)).toThrow(RangeError);
+    });
   });
 
   describe("insertItem", () => {
@@ -105,6 +121,18 @@ describe("ArrayDatasource", () => {
       ds.insertItem(3, { id: 99, name: "New" });
       expect(ds.getNumberOfItems()).toBe(4);
       expect(ds.getObjectAtRowIndex(3)).toEqual({ id: 99, name: "New" });
+    });
+
+    it("should throw RangeError for a negative index", () => {
+      expect(() => ds.insertItem(-1, { id: 99, name: "New" })).toThrow(
+        RangeError,
+      );
+    });
+
+    it("should throw RangeError for an index beyond length", () => {
+      expect(() => ds.insertItem(4, { id: 99, name: "New" })).toThrow(
+        RangeError,
+      );
     });
   });
 
@@ -131,6 +159,14 @@ describe("ArrayDatasource", () => {
       ds.removeItem(0);
       expect(ds.getObjectAtRowIndex(0)).toEqual({ id: 2, name: "Bob" });
       expect(ds.getObjectAtRowIndex(1)).toEqual({ id: 3, name: "Charlie" });
+    });
+
+    it("should throw RangeError for a negative index", () => {
+      expect(() => ds.removeItem(-1)).toThrow(RangeError);
+    });
+
+    it("should throw RangeError for an index >= length", () => {
+      expect(() => ds.removeItem(3)).toThrow(RangeError);
     });
   });
 });

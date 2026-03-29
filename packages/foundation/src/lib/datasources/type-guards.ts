@@ -88,7 +88,12 @@ export function isFilterableTreeDatasource<T>(
     return false;
   }
   const obj = datasource as Record<string, unknown>;
-  return typeof obj["filterBy"] === "function";
+  return (
+    typeof obj["filterBy"] === "function" &&
+    typeof obj["getRootNodes"] === "function" &&
+    typeof obj["getChildren"] === "function" &&
+    typeof obj["hasChildren"] === "function"
+  );
 }
 
 /**
@@ -130,7 +135,12 @@ export function isSortableTreeDatasource<T>(
     return false;
   }
   const obj = datasource as Record<string, unknown>;
-  return typeof obj["sortBy"] === "function";
+  return (
+    typeof obj["sortBy"] === "function" &&
+    typeof obj["getRootNodes"] === "function" &&
+    typeof obj["getChildren"] === "function" &&
+    typeof obj["hasChildren"] === "function"
+  );
 }
 
 /**
