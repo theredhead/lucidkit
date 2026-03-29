@@ -15,6 +15,7 @@
         (selectAllChange)="onSelectAllChange($event)" />
     <ui-table-body [columns]="resolvedColumns()" [rows]="sortedRows()" [showRowIndexIndicator]="showRowIndexIndicator()"
         [rowIndexOffset]="rowIndexOffset()" [columnWidths]="columnWidths()"
+        [rowHeight]="rowHeight()"
         [selectionMode]="selectionMode()" [showSelectionColumn]="showSelectionColumn()"
         [selection]="selection()" [rowClickSelect]="rowClickSelect()"
         [activeIndex]="activeIndex()"

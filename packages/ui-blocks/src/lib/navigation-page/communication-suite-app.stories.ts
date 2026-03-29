@@ -1924,12 +1924,13 @@ function channelIcon(type: string): string {
                 [datasource]="inboxDs"
                 title="Inbox"
                 [showFilter]="true"
+                [rowHeight]="56"
                 placeholder="Select a message to read..."
               >
                 <ui-template-column key="subject" headerText="Subject">
                   <ng-template let-row>
                     <div
-                      style="display: flex; flex-direction: column; padding: .15rem; width: 100%;"
+                      style="display: flex; flex-direction: column; padding-top: 6px; padding-bottom: 6px; width: 100%;"
                     >
                       <div
                         style="display: flex; align-items: center; gap: 0.5rem;"
