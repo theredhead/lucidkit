@@ -10,8 +10,8 @@
     "@theredhead/ui-kit": "0.0.1"
   },
   "scripts": {
-    "build": "ng-packagr -p ng-package.json",
-    "build:watch": "ng-packagr -p ng-package.json -w"
+    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",
+    "build:watch": "ng-packagr -p ng-package.json -c tsconfig.lib.json -w"
   },
   "ngPackage": {
     "$schema": "node_modules/ng-packagr/ng-package.schema.json",

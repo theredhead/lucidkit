@@ -5,6 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
+      "@theredhead/foundation": ["../../dist/foundation"],
       "@theredhead/ui-theme": ["../../dist/ui-theme"]
     }
   },

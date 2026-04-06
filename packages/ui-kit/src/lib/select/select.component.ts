@@ -37,7 +37,7 @@ export interface SelectOption {
 })
 export class UISelect {
   /** Available options. */
-  readonly options = input.required<SelectOption[]>();
+  readonly options = input.required<readonly SelectOption[]>();
 
   /** Currently selected value (two-way bindable). */
   readonly value = model("");

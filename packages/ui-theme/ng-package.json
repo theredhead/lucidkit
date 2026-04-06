@@ -6,6 +6,7 @@
     "styleIncludePaths": ["src/lib/styles"]
   },
   "assets": [
-    "src/lib/styles/**/*.scss"
+    "src/lib/styles/**/*.scss",
+    "styles/**/*.scss"
   ]
 }

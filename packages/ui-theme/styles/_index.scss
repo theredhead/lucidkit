@@ -1,0 +1,4 @@
+// Public SCSS entry point for external consumers.
+// Usage: @use '@theredhead/ui-theme/styles' as theme;
+
+@forward "../src/lib/styles";

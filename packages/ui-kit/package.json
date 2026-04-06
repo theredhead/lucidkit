@@ -11,8 +11,8 @@
     "@angular/core": "^21.0.0"
   },
   "scripts": {
-    "build": "ng-packagr -p ng-package.json",
-    "build:watch": "ng-packagr -p ng-package.json -w",
+    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",
+    "build:watch": "ng-packagr -p ng-package.json -c tsconfig.lib.json -w",
     "test": "jest --config jest.config.js",
     "test:watch": "jest --config jest.config.js --watch",
     "test:coverage": "jest --config jest.config.js --coverage"

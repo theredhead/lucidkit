@@ -18,15 +18,15 @@ import {
   computeDateRange,
   computeTodayPosition,
 } from "./gantt-chart.utils";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * Processed task row ready for template rendering.
  *
  * @internal
  */
-interface GanttRow {
-  readonly task: GanttTask;
+interface GanttRow<T = unknown> {
+  readonly task: GanttTask<T>;
   readonly left: number;
   readonly width: number;
   readonly color: string;
@@ -58,7 +58,7 @@ interface GanttRow {
   selector: "ui-gantt-chart",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./gantt-chart.component.html",
   styleUrl: "./gantt-chart.component.scss",
   host: {
@@ -134,7 +134,7 @@ export class UIGanttChart<T = unknown> {
   });
 
   /** Processed rows for template rendering. */
-  protected readonly rows = computed<readonly GanttRow[]>(() => {
+  protected readonly rows = computed<readonly GanttRow<T>[]>(() => {
     const tl = this.timeline();
     const tasks = this.tasks();
     const pal = this.palette();
