@@ -2,6 +2,7 @@
   <!-- Sidebar (pinned or inside drawer) -->
   @if (sidebarPinned()) {
     <aside class="sidebar">
+      <ng-content select="ui-sidebar-header" />
       <ui-sidebar-nav [ariaLabel]="ariaLabel()">
         <ng-content select="ui-sidebar-item" />
 
@@ -35,6 +36,7 @@
           }
         }
       </ui-sidebar-nav>
+      <ng-content select="ui-sidebar-footer" />
     </aside>
   } @else {
     <ui-drawer
@@ -43,6 +45,7 @@
       [width]="drawerWidth()"
       [ariaLabel]="ariaLabel()"
     >
+      <ng-content select="ui-sidebar-header" />
       <ui-sidebar-nav [ariaLabel]="ariaLabel()">
         <ng-content select="ui-sidebar-item" />
 
@@ -76,6 +79,7 @@
           }
         }
       </ui-sidebar-nav>
+      <ng-content select="ui-sidebar-footer" />
     </ui-drawer>
   }
 

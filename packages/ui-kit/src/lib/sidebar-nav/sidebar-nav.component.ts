@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Directive,
   contentChildren,
   input,
   model,
@@ -156,3 +157,37 @@ export class UISidebarNav {
   /** All projected sidebar items (direct children). */
   public readonly items = contentChildren(UISidebarItem);
 }
+
+/**
+ * A container for custom header content above the sidebar navigation.
+ *
+ * @example
+ * ```html
+ * <ui-navigation-page>
+ *   <ui-sidebar-header>…</ui-sidebar-header>
+ * </ui-navigation-page>
+ * ```
+ */
+@Directive({
+  selector: "[uiSidebarHeader]",
+  standalone: true,
+  host: { class: "ui-sidebar-header" },
+})
+export class UISidebarHeader {}
+
+/**
+ * A container for custom footer content below the sidebar navigation.
+ *
+ * @example
+ * ```html
+ * <ui-navigation-page>
+ *   <ui-sidebar-footer>…</ui-sidebar-footer>
+ * </ui-navigation-page>
+ * ```
+ */
+@Directive({
+  selector: "[uiSidebarFooter]",
+  standalone: true,
+  host: { class: "ui-sidebar-footer" },
+})
+export class UISidebarFooter {}
