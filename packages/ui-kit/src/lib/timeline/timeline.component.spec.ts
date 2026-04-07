@@ -272,14 +272,14 @@ describe("UITimeline — component rendering", () => {
   it("should use resolveComponent to get the component class", () => {
     const timeline = fixture.debugElement.children[0]
       .componentInstance as UITimeline<TestEvent>;
-    const comp = (timeline as never)["resolveComponent"](TEST_EVENTS[0]);
+    const comp = (timeline as any)["resolveComponent"](TEST_EVENTS[0]);
     expect(comp).toBe(TestEventCard);
   });
 
   it("should build component inputs with index and first/last flags", () => {
     const timeline = fixture.debugElement.children[0]
       .componentInstance as UITimeline<TestEvent>;
-    const inputs = (timeline as never)["buildComponentInputs"](
+    const inputs = (timeline as any)["buildComponentInputs"](
       TEST_EVENTS[0],
       0,
     ) as Record<string, unknown>;

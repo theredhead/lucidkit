@@ -102,7 +102,7 @@ describe("UIColorPicker", () => {
       component.open();
 
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy.mock.calls[0][0]?.inputs?.initialValue).toBe("#0061a4");
+      expect(spy.mock.calls[0][0]?.inputs?.["initialValue"]).toBe("#0061a4");
     });
 
     it("should update value and emit colorChange on popover close with result", () => {

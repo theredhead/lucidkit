@@ -28,13 +28,13 @@ describe("UITableBody", () => {
     it("should return null when column not in widths map", () => {
       fixture.componentRef.setInput("columnWidths", {});
       fixture.detectChanges();
-      expect((component as never)["getColWidth"]("unknown")).toBeNull();
+      expect((component as any)["getColWidth"]("unknown")).toBeNull();
     });
 
     it("should return width when column exists in widths map", () => {
       fixture.componentRef.setInput("columnWidths", { name: 150 });
       fixture.detectChanges();
-      expect((component as never)["getColWidth"]("name")).toBe(150);
+      expect((component as any)["getColWidth"]("name")).toBe(150);
     });
   });
 
@@ -42,14 +42,14 @@ describe("UITableBody", () => {
     it("should emit rowClick for non-null row", () => {
       const spy = vi.fn();
       component.rowClick.subscribe(spy);
-      (component as never)["onRowClick"]({ id: 1 });
+      (component as any)["onRowClick"]({ id: 1 });
       expect(spy).toHaveBeenCalledWith({ id: 1 });
     });
 
     it("should not emit rowClick for null row", () => {
       const spy = vi.fn();
       component.rowClick.subscribe(spy);
-      (component as never)["onRowClick"](null);
+      (component as any)["onRowClick"](null);
       expect(spy).not.toHaveBeenCalled();
     });
   });
@@ -63,7 +63,7 @@ describe("UITableBody", () => {
       fixture.componentRef.setInput("selection", mockSelection);
       fixture.detectChanges();
 
-      (component as never)["onSelectionToggle"]({ id: 1 });
+      (component as any)["onSelectionToggle"]({ id: 1 });
       expect(mockSelection.toggle).toHaveBeenCalledWith({ id: 1 });
     });
 
@@ -75,18 +75,18 @@ describe("UITableBody", () => {
       fixture.componentRef.setInput("selection", mockSelection);
       fixture.detectChanges();
 
-      (component as never)["onSelectionToggle"](null);
+      (component as any)["onSelectionToggle"](null);
       expect(mockSelection.toggle).not.toHaveBeenCalled();
     });
   });
 
   describe("isRowSelected", () => {
     it("should return false for null row", () => {
-      expect((component as never)["isRowSelected"](null)).toBe(false);
+      expect((component as any)["isRowSelected"](null)).toBe(false);
     });
 
     it("should return false when no selection model", () => {
-      expect((component as never)["isRowSelected"]({ id: 1 })).toBe(false);
+      expect((component as any)["isRowSelected"]({ id: 1 })).toBe(false);
     });
 
     it("should delegate to selection model", () => {
@@ -97,7 +97,7 @@ describe("UITableBody", () => {
       fixture.componentRef.setInput("selection", mockSelection);
       fixture.detectChanges();
 
-      expect((component as never)["isRowSelected"]({ id: 1 })).toBe(true);
+      expect((component as any)["isRowSelected"]({ id: 1 })).toBe(true);
       expect(mockSelection.isSelected).toHaveBeenCalledWith({ id: 1 });
     });
   });

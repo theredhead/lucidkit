@@ -2,7 +2,7 @@
   <!-- Sidebar (pinned or inside drawer) -->
   @if (sidebarPinned()) {
     <aside class="sidebar" [class.sidebar--collapsed]="!sidebarVisible()">
-      <ng-content select="ui-sidebar-header" />
+      <ng-content select="[uiSidebarHeader]" />
       <ui-sidebar-nav [ariaLabel]="ariaLabel()">
         <ng-content select="ui-sidebar-item" />
 
@@ -36,7 +36,7 @@
           }
         }
       </ui-sidebar-nav>
-      <ng-content select="ui-sidebar-footer" />
+      <ng-content select="[uiSidebarFooter]" />
     </aside>
   } @else {
     <ui-drawer
@@ -45,7 +45,7 @@
       [width]="drawerWidth()"
       [ariaLabel]="ariaLabel()"
     >
-      <ng-content select="ui-sidebar-header" />
+      <ng-content select="[uiSidebarHeader]" />
       <ui-sidebar-nav [ariaLabel]="ariaLabel()">
         <ng-content select="ui-sidebar-item" />
 
@@ -79,7 +79,7 @@
           }
         }
       </ui-sidebar-nav>
-      <ng-content select="ui-sidebar-footer" />
+      <ng-content select="[uiSidebarFooter]" />
     </ui-drawer>
   }
 

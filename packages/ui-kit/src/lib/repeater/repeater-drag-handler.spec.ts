@@ -29,8 +29,12 @@ function pointerEvent(
 
 describe("RepeaterDragHandler", () => {
   let container: HTMLElement;
-  let onReorder: ReturnType<typeof vi.fn>;
-  let onTransfer: ReturnType<typeof vi.fn>;
+  let onReorder: (previousIndex: number, currentIndex: number) => void;
+  let onTransfer: (
+    targetHandler: RepeaterDragHandler,
+    previousIndex: number,
+    currentIndex: number,
+  ) => void;
   let handler: RepeaterDragHandler;
 
   beforeEach(() => {
@@ -451,7 +455,11 @@ describe("RepeaterDragHandler", () => {
   describe("cross-container transfer", () => {
     let container2: HTMLElement;
     let handler2: RepeaterDragHandler;
-    let onTransfer2: ReturnType<typeof vi.fn>;
+    let onTransfer2: (
+      targetHandler: RepeaterDragHandler,
+      previousIndex: number,
+      currentIndex: number,
+    ) => void;
 
     function mockItems(cont: HTMLElement, yOffset = 0): void {
       const items = cont.querySelectorAll(
@@ -477,7 +485,11 @@ describe("RepeaterDragHandler", () => {
     beforeEach(() => {
       container2 = createContainer(2);
       onTransfer2 = vi.fn();
-      handler2 = new RepeaterDragHandler(container2, vi.fn(), onTransfer2);
+      handler2 = new RepeaterDragHandler(
+        container2,
+        vi.fn<(previousIndex: number, currentIndex: number) => void>(),
+        onTransfer2,
+      );
       handler2.enabled = true;
       handler.enabled = true;
 

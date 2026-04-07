@@ -4,14 +4,18 @@ import { ColumnResizeService } from "./column-resize.service";
 
 describe("ColumnResizeService", () => {
   let service: ColumnResizeService;
-  let storageMock: jasmine.SpyObj<StorageService>;
+  let storageMock: {
+    getItem: ReturnType<typeof vi.fn>;
+    setItem: ReturnType<typeof vi.fn>;
+    removeItem: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
     storageMock = {
       getItem: vi.fn(),
       setItem: vi.fn(),
       removeItem: vi.fn(),
-    } as unknown as jasmine.SpyObj<StorageService>;
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -30,7 +34,9 @@ describe("ColumnResizeService", () => {
     });
 
     it("should return empty map when storage has no data", () => {
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockReturnValue(null);
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockReturnValue(null);
       const map = service.load("table-1");
       expect(map.size).toBe(0);
     });
@@ -40,7 +46,9 @@ describe("ColumnResizeService", () => {
         { key: "name", widthPx: 200 },
         { key: "age", widthPx: 100 },
       ];
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockReturnValue(JSON.stringify(entries));
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockReturnValue(JSON.stringify(entries));
       const map = service.load("table-1");
       expect(map.get("name")).toBe(200);
       expect(map.get("age")).toBe(100);
@@ -48,14 +56,18 @@ describe("ColumnResizeService", () => {
 
     it("should skip entries with invalid key type", () => {
       const entries = [{ key: 123, widthPx: 200 }];
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockReturnValue(JSON.stringify(entries));
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockReturnValue(JSON.stringify(entries));
       const map = service.load("table-1");
       expect(map.size).toBe(0);
     });
 
     it("should skip entries with non-number widthPx", () => {
       const entries = [{ key: "name", widthPx: "wide" }];
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockReturnValue(JSON.stringify(entries));
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockReturnValue(JSON.stringify(entries));
       const map = service.load("table-1");
       expect(map.size).toBe(0);
     });
@@ -65,19 +77,25 @@ describe("ColumnResizeService", () => {
         { key: "name", widthPx: 0 },
         { key: "age", widthPx: -10 },
       ];
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockReturnValue(JSON.stringify(entries));
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockReturnValue(JSON.stringify(entries));
       const map = service.load("table-1");
       expect(map.size).toBe(0);
     });
 
     it("should handle corrupt JSON gracefully", () => {
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockReturnValue("{not-valid-json");
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockReturnValue("{not-valid-json");
       const map = service.load("table-1");
       expect(map.size).toBe(0);
     });
 
     it("should handle storage throwing", () => {
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => {
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockImplementation(() => {
         throw new Error("localStorage gone");
       });
       const map = service.load("table-1");
@@ -85,7 +103,9 @@ describe("ColumnResizeService", () => {
     });
 
     it("should use correct storage key prefix", () => {
-      (storageMock.getItem as unknown as ReturnType<typeof vi.fn>).mockReturnValue(null);
+      (
+        storageMock.getItem as unknown as ReturnType<typeof vi.fn>
+      ).mockReturnValue(null);
       service.load("my-table");
       expect(storageMock.getItem).toHaveBeenCalledWith(
         "ui-table-col-widths:my-table",
@@ -110,7 +130,8 @@ describe("ColumnResizeService", () => {
         expect.any(String),
       );
       const stored = JSON.parse(
-        (storageMock.setItem as unknown as ReturnType<typeof vi.fn>).mock.calls[0][1],
+        (storageMock.setItem as unknown as ReturnType<typeof vi.fn>).mock
+          .calls[0][1],
       );
       expect(stored).toEqual(
         expect.arrayContaining([
@@ -121,7 +142,9 @@ describe("ColumnResizeService", () => {
     });
 
     it("should handle storage throwing gracefully", () => {
-      (storageMock.setItem as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => {
+      (
+        storageMock.setItem as unknown as ReturnType<typeof vi.fn>
+      ).mockImplementation(() => {
         throw new Error("quota exceeded");
       });
       expect(() => service.save("t", new Map([["a", 1]]))).not.toThrow();
@@ -142,7 +165,9 @@ describe("ColumnResizeService", () => {
     });
 
     it("should handle storage throwing gracefully", () => {
-      (storageMock.removeItem as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => {
+      (
+        storageMock.removeItem as unknown as ReturnType<typeof vi.fn>
+      ).mockImplementation(() => {
         throw new Error("boom");
       });
       expect(() => service.clear("table-1")).not.toThrow();

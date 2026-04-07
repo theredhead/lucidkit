@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "npm run build -w packages/foundation && npm run build -w packages/ui-theme && npm run build -w packages/ui-kit && npm run build -w packages/ui-blocks && npm run build -w packages/ui-forms",
+    "pack": "npm run build && cd dist/foundation && npm pack --pack-destination .. && cd ../ui-theme && npm pack --pack-destination .. && cd ../ui-kit && npm pack --pack-destination .. && cd ../ui-blocks && npm pack --pack-destination .. && cd ../ui-forms && npm pack --pack-destination ..",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

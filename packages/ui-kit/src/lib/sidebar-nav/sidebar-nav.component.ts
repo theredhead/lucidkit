@@ -164,7 +164,7 @@ export class UISidebarNav {
  * @example
  * ```html
  * <ui-navigation-page>
- *   <ui-sidebar-header>…</ui-sidebar-header>
+ *   <header uiSidebarHeader>…</header>
  * </ui-navigation-page>
  * ```
  */
@@ -181,7 +181,7 @@ export class UISidebarHeader {}
  * @example
  * ```html
  * <ui-navigation-page>
- *   <ui-sidebar-footer>…</ui-sidebar-footer>
+ *   <footer uiSidebarFooter>…</footer>
  * </ui-navigation-page>
  * ```
  */

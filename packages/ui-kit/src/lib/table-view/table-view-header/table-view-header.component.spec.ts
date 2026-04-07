@@ -216,8 +216,8 @@ describe("UITableHeader", () => {
 
     it("should reset sort when clicking a different column", () => {
       const col2 = new StubColumn();
-      col2.key = signal("col-other") as any;
-      col2.headerText = signal("Other") as any;
+      (col2 as any).key = signal("col-other");
+      (col2 as any).headerText = signal("Other");
       host.columns.set([new StubColumn(), col2]);
       fixture.detectChanges();
 

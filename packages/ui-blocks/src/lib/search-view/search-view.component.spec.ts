@@ -255,7 +255,7 @@ describe("UISearchView", () => {
       searchView.saveNewSearch("My Filter");
       detectAndFlush(fixture);
 
-      const list = searchView.savedSearches();
+      const list = (searchView as any).savedSearches();
       expect(list.length).toBe(1);
       expect(list[0].name).toBe("My Filter");
 
@@ -263,7 +263,7 @@ describe("UISearchView", () => {
       searchView.loadSavedSearch(savedId);
       detectAndFlush(fixture);
 
-      expect(searchView.selectedSearchId()).toBe(savedId);
+      expect((searchView as any).selectedSearchId()).toBe(savedId);
     });
 
     it("should delete a saved search", () => {
@@ -273,12 +273,12 @@ describe("UISearchView", () => {
       searchView.saveNewSearch("Temp Filter");
       detectAndFlush(fixture);
 
-      const savedId = searchView.savedSearches()[0].id;
+      const savedId = (searchView as any).savedSearches()[0].id;
       searchView.deleteSavedSearch(savedId);
       detectAndFlush(fixture);
 
-      expect(searchView.savedSearches().length).toBe(0);
-      expect(searchView.selectedSearchId()).toBe("");
+      expect((searchView as any).savedSearches().length).toBe(0);
+      expect((searchView as any).selectedSearchId()).toBe("");
     });
 
     it("should not save with empty name", () => {
@@ -288,7 +288,7 @@ describe("UISearchView", () => {
       searchView.saveNewSearch("   ");
       detectAndFlush(fixture);
 
-      expect(searchView.savedSearches().length).toBe(0);
+      expect((searchView as any).savedSearches().length).toBe(0);
     });
 
     it("should load empty string to reset selection", () => {
@@ -298,12 +298,12 @@ describe("UISearchView", () => {
       searchView.saveNewSearch("Test");
       detectAndFlush(fixture);
 
-      const savedId = searchView.savedSearches()[0].id;
+      const savedId = (searchView as any).savedSearches()[0].id;
       searchView.loadSavedSearch(savedId);
       detectAndFlush(fixture);
 
       searchView.loadSavedSearch("");
-      expect(searchView.selectedSearchId()).toBe("");
+      expect((searchView as any).selectedSearchId()).toBe("");
     });
   });
 
@@ -337,13 +337,13 @@ describe("UISearchView", () => {
     it("should toggle filter panel via toggleFilter", () => {
       const searchView = fixture.debugElement.children[0]
         .componentInstance as UISearchView<Product>;
-      const initial = searchView.filterCollapsed();
+      const initial = (searchView as any).filterCollapsed();
 
       searchView.toggleFilter();
-      expect(searchView.filterCollapsed()).toBe(!initial);
+      expect((searchView as any).filterCollapsed()).toBe(!initial);
 
       searchView.toggleFilter();
-      expect(searchView.filterCollapsed()).toBe(initial);
+      expect((searchView as any).filterCollapsed()).toBe(initial);
     });
   });
 });
