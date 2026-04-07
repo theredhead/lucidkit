@@ -50,6 +50,10 @@ Each package maintains a machine-readable inventory of its public API:
 - [`packages/ui-blocks/components.agents.md`](packages/ui-blocks/components.agents.md)
 - [`packages/ui-forms/components.agents.md`](packages/ui-forms/components.agents.md)
 
+**Keep these inventories up to date.** Whenever you add, rename, or remove a
+public export (component, directive, service, type, function, etc.), update
+the corresponding `components.agents.md` file in the same commit.
+
 ---
 
 ## Toolchain
