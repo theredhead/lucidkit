@@ -25,6 +25,10 @@
   flex-direction: column;
   flex-shrink: 0;
   width: var(--ui-sidebar-width);
+  transition:
+    width 0.25s ease,
+    opacity 0.2s ease;
+  opacity: 1;
   @include mix.scrollable(y);
   overflow-x: hidden;
 
@@ -32,6 +36,12 @@
     flex: 1;
     min-height: 0;
     height: auto;
+  }
+
+  &--collapsed {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
   }
 }
 
