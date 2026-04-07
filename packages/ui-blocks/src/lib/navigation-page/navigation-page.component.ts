@@ -19,7 +19,10 @@ import {
   type ITreeDatasource,
   type TreeNode,
   UIBreadcrumb,
+  UIButton,
   UIDrawer,
+  UIIcon,
+  UIIcons,
   UISidebarGroup,
   UISidebarItem,
   UISidebarNav,
@@ -112,7 +115,9 @@ export interface NavigationPageContext {
   standalone: true,
   imports: [
     NgTemplateOutlet,
+    UIButton,
     UIDrawer,
+    UIIcon,
     UISidebarNav,
     UISidebarItem,
     UISidebarGroup,
@@ -125,6 +130,7 @@ export interface NavigationPageContext {
   host: {
     class: "ui-navigation-page",
     "[class.ui-navigation-page--drawer-open]": "drawerOpen()",
+    "[class.ui-navigation-page--sidebar-hidden]": "!sidebarVisible()",
   },
 })
 export class UINavigationPage {
@@ -175,6 +181,9 @@ export class UINavigationPage {
   /** Whether the drawer should always be visible (desktop layout). */
   public readonly sidebarPinned = input(true);
 
+  /** Whether to show the sidebar toggle button before the breadcrumb. */
+  public readonly showSidebarToggle = input(true);
+
   // ── Models ──────────────────────────────────────────────────────────
 
   /** The currently active node id. Supports two-way binding. */
@@ -182,6 +191,9 @@ export class UINavigationPage {
 
   /** Whether the drawer is open (when not pinned). Supports two-way binding. */
   public readonly drawerOpen = model(false);
+
+  /** Whether the sidebar panel is visible. Supports two-way binding. Defaults to shown. */
+  public readonly sidebarVisible = model(true);
 
   // ── Outputs ─────────────────────────────────────────────────────────
 
@@ -207,6 +219,13 @@ export class UINavigationPage {
   public readonly projectedItems = contentChildren(UISidebarItem);
 
   // ── Computed ────────────────────────────────────────────────────────
+
+  /** Icon for the sidebar toggle button. @internal */
+  protected readonly sidebarToggleIcon = computed(() =>
+    this.sidebarVisible()
+      ? UIIcons.Lucide.Arrows.PanelLeftClose
+      : UIIcons.Lucide.Arrows.PanelLeftOpen,
+  );
 
   /** Resolved datasource — from the input or auto-created from items. */
   protected readonly resolvedDatasource = computed(() => {

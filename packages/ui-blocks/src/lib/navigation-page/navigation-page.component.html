@@ -1,43 +1,45 @@
 <div class="layout">
   <!-- Sidebar (pinned or inside drawer) -->
   @if (sidebarPinned()) {
-    <aside class="sidebar">
-      <ng-content select="ui-sidebar-header" />
-      <ui-sidebar-nav [ariaLabel]="ariaLabel()">
-        <ng-content select="ui-sidebar-item" />
+    @if (sidebarVisible()) {
+      <aside class="sidebar">
+        <ng-content select="ui-sidebar-header" />
+        <ui-sidebar-nav [ariaLabel]="ariaLabel()">
+          <ng-content select="ui-sidebar-item" />
 
-        @for (node of rootNodes(); track node.id) {
-          @if (node.children?.length) {
-            <ui-sidebar-group
-              [label]="node.data.label"
-              [icon]="node.icon ?? ''"
-              [expanded]="node.expanded ?? true"
-            >
-              @for (child of node.children; track child.id) {
-                <ui-sidebar-item
-                  [label]="child.data.label"
-                  [icon]="child.icon ?? ''"
-                  [badge]="child.data.badge ?? ''"
-                  [active]="currentPage()?.id === child.id"
-                  [disabled]="child.disabled ?? false"
-                  (activated)="navigate(child)"
-                />
-              }
-            </ui-sidebar-group>
-          } @else {
-            <ui-sidebar-item
-              [label]="node.data.label"
-              [icon]="node.icon ?? ''"
-              [badge]="node.data.badge ?? ''"
-              [active]="currentPage()?.id === node.id"
-              [disabled]="node.disabled ?? false"
-              (activated)="navigate(node)"
-            />
+          @for (node of rootNodes(); track node.id) {
+            @if (node.children?.length) {
+              <ui-sidebar-group
+                [label]="node.data.label"
+                [icon]="node.icon ?? ''"
+                [expanded]="node.expanded ?? true"
+              >
+                @for (child of node.children; track child.id) {
+                  <ui-sidebar-item
+                    [label]="child.data.label"
+                    [icon]="child.icon ?? ''"
+                    [badge]="child.data.badge ?? ''"
+                    [active]="currentPage()?.id === child.id"
+                    [disabled]="child.disabled ?? false"
+                    (activated)="navigate(child)"
+                  />
+                }
+              </ui-sidebar-group>
+            } @else {
+              <ui-sidebar-item
+                [label]="node.data.label"
+                [icon]="node.icon ?? ''"
+                [badge]="node.data.badge ?? ''"
+                [active]="currentPage()?.id === node.id"
+                [disabled]="node.disabled ?? false"
+                (activated)="navigate(node)"
+              />
+            }
           }
-        }
-      </ui-sidebar-nav>
-      <ng-content select="ui-sidebar-footer" />
-    </aside>
+        </ui-sidebar-nav>
+        <ng-content select="ui-sidebar-footer" />
+      </aside>
+    }
   } @else {
     <ui-drawer
       [(open)]="drawerOpen"
@@ -86,6 +88,16 @@
   <!-- Main content area -->
   <main class="main">
     <header class="breadcrumb">
+      @if (showSidebarToggle()) {
+        <ui-button
+          class="sidebar-toggle"
+          variant="ghost"
+          ariaLabel="Toggle sidebar"
+          (click)="sidebarVisible.set(!sidebarVisible())"
+        >
+          <ui-icon [svg]="sidebarToggleIcon()" [size]="18" />
+        </ui-button>
+      }
       <ui-breadcrumb
         surfaceType="panel"
         [items]="breadcrumbItems()"
