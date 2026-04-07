@@ -7,6 +7,7 @@ source of truth — always follow it.**
 Read and apply `AGENTS.md` before generating or modifying any code in this
 workspace. It covers:
 
+- **Read Before You Code** — always read source files and docs before assuming API shapes
 - Component conventions (standalone, OnPush, signal APIs, `UI<Name>` naming)
 - CSS token namespace (`--ui-*`), centralised dark mode, and UISurface directive
 - File structure, barrel exports, and public API surface

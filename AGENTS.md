@@ -6,6 +6,26 @@
 
 ---
 
+## Read Before You Code
+
+**Before writing or modifying any code, always read the relevant source
+files, READMEs, JSDoc comments, and available documentation.** Never assume
+an API shape, event name, input type, or default value — verify it by
+reading the implementation first. This applies to:
+
+- Component inputs, outputs, and host bindings
+- Service methods and injection tokens
+- Type definitions and union members
+- Template syntax and directive selectors
+- SCSS tokens and class names
+
+Each package has a **`components.agents.md`** file listing every public
+export with its kind, file path, selector, and one-line description. Consult
+these inventories to locate the right file, then read that file before
+using or modifying the API.
+
+---
+
 ## Project Overview
 
 This is an **Angular 21** component library workspace (`theredhead-fe-workspace`)
@@ -16,8 +36,19 @@ beyond Angular core and CDK. It ships three npm packages:
 | ------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
 | `@theredhead/foundation` | Core       | Logger, type utilities, base classes — shared by all higher-level packages                  |
 | `@theredhead/ui-kit`     | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
-| `@theredhead/ui-blocks`  | Composites | Master-Detail View (higher-level compositions)                                              |
+| `@theredhead/ui-blocks`  | Composites | Master-Detail View, Navigation Page, Dashboard, Kanban, Chat, File Browser, etc.            |
+| `@theredhead/ui-forms`   | Forms      | Schema-driven forms, validation, conditional logic, form designer                           |
 | `@theredhead/ui-theme`   | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
+
+### API Inventories
+
+Each package maintains a machine-readable inventory of its public API:
+
+- [`packages/foundation/components.agents.md`](packages/foundation/components.agents.md)
+- [`packages/ui-theme/components.agents.md`](packages/ui-theme/components.agents.md)
+- [`packages/ui-kit/components.agents.md`](packages/ui-kit/components.agents.md)
+- [`packages/ui-blocks/components.agents.md`](packages/ui-blocks/components.agents.md)
+- [`packages/ui-forms/components.agents.md`](packages/ui-forms/components.agents.md)
 
 ---
 

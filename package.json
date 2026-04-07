@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build -w packages/foundation && npm run build -w packages/ui-theme && npm run build -w packages/ui-kit && npm run build -w packages/ui-blocks && npm run build -w packages/ui-forms",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

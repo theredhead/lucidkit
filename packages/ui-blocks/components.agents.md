@@ -1,0 +1,84 @@
+# @theredhead/ui-blocks — API Inventory
+
+> Machine-readable inventory of all public exports.
+> Referenced from the root [AGENTS.md](../../AGENTS.md).
+
+## Components
+
+| Name                 | File                                                           | Selector                | Description                                                                             |
+| -------------------- | -------------------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------- |
+| `UIMasterDetailView` | `src/lib/master-detail-view/master-detail-view.component.ts`   | `ui-master-detail-view` | Master-detail layout showing a list in UITableView or UITreeView with a detail template |
+| `UIDashboard`        | `src/lib/dashboard/dashboard.component.ts`                     | `ui-dashboard`          | Dashboard host with projected panels on a CSS grid with configurable columns and gap    |
+| `UIDashboardPanel`   | `src/lib/dashboard/dashboard-panel.component.ts`               | `ui-dashboard-panel`    | Single panel with header bar, grid placement, and collapse/remove controls              |
+| `UINavigationPage`   | `src/lib/navigation-page/navigation-page.component.ts`         | `ui-navigation-page`    | Full-page navigation layout with sidebar, breadcrumbs, and content area                 |
+| `UISearchView`       | `src/lib/search-view/search-view.component.ts`                 | `ui-search-view`        | Browse-and-filter layout composing UIFilter, UITableView, and UIPagination              |
+| `UIPropertySheet`    | `src/lib/property-sheet/property-sheet.component.ts`           | `ui-property-sheet`     | Key-value inspector panel rendering typed fields against a data object                  |
+| `UICommandPalette`   | `src/lib/command-palette/command-palette.component.ts`         | `ui-command-palette`    | Keyboard-triggered command palette for quick access to actions                          |
+| `UIFileBrowser`      | `src/lib/file-browser/file-browser.component.ts`               | `ui-file-browser`       | Two-panel file browser with tree sidebar, breadcrumb, and contents list                 |
+| `UIChatView`         | `src/lib/chat-view/chat-view.component.ts`                     | `ui-chat-view`          | Chat/messaging view with scrollable message list, date grouping, and composer           |
+| `UIMessageBubble`    | `src/lib/chat-view/message-bubble/message-bubble.component.ts` | `ui-message-bubble`     | Single chat message bubble with avatar, sender, content, and timestamp                  |
+| `UIWizard`           | `src/lib/wizard/wizard.component.ts`                           | `ui-wizard`             | Multi-step workflow shell with step indicator and navigation buttons                    |
+| `UIWizardStep`       | `src/lib/wizard/wizard-step.component.ts`                      | `ui-wizard-step`        | Single step inside a UIWizard with label and optional flag                              |
+| `UIKanbanBoard`      | `src/lib/kanban-board/kanban-board.component.ts`               | `ui-kanban-board`       | Column-based kanban board with drag-and-drop card reordering                            |
+| `UIAlertDialog`      | `src/lib/common-dialogs/alert-dialog.component.ts`             | `ui-alert-dialog`       | Alert dialog content (internal; use CommonDialogService)                                |
+| `UIConfirmDialog`    | `src/lib/common-dialogs/confirm-dialog.component.ts`           | `ui-confirm-dialog`     | Confirm dialog content (internal; use CommonDialogService)                              |
+| `UIPromptDialog`     | `src/lib/common-dialogs/prompt-dialog.component.ts`            | `ui-prompt-dialog`      | Prompt dialog with text input (internal; use CommonDialogService)                       |
+| `UIOpenFileDialog`   | `src/lib/common-dialogs/open-file-dialog.component.ts`         | `ui-open-file-dialog`   | Open-file dialog with UIFileBrowser (internal; use CommonDialogService)                 |
+| `UISaveFileDialog`   | `src/lib/common-dialogs/save-file-dialog.component.ts`         | `ui-save-file-dialog`   | Save-file dialog with filename input (internal; use CommonDialogService)                |
+| `UIAboutDialog`      | `src/lib/common-dialogs/about-dialog.component.ts`             | `ui-about-dialog`       | About dialog showing app info/version (internal; use CommonDialogService)               |
+
+## Services
+
+| Name                  | File                                              | Description                                                  |
+| --------------------- | ------------------------------------------------- | ------------------------------------------------------------ |
+| `SavedSearchService`  | `src/lib/search-view/saved-search.service.ts`     | Manages persisted saved searches through StorageService      |
+| `CommonDialogService` | `src/lib/common-dialogs/common-dialog.service.ts` | Programmatic alert, confirm, prompt, file, and about dialogs |
+
+## Utility Functions
+
+| Name                 | File                                               | Description                                                  |
+| -------------------- | -------------------------------------------------- | ------------------------------------------------------------ |
+| `navItem`            | `src/lib/navigation-page/navigation-page.utils.ts` | Factory: creates a leaf navigation node (sidebar item)       |
+| `navGroup`           | `src/lib/navigation-page/navigation-page.utils.ts` | Factory: creates a group navigation node (collapsible group) |
+| `routesToNavigation` | `src/lib/navigation-page/navigation-page.utils.ts` | Converts Angular Router config to NavigationNode array       |
+| `entryToTreeNode`    | `src/lib/file-browser/file-browser.types.ts`       | Converts FileBrowserEntry to TreeNode for tree-view sidebar  |
+
+## Types & Interfaces
+
+| Kind      | Name                       | File                                                         | Description                                                            |
+| --------- | -------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| Type      | `MasterDetailContext`      | `src/lib/master-detail-view/master-detail-view.component.ts` | Context for the detail template                                        |
+| Interface | `DashboardPanelConfig`     | `src/lib/dashboard/dashboard.types.ts`                       | Static panel config (id, title, icon, placement)                       |
+| Interface | `DashboardGridPlacement`   | `src/lib/dashboard/dashboard.types.ts`                       | Grid placement with colSpan/rowSpan                                    |
+| Type      | `DashboardColumns`         | `src/lib/dashboard/dashboard.types.ts`                       | `'auto'` or a fixed column count                                       |
+| Type      | `DashboardDockPosition`    | `src/lib/dashboard/dashboard.types.ts`                       | `'top' \| 'bottom'`                                                    |
+| Interface | `NavigationNodeData`       | `src/lib/navigation-page/navigation-page.component.ts`       | Data payload for navigation tree nodes (label, badge, route)           |
+| Interface | `NavigationPageContext`    | `src/lib/navigation-page/navigation-page.component.ts`       | Template context with the active navigation node                       |
+| Type      | `NavigationNode`           | `src/lib/navigation-page/navigation-page.utils.ts`           | Alias for `TreeNode<NavigationNodeData>`                               |
+| Interface | `NavigationRouteConfig`    | `src/lib/navigation-page/navigation-page.utils.ts`           | Angular Route-compatible structure for router integration              |
+| Interface | `SavedSearch`              | `src/lib/search-view/saved-search.types.ts`                  | Named saved search with filter descriptor and timestamp                |
+| Type      | `SearchViewLayout`         | `src/lib/search-view/search-view.types.ts`                   | `'table' \| 'custom'`                                                  |
+| Interface | `SearchViewResultsContext` | `src/lib/search-view/search-view.types.ts`                   | Context for #results template                                          |
+| Interface | `SearchViewEmptyContext`   | `src/lib/search-view/search-view.types.ts`                   | Context for #empty template                                            |
+| Interface | `PropertyFieldDefinition`  | `src/lib/property-sheet/property-sheet.types.ts`             | Field definition (key, label, type, group)                             |
+| Type      | `PropertyFieldType`        | `src/lib/property-sheet/property-sheet.types.ts`             | `'string' \| 'number' \| 'boolean' \| 'select' \| 'color' \| 'slider'` |
+| Interface | `PropertyChangeEvent`      | `src/lib/property-sheet/property-sheet.types.ts`             | Event with key, value, and complete data                               |
+| Interface | `CommandPaletteItem`       | `src/lib/command-palette/command-palette.types.ts`           | Action (id, label, group, shortcut, icon, keywords)                    |
+| Interface | `CommandExecuteEvent`      | `src/lib/command-palette/command-palette.types.ts`           | Event when command is executed                                         |
+| Interface | `FileBrowserEntry`         | `src/lib/file-browser/file-browser.types.ts`                 | File/directory entry (id, name, isDirectory, icon)                     |
+| Interface | `FileBrowserDatasource`    | `src/lib/file-browser/file-browser.types.ts`                 | Datasource contract (getChildren, isDirectory)                         |
+| Type      | `FileBrowserViewMode`      | `src/lib/file-browser/file-browser.types.ts`                 | `'list' \| 'icons' \| 'detail' \| 'tree' \| 'column'`                  |
+| Interface | `ChatParticipant`          | `src/lib/chat-view/chat-view.types.ts`                       | Participant (id, name, avatar)                                         |
+| Interface | `ChatMessage`              | `src/lib/chat-view/chat-view.types.ts`                       | Message (id, content, timestamp, sender, type)                         |
+| Interface | `MessageSendEvent`         | `src/lib/chat-view/chat-view.types.ts`                       | Event when user sends a message                                        |
+| Interface | `StepChangeEvent`          | `src/lib/wizard/wizard.types.ts`                             | Event when step changes (previousIndex, currentIndex)                  |
+| Interface | `KanbanColumn`             | `src/lib/kanban-board/kanban-board.types.ts`                 | Column descriptor (id, title, cards, colour)                           |
+| Interface | `KanbanCard`               | `src/lib/kanban-board/kanban-board.types.ts`                 | Card (id, data payload)                                                |
+| Interface | `KanbanCardMoveEvent`      | `src/lib/kanban-board/kanban-board.types.ts`                 | Event when card is moved                                               |
+| Interface | `AlertOptions`             | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for alert dialog                                               |
+| Interface | `ConfirmOptions`           | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for confirm dialog                                             |
+| Interface | `PromptOptions`            | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for prompt dialog                                              |
+| Interface | `OpenFileOptions`          | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for open-file dialog                                           |
+| Interface | `SaveFileOptions`          | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for save-file dialog                                           |
+| Interface | `AboutOptions`             | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for about dialog                                               |
+| Token     | `FILE_ICON_REGISTRY`       | `src/lib/file-browser/file-browser.types.ts`                 | InjectionToken for customisable file-icon registry                     |
