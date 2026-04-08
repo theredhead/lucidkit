@@ -27,27 +27,19 @@
 // ── Table-specific surfaces ───────────────────────────────────────
 
 .ui-surface-type-table {
-  color: var(--ui-text);
   background-color: var(--ui-surface);
-  border: 1px solid var(--ui-border);
-  border-radius: var(--ui-radius, 0.375rem);
 }
 
 .ui-surface-type-table-header {
-  color: var(--ui-text-muted);
   background-color: var(--ui-surface-2);
-  border-bottom: 1px solid var(--ui-border);
 }
 
 .ui-surface-type-table-body {
-  color: var(--ui-text);
   background-color: var(--ui-surface);
 }
 
 .ui-surface-type-table-footer {
-  color: var(--ui-text-muted);
   background-color: var(--ui-surface-2);
-  border-top: 1px solid var(--ui-border);
 }
 
 // ── Input surfaces ────────────────────────────────────────────────

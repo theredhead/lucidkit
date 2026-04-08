@@ -1,11 +1,16 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   color: var(--ui-text);
   background-color: var(--ui-surface);
 }
 
 .table-body-viewport {
-  height: var(--ui-viewport-height, 420px);
+  flex: 1 1 var(--ui-viewport-height, 420px);
+  min-height: 0;
   width: 100%;
   overflow: auto;
 }
