@@ -1897,6 +1897,7 @@ function channelIcon(type: string): string {
       [items]="nav"
       [(activePage)]="activePage"
       rootLabel="ConnectHub"
+      storageKey="storybook-nav-comms-suite"
     >
       <ng-template #content let-node>
         <!-- ─── Inbox ─── -->
@@ -3283,7 +3284,7 @@ export const Default: Story = {
         language: "html",
         code: `
 // ── HTML ──
-<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="ConnectHub">
+<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="ConnectHub" storageKey="storybook-nav-comms-suite">
   <ng-template #content let-node>
     @if (node.id === 'inbox') {
       <ui-master-detail-view [datasource]="inboxDs" title="Inbox" [showFilter]="true">

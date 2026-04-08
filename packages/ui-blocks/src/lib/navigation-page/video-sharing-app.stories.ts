@@ -1083,6 +1083,7 @@ function formatNumber(n: number): string {
       [items]="nav"
       [(activePage)]="activePage"
       rootLabel="StreamHub"
+      storageKey="storybook-nav-video-sharing"
     >
       <ng-template #content let-node>
         <!-- ─── Home ─── -->
@@ -2206,7 +2207,7 @@ export const Default: Story = {
         language: "html",
         code: `
 // ── HTML ──
-<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="StreamHub">
+<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="StreamHub" storageKey="storybook-nav-video-sharing">
   <ng-template #content let-node>
     @if (node.id === 'home') {
       <!-- Video grid with category chip filters -->

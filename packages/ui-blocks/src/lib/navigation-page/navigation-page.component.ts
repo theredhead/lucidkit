@@ -4,10 +4,10 @@ import {
   computed,
   contentChild,
   contentChildren,
-  effect,
   inject,
   input,
   model,
+  type OnInit,
   output,
   TemplateRef,
 } from "@angular/core";
@@ -139,7 +139,7 @@ export interface NavigationPageContext {
     "[class.ui-navigation-page--sidebar-hidden]": "!sidebarVisible()",
   },
 })
-export class UINavigationPage {
+export class UINavigationPage implements OnInit {
   // ── Inputs ──────────────────────────────────────────────────────────
 
   /**
@@ -245,30 +245,29 @@ export class UINavigationPage {
   // ── Private fields ──────────────────────────────────────────────────
 
   private readonly storage = inject(StorageService);
-  private restoredFromStorage = false;
 
-  // ── Constructor ─────────────────────────────────────────────────────
+  // ── Lifecycle ───────────────────────────────────────────────────────
 
-  public constructor() {
-    effect(() => {
-      const key = this.storageKey();
-      const visible = this.sidebarVisible();
-      if (!key) {
-        return;
+  public ngOnInit(): void {
+    const key = this.storageKey();
+    if (key) {
+      const stored = this.storage.getItem(key);
+      if (stored !== null) {
+        this.sidebarVisible.set(stored === "true");
       }
+    }
+  }
 
-      // On first run, restore from storage instead of persisting the default
-      if (!this.restoredFromStorage) {
-        this.restoredFromStorage = true;
-        const stored = this.storage.getItem(key);
-        if (stored !== null && (stored === "true") !== visible) {
-          this.sidebarVisible.set(stored === "true");
-          return;
-        }
-      }
+  // ── Public methods ──────────────────────────────────────────────────
 
-      this.storage.setItem(key, String(visible));
-    });
+  /** Toggle the sidebar and persist the new state to storage. */
+  public toggleSidebar(): void {
+    const next = !this.sidebarVisible();
+    this.sidebarVisible.set(next);
+    const key = this.storageKey();
+    if (key) {
+      this.storage.setItem(key, String(next));
+    }
   }
 
   /** Resolved datasource — from the input or auto-created from items. */

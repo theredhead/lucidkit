@@ -161,6 +161,7 @@ const DEMO_ROUTES: NavigationRouteConfig[] = [
   template: `
     <ui-navigation-page
       [items]="items"
+      storageKey="storybook-nav-default"
       [(activePage)]="activePage"
       (navigated)="onNavigated($event)"
     >
@@ -230,6 +231,7 @@ class DemoNavPageDefaultComponent {
     <ui-navigation-page
       [items]="items"
       [sidebarPinned]="false"
+      storageKey="storybook-nav-drawer"
       [(activePage)]="activePage"
       [(drawerOpen)]="drawerOpen"
     >
@@ -296,6 +298,7 @@ class DemoNavPageDrawerComponent {
       [items]="items"
       rootLabel="App"
       breadcrumbVariant="link"
+      storageKey="storybook-nav-custom-root"
       [(activePage)]="activePage"
     >
       <ng-template #content let-node>
@@ -364,6 +367,7 @@ class DemoNavPageCustomRootComponent {
     <ui-navigation-page
       [items]="items"
       rootLabel="Router Demo"
+      storageKey="storybook-nav-router"
       [(activePage)]="activePage"
       (navigated)="onNavigated($event)"
     >

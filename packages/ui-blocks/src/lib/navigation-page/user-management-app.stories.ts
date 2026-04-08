@@ -618,6 +618,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
       [items]="nav"
       [(activePage)]="activePage"
       rootLabel="Admin"
+      storageKey="storybook-nav-user-mgmt"
     >
       <ng-template #content let-node>
         <!-- ─── Overview ─── -->
@@ -1361,7 +1362,7 @@ export const Default: Story = {
         language: "html",
         code: `
 // ── HTML ──
-<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="Admin">
+<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="Admin" storageKey="storybook-nav-user-mgmt">
   <ng-template #content let-node>
     <!-- Route content based on node.id -->
     @if (node.id === 'users') {

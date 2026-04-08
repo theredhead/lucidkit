@@ -592,13 +592,11 @@ describe("UINavigationPage — sidebar persistence", () => {
     expect(fresh.componentInstance.storageKey()).toBe("");
   });
 
-  it("should persist sidebar state to storage when toggled", async () => {
+  it("should persist sidebar state to storage when toggled", () => {
     const fixture = createFixture();
-    await fixture.whenStable();
 
-    fixture.componentInstance.sidebarVisible.set(false);
+    fixture.componentInstance.nav().toggleSidebar();
     fixture.detectChanges();
-    await fixture.whenStable();
 
     expect(storageMock.setItem).toHaveBeenCalledWith(
       "test-nav-sidebar",
@@ -606,27 +604,43 @@ describe("UINavigationPage — sidebar persistence", () => {
     );
   });
 
-  it("should restore sidebar state from storage on creation", async () => {
+  it("should restore sidebar state from storage on creation", () => {
     storageMock.getItem.mockReturnValue("false");
     const fixture = createFixture();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    await fixture.whenStable();
 
     expect(fixture.componentInstance.nav().sidebarVisible()).toBe(false);
   });
 
-  it("should not persist when storageKey is empty", async () => {
+  it("should not persist when storageKey is empty", () => {
     const fixture = createFixture();
     fixture.componentInstance.storageKey.set("");
     fixture.detectChanges();
-    await fixture.whenStable();
 
     storageMock.setItem.mockClear();
-    fixture.componentInstance.sidebarVisible.set(false);
+    fixture.componentInstance.nav().toggleSidebar();
     fixture.detectChanges();
-    await fixture.whenStable();
 
     expect(storageMock.setItem).not.toHaveBeenCalled();
+  });
+
+  it("should survive a full round-trip: toggle → destroy → recreate", () => {
+    // 1. Create, toggle sidebar closed → persists "false"
+    const fixture1 = createFixture();
+    expect(fixture1.componentInstance.nav().sidebarVisible()).toBe(true);
+
+    fixture1.componentInstance.nav().toggleSidebar();
+    expect(storageMock.setItem).toHaveBeenCalledWith(
+      "test-nav-sidebar",
+      "false",
+    );
+
+    // 2. Simulate reload: getItem now returns "false"
+    storageMock.getItem.mockReturnValue("false");
+    fixture1.destroy();
+    TestBed.resetTestingModule();
+
+    // 3. Recreate — should restore the closed state
+    const fixture2 = createFixture();
+    expect(fixture2.componentInstance.nav().sidebarVisible()).toBe(false);
   });
 });

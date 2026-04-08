@@ -1441,6 +1441,7 @@ function renderStars(rating: number): string {
       [items]="nav"
       [(activePage)]="activePage"
       rootLabel="CookBook"
+      storageKey="storybook-nav-recipe-book"
     >
       <ng-template #content let-node>
         <!-- ─── Featured Recipes ─── -->
@@ -2564,7 +2565,7 @@ export const Default: Story = {
         language: "html",
         code: `
 // ── HTML ──
-<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="CookBook">
+<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="CookBook" storageKey="storybook-nav-recipe-book">
   <ng-template #content let-node>
     @if (node.id === 'featured') {
       <!-- Featured recipe hero + card grid -->

@@ -1040,6 +1040,7 @@ function formatQty(n: number): string {
       [items]="nav"
       [(activePage)]="activePage"
       rootLabel="PartVault WMS"
+      storageKey="storybook-nav-warehouse"
     >
       <ng-template #content let-node>
         <!-- ─── Dashboard ─── -->
@@ -2437,7 +2438,7 @@ export const Default: Story = {
         language: "html",
         code: `
 // ── HTML ──
-<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="PartVault WMS">
+<ui-navigation-page [items]="nav" [(activePage)]="activePage" rootLabel="PartVault WMS" storageKey="storybook-nav-warehouse">
   <ng-template #content let-node>
     @if (node.id === 'dashboard') {
       <div class="stats-grid">
