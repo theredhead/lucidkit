@@ -123,6 +123,10 @@ export class UITableView implements OnInit, AfterViewInit {
   /** Bumped to force the adapter computed to rebuild. @internal */
   private readonly _adapterVersion = signal(0);
 
+  /** Tracks the current adapter so we can dispose it on replacement. @internal */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private _currentAdapter: DatasourceAdapter<any> | null = null;
+
   /**
    * Internal adapter wrapping the raw datasource for signal-based
    * pagination. Rebuilt whenever the `datasource` input changes or
@@ -134,7 +138,13 @@ export class UITableView implements OnInit, AfterViewInit {
     this._adapterVersion();
     const ds = this.datasource();
     const ps = untracked(() => this.pageSize());
-    return untracked(() => new DatasourceAdapter(ds, ps ?? INITIAL_PAGE_SIZE));
+    // Dispose the previous adapter's emitter subscriptions
+    this._currentAdapter?.dispose();
+    const next = untracked(
+      () => new DatasourceAdapter(ds, ps ?? INITIAL_PAGE_SIZE),
+    );
+    this._currentAdapter = next;
+    return next;
   });
   showBuiltInPaginator = input<boolean>(true);
   caption = input<string>("");
@@ -346,6 +356,10 @@ export class UITableView implements OnInit, AfterViewInit {
   });
 
   constructor() {
+    // Dispose the adapter's emitter subscriptions when the component
+    // is destroyed so we don't leak listeners on long-lived datasources.
+    this.destroyRef.onDestroy(() => this._currentAdapter?.dispose());
+
     // ── Sync external pageSize / pageIndex inputs into the adapter ──
     effect(() => {
       const ps = this.pageSize();
@@ -362,7 +376,12 @@ export class UITableView implements OnInit, AfterViewInit {
     });
 
     effect(() => {
-      const items = this.adapter().visibleWindow();
+      const adapter = this.adapter();
+      // Explicit dependency on the adapter's data-change counter so
+      // the effect re-runs when noteRowChanged / noteRowRangeChanged
+      // fires on an IActiveDatasource.
+      adapter.dataVersion();
+      const items = adapter.visibleWindow();
       const gen = ++this.resolveGeneration;
       const rows: (unknown | null)[] = new Array(items.length).fill(null);
 

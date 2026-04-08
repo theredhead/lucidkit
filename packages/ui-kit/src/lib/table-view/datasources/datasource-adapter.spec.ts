@@ -1,6 +1,11 @@
 import { DatasourceAdapter } from "./datasource-adapter";
 import { ArrayDatasource } from "./array-datasource";
-import type { IDatasource, RowResult } from "./datasource";
+import type { IDatasource, IActiveDatasource, RowResult } from "./datasource";
+import { Emitter } from "./datasource";
+import type {
+  RowChangedNotification,
+  RowRangeChangedNotification,
+} from "./datasource";
 
 describe("DatasourceAdapter", () => {
   const sampleData = Array.from({ length: 25 }, (_, i) => ({
@@ -141,6 +146,104 @@ describe("DatasourceAdapter", () => {
       adapter.pageIndex.set(0);
       expect(adapter.pageIndex()).toBe(0);
       expect(adapter.visibleWindow()[0]).toEqual({ id: 1, name: "Item 1" });
+    });
+  });
+
+  // ── Active datasource integration ──────────────────────────────────
+
+  /** Helper: plain datasource with IActiveDatasource emitters. */
+  function createActiveDatasource(data: typeof sampleData) {
+    const items = [...data];
+    return {
+      noteRowChanged: new Emitter<RowChangedNotification>(),
+      noteRowRangeChanged: new Emitter<RowRangeChangedNotification>(),
+      getNumberOfItems: () => items.length,
+      getObjectAtRowIndex: (i: number) => items[i],
+      /** Mutate in-place so tests can verify the adapter picks up changes. */
+      _items: items,
+    };
+  }
+
+  describe("noteRowChanged", () => {
+    it("should invalidate visibleWindow when noteRowChanged fires", () => {
+      const ds = createActiveDatasource(sampleData);
+      const adapter = new DatasourceAdapter(ds, 10);
+
+      const before = adapter.visibleWindow();
+      expect(before[0]).toEqual({ id: 1, name: "Item 1" });
+
+      // Mutate the underlying data and notify
+      ds._items[0] = { id: 1, name: "Updated Item 1" };
+      ds.noteRowChanged.emit({ rowIndex: 0 });
+
+      const after = adapter.visibleWindow();
+      expect(after[0]).toEqual({ id: 1, name: "Updated Item 1" });
+    });
+
+    it("should not invalidate when noteRowChanged fires after dispose", () => {
+      const ds = createActiveDatasource(sampleData);
+      const adapter = new DatasourceAdapter(ds, 10);
+
+      // Read once to establish a cached computed value
+      expect(adapter.visibleWindow()[0]).toEqual({ id: 1, name: "Item 1" });
+
+      adapter.dispose();
+
+      ds._items[0] = { id: 1, name: "Updated Item 1" };
+      ds.noteRowChanged.emit({ rowIndex: 0 });
+
+      // visibleWindow should still return the cached value
+      expect(adapter.visibleWindow()[0]).toEqual({ id: 1, name: "Item 1" });
+    });
+  });
+
+  describe("noteRowRangeChanged", () => {
+    it("should invalidate visibleWindow and refresh totalItems when noteRowRangeChanged fires", () => {
+      const ds = createActiveDatasource(sampleData);
+      const adapter = new DatasourceAdapter(ds, 10);
+
+      expect(adapter.totalItems()).toBe(25);
+
+      // Add an item and notify
+      ds._items.push({ id: 26, name: "Item 26" });
+      ds.noteRowRangeChanged.emit({ range: { start: 25, length: 1 } });
+
+      expect(adapter.totalItems()).toBe(26);
+      // The visible window should have been invalidated (re-fetched)
+      expect(adapter.visibleWindow().length).toBe(10);
+    });
+
+    it("should not invalidate when noteRowRangeChanged fires after dispose", () => {
+      const ds = createActiveDatasource(sampleData);
+      const adapter = new DatasourceAdapter(ds, 10);
+
+      const totalBefore = adapter.totalItems();
+      adapter.dispose();
+
+      ds._items.push({ id: 26, name: "Item 26" });
+      ds.noteRowRangeChanged.emit({ range: { start: 25, length: 1 } });
+
+      // totalItems should remain unchanged after dispose
+      expect(adapter.totalItems()).toBe(totalBefore);
+    });
+  });
+
+  describe("dispose", () => {
+    it("should be safe to call multiple times", () => {
+      const ds = createActiveDatasource(sampleData);
+      const adapter = new DatasourceAdapter(ds, 10);
+
+      expect(() => {
+        adapter.dispose();
+        adapter.dispose();
+      }).not.toThrow();
+    });
+
+    it("should work for plain datasources without emitters", () => {
+      const ds = new ArrayDatasource(sampleData);
+      const adapter = new DatasourceAdapter(ds, 10);
+
+      expect(() => adapter.dispose()).not.toThrow();
     });
   });
 });

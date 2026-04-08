@@ -90,8 +90,12 @@ export class SortableArrayDatasource<T>
   ): void {
     if (!comparator) {
       this._sortedRows = this._allRows;
-      return;
+    } else {
+      this._sortedRows = [...this._allRows].sort(comparator);
     }
-    this._sortedRows = [...this._allRows].sort(comparator);
+
+    this.noteRowRangeChanged.emit({
+      range: { start: 0, length: this._sortedRows.length },
+    });
   }
 }

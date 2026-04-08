@@ -77,11 +77,14 @@ export class FilterableArrayDatasource<T>
   public filterBy(expression: FilterExpression<T> | null | undefined): void {
     if (!expression || expression.length === 0) {
       this._filteredRows = this._allRows;
-      return;
+    } else {
+      const predicate = this.compileExpression(expression);
+      this._filteredRows = this._allRows.filter(predicate);
     }
 
-    const predicate = this.compileExpression(expression);
-    this._filteredRows = this._allRows.filter(predicate);
+    this.noteRowRangeChanged.emit({
+      range: { start: 0, length: this._filteredRows.length },
+    });
   }
 
   // ── Private helpers ───────────────────────────────────────────────
