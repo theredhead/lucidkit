@@ -4,6 +4,8 @@ import {
   computed,
   contentChild,
   contentChildren,
+  effect,
+  inject,
   input,
   model,
   output,
@@ -27,7 +29,11 @@ import {
   UISidebarItem,
   UISidebarNav,
 } from "@theredhead/ui-kit";
-import { ArrayTreeDatasource, UISurface } from "@theredhead/foundation";
+import {
+  ArrayTreeDatasource,
+  StorageService,
+  UISurface,
+} from "@theredhead/foundation";
 
 import type { NavigationNode } from "./navigation-page.utils";
 
@@ -184,6 +190,15 @@ export class UINavigationPage {
   /** Whether to show the sidebar toggle button before the breadcrumb. */
   public readonly showSidebarToggle = input(true);
 
+  /**
+   * Optional localStorage key for persisting the sidebar open/closed state.
+   *
+   * When set, the component reads the stored value on creation and
+   * writes back whenever `sidebarVisible` changes. Leave empty
+   * (the default) to disable persistence.
+   */
+  public readonly storageKey = input<string>("");
+
   // ── Models ──────────────────────────────────────────────────────────
 
   /** The currently active node id. Supports two-way binding. */
@@ -226,6 +241,35 @@ export class UINavigationPage {
       ? UIIcons.Lucide.Arrows.PanelLeftClose
       : UIIcons.Lucide.Arrows.PanelLeftOpen,
   );
+
+  // ── Private fields ──────────────────────────────────────────────────
+
+  private readonly storage = inject(StorageService);
+  private restoredFromStorage = false;
+
+  // ── Constructor ─────────────────────────────────────────────────────
+
+  public constructor() {
+    effect(() => {
+      const key = this.storageKey();
+      const visible = this.sidebarVisible();
+      if (!key) {
+        return;
+      }
+
+      // On first run, restore from storage instead of persisting the default
+      if (!this.restoredFromStorage) {
+        this.restoredFromStorage = true;
+        const stored = this.storage.getItem(key);
+        if (stored !== null && (stored === "true") !== visible) {
+          this.sidebarVisible.set(stored === "true");
+          return;
+        }
+      }
+
+      this.storage.setItem(key, String(visible));
+    });
+  }
 
   /** Resolved datasource — from the input or auto-created from items. */
   protected readonly resolvedDatasource = computed(() => {

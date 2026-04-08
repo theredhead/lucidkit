@@ -3,6 +3,7 @@ import { Component, signal, viewChild } from "@angular/core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { UINavigationPage } from "./navigation-page.component";
+import { StorageService } from "@theredhead/foundation";
 import {
   navItem,
   navGroup,
@@ -528,5 +529,104 @@ describe("routesToNavigation", () => {
     ];
     const nodes = routesToNavigation(routes);
     expect(nodes[0].disabled).toBe(true);
+  });
+});
+
+// ── Sidebar persistence tests ─────────────────────────────────────
+
+@Component({
+  selector: "ui-test-storage-host",
+  standalone: true,
+  imports: [UINavigationPage],
+  template: `
+    <div style="height: 400px">
+      <ui-navigation-page
+        [items]="items()"
+        [storageKey]="storageKey()"
+        [(sidebarVisible)]="sidebarVisible"
+      >
+        <ng-template #content let-node>
+          <h2>{{ node.data.label }}</h2>
+        </ng-template>
+      </ui-navigation-page>
+    </div>
+  `,
+})
+class TestStorageHost {
+  public readonly nav = viewChild.required(UINavigationPage);
+  public readonly items = signal<readonly NavigationNode[]>(TEST_ITEMS);
+  public readonly storageKey = signal("test-nav-sidebar");
+  public readonly sidebarVisible = signal(true);
+}
+
+describe("UINavigationPage — sidebar persistence", () => {
+  let storageMock: {
+    getItem: ReturnType<typeof vi.fn>;
+    setItem: ReturnType<typeof vi.fn>;
+    removeItem: ReturnType<typeof vi.fn>;
+  };
+
+  beforeEach(() => {
+    storageMock = {
+      getItem: vi.fn().mockReturnValue(null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+  });
+
+  function createFixture(): ComponentFixture<TestStorageHost> {
+    TestBed.configureTestingModule({
+      imports: [TestStorageHost],
+      providers: [{ provide: StorageService, useValue: storageMock }],
+    });
+    const f = TestBed.createComponent(TestStorageHost);
+    f.detectChanges();
+    return f;
+  }
+
+  it("should default storageKey to empty string", () => {
+    const fresh = TestBed.configureTestingModule({
+      imports: [UINavigationPage],
+    }).createComponent(UINavigationPage);
+    fresh.detectChanges();
+    expect(fresh.componentInstance.storageKey()).toBe("");
+  });
+
+  it("should persist sidebar state to storage when toggled", async () => {
+    const fixture = createFixture();
+    await fixture.whenStable();
+
+    fixture.componentInstance.sidebarVisible.set(false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(storageMock.setItem).toHaveBeenCalledWith(
+      "test-nav-sidebar",
+      "false",
+    );
+  });
+
+  it("should restore sidebar state from storage on creation", async () => {
+    storageMock.getItem.mockReturnValue("false");
+    const fixture = createFixture();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.nav().sidebarVisible()).toBe(false);
+  });
+
+  it("should not persist when storageKey is empty", async () => {
+    const fixture = createFixture();
+    fixture.componentInstance.storageKey.set("");
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    storageMock.setItem.mockClear();
+    fixture.componentInstance.sidebarVisible.set(false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(storageMock.setItem).not.toHaveBeenCalled();
   });
 });
