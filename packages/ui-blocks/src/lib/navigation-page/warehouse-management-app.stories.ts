@@ -1183,7 +1183,9 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="outlined" size="small"> Export CSV </ui-button>
+                <ui-button variant="outlined" size="small">
+                  Export CSV
+                </ui-button>
               </div>
             </div>
 
@@ -1444,7 +1446,9 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="filled" size="small"> Reorder All </ui-button>
+                <ui-button variant="filled" size="small">
+                  Reorder All
+                </ui-button>
               </div>
             </div>
 
@@ -1547,7 +1551,9 @@ function formatQty(n: number): string {
                 />
               </div>
               <div class="page-actions">
-                <ui-button variant="filled" size="small"> Auto-Assign </ui-button>
+                <ui-button variant="filled" size="small">
+                  Auto-Assign
+                </ui-button>
               </div>
             </div>
 
@@ -1889,7 +1895,9 @@ function formatQty(n: number): string {
                     <ui-button variant="ghost" size="small">
                       View Racks
                     </ui-button>
-                    <ui-button variant="ghost" size="small"> Zone Map </ui-button>
+                    <ui-button variant="ghost" size="small">
+                      Zone Map
+                    </ui-button>
                   </div>
                 </ui-card-footer>
               </ui-card>

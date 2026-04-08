@@ -35,7 +35,12 @@ import {
   ROW_INDEX_COLUMN_WIDTH,
   SELECTION_COLUMN_WIDTH,
 } from "./table-view.constants";
-import { UITableBody } from "./table-view-body/table-view-body.component";
+import { UIPlainTableBody } from "./rendering-strategies/plain-table-body.component";
+import { UICdkVirtualTableBody } from "./rendering-strategies/cdk-virtual-table-body.component";
+import {
+  TABLE_ROW_RENDERING_STRATEGY,
+  type TableRowRenderingStrategyType,
+} from "./rendering-strategies/table-row-rendering-strategy";
 import { UITableFooter } from "./table-view-footer/table-view-footer.component";
 import {
   ColumnResizeEvent,
@@ -50,7 +55,12 @@ import { type SelectionMode, SelectionModel } from "../core/selection-model";
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "table" }],
-  imports: [UITableHeader, UITableBody, UITableFooter],
+  imports: [
+    UITableHeader,
+    UIPlainTableBody,
+    UICdkVirtualTableBody,
+    UITableFooter,
+  ],
   templateUrl: "./table-view.component.html",
   styleUrl: "./table-view.component.scss",
   host: {
@@ -65,6 +75,23 @@ export class UITableView implements OnInit, AfterViewInit {
   private readonly resizeService = inject(ColumnResizeService);
   private readonly elRef = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly defaultStrategy = inject(TABLE_ROW_RENDERING_STRATEGY);
+
+  /**
+   * Row rendering strategy for the table body.
+   *
+   * - `'plain'` — renders all rows in a scrollable `<div>` using `@for`.
+   *   No CDK dependency. Best for small-to-medium datasets.
+   * - `'virtual'` — renders rows inside a CDK `VirtualScrollViewport`.
+   *   Best for large datasets where only a window of rows should be in
+   *   the DOM.
+   *
+   * Defaults to the value provided by the {@link TABLE_ROW_RENDERING_STRATEGY}
+   * DI token (workspace default: `'plain'`).
+   */
+  renderingStrategy = input<TableRowRenderingStrategyType | undefined>(
+    undefined,
+  );
 
   /** Whether the table view is disabled. */
   disabled = input<boolean>(false);
@@ -222,6 +249,16 @@ export class UITableView implements OnInit, AfterViewInit {
 
   /** Column widths as a record (key → px). Used by both header and body. */
   protected readonly columnWidths = signal<Record<string, number>>({});
+
+  /**
+   * The effective rendering strategy. Prefers the explicit input,
+   * falls back to the workspace-wide DI default.
+   */
+  protected readonly resolvedStrategy = computed<TableRowRenderingStrategyType>(
+    () => {
+      return this.renderingStrategy() ?? this.defaultStrategy;
+    },
+  );
 
   /** Whether resizing is actually enabled (explicit input or inferred from tableId). */
   protected readonly isResizable = computed(() => {
@@ -391,44 +428,46 @@ export class UITableView implements OnInit, AfterViewInit {
   }
 
   /**
-   * Keeps the header aligned and in sync with the CDK virtual-scroll
-   * viewport.
+   * Keeps the header aligned and in sync with the table body's scroll
+   * container.
    *
    * Two things are synchronised:
    * 1. **Vertical scrollbar spacer** — the header trailing spacer is set
-   *    to the viewport's actual scrollbar width (0 when no scrollbar is
-   *    visible) so header and body columns stay pixel-aligned.
+   *    to the scroll container's actual scrollbar width (0 when no
+   *    scrollbar is visible) so header and body columns stay pixel-aligned.
    * 2. **Horizontal scroll** — when the body overflows horizontally,
    *    `--ui-header-scroll-width` widens the header row to match, and
    *    `scrollLeft` is mirrored on every scroll event.
    *
-   * A {@link ResizeObserver} on the viewport's content wrapper re-runs
-   * the sync whenever the body's scrollable area changes (data load,
-   * column resize, window resize, etc.).
+   * A {@link ResizeObserver} on the content wrapper re-runs the sync
+   * whenever the body's scrollable area changes (data load, column
+   * resize, window resize, etc.).
+   *
+   * Both the plain and CDK virtual-scroll strategies mark their scroll
+   * container with `data-table-scroll-container`. The plain strategy
+   * also marks its content wrapper with `data-table-content-wrapper`;
+   * the CDK strategy uses its auto-generated
+   * `.cdk-virtual-scroll-content-wrapper`.
    */
   private setupHorizontalScrollSync(): void {
     const root = this.elRef.nativeElement;
-    const viewport = root.querySelector(
-      "cdk-virtual-scroll-viewport",
+    const scrollContainer = root.querySelector(
+      "[data-table-scroll-container]",
     ) as HTMLElement | null;
     const header = root.querySelector("ui-table-header") as HTMLElement | null;
-    if (!viewport || !header) return;
+    if (!scrollContainer || !header) return;
 
     const syncHeaderWidth = () => {
       // ── Vertical scrollbar compensation ──
-      // Only reserve header-spacer width when the viewport actually
-      // displays a scrollbar. The previous probe-based approach always
-      // set the platform scrollbar width, even when the content was
-      // shorter than the viewport and no scrollbar was visible.
-      const verticalSbW = viewport.offsetWidth - viewport.clientWidth;
+      const verticalSbW =
+        scrollContainer.offsetWidth - scrollContainer.clientWidth;
       root.style.setProperty("--ui-scrollbar-width", `${verticalSbW}px`);
 
       // ── Horizontal overflow ──
-      const sw = viewport.scrollWidth;
-      const cw = viewport.clientWidth;
+      const sw = scrollContainer.scrollWidth;
+      const cw = scrollContainer.clientWidth;
       if (sw > cw) {
-        // Body overflows – widen the header row to match.
-        const sbW = viewport.offsetWidth - cw;
+        const sbW = scrollContainer.offsetWidth - cw;
         header.style.setProperty("--ui-header-scroll-width", `${sw + sbW}px`);
       } else {
         header.style.removeProperty("--ui-header-scroll-width");
@@ -440,25 +479,26 @@ export class UITableView implements OnInit, AfterViewInit {
 
     const onScroll = () => {
       syncHeaderWidth();
-      header.scrollLeft = viewport.scrollLeft;
+      header.scrollLeft = scrollContainer.scrollLeft;
     };
 
-    viewport.addEventListener("scroll", onScroll, { passive: true });
+    scrollContainer.addEventListener("scroll", onScroll, { passive: true });
 
     // Observe size changes in the content wrapper so we catch data loads,
     // column resizes, and window resizes without polling.
-    const contentWrapper = viewport.querySelector(
-      ".cdk-virtual-scroll-content-wrapper",
-    );
-    let ro: ResizeObserver | undefined;
-    if (contentWrapper) {
-      ro = new ResizeObserver(() => syncHeaderWidth());
-      ro.observe(contentWrapper);
-    }
+    // Plain strategy marks it with [data-table-content-wrapper];
+    // CDK strategy uses its auto-generated .cdk-virtual-scroll-content-wrapper.
+    const contentWrapper =
+      scrollContainer.querySelector("[data-table-content-wrapper]") ??
+      scrollContainer.querySelector(".cdk-virtual-scroll-content-wrapper") ??
+      scrollContainer;
+
+    const ro = new ResizeObserver(() => syncHeaderWidth());
+    ro.observe(contentWrapper);
 
     this.destroyRef.onDestroy(() => {
-      viewport.removeEventListener("scroll", onScroll);
-      ro?.disconnect();
+      scrollContainer.removeEventListener("scroll", onScroll);
+      ro.disconnect();
     });
   }
 

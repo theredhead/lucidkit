@@ -1,0 +1,149 @@
+:host {
+  display: block;
+  color: var(--ui-text);
+  background-color: var(--ui-surface);
+}
+
+.table-body-viewport {
+  height: var(--ui-viewport-height, 420px);
+  width: 100%;
+  overflow: auto;
+}
+
+.table-row {
+  display: flex;
+  min-width: var(--ui-total-row-width, 100%);
+  transition: background-color 120ms ease;
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+/* ── Zebra striping ── */
+
+.table-row:nth-child(even) {
+  background-color: var(--ui-surface-2);
+}
+
+.table-cell {
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--ui-inline-padding, 0.85rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: calc(var(--ui-font-body) * var(--ui-density-scale, 1));
+  border-right: 1px solid var(--ui-border);
+}
+
+.table-cell:last-child {
+  border-right: none;
+}
+
+.table-cell--row-index {
+  flex: 0 0 var(--ui-row-index-width, 4.25rem);
+  width: var(--ui-row-index-width, 4.25rem);
+  min-width: var(--ui-row-index-width, 4.25rem);
+  max-width: var(--ui-row-index-width, 4.25rem);
+  justify-content: flex-end;
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-text-muted);
+}
+
+.table-cell--selection {
+  flex: 0 0 var(--ui-selection-col-width, 3rem);
+  width: var(--ui-selection-col-width, 3rem);
+  min-width: var(--ui-selection-col-width, 3rem);
+  max-width: var(--ui-selection-col-width, 3rem);
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.tv-row-checkbox {
+  width: var(--ui-checkbox-size, 0.95rem);
+  height: var(--ui-checkbox-size, 0.95rem);
+  cursor: pointer;
+  margin: 0;
+  accent-color: var(--ui-accent);
+}
+
+.tv-row-radio {
+  width: var(--ui-radio-size, 0.95rem);
+  height: var(--ui-radio-size, 0.95rem);
+  cursor: pointer;
+  margin: 0;
+  accent-color: var(--ui-accent);
+}
+
+/* ── Selectable row ── */
+
+.table-row--selectable {
+  cursor: pointer;
+}
+
+.table-row--selectable:hover {
+  background-color: var(--ui-hover-bg);
+}
+
+/* ── Selected row ── */
+
+.table-row--selected {
+  background-color: var(--ui-selected-bg);
+}
+
+.table-row--selected:hover {
+  background-color: var(--ui-selected-hover-bg);
+}
+
+/* ── Active (keyboard-focused) row ── */
+
+.table-row--active {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: -2px;
+}
+
+/* ── Skeleton / loading rows ── */
+
+.table-row--loading {
+  pointer-events: none;
+}
+
+.table-cell-skeleton {
+  display: block;
+  width: var(--ui-skeleton-width, 60%);
+  height: var(--ui-skeleton-height, 0.75rem);
+  border-radius: var(--ui-skeleton-radius, 4px);
+  background: linear-gradient(
+    90deg,
+    var(--ui-border) 25%,
+    var(--ui-surface-2) 50%,
+    var(--ui-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: tv-skeleton-shimmer var(--ui-skeleton-duration, 1.5s) ease-in-out
+    infinite;
+}
+
+/* Vary skeleton bar widths per column for a natural look */
+.table-row--loading .table-cell:nth-child(odd) .table-cell-skeleton {
+  width: var(--ui-skeleton-width-odd, 45%);
+}
+
+.table-row--loading .table-cell:nth-child(even) .table-cell-skeleton {
+  width: var(--ui-skeleton-width-even, 70%);
+}
+
+@keyframes tv-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

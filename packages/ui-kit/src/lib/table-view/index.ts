@@ -3,6 +3,7 @@ export * from "./table-view.constants";
 export * from "./table-view.utils";
 export * from "./table-view-header/table-view-header.component";
 export * from "./table-view-body/table-view-body.component";
+export * from "./rendering-strategies";
 export * from "./table-view-footer/table-view-footer.component";
 export * from "./column-resize.service";
 export * from "./columns/table-column.directive";

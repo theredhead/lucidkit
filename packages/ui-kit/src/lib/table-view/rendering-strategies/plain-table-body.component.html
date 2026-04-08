@@ -1,0 +1,76 @@
+<div
+  class="table-body-viewport"
+  data-table-scroll-container
+  #scrollContainer
+>
+  <div data-table-content-wrapper>
+    @for (row of rows(); track $index; let rowIndex = $index) {
+      <div
+        class="table-row"
+        role="row"
+        tabindex="-1"
+        [class.table-row--loading]="row === null"
+        [class.table-row--selected]="isRowSelected(row)"
+        [class.table-row--selectable]="selectionMode() !== 'none' && rowClickSelect()"
+        [class.table-row--active]="rowIndex === activeIndex()"
+        [style.height.px]="rowHeight()"
+        [style.min-height.px]="rowHeight()"
+        (click)="onRowClick(row)"
+        (keydown.enter)="onRowClick(row)"
+      >
+        @if (showRowIndexIndicator()) {
+          <div class="table-cell table-cell--row-index">
+            @if (row !== null) {
+              {{ rowIndexOffset() + rowIndex + 1 }}
+            }
+          </div>
+        }
+        @if (showSelectionColumn() && selectionMode() === 'single') {
+          <div class="table-cell table-cell--selection">
+            @if (row !== null) {
+              <input
+                type="radio"
+                class="tv-row-radio"
+                [checked]="isRowSelected(row)"
+                (click)="$event.stopPropagation()"
+                (change)="onSelectionToggle(row)"
+                aria-label="Select row"
+              />
+            }
+          </div>
+        }
+        @if (showSelectionColumn() && selectionMode() === 'multiple') {
+          <div class="table-cell table-cell--selection">
+            @if (row !== null) {
+              <input
+                type="checkbox"
+                class="tv-row-checkbox"
+                [checked]="isRowSelected(row)"
+                (click)="$event.stopPropagation()"
+                (change)="onSelectionToggle(row)"
+                aria-label="Select row"
+              />
+            }
+          </div>
+        }
+        @for (col of columns(); track col.key()) {
+          <div
+            class="table-cell"
+            [style.width.px]="getColWidth(col.key())"
+            [style.min-width.px]="getColWidth(col.key()) ? minColumnWidth : null"
+            [style.flex]="getColWidth(col.key()) ? '0 0 auto' : '1'"
+          >
+            @if (row !== null) {
+              <ng-container
+                [ngTemplateOutlet]="col.cellTemplate"
+                [ngTemplateOutletContext]="{ $implicit: row, column: col }"
+              />
+            } @else {
+              <span class="table-cell-skeleton"></span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
