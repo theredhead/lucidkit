@@ -1,4 +1,4 @@
-# theredhead Frontend Library
+# LucidKit
 
 ## Mission
 
@@ -7,18 +7,24 @@ for all theredhead frontend applications. Every package in this workspace is bui
 with standalone components, signal-based reactivity, and **zero external runtime
 dependencies** beyond Angular core and CDK.
 
+### About the name
+
+After brainstorming the name for this project for many days, taking in advice from both people and LLMs I eventually ended up with LucidKit because it embodies the kind of opinionated clarity I want this project to embody. -- then I realized the awesome Iconset i've been using for months now, is called [Lucide](https://github.com/lucide-icons/lucide) right as I was committing the rename. It's a "lucky" coincidence that may well have been informed subconciously by the Icons I've loved for a long time.
+
 ---
 
 ## What's in this repo
 
-This is an **npm workspace** (`packages/*`) that publishes three independent
+This is an **npm workspace** (`packages/*`) that publishes five independent
 Angular libraries:
 
-| Package              | npm name                | Purpose                                                                |
-| -------------------- | ----------------------- | ---------------------------------------------------------------------- |
-| `packages/ui-theme`  | `@theredhead/lucid-theme`  | SCSS theme with light / dark mode, CSS custom properties, ThemeService |
-| `packages/ui-kit`    | `@theredhead/lucid-kit`    | Core reusable components (Button, Table View, Filter, Tree View, …)    |
-| `packages/ui-blocks` | `@theredhead/lucid-blocks` | Higher-level compositions (Master-Detail View)                         |
+| Package               | npm name                       | Purpose                                                                |
+| --------------------- | ------------------------------ | ---------------------------------------------------------------------- |
+| `packages/foundation` | `@theredhead/lucid-foundation` | Logger, type utilities, base classes — shared by all other packages    |
+| `packages/ui-theme`   | `@theredhead/lucid-theme`      | SCSS theme with light / dark mode, CSS custom properties, ThemeService |
+| `packages/ui-kit`     | `@theredhead/lucid-kit`        | Core reusable components (Button, Table View, Filter, Tree View, …)    |
+| `packages/ui-blocks`  | `@theredhead/lucid-blocks`     | Higher-level compositions (Master-Detail View, NavigationPage)         |
+| `packages/ui-forms`   | `@theredhead/lucid-forms`      | Schema-driven forms, validation, conditional logic, form designer      |
 
 A shared **Storybook** host is wired up at the workspace root for interactive
 component development and documentation.
@@ -44,19 +50,34 @@ npm install
 ## Building
 
 ```bash
-# Build all packages
+# Build all packages in dependency order
 npm run build
 
 # Build a single package
-cd packages/ui-theme  && npm run build
-cd packages/ui-kit    && npm run build
-cd packages/ui-blocks && npm run build
+cd packages/foundation  && npm run build
+cd packages/ui-theme    && npm run build
+cd packages/ui-kit      && npm run build
+cd packages/ui-blocks   && npm run build
+cd packages/ui-forms    && npm run build
 ```
 
 Built artefacts are output to `dist/<package-name>/`.
 
-> **Build order matters.** `ui-kit` depends on `ui-theme`, so build `ui-theme`
-> first when building packages individually.
+> **Build order matters:** `lucid-kit` depends on `lucid-theme` and `lucid-foundation`;
+> `lucid-blocks` and `lucid-forms` depend on `lucid-kit`. The root `npm run build`
+> handles this order automatically.
+
+---
+
+## Packing (local distribution)
+
+```bash
+# Build all packages then pack each into a .tgz in dist/
+npm run pack
+```
+
+Produces `.tgz` tarballs in `dist/` that can be installed locally via
+`npm install /path/to/package.tgz` without publishing to a registry.
 
 ---
 
@@ -96,7 +117,41 @@ Open `http://localhost:6006` after the dev server starts.
 ## Linting
 
 ```bash
+# Check for lint errors
 npm run lint
+
+# Auto-fix fixable lint errors
+npm run lint:fix
+```
+
+---
+
+## API documentation
+
+Docs are generated from JSDoc comments using **TypeDoc**.
+
+```bash
+# Generate docs into dev-docs/
+npm run docs
+
+# Watch mode — regenerates on file changes
+npm run docs:watch
+```
+
+Open `dev-docs/index.html` in a browser after generation.
+
+---
+
+## Docker
+
+A `Dockerfile` is included for serving the TypeDoc documentation site.
+
+```bash
+# Build the docs Docker image
+npm run docker:build
+
+# Run the docs server on port 8080
+docker run -p 8080:80 theredhead-docs
 ```
 
 ---
@@ -108,7 +163,7 @@ npm run lint
 | Angular    | 21                                  | Standalone components, signal APIs, OnPush everywhere   |
 | TypeScript | 5.9+                                | `strict: true`, `noImplicitOverride`, `isolatedModules` |
 | Build      | ng-packagr 21                       | Library builds via `npm run build --workspaces`         |
-| Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zone.js setup              |
+| Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zoneless setup             |
 | Lint       | ESLint 10 + angular-eslint 21       | `npm run lint`, flat config (`eslint.config.js`)        |
 | Git hooks  | Husky + lint-staged                 | Pre-commit: lint staged `.ts` and `.html` files         |
 | Storybook  | 10.x                                | `npm run storybook`                                     |
@@ -120,9 +175,11 @@ npm run lint
 
 Each package has its own README with component API details and usage examples:
 
+- [packages/foundation/README.md](packages/foundation/README.md)
 - [packages/ui-theme/README.md](packages/ui-theme/README.md)
 - [packages/ui-kit/README.md](packages/ui-kit/README.md)
 - [packages/ui-blocks/README.md](packages/ui-blocks/README.md)
+- [packages/ui-forms/README.md](packages/ui-forms/README.md)
 
 ---
 
