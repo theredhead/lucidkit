@@ -36,14 +36,14 @@ export type BadgeColor =
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-badge",
-    "[class.ui-badge--count]": "variant() === 'count'",
-    "[class.ui-badge--dot]": "variant() === 'dot'",
-    "[class.ui-badge--label]": "variant() === 'label'",
-    "[class.ui-badge--primary]": "color() === 'primary'",
-    "[class.ui-badge--success]": "color() === 'success'",
-    "[class.ui-badge--warning]": "color() === 'warning'",
-    "[class.ui-badge--danger]": "color() === 'danger'",
-    "[class.ui-badge--neutral]": "color() === 'neutral'",
+    "[class.count]": "variant() === 'count'",
+    "[class.dot]": "variant() === 'dot'",
+    "[class.label]": "variant() === 'label'",
+    "[class.primary]": "color() === 'primary'",
+    "[class.success]": "color() === 'success'",
+    "[class.warning]": "color() === 'warning'",
+    "[class.danger]": "color() === 'danger'",
+    "[class.neutral]": "color() === 'neutral'",
   },
 })
 export class UIBadge {

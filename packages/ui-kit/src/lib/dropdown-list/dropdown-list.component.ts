@@ -128,8 +128,8 @@ export class UIDropdownListPanel implements UIPopoverContent<string> {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-dropdown-list",
-    "[class.ui-dropdown-list--open]": "isOpen()",
-    "[class.ui-dropdown-list--disabled]": "disabled()",
+    "[class.open]": "isOpen()",
+    "[class.disabled]": "disabled()",
     "[attr.aria-label]": "ariaLabel()",
   },
 })

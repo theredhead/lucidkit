@@ -135,10 +135,10 @@ describe("UIBreadcrumb", () => {
       expect(buttons[2].getAttribute("aria-current")).toBe("page");
     });
 
-    it("should add ui-breadcrumb--button host class", () => {
+    it("should add button host class", () => {
       expect(
         fixture.nativeElement.querySelector("ui-breadcrumb").classList,
-      ).toContain("ui-breadcrumb--button");
+      ).toContain("button");
     });
 
     it("should emit itemClicked on non-last button click", () => {

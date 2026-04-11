@@ -241,7 +241,7 @@ describe("UITreeView", () => {
       fixture.detectChanges();
 
       const item = treeEl.querySelector("ui-tree-node");
-      expect(item?.classList.contains("ui-tree-node--selected")).toBe(true);
+      expect(item?.classList.contains("selected")).toBe(true);
     });
 
     it("should replace selection on plain click", () => {
@@ -313,7 +313,7 @@ describe("UITreeView", () => {
       fixture.detectChanges();
 
       const item = treeEl.querySelector("ui-tree-node");
-      expect(item?.classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(item?.classList.contains("focused")).toBe(true);
     });
   });
 
@@ -361,7 +361,7 @@ describe("UITreeView", () => {
     it("should move cursor to the first node with ArrowDown", () => {
       press("ArrowDown");
       const firstNode = treeEl.querySelector("ui-tree-node");
-      expect(firstNode?.classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(firstNode?.classList.contains("focused")).toBe(true);
     });
 
     it("should select the cursor node on ArrowDown", () => {
@@ -374,7 +374,7 @@ describe("UITreeView", () => {
       press("ArrowDown"); // cursor → src
       press("ArrowDown"); // cursor → readme
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
-      expect(items[1].classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(items[1].classList.contains("focused")).toBe(true);
     });
 
     it("should replace selection when moving with ArrowDown", () => {
@@ -387,14 +387,14 @@ describe("UITreeView", () => {
     it("should remove selected/focused classes from the previous node on ArrowDown", () => {
       press("ArrowDown"); // cursor → src
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
-      expect(items[0].classList.contains("ui-tree-node--selected")).toBe(true);
-      expect(items[0].classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(items[0].classList.contains("selected")).toBe(true);
+      expect(items[0].classList.contains("focused")).toBe(true);
 
       press("ArrowDown"); // cursor → readme
-      expect(items[0].classList.contains("ui-tree-node--selected")).toBe(false);
-      expect(items[0].classList.contains("ui-tree-node--focused")).toBe(false);
-      expect(items[1].classList.contains("ui-tree-node--selected")).toBe(true);
-      expect(items[1].classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(items[0].classList.contains("selected")).toBe(false);
+      expect(items[0].classList.contains("focused")).toBe(false);
+      expect(items[1].classList.contains("selected")).toBe(true);
+      expect(items[1].classList.contains("focused")).toBe(true);
     });
 
     it("should move cursor up with ArrowUp", () => {
@@ -402,7 +402,7 @@ describe("UITreeView", () => {
       press("ArrowDown"); // cursor → readme
       press("ArrowUp"); // back to src
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
-      expect(items[0].classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(items[0].classList.contains("focused")).toBe(true);
     });
 
     it("should replace selection when moving with ArrowUp", () => {
@@ -438,7 +438,7 @@ describe("UITreeView", () => {
       press("ArrowLeft"); // → parent (src)
 
       const srcNode = treeEl.querySelector(":scope > ui-tree-node");
-      expect(srcNode?.classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(srcNode?.classList.contains("focused")).toBe(true);
       expect(host.selected.length).toBe(1);
       expect(host.selected[0].id).toBe("src");
     });
@@ -460,7 +460,7 @@ describe("UITreeView", () => {
       press("ArrowDown");
       press("Home");
       const first = treeEl.querySelector("ui-tree-node");
-      expect(first?.classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(first?.classList.contains("focused")).toBe(true);
       expect(host.selected[0].id).toBe("src");
     });
 
@@ -468,7 +468,7 @@ describe("UITreeView", () => {
       press("End");
       const items = treeEl.querySelectorAll(":scope > ui-tree-node");
       const last = items[items.length - 1];
-      expect(last.classList.contains("ui-tree-node--focused")).toBe(true);
+      expect(last.classList.contains("focused")).toBe(true);
     });
 
     it("should clear selection with Escape", () => {
@@ -563,7 +563,7 @@ describe("UITreeView", () => {
         pressOnRow(row, "ArrowDown");
 
         const items = treeEl.querySelectorAll(":scope > ui-tree-node");
-        expect(items[1].classList.contains("ui-tree-node--focused")).toBe(true);
+        expect(items[1].classList.contains("focused")).toBe(true);
       });
     });
 

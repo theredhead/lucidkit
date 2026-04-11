@@ -38,7 +38,7 @@ export type AccordionMode = "single" | "multi";
   providers: [{ provide: ACCORDION_CONTROLLER, useExisting: UIAccordion }],
   host: {
     class: "ui-accordion",
-    "[class.ui-accordion--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
   },
   styleUrl: "./accordion.component.scss",
 })

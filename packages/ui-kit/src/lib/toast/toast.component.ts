@@ -32,13 +32,12 @@ import { UISurface } from '@theredhead/foundation';
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-toast-container",
-    "[class.ui-toast-container--top-right]": "position() === 'top-right'",
-    "[class.ui-toast-container--top-left]": "position() === 'top-left'",
-    "[class.ui-toast-container--top-center]": "position() === 'top-center'",
-    "[class.ui-toast-container--bottom-right]": "position() === 'bottom-right'",
-    "[class.ui-toast-container--bottom-left]": "position() === 'bottom-left'",
-    "[class.ui-toast-container--bottom-center]":
-      "position() === 'bottom-center'",
+    "[class.top-right]": "position() === 'top-right'",
+    "[class.top-left]": "position() === 'top-left'",
+    "[class.top-center]": "position() === 'top-center'",
+    "[class.bottom-right]": "position() === 'bottom-right'",
+    "[class.bottom-left]": "position() === 'bottom-left'",
+    "[class.bottom-center]": "position() === 'bottom-center'",
   },
 })
 export class UIToastContainer {

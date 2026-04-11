@@ -66,13 +66,13 @@ async function sha256Hex(message: string): Promise<string> {
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-avatar",
-    "[class.ui-avatar--extra-small]": "size() === 'extra-small'",
-    "[class.ui-avatar--small]": "size() === 'small'",
-    "[class.ui-avatar--medium]": "size() === 'medium'",
-    "[class.ui-avatar--large]": "size() === 'large'",
-    "[class.ui-avatar--extra-large]": "size() === 'extra-large'",
+    "[class.extra-small]": "size() === 'extra-small'",
+    "[class.small]": "size() === 'small'",
+    "[class.medium]": "size() === 'medium'",
+    "[class.large]": "size() === 'large'",
+    "[class.extra-large]": "size() === 'extra-large'",
     "[style.--avatar-custom-size]": "customSizePx()",
-    "[class.ui-avatar--custom]": "customSizePx()",
+    "[class.custom]": "customSizePx()",
   },
 })
 export class UIAvatar {

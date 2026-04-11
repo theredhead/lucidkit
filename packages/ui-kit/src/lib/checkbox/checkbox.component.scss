@@ -10,7 +10,7 @@
   color: var(--ui-text);
 }
 
-:host(.ui-checkbox--disabled) {
+:host(.disabled) {
   @include mix.disabled;
 }
 
@@ -42,8 +42,8 @@
   flex-shrink: 0;
 }
 
-:host(.ui-checkbox--checked) .box,
-:host(.ui-checkbox--indeterminate) .box {
+:host(.checked) .box,
+:host(.indeterminate) .box {
   background-color: var(--ui-accent);
   border-color: var(--ui-accent);
 }
@@ -68,7 +68,7 @@
   flex-shrink: 0;
 }
 
-:host(.ui-checkbox--checked) .track {
+:host(.checked) .track {
   background-color: var(--ui-accent);
 }
 
@@ -80,7 +80,7 @@
   transition: transform anim.$duration-medium anim.$easing-default;
 }
 
-:host(.ui-checkbox--checked) .thumb {
+:host(.checked) .thumb {
   transform: translateX(1rem);
 }
 

@@ -72,10 +72,10 @@ const STORAGE_PREFIX = "ui-split-container:";
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-split-container",
-    "[class.ui-split-container--horizontal]": "orientation() === 'horizontal'",
-    "[class.ui-split-container--vertical]": "orientation() === 'vertical'",
-    "[class.ui-split-container--dragging]": "dragging()",
-    "[class.ui-split-container--disabled]": "disabled()",
+    "[class.horizontal]": "orientation() === 'horizontal'",
+    "[class.vertical]": "orientation() === 'vertical'",
+    "[class.dragging]": "dragging()",
+    "[class.disabled]": "disabled()",
     "[style.--ui-divider-width]": "dividerWidth() + 'px'",
   },
 })

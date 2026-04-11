@@ -36,10 +36,10 @@ import { UISurface } from '@theredhead/foundation';
     "[attr.aria-selected]": "isSelected()",
     "[attr.aria-disabled]": "node().disabled || null",
     "[attr.aria-level]": "level() + 1",
-    "[class.ui-tree-node--selected]": "isSelected()",
-    "[class.ui-tree-node--focused]": "isFocused()",
-    "[class.ui-tree-node--disabled]": "node().disabled",
-    "[class.ui-tree-node--leaf]": "!hasChildren()",
+    "[class.selected]": "isSelected()",
+    "[class.focused]": "isFocused()",
+    "[class.disabled]": "node().disabled",
+    "[class.leaf]": "!hasChildren()",
   },
 })
 export class UITreeNode<T = unknown> {

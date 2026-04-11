@@ -56,51 +56,51 @@ describe("UIToggle", () => {
       expect(fixture.nativeElement.classList).toContain("ui-toggle");
     });
 
-    it("should apply ui-toggle--on when value is true", () => {
+    it("should apply on when value is true", () => {
       fixture.componentRef.setInput("value", true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain("ui-toggle--on");
+      expect(fixture.nativeElement.classList).toContain("on");
     });
 
-    it("should not have ui-toggle--on when value is false", () => {
-      expect(fixture.nativeElement.classList).not.toContain("ui-toggle--on");
+    it("should not have on when value is false", () => {
+      expect(fixture.nativeElement.classList).not.toContain("on");
     });
 
-    it("should apply ui-toggle--disabled when disabled", () => {
+    it("should apply disabled when disabled", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain("ui-toggle--disabled");
+      expect(fixture.nativeElement.classList).toContain("disabled");
     });
 
     describe("sizes", () => {
       const sizes: ToggleSize[] = ["small", "medium", "large"];
 
       for (const size of sizes) {
-        it(`should apply ui-toggle--${size} host class`, () => {
+        it(`should apply ${size} host class`, () => {
           fixture.componentRef.setInput("size", size);
           fixture.detectChanges();
           expect(fixture.nativeElement.classList).toContain(
-            `ui-toggle--${size}`,
+            `${size}`,
           );
         });
       }
     });
 
-    it("should apply ui-toggle--labelled when onLabel is set", () => {
+    it("should apply labelled when onLabel is set", () => {
       fixture.componentRef.setInput("onLabel", "Yes");
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain("ui-toggle--labelled");
+      expect(fixture.nativeElement.classList).toContain("labelled");
     });
 
-    it("should apply ui-toggle--labelled when offLabel is set", () => {
+    it("should apply labelled when offLabel is set", () => {
       fixture.componentRef.setInput("offLabel", "No");
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain("ui-toggle--labelled");
+      expect(fixture.nativeElement.classList).toContain("labelled");
     });
 
-    it("should not have ui-toggle--labelled when no labels set", () => {
+    it("should not have labelled when no labels set", () => {
       expect(fixture.nativeElement.classList).not.toContain(
-        "ui-toggle--labelled",
+        "labelled",
       );
     });
   });

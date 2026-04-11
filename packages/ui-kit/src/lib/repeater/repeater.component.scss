@@ -2,7 +2,7 @@
   display: contents;
 }
 
-:host(.ui-repeater--reorderable) {
+:host(.reorderable) {
   display: block;
   isolation: isolate;
 }
@@ -12,17 +12,17 @@
 // During a drag, non-dragged items transition smoothly as they shift.
 // The source container is elevated so the dragged item renders above
 // sibling containers (e.g. a connected drop target).
-:host(.ui-repeater--dragging) {
+:host(.dragging) {
   position: relative;
   z-index: 1;
 
-  .ui-repeater-item:not(.ui-repeater-item--dragging) {
+  .item:not(.dragging) {
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
 // The item currently being dragged.
-.ui-repeater-item--dragging {
+.item.dragging {
   position: relative;
   z-index: 1;
   opacity: 0.85;
@@ -30,7 +30,7 @@
 }
 
 // Connected container that is a valid drop target during a drag.
-:host(.ui-repeater--drop-target) {
+:host(.drop-target) {
   outline-offset: -2px;
   transition: padding-bottom 200ms cubic-bezier(0, 0, 0.2, 1);
 }
@@ -38,14 +38,14 @@
 // ── Dark mode ─────────────────────────────────────────────────
 
 :host-context(html.dark-theme) {
-  .ui-repeater-item--dragging {
+  .item.dragging {
     opacity: 0.8;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(html:not(.light-theme):not(.dark-theme)) {
-    .ui-repeater-item--dragging {
+    .item.dragging {
       opacity: 0.8;
     }
   }

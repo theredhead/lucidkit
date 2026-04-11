@@ -35,12 +35,12 @@ export type ChipColor =
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-chip",
-    "[class.ui-chip--primary]": "color() === 'primary'",
-    "[class.ui-chip--success]": "color() === 'success'",
-    "[class.ui-chip--warning]": "color() === 'warning'",
-    "[class.ui-chip--danger]": "color() === 'danger'",
-    "[class.ui-chip--neutral]": "color() === 'neutral'",
-    "[class.ui-chip--disabled]": "disabled()",
+    "[class.primary]": "color() === 'primary'",
+    "[class.success]": "color() === 'success'",
+    "[class.warning]": "color() === 'warning'",
+    "[class.danger]": "color() === 'danger'",
+    "[class.neutral]": "color() === 'neutral'",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UIChip {

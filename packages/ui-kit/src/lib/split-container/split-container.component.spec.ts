@@ -92,7 +92,7 @@ describe("UISplitContainer", () => {
   describe("defaults", () => {
     it("should default to horizontal orientation", () => {
       const el = fixture.nativeElement.querySelector("ui-split-container");
-      expect(el.classList.contains("ui-split-container--horizontal")).toBe(
+      expect(el.classList.contains("horizontal")).toBe(
         true,
       );
     });
@@ -121,7 +121,7 @@ describe("UISplitContainer", () => {
       host.orientation.set("vertical");
       fixture.detectChanges();
       const el = fixture.nativeElement.querySelector("ui-split-container");
-      expect(el.classList.contains("ui-split-container--vertical")).toBe(true);
+      expect(el.classList.contains("vertical")).toBe(true);
     });
 
     it("should set aria-orientation on divider", () => {
@@ -552,7 +552,7 @@ describe("UISplitContainer", () => {
 
       // We can't easily set the split's disabled input from TestHost,
       // but we can verify the host binding exists
-      expect(hostEl.classList.contains("ui-split-container--disabled")).toBe(
+      expect(hostEl.classList.contains("disabled")).toBe(
         false,
       );
     });

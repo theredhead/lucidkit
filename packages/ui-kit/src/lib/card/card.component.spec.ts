@@ -48,7 +48,7 @@ describe("UICard", () => {
         fixture.componentRef.setInput("variant", variant);
         fixture.detectChanges();
         expect(fixture.nativeElement.classList).toContain(
-          `ui-card--${variant}`,
+          `${variant}`,
         );
       });
     }
@@ -58,12 +58,12 @@ describe("UICard", () => {
     it("should apply interactive host class when enabled", () => {
       fixture.componentRef.setInput("interactive", true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain("ui-card--interactive");
+      expect(fixture.nativeElement.classList).toContain("interactive");
     });
 
     it("should not apply interactive host class by default", () => {
       expect(fixture.nativeElement.classList).not.toContain(
-        "ui-card--interactive",
+        "interactive",
       );
     });
   });

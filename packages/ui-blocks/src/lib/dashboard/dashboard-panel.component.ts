@@ -40,9 +40,9 @@ import type { DashboardPanelConfig } from "./dashboard.types";
   styleUrl: "./dashboard-panel.component.scss",
   host: {
     class: "ui-dashboard-panel",
-    "[class.ui-dashboard-panel--collapsed]": "collapsed()",
-    "[class.ui-dashboard-panel--removed]": "removed()",
-    "[class.ui-dashboard-panel--notified]": "notified()",
+    "[class.collapsed]": "collapsed()",
+    "[class.removed]": "removed()",
+    "[class.notified]": "notified()",
     "[style.grid-column]": "gridColumn()",
     "[style.grid-row]": "gridRow()",
     "[attr.data-panel-id]": "config().id",

@@ -121,7 +121,7 @@ describe("UIAvatar", () => {
         fixture.detectChanges();
         expect(
           fixture.nativeElement.querySelector("ui-avatar").classList,
-        ).toContain(`ui-avatar--${size}`);
+        ).toContain(`${size}`);
       });
     }
   });
@@ -449,7 +449,7 @@ describe("UIAvatar", () => {
     it("should default to medium size", () => {
       expect(
         fixture.nativeElement.querySelector("ui-avatar").classList,
-      ).toContain("ui-avatar--medium");
+      ).toContain("medium");
     });
 
     it("should show initials by default (no src, no email)", () => {

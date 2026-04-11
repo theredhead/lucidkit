@@ -1014,7 +1014,7 @@ class UITableViewFilteredDemo {
  */
 export const FilteredTable: Story = {
   args: {
-    selectionMode: "single"
+    selectionMode: "single",
   },
 
   decorators: [
@@ -1064,7 +1064,7 @@ onExpressionChange(expression: FilterExpression<Employee>): void {
         language: "typescript",
       },
     },
-  }
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -1221,14 +1221,62 @@ interface DemoRow {
 }
 
 const DEMO_ROWS: DemoRow[] = [
-  { id: 1, name: "John Doe", email: "john@example.com", age: 30, status: "active" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com", age: 25, status: "inactive" },
-  { id: 3, name: "Bob Johnson", email: "bob@example.com", age: 35, status: "active" },
-  { id: 4, name: "Alice Williams", email: "alice@example.com", age: 28, status: "pending" },
-  { id: 5, name: "Charlie Brown", email: "charlie@example.com", age: 32, status: "active" },
-  { id: 6, name: "Diana Miller", email: "diana@example.com", age: 27, status: "inactive" },
-  { id: 7, name: "Ethan Davis", email: "ethan@example.com", age: 31, status: "pending" },
-  { id: 8, name: "Fiona Garcia", email: "fiona@example.com", age: 29, status: "active" },
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    age: 30,
+    status: "active",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    email: "jane@example.com",
+    age: 25,
+    status: "inactive",
+  },
+  {
+    id: 3,
+    name: "Bob Johnson",
+    email: "bob@example.com",
+    age: 35,
+    status: "active",
+  },
+  {
+    id: 4,
+    name: "Alice Williams",
+    email: "alice@example.com",
+    age: 28,
+    status: "pending",
+  },
+  {
+    id: 5,
+    name: "Charlie Brown",
+    email: "charlie@example.com",
+    age: 32,
+    status: "active",
+  },
+  {
+    id: 6,
+    name: "Diana Miller",
+    email: "diana@example.com",
+    age: 27,
+    status: "inactive",
+  },
+  {
+    id: 7,
+    name: "Ethan Davis",
+    email: "ethan@example.com",
+    age: 31,
+    status: "pending",
+  },
+  {
+    id: 8,
+    name: "Fiona Garcia",
+    email: "fiona@example.com",
+    age: 29,
+    status: "active",
+  },
 ];
 
 const DEMO_FILTER_FIELDS: FilterFieldDefinition<DemoRow>[] = [
@@ -1281,8 +1329,18 @@ const DEMO_FILTER_FIELDS: FilterFieldDefinition<DemoRow>[] = [
         [sortable]="true"
         [format]="{ maximumFractionDigits: 0 }"
       />
-      <ui-text-column key="name" headerText="Name" [sortable]="true" [truncate]="true" />
-      <ui-text-column key="email" headerText="Email" [sortable]="true" [truncate]="true" />
+      <ui-text-column
+        key="name"
+        headerText="Name"
+        [sortable]="true"
+        [truncate]="true"
+      />
+      <ui-text-column
+        key="email"
+        headerText="Email"
+        [sortable]="true"
+        [truncate]="true"
+      />
       <ui-number-column
         key="age"
         headerText="Age"
@@ -1334,9 +1392,7 @@ class UITableViewLocalDataDemo {
     (row) => row.id,
   );
   readonly density = signal<UIDensity>("comfortable");
-  readonly statusLine = signal(
-    "Select rows or click View to see output here…",
-  );
+  readonly statusLine = signal("Select rows or click View to see output here…");
 
   private readonly table = viewChild.required(UITableView);
 
@@ -1379,7 +1435,7 @@ class UITableViewLocalDataDemo {
  */
 export const LocalDataDemo: Story = {
   args: {
-    selectionMode: "none"
+    selectionMode: "none",
   },
 
   decorators: [
@@ -1455,7 +1511,7 @@ onAction(row: Row): void { /* handle action */ }
 /* No custom styles needed. */`,
       },
     },
-  }
+  },
 };
 
 /**

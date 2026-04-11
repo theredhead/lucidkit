@@ -15,15 +15,15 @@
 
 // ── Tab alignment ────────────────────────────────────────────────────
 
-:host(.ui-tab-group--align-start) .header {
+:host(.align-start) .header {
   justify-content: flex-start;
 }
 
-:host(.ui-tab-group--align-center) .header {
+:host(.align-center) .header {
   justify-content: center;
 }
 
-:host(.ui-tab-group--align-end) .header {
+:host(.align-end) .header {
   justify-content: flex-end;
 }
 
@@ -86,7 +86,7 @@
 
 // ── Panel style: raised (default) ────────────────────────────────────
 
-:host(.ui-tab-group--raised) .panel {
+:host(.raised) .panel {
   background: var(--ui-surface);
   border-radius: 0.25rem;
   box-shadow: var(--ui-shadow-sm);
@@ -94,36 +94,36 @@
 
 // ── Panel style: outline ─────────────────────────────────────────────
 
-:host(.ui-tab-group--outline) .panel {
+:host(.outline) .panel {
   border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
 }
 
 // ── Panel style: flat ────────────────────────────────────────────────
 
-:host(.ui-tab-group--flat) .panel {
+:host(.flat) .panel {
   padding: 1rem 0;
 }
 
-:host(.ui-tab-group--flat.ui-tab-group--top) .header {
+:host(.flat.top) .header {
   border-bottom: 1px solid var(--ui-border);
 }
 
-:host(.ui-tab-group--flat.ui-tab-group--bottom) .header {
+:host(.flat.bottom) .header {
   border-top: 1px solid var(--ui-border);
 }
 
-:host(.ui-tab-group--flat.ui-tab-group--left) .header {
+:host(.flat.left) .header {
   border-right: 1px solid var(--ui-border);
 }
 
-:host(.ui-tab-group--flat.ui-tab-group--right) .header {
+:host(.flat.right) .header {
   border-left: 1px solid var(--ui-border);
 }
 
 // ── Position: top (default) ──────────────────────────────────────────
 
-:host(.ui-tab-group--top) {
+:host(.top) {
   flex-direction: column;
 
   .header {
@@ -142,7 +142,7 @@
 
 // ── Position: bottom ─────────────────────────────────────────────────
 
-:host(.ui-tab-group--bottom) {
+:host(.bottom) {
   flex-direction: column-reverse;
 
   .header {
@@ -161,7 +161,7 @@
 
 // ── Position: left ───────────────────────────────────────────────────
 
-:host(.ui-tab-group--left) {
+:host(.left) {
   flex-direction: row;
 
   .header {
@@ -182,7 +182,7 @@
 
 // ── Position: right ──────────────────────────────────────────────────
 
-:host(.ui-tab-group--right) {
+:host(.right) {
   flex-direction: row-reverse;
 
   .header {

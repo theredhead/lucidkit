@@ -99,7 +99,7 @@ describe("UIFileUpload", () => {
     it("should add disabled host class when disabled", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
-      expect(el.classList).toContain("ui-file-upload--disabled");
+      expect(el.classList).toContain("disabled");
     });
 
     it("should not open file browser when disabled", () => {
@@ -282,7 +282,7 @@ describe("UIFileUpload", () => {
       fixture.detectChanges();
 
       expect(component["isDragging"]()).toBe(true);
-      expect(el.classList).toContain("ui-file-upload--dragging");
+      expect(el.classList).toContain("dragging");
     });
 
     it("should clear dragging state on dragleave", () => {

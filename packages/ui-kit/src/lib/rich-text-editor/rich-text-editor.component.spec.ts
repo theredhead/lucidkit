@@ -52,7 +52,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
       expect(
         fixture.nativeElement.classList.contains(
-          "ui-rich-text-editor--disabled",
+          "disabled",
         ),
       ).toBe(true);
     });
@@ -62,7 +62,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
       expect(
         fixture.nativeElement.classList.contains(
-          "ui-rich-text-editor--readonly",
+          "readonly",
         ),
       ).toBe(true);
     });

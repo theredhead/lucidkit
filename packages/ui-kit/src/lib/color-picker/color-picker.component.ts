@@ -42,7 +42,7 @@ import { UISurface } from '@theredhead/foundation';
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-color-picker",
-    "[class.ui-color-picker--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
   },
   templateUrl: "./color-picker.component.html",
   styleUrl: "./color-picker.component.scss",

@@ -164,7 +164,7 @@ describe("UIDropdownItem", () => {
     fixture.componentRef.setInput("disabled", true);
     fixture.detectChanges();
     expect(fixture.nativeElement.classList).toContain(
-      "ui-dropdown-item--disabled",
+      "disabled",
     );
   });
 

@@ -357,7 +357,7 @@ describe("UIFilter", () => {
 
     it("should have the simple mode class when in simple mode", () => {
       const host: HTMLElement = fixture.nativeElement;
-      expect(host.classList.contains("ui-filter--simple")).toBe(true);
+      expect(host.classList.contains("simple")).toBe(true);
     });
 
     it("should have the advanced mode class when in advanced mode", () => {
@@ -365,7 +365,7 @@ describe("UIFilter", () => {
       fixture.detectChanges();
 
       const host: HTMLElement = fixture.nativeElement;
-      expect(host.classList.contains("ui-filter--advanced")).toBe(true);
+      expect(host.classList.contains("advanced")).toBe(true);
     });
   });
 

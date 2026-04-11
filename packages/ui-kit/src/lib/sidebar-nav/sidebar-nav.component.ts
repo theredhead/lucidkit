@@ -27,8 +27,8 @@ import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-sidebar-item",
-    "[class.ui-sidebar-item--active]": "active()",
-    "[class.ui-sidebar-item--disabled]": "disabled()",
+    "[class.active]": "active()",
+    "[class.disabled]": "disabled()",
     "[attr.role]": "'treeitem'",
     "[attr.aria-selected]": "active()",
     "[attr.aria-disabled]": "disabled()",
@@ -85,7 +85,7 @@ export class UISidebarItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "ui-sidebar-group",
-    "[class.ui-sidebar-group--expanded]": "expanded()",
+    "[class.expanded]": "expanded()",
   },
   templateUrl: "./sidebar-group.component.html",
   styleUrl: "./sidebar-group.component.scss",

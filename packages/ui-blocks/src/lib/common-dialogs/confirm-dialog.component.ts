@@ -33,8 +33,8 @@ import { UISurface } from '@theredhead/foundation';
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-confirm-dialog",
-    "[class.ui-confirm-dialog--danger]": "variant() === 'danger'",
-    "[class.ui-confirm-dialog--warning]": "variant() === 'warning'",
+    "[class.danger]": "variant() === 'danger'",
+    "[class.warning]": "variant() === 'warning'",
   },
   template: `
     <ui-dialog-header>{{ title() }}</ui-dialog-header>
@@ -70,10 +70,10 @@ import { UISurface } from '@theredhead/foundation';
         line-height: 1.55;
         white-space: pre-wrap;
       }
-      :host(.ui-confirm-dialog--danger) {
+      :host(.danger) {
         --ui-accent: #d93025;
       }
-      :host(.ui-confirm-dialog--warning) {
+      :host(.warning) {
         --ui-accent: #e5a50a;
       }
     `,

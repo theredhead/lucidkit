@@ -42,7 +42,7 @@ export interface RadioOption {
   host: {
     class: "ui-radio-group",
     role: "radiogroup",
-    "[class.ui-radio-group--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
     "[attr.aria-label]": "ariaLabel()",
   },
 })

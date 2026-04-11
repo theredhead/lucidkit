@@ -46,8 +46,8 @@ export interface UIFileEntry {
   providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
   host: {
     class: "ui-file-upload",
-    "[class.ui-file-upload--dragging]": "isDragging()",
-    "[class.ui-file-upload--disabled]": "disabled()",
+    "[class.dragging]": "isDragging()",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UIFileUpload {

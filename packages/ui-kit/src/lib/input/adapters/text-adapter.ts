@@ -54,7 +54,7 @@ export interface TextAdapter {
    * the current input is valid.
    *
    * When present, `UIInput` exposes a `valid` signal and applies the
-   * `ui-input--invalid` host class when validation fails.
+   * `invalid` host class when validation fails.
    *
    * @param text Raw text from the input element.
    * @returns Validation result with `valid` flag and error messages.

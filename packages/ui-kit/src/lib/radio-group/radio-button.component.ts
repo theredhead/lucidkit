@@ -26,8 +26,8 @@ import { UISurface } from '@theredhead/foundation';
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-radio-button",
-    "[class.ui-radio-button--checked]": "isChecked()",
-    "[class.ui-radio-button--disabled]": "isDisabled()",
+    "[class.checked]": "isChecked()",
+    "[class.disabled]": "isDisabled()",
   },
 })
 export class UIRadioButton {

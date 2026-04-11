@@ -61,7 +61,7 @@ import { UISurface } from '@theredhead/foundation';
     role: "region",
     "[attr.aria-label]": "ariaLabel()",
     "[attr.aria-roledescription]": "'carousel'",
-    "[class.ui-carousel--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UICarousel<T = unknown> {

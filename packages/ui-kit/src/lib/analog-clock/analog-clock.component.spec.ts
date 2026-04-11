@@ -316,12 +316,12 @@ describe("UIAnalogClock", () => {
       fixture.detectChanges();
 
       const hostEl = fixture.nativeElement.querySelector("ui-analog-clock");
-      expect(hostEl.classList.contains("ui-analog-clock--night")).toBe(true);
+      expect(hostEl.classList.contains("night")).toBe(true);
     });
 
     it("should not apply night host class during the day", () => {
       const hostEl = fixture.nativeElement.querySelector("ui-analog-clock");
-      expect(hostEl.classList.contains("ui-analog-clock--night")).toBe(false);
+      expect(hostEl.classList.contains("night")).toBe(false);
     });
 
     it("should accept custom day icon", () => {

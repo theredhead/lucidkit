@@ -85,7 +85,7 @@ export interface EntryTemplateContext<M = unknown> {
   styleUrl: "./file-browser.component.scss",
   host: {
     class: "ui-file-browser",
-    "[class.ui-file-browser--dragging]": "draggingPanel()",
+    "[class.dragging]": "draggingPanel()",
     "[style.--fb-sidebar-width]": "sidebarWidthPx() + 'px'",
     "[style.--fb-details-width]": "detailsWidthPx() + 'px'",
   },

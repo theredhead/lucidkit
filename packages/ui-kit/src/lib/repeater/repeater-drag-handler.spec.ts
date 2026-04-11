@@ -4,7 +4,7 @@ function createContainer(itemCount: number): HTMLElement {
   const container = document.createElement("div");
   for (let i = 0; i < itemCount; i++) {
     const item = document.createElement("div");
-    item.className = "ui-repeater-item";
+    item.className = "item";
     item.textContent = `Item ${i}`;
     container.appendChild(item);
   }
@@ -66,28 +66,28 @@ describe("RepeaterDragHandler", () => {
   describe("enabled", () => {
     it("should not start drag when disabled", () => {
       handler.enabled = false;
-      const item = container.querySelector(".ui-repeater-item")!;
+      const item = container.querySelector(".item")!;
       item.dispatchEvent(pointerEvent("pointerdown", item as HTMLElement));
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(false);
+      expect(container.classList.contains("dragging")).toBe(false);
     });
 
     it("should start drag when enabled", () => {
       handler.enabled = true;
-      const item = container.querySelector(".ui-repeater-item") as HTMLElement;
+      const item = container.querySelector(".item") as HTMLElement;
 
       // Mock setPointerCapture since JSDOM doesn't support it
       item.setPointerCapture = vi.fn();
       item.releasePointerCapture = vi.fn();
 
       item.dispatchEvent(pointerEvent("pointerdown", item));
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(true);
+      expect(container.classList.contains("dragging")).toBe(true);
     });
   });
 
   describe("pointerdown guards", () => {
     it("should ignore non-primary button", () => {
       handler.enabled = true;
-      const item = container.querySelector(".ui-repeater-item") as HTMLElement;
+      const item = container.querySelector(".item") as HTMLElement;
       item.setPointerCapture = vi.fn();
       item.dispatchEvent(
         new PointerEvent("pointerdown", {
@@ -96,13 +96,13 @@ describe("RepeaterDragHandler", () => {
           button: 2,
         }),
       );
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(false);
+      expect(container.classList.contains("dragging")).toBe(false);
     });
 
     it("should ignore clicks outside items", () => {
       handler.enabled = true;
       container.dispatchEvent(pointerEvent("pointerdown", container));
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(false);
+      expect(container.classList.contains("dragging")).toBe(false);
     });
   });
 
@@ -110,7 +110,7 @@ describe("RepeaterDragHandler", () => {
     it("should call onReorder when item is dropped at different index", () => {
       handler.enabled = true;
       const items = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
 
       // We need to mock getBoundingClientRect for rects calculation
@@ -153,7 +153,7 @@ describe("RepeaterDragHandler", () => {
     it("should not call onReorder when dropped at same position", () => {
       handler.enabled = true;
       const items = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
 
       items.forEach((el, i) => {
@@ -186,7 +186,7 @@ describe("RepeaterDragHandler", () => {
     it("should shift items downward when dragging from top to bottom", () => {
       handler.enabled = true;
       const items = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
 
       items.forEach((el, i) => {
@@ -219,7 +219,7 @@ describe("RepeaterDragHandler", () => {
     it("should shift items upward when dragging from bottom to top", () => {
       handler.enabled = true;
       const items = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
 
       items.forEach((el, i) => {
@@ -260,7 +260,7 @@ describe("RepeaterDragHandler", () => {
     it("should clear transforms on drop", () => {
       handler.enabled = true;
       const items = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
 
       items.forEach((el, i) => {
@@ -299,7 +299,7 @@ describe("RepeaterDragHandler", () => {
   describe("visual feedback", () => {
     it("should add dragging class to item and container", () => {
       handler.enabled = true;
-      const item = container.querySelector(".ui-repeater-item") as HTMLElement;
+      const item = container.querySelector(".item") as HTMLElement;
       item.setPointerCapture = vi.fn();
       item.releasePointerCapture = vi.fn();
       item.getBoundingClientRect = () =>
@@ -315,14 +315,14 @@ describe("RepeaterDragHandler", () => {
         }) as DOMRect;
 
       item.dispatchEvent(pointerEvent("pointerdown", item));
-      expect(item.classList.contains("ui-repeater-item--dragging")).toBe(true);
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(true);
+      expect(item.classList.contains("dragging")).toBe(true);
+      expect(container.classList.contains("dragging")).toBe(true);
     });
 
     it("should apply transform on pointermove", () => {
       handler.enabled = true;
       const items = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
       items.forEach((el, i) => {
         el.getBoundingClientRect = () =>
@@ -352,7 +352,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should clean up classes on pointerup", () => {
       handler.enabled = true;
-      const item = container.querySelector(".ui-repeater-item") as HTMLElement;
+      const item = container.querySelector(".item") as HTMLElement;
       item.setPointerCapture = vi.fn();
       item.releasePointerCapture = vi.fn();
       item.getBoundingClientRect = () =>
@@ -369,8 +369,8 @@ describe("RepeaterDragHandler", () => {
 
       item.dispatchEvent(pointerEvent("pointerdown", item));
       item.dispatchEvent(pointerEvent("pointerup", item));
-      expect(item.classList.contains("ui-repeater-item--dragging")).toBe(false);
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(false);
+      expect(item.classList.contains("dragging")).toBe(false);
+      expect(container.classList.contains("dragging")).toBe(false);
       expect(item.style.transform).toBe("");
     });
   });
@@ -393,15 +393,15 @@ describe("RepeaterDragHandler", () => {
     it("should not respond to pointerdown after destroy", () => {
       handler.enabled = true;
       handler.destroy();
-      const item = container.querySelector(".ui-repeater-item") as HTMLElement;
+      const item = container.querySelector(".item") as HTMLElement;
       item.setPointerCapture = vi.fn();
       item.dispatchEvent(pointerEvent("pointerdown", item));
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(false);
+      expect(container.classList.contains("dragging")).toBe(false);
     });
 
     it("should cancel in-progress drag on destroy", () => {
       handler.enabled = true;
-      const item = container.querySelector(".ui-repeater-item") as HTMLElement;
+      const item = container.querySelector(".item") as HTMLElement;
       item.setPointerCapture = vi.fn();
       item.releasePointerCapture = vi.fn();
       item.getBoundingClientRect = () =>
@@ -417,10 +417,10 @@ describe("RepeaterDragHandler", () => {
         }) as DOMRect;
 
       item.dispatchEvent(pointerEvent("pointerdown", item));
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(true);
+      expect(container.classList.contains("dragging")).toBe(true);
 
       handler.destroy();
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(false);
+      expect(container.classList.contains("dragging")).toBe(false);
       expect(item.style.transform).toBe("");
     });
   });
@@ -428,7 +428,7 @@ describe("RepeaterDragHandler", () => {
   describe("pointercancel", () => {
     it("should clean up on pointer cancel", () => {
       handler.enabled = true;
-      const item = container.querySelector(".ui-repeater-item") as HTMLElement;
+      const item = container.querySelector(".item") as HTMLElement;
       item.setPointerCapture = vi.fn();
       item.releasePointerCapture = vi.fn();
       item.getBoundingClientRect = () =>
@@ -447,8 +447,8 @@ describe("RepeaterDragHandler", () => {
       item.dispatchEvent(
         new PointerEvent("pointercancel", { bubbles: true, pointerId: 1 }),
       );
-      expect(item.classList.contains("ui-repeater-item--dragging")).toBe(false);
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(false);
+      expect(item.classList.contains("dragging")).toBe(false);
+      expect(container.classList.contains("dragging")).toBe(false);
     });
   });
 
@@ -463,7 +463,7 @@ describe("RepeaterDragHandler", () => {
 
     function mockItems(cont: HTMLElement, yOffset = 0): void {
       const items = cont.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
       items.forEach((el, i) => {
         el.getBoundingClientRect = () =>
@@ -527,7 +527,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should call onTransfer when dropping onto a connected container", () => {
       const sourceItems = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
       const first = sourceItems[0];
 
@@ -551,7 +551,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should add drop-target class on target container during transfer", () => {
       const first = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       )[0] as HTMLElement;
 
       first.dispatchEvent(
@@ -561,7 +561,7 @@ describe("RepeaterDragHandler", () => {
         pointerEvent("pointermove", first, { clientX: 100, clientY: 225 }),
       );
 
-      expect(container2.classList.contains("ui-repeater--drop-target")).toBe(
+      expect(container2.classList.contains("drop-target")).toBe(
         true,
       );
 
@@ -573,7 +573,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should remove drop-target class after drop", () => {
       const first = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       )[0] as HTMLElement;
 
       first.dispatchEvent(
@@ -586,14 +586,14 @@ describe("RepeaterDragHandler", () => {
         pointerEvent("pointerup", first, { clientX: 100, clientY: 225 }),
       );
 
-      expect(container2.classList.contains("ui-repeater--drop-target")).toBe(
+      expect(container2.classList.contains("drop-target")).toBe(
         false,
       );
     });
 
     it("should shift target items to make room during transfer", () => {
       const first = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       )[0] as HTMLElement;
 
       first.dispatchEvent(
@@ -606,7 +606,7 @@ describe("RepeaterDragHandler", () => {
       );
 
       const targetItems = container2.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
       // Items at/after dropIndex should be shifted
       expect(targetItems[0].style.transform).toContain("translateY");
@@ -618,7 +618,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should grow target container paddingBottom during transfer", () => {
       const first = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       )[0] as HTMLElement;
 
       first.dispatchEvent(
@@ -637,7 +637,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should clear growth padding after drop", () => {
       const first = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       )[0] as HTMLElement;
 
       first.dispatchEvent(
@@ -655,7 +655,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should clear source shifts when moving to connected container", () => {
       const sourceItems = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
       const first = sourceItems[0];
 
@@ -682,7 +682,7 @@ describe("RepeaterDragHandler", () => {
 
     it("should cancel cross-container drag on destroy", () => {
       const first = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       )[0] as HTMLElement;
 
       first.dispatchEvent(
@@ -694,7 +694,7 @@ describe("RepeaterDragHandler", () => {
 
       handler.destroy();
 
-      expect(container2.classList.contains("ui-repeater--drop-target")).toBe(
+      expect(container2.classList.contains("drop-target")).toBe(
         false,
       );
       expect(container2.style.paddingBottom).toBe("");
@@ -704,7 +704,7 @@ describe("RepeaterDragHandler", () => {
       handler2.enabled = false;
 
       const first = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       )[0] as HTMLElement;
 
       first.dispatchEvent(
@@ -734,7 +734,7 @@ describe("RepeaterDragHandler", () => {
       singleHandler.enabled = true;
 
       const item = singleContainer.querySelector(
-        ".ui-repeater-item",
+        ".item",
       ) as HTMLElement;
       item.getBoundingClientRect = () =>
         ({
@@ -752,7 +752,7 @@ describe("RepeaterDragHandler", () => {
 
       // Start drag — this exercises computeSlotHeight with single item
       item.dispatchEvent(pointerEvent("pointerdown", item, { clientY: 30 }));
-      expect(singleContainer.classList.contains("ui-repeater--dragging")).toBe(
+      expect(singleContainer.classList.contains("dragging")).toBe(
         true,
       );
 
@@ -764,7 +764,7 @@ describe("RepeaterDragHandler", () => {
     it("should use previous item gap for last item", () => {
       handler.enabled = true;
       const items = container.querySelectorAll(
-        ".ui-repeater-item",
+        ".item",
       ) as NodeListOf<HTMLElement>;
 
       items.forEach((el, i) => {
@@ -787,7 +787,7 @@ describe("RepeaterDragHandler", () => {
       items[2].dispatchEvent(
         pointerEvent("pointerdown", items[2], { clientY: 125 }),
       );
-      expect(container.classList.contains("ui-repeater--dragging")).toBe(true);
+      expect(container.classList.contains("dragging")).toBe(true);
 
       items[2].dispatchEvent(
         pointerEvent("pointerup", items[2], { clientY: 125 }),

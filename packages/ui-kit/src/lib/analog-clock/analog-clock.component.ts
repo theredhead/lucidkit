@@ -54,7 +54,7 @@ interface ClockTime {
   styleUrl: "./analog-clock.component.scss",
   host: {
     class: "ui-analog-clock",
-    "[class.ui-analog-clock--night]": "isNight()",
+    "[class.night]": "isNight()",
     "[style.width.px]": "size()",
     "[style.height.px]": "size()",
   },

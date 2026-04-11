@@ -18,7 +18,7 @@
   overflow: hidden;
 }
 
-:host(.ui-split-container--vertical) .container {
+:host(.vertical) .container {
   flex-direction: column;
 }
 
@@ -46,11 +46,11 @@
   z-index: 1;
 }
 
-:host(.ui-split-container--horizontal) .divider {
+:host(.horizontal) .divider {
   cursor: col-resize;
 }
 
-:host(.ui-split-container--vertical) .divider {
+:host(.vertical) .divider {
   cursor: row-resize;
 }
 
@@ -70,27 +70,27 @@
   background: var(--ui-accent, #3584e4);
 }
 
-:host(.ui-split-container--horizontal) .divider-handle {
+:host(.horizontal) .divider-handle {
   width: 2px;
   height: 24px;
 }
 
-:host(.ui-split-container--vertical) .divider-handle {
+:host(.vertical) .divider-handle {
   width: 24px;
   height: 2px;
 }
 
 /* ── Prevent text selection during drag ── */
 
-:host(.ui-split-container--dragging) {
+:host(.dragging) {
   cursor: col-resize;
 }
 
-:host(.ui-split-container--dragging.ui-split-container--vertical) {
+:host(.dragging.vertical) {
   cursor: row-resize;
 }
 
-:host(.ui-split-container--dragging) .panel {
+:host(.dragging) .panel {
   pointer-events: none;
   user-select: none;
 }

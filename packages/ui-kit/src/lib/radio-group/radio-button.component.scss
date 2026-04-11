@@ -10,7 +10,7 @@
   color: var(--ui-text);
 }
 
-:host(.ui-radio-button--disabled) {
+:host(.disabled) {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -41,7 +41,7 @@
   flex-shrink: 0;
 }
 
-:host(.ui-radio-button--checked) .circle {
+:host(.checked) .circle {
   border-color: var(--ui-accent);
 }
 

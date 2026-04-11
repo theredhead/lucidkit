@@ -135,8 +135,8 @@ export interface NavigationPageContext {
   styleUrl: "./navigation-page.component.scss",
   host: {
     class: "ui-navigation-page",
-    "[class.ui-navigation-page--drawer-open]": "drawerOpen()",
-    "[class.ui-navigation-page--sidebar-hidden]": "!sidebarVisible()",
+    "[class.drawer-open]": "drawerOpen()",
+    "[class.sidebar-hidden]": "!sidebarVisible()",
   },
 })
 export class UINavigationPage implements OnInit {

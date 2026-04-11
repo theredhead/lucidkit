@@ -92,10 +92,10 @@ describe("UIChatView", () => {
 
       const el: HTMLElement = fixture.nativeElement;
       const messageEls = el.querySelectorAll("ui-message-bubble");
-      expect(messageEls[0].classList.contains("ui-message-bubble--mine")).toBe(
+      expect(messageEls[0].classList.contains("mine")).toBe(
         false,
       );
-      expect(messageEls[1].classList.contains("ui-message-bubble--mine")).toBe(
+      expect(messageEls[1].classList.contains("mine")).toBe(
         true,
       );
     });
@@ -356,7 +356,7 @@ describe("UIChatView", () => {
 
       const el: HTMLElement = fixture.nativeElement;
       const msgEl = el.querySelector("ui-message-bubble");
-      expect(msgEl!.classList.contains("ui-message-bubble--mine")).toBe(true);
+      expect(msgEl!.classList.contains("mine")).toBe(true);
     });
 
     it("should left-align other messages", () => {
@@ -367,7 +367,7 @@ describe("UIChatView", () => {
 
       const el: HTMLElement = fixture.nativeElement;
       const msgEl = el.querySelector("ui-message-bubble");
-      expect(msgEl!.classList.contains("ui-message-bubble--mine")).toBe(false);
+      expect(msgEl!.classList.contains("mine")).toBe(false);
     });
   });
 });

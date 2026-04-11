@@ -12,31 +12,31 @@
 
 /* ── Sizes ── */
 
-:host(.ui-avatar--extra-small) {
+:host(.extra-small) {
   width: 1.5rem;
   height: 1.5rem;
   font-size: 0.625rem;
 }
 
-:host(.ui-avatar--small) {
+:host(.small) {
   width: 2rem;
   height: 2rem;
   font-size: 0.75rem;
 }
 
-:host(.ui-avatar--medium) {
+:host(.medium) {
   width: 2.5rem;
   height: 2.5rem;
   font-size: 0.875rem;
 }
 
-:host(.ui-avatar--large) {
+:host(.large) {
   width: 3.5rem;
   height: 3.5rem;
   font-size: 1.125rem;
 }
 
-:host(.ui-avatar--extra-large) {
+:host(.extra-large) {
   width: 5rem;
   height: 5rem;
   font-size: 1.5rem;
@@ -44,7 +44,7 @@
 
 /* ── Custom pixel size ── */
 
-:host(.ui-avatar--custom) {
+:host(.custom) {
   width: var(--avatar-custom-size);
   height: var(--avatar-custom-size);
   font-size: calc(var(--avatar-custom-size) * 0.35);

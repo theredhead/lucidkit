@@ -61,7 +61,7 @@ import type { GaugePresentationStrategy } from "./strategies/gauge-presentation-
   styleUrl: "./gauge.component.scss",
   host: {
     class: "ui-gauge",
-    "[class.ui-gauge--fit]": "fit()",
+    "[class.fit]": "fit()",
   },
 })
 export class UIGauge {

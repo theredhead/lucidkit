@@ -28,12 +28,12 @@
   box-shadow: var(--ui-shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.14));
 }
 
-:host(.ui-drawer--left) .panel {
+:host(.left) .panel {
   left: 0;
   animation: ui-drawer-slide-left anim.$duration-slow anim.$easing-out;
 }
 
-:host(.ui-drawer--right) .panel {
+:host(.right) .panel {
   right: 0;
   animation: ui-drawer-slide-right anim.$duration-slow anim.$easing-out;
 }

@@ -71,7 +71,7 @@ describe("UIChip", () => {
         fixture.detectChanges();
         expect(
           fixture.nativeElement.querySelector("ui-chip").classList,
-        ).toContain(`ui-chip--${color}`);
+        ).toContain(`${color}`);
       });
     }
   });
@@ -101,7 +101,7 @@ describe("UIChip", () => {
       fixture.detectChanges();
       expect(
         fixture.nativeElement.querySelector("ui-chip").classList,
-      ).toContain("ui-chip--disabled");
+      ).toContain("disabled");
     });
 
     it("should not show dismiss button when disabled", () => {

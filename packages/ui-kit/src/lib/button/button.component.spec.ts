@@ -57,7 +57,7 @@ describe("UIButton", () => {
         fixture.detectChanges();
 
         const host: HTMLElement = fixture.nativeElement;
-        expect(host.classList.contains(`ui-button--${variant}`)).toBe(true);
+        expect(host.classList.contains(`${variant}`)).toBe(true);
       });
     });
   });
@@ -71,7 +71,7 @@ describe("UIButton", () => {
         fixture.detectChanges();
 
         const host: HTMLElement = fixture.nativeElement;
-        expect(host.classList.contains(`ui-button--${size}`)).toBe(true);
+        expect(host.classList.contains(`${size}`)).toBe(true);
       });
     });
   });

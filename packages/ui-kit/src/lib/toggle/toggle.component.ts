@@ -42,12 +42,12 @@ export type ToggleSize = "small" | "medium" | "large";
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-toggle",
-    "[class.ui-toggle--on]": "value()",
-    "[class.ui-toggle--disabled]": "disabled()",
-    "[class.ui-toggle--small]": "size() === 'small'",
-    "[class.ui-toggle--medium]": "size() === 'medium'",
-    "[class.ui-toggle--large]": "size() === 'large'",
-    "[class.ui-toggle--labelled]": "hasTrackLabels()",
+    "[class.on]": "value()",
+    "[class.disabled]": "disabled()",
+    "[class.small]": "size() === 'small'",
+    "[class.medium]": "size() === 'medium'",
+    "[class.large]": "size() === 'large'",
+    "[class.labelled]": "hasTrackLabels()",
   },
 })
 export class UIToggle {

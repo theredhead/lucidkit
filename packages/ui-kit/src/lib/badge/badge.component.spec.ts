@@ -46,7 +46,7 @@ describe("UIBadge", () => {
         fixture.componentRef.setInput("variant", variant);
         fixture.detectChanges();
         expect(fixture.nativeElement.classList).toContain(
-          `ui-badge--${variant}`,
+          `${variant}`,
         );
       });
     }
@@ -65,7 +65,7 @@ describe("UIBadge", () => {
       it(`should apply ${color} host class`, () => {
         fixture.componentRef.setInput("color", color);
         fixture.detectChanges();
-        expect(fixture.nativeElement.classList).toContain(`ui-badge--${color}`);
+        expect(fixture.nativeElement.classList).toContain(`${color}`);
       });
     }
   });

@@ -47,7 +47,7 @@ describe("UIColorPicker", () => {
       fixture.detectChanges();
 
       const host: HTMLElement = fixture.nativeElement;
-      expect(host.classList.contains("ui-color-picker--disabled")).toBe(true);
+      expect(host.classList.contains("disabled")).toBe(true);
     });
 
     it("should disable the trigger button", () => {

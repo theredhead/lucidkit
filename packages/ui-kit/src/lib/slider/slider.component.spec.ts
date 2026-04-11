@@ -66,7 +66,7 @@ describe("UISlider", () => {
     it("should apply single mode class", () => {
       expect(
         fixture.nativeElement.querySelector("ui-slider").classList,
-      ).toContain("ui-slider--single");
+      ).toContain("single");
     });
 
     it("should set input value", () => {
@@ -116,7 +116,7 @@ describe("UISlider", () => {
     it("should apply range mode class", () => {
       expect(
         fixture.nativeElement.querySelector("ui-slider").classList,
-      ).toContain("ui-slider--range");
+      ).toContain("range");
     });
 
     it("should set low input value", () => {
@@ -188,7 +188,7 @@ describe("UISlider", () => {
       fixture.detectChanges();
       expect(
         fixture.nativeElement.querySelector("ui-slider").classList,
-      ).toContain("ui-slider--disabled");
+      ).toContain("disabled");
     });
 
     it("should disable native input", () => {

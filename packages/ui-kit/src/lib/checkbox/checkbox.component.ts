@@ -34,11 +34,11 @@ export type CheckboxVariant = "checkbox" | "switch";
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-checkbox",
-    "[class.ui-checkbox--checkbox]": "variant() === 'checkbox'",
-    "[class.ui-checkbox--switch]": "variant() === 'switch'",
-    "[class.ui-checkbox--checked]": "checked()",
-    "[class.ui-checkbox--disabled]": "disabled()",
-    "[class.ui-checkbox--indeterminate]": "indeterminate()",
+    "[class.checkbox]": "variant() === 'checkbox'",
+    "[class.switch]": "variant() === 'switch'",
+    "[class.checked]": "checked()",
+    "[class.disabled]": "disabled()",
+    "[class.indeterminate]": "indeterminate()",
   },
 })
 export class UICheckbox {

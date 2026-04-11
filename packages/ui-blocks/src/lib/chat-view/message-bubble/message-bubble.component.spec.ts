@@ -79,7 +79,7 @@ describe("UIMessageBubble", () => {
 
     it("should not have --mine host class", () => {
       expect(
-        fixture.nativeElement.classList.contains("ui-message-bubble--mine"),
+        fixture.nativeElement.classList.contains("mine"),
       ).toBe(false);
     });
   });
@@ -96,7 +96,7 @@ describe("UIMessageBubble", () => {
 
     it("should have --mine host class", () => {
       expect(
-        fixture.nativeElement.classList.contains("ui-message-bubble--mine"),
+        fixture.nativeElement.classList.contains("mine"),
       ).toBe(true);
     });
 

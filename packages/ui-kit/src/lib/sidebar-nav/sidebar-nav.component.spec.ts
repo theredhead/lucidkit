@@ -89,7 +89,7 @@ describe("UISidebarItem", () => {
       fixture.componentRef.setInput("active", true);
       fixture.detectChanges();
       expect(fixture.nativeElement.classList).toContain(
-        "ui-sidebar-item--active",
+        "active",
       );
     });
 
@@ -105,7 +105,7 @@ describe("UISidebarItem", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
       expect(fixture.nativeElement.classList).toContain(
-        "ui-sidebar-item--disabled",
+        "disabled",
       );
     });
 
@@ -208,7 +208,7 @@ describe("UISidebarGroup", () => {
   describe("collapse / expand", () => {
     it("should apply expanded host class when expanded", () => {
       expect(fixture.nativeElement.classList).toContain(
-        "ui-sidebar-group--expanded",
+        "expanded",
       );
     });
 
@@ -224,7 +224,7 @@ describe("UISidebarGroup", () => {
       fixture.detectChanges();
       expect(component.expanded()).toBe(false);
       expect(fixture.nativeElement.classList).not.toContain(
-        "ui-sidebar-group--expanded",
+        "expanded",
       );
     });
 
@@ -374,7 +374,7 @@ describe("Sidebar integration", () => {
 
   it("should render active item with correct class", () => {
     const active = fixture.nativeElement.querySelector(
-      ".ui-sidebar-item--active",
+      ".active",
     );
     expect(active).toBeTruthy();
   });

@@ -40,8 +40,8 @@ export type BreadcrumbVariant = "link" | "button";
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-breadcrumb",
-    "[class.ui-breadcrumb--button]": "variant() === 'button'",
-    "[class.ui-breadcrumb--disabled]": "disabled()",
+    "[class.button]": "variant() === 'button'",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UIBreadcrumb {

@@ -26,7 +26,7 @@ import { UISurface } from '@theredhead/foundation';
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-form-group",
-    "[class.ui-form-group--hidden]": "!state().visible()",
+    "[class.hidden]": "!state().visible()",
   },
   templateUrl: "./form-group.component.html",
   styleUrl: "./form-group.component.scss",

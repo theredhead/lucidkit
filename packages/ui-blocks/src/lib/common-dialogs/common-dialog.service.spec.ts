@@ -109,7 +109,7 @@ describe("UIConfirmDialog", () => {
       variant: "danger",
     });
     expect(fixture.nativeElement.classList).toContain(
-      "ui-confirm-dialog--danger",
+      "danger",
     );
   });
 
@@ -118,7 +118,7 @@ describe("UIConfirmDialog", () => {
       variant: "warning",
     });
     expect(fixture.nativeElement.classList).toContain(
-      "ui-confirm-dialog--warning",
+      "warning",
     );
   });
 });

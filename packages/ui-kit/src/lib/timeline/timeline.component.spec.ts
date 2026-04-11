@@ -116,22 +116,22 @@ describe("UITimeline", () => {
   describe("orientation", () => {
     it("should default to vertical", () => {
       const timeline = fixture.nativeElement.querySelector("ui-timeline");
-      expect(timeline.classList).toContain("ui-timeline--vertical");
+      expect(timeline.classList).toContain("vertical");
     });
 
     it("should apply horizontal class", async () => {
       host.orientation.set("horizontal");
       fixture.detectChanges();
       const timeline = fixture.nativeElement.querySelector("ui-timeline");
-      expect(timeline.classList).toContain("ui-timeline--horizontal");
-      expect(timeline.classList).not.toContain("ui-timeline--vertical");
+      expect(timeline.classList).toContain("horizontal");
+      expect(timeline.classList).not.toContain("vertical");
     });
   });
 
   describe("alignment", () => {
     it("should default to alternate", () => {
       const timeline = fixture.nativeElement.querySelector("ui-timeline");
-      expect(timeline.classList).toContain("ui-timeline--alternate");
+      expect(timeline.classList).toContain("alternate");
     });
 
     for (const align of ["start", "end", "alternate"] as const) {
@@ -139,7 +139,7 @@ describe("UITimeline", () => {
         host.alignment.set(align);
         fixture.detectChanges();
         const timeline = fixture.nativeElement.querySelector("ui-timeline");
-        expect(timeline.classList).toContain(`ui-timeline--${align}`);
+        expect(timeline.classList).toContain(`${align}`);
       });
     }
   });

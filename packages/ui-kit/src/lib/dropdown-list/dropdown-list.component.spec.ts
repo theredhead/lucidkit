@@ -89,7 +89,7 @@ describe("UIDropdownList", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.classList.contains("ui-dropdown-list--disabled"),
+        fixture.nativeElement.classList.contains("disabled"),
       ).toBe(true);
     });
   });
@@ -98,7 +98,7 @@ describe("UIDropdownList", () => {
     it("should render an outlined button", () => {
       const btn = fixture.nativeElement.querySelector("ui-button");
       expect(btn).toBeTruthy();
-      expect(btn.classList.contains("ui-button--outlined")).toBe(true);
+      expect(btn.classList.contains("outlined")).toBe(true);
     });
 
     it("should render a chevron icon", () => {
@@ -173,7 +173,7 @@ describe("UIDropdownList", () => {
       (component as any).toggle();
       fixture.detectChanges();
       expect(
-        fixture.nativeElement.classList.contains("ui-dropdown-list--open"),
+        fixture.nativeElement.classList.contains("open"),
       ).toBe(true);
     });
 

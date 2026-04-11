@@ -98,7 +98,7 @@ describe("UIMediaPlayer", () => {
     it("should default to video mode", () => {
       expect(
         fixture.nativeElement.querySelector("ui-media-player").classList,
-      ).toContain("ui-media-player--video");
+      ).toContain("video");
     });
 
     it("should render a video element in video mode", () => {
@@ -111,7 +111,7 @@ describe("UIMediaPlayer", () => {
       fixture.detectChanges();
       expect(
         fixture.nativeElement.querySelector("ui-media-player").classList,
-      ).toContain("ui-media-player--audio");
+      ).toContain("audio");
       expect(fixture.nativeElement.querySelector("audio")).toBeTruthy();
       expect(fixture.nativeElement.querySelector("video")).toBeFalsy();
     });
@@ -129,7 +129,7 @@ describe("UIMediaPlayer", () => {
       fixture.detectChanges();
       expect(
         fixture.nativeElement.querySelector("ui-media-player").classList,
-      ).toContain("ui-media-player--no-controls");
+      ).toContain("no-controls");
     });
 
     it("should render play/pause button", () => {
@@ -314,7 +314,7 @@ describe("UIMediaPlayer", () => {
   describe("state", () => {
     it("should default to paused", () => {
       const player = fixture.nativeElement.querySelector("ui-media-player");
-      expect(player.classList).toContain("ui-media-player--paused");
+      expect(player.classList).toContain("paused");
     });
 
     it("should default error to null", () => {
@@ -355,7 +355,7 @@ describe("UIMediaPlayer", () => {
       fixture.detectChanges();
 
       const el = fixture.nativeElement.querySelector("ui-media-player");
-      expect(el.classList).toContain("ui-media-player--error");
+      expect(el.classList).toContain("error");
     });
 
     it("should not show poster placeholder when error is active", () => {
@@ -494,7 +494,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const el = fixture.nativeElement.querySelector("ui-media-player");
-      expect(el.classList).toContain("ui-media-player--embed");
+      expect(el.classList).toContain("embed");
     });
 
     it("should not render native video element for embed URL", () => {
@@ -589,7 +589,7 @@ describe("UIMediaPlayer — embed providers", () => {
       fixture.detectChanges();
 
       const el = fixture.nativeElement.querySelector("ui-media-player");
-      expect(el.classList).not.toContain("ui-media-player--embed");
+      expect(el.classList).not.toContain("embed");
     });
   });
 
@@ -1664,7 +1664,7 @@ describe("UIMediaPlayer — public methods", () => {
   describe("disabled input", () => {
     it("should not have --disabled host class by default", () => {
       const mpEl = fixture.nativeElement.querySelector("ui-media-player");
-      expect(mpEl.classList).not.toContain("ui-media-player--disabled");
+      expect(mpEl.classList).not.toContain("disabled");
     });
   });
 

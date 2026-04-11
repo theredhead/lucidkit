@@ -103,7 +103,7 @@ import { type SelectionMode, SelectionModel } from "../core/selection-model";
   styleUrl: "./table-view.component.scss",
   host: {
     class: "ui-table-view",
-    "[class.ui-table-view--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
     tabindex: "0",
     "(keydown)": "onKeydown($event)",
   },

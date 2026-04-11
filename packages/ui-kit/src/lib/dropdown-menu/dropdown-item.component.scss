@@ -11,12 +11,12 @@
   transition: background-color 100ms ease;
 }
 
-:host(:hover:not(.ui-dropdown-item--disabled)),
+:host(:hover:not(.disabled)),
 :host(:focus-visible) {
   outline: none;
 }
 
-:host(.ui-dropdown-item--disabled) {
+:host(.disabled) {
   opacity: 0.45;
   cursor: not-allowed;
 }

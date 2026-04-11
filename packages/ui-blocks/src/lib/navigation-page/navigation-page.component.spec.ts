@@ -165,7 +165,7 @@ describe("UINavigationPage", () => {
 
     it("should mark the active item", () => {
       const activeItem = fixture.nativeElement.querySelector(
-        ".sidebar ui-sidebar-item.ui-sidebar-item--active",
+        ".sidebar ui-sidebar-item.active",
       );
       expect(activeItem).toBeTruthy();
     });

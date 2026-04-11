@@ -73,7 +73,7 @@ export interface TreeNodeContext<T = unknown> {
     tabindex: "0",
     "[attr.aria-label]": "ariaLabel()",
     "aria-multiselectable": "true",
-    "[class.ui-tree-view--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
     "(keydown)": "onKeydown($event)",
   },
 })

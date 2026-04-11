@@ -32,9 +32,9 @@ import { UISurface } from '@theredhead/foundation';
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-slider",
-    "[class.ui-slider--single]": "mode() === 'single'",
-    "[class.ui-slider--range]": "mode() === 'range'",
-    "[class.ui-slider--disabled]": "disabled()",
+    "[class.single]": "mode() === 'single'",
+    "[class.range]": "mode() === 'range'",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UISlider {

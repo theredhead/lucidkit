@@ -60,6 +60,6 @@
 
 // ── Disabled host class ────────────────────────────────────────
 
-:host(.ui-color-picker--disabled) {
+:host(.disabled) {
   pointer-events: none;
 }

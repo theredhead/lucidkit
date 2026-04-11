@@ -96,7 +96,7 @@ describe("UITooltip", () => {
     const button = fixture.nativeElement.querySelector("button");
     button.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
     const tooltip = document.querySelector(".ui-tooltip");
-    expect(tooltip?.classList).toContain("ui-tooltip--top");
+    expect(tooltip?.classList).toContain("top");
   });
 
   it('should have role="tooltip"', () => {
@@ -139,7 +139,7 @@ describe("UITooltip — configurable", () => {
     const button = fixture.nativeElement.querySelector("button");
     button.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
     const tooltip = document.querySelector(".ui-tooltip");
-    expect(tooltip?.classList).toContain("ui-tooltip--bottom");
+    expect(tooltip?.classList).toContain("bottom");
   });
 
   it("should apply left position class", () => {
@@ -148,7 +148,7 @@ describe("UITooltip — configurable", () => {
     const button = fixture.nativeElement.querySelector("button");
     button.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
     const tooltip = document.querySelector(".ui-tooltip");
-    expect(tooltip?.classList).toContain("ui-tooltip--left");
+    expect(tooltip?.classList).toContain("left");
   });
 
   it("should apply right position class", () => {
@@ -157,7 +157,7 @@ describe("UITooltip — configurable", () => {
     const button = fixture.nativeElement.querySelector("button");
     button.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
     const tooltip = document.querySelector(".ui-tooltip");
-    expect(tooltip?.classList).toContain("ui-tooltip--right");
+    expect(tooltip?.classList).toContain("right");
   });
 
   it("should not create tooltip when text is empty", () => {

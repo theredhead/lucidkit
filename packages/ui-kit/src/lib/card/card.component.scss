@@ -16,33 +16,33 @@
 
 /* ── Variants ── */
 
-:host(.ui-card--elevated) {
+:host(.elevated) {
   box-shadow: var(--ui-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
 }
 
-:host(.ui-card--elevated.ui-card--interactive:hover) {
+:host(.elevated.interactive:hover) {
   box-shadow: var(--ui-shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.14));
 }
 
-:host(.ui-card--outlined) {
+:host(.outlined) {
   border: 1px solid var(--ui-border);
 }
 
-:host(.ui-card--filled) {
+:host(.filled) {
   background-color: var(--ui-surface-2);
 }
 
 /* ── Interactive ── */
 
-:host(.ui-card--interactive) {
+:host(.interactive) {
   cursor: pointer;
 }
 
-:host(.ui-card--interactive:hover) {
+:host(.interactive:hover) {
   transform: translateY(-1px);
 }
 
-:host(.ui-card--interactive:focus-visible) {
+:host(.interactive:focus-visible) {
   outline-offset: 2px;
 }
 

@@ -61,8 +61,8 @@ describe("UIRadioGroup", () => {
       controls[1].click();
       fixture.detectChanges();
       const buttons = fixture.nativeElement.querySelectorAll("ui-radio-button");
-      expect(buttons[1].classList).toContain("ui-radio-button--checked");
-      expect(buttons[0].classList).not.toContain("ui-radio-button--checked");
+      expect(buttons[1].classList).toContain("checked");
+      expect(buttons[0].classList).not.toContain("checked");
     });
 
     it("should show dot on selected button", () => {
@@ -90,7 +90,7 @@ describe("UIRadioGroup", () => {
       host.selected.set("green");
       fixture.detectChanges();
       const buttons = fixture.nativeElement.querySelectorAll("ui-radio-button");
-      expect(buttons[1].classList).toContain("ui-radio-button--checked");
+      expect(buttons[1].classList).toContain("checked");
     });
   });
 
@@ -104,14 +104,14 @@ describe("UIRadioGroup", () => {
 
     it("should apply disabled class to individual button", () => {
       const buttons = fixture.nativeElement.querySelectorAll("ui-radio-button");
-      expect(buttons[2].classList).toContain("ui-radio-button--disabled");
+      expect(buttons[2].classList).toContain("disabled");
     });
 
     it("should disable entire group when group disabled", () => {
       host.groupDisabled.set(true);
       fixture.detectChanges();
       const group = fixture.nativeElement.querySelector("ui-radio-group");
-      expect(group.classList).toContain("ui-radio-group--disabled");
+      expect(group.classList).toContain("disabled");
     });
 
     it("should not allow selection when group is disabled", () => {

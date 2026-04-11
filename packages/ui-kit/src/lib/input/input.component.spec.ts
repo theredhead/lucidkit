@@ -211,12 +211,12 @@ describe("UIInput", () => {
       expect(component.value()).toBe("multiline text");
     });
 
-    it("should add ui-input--multiline host class", () => {
+    it("should add multiline host class", () => {
       fixture.componentRef.setInput("multiline", true);
       fixture.detectChanges();
 
       expect(
-        fixture.nativeElement.classList.contains("ui-input--multiline"),
+        fixture.nativeElement.classList.contains("multiline"),
       ).toBe(true);
     });
 
@@ -381,21 +381,21 @@ describe("UIInput", () => {
       expect(icons.length).toBe(0);
     });
 
-    it("should add ui-input--has-prefix host class", () => {
+    it("should add has-prefix host class", () => {
       fixture.componentRef.setInput("adapter", new EmailTextAdapter());
       fixture.detectChanges();
 
       expect(
-        fixture.nativeElement.classList.contains("ui-input--has-prefix"),
+        fixture.nativeElement.classList.contains("has-prefix"),
       ).toBe(true);
     });
 
-    it("should add ui-input--has-suffix host class", () => {
+    it("should add has-suffix host class", () => {
       fixture.componentRef.setInput("adapter", new UrlTextAdapter());
       fixture.detectChanges();
 
       expect(
-        fixture.nativeElement.classList.contains("ui-input--has-suffix"),
+        fixture.nativeElement.classList.contains("has-suffix"),
       ).toBe(true);
     });
   });
@@ -733,7 +733,7 @@ describe("UIInput", () => {
       expect(component.errors()).toEqual([]);
     });
 
-    it("should add ui-input--invalid host class when invalid", () => {
+    it("should add invalid host class when invalid", () => {
       fixture.componentRef.setInput("adapter", new IntegerTextAdapter());
       fixture.detectChanges();
 
@@ -744,11 +744,11 @@ describe("UIInput", () => {
       fixture.detectChanges();
 
       expect(
-        fixture.nativeElement.classList.contains("ui-input--invalid"),
+        fixture.nativeElement.classList.contains("invalid"),
       ).toBe(true);
     });
 
-    it("should not add ui-input--invalid host class when valid", () => {
+    it("should not add invalid host class when valid", () => {
       fixture.componentRef.setInput("adapter", new IntegerTextAdapter());
       fixture.detectChanges();
 
@@ -759,7 +759,7 @@ describe("UIInput", () => {
       fixture.detectChanges();
 
       expect(
-        fixture.nativeElement.classList.contains("ui-input--invalid"),
+        fixture.nativeElement.classList.contains("invalid"),
       ).toBe(false);
     });
 

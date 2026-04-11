@@ -21,7 +21,7 @@ interface DragState {
 }
 
 export class RepeaterDragHandler {
-  private static readonly ITEM = ".ui-repeater-item";
+  private static readonly ITEM = ".item";
 
   /** Whether this handler accepts drag interactions. */
   public enabled = false;
@@ -93,8 +93,8 @@ export class RepeaterDragHandler {
       activeTarget: this,
     };
 
-    item.classList.add("ui-repeater-item--dragging");
-    this.container.classList.add("ui-repeater--dragging");
+    item.classList.add("dragging");
+    this.container.classList.add("dragging");
 
     item.addEventListener("pointermove", this.handleMove);
     item.addEventListener("pointerup", this.handleUp);
@@ -116,10 +116,10 @@ export class RepeaterDragHandler {
     if (target !== d.activeTarget) {
       this.clearShifts(d.activeTarget);
       this.clearGrowth(d.activeTarget);
-      d.activeTarget.container.classList.remove("ui-repeater--drop-target");
+      d.activeTarget.container.classList.remove("drop-target");
       d.activeTarget = target;
       if (target !== this) {
-        target.container.classList.add("ui-repeater--drop-target");
+        target.container.classList.add("drop-target");
       }
     }
 
@@ -140,15 +140,15 @@ export class RepeaterDragHandler {
     d.element.removeEventListener("pointercancel", this.handleUp);
 
     // Clean up all visual state
-    d.element.classList.remove("ui-repeater-item--dragging");
+    d.element.classList.remove("dragging");
     d.element.style.transform = "";
-    this.container.classList.remove("ui-repeater--dragging");
+    this.container.classList.remove("dragging");
     this.clearShifts(this);
 
     if (d.activeTarget !== this) {
       this.clearShifts(d.activeTarget);
       this.clearGrowth(d.activeTarget);
-      d.activeTarget.container.classList.remove("ui-repeater--drop-target");
+      d.activeTarget.container.classList.remove("drop-target");
     }
 
     const from = d.fromIndex;
@@ -296,15 +296,15 @@ export class RepeaterDragHandler {
     d.element.removeEventListener("pointermove", this.handleMove);
     d.element.removeEventListener("pointerup", this.handleUp);
     d.element.removeEventListener("pointercancel", this.handleUp);
-    d.element.classList.remove("ui-repeater-item--dragging");
+    d.element.classList.remove("dragging");
     d.element.style.transform = "";
-    this.container.classList.remove("ui-repeater--dragging");
+    this.container.classList.remove("dragging");
     this.clearShifts(this);
 
     if (d.activeTarget !== this) {
       this.clearShifts(d.activeTarget);
       this.clearGrowth(d.activeTarget);
-      d.activeTarget.container.classList.remove("ui-repeater--drop-target");
+      d.activeTarget.container.classList.remove("drop-target");
     }
 
     this.drag = null;

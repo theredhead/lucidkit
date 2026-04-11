@@ -100,7 +100,7 @@
 
 // ── Dragging state ──────────────────────────────────────────────────
 
-:host(.ui-file-browser--dragging) {
+:host(.dragging) {
   cursor: col-resize;
 
   .fb-contents,

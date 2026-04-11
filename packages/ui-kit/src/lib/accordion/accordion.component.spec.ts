@@ -197,12 +197,12 @@ describe("UIAccordion", () => {
       headers[0].click();
       fixture.detectChanges();
       const item = fixture.nativeElement.querySelector("ui-accordion-item");
-      expect(item.classList).toContain("ui-accordion-item--expanded");
+      expect(item.classList).toContain("expanded");
     });
 
     it("should apply disabled class to disabled item", () => {
       const items = fixture.nativeElement.querySelectorAll("ui-accordion-item");
-      expect(items[2].classList).toContain("ui-accordion-item--disabled");
+      expect(items[2].classList).toContain("disabled");
     });
   });
 

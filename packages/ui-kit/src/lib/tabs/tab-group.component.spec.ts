@@ -194,15 +194,15 @@ describe("UITabGroup", () => {
   describe("tabPosition", () => {
     it("should default to top position", () => {
       const el = fixture.nativeElement.querySelector(".ui-tab-group");
-      expect(el.classList).toContain("ui-tab-group--top");
+      expect(el.classList).toContain("top");
     });
 
     for (const position of ["top", "bottom", "left", "right"] as const) {
-      it(`should apply ui-tab-group--${position} host class`, () => {
+      it(`should apply ${position} host class`, () => {
         host.tabPosition.set(position);
         fixture.detectChanges();
         const el = fixture.nativeElement.querySelector(".ui-tab-group");
-        expect(el.classList).toContain(`ui-tab-group--${position}`);
+        expect(el.classList).toContain(`${position}`);
       });
     }
 
@@ -231,15 +231,15 @@ describe("UITabGroup", () => {
   describe("panelStyle", () => {
     it("should default to raised", () => {
       const el = fixture.nativeElement.querySelector(".ui-tab-group");
-      expect(el.classList).toContain("ui-tab-group--raised");
+      expect(el.classList).toContain("raised");
     });
 
     for (const style of ["flat", "outline", "raised"] as const) {
-      it(`should apply ui-tab-group--${style} host class`, () => {
+      it(`should apply ${style} host class`, () => {
         host.panelStyle.set(style);
         fixture.detectChanges();
         const el = fixture.nativeElement.querySelector(".ui-tab-group");
-        expect(el.classList).toContain(`ui-tab-group--${style}`);
+        expect(el.classList).toContain(`${style}`);
       });
     }
   });
@@ -262,20 +262,20 @@ describe("UITabGroup with provideTabDefaults", () => {
 
   it("should use injected tabPosition default", () => {
     const el = fixture.nativeElement.querySelector(".ui-tab-group");
-    expect(el.classList).toContain("ui-tab-group--left");
+    expect(el.classList).toContain("left");
   });
 
   it("should use injected panelStyle default", () => {
     const el = fixture.nativeElement.querySelector(".ui-tab-group");
-    expect(el.classList).toContain("ui-tab-group--flat");
+    expect(el.classList).toContain("flat");
   });
 
   it("should allow input to override injected default", () => {
     fixture.componentInstance.tabPosition.set("bottom");
     fixture.detectChanges();
     const el = fixture.nativeElement.querySelector(".ui-tab-group");
-    expect(el.classList).toContain("ui-tab-group--bottom");
-    expect(el.classList).not.toContain("ui-tab-group--left");
+    expect(el.classList).toContain("bottom");
+    expect(el.classList).not.toContain("left");
   });
 });
 
@@ -413,16 +413,16 @@ describe("UITabGroup alignment", () => {
 
   it("should default to start alignment", () => {
     const el = fixture.nativeElement.querySelector("ui-tab-group");
-    expect(el.classList).toContain("ui-tab-group--align-start");
+    expect(el.classList).toContain("align-start");
   });
 
   for (const alignment of ["start", "center", "end"] as TabAlignment[]) {
-    it(`should apply ui-tab-group--align-${alignment} host class`, () => {
+    it(`should apply align-${alignment} host class`, () => {
       fixture.componentInstance.align = alignment;
       fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
       fixture.detectChanges();
       const el = fixture.nativeElement.querySelector("ui-tab-group");
-      expect(el.classList).toContain(`ui-tab-group--align-${alignment}`);
+      expect(el.classList).toContain(`align-${alignment}`);
     });
   }
 });

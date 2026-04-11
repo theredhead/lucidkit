@@ -41,8 +41,8 @@ export interface AccordionController {
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-accordion-item",
-    "[class.ui-accordion-item--expanded]": "expanded()",
-    "[class.ui-accordion-item--disabled]": "disabled()",
+    "[class.expanded]": "expanded()",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UIAccordionItem {

@@ -40,9 +40,9 @@ import { FORM_SETTINGS } from "../form-settings";
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-form-field",
-    "[class.ui-form-field--invalid]": "showErrors()",
-    "[class.ui-form-field--disabled]": "!state().enabled()",
-    "[class.ui-form-field--hidden]": "!state().visible()",
+    "[class.invalid]": "showErrors()",
+    "[class.disabled]": "!state().enabled()",
+    "[class.hidden]": "!state().visible()",
   },
   templateUrl: "./form-field.component.html",
   styleUrl: "./form-field.component.scss",

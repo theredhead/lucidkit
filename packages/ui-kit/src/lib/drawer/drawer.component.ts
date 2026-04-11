@@ -37,9 +37,9 @@ export type DrawerWidth = "narrow" | "medium" | "wide" | string;
   providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
   host: {
     class: "ui-drawer",
-    "[class.ui-drawer--open]": "open()",
-    "[class.ui-drawer--left]": "position() === 'left'",
-    "[class.ui-drawer--right]": "position() === 'right'",
+    "[class.open]": "open()",
+    "[class.left]": "position() === 'left'",
+    "[class.right]": "position() === 'right'",
   },
 })
 export class UIDrawer {

@@ -9,7 +9,7 @@
 // ── System preference fallback ────────────────────────────────────
 
 // ── Disabled state ────────────────────────────────────────────────
-:host(.ui-dropdown-list--disabled) {
+:host(.disabled) {
   opacity: 0.5;
   pointer-events: none;
 }

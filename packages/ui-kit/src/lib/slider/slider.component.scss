@@ -8,7 +8,7 @@
   color: var(--ui-text);
 }
 
-:host(.ui-slider--disabled) {
+:host(.disabled) {
   opacity: 0.5;
   pointer-events: none;
 }

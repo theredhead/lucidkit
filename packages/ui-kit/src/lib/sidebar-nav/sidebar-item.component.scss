@@ -29,7 +29,7 @@
   outline-offset: -2px;
 }
 
-:host(.ui-sidebar-item--active) .sidebar-item-inner {
+:host(.active) .sidebar-item-inner {
   font-weight: 600;
   color: var(--ui-accent);
   background-color: var(--ui-selected-bg);
@@ -39,7 +39,7 @@
   }
 }
 
-:host(.ui-sidebar-item--disabled) .sidebar-item-inner {
+:host(.disabled) .sidebar-item-inner {
   opacity: 0.45;
   cursor: not-allowed;
 }

@@ -61,7 +61,7 @@ import {
   styleUrl: "./image-cropper.component.scss",
   host: {
     class: "ui-image-cropper",
-    "[class.ui-image-cropper--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UIImageCropper implements AfterViewInit {

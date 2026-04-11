@@ -6,7 +6,7 @@
   font-family: inherit;
 }
 
-:host(.ui-gauge--fit) {
+:host(.fit) {
   display: block;
   width: 100%;
   height: 100%;
@@ -16,7 +16,7 @@
   overflow: hidden;
   line-height: 0;
 
-  :host(.ui-gauge--fit) & {
+  :host(.fit) & {
     width: 100%;
     height: 100%;
   }

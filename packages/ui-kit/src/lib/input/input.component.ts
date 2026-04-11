@@ -75,11 +75,11 @@ import {
   providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
   host: {
     class: "ui-input",
-    "[class.ui-input--multiline]": "multiline()",
-    "[class.ui-input--height-adjustable]": "multiline() && heightAdjustable()",
-    "[class.ui-input--has-prefix]": "prefixIcon() !== undefined",
-    "[class.ui-input--has-suffix]": "suffixIcon() !== undefined",
-    "[class.ui-input--invalid]": "!valid()",
+    "[class.multiline]": "multiline()",
+    "[class.height-adjustable]": "multiline() && heightAdjustable()",
+    "[class.has-prefix]": "prefixIcon() !== undefined",
+    "[class.has-suffix]": "suffixIcon() !== undefined",
+    "[class.invalid]": "!valid()",
   },
 })
 export class UIInput implements OnDestroy {

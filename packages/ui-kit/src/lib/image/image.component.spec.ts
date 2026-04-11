@@ -127,7 +127,7 @@ describe("UIImage", () => {
   });
 
   describe("load state", () => {
-    it("should add ui-image--loaded class after load", () => {
+    it("should add loaded class after load", () => {
       triggerIntersection(true);
       fixture.detectChanges();
 
@@ -135,12 +135,12 @@ describe("UIImage", () => {
       img.dispatchEvent(new Event("load"));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.classList.contains("ui-image--loaded")).toBe(
+      expect(fixture.nativeElement.classList.contains("loaded")).toBe(
         true,
       );
     });
 
-    it("should add ui-image--error class on error", () => {
+    it("should add error class on error", () => {
       triggerIntersection(true);
       fixture.detectChanges();
 
@@ -148,7 +148,7 @@ describe("UIImage", () => {
       img.dispatchEvent(new Event("error"));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.classList.contains("ui-image--error")).toBe(
+      expect(fixture.nativeElement.classList.contains("error")).toBe(
         true,
       );
     });

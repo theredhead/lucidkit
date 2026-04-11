@@ -14,7 +14,7 @@
   min-width: 0;
   min-height: 0;
 
-  &.ui-dashboard-panel--removed {
+  &.removed {
     display: none;
   }
 }
@@ -87,13 +87,13 @@
 
 // ── Collapsed state ──────────────────────────────────────────────
 
-:host(.ui-dashboard-panel--collapsed) {
+:host(.collapsed) {
   display: none;
 }
 
 // ── Notified state ───────────────────────────────────────────────
 
-:host(.ui-dashboard-panel--notified) {
+:host(.notified) {
   animation: ui-panel-pulse 2s anim.$easing-in-out infinite;
 
   .icon {

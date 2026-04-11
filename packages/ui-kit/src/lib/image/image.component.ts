@@ -33,8 +33,8 @@ import { UISurface } from '@theredhead/foundation';
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-image",
-    "[class.ui-image--loaded]": "loaded()",
-    "[class.ui-image--error]": "errored()",
+    "[class.loaded]": "loaded()",
+    "[class.error]": "errored()",
     "[style.width.px]": "width()",
     "[style.height.px]": "height()",
   },

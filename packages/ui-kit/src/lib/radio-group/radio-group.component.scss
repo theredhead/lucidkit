@@ -4,7 +4,7 @@
   gap: 0.5rem;
 }
 
-:host(.ui-radio-group--disabled) {
+:host(.disabled) {
   opacity: 0.5;
   pointer-events: none;
 }

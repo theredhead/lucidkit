@@ -77,7 +77,7 @@ export class UITooltip implements OnDestroy {
     }
 
     const el = document.createElement("div");
-    el.className = `ui-tooltip ui-tooltip--${this.tooltipPosition()}`;
+    el.className = `ui-tooltip ${this.tooltipPosition()}`;
     el.setAttribute("role", "tooltip");
     el.textContent = text;
     document.body.appendChild(el);

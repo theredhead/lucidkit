@@ -16,33 +16,33 @@
   background-color: var(--ui-chip-bg);
 }
 
-:host(.ui-chip--disabled) {
+:host(.disabled) {
   @include mix.disabled;
 }
 
 /* ── Color variants ── */
 
-:host(.ui-chip--neutral) {
+:host(.neutral) {
   color: var(--ui-chip-text);
   background-color: var(--ui-chip-bg);
 }
 
-:host(.ui-chip--primary) {
+:host(.primary) {
   color: var(--ui-accent);
   background-color: color-mix(in srgb, var(--ui-accent) 14%, transparent);
 }
 
-:host(.ui-chip--success) {
+:host(.success) {
   color: var(--ui-success);
   background-color: color-mix(in srgb, var(--ui-success) 14%, transparent);
 }
 
-:host(.ui-chip--warning) {
+:host(.warning) {
   color: var(--ui-warning);
   background-color: color-mix(in srgb, var(--ui-warning) 14%, transparent);
 }
 
-:host(.ui-chip--danger) {
+:host(.danger) {
   color: var(--ui-error);
   background-color: color-mix(in srgb, var(--ui-error) 14%, transparent);
 }

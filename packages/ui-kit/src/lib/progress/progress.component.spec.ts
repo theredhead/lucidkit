@@ -69,7 +69,7 @@ describe("UIProgress", () => {
     it("should apply linear class", () => {
       expect(
         fixture.nativeElement.querySelector("ui-progress").classList,
-      ).toContain("ui-progress--linear");
+      ).toContain("linear");
     });
   });
 
@@ -93,7 +93,7 @@ describe("UIProgress", () => {
     it("should apply indeterminate class", () => {
       expect(
         fixture.nativeElement.querySelector("ui-progress").classList,
-      ).toContain("ui-progress--indeterminate");
+      ).toContain("indeterminate");
     });
   });
 
@@ -117,7 +117,7 @@ describe("UIProgress", () => {
     it("should apply circular class", () => {
       expect(
         fixture.nativeElement.querySelector("ui-progress").classList,
-      ).toContain("ui-progress--circular");
+      ).toContain("circular");
     });
   });
 

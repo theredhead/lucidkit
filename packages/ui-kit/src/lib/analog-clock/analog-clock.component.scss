@@ -98,7 +98,7 @@
 
 // ── PM / nighttime overrides (lighter face) ──────────────────────
 
-:host(.ui-analog-clock--night) {
+:host(.night) {
   .rim {
     stroke: var(
       --clock-rim,

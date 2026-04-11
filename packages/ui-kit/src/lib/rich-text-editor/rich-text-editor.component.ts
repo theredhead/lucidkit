@@ -110,9 +110,9 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
   styleUrl: "./rich-text-editor.component.scss",
   host: {
     class: "ui-rich-text-editor",
-    "[class.ui-rich-text-editor--disabled]": "disabled()",
-    "[class.ui-rich-text-editor--readonly]": "readonly()",
-    "[class.ui-rich-text-editor--markdown]": "mode() === 'markdown'",
+    "[class.disabled]": "disabled()",
+    "[class.readonly]": "readonly()",
+    "[class.markdown]": "mode() === 'markdown'",
   },
 })
 export class UIRichTextEditor implements OnInit, AfterViewInit {

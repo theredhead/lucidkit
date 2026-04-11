@@ -37,7 +37,7 @@ describe("UIToastContainer", () => {
   describe("positioning", () => {
     it("should apply position host class", () => {
       expect(fixture.nativeElement.classList).toContain(
-        "ui-toast-container--top-right",
+        "top-right",
       );
     });
 
@@ -45,7 +45,7 @@ describe("UIToastContainer", () => {
       fixture.componentRef.setInput("position", "bottom-left");
       fixture.detectChanges();
       expect(fixture.nativeElement.classList).toContain(
-        "ui-toast-container--bottom-left",
+        "bottom-left",
       );
     });
   });

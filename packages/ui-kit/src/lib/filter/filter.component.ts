@@ -66,9 +66,9 @@ const JUNCTION_OPTIONS: SelectOption[] = [
     class: "ui-filter",
     role: "region",
     "aria-label": "Filter builder",
-    "[class.ui-filter--simple]": "mode() === 'simple'",
-    "[class.ui-filter--advanced]": "mode() === 'advanced'",
-    "[class.ui-filter--disabled]": "disabled()",
+    "[class.simple]": "mode() === 'simple'",
+    "[class.advanced]": "mode() === 'advanced'",
+    "[class.disabled]": "disabled()",
   },
 })
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

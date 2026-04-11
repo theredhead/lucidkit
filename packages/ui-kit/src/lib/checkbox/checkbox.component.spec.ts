@@ -46,7 +46,7 @@ describe("UICheckbox", () => {
         fixture.componentRef.setInput("variant", variant);
         fixture.detectChanges();
         expect(fixture.nativeElement.classList).toContain(
-          `ui-checkbox--${variant}`,
+          `${variant}`,
         );
       });
     }
@@ -110,14 +110,14 @@ describe("UICheckbox", () => {
     it("should apply checked host class", () => {
       fixture.componentRef.setInput("checked", true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain("ui-checkbox--checked");
+      expect(fixture.nativeElement.classList).toContain("checked");
     });
 
     it("should apply indeterminate host class", () => {
       fixture.componentRef.setInput("indeterminate", true);
       fixture.detectChanges();
       expect(fixture.nativeElement.classList).toContain(
-        "ui-checkbox--indeterminate",
+        "indeterminate",
       );
     });
   });
@@ -190,7 +190,7 @@ describe("UICheckbox", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
       expect(fixture.nativeElement.classList).toContain(
-        "ui-checkbox--disabled",
+        "disabled",
       );
     });
 

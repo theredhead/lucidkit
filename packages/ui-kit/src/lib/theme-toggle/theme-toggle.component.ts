@@ -43,7 +43,7 @@ const MOON_ICON =
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-theme-toggle",
-    "[class.ui-theme-toggle--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UIThemeToggle {

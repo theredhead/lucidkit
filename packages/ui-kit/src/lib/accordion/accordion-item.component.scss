@@ -9,7 +9,7 @@
   border-top: 1px solid var(--ui-border);
 }
 
-:host(.ui-accordion-item--disabled) {
+:host(.disabled) {
   @include mix.disabled($block: false);
   pointer-events: none;
 }
@@ -54,7 +54,7 @@
   transition: transform anim.$duration-slow anim.$easing-default;
 }
 
-:host(.ui-accordion-item--expanded) .chevron {
+:host(.expanded) .chevron {
   transform: rotate(180deg);
 }
 

@@ -225,14 +225,14 @@ describe("UIGauge", () => {
       expect(component.fit()).toBe(false);
     });
 
-    it("should not add ui-gauge--fit class when fit is false", () => {
-      expect(fixture.nativeElement.classList).not.toContain("ui-gauge--fit");
+    it("should not add fit class when fit is false", () => {
+      expect(fixture.nativeElement.classList).not.toContain("fit");
     });
 
-    it("should add ui-gauge--fit host class when fit is true", () => {
+    it("should add fit host class when fit is true", () => {
       fixture.componentRef.setInput("fit", true);
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain("ui-gauge--fit");
+      expect(fixture.nativeElement.classList).toContain("fit");
     });
 
     it("should remove inline width/height on viewport when fit is true", () => {

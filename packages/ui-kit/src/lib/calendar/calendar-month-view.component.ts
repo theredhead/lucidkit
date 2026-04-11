@@ -56,7 +56,7 @@ import type { PopoverRef } from "../popover/popover.types";
   styleUrl: "./calendar-month-view.component.scss",
   host: {
     class: "ui-calendar-month-view",
-    "[class.ui-calendar-month-view--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
   },
 })
 export class UICalendarMonthView {

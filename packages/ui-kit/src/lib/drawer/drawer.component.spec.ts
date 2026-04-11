@@ -70,7 +70,7 @@ describe("UIDrawer", () => {
       it(`should apply ${pos} host class`, () => {
         fixture.componentRef.setInput("position", pos);
         fixture.detectChanges();
-        expect(fixture.nativeElement.classList).toContain(`ui-drawer--${pos}`);
+        expect(fixture.nativeElement.classList).toContain(`${pos}`);
       });
     }
   });

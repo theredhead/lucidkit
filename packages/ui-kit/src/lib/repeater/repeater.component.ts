@@ -79,7 +79,7 @@ import { RepeaterDragHandler } from "./repeater-drag-handler";
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-repeater",
-    "[class.ui-repeater--reorderable]": "reorderable()",
+    "[class.reorderable]": "reorderable()",
   },
 })
 export class UIRepeater<T = unknown> {

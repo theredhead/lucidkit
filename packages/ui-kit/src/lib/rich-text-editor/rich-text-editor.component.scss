@@ -400,7 +400,7 @@
 
 /* ── Disabled state ────────────────────────────────────── */
 
-:host.ui-rich-text-editor--disabled {
+:host.disabled {
   .toolbar {
     opacity: 0.5;
     pointer-events: none;
@@ -412,7 +412,7 @@
   }
 }
 
-:host.ui-rich-text-editor--readonly {
+:host.readonly {
   .toolbar {
     opacity: 0.6;
   }
@@ -426,7 +426,7 @@
 
 /* ── Markdown mode ─────────────────────────────────────── */
 
-:host.ui-rich-text-editor--markdown {
+:host.markdown {
   .markdown-editor {
     min-height: 12rem;
     border: none;

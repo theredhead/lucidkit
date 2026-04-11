@@ -183,7 +183,7 @@ describe("UIDashboard", () => {
       fixture.detectChanges();
 
       expect(feedPanel.querySelector(".body")).toBeNull();
-      expect(feedPanel.classList).toContain("ui-dashboard-panel--collapsed");
+      expect(feedPanel.classList).toContain("collapsed");
     });
 
     it("should expand panel body on second toggle click", () => {
@@ -244,7 +244,7 @@ describe("UIDashboard", () => {
       removeBtn.click();
       fixture.detectChanges();
 
-      expect(feedPanel.classList).toContain("ui-dashboard-panel--removed");
+      expect(feedPanel.classList).toContain("removed");
     });
 
     it("should emit panelRemoved on remove", () => {
@@ -273,14 +273,14 @@ describe("UIDashboard", () => {
       ) as HTMLElement;
       removeBtn.click();
       fixture.detectChanges();
-      expect(feedPanel.classList).toContain("ui-dashboard-panel--removed");
+      expect(feedPanel.classList).toContain("removed");
 
       // Restore it
       const restored = host.dashboard().restorePanel("feed");
       fixture.detectChanges();
 
       expect(restored).toBe(true);
-      expect(feedPanel.classList).not.toContain("ui-dashboard-panel--removed");
+      expect(feedPanel.classList).not.toContain("removed");
     });
 
     it("should return false for unknown panel id", () => {
@@ -297,12 +297,12 @@ describe("UIDashboard", () => {
         .querySelector<HTMLElement>(".action--remove")!
         .click();
       fixture.detectChanges();
-      expect(feedPanel.classList).toContain("ui-dashboard-panel--removed");
+      expect(feedPanel.classList).toContain("removed");
 
       host.dashboard().restoreAll();
       fixture.detectChanges();
 
-      expect(feedPanel.classList).not.toContain("ui-dashboard-panel--removed");
+      expect(feedPanel.classList).not.toContain("removed");
     });
   });
 

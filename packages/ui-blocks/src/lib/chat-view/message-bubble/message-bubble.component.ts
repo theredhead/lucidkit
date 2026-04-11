@@ -31,7 +31,7 @@ import type { ChatMessage } from "../chat-view.types";
   styleUrl: "./message-bubble.component.scss",
   host: {
     class: "ui-message-bubble",
-    "[class.ui-message-bubble--mine]": "isMine()",
+    "[class.mine]": "isMine()",
   },
 })
 export class UIMessageBubble<M = unknown> {

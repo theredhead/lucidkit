@@ -8,7 +8,7 @@
 
 /* ── Linear ── */
 
-:host(.ui-progress--linear) {
+:host(.linear) {
   width: 100%;
 }
 
@@ -42,7 +42,7 @@
 
 /* ── Circular ── */
 
-:host(.ui-progress--circular) {
+:host(.circular) {
   width: 2.5rem;
   height: 2.5rem;
 }

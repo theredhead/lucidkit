@@ -27,7 +27,7 @@ export type DropdownAlign = "start" | "end";
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
     class: "ui-dropdown-item",
-    "[class.ui-dropdown-item--disabled]": "disabled()",
+    "[class.disabled]": "disabled()",
     "[attr.role]": "'menuitem'",
     "[attr.aria-disabled]": "disabled()",
     "[attr.tabindex]": "disabled() ? -1 : 0",

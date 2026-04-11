@@ -255,12 +255,12 @@ describe("UIRepeater", () => {
       reorderFixture.detectChanges();
 
       const el = reorderFixture.nativeElement.querySelector("ui-repeater");
-      expect(el.classList.contains("ui-repeater--reorderable")).toBe(true);
+      expect(el.classList.contains("reorderable")).toBe(true);
     });
 
     it("should not apply reorderable host class by default", () => {
       const el = fixture.nativeElement.querySelector("ui-repeater");
-      expect(el.classList.contains("ui-repeater--reorderable")).toBe(false);
+      expect(el.classList.contains("reorderable")).toBe(false);
     });
 
     it("should enable drag handler when reorderable", async () => {

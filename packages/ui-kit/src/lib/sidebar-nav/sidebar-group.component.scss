@@ -50,7 +50,7 @@
   }
 }
 
-:host(.ui-sidebar-group--expanded) .sidebar-group-chevron {
+:host(.expanded) .sidebar-group-chevron {
   transform: rotate(90deg);
 }
 

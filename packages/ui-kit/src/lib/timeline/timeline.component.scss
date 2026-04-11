@@ -10,7 +10,7 @@
 }
 
 // ── Vertical layout (default) ─────────────────────────────────
-:host(.ui-timeline--vertical) {
+:host(.vertical) {
   .timeline-track {
     display: flex;
     flex-direction: column;
@@ -71,7 +71,7 @@
   }
 
   // ── Alternate alignment ────────────────────────────────────
-  &.ui-timeline--alternate {
+  &.alternate {
     .timeline-track {
       max-width: 100%;
     }
@@ -109,7 +109,7 @@
   }
 
   // ── End alignment ──────────────────────────────────────────
-  &.ui-timeline--end {
+  &.end {
     .timeline-entry {
       grid-template-columns: 1fr auto;
     }
@@ -128,7 +128,7 @@
 }
 
 // ── Horizontal layout ─────────────────────────────────────────
-:host(.ui-timeline--horizontal) {
+:host(.horizontal) {
   overflow-x: auto;
 
   .timeline-track {

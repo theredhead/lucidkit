@@ -27,31 +27,31 @@ button {
 
 /* ---------- sizes ---------- */
 
-:host-context(.ui-button--small) button {
+:host(.small) button {
   padding: 0.25rem 0.5rem;
   font-size: calc(var(--ui-font-body, 0.875rem) * 0.92);
 }
 
-:host-context(.ui-button--medium) button {
+:host(.medium) button {
   padding: 0.3rem 0.75rem;
   font-size: var(--ui-font-body, 0.875rem);
 }
 
-:host-context(.ui-button--large) button {
+:host(.large) button {
   padding: 0.5rem 1rem;
   font-size: calc(var(--ui-font-body, 0.875rem) * 1.12);
 }
 
 /* ---------- pill ---------- */
 
-:host-context(.ui-button--pill) button {
+:host(.pill) button {
   border-radius: 9999px;
   padding-inline: 1.25em;
 }
 
 /* ---------- variants ---------- */
 
-:host-context(.ui-button--filled) button {
+:host(.filled) button {
   color: var(--_btn-contrast);
   background-color: var(--_btn-solid);
   border: 1px solid transparent;
@@ -61,7 +61,7 @@ button {
   }
 }
 
-:host-context(.ui-button--outlined) button {
+:host(.outlined) button {
   color: var(--_btn-solid);
   background-color: transparent;
   border: 1px solid var(--_btn-solid);
@@ -71,7 +71,7 @@ button {
   }
 }
 
-:host-context(.ui-button--ghost) button {
+:host(.ghost) button {
   color: var(--_btn-solid);
   background-color: transparent;
   border: 1px solid transparent;
@@ -83,38 +83,38 @@ button {
 
 /* ---------- colors ---------- */
 
-:host(.ui-button--primary) {
+:host(.primary) {
   --_btn-solid: var(--ui-accent);
   --_btn-solid-hover: var(--ui-accent-hover);
   --_btn-contrast: var(--ui-accent-contrast, #ffffff);
 }
 
-:host(.ui-button--secondary) {
+:host(.secondary) {
   --_btn-solid: var(--ui-secondary);
   --_btn-solid-hover: color-mix(in srgb, var(--ui-secondary) 85%, black);
   --_btn-contrast: #ffffff;
 }
 
-:host(.ui-button--safe) {
+:host(.safe) {
   --_btn-solid: var(--ui-success);
   --_btn-solid-hover: color-mix(in srgb, var(--ui-success) 85%, black);
   --_btn-contrast: #ffffff;
 }
 
-:host(.ui-button--danger) {
+:host(.danger) {
   --_btn-solid: var(--ui-error);
   --_btn-solid-hover: color-mix(in srgb, var(--ui-error) 85%, black);
   --_btn-contrast: var(--ui-on-error, #ffffff);
 }
 
-:host(.ui-button--neutral) {
+:host(.neutral) {
   --_btn-solid: var(--ui-text);
   --_btn-solid-hover: var(--ui-text-muted);
   --_btn-contrast: var(--ui-surface);
 }
 
 /* Neutral outlined + ghost override: use standard border and text */
-:host(.ui-button--neutral.ui-button--outlined) button {
+:host(.neutral.outlined) button {
   color: var(--ui-text);
   border-color: var(--ui-border);
 
@@ -123,7 +123,7 @@ button {
   }
 }
 
-:host(.ui-button--neutral.ui-button--ghost) button {
+:host(.neutral.ghost) button {
   color: var(--ui-text);
 
   &:hover:not(:disabled) {
