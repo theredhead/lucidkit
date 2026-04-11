@@ -9,7 +9,7 @@ export {
   Emitter,
   SortDirection,
   type SortExpression,
-  type FilterExpression,
+  type CompiledFilter,
   type RangeDefinition,
   type RowChangedNotification,
   type RowRangeChangedNotification,

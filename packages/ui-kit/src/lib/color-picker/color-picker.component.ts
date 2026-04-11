@@ -13,7 +13,7 @@ import { UIIcons } from "../icon/lucide-icons.generated";
 import { PopoverService } from "../popover/popover.service";
 import type { ColorPickerMode } from "./color-picker.types";
 import { UIColorPickerPopover } from "./color-picker-popover.component";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * A colour-picker trigger button.
@@ -39,7 +39,7 @@ import { UISurface } from '@theredhead/foundation';
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-color-picker",
     "[class.disabled]": "disabled()",

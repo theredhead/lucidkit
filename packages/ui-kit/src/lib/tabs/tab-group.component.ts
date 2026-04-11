@@ -18,7 +18,7 @@ import { UITab } from "./tab.component";
 import { TAB_HEADER_ITEM, type TabAlignment } from "./tab-header-item";
 import { UITabSeparator } from "./tab-separator.component";
 import { UITabSpacer } from "./tab-spacer.component";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /** Position of the tab headers relative to the content panel. */
 export type TabPosition = "top" | "bottom" | "left" | "right";
@@ -93,7 +93,7 @@ export function provideTabDefaults(
   templateUrl: "./tab-group.component.html",
   styleUrl: "./tab-group.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-tab-group",
     "[class.disabled]": "disabled()",

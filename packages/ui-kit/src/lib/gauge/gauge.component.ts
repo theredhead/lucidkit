@@ -56,7 +56,7 @@ import type { GaugePresentationStrategy } from "./strategies/gauge-presentation-
   selector: "ui-gauge",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./gauge.component.html",
   styleUrl: "./gauge.component.scss",
   host: {

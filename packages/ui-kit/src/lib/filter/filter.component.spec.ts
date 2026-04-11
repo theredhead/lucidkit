@@ -288,7 +288,7 @@ describe("UIFilter", () => {
       component.value.set({ junction: "and", rules: [] });
       fixture.detectChanges();
 
-      expect(emitted).toEqual([]);
+      expect(emitted).toEqual({ junction: "and", rules: [] });
     });
 
     it("should emit a filter expression when valid rules exist", () => {
@@ -307,8 +307,13 @@ describe("UIFilter", () => {
 
       fixture.detectChanges();
 
-      expect(Array.isArray(expression)).toBe(true);
-      expect((expression as unknown[]).length).toBeGreaterThan(0);
+      expect(expression).toMatchObject({
+        junction: expect.any(String),
+        rules: expect.any(Array),
+      });
+      expect((expression as { rules: unknown[] }).rules.length).toBeGreaterThan(
+        0,
+      );
     });
   });
 

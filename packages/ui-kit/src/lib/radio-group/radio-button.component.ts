@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 
 import { UIRadioGroup } from "./radio-group.component";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * A single radio button within a `<ui-radio-group>`.
@@ -23,7 +23,7 @@ import { UISurface } from '@theredhead/foundation';
   templateUrl: "./radio-button.component.html",
   styleUrl: "./radio-button.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-radio-button",
     "[class.checked]": "isChecked()",

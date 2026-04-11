@@ -79,9 +79,7 @@ describe("UIToggle", () => {
         it(`should apply ${size} host class`, () => {
           fixture.componentRef.setInput("size", size);
           fixture.detectChanges();
-          expect(fixture.nativeElement.classList).toContain(
-            `${size}`,
-          );
+          expect(fixture.nativeElement.classList).toContain(`${size}`);
         });
       }
     });
@@ -99,9 +97,7 @@ describe("UIToggle", () => {
     });
 
     it("should not have labelled when no labels set", () => {
-      expect(fixture.nativeElement.classList).not.toContain(
-        "labelled",
-      );
+      expect(fixture.nativeElement.classList).not.toContain("labelled");
     });
   });
 

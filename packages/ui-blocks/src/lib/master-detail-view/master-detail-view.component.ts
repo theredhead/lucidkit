@@ -32,6 +32,7 @@ import {
   UITableViewColumn,
   UITreeView,
   inferFilterFields,
+  toFilterExpression,
   toPredicate,
   type ColumnMeta,
   type FilterDescriptor,
@@ -568,9 +569,11 @@ export class UIMasterDetailView<T = unknown> {
     if (this.isTreeMode()) {
       const treeDs = this.resolvedTreeDatasource();
 
-      // FilterableArrayTreeDatasource: pass expression directly
+      // FilterableArrayTreeDatasource: compile expression and apply
       if (treeDs instanceof FilterableArrayTreeDatasource) {
-        treeDs.filterBy(expression);
+        const fields = this.resolvedFilterFields();
+        const compiled = toFilterExpression(expression, fields);
+        treeDs.filterBy(compiled.length === 0 ? null : compiled);
         return;
       }
 
@@ -584,7 +587,9 @@ export class UIMasterDetailView<T = unknown> {
     // Table mode: apply expression to FilterableArrayDatasource
     const ds = this.resolvedTableDatasource();
     if (ds instanceof FilterableArrayDatasource) {
-      ds.filterBy(expression);
+      const fields = this.resolvedFilterFields();
+      const compiled = toFilterExpression(expression, fields);
+      ds.filterBy(compiled.length === 0 ? null : compiled);
       this.tableViewChild()?.refreshDatasource();
     }
   }

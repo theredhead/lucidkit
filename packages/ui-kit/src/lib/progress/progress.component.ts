@@ -6,7 +6,7 @@ import {
 } from "@angular/core";
 
 import type { ProgressMode, ProgressVariant } from "./progress.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * A progress indicator in linear (bar) or circular (ring) form.
@@ -26,7 +26,7 @@ import { UISurface } from '@theredhead/foundation';
   templateUrl: "./progress.component.html",
   styleUrl: "./progress.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-progress",
     "[class.linear]": "variant() === 'linear'",

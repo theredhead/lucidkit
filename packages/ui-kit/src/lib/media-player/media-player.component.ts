@@ -82,7 +82,7 @@ import type {
   templateUrl: "./media-player.component.html",
   styleUrl: "./media-player.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-media-player",
     "[class.audio]": "type() === 'audio'",

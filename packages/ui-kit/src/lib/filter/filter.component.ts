@@ -9,7 +9,6 @@ import {
   signal,
 } from "@angular/core";
 
-import type { FilterExpression } from "../core/types/filter";
 import { UIButton } from "../button/button.component";
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
@@ -19,7 +18,7 @@ import { UISelect } from "../select/select.component";
 import type { SelectOption } from "../select/select.component";
 import { UIFilterRow } from "./filter-row.component";
 import type {
-  FilterDescriptor,
+  FilterExpression,
   FilterFieldDefinition,
   FilterJunction,
   FilterMode,
@@ -27,7 +26,6 @@ import type {
   FilterRule,
 } from "./filter.types";
 import { ANY_FIELD_KEY } from "./filter.types";
-import { toFilterExpression } from "./filter.utils";
 import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
 
 const JUNCTION_OPTIONS: SelectOption[] = [
@@ -131,7 +129,7 @@ export class UIFilter<T = any> {
   // ── Model ───────────────────────────────────────────────────────────
 
   /** The complete filter state (two-way bindable). */
-  readonly value = model<FilterDescriptor<T>>({
+  readonly value = model<FilterExpression<T>>({
     junction: "and",
     rules: [],
   });
@@ -185,9 +183,7 @@ export class UIFilter<T = any> {
 
     // Derive and emit a filter expression every time the descriptor changes.
     effect(() => {
-      const descriptor = this.value();
-      const fields = this.fields();
-      this.expressionChange.emit(toFilterExpression(descriptor, fields));
+      this.expressionChange.emit(this.value());
     });
 
     // In simple mode, sync the search term into the descriptor.

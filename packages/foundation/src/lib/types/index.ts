@@ -6,7 +6,10 @@ export {
   compileSortExpression,
   compileTreeSortExpression,
 } from "./sort";
-export { type FilterExpression } from "./filter";
+export {
+  type CompiledFilter,
+  type CompiledFilter as FilterExpression,
+} from "./filter";
 export { type RangeDefinition } from "./range";
 export {
   type RowChangedNotification,

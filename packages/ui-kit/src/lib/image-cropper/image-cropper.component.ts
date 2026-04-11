@@ -56,7 +56,7 @@ import {
   selector: "ui-image-cropper",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./image-cropper.component.html",
   styleUrl: "./image-cropper.component.scss",
   host: {

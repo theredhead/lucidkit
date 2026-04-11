@@ -116,7 +116,7 @@ export type FilterJunction = "and" | "or";
  * @typeParam T - The row object type (for documentation; not enforced at runtime).
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface FilterDescriptor<_T = any> {
+export interface FilterExpression<_T = any> {
   /** How the rules are combined (`and` = all must match, `or` = any). */
   junction: FilterJunction;
   /** The individual filter rules. */

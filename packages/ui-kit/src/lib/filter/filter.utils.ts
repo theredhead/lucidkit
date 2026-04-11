@@ -1,9 +1,9 @@
 import type { Predicate } from "@angular/core";
 
-import type { FilterExpression } from "../core/types/filter";
+import type { CompiledFilter } from "../core/types/filter";
 import type {
   DateUnit,
-  FilterDescriptor,
+  FilterExpression,
   FilterFieldDefinition,
   FilterFieldType,
   FilterRule,
@@ -179,7 +179,7 @@ function buildPredicate(
 // ---------------------------------------------------------------------------
 
 /**
- * Converts a {@link FilterDescriptor} into a single `Predicate<T>`
+ * Converts a {@link FilterExpression} into a single `Predicate<T>`
  * that can be passed directly to `FilterableArrayDatasource.filterBy()`.
  *
  * - **AND** junction → all rules must match.
@@ -191,7 +191,7 @@ function buildPredicate(
  * @param fields     - The field definitions (needed to resolve types).
  */
 export function toPredicate<T>(
-  descriptor: FilterDescriptor<T>,
+  descriptor: FilterExpression<T>,
   fields: FilterFieldDefinition<T>[],
 ): Predicate<T> | undefined {
   const fieldMap = new Map<string, FilterFieldDefinition<T>>(
@@ -225,7 +225,7 @@ export function toPredicate<T>(
 }
 
 /**
- * Converts a {@link FilterDescriptor} into a {@link FilterExpression}
+ * Converts a {@link FilterExpression} into a {@link CompiledFilter}
  * that can be passed to `IFilterableDatasource.filterBy()`.
  *
  * - **AND** junction → one property-level predicate per rule.
@@ -236,9 +236,9 @@ export function toPredicate<T>(
  * @param fields     - The field definitions (needed to resolve types).
  */
 export function toFilterExpression<T>(
-  descriptor: FilterDescriptor<T>,
+  descriptor: FilterExpression<T>,
   fields: FilterFieldDefinition<T>[],
-): FilterExpression<T> {
+): CompiledFilter<T> {
   const fieldMap = new Map<string, FilterFieldDefinition<T>>(
     fields.map((f) => [f.key, f]),
   );
@@ -268,7 +268,7 @@ export function toFilterExpression<T>(
 
   if (descriptor.junction === "and") {
     // "Any field" rules become row-level predicates; others stay property-level
-    const entries: FilterExpression<T> = [];
+    const entries: CompiledFilter<T> = [];
     for (const r of validRules) {
       if (r.field === ANY_FIELD_KEY) {
         entries.push({ predicate: buildRowTest(r) as Predicate<T> });

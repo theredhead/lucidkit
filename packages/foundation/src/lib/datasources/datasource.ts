@@ -1,4 +1,4 @@
-import type { FilterExpression } from "../types/filter";
+import type { CompiledFilter } from "../types/filter";
 import type { SortExpression } from "../types/sort";
 import type {
   RowChangedNotification,
@@ -67,7 +67,7 @@ export interface IFilterableDatasource<T = unknown> extends IDatasource<T> {
    *
    * @param expression - The filter criteria to apply, or `null`/`undefined` to clear.
    */
-  filterBy(expression: FilterExpression<T> | null | undefined): void;
+  filterBy(expression: CompiledFilter<T> | null | undefined): void;
 }
 
 /**
@@ -205,7 +205,7 @@ export interface IFilterableTreeDatasource<
    *
    * @param expression - The filter expression to apply.
    */
-  filterBy(expression: FilterExpression<T> | null | undefined): void;
+  filterBy(expression: CompiledFilter<T> | null | undefined): void;
 }
 
 /**

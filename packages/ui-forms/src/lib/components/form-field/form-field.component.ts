@@ -37,7 +37,7 @@ import { FORM_SETTINGS } from "../form-settings";
   selector: "ui-form-field",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-form-field",
     "[class.invalid]": "showErrors()",

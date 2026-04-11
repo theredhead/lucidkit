@@ -14,7 +14,7 @@ import {
 } from "@theredhead/ui-kit";
 
 import type { ConfirmVariant } from "./common-dialog.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * Content component for a confirm dialog.
@@ -30,7 +30,7 @@ import { UISurface } from '@theredhead/foundation';
   standalone: true,
   imports: [UIButton, UIDialogHeader, UIDialogBody, UIDialogFooter],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-confirm-dialog",
     "[class.danger]": "variant() === 'danger'",

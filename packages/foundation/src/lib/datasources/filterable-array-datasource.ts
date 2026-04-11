@@ -1,10 +1,10 @@
-import type { FilterExpression } from "../types/filter";
+import type { CompiledFilter } from "../types/filter";
 import { ArrayDatasource } from "./array-datasource";
 import type { IFilterableDatasource } from "./datasource";
 
 /**
  * An in-memory array datasource that supports filtering via a
- * {@link FilterExpression}.
+ * {@link CompiledFilter}.
  *
  * When an expression is applied the datasource compiles it into a
  * single predicate, re-derives its visible rows from the original
@@ -64,7 +64,7 @@ export class FilterableArrayDatasource<T>
   // ── IFilterableDatasource ─────────────────────────────────────────
 
   /**
-   * Applies a structured {@link FilterExpression} to the datasource.
+   * Applies a structured {@link CompiledFilter} to the datasource.
    *
    * The expression is compiled into a single predicate once, which is
    * then applied to every row. Pass an empty array (or `null` /
@@ -74,7 +74,7 @@ export class FilterableArrayDatasource<T>
    * - **Row-level** entries test the entire row object.
    * - All entries must pass (AND) for a row to be included.
    */
-  public filterBy(expression: FilterExpression<T> | null | undefined): void {
+  public filterBy(expression: CompiledFilter<T> | null | undefined): void {
     if (!expression || expression.length === 0) {
       this._filteredRows = this._allRows;
     } else {
@@ -90,11 +90,11 @@ export class FilterableArrayDatasource<T>
   // ── Private helpers ───────────────────────────────────────────────
 
   /**
-   * Compiles a {@link FilterExpression} into a single predicate
+   * Compiles a {@link CompiledFilter} into a single predicate
    * function that can be applied to all rows.
    */
   private compileExpression(
-    expression: FilterExpression<T>,
+    expression: CompiledFilter<T>,
   ): (row: T) => boolean {
     const tests = expression.map((entry) => {
       if ("property" in entry) {

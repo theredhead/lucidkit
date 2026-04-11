@@ -9,7 +9,7 @@ import {
   signal,
   type OnInit,
 } from "@angular/core";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * Lazy-loading image component.
@@ -30,7 +30,7 @@ import { UISurface } from '@theredhead/foundation';
   templateUrl: "./image.component.html",
   styleUrl: "./image.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-image",
     "[class.loaded]": "loaded()",

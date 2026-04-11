@@ -51,7 +51,7 @@ import type { PopoverRef } from "../popover/popover.types";
   standalone: true,
   imports: [SlicePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./calendar-month-view.component.html",
   styleUrl: "./calendar-month-view.component.scss",
   host: {

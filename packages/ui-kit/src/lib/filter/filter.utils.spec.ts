@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Predicate } from "@angular/core";
 
-import type { FilterDescriptor, FilterFieldDefinition } from "./filter.types";
+import type { FilterExpression, FilterFieldDefinition } from "./filter.types";
 import { ANY_FIELD_KEY } from "./filter.types";
 import { toFilterExpression, toPredicate } from "./filter.utils";
 
@@ -23,7 +23,7 @@ describe("filter.utils", () => {
   // ---------------------------------------------------------------------------
   describe("toPredicate", () => {
     it("should return undefined when there are no rules", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "and",
         rules: [],
       };
@@ -31,7 +31,7 @@ describe("filter.utils", () => {
     });
 
     it("should return undefined when rules reference unknown fields", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "unknown", operator: "equals", value: "x" }],
       };
@@ -44,7 +44,7 @@ describe("filter.utils", () => {
       const row: TestRow = { name: "Alice", age: 30, joined: "2024-01-15" };
 
       function buildPred(operator: string, value: string): Predicate<TestRow> {
-        const d: FilterDescriptor<TestRow> = {
+        const d: FilterExpression<TestRow> = {
           junction: "and",
           rules: [{ id: 1, field: "name", operator: operator as any, value }],
         };
@@ -103,7 +103,7 @@ describe("filter.utils", () => {
         operator: string,
         value: string,
       ): Predicate<TestRow> {
-        const d: FilterDescriptor<TestRow> = {
+        const d: FilterExpression<TestRow> = {
           junction: "and",
           rules: [
             {
@@ -148,7 +148,7 @@ describe("filter.utils", () => {
       });
 
       it("should work with AND junction alongside regular rules", () => {
-        const d: FilterDescriptor<TestRow> = {
+        const d: FilterExpression<TestRow> = {
           junction: "and",
           rules: [
             {
@@ -171,7 +171,7 @@ describe("filter.utils", () => {
       });
 
       it("should work with OR junction", () => {
-        const d: FilterDescriptor<TestRow> = {
+        const d: FilterExpression<TestRow> = {
           junction: "or",
           rules: [
             {
@@ -198,7 +198,7 @@ describe("filter.utils", () => {
         value: string,
         valueTo?: string,
       ): Predicate<TestRow> {
-        const d: FilterDescriptor<TestRow> = {
+        const d: FilterExpression<TestRow> = {
           junction: "and",
           rules: [
             { id: 1, field: "age", operator: operator as any, value, valueTo },
@@ -265,7 +265,7 @@ describe("filter.utils", () => {
         value: string,
         extra?: Partial<{ valueTo: string; unit: string }>,
       ): Predicate<TestRow> {
-        const d: FilterDescriptor<TestRow> = {
+        const d: FilterExpression<TestRow> = {
           junction: "and",
           rules: [
             {
@@ -328,7 +328,7 @@ describe("filter.utils", () => {
       ];
 
       it("AND: all rules must match", () => {
-        const descriptor: FilterDescriptor<TestRow> = {
+        const descriptor: FilterExpression<TestRow> = {
           junction: "and",
           rules: [
             { id: 1, field: "name", operator: "startsWith", value: "Ali" },
@@ -344,7 +344,7 @@ describe("filter.utils", () => {
       });
 
       it("OR: any rule may match", () => {
-        const descriptor: FilterDescriptor<TestRow> = {
+        const descriptor: FilterExpression<TestRow> = {
           junction: "or",
           rules: [
             { id: 1, field: "name", operator: "equals", value: "bob" },
@@ -366,7 +366,7 @@ describe("filter.utils", () => {
   // ---------------------------------------------------------------------------
   describe("toFilterExpression", () => {
     it("should return empty array when there are no rules", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "and",
         rules: [],
       };
@@ -374,7 +374,7 @@ describe("filter.utils", () => {
     });
 
     it("should produce property-level predicates for AND junction", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           { id: 1, field: "name", operator: "contains", value: "A" },
@@ -390,7 +390,7 @@ describe("filter.utils", () => {
     });
 
     it("should produce a single row-level predicate for OR junction", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "or",
         rules: [
           { id: 1, field: "name", operator: "contains", value: "A" },
@@ -405,7 +405,7 @@ describe("filter.utils", () => {
     });
 
     it("AND expression should filter correctly", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "name", operator: "startsWith", value: "A" }],
       };
@@ -428,7 +428,7 @@ describe("filter.utils", () => {
         { name: "Charlie", age: 35, joined: "2024-01-01" },
       ];
 
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "or",
         rules: [
           { id: 1, field: "name", operator: "equals", value: "alice" },
@@ -448,7 +448,7 @@ describe("filter.utils", () => {
     });
 
     it("should return empty array when rules reference unknown fields", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "unknown", operator: "equals", value: "x" }],
       };
@@ -456,7 +456,7 @@ describe("filter.utils", () => {
     });
 
     it("AND with Any field rule should produce a row-level entry for it", () => {
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           {
@@ -484,7 +484,7 @@ describe("filter.utils", () => {
         { name: "Bob", age: 25, joined: "2024-01-01" },
       ];
 
-      const descriptor: FilterDescriptor<TestRow> = {
+      const descriptor: FilterExpression<TestRow> = {
         junction: "or",
         rules: [
           {
@@ -513,7 +513,7 @@ describe("filter.utils", () => {
   // ---------------------------------------------------------------------------
   describe("date operator: inTheLast", () => {
     function buildDatePred(value: string, unit: string) {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           {
@@ -585,7 +585,7 @@ describe("filter.utils", () => {
     });
 
     it("inTheLast defaults to days when unit is not specified", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           {
@@ -614,7 +614,7 @@ describe("filter.utils", () => {
   // ---------------------------------------------------------------------------
   describe("unknown operator fallback", () => {
     it("should return true for unknown string operator", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           { id: 1, field: "name", operator: "nonexistent" as any, value: "x" },
@@ -625,7 +625,7 @@ describe("filter.utils", () => {
     });
 
     it("should return true for unknown number operator", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           { id: 1, field: "age", operator: "nonexistent" as any, value: "5" },
@@ -636,7 +636,7 @@ describe("filter.utils", () => {
     });
 
     it("should return true for unknown date operator", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           {
@@ -657,7 +657,7 @@ describe("filter.utils", () => {
   // ---------------------------------------------------------------------------
   describe("edge cases", () => {
     it("string contains with null value in row should not throw", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "name", operator: "contains", value: "x" }],
       };
@@ -666,7 +666,7 @@ describe("filter.utils", () => {
     });
 
     it("number isEmpty with empty string value", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "age", operator: "isEmpty", value: "" }],
       };
@@ -675,7 +675,7 @@ describe("filter.utils", () => {
     });
 
     it("number isNotEmpty with empty string value", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "age", operator: "isNotEmpty", value: "" }],
       };
@@ -684,7 +684,7 @@ describe("filter.utils", () => {
     });
 
     it("date equals with invalid date string should not match", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           { id: 1, field: "joined", operator: "equals", value: "2024-01-01" },
@@ -695,7 +695,7 @@ describe("filter.utils", () => {
     });
 
     it("date before with null date should not match", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           { id: 1, field: "joined", operator: "before", value: "2030-01-01" },
@@ -706,7 +706,7 @@ describe("filter.utils", () => {
     });
 
     it("date after with numeric timestamp should parse", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [
           { id: 1, field: "joined", operator: "after", value: "2020-01-01" },
@@ -718,7 +718,7 @@ describe("filter.utils", () => {
     });
 
     it("string isEmpty with null row value", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "name", operator: "isEmpty", value: "" }],
       };
@@ -727,7 +727,7 @@ describe("filter.utils", () => {
     });
 
     it("string isNotEmpty with null row value", () => {
-      const d: FilterDescriptor<TestRow> = {
+      const d: FilterExpression<TestRow> = {
         junction: "and",
         rules: [{ id: 1, field: "name", operator: "isNotEmpty", value: "" }],
       };

@@ -69,7 +69,7 @@ const STORAGE_PREFIX = "ui-split-container:";
   templateUrl: "./split-container.component.html",
   styleUrl: "./split-container.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-split-container",
     "[class.horizontal]": "orientation() === 'horizontal'",

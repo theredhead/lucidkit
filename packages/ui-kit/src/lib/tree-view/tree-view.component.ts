@@ -19,7 +19,7 @@ import {
   type TreeKeyboardDelegate,
 } from "./tree-keyboard-handler";
 import type { ITreeDatasource, TreeNode } from "./tree-view.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * Context provided to a custom node template.
@@ -66,7 +66,7 @@ export interface TreeNodeContext<T = unknown> {
   templateUrl: "./tree-view.component.html",
   styleUrl: "./tree-view.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-tree-view",
     role: "tree",

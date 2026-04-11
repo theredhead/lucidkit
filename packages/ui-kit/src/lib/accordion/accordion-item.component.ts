@@ -7,7 +7,7 @@ import {
   model,
   output,
 } from "@angular/core";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /** @internal — DI token for the parent accordion controller. */
 export const ACCORDION_CONTROLLER = new InjectionToken<AccordionController>(
@@ -38,7 +38,7 @@ export interface AccordionController {
   templateUrl: "./accordion-item.component.html",
   styleUrl: "./accordion-item.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-accordion-item",
     "[class.expanded]": "expanded()",

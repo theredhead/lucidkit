@@ -7,7 +7,7 @@ import {
   output,
   signal,
 } from "@angular/core";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /** Alignment of the dropdown relative to the trigger. */
 export type DropdownAlign = "start" | "end";
@@ -24,7 +24,7 @@ export type DropdownAlign = "start" | "end";
   selector: "ui-dropdown-item",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-dropdown-item",
     "[class.disabled]": "disabled()",

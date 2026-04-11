@@ -2,6 +2,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  input,
   signal,
   viewChild,
 } from "@angular/core";
@@ -25,7 +26,7 @@ import {
   JsonPlaceholderPostsDatasource,
 } from "./datasources/jsonplaceholder-datasource";
 import { UITableView } from "./table-view.component";
-import { SelectionModel } from "../core/selection-model";
+import { SelectionModel, type SelectionMode } from "../core/selection-model";
 import { UIButton } from "../button/button.component";
 
 @Component({
@@ -42,10 +43,15 @@ import { UIButton } from "../button/button.component";
   template: `
     <ui-table-view
       uiDensity="comfortable"
-      caption="JSONPlaceholder Posts"
       tableId="story-posts"
-      [showRowIndexIndicator]="true"
-      [showBuiltInPaginator]="true"
+      [caption]="caption()"
+      [selectionMode]="selectionMode()"
+      [showRowIndexIndicator]="showRowIndexIndicator()"
+      [showBuiltInPaginator]="showBuiltInPaginator()"
+      [showSelectionColumn]="showSelectionColumn()"
+      [rowClickSelect]="rowClickSelect()"
+      [pageSize]="pageSize()"
+      [disabled]="disabled()"
       [datasource]="adapter"
     >
       <ui-number-column
@@ -71,6 +77,15 @@ import { UIButton } from "../button/button.component";
   `,
 })
 class UITableViewStoryDemo {
+  readonly caption = input<string>("JSONPlaceholder Posts");
+  readonly selectionMode = input<SelectionMode>("none");
+  readonly showBuiltInPaginator = input<boolean>(true);
+  readonly showRowIndexIndicator = input<boolean>(true);
+  readonly showSelectionColumn = input<boolean>(true);
+  readonly rowClickSelect = input<boolean>(false);
+  readonly pageSize = input<number | undefined>(undefined);
+  readonly disabled = input<boolean>(false);
+
   readonly adapter = new JsonPlaceholderPostsDatasource(25);
 }
 
@@ -311,6 +326,11 @@ const meta: Meta<object> = {
   title: "@theredhead/UI Kit/Table View",
   component: UITableViewStoryDemo,
   tags: ["autodocs"],
+  decorators: [
+    moduleMetadata({
+      imports: [UITableViewStoryDemo],
+    }),
+  ],
   argTypes: {
     caption: {
       control: "text",
@@ -366,6 +386,29 @@ type Story = StoryObj<object>;
  * pagination, and row-index indicators are all enabled.
  */
 export const JsonPlaceholderPosts: Story = {
+  render: (args) => ({
+    props: args,
+    template: `<ui-table-view-story-demo
+      [caption]="caption"
+      [selectionMode]="selectionMode"
+      [showBuiltInPaginator]="showBuiltInPaginator"
+      [showRowIndexIndicator]="showRowIndexIndicator"
+      [showSelectionColumn]="showSelectionColumn"
+      [rowClickSelect]="rowClickSelect"
+      [pageSize]="pageSize"
+      [disabled]="disabled"
+    />`,
+  }),
+  args: {
+    caption: "JSONPlaceholder Posts",
+    selectionMode: "none",
+    showBuiltInPaginator: true,
+    showRowIndexIndicator: true,
+    showSelectionColumn: true,
+    rowClickSelect: false,
+    pageSize: undefined,
+    disabled: false,
+  },
   parameters: {
     docs: {
       source: {

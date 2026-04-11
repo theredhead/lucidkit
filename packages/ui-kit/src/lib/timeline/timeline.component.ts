@@ -20,7 +20,7 @@ import type {
   TimelineEventContext,
   TimelineOrientation,
 } from "./timeline.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /**
  * A visual timeline that renders events from a datasource.
@@ -63,7 +63,7 @@ import { UISurface } from '@theredhead/foundation';
   templateUrl: "./timeline.component.html",
   styleUrl: "./timeline.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-timeline",
     "[class.vertical]": "orientation() === 'vertical'",

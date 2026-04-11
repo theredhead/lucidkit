@@ -10,7 +10,7 @@ import {
   type AccordionController,
   UIAccordionItem,
 } from "./accordion-item.component";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /** Expansion mode for the accordion. */
 export type AccordionMode = "single" | "multi";
@@ -34,7 +34,7 @@ export type AccordionMode = "single" | "multi";
   standalone: true,
   templateUrl: "./accordion.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   providers: [{ provide: ACCORDION_CONTROLLER, useExisting: UIAccordion }],
   host: {
     class: "ui-accordion",

@@ -6,7 +6,7 @@ import {
   model,
   output,
 } from "@angular/core";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 /** Visual appearance of the checkbox control. */
 export type CheckboxVariant = "checkbox" | "switch";
@@ -31,7 +31,7 @@ export type CheckboxVariant = "checkbox" | "switch";
   templateUrl: "./checkbox.component.html",
   styleUrl: "./checkbox.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-checkbox",
     "[class.checkbox]": "variant() === 'checkbox'",

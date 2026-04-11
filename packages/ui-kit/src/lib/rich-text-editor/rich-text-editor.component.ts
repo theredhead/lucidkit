@@ -105,7 +105,7 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
   standalone: true,
   imports: [UIIcon, UIEmojiPicker],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./rich-text-editor.component.html",
   styleUrl: "./rich-text-editor.component.scss",
   host: {

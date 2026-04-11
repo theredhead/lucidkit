@@ -49,7 +49,7 @@ interface ClockTime {
   selector: "ui-analog-clock",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./analog-clock.component.html",
   styleUrl: "./analog-clock.component.scss",
   host: {

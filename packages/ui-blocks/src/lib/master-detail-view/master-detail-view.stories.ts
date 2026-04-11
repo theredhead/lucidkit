@@ -8,6 +8,7 @@ import {
   UIFilter,
   UITemplateColumn,
   UITextColumn,
+  toFilterExpression,
   type FilterFieldDefinition,
   type FilterDescriptor,
   type FilterExpression,
@@ -460,7 +461,15 @@ class CustomFilterDemo {
   protected readonly adapter = this.datasource;
 
   protected onExpression(expression: FilterExpression<Employee>): void {
-    this.datasource.filterBy(expression);
+    const fields: FilterFieldDefinition<Employee>[] = [
+      { key: "name", label: "Name", type: "string" },
+      { key: "email", label: "Email", type: "string" },
+      { key: "department", label: "Department", type: "string" },
+      { key: "role", label: "Role", type: "string" },
+      { key: "joined", label: "Joined", type: "date" },
+    ];
+    const compiled = toFilterExpression(expression, fields);
+    this.datasource.filterBy(compiled.length === 0 ? null : compiled);
   }
 }
 

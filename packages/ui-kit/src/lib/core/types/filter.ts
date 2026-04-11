@@ -1,5 +1,5 @@
 /**
  * Re-exported from `@theredhead/foundation`.
- * @see {@link @theredhead/foundation!FilterExpression}
+ * @see {@link @theredhead/foundation!CompiledFilter}
  */
-export type { FilterExpression } from "@theredhead/foundation";
+export type { CompiledFilter, FilterExpression } from "@theredhead/foundation";

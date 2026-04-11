@@ -1,12 +1,12 @@
 import type { Predicate } from "@angular/core";
 
-import type { FilterExpression } from "../types/filter";
+import type { CompiledFilter } from "../types/filter";
 import type { IFilterableTreeDatasource, TreeNode } from "./datasource";
 import { ArrayTreeDatasource } from "./array-tree-datasource";
 
 /**
  * An in-memory tree datasource that supports filtering via a
- * {@link FilterExpression}.
+ * {@link CompiledFilter}.
  *
  * When an expression is applied the datasource compiles it into a
  * single predicate, re-derives its visible tree structure from the
@@ -70,7 +70,7 @@ export class FilterableArrayTreeDatasource<T = unknown>
   // ── IFilterableTreeDataSource ────────────────────────────────────
 
   /**
-   * Applies a structured {@link FilterExpression} to the tree.
+   * Applies a structured {@link CompiledFilter} to the tree.
    *
    * The expression is compiled into a single predicate once, which is
    * then applied to each node's `data`. Matching nodes and their
@@ -81,7 +81,7 @@ export class FilterableArrayTreeDatasource<T = unknown>
    * - **Row-level** entries test the entire `T` object.
    * - All entries must pass (AND) for a node to be included.
    */
-  public filterBy(expression: FilterExpression<T> | null | undefined): void {
+  public filterBy(expression: CompiledFilter<T> | null | undefined): void {
     if (!expression || expression.length === 0) {
       this._filteredRoots = this.deepCopyNodes(
         this._allRoots,
@@ -109,10 +109,10 @@ export class FilterableArrayTreeDatasource<T = unknown>
   // ── Private helpers ───────────────────────────────────────────────
 
   /**
-   * Compiles a {@link FilterExpression} into a single predicate
+   * Compiles a {@link CompiledFilter} into a single predicate
    * function that can be applied to each node's `data`.
    */
-  private compileExpression(expression: FilterExpression<T>): Predicate<T> {
+  private compileExpression(expression: CompiledFilter<T>): Predicate<T> {
     const tests = expression.map((entry) => {
       if ("property" in entry) {
         const { property, predicate } = entry;

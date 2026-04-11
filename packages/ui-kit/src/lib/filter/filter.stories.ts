@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
 
 import { UIFilter } from "./filter.component";
-import type { FilterDescriptor, FilterFieldDefinition } from "./filter.types";
+import type { FilterExpression, FilterFieldDefinition } from "./filter.types";
 
 // ---------------------------------------------------------------------------
 // Demo wrapper — shows the filter builder + live JSON output
@@ -47,7 +47,7 @@ const DEMO_FIELDS: FilterFieldDefinition<DemoRow>[] = [
 class UIFilterStoryDemo {
   readonly fields = DEMO_FIELDS;
   readonly allowJunction = signal(false);
-  readonly descriptor = signal<FilterDescriptor<DemoRow>>({
+  readonly descriptor = signal<FilterExpression<DemoRow>>({
     junction: "and",
     rules: [],
   });
@@ -194,7 +194,7 @@ export const WithJunction: Story = {
     `,
     props: {
       fields: DEMO_FIELDS,
-      descriptor: { junction: "and", rules: [] } as FilterDescriptor<DemoRow>,
+      descriptor: { junction: "and", rules: [] } as FilterExpression<DemoRow>,
     },
   }),
   parameters: {
@@ -264,7 +264,7 @@ export const Prepopulated: Story = {
             unit: "months",
           },
         ],
-      } as FilterDescriptor<DemoRow>,
+      } as FilterExpression<DemoRow>,
     },
   }),
   parameters: {

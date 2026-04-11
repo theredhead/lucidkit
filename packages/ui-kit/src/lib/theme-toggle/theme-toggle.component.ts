@@ -6,7 +6,7 @@ import {
 } from "@angular/core";
 
 import { ThemeService } from "@theredhead/ui-theme";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from "@theredhead/foundation";
 
 export type ThemeToggleVariant = "icon" | "button";
 
@@ -40,7 +40,7 @@ const MOON_ICON =
   templateUrl: "./theme-toggle.component.html",
   styleUrls: ["./theme-toggle.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-theme-toggle",
     "[class.disabled]": "disabled()",

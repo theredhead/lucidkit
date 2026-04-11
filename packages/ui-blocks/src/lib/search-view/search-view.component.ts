@@ -33,6 +33,7 @@ import {
   UITableView,
   UITableViewColumn,
   inferFilterFields,
+  toFilterExpression,
   type ColumnMeta,
   type FilterDescriptor,
   type FilterExpression,
@@ -543,7 +544,11 @@ export class UISearchView<T = unknown> {
 
     const ds = this.datasource();
     if (ds instanceof FilterableArrayDatasource) {
-      ds.filterBy(expression.length === 0 ? null : expression);
+      const compiled = toFilterExpression(
+        expression,
+        this.resolvedFilterFields(),
+      );
+      ds.filterBy(compiled.length === 0 ? null : compiled);
       const count = ds.getNumberOfItems();
       this.totalItems.set(typeof count === "number" ? count : 0);
       this.pageIndex.set(0);
