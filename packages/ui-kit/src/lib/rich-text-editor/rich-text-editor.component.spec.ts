@@ -50,21 +50,13 @@ describe("UIRichTextEditor", () => {
     it("should add disabled class when disabled", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.classList.contains(
-          "disabled",
-        ),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("disabled")).toBe(true);
     });
 
     it("should add readonly class when readonly", () => {
       fixture.componentRef.setInput("readonly", true);
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.classList.contains(
-          "readonly",
-        ),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("readonly")).toBe(true);
     });
   });
 
@@ -100,24 +92,35 @@ describe("UIRichTextEditor", () => {
 
   describe("toolbar", () => {
     it("should render a toolbar", () => {
-      const toolbar = fixture.nativeElement.querySelector(".toolbar");
+      const toolbar = fixture.nativeElement.querySelector("ui-toolbar");
       expect(toolbar).toBeTruthy();
       expect(toolbar.getAttribute("role")).toBe("toolbar");
     });
 
     it("should render flat buttons for inline and misc groups", () => {
-      const flatButtons = fixture.nativeElement.querySelectorAll(
-        ".toolbar-btn:not(.dropdown-trigger):not(.toolbar-btn--source)",
-      );
-      // 2 history (↩ ↪) + 4 inline (B, I, U, S) + 2 insert (― 🖼) + 1 link (🔗) + 1 misc (⌧) + 1 emoji = 11
-      expect(flatButtons.length).toBe(11);
+      // Check that key formatting buttons are rendered
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Undo"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Bold"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Italic"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Hyperlink"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Insert emoji"]'),
+      ).toBeTruthy();
     });
 
     it("should render dropdown triggers for grouped actions", () => {
-      const triggers =
-        fixture.nativeElement.querySelectorAll(".dropdown-trigger");
-      // block (Headings), list (Lists), align (Alignment) = 3
-      expect(triggers.length).toBe(3);
+      const dropdownTools =
+        fixture.nativeElement.querySelectorAll("ui-dropdown-tool");
+      // block (Styles) and list (Lists) — align is now a toggle group
+      expect(dropdownTools.length).toBe(2);
     });
 
     it("should show dropdown panel with actions on trigger click", () => {
@@ -129,7 +132,7 @@ describe("UIRichTextEditor", () => {
       const panel = fixture.nativeElement.querySelector(".dropdown-panel");
       expect(panel).toBeTruthy();
 
-      const actions = panel.querySelectorAll(".dropdown-action");
+      const actions = panel.querySelectorAll(".dropdown-panel-item");
       expect(actions.length).toBeGreaterThan(0);
     });
 
@@ -139,8 +142,9 @@ describe("UIRichTextEditor", () => {
       trigger.click();
       fixture.detectChanges();
 
-      const action: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dropdown-action");
+      const action: HTMLButtonElement = fixture.nativeElement.querySelector(
+        ".dropdown-panel-item",
+      );
       action.click();
       fixture.detectChanges();
 
@@ -180,14 +184,25 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("toolbarActions", ["bold", "italic"]);
       fixture.detectChanges();
 
-      const buttons = fixture.nativeElement.querySelectorAll(
-        ".toolbar-btn:not(.dropdown-trigger):not(.toolbar-btn--source)",
-      );
-      // 2 toolbar actions + 1 emoji picker = 3
-      expect(buttons.length).toBe(3);
-      expect(buttons[0].getAttribute("aria-label")).toBe("Bold");
-      expect(buttons[1].getAttribute("aria-label")).toBe("Italic");
-      expect(buttons[2].getAttribute("aria-label")).toBe("Insert emoji");
+      // Specified actions should be present
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Bold"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Italic"]'),
+      ).toBeTruthy();
+      // Emoji picker is always shown
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Insert emoji"]'),
+      ).toBeTruthy();
+      // History group should not be rendered
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Undo"]'),
+      ).toBeNull();
+      // No dropdowns
+      expect(
+        fixture.nativeElement.querySelectorAll("ui-dropdown-tool").length,
+      ).toBe(0);
     });
 
     it("should disable all toolbar buttons when disabled", () => {
@@ -216,7 +231,7 @@ describe("UIRichTextEditor", () => {
 
     it("should render group separators between different groups", () => {
       const separators =
-        fixture.nativeElement.querySelectorAll(".toolbar-separator");
+        fixture.nativeElement.querySelectorAll("ui-separator-tool");
       expect(separators.length).toBeGreaterThan(0);
     });
   });
@@ -394,9 +409,7 @@ describe("UIRichTextEditor", () => {
     });
 
     it("should show placeholder picker button when placeholders are provided", () => {
-      const btn = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
-      );
+      const btn = fixture.nativeElement.querySelector(".placeholder-trigger");
       expect(btn).toBeTruthy();
     });
 
@@ -404,15 +417,13 @@ describe("UIRichTextEditor", () => {
       fixture.componentRef.setInput("placeholders", []);
       fixture.detectChanges();
 
-      const btn = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
-      );
+      const btn = fixture.nativeElement.querySelector(".placeholder-trigger");
       expect(btn).toBeNull();
     });
 
     it("should toggle dropdown on click", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
 
       btn.click();
@@ -430,7 +441,7 @@ describe("UIRichTextEditor", () => {
 
     it("should render category headers", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       btn.click();
       fixture.detectChanges();
@@ -445,7 +456,7 @@ describe("UIRichTextEditor", () => {
 
     it("should render placeholder options", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       btn.click();
       fixture.detectChanges();
@@ -458,7 +469,7 @@ describe("UIRichTextEditor", () => {
 
     it("should close dropdown after inserting a placeholder", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       btn.click();
       fixture.detectChanges();
@@ -477,7 +488,7 @@ describe("UIRichTextEditor", () => {
       component.placeholderInserted.subscribe(spy);
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       btn.click();
       fixture.detectChanges();
@@ -494,7 +505,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       expect(btn.disabled).toBe(true);
     });
@@ -743,9 +754,10 @@ describe("UIRichTextEditor", () => {
 
   describe("source editing", () => {
     it("should render a source toggle button", () => {
-      const btn = fixture.nativeElement.querySelector(".toolbar-btn--source");
+      const btn = fixture.nativeElement.querySelector(
+        '[aria-label="Edit HTML source"]',
+      );
       expect(btn).toBeTruthy();
-      expect(btn.getAttribute("aria-label")).toBe("Edit HTML source");
     });
 
     it("should default to WYSIWYG mode (not source)", () => {
@@ -756,7 +768,7 @@ describe("UIRichTextEditor", () => {
 
     it("should show textarea above WYSIWYG preview in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       btn.click();
       fixture.detectChanges();
@@ -771,7 +783,7 @@ describe("UIRichTextEditor", () => {
 
     it("should show a preview label in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       btn.click();
       fixture.detectChanges();
@@ -783,7 +795,7 @@ describe("UIRichTextEditor", () => {
 
     it("should make WYSIWYG preview non-editable in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       btn.click();
       fixture.detectChanges();
@@ -800,7 +812,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       btn.click();
       fixture.detectChanges();
@@ -812,7 +824,7 @@ describe("UIRichTextEditor", () => {
 
     it("should sync value from textarea input", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       btn.click();
       fixture.detectChanges();
@@ -828,7 +840,7 @@ describe("UIRichTextEditor", () => {
 
     it("should live-update WYSIWYG preview as textarea changes", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       btn.click();
       fixture.detectChanges();
@@ -846,13 +858,13 @@ describe("UIRichTextEditor", () => {
 
     it("should add active class to toggle when in source mode", () => {
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
-      expect(btn.classList.contains("toolbar-btn--active")).toBe(false);
+      expect(btn.getAttribute("aria-pressed")).toBe("false");
 
       btn.click();
       fixture.detectChanges();
-      expect(btn.classList.contains("toolbar-btn--active")).toBe(true);
+      expect(btn.getAttribute("aria-pressed")).toBe("true");
     });
 
     it("should not toggle source mode when disabled", () => {
@@ -860,7 +872,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       expect(btn.disabled).toBe(true);
     });
@@ -885,9 +897,8 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const boldBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        '.toolbar-btn[aria-label="Bold"]',
+        '[aria-label="Bold"]',
       );
-      expect(boldBtn.classList.contains("toolbar-btn--active")).toBe(true);
       expect(boldBtn.getAttribute("aria-pressed")).toBe("true");
     });
 
@@ -901,9 +912,8 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const boldBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        '.toolbar-btn[aria-label="Bold"]',
+        '[aria-label="Bold"]',
       );
-      expect(boldBtn.classList.contains("toolbar-btn--active")).toBe(false);
       expect(boldBtn.getAttribute("aria-pressed")).toBe("false");
     });
 
@@ -1726,7 +1736,7 @@ describe("UIRichTextEditor", () => {
 
       // Open placeholder picker
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       pickerBtn.click();
       fixture.detectChanges();
@@ -1736,30 +1746,12 @@ describe("UIRichTextEditor", () => {
 
       // Toggle source mode — picker should close
       const sourceBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
+        '[aria-label="Edit HTML source"]',
       );
       sourceBtn.click();
       fixture.detectChanges();
 
       expect(component["isPlaceholderPickerOpen"]()).toBe(false);
-    });
-
-    it("should close dropdown group when toggling source mode", () => {
-      // Open a dropdown
-      const trigger: HTMLButtonElement =
-        fixture.nativeElement.querySelector(".dropdown-trigger");
-      trigger.click();
-      fixture.detectChanges();
-      expect(component["openDropdownGroup"]()).not.toBeNull();
-
-      // Toggle source mode — dropdown should close
-      const sourceBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--source",
-      );
-      sourceBtn.click();
-      fixture.detectChanges();
-
-      expect(component["openDropdownGroup"]()).toBeNull();
     });
 
     it("should not toggle source mode when readonly", () => {
@@ -1768,42 +1760,6 @@ describe("UIRichTextEditor", () => {
 
       component["toggleSourceMode"]();
       expect(component["isSourceMode"]()).toBe(false);
-    });
-  });
-
-  describe("dropdown group interactions", () => {
-    it("should not toggle dropdown when disabled", () => {
-      fixture.componentRef.setInput("disabled", true);
-      fixture.detectChanges();
-
-      component["toggleDropdownGroup"]("block");
-      expect(component["openDropdownGroup"]()).toBeNull();
-    });
-
-    it("should not toggle dropdown when readonly", () => {
-      fixture.componentRef.setInput("readonly", true);
-      fixture.detectChanges();
-
-      component["toggleDropdownGroup"]("block");
-      expect(component["openDropdownGroup"]()).toBeNull();
-    });
-
-    it("should close placeholder picker when opening dropdown", () => {
-      fixture.componentRef.setInput("placeholders", [{ key: "k", label: "K" }]);
-      fixture.detectChanges();
-
-      component["isPlaceholderPickerOpen"].set(true);
-      component["toggleDropdownGroup"]("block");
-
-      expect(component["isPlaceholderPickerOpen"]()).toBe(false);
-    });
-
-    it("should close dropdown when toggling same group", () => {
-      component["toggleDropdownGroup"]("block");
-      expect(component["openDropdownGroup"]()).toBe("block");
-
-      component["toggleDropdownGroup"]("block");
-      expect(component["openDropdownGroup"]()).toBeNull();
     });
   });
 
@@ -1822,14 +1778,6 @@ describe("UIRichTextEditor", () => {
 
       component["togglePlaceholderPicker"]();
       expect(component["isPlaceholderPickerOpen"]()).toBe(false);
-    });
-
-    it("should close dropdown group when opening picker", () => {
-      component["openDropdownGroup"].set("block");
-      component["togglePlaceholderPicker"]();
-
-      expect(component["openDropdownGroup"]()).toBeNull();
-      expect(component["isPlaceholderPickerOpen"]()).toBe(true);
     });
 
     it("should not insert placeholder when disabled", () => {
@@ -2037,14 +1985,17 @@ describe("UIRichTextEditor", () => {
       listTrigger.click();
       fixture.detectChanges();
 
-      const indentBtn = fixture.nativeElement.querySelector(
-        '[aria-label="Increase indent"]',
+      const items = Array.from(
+        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+      ) as HTMLButtonElement[];
+      const indentItem = items.find((el) =>
+        el.textContent?.includes("Increase indent"),
       );
-      const outdentBtn = fixture.nativeElement.querySelector(
-        '[aria-label="Decrease indent"]',
+      const outdentItem = items.find((el) =>
+        el.textContent?.includes("Decrease indent"),
       );
-      expect(indentBtn).toBeTruthy();
-      expect(outdentBtn).toBeTruthy();
+      expect(indentItem).toBeTruthy();
+      expect(outdentItem).toBeTruthy();
     });
 
     it("should call execCommand indent on indent click", () => {
@@ -2053,10 +2004,13 @@ describe("UIRichTextEditor", () => {
       listTrigger.click();
       fixture.detectChanges();
 
-      const indentBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        '[aria-label="Increase indent"]',
-      );
-      indentBtn.click();
+      const items = Array.from(
+        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+      ) as HTMLButtonElement[];
+      const indentItem = items.find((el) =>
+        el.textContent?.includes("Increase indent"),
+      ) as HTMLButtonElement;
+      indentItem.click();
       fixture.detectChanges();
 
       expect(execCommandSpy).toHaveBeenCalledWith("indent");
@@ -2088,7 +2042,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       pickerBtn.click();
       fixture.detectChanges();
@@ -2137,7 +2091,7 @@ describe("UIRichTextEditor", () => {
 
     it("should render a search input in the placeholder dropdown", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       pickerBtn.click();
       fixture.detectChanges();
@@ -2150,7 +2104,7 @@ describe("UIRichTextEditor", () => {
 
     it("should filter placeholders by search term", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       pickerBtn.click();
       fixture.detectChanges();
@@ -2172,7 +2126,7 @@ describe("UIRichTextEditor", () => {
 
     it("should show no matches message when search yields no results", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       pickerBtn.click();
       fixture.detectChanges();
@@ -2187,7 +2141,7 @@ describe("UIRichTextEditor", () => {
 
     it("should clear search term when picker is closed", () => {
       const pickerBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".toolbar-btn--placeholder",
+        ".placeholder-trigger",
       );
       pickerBtn.click();
       fixture.detectChanges();

@@ -1,76 +1,124 @@
 <!-- ── Toolbar ─────────────────────────────────────────────── -->
-<div class="toolbar" role="toolbar" aria-label="Formatting">
-  @for (group of groupedToolbarButtons(); track group.group) {
-    @if (!$first) {
-      <span class="toolbar-separator" aria-hidden="true"></span>
-    }
-    @if (group.flat) {
-      @for (btn of group.buttons; track btn.action) {
-        <button
-          #btnEl
-          type="button"
-          class="toolbar-btn"
-          [class.toolbar-btn--active]="isActionActive(btn.action)"
-          [attr.aria-label]="btn.label"
-          [attr.title]="btn.label"
-          [attr.aria-pressed]="isActionActive(btn.action)"
-          [disabled]="disabled() || readonly()"
-          (mousedown)="$event.preventDefault()"
-          (click)="execAction(btn.action, btnEl)"
-        >
-          <ui-icon [svg]="btn.icon" [size]="16" />
-        </button>
+<ui-toolbar role="toolbar" aria-label="Formatting" (toolAction)="onToolAction($event)">
+
+  <!-- History: Undo / Redo -->
+  @if (showHistoryGroup()) {
+    <ui-button-group-tool id="history">
+      @if (hasToolbarAction('undo')) {
+        <ui-button-tool id="undo" [icon]="teIcons.Undo" ariaLabel="Undo" [disabled]="isEditorDisabled()" />
       }
-    } @else if (group.meta) {
-      <div class="dropdown-group">
-        <button
-          type="button"
-          class="toolbar-btn dropdown-trigger"
-          [attr.aria-label]="group.meta.label"
-          [attr.title]="group.meta.label"
-          [attr.aria-expanded]="openDropdownGroup() === group.group"
-          [disabled]="disabled() || readonly()"
-          (mousedown)="$event.preventDefault()"
-          (click)="toggleDropdownGroup(group.group)"
-        >
-          <ui-icon [svg]="group.meta.icon" [size]="16" />
-          <span class="dropdown-caret" aria-hidden="true">▾</span>
-        </button>
-        @if (openDropdownGroup() === group.group) {
-          <div
-            class="dropdown-panel"
-            role="group"
-            [attr.aria-label]="group.meta.label"
-          >
-            @for (btn of group.buttons; track btn.action) {
-              <button
-                type="button"
-                class="dropdown-action"
-                [class.dropdown-action--active]="isActionActive(btn.action)"
-                [attr.aria-label]="btn.label"
-                (mousedown)="$event.preventDefault()"
-                (click)="execAction(btn.action)"
-              >
-                <span class="dropdown-action-icon"><ui-icon [svg]="btn.icon" [size]="16" /></span>
-                {{ btn.label }}
-              </button>
-            }
-          </div>
-        }
-      </div>
-    }
+      @if (hasToolbarAction('redo')) {
+        <ui-button-tool id="redo" [icon]="teIcons.Redo" ariaLabel="Redo" [disabled]="isEditorDisabled()" />
+      }
+    </ui-button-group-tool>
+    <ui-separator-tool id="sep-history" />
+  }
+
+  <!-- Inline: Bold / Italic / Underline / Strikethrough -->
+  @if (showInlineGroup()) {
+    <ui-button-group-tool id="inline">
+      @if (hasToolbarAction('bold')) {
+        <ui-toggle-tool id="bold" [icon]="teIcons.Bold" ariaLabel="Bold"
+          [checked]="isActionActive('bold')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('italic')) {
+        <ui-toggle-tool id="italic" [icon]="teIcons.Italic" ariaLabel="Italic"
+          [checked]="isActionActive('italic')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('underline')) {
+        <ui-toggle-tool id="underline" [icon]="teIcons.Underline" ariaLabel="Underline"
+          [checked]="isActionActive('underline')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('strikethrough')) {
+        <ui-toggle-tool id="strikethrough" [icon]="teIcons.Strikethrough" ariaLabel="Strikethrough"
+          [checked]="isActionActive('strikethrough')" [disabled]="isEditorDisabled()" />
+      }
+    </ui-button-group-tool>
+    <ui-separator-tool id="sep-inline" />
+  }
+
+  <!-- Block styles (dropdown) -->
+  @if (blockDropdownItems().length > 0) {
+    <ui-dropdown-tool id="block"
+      [icon]="teIcons.Styles"
+      ariaLabel="Styles"
+      [items]="blockDropdownItems()"
+      [disabled]="isEditorDisabled()"
+    />
+  }
+
+  <!-- Lists (dropdown) -->
+  @if (listDropdownItems().length > 0) {
+    <ui-dropdown-tool id="list"
+      [icon]="teIcons.List"
+      ariaLabel="Lists"
+      [items]="listDropdownItems()"
+      [disabled]="isEditorDisabled()"
+    />
+  }
+
+  <!-- Alignment (radio-style, HTML mode only) -->
+  @if (!isMarkdownMode() && showAlignGroup()) {
+    <ui-separator-tool id="sep-align-before" />
+    <ui-toggle-group-tool id="align" aria-label="Alignment">
+      @if (hasToolbarAction('alignLeft')) {
+        <ui-toggle-tool id="alignLeft" [icon]="teIcons.AlignLeft" ariaLabel="Align left"
+          [checked]="isActionActive('alignLeft')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('alignCenter')) {
+        <ui-toggle-tool id="alignCenter" [icon]="teIcons.AlignCenter" ariaLabel="Align centre"
+          [checked]="isActionActive('alignCenter')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('alignRight')) {
+        <ui-toggle-tool id="alignRight" [icon]="teIcons.AlignRight" ariaLabel="Align right"
+          [checked]="isActionActive('alignRight')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('alignJustify')) {
+        <ui-toggle-tool id="alignJustify" [icon]="teIcons.AlignJustify" ariaLabel="Justify"
+          [checked]="isActionActive('alignJustify')" [disabled]="isEditorDisabled()" />
+      }
+    </ui-toggle-group-tool>
+    <ui-separator-tool id="sep-align-after" />
+  }
+
+  <!-- Insert: Horizontal rule / Image -->
+  @if (showInsertGroup()) {
+    <ui-button-group-tool id="insert">
+      @if (hasToolbarAction('horizontalRule')) {
+        <ui-button-tool id="horizontalRule" [icon]="teIcons.HorizontalRule" ariaLabel="Horizontal rule"
+          [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('image')) {
+        <ui-button-tool id="image" [icon]="teIcons.Image" ariaLabel="Insert image"
+          [disabled]="isEditorDisabled()" />
+      }
+    </ui-button-group-tool>
+    <ui-separator-tool id="sep-insert" />
+  }
+
+  <!-- Link -->
+  @if (hasToolbarAction('link')) {
+    <ui-button-tool id="link" [icon]="teIcons.Link" ariaLabel="Hyperlink"
+      [disabled]="isEditorDisabled()" />
+    <ui-separator-tool id="sep-link" />
+  }
+
+  <!-- Remove formatting -->
+  @if (hasToolbarAction('removeFormat')) {
+    <ui-button-tool id="removeFormat" [icon]="teIcons.RemoveFormat" ariaLabel="Clear formatting"
+      [disabled]="isEditorDisabled()" />
   }
 
   <!-- Placeholder picker -->
   @if (placeholders().length > 0) {
-    <span class="toolbar-separator" aria-hidden="true"></span>
+    <ui-separator-tool id="sep-placeholder" />
     <div class="placeholder-picker">
       <button
         type="button"
-        class="toolbar-btn toolbar-btn--placeholder"
+        class="tool-btn placeholder-trigger"
         aria-label="Insert placeholder"
         title="Insert placeholder"
-        [disabled]="disabled() || readonly()"
+        [disabled]="isEditorDisabled()"
         [attr.aria-expanded]="isPlaceholderPickerOpen()"
         (mousedown)="$event.preventDefault()"
         (click)="togglePlaceholderPicker()"
@@ -120,14 +168,14 @@
   }
 
   <!-- Emoji picker -->
-  <span class="toolbar-separator" aria-hidden="true"></span>
+  <ui-separator-tool id="sep-emoji" />
   <div class="emoji-picker-wrapper">
     <button
       type="button"
-      class="toolbar-btn"
+      class="tool-btn"
       aria-label="Insert emoji"
       title="Insert emoji"
-      [disabled]="disabled() || readonly()"
+      [disabled]="isEditorDisabled()"
       [attr.aria-expanded]="isEmojiPickerOpen()"
       (mousedown)="$event.preventDefault()"
       (click)="toggleEmojiPicker()"
@@ -145,24 +193,19 @@
     }
   </div>
 
-  <!-- Source toggle -->
+  <!-- Source toggle (HTML mode only) -->
   @if (!isMarkdownMode()) {
-    <span class="toolbar-separator" aria-hidden="true"></span>
-    <button
-      type="button"
-      class="toolbar-btn toolbar-btn--source"
-      [class.toolbar-btn--active]="isSourceMode()"
-      [attr.aria-label]="sourceToggleLabel()"
-      [attr.title]="sourceToggleLabel()"
-      [attr.aria-pressed]="isSourceMode()"
-      [disabled]="disabled() || readonly()"
-      (mousedown)="$event.preventDefault()"
-      (click)="toggleSourceMode()"
-    >
-      <ui-icon [svg]="sourceIcon" [size]="16" />
-    </button>
+    <ui-separator-tool id="sep-source" />
+    <ui-toggle-tool
+      id="source-mode"
+      [icon]="sourceIcon"
+      [ariaLabel]="sourceToggleLabel()"
+      [checked]="isSourceMode()"
+      [disabled]="isEditorDisabled()"
+    />
   }
-</div>
+
+</ui-toolbar>
 
 <!-- ── HTML source textarea (HTML mode only) ──────────────── -->
 @if (!isMarkdownMode() && isSourceMode()) {

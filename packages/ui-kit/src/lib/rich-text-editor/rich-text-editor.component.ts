@@ -21,6 +21,17 @@ import { LoggerFactory, UISurface } from "@theredhead/foundation";
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
 import { UIEmojiPicker } from "../emoji-picker/emoji-picker.component";
+import {
+  UIToolbar,
+  UIButtonTool,
+  UIToggleTool,
+  UISeparatorTool,
+  UIDropdownTool,
+  UIButtonGroupTool,
+  UIToggleGroupTool,
+  type ToolActionEvent,
+  type DropdownToolItem,
+} from "../toolbar";
 import type { EmojiCategory } from "../emoji-picker/emoji-picker.types";
 import { PopoverService } from "../popover/popover.service";
 import {
@@ -103,7 +114,17 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
 @Component({
   selector: "ui-rich-text-editor",
   standalone: true,
-  imports: [UIIcon, UIEmojiPicker],
+  imports: [
+    UIIcon,
+    UIEmojiPicker,
+    UIToolbar,
+    UIButtonTool,
+    UIToggleTool,
+    UISeparatorTool,
+    UIDropdownTool,
+    UIButtonGroupTool,
+    UIToggleGroupTool,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./rich-text-editor.component.html",
@@ -294,9 +315,6 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** Whether the editor area is currently focused. */
   protected readonly isFocused = signal(false);
 
-  /** Which toolbar dropdown group is currently open, if any. */
-  protected readonly openDropdownGroup = signal<string | null>(null);
-
   /** Whether the editor is in raw source editing mode. */
   protected readonly isSourceMode = signal(false);
 
@@ -308,6 +326,26 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** SVG content for the emoji toolbar button. @internal */
   protected readonly emojiIcon = UIIcons.Lucide.Emoji.Smile;
+
+  /** @internal Icon registry for the rich-text toolbar. */
+  protected readonly teIcons = {
+    Undo: UIIcons.Lucide.Arrows.Undo2,
+    Redo: UIIcons.Lucide.Arrows.Redo2,
+    Bold: UIIcons.Lucide.Text.Bold,
+    Italic: UIIcons.Lucide.Text.Italic,
+    Underline: UIIcons.Lucide.Text.Underline,
+    Strikethrough: UIIcons.Lucide.Text.Strikethrough,
+    Styles: UIIcons.Lucide.Text.Pilcrow,
+    List: UIIcons.Lucide.Text.List,
+    AlignLeft: UIIcons.Lucide.Text.TextAlignStart,
+    AlignCenter: UIIcons.Lucide.Text.TextAlignCenter,
+    AlignRight: UIIcons.Lucide.Text.TextAlignEnd,
+    AlignJustify: UIIcons.Lucide.Text.TextAlignJustify,
+    HorizontalRule: UIIcons.Lucide.Development.Minus,
+    Image: UIIcons.Lucide.Files.ImagePlus,
+    Link: UIIcons.Lucide.Text.Link,
+    RemoveFormat: UIIcons.Lucide.Text.RemoveFormatting,
+  } as const;
 
   /**
    * Whether the editor is in Markdown mode.  In this mode the
@@ -365,6 +403,83 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    */
   protected readonly activeFormats = signal<ReadonlySet<RichTextFormatAction>>(
     new Set(),
+  );
+
+  /** @internal Whether the editor is non-interactive (disabled or readonly). */
+  protected readonly isEditorDisabled = computed(
+    () => this.disabled() || this.readonly(),
+  );
+
+  /** @internal Dropdown items for the block-styles dropdown. */
+  protected readonly blockDropdownItems = computed<DropdownToolItem[]>(() => {
+    const actions = this.toolbarActions();
+    return (
+      [
+        "paragraph",
+        "heading1",
+        "heading2",
+        "heading3",
+        "blockquote",
+        "codeBlock",
+      ] as RichTextFormatAction[]
+    )
+      .filter((a) => actions.includes(a))
+      .map((a) => ({
+        id: a,
+        label: TOOLBAR_BUTTON_REGISTRY[a].label,
+        icon: TOOLBAR_BUTTON_REGISTRY[a].icon,
+      }));
+  });
+
+  /** @internal Dropdown items for the lists dropdown. */
+  protected readonly listDropdownItems = computed<DropdownToolItem[]>(() => {
+    const actions = this.toolbarActions();
+    return (
+      [
+        "unorderedList",
+        "orderedList",
+        "indent",
+        "outdent",
+      ] as RichTextFormatAction[]
+    )
+      .filter((a) => actions.includes(a))
+      .map((a) => ({
+        id: a,
+        label: TOOLBAR_BUTTON_REGISTRY[a].label,
+        icon: TOOLBAR_BUTTON_REGISTRY[a].icon,
+      }));
+  });
+
+  /** @internal True when at least one history action is in the toolbar. */
+  protected readonly showHistoryGroup = computed(() =>
+    this.toolbarActions().some((a) => a === "undo" || a === "redo"),
+  );
+
+  /** @internal True when at least one inline-format action is in the toolbar. */
+  protected readonly showInlineGroup = computed(() =>
+    this.toolbarActions().some(
+      (a) =>
+        a === "bold" ||
+        a === "italic" ||
+        a === "underline" ||
+        a === "strikethrough",
+    ),
+  );
+
+  /** @internal True when at least one alignment action is in the toolbar. */
+  protected readonly showAlignGroup = computed(() =>
+    this.toolbarActions().some(
+      (a) =>
+        a === "alignLeft" ||
+        a === "alignCenter" ||
+        a === "alignRight" ||
+        a === "alignJustify",
+    ),
+  );
+
+  /** @internal True when at least one insert action is in the toolbar. */
+  protected readonly showInsertGroup = computed(() =>
+    this.toolbarActions().some((a) => a === "horizontalRule" || a === "image"),
   );
 
   /** Resolved toolbar button metadata from the actions list. */
@@ -496,7 +611,6 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     if (!this.initialised) return;
     untracked(() => {
       this.isSourceMode.set(false);
-      this.openDropdownGroup.set(null);
       this.isPlaceholderPickerOpen.set(false);
       this.isEmojiPickerOpen.set(false);
       this.activeFormats.set(new Set());
@@ -517,30 +631,22 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       document.removeEventListener("selectionchange", onSelectionChange);
     });
 
-    // Close dropdowns on outside click
+    // Close placeholder / emoji pickers on outside click
     const onDocumentClick = (event: MouseEvent) => {
-      if (
-        !this.openDropdownGroup() &&
-        !this.isPlaceholderPickerOpen() &&
-        !this.isEmojiPickerOpen()
-      ) {
+      if (!this.isPlaceholderPickerOpen() && !this.isEmojiPickerOpen()) {
         return;
       }
       const target = event.target as HTMLElement;
-      // Close if the click lands outside the component entirely,
-      // or inside the component but outside any dropdown/picker container.
       const host = this.elRef.nativeElement as HTMLElement;
       if (!host.contains(target)) {
-        this.openDropdownGroup.set(null);
         this.isPlaceholderPickerOpen.set(false);
         this.isEmojiPickerOpen.set(false);
         return;
       }
       const inDropdown = target.closest(
-        ".dropdown-group, .placeholder-picker, .emoji-picker-wrapper",
+        ".placeholder-picker, .emoji-picker-wrapper",
       );
       if (!inDropdown) {
-        this.openDropdownGroup.set(null);
         this.isPlaceholderPickerOpen.set(false);
         this.isEmojiPickerOpen.set(false);
       }
@@ -581,9 +687,36 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    *
    * @internal
    */
+  /** @internal Routes toolbar tool-action events to the appropriate handler. */
+  protected onToolAction(event: ToolActionEvent): void {
+    const id = event.itemId;
+    if (id === "source-mode") {
+      this.toggleSourceMode();
+      return;
+    }
+    if (id === "block" || id === "list") {
+      const tool = event.itemRef as UIDropdownTool;
+      const actionId = tool.selectedItemId() as
+        | RichTextFormatAction
+        | undefined;
+      if (actionId) {
+        this.execAction(actionId, event.event?.target as Element | undefined);
+      }
+      return;
+    }
+    this.execAction(
+      id as RichTextFormatAction,
+      event.event?.target as Element | undefined,
+    );
+  }
+
+  /** @internal Returns true when the given action is in the toolbar. */
+  protected hasToolbarAction(action: RichTextFormatAction): boolean {
+    return this.toolbarActions().includes(action);
+  }
+
   protected execAction(action: RichTextFormatAction, anchorEl?: Element): void {
     if (this.disabled() || this.readonly()) return;
-    this.openDropdownGroup.set(null);
 
     // In HTML mode, restore focus to the contenteditable element
     // before executing the action.  In Markdown mode the textarea
@@ -686,19 +819,8 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   }
 
   /** @internal */
-  protected toggleDropdownGroup(group: string): void {
-    if (this.disabled() || this.readonly()) return;
-    this.isPlaceholderPickerOpen.set(false);
-    this.isEmojiPickerOpen.set(false);
-    this.openDropdownGroup.update((current) =>
-      current === group ? null : group,
-    );
-  }
-
-  /** @internal */
   protected togglePlaceholderPicker(): void {
     if (this.disabled() || this.readonly()) return;
-    this.openDropdownGroup.set(null);
     this.isEmojiPickerOpen.set(false);
     this.isPlaceholderPickerOpen.update((v) => {
       if (v) this.placeholderSearchTerm.set("");
@@ -720,7 +842,6 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    */
   protected toggleEmojiPicker(): void {
     if (this.disabled() || this.readonly()) return;
-    this.openDropdownGroup.set(null);
     this.isPlaceholderPickerOpen.set(false);
     this.isEmojiPickerOpen.update((v) => !v);
   }
@@ -803,7 +924,6 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    */
   private openLinkDialog(anchorEl: Element | null): void {
     if (this.disabled() || this.readonly()) return;
-    this.openDropdownGroup.set(null);
     this.isPlaceholderPickerOpen.set(false);
     this.isEmojiPickerOpen.set(false);
 
@@ -888,7 +1008,6 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    */
   private openImageDialog(anchorEl: Element | null): void {
     if (this.disabled() || this.readonly()) return;
-    this.openDropdownGroup.set(null);
     this.isPlaceholderPickerOpen.set(false);
     this.isEmojiPickerOpen.set(false);
 
@@ -1003,7 +1122,6 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    */
   protected toggleSourceMode(): void {
     if (this.disabled() || this.readonly()) return;
-    this.openDropdownGroup.set(null);
     this.isPlaceholderPickerOpen.set(false);
     this.isEmojiPickerOpen.set(false);
     this.isSourceMode.update((v) => !v);
