@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component, signal } from "@angular/core";
 
-import { UISegmentedControl, type SegmentedItem } from "./segmented-control.component";
+import {
+  UISegmentedControl,
+  type SegmentedItem,
+} from "./segmented-control.component";
 
 const ITEMS: SegmentedItem[] = [
   { id: "day", label: "Day" },
@@ -40,7 +43,9 @@ describe("UISegmentedControl", () => {
   });
 
   it("should create", () => {
-    expect(fixture.nativeElement.querySelector("ui-segmented-control")).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector("ui-segmented-control"),
+    ).toBeTruthy();
   });
 
   it("should render one segment per item", () => {
@@ -69,7 +74,7 @@ describe("UISegmentedControl", () => {
     expect(segments[0].classList).not.toContain("active");
   });
 
-  it('should not change value when disabled control is clicked', () => {
+  it("should not change value when disabled control is clicked", () => {
     host.disabled.set(true);
     fixture.detectChanges();
     const segments = fixture.nativeElement.querySelectorAll(".segment");

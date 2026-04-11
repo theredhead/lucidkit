@@ -55,20 +55,24 @@ describe("UICountdown", () => {
   });
 
   describe("formats", () => {
-    it('dhms format shows h/m/s units by default', () => {
+    it("dhms format shows h/m/s units by default", () => {
       fixture.detectChanges();
       const labels = Array.from(
-        fixture.nativeElement.querySelectorAll(".label") as NodeListOf<HTMLElement>,
+        fixture.nativeElement.querySelectorAll(
+          ".label",
+        ) as NodeListOf<HTMLElement>,
       ).map((el) => el.textContent?.trim());
       expect(labels).toContain("m");
       expect(labels).toContain("s");
     });
 
-    it('ms format only shows minutes and seconds', () => {
+    it("ms format only shows minutes and seconds", () => {
       fixture.componentRef.setInput("format", "ms");
       fixture.detectChanges();
       const labels = Array.from(
-        fixture.nativeElement.querySelectorAll(".label") as NodeListOf<HTMLElement>,
+        fixture.nativeElement.querySelectorAll(
+          ".label",
+        ) as NodeListOf<HTMLElement>,
       ).map((el) => el.textContent?.trim());
       expect(labels).not.toContain("h");
       expect(labels).toContain("m");
@@ -80,7 +84,8 @@ describe("UICountdown", () => {
     it("should pad single digits", () => {
       fixture.detectChanges();
       // Access protected member via casting for unit test
-      const padFn = (component as unknown as { pad: (n: number) => string }).pad;
+      const padFn = (component as unknown as { pad: (n: number) => string })
+        .pad;
       expect(padFn.call(component, 5)).toBe("05");
       expect(padFn.call(component, 10)).toBe("10");
     });

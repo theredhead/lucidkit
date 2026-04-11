@@ -9,7 +9,11 @@ import {
   output,
   signal,
 } from "@angular/core";
-import type { CountdownFormat, CountdownMode, CountdownParts } from "./countdown.types";
+import type {
+  CountdownFormat,
+  CountdownMode,
+  CountdownParts,
+} from "./countdown.types";
 
 export type { CountdownFormat, CountdownMode, CountdownParts };
 
@@ -117,7 +121,11 @@ export class UICountdown implements OnInit {
 
     this.parts.set({ days, hours, minutes, seconds, totalSeconds });
 
-    if (this.mode() === "countdown" && totalSeconds === 0 && !this.isExpired()) {
+    if (
+      this.mode() === "countdown" &&
+      totalSeconds === 0 &&
+      !this.isExpired()
+    ) {
       this.isExpired.set(true);
       this.expired.emit();
     }

@@ -9,7 +9,11 @@
 
 :host {
   --skeleton-base: var(--ui-track, #d7dce2);
-  --skeleton-sheen: color-mix(in srgb, var(--skeleton-base) 55%, var(--ui-surface, #fff));
+  --skeleton-sheen: color-mix(
+    in srgb,
+    var(--skeleton-base) 55%,
+    var(--ui-surface, #fff)
+  );
   --skeleton-gradient: linear-gradient(
     90deg,
     var(--skeleton-base) 25%,

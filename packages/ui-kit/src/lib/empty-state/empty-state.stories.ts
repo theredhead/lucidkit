@@ -11,20 +11,28 @@ import { UIButton } from "../button/button.component";
   imports: [UIEmptyState, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div style="display: flex; flex-direction: column; gap: 40px; padding: 16px; background: var(--ui-surface, #fff); color: var(--ui-text, #1d232b);">
+    <div
+      style="display: flex; flex-direction: column; gap: 40px; padding: 16px; background: var(--ui-surface, #fff); color: var(--ui-text, #1d232b);"
+    >
       <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">Heading only</h4>
+        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
+          Heading only
+        </h4>
         <ui-empty-state heading="No notifications" />
       </div>
       <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">With message</h4>
+        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
+          With message
+        </h4>
         <ui-empty-state
           heading="No results found"
           message="Try adjusting your search or filters to find what you're looking for."
         />
       </div>
       <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">With icon + action</h4>
+        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
+          With icon + action
+        </h4>
         <ui-empty-state
           heading="Your inbox is empty"
           message="When you receive messages they'll appear here."

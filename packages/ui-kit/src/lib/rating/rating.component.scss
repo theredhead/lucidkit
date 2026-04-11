@@ -22,7 +22,9 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  transition: transform 100ms ease, color 120ms ease;
+  transition:
+    transform 100ms ease,
+    color 120ms ease;
   border-radius: 2px;
 }
 

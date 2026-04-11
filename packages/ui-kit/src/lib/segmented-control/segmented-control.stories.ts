@@ -1,7 +1,10 @@
 import { Meta, StoryObj, moduleMetadata } from "@storybook/angular";
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
 
-import { UISegmentedControl, type SegmentedItem } from "./segmented-control.component";
+import {
+  UISegmentedControl,
+  type SegmentedItem,
+} from "./segmented-control.component";
 import { UIIcons } from "../icon";
 
 @Component({
@@ -10,23 +13,39 @@ import { UIIcons } from "../icon";
   imports: [UISegmentedControl],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div style="display: flex; flex-direction: column; gap: 32px; padding: 16px; background: var(--ui-surface, #fff); color: var(--ui-text, #1d232b);">
+    <div
+      style="display: flex; flex-direction: column; gap: 32px; padding: 16px; background: var(--ui-surface, #fff); color: var(--ui-text, #1d232b);"
+    >
       <div>
         <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">Basic</h4>
         <ui-segmented-control [items]="viewItems" [(value)]="view" />
-        <p style="margin: 8px 0 0; font-size: 0.875rem; color: var(--ui-text-muted, #5a6470);">Active: {{ view() }}</p>
+        <p
+          style="margin: 8px 0 0; font-size: 0.875rem; color: var(--ui-text-muted, #5a6470);"
+        >
+          Active: {{ view() }}
+        </p>
       </div>
       <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">With icons</h4>
+        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
+          With icons
+        </h4>
         <ui-segmented-control [items]="iconItems" [(value)]="iconView" />
       </div>
       <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">Disabled item</h4>
+        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
+          Disabled item
+        </h4>
         <ui-segmented-control [items]="mixedItems" [(value)]="mixed" />
       </div>
       <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">Entire control disabled</h4>
-        <ui-segmented-control [items]="viewItems" [(value)]="view" [disabled]="true" />
+        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
+          Entire control disabled
+        </h4>
+        <ui-segmented-control
+          [items]="viewItems"
+          [(value)]="view"
+          [disabled]="true"
+        />
       </div>
     </div>
   `,
@@ -66,7 +85,10 @@ const meta: Meta<UISegmentedControl> = {
   ],
   argTypes: {
     value: { control: "text", description: "Active segment id." },
-    disabled: { control: "boolean", description: "Disable the entire control." },
+    disabled: {
+      control: "boolean",
+      description: "Disable the entire control.",
+    },
   },
 };
 export default meta;
@@ -123,6 +145,8 @@ export class ExampleComponent {
 export const Showcase: Story = {
   render: () => ({ template: `<ui-segmented-control-demo />` }),
   parameters: {
-    docs: { source: { code: "See SegmentedControlDemo component in stories file." } },
+    docs: {
+      source: { code: "See SegmentedControlDemo component in stories file." },
+    },
   },
 };
