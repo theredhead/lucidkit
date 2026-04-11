@@ -1,0 +1,40 @@
+<button
+  class="dropdown-trigger"
+  [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel() || label() || undefined"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-haspopup]="'menu'"
+  [attr.title]="tooltip() || undefined"
+  (click)="toggleOpen()"
+>
+  @if (icon()) {
+    <ui-icon [svg]="icon()!" [size]="16" />
+  }
+  @if (label()) {
+    <span class="tool-label">{{ label() }}</span>
+  }
+  <ui-icon [svg]="chevronIcon" [size]="12" class="chevron-icon" />
+</button>
+
+@if (isOpen()) {
+  <div class="dropdown-panel" role="menu">
+    @if (items().length > 0) {
+      @for (item of items(); track item.id) {
+        <button
+          class="dropdown-panel-item"
+          role="menuitem"
+          [disabled]="item.disabled ?? false"
+          [class.dropdown-panel-item--selected]="item.id === selectedItemId()"
+          (click)="onItemClick(item, $event)"
+        >
+          @if (item.icon) {
+            <ui-icon [svg]="item.icon" [size]="16" />
+          }
+          {{ item.label }}
+        </button>
+      }
+    } @else {
+      <ng-content />
+    }
+  </div>
+}

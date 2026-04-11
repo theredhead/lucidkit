@@ -1,0 +1,7 @@
+<ui-select
+  [options]="selectOptions()"
+  [value]="value()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel() || label() || undefined"
+  (valueChange)="onSelectionChange($event)"
+/>

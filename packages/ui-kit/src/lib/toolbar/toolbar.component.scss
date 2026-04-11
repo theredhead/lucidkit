@@ -1,0 +1,16 @@
+:host {
+  display: inline-flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.25rem;
+  border: 1px solid var(--ui-border, #cdd5df);
+  border-radius: var(--ui-radius, 0.375rem);
+  background: var(--ui-surface, #f7f8fa);
+  color: var(--ui-text, #1d232b);
+}
+
+:host.vertical {
+  flex-flow: column nowrap;
+  align-items: stretch;
+}

@@ -1,0 +1,15 @@
+<button
+  class="toggle-tool-inner"
+  [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel() || label() || undefined"
+  [attr.aria-pressed]="checked()"
+  [attr.title]="tooltip() || undefined"
+  (click)="onClick($event)"
+>
+  @if (icon()) {
+    <ui-icon [svg]="icon()!" [size]="16" />
+  }
+  @if (label()) {
+    <span class="tool-label">{{ label() }}</span>
+  }
+</button>

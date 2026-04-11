@@ -93,8 +93,8 @@ the corresponding `components.agents.md` file in the same commit.
   styleUrl: "./<name>.component.scss",
   host: {
     class: "ui-<name>",
-    // variant / state host classes via signal expressions:
-    "[class.ui-<name>--<variant>]": "variant() === '<variant>'",
+    // variant / state host classes — plain descriptive names only, never repeat the component name:
+    "[class.<variant>]": "variant() === '<variant>'",
   },
 })
 ```
@@ -236,7 +236,11 @@ This rule applies _everywhere_ colours are declared. Including but not limited t
 ### Some more CSS rules
 
 - Inline `style` attributes in templates are forbidden except in Storybook stories
-- Never ever under any circumstances ever use BEM style css class names
+- **Never use any class naming pattern that repeats the host or block name** — this
+  includes BEM modifier syntax (`ui-toolbar--vertical`), BEM element syntax
+  (`ui-toolbar__item`), and any other convention that prefixes or suffixes a class
+  name with the component name. If a simple descriptive name works (`.vertical`,
+  `.checked`, `.open`), use that. There is no exception.
 
 ### Good
 
@@ -419,8 +423,10 @@ fallback handles dark mode.
 
 ### Selectors
 
-- Host element variant/state classes: `ui-<name>--<variant>`
-- Inner element classes: plain descriptive names (`.ac-chip`, `.table-cell`, `.badge-cell`)
+- Host element variant/state classes: plain descriptive names only — `.vertical`,
+  `.checked`, `.open`, `.disabled`. **Never** repeat the component name
+  (no `ui-<name>--<variant>`, no BEM modifiers, no BEM elements).
+- Inner element classes: plain descriptive names (`.chip`, `.table-cell`, `.badge-cell`)
 
 ---
 
@@ -524,9 +530,7 @@ describe("UIButton", () => {
       it(`should apply ${variant} host class`, () => {
         fixture.componentRef.setInput("variant", variant); // set signal input
         fixture.detectChanges();
-        expect(fixture.nativeElement.classList).toContain(
-          `ui-button--${variant}`,
-        );
+        expect(fixture.nativeElement.classList).toContain(variant);
       });
     }
   });

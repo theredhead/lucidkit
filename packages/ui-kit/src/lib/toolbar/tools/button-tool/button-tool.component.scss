@@ -1,0 +1,29 @@
+:host {
+  display: contents;
+}
+
+.button-tool-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  font-size: var(--ui-font-body, 0.875rem);
+  font-family: var(--ui-font, inherit);
+  background: transparent;
+  color: var(--ui-text, #1d232b);
+  border: none;
+  border-radius: var(--ui-radius-sm, 0.25rem);
+  cursor: pointer;
+  line-height: 1;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: var(--ui-surface-raised, rgba(0, 0, 0, 0.07));
+    color: var(--ui-text, #1d232b);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
