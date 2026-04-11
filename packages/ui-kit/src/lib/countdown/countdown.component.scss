@@ -1,0 +1,55 @@
+:host {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
+}
+
+.time-display {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.unit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+}
+
+.value {
+  font-size: 1.125em;
+  font-weight: 600;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
+}
+
+.label {
+  font-size: 0.65em;
+  font-weight: 500;
+  color: var(--ui-text-muted, #5a6470);
+  background: transparent;
+  text-transform: lowercase;
+}
+
+.separator {
+  font-size: 1.125em;
+  font-weight: 400;
+  color: var(--ui-text-muted, #5a6470);
+  background: transparent;
+  align-self: baseline;
+  padding: 0 1px;
+}
+
+.expired-label {
+  font-size: 0.875em;
+  font-weight: 500;
+  color: var(--ui-error, #ba1a1a);
+  background: transparent;
+}
+
+:host(.expired) {
+  color: var(--ui-error, #ba1a1a);
+}

@@ -1,0 +1,75 @@
+@keyframes ui-skeleton-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+:host {
+  --skeleton-base: var(--ui-track, #d7dce2);
+  --skeleton-sheen: color-mix(in srgb, var(--skeleton-base) 55%, var(--ui-surface, #fff));
+  --skeleton-gradient: linear-gradient(
+    90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-sheen) 50%,
+    var(--skeleton-base) 75%
+  );
+
+  display: block;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
+}
+
+/* ── Text variant ── */
+
+:host(.text) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  height: auto !important; /* driven by line count */
+}
+
+.line {
+  height: 1em;
+  border-radius: var(--ui-radius, 0.375rem);
+  background: var(--skeleton-base);
+  color: transparent;
+}
+
+.line.short {
+  width: 70%;
+}
+
+:host(.animated.text) .line {
+  background: var(--skeleton-gradient);
+  background-size: 200% 100%;
+  animation: ui-skeleton-shimmer 1.6s linear infinite;
+}
+
+/* ── Rect variant ── */
+
+:host(.rect) {
+  border-radius: var(--ui-radius, 0.375rem);
+  background: var(--skeleton-base);
+}
+
+:host(.animated.rect) {
+  background: var(--skeleton-gradient);
+  background-size: 200% 100%;
+  animation: ui-skeleton-shimmer 1.6s linear infinite;
+}
+
+/* ── Circle variant ── */
+
+:host(.circle) {
+  border-radius: 50%;
+  background: var(--skeleton-base);
+}
+
+:host(.animated.circle) {
+  background: var(--skeleton-gradient);
+  background-size: 200% 100%;
+  animation: ui-skeleton-shimmer 1.6s linear infinite;
+}

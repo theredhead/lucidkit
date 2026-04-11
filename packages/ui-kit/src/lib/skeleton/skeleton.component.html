@@ -1,0 +1,5 @@
+@if (variant() === 'text') {
+  @for (line of lineArray(); track line) {
+    <div class="line" [class.short]="$last && lineArray().length > 1"></div>
+  }
+}

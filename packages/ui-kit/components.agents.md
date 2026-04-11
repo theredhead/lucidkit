@@ -80,6 +80,11 @@
 | `UITimeline`            | `src/lib/timeline/timeline.component.ts`                                      | `ui-timeline`               | Timeline displaying sequential events                                                                                  |
 | `UIEmojiPicker`         | `src/lib/emoji-picker/emoji-picker.component.ts`                              | `ui-emoji-picker`           | Emoji picker with category navigation                                                                                  |
 | `UIRichTextEditor`      | `src/lib/rich-text-editor/rich-text-editor.component.ts`                      | `ui-rich-text-editor`       | Rich-text editor supporting HTML and Markdown modes                                                                    |
+| `UISkeleton`            | `src/lib/skeleton/skeleton.component.ts`                                       | `ui-skeleton`               | Animated shimmer placeholder while content loads — `text`, `rect`, and `circle` variants                               |
+| `UIEmptyState`          | `src/lib/empty-state/empty-state.component.ts`                                 | `ui-empty-state`            | Zero-data placeholder with heading, optional message, optional icon, and projected action slot                         |
+| `UISegmentedControl`    | `src/lib/segmented-control/segmented-control.component.ts`                     | `ui-segmented-control`      | iOS-style mutually exclusive option button row via `items` input and `[(value)]` binding                               |
+| `UIRating`              | `src/lib/rating/rating.component.ts`                                           | `ui-rating`                 | Star rating input with interactive and read-only modes; `max`, `[(value)]`, `size`, `readonly`, `disabled`             |
+| `UICountdown`           | `src/lib/countdown/countdown.component.ts`                                     | `ui-countdown`              | Live countdown or elapsed timer ticking every second; `target`, `mode`, `format`; emits `expired`                      |
 
 ## Toolbar
 

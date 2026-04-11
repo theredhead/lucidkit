@@ -1,0 +1,71 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--ui-rating-empty, var(--ui-border-strong, #b0b7c0));
+  background: transparent;
+}
+
+:host(.disabled) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Star button ── */
+
+.star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 100ms ease, color 120ms ease;
+  border-radius: 2px;
+}
+
+.star:focus-visible {
+  outline: 2px solid var(--ui-focus-ring, var(--ui-accent, #3584e4));
+  outline-offset: 1px;
+}
+
+.star:disabled {
+  cursor: default;
+}
+
+.star.filled {
+  color: var(--ui-rating-filled, #f5a623);
+}
+
+:host(:not(.readonly)) .star:hover,
+:host(:not(.readonly)) .star.hovered {
+  color: var(--ui-rating-hover, #f5a623);
+  transform: scale(1.15);
+}
+
+:host(.readonly) .star {
+  cursor: default;
+}
+
+/* ── Star icon sizes ── */
+
+.star-icon {
+  display: block;
+}
+
+:host(.small) .star-icon {
+  width: 14px;
+  height: 14px;
+}
+
+:host(.medium) .star-icon {
+  width: 20px;
+  height: 20px;
+}
+
+:host(.large) .star-icon {
+  width: 28px;
+  height: 28px;
+}

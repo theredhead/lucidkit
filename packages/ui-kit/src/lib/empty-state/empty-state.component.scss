@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
+}
+
+.icon {
+  color: var(--ui-text-muted, #5a6470);
+  margin-bottom: 0.5rem;
+}
+
+.heading {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
+}
+
+.message {
+  margin: 0;
+  font-size: var(--ui-font-body, 0.875rem);
+  color: var(--ui-text-muted, #5a6470);
+  background: transparent;
+  max-width: 36ch;
+}
+
+::ng-deep [action] {
+  margin-top: 1rem;
+}

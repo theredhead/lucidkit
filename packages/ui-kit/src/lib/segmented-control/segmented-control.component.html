@@ -1,0 +1,20 @@
+@for (item of items(); track item.id) {
+  <button
+    class="segment"
+    type="button"
+    role="radio"
+    [class.active]="item.id === value()"
+    [class.disabled]="item.disabled"
+    [attr.aria-checked]="item.id === value()"
+    [attr.aria-disabled]="item.disabled ?? false"
+    [attr.aria-label]="item.label"
+    [disabled]="disabled() || item.disabled || null"
+    (click)="select(item)"
+    (keydown)="onKeyDown($event, item)"
+  >
+    @if (item.icon) {
+      <ui-icon [svg]="item.icon" [size]="14" />
+    }
+    <span class="label">{{ item.label }}</span>
+  </button>
+}

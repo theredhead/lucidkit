@@ -1,0 +1,30 @@
+@if (isExpired()) {
+  <span class="expired-label">Expired</span>
+} @else {
+  <span class="time-display" [attr.aria-atomic]="true">
+    @if (format() === 'dhms' && parts().days > 0) {
+      <span class="unit">
+        <span class="value">{{ parts().days }}</span>
+        <span class="label">d</span>
+      </span>
+      <span class="separator" aria-hidden="true">:</span>
+    }
+    @if (format() === 'dhms' || format() === 'hms') {
+      @let hoursValue = format() === 'hms' ? parts().days * 24 + parts().hours : parts().hours;
+      <span class="unit">
+        <span class="value">{{ pad(hoursValue) }}</span>
+        <span class="label">h</span>
+      </span>
+      <span class="separator" aria-hidden="true">:</span>
+    }
+    <span class="unit">
+      <span class="value">{{ pad(parts().minutes) }}</span>
+      <span class="label">m</span>
+    </span>
+    <span class="separator" aria-hidden="true">:</span>
+    <span class="unit">
+      <span class="value">{{ pad(parts().seconds) }}</span>
+      <span class="label">s</span>
+    </span>
+  </span>
+}
