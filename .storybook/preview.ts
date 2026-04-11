@@ -1,3 +1,4 @@
+import { provideZonelessChangeDetection } from "@angular/core";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 
 import { themes } from "storybook/theming";
@@ -13,7 +14,7 @@ import { StoryToolbar } from "./story-toolbar.component";
 const preview: Preview = {
   decorators: [
     applicationConfig({
-      providers: [provideAnimationsAsync()],
+      providers: [provideAnimationsAsync(), provideZonelessChangeDetection()],
     }),
     moduleMetadata({
       imports: [StoryToolbar],

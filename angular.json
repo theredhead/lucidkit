@@ -56,7 +56,8 @@
           "options": {
             "configDir": ".storybook",
             "browserTarget": "storybook-host:build",
-            "port": 6006
+            "port": 6006,
+            "experimentalZoneless": true
           }
         },
         "build-storybook": {
@@ -64,7 +65,8 @@
           "options": {
             "configDir": ".storybook",
             "browserTarget": "storybook-host:build",
-            "outputDir": "dist/storybook"
+            "outputDir": "dist/storybook",
+            "experimentalZoneless": true
           }
         }
       }
