@@ -30,6 +30,7 @@ export type SurfaceType =
   | "raised"
   | "sunken"
   | "panel"
+  | "avatar"
   | (string & {});
 
 /**

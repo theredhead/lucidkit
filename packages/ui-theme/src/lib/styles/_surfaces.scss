@@ -24,6 +24,14 @@
   background-color: var(--ui-surface, inherit);
 }
 
+.ui-surface-type-avatar {
+  color: var(--ui-text, #1d232b);
+  background-color: var(--ui-surface-2, #e8ecf0);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.14),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 // ── Table-specific surfaces ───────────────────────────────────────
 
 .ui-surface-type-table {

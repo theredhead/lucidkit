@@ -1,4 +1,6 @@
-@if (showImage()) {
+@if (showSkeleton()) {
+  <ui-skeleton variant="circle" width="100%" height="100%" />
+} @else if (showImage()) {
   <img
     class="image"
     [src]="effectiveSrc()"

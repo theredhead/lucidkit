@@ -1,14 +1,28 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component, signal } from "@angular/core";
+import { vi } from "vitest";
 
 import { UIAvatar, type AvatarSize } from "./avatar.component";
 
-/** Flush pending microtasks / promises (e.g. crypto.subtle). */
-async function flushAsync(): Promise<void> {
-  // Double-yield: first settles the crypto.subtle Promise chain,
-  // second ensures Angular signal notifications propagate.
-  await new Promise((r) => setTimeout(r, 0));
-  await new Promise((r) => setTimeout(r, 0));
+/**
+ * Wait until the gravatar `<img>` element is present in the fixture.
+ * Uses vi.waitFor so it polls rather than relying on a fixed delay —
+ * avoids races when the full suite runs in parallel.
+ */
+async function waitForGravatarImg(
+  fixture: ComponentFixture<unknown>,
+  selector = "img",
+): Promise<HTMLImageElement> {
+  return vi.waitFor(
+    () => {
+      fixture.detectChanges();
+      const el =
+        fixture.nativeElement.querySelector<HTMLImageElement>(selector);
+      if (!el) throw new Error(`${selector} not found yet`);
+      return el;
+    },
+    { timeout: 2000, interval: 30 },
+  );
 }
 
 @Component({
@@ -127,14 +141,36 @@ describe("UIAvatar", () => {
   });
 
   describe("gravatar", () => {
+    it("should show skeleton while gravatar hash is being computed", async () => {
+      host.name.set("");
+      host.email.set("test@example.com");
+      fixture.detectChanges();
+
+      // Before the async hash resolves the skeleton should be visible
+      expect(fixture.nativeElement.querySelector("ui-skeleton")).toBeTruthy();
+
+      // Once resolved the skeleton should be replaced by the image
+      await waitForGravatarImg(fixture, "img");
+      expect(fixture.nativeElement.querySelector("ui-skeleton")).toBeNull();
+    });
+
+    it("should not show skeleton when an explicit src is set", () => {
+      host.src.set("https://example.com/photo.jpg");
+      host.email.set("test@example.com");
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector("ui-skeleton")).toBeNull();
+      expect(
+        fixture.nativeElement.querySelector(".image")?.getAttribute("src"),
+      ).toBe("https://example.com/photo.jpg");
+    });
+
     it("should show gravatar image when email is provided", async () => {
       host.name.set("");
       host.email.set("test@example.com");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
-      const img = fixture.nativeElement.querySelector("img");
+      const img = await waitForGravatarImg(fixture, "img");
       expect(img).toBeTruthy();
       expect(img.getAttribute("src")).toContain("gravatar.com/avatar/");
       expect(img.getAttribute("src")).toContain("d=404");
@@ -144,10 +180,8 @@ describe("UIAvatar", () => {
       host.src.set("https://example.com/photo.jpg");
       host.email.set("test@example.com");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
-      const img = fixture.nativeElement.querySelector(".image");
+      const img = await waitForGravatarImg(fixture, ".image");
       expect(img.getAttribute("src")).toBe("https://example.com/photo.jpg");
     });
 
@@ -155,10 +189,8 @@ describe("UIAvatar", () => {
       host.email.set("test@example.com");
       host.size.set("large");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
-      const img = fixture.nativeElement.querySelector(".image");
+      const img = await waitForGravatarImg(fixture, ".image");
       // large = 56px × 2 = 112
       expect(img.getAttribute("src")).toContain("s=112");
     });
@@ -166,19 +198,13 @@ describe("UIAvatar", () => {
     it("should normalise email before hashing", async () => {
       host.email.set("  Test@Example.COM  ");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
-      const src1 = fixture.nativeElement
-        .querySelector(".image")
-        ?.getAttribute("src");
+      const img1 = await waitForGravatarImg(fixture, ".image");
+      const src1 = img1.getAttribute("src");
 
       host.email.set("test@example.com");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
-      const src2 = fixture.nativeElement
-        .querySelector(".image")
-        ?.getAttribute("src");
+      const img2 = await waitForGravatarImg(fixture, ".image");
+      const src2 = img2.getAttribute("src");
 
       expect(src1).toBe(src2);
     });
@@ -194,10 +220,8 @@ describe("UIAvatar", () => {
       host.name.set("Jane Doe");
       host.email.set("test@example.com");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
-      const img = fixture.nativeElement.querySelector(".image");
+      const img = await waitForGravatarImg(fixture, ".image");
       expect(img).toBeTruthy();
       img.dispatchEvent(new Event("error"));
       fixture.detectChanges();
@@ -209,21 +233,17 @@ describe("UIAvatar", () => {
     it("should reset error state when email changes", async () => {
       host.email.set("first@example.com");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
-      // Trigger error
-      const img = fixture.nativeElement.querySelector(".image");
-      img.dispatchEvent(new Event("error"));
+      const img1 = await waitForGravatarImg(fixture, ".image");
+      img1.dispatchEvent(new Event("error"));
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector(".image")).toBeNull();
 
       // Change email — should reset and try again
       host.email.set("second@example.com");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
+      await waitForGravatarImg(fixture, ".image");
       expect(fixture.nativeElement.querySelector(".image")).toBeTruthy();
     });
 
@@ -231,13 +251,10 @@ describe("UIAvatar", () => {
       host.email.set("test@example.com");
       host.name.set("Jane Doe");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
+      await waitForGravatarImg(fixture, "img");
       expect(fixture.nativeElement.querySelector("img")).toBeTruthy();
 
       host.email.set(undefined);
-      fixture.detectChanges();
-      await flushAsync();
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector("img")).toBeNull();
@@ -366,10 +383,8 @@ describe("UIAvatar", () => {
       host.email.set("test@example.com");
       host.src.set("https://example.com/override.jpg");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
-      const img = fixture.nativeElement.querySelector("img");
+      const img = await waitForGravatarImg(fixture, "img");
       expect(img.getAttribute("src")).toBe("https://example.com/override.jpg");
     });
   });
@@ -408,10 +423,8 @@ describe("UIAvatar", () => {
       host.src.set(undefined);
       host.email.set("test@example.com");
       fixture.detectChanges();
-      await flushAsync();
-      fixture.detectChanges();
 
-      const newImg = fixture.nativeElement.querySelector("img");
+      const newImg = await waitForGravatarImg(fixture, "img");
       expect(newImg).toBeTruthy();
       expect(newImg.getAttribute("src")).toContain("gravatar.com/avatar/");
     });

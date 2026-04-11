@@ -7,7 +7,8 @@ import {
   signal,
   untracked,
 } from "@angular/core";
-import { UISurface } from "@theredhead/lucid-foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
+import { UISkeleton } from "../skeleton/skeleton.component";
 
 /** Named size preset for the avatar. */
 export type AvatarSizeName =
@@ -60,10 +61,12 @@ async function sha256Hex(message: string): Promise<string> {
 @Component({
   selector: "ui-avatar",
   standalone: true,
+  imports: [UISkeleton],
   templateUrl: "./avatar.component.html",
   styleUrl: "./avatar.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "avatar" }],
   host: {
     class: "ui-avatar",
     "[class.extra-small]": "size() === 'extra-small'",
@@ -133,6 +136,11 @@ export class UIAvatar {
     () => !!this.effectiveSrc() && !this.imgError(),
   );
 
+  /** @internal — whether the Gravatar hash is being computed (show skeleton). */
+  protected readonly showSkeleton = computed(
+    () => this.gravatarLoading() && !this.src(),
+  );
+
   /** @internal — derived initials from the name (max 2 letters). */
   protected readonly initials = computed(() => {
     const n = this.name().trim();
@@ -155,7 +163,8 @@ export class UIAvatar {
 
   /** @internal — SHA-256 hex digest of the normalised email. */
   private readonly gravatarHash = signal<string | undefined>(undefined);
-
+  /** @internal — true while sha256 hash is being computed. */
+  private readonly gravatarLoading = signal(false);
   // ── Constructor ────────────────────────────────────────────────
 
   public constructor() {
@@ -164,10 +173,15 @@ export class UIAvatar {
       const raw = this.email();
       if (!raw?.trim()) {
         this.gravatarHash.set(undefined);
+        this.gravatarLoading.set(false);
         return;
       }
       const normalised = raw.trim().toLowerCase();
-      void sha256Hex(normalised).then((hash) => this.gravatarHash.set(hash));
+      this.gravatarLoading.set(true);
+      void sha256Hex(normalised).then((hash) => {
+        this.gravatarHash.set(hash);
+        this.gravatarLoading.set(false);
+      });
     });
 
     // Reset image-error state whenever the resolved source changes
