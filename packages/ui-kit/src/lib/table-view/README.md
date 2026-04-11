@@ -42,6 +42,10 @@ Concrete implementations currently available:
 - `UIBadgeColumn` (`ui-badge-column`) with `variant`
 - `UINumberColumn` (`ui-number-column`) with locale/format options
 
+## Column Inheritance Pattern
+
+The table view uses Angular's dependency injection (DI) forwarding system to enable flexible column composition. All column types extend `UITableViewColumn` and provide themselves via DI forwarding using `forwardRef` to make them discoverable by the parent table component through a single `contentChildren()` query on the base class token. This pattern allows for extensibility - new column types can be added without modifying the parent table component, as long as they follow the DI forwarding pattern.
+
 ## Datasource Model
 
 `UITableView` requires `datasource` input of type `DatasourceAdapter<T>`.

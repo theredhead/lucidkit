@@ -40,6 +40,30 @@ core and `@angular/cdk`.
 | **UIDialog**                     | `ui-dialog`                          | Modal dialog container with backdrop, size options                        |
 | **UIThemeToggle**                | `ui-theme-toggle`                    | Light/dark mode toggle button with inline SVG icons                       |
 
+## Table View Columns
+
+The table view supports multiple column types that use Angular's dependency injection (DI) forwarding system for flexible column composition:
+
+- `ui-text-column` - Renders text values with optional truncation
+- `ui-badge-column` - Renders badge status values
+- `ui-number-column` - Renders formatted numbers
+- `ui-template-column` - Renders custom templates with projected content
+
+All column types extend `UITableViewColumn` and provide themselves via DI forwarding, enabling the parent table to discover all columns through a single `contentChildren()` query on the base class token. This pattern allows for extensibility - new column types can be added without modifying the parent table component.
+
+For more information about the column inheritance pattern, see [column-inheritance-pattern.md](src/lib/table-view/column-inheritance-pattern.md).
+
+## Table View Columns
+
+The table view supports multiple column types that use Angular's dependency injection (DI) forwarding system for flexible column composition:
+
+- `ui-text-column` - Renders text values with optional truncation
+- `ui-badge-column` - Renders badge status values
+- `ui-number-column` - Renders formatted numbers
+- `ui-template-column` - Renders custom templates with projected content
+
+All column types extend `UITableViewColumn` and provide themselves via DI forwarding, enabling the parent table to discover all columns through a single `contentChildren()` query on the base class token. This pattern allows for extensibility - new column types can be added without modifying the parent table component.
+
 ### Directives
 
 | Directive              | Selector      | Description                                                 |

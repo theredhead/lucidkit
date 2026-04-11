@@ -49,6 +49,44 @@ import {
 } from "./table-view-header/table-view-header.component";
 import { type SelectionMode, SelectionModel } from "../core/selection-model";
 
+/**
+ * Table View Component
+ *
+ * The UITableView component provides a flexible table with sorting, filtering,
+ * selection, and column resizing capabilities. It uses Angular's dependency
+ * injection system to discover and manage table columns through DI forwarding.
+ *
+ * ## Column Inheritance and DI Forwarding
+ *
+ * All column types (UITextColumn, UIBadgeColumn, UINumberColumn, UITemplateColumn)
+ * extend UITableViewColumn and provide themselves via Angular's DI system using
+ * forwardRef to enable the parent table to discover all projected columns through
+ * a single contentChildren() query on the base class token.
+ *
+ * This pattern allows for extensibility - new column types can be added without
+ * modifying the parent table component, as long as they follow the DI forwarding
+ * pattern described in the documentation.
+ *
+ * ## Usage Example
+ *
+ * ```html
+ * <ui-table-view [datasource]="adapter" tableId="my-table">
+ *   <ui-text-column key="name" headerText="Name" [sortable]="true" />
+ *   <ui-badge-column key="status" headerText="Status" variant="success" />
+ *   <ui-number-column key="price" headerText="Price" [format]="{ maximumFractionDigits: 2 }" />
+ *   <ui-template-column key="actions" headerText="Actions">
+ *     <ng-template let-row>
+ *       <ui-button (click)="handleClick(row)">Edit</ui-button>
+ *     </ng-template>
+ *   </ui-template-column>
+ * </ui-table-view>
+ * ```
+ *
+ * @selector ui-table-view
+ * @standalone true
+ * @imports UITableViewHeader, UITableBody, UITableFooter, ColumnResizeService, DatasourceAdapter
+ */
+
 @Component({
   selector: "ui-table-view",
   standalone: true,

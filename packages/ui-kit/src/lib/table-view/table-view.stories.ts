@@ -1013,15 +1013,21 @@ class UITableViewFilteredDemo {
  * employee dataset with string, number, and date filter fields.
  */
 export const FilteredTable: Story = {
+  args: {
+    selectionMode: "single"
+  },
+
   decorators: [
     moduleMetadata({
       imports: [UITableViewFilteredDemo],
     }),
   ],
+
   render: () => ({
     template: "<ui-table-view-filtered-demo />",
     props: {},
   }),
+
   parameters: {
     docs: {
       source: {
@@ -1058,7 +1064,7 @@ onExpressionChange(expression: FilterExpression<Employee>): void {
         language: "typescript",
       },
     },
-  },
+  }
 };
 
 // ---------------------------------------------------------------------------
@@ -1200,6 +1206,256 @@ export const TemplateColumn: Story = {
       },
     },
   },
+};
+
+// ---------------------------------------------------------------------------
+// Local data demo (filter + multi-select + template column + density toggle)
+// ---------------------------------------------------------------------------
+
+interface DemoRow {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+  status: string;
+}
+
+const DEMO_ROWS: DemoRow[] = [
+  { id: 1, name: "John Doe", email: "john@example.com", age: 30, status: "active" },
+  { id: 2, name: "Jane Smith", email: "jane@example.com", age: 25, status: "inactive" },
+  { id: 3, name: "Bob Johnson", email: "bob@example.com", age: 35, status: "active" },
+  { id: 4, name: "Alice Williams", email: "alice@example.com", age: 28, status: "pending" },
+  { id: 5, name: "Charlie Brown", email: "charlie@example.com", age: 32, status: "active" },
+  { id: 6, name: "Diana Miller", email: "diana@example.com", age: 27, status: "inactive" },
+  { id: 7, name: "Ethan Davis", email: "ethan@example.com", age: 31, status: "pending" },
+  { id: 8, name: "Fiona Garcia", email: "fiona@example.com", age: 29, status: "active" },
+];
+
+const DEMO_FILTER_FIELDS: FilterFieldDefinition<DemoRow>[] = [
+  { key: "name", label: "Name", type: "string" },
+  { key: "email", label: "Email", type: "string" },
+  { key: "age", label: "Age", type: "number" },
+  { key: "status", label: "Status", type: "string" },
+];
+
+@Component({
+  selector: "ui-table-view-local-data-demo",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    UITableView,
+    UINumberColumn,
+    UITextColumn,
+    UIBadgeColumn,
+    UITemplateColumn,
+    UIDensityDirective,
+    UIButton,
+    UIFilter,
+  ],
+  template: `
+    <div class="local-demo-controls">
+      <ui-filter
+        [fields]="filterFields"
+        [allowJunction]="true"
+        (expressionChange)="onExpressionChange($event)"
+      />
+      <ui-button variant="outlined" (click)="toggleDensity()">
+        Density: {{ density() }}
+      </ui-button>
+    </div>
+    <ui-table-view
+      [uiDensity]="density()"
+      caption="Team Members"
+      tableId="story-local-data"
+      selectionMode="multiple"
+      [rowClickSelect]="true"
+      [showRowIndexIndicator]="true"
+      [showBuiltInPaginator]="true"
+      [selectionModel]="selectionModel"
+      [datasource]="datasource"
+      (selectionChange)="onSelectionChange($event)"
+    >
+      <ui-number-column
+        key="id"
+        headerText="ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-text-column key="name" headerText="Name" [sortable]="true" [truncate]="true" />
+      <ui-text-column key="email" headerText="Email" [sortable]="true" [truncate]="true" />
+      <ui-number-column
+        key="age"
+        headerText="Age"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-badge-column key="status" headerText="Status" [sortable]="true" />
+      <ui-template-column key="actions" headerText="Actions" [sortable]="false">
+        <ng-template #cell let-row>
+          <ui-button variant="outlined" size="small" (click)="onAction(row)">
+            View
+          </ui-button>
+        </ng-template>
+      </ui-template-column>
+    </ui-table-view>
+    <pre class="local-demo-output">{{ statusLine() }}</pre>
+  `,
+  styles: [
+    `
+      .local-demo-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #f6f7f8);
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 4px;
+      }
+
+      .local-demo-output {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #f6f7f8);
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 4px;
+      }
+    `,
+  ],
+})
+class UITableViewLocalDataDemo {
+  readonly filterFields = DEMO_FILTER_FIELDS;
+  readonly datasource = new FilterableArrayDatasource(DEMO_ROWS);
+  readonly selectionModel = new SelectionModel<DemoRow>(
+    "multiple",
+    (row) => row.id,
+  );
+  readonly density = signal<UIDensity>("comfortable");
+  readonly statusLine = signal(
+    "Select rows or click View to see output here…",
+  );
+
+  private readonly table = viewChild.required(UITableView);
+
+  onExpressionChange(expression: FilterExpression<DemoRow>): void {
+    this.datasource.filterBy(expression);
+    this.table().refreshDatasource();
+  }
+
+  onSelectionChange(rows: readonly unknown[]): void {
+    const count = rows.length;
+    this.statusLine.set(
+      count > 0
+        ? `${count} row${count === 1 ? "" : "s"} selected: ${(rows as DemoRow[]).map((r) => r.name).join(", ")}`
+        : "No rows selected.",
+    );
+  }
+
+  onAction(row: DemoRow): void {
+    this.statusLine.set(
+      `View clicked: ${JSON.stringify({ id: row.id, name: row.name, status: row.status }, null, 2)}`,
+    );
+  }
+
+  toggleDensity(): void {
+    const cycle: Record<UIDensity, UIDensity> = {
+      small: "compact",
+      compact: "comfortable",
+      comfortable: "generous",
+      generous: "small",
+    };
+    this.density.update((d) => cycle[d]);
+  }
+}
+
+/**
+ * **Local data with filter, selection & actions** — A self-contained demo
+ * using an in-memory `FilterableArrayDatasource`. Combines `<ui-filter>`,
+ * multi-row selection with a `SelectionModel`, a `<ui-template-column>`
+ * action button, and an interactive density toggle.
+ */
+export const LocalDataDemo: Story = {
+  args: {
+    selectionMode: "none"
+  },
+
+  decorators: [
+    moduleMetadata({
+      imports: [UITableViewLocalDataDemo],
+    }),
+  ],
+
+  render: () => ({
+    template: "<ui-table-view-local-data-demo />",
+    props: {},
+  }),
+
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `// ── HTML ──
+<ui-filter
+  [fields]="filterFields"
+  [allowJunction]="true"
+  (expressionChange)="onExpressionChange($event)"
+/>
+
+<ui-table-view
+  [uiDensity]="density"
+  caption="Team Members"
+  tableId="local-data"
+  selectionMode="multiple"
+  [rowClickSelect]="true"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [selectionModel]="selectionModel"
+  [datasource]="datasource"
+  (selectionChange)="onSelectionChange($event)"
+>
+  <ui-number-column key="id" headerText="ID" [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="name" headerText="Name" [sortable]="true" [truncate]="true" />
+  <ui-text-column key="email" headerText="Email" [sortable]="true" [truncate]="true" />
+  <ui-number-column key="age" headerText="Age" [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-badge-column key="status" headerText="Status" [sortable]="true" />
+  <ui-template-column key="actions" headerText="Actions" [sortable]="false">
+    <ng-template #cell let-row>
+      <ui-button variant="outlined" size="small" (click)="onAction(row)">View</ui-button>
+    </ng-template>
+  </ui-template-column>
+</ui-table-view>
+
+// ── TypeScript ──
+import { Component, signal, viewChild } from '@angular/core';
+import {
+  UITableView, UITextColumn, UINumberColumn, UIBadgeColumn, UITemplateColumn,
+  UIButton, UIFilter, UIDensityDirective,
+  FilterableArrayDatasource, SelectionModel,
+} from '@theredhead/ui-kit';
+import type { FilterExpression, FilterFieldDefinition } from '@theredhead/ui-kit';
+
+interface Row { id: number; name: string; email: string; age: number; status: string; }
+
+readonly datasource = new FilterableArrayDatasource<Row>(rows);
+readonly selectionModel = new SelectionModel<Row>('multiple', row => row.id);
+private readonly table = viewChild.required(UITableView);
+
+onExpressionChange(expression: FilterExpression<Row>): void {
+  this.datasource.filterBy(expression);
+  this.table().refreshDatasource();
+}
+
+onSelectionChange(rows: readonly Row[]): void { /* update UI */ }
+onAction(row: Row): void { /* handle action */ }
+
+// ── SCSS ──
+/* No custom styles needed. */`,
+      },
+    },
+  }
 };
 
 /**
