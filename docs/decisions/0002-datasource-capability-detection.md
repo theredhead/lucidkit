@@ -46,7 +46,7 @@ if (isSortableDatasource(ds)) {
 }
 ```
 
-Type guards are shipped from `@theredhead/foundation`:
+Type guards are shipped from `@theredhead/lucid-foundation`:
 
 - `isSortableDatasource()`
 - `isFilterableDatasource()`

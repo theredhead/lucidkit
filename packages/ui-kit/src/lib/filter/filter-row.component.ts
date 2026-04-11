@@ -23,7 +23,7 @@ import {
   isNoValueOperator,
   operatorsForType,
 } from "./filter.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 // ── Helpers ───────────────────────────────────────────────────────────
 

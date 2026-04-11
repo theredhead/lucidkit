@@ -14,8 +14,8 @@ import type { SortState } from "./table-view-header/table-view-header.component"
  *
  * @example
  * ```ts
- * import { toComparator } from '@theredhead/ui-kit';
- * import { SortableArrayDatasource } from '@theredhead/foundation';
+ * import { toComparator } from '@theredhead/lucid-kit';
+ * import { SortableArrayDatasource } from '@theredhead/lucid-foundation';
  *
  * const ds = new SortableArrayDatasource(items);
  * const state = { key: 'name', direction: 'asc' };

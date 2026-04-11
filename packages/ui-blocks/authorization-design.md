@@ -1,13 +1,13 @@
 # Authorization-Aware UI — Design Document
 
-> **Status:** Draft · **Package:** `@theredhead/ui-blocks`  
+> **Status:** Draft · **Package:** `@theredhead/lucid-blocks`  
 > **Date:** 2026-03-21
 
 ---
 
 ## Problem
 
-Application developers using `@theredhead/ui-kit` and `@theredhead/ui-blocks`
+Application developers using `@theredhead/lucid-kit` and `@theredhead/lucid-blocks`
 need to disable (or hide) UI elements based on the current user's permissions.
 The UI library must support this without:
 
@@ -354,7 +354,7 @@ Suitable when the backend returns a pre-expanded list of permission strings
 
 ```ts
 import { Injectable, Signal, computed, signal } from "@angular/core";
-import { IAuthorizationProvider } from "@theredhead/ui-blocks";
+import { IAuthorizationProvider } from "@theredhead/lucid-blocks";
 
 @Injectable({ providedIn: "root" })
 export class AuthorizationService implements IAuthorizationProvider {
@@ -384,7 +384,7 @@ and permissions are derived client-side.
 
 ```ts
 import { Injectable, Signal, computed, signal } from "@angular/core";
-import { IAuthorizationProvider } from "@theredhead/ui-blocks";
+import { IAuthorizationProvider } from "@theredhead/lucid-blocks";
 
 interface UserContext {
   readonly contextId: string;
@@ -471,7 +471,7 @@ export class MultiContextAuthService implements IAuthorizationProvider {
 ### Register the provider
 
 ```ts
-import { AUTHORIZATION_PROVIDER } from "@theredhead/ui-blocks";
+import { AUTHORIZATION_PROVIDER } from "@theredhead/lucid-blocks";
 import { RoleAuthorizationService } from "./auth/role-authorization.service";
 
 bootstrapApplication(AppComponent, {
@@ -526,7 +526,7 @@ calculation.
                   │ inject (optional)
                   ▼
 ┌─────────────────────────────────────────────────┐
-│  @theredhead/ui-blocks                          │
+│  @theredhead/lucid-blocks                          │
 │                                                 │
 │  ┌──────────────────────────────────────┐       │
 │  │ IAuthorizationProvider (interface)   │       │
@@ -541,7 +541,7 @@ calculation.
 │                 │ removes from DOM               │
 │                 ▼                                │
 │  ┌──────────────────────────────────────┐       │
-│  │ @theredhead/ui-kit components        │       │
+│  │ @theredhead/lucid-kit components        │       │
 │  │ (UIButton, UIInput, UISelect, ...)   │       │
 │  │                                      │       │
 │  │ No changes needed — the directive    │       │

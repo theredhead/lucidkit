@@ -178,7 +178,7 @@ export const Default: Story = {
 <ui-button color="primary" variant="filled">Click me</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],
@@ -223,7 +223,7 @@ export const Gallery: Story = {
 <ui-button color="neutral" variant="ghost">Cancel</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],
@@ -262,7 +262,7 @@ export const Outlined: Story = {
 <ui-button variant="outlined">Outlined</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],
@@ -300,7 +300,7 @@ export const Ghost: Story = {
 <ui-button variant="ghost">Ghost</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],
@@ -332,7 +332,7 @@ export const Disabled: Story = {
 <ui-button variant="filled" [disabled]="true">Disabled</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],
@@ -375,7 +375,7 @@ export const AllVariants: Story = {
 <ui-button variant="ghost">Ghost</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],
@@ -425,7 +425,7 @@ export const AllSizes: Story = {
 <ui-button variant="filled" size="large">Large</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],
@@ -500,7 +500,7 @@ export const AllColors: Story = {
 <ui-button variant="outlined" color="danger">Delete</ui-button>
 
 // ── TypeScript ──
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIButton],

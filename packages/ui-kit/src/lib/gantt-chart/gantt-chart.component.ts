@@ -18,7 +18,7 @@ import {
   computeDateRange,
   computeTodayPosition,
 } from "./gantt-chart.utils";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Processed task row ready for template rendering.

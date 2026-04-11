@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { FilterableArrayDatasource, UITextColumn } from "@theredhead/ui-kit";
+import { FilterableArrayDatasource, UITextColumn } from "@theredhead/lucid-kit";
 
 import { UISearchView } from "./search-view.component";
 import type { SavedSearch } from "./saved-search.types";
@@ -394,8 +394,8 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { FilterableArrayDatasource } from '@theredhead/foundation';
-import { UISearchView, UITextColumn } from '@theredhead/ui-blocks';
+import { FilterableArrayDatasource } from '@theredhead/lucid-foundation';
+import { UISearchView, UITextColumn } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',
@@ -544,8 +544,8 @@ export const WithSavedSearches: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { FilterableArrayDatasource } from '@theredhead/foundation';
-import { UISearchView, UITextColumn, type SavedSearch } from '@theredhead/ui-blocks';
+import { FilterableArrayDatasource } from '@theredhead/lucid-foundation';
+import { UISearchView, UITextColumn, type SavedSearch } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',

@@ -1,6 +1,6 @@
 # UI Blocks — New Component Roadmap
 
-New composite blocks that compose `@theredhead/ui-kit` primitives into
+New composite blocks that compose `@theredhead/lucid-kit` primitives into
 higher-level, content-agnostic layout shells.
 
 ## Queue

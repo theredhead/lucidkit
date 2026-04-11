@@ -1,4 +1,4 @@
-// Core types — re-exported from @theredhead/foundation
+// Core types — re-exported from @theredhead/lucid-foundation
 export {
   Emitter,
   SortDirection,
@@ -7,7 +7,7 @@ export {
   type RangeDefinition,
   type RowChangedNotification,
   type RowRangeChangedNotification,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 
 // Selection model — remains in ui-kit
 export {

@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 
 import type { PageChangeEvent } from "./pagination.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * A pagination control for navigating through pages of data.

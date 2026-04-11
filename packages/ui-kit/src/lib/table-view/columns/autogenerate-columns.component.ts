@@ -13,7 +13,7 @@ import {
   UITableViewCellContext,
   UITableViewColumn,
 } from "./table-column.directive";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Internal text column component used by UIAutogenerateColumns.

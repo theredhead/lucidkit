@@ -20,7 +20,7 @@ import type {
   CarouselStrategy,
 } from "./carousel.types";
 import { CoverflowCarouselStrategy } from "./coverflow-strategy";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A generic carousel that delegates layout and animation to a

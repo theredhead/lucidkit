@@ -11,8 +11,8 @@ import {
   UIDialogBody,
   UIDialogFooter,
   ModalRef,
-} from "@theredhead/ui-kit";
-import { UISurface } from '@theredhead/foundation';
+} from "@theredhead/lucid-kit";
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Content component for a simple alert dialog.

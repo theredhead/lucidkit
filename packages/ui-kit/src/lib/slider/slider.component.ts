@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 
 import type { SliderMode, SliderTick, SliderValue } from "./slider.types";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A range slider with single-thumb and dual-thumb (range) modes.

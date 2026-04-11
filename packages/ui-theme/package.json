@@ -1,5 +1,5 @@
 {
-  "name": "@theredhead/ui-theme",
+  "name": "@theredhead/lucid-theme",
   "version": "0.0.1",
   "description": "theredhead UI Theme - Light/Dark Mode Theming with CSS Custom Properties",
   "private": false,

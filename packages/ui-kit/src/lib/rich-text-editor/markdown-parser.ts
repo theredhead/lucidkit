@@ -20,7 +20,7 @@ import { InjectionToken } from "@angular/core";
  *
  * // Plugging in `marked`
  * import { marked } from 'marked';
- * import { MARKDOWN_PARSER, createMarkedParser } from '@theredhead/ui-kit';
+ * import { MARKDOWN_PARSER, createMarkedParser } from '@theredhead/lucid-kit';
  *
  * providers: [
  *   { provide: MARKDOWN_PARSER, useValue: createMarkedParser(md => marked.parse(md) as string) }
@@ -51,7 +51,7 @@ export interface MarkdownParser {
  *
  * @example
  * ```ts
- * import { MARKDOWN_PARSER, createMarkedParser } from '@theredhead/ui-kit';
+ * import { MARKDOWN_PARSER, createMarkedParser } from '@theredhead/lucid-kit';
  * import { marked } from 'marked';
  *
  * @Component({
@@ -86,7 +86,7 @@ export const MARKDOWN_PARSER = new InjectionToken<MarkdownParser>(
  * @example
  * ```ts
  * import { marked } from 'marked';
- * import { MARKDOWN_PARSER, createMarkedParser } from '@theredhead/ui-kit';
+ * import { MARKDOWN_PARSER, createMarkedParser } from '@theredhead/lucid-kit';
  *
  * providers: [
  *   {
@@ -118,7 +118,7 @@ export function createMarkedParser(
  * @example
  * ```ts
  * import MarkdownIt from 'markdown-it';
- * import { MARKDOWN_PARSER, createMarkdownItParser } from '@theredhead/ui-kit';
+ * import { MARKDOWN_PARSER, createMarkdownItParser } from '@theredhead/lucid-kit';
  *
  * const mdit = new MarkdownIt();
  *

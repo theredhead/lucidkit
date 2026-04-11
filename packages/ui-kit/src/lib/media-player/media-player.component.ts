@@ -14,7 +14,7 @@ import {
 } from "@angular/core";
 import { DomSanitizer, type SafeResourceUrl } from "@angular/platform-browser";
 
-import { LoggerFactory, UISurface } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";

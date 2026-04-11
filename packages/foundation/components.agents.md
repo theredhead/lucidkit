@@ -1,4 +1,4 @@
-# @theredhead/foundation — API Inventory
+# @theredhead/lucid-foundation — API Inventory
 
 > Machine-readable inventory of all public exports.
 > Referenced from the root [AGENTS.md](../../AGENTS.md).

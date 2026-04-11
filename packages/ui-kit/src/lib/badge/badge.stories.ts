@@ -170,7 +170,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIBadge } from '@theredhead/ui-kit';
+import { UIBadge } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -227,7 +227,7 @@ export const Count: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIBadge } from '@theredhead/ui-kit';
+import { UIBadge } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -266,7 +266,7 @@ export const Overflow: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIBadge } from '@theredhead/ui-kit';
+import { UIBadge } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -306,7 +306,7 @@ export const Dot: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIBadge } from '@theredhead/ui-kit';
+import { UIBadge } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -342,7 +342,7 @@ export const Label: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIBadge } from '@theredhead/ui-kit';
+import { UIBadge } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -393,7 +393,7 @@ export const AllColors: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIBadge } from '@theredhead/ui-kit';
+import { UIBadge } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -446,7 +446,7 @@ export const AllVariants: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIBadge } from '@theredhead/ui-kit';
+import { UIBadge } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

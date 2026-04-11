@@ -1,5 +1,5 @@
 /**
- * Re-exported from `@theredhead/foundation`.
- * @see {@link @theredhead/foundation!ArrayTreeDatasource}
+ * Re-exported from `@theredhead/lucid-foundation`.
+ * @see {@link @theredhead/lucid-foundation!ArrayTreeDatasource}
  */
-export { ArrayTreeDatasource } from "@theredhead/foundation";
+export { ArrayTreeDatasource } from "@theredhead/lucid-foundation";

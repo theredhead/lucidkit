@@ -40,7 +40,7 @@ export const TEXT_ADAPTER_REGISTRATIONS = new InjectionToken<
  * @example
  * ```ts
  * // app.config.ts
- * import { provideTextAdapters, EmailTextAdapter, UrlTextAdapter } from '@theredhead/ui-kit';
+ * import { provideTextAdapters, EmailTextAdapter, UrlTextAdapter } from '@theredhead/lucid-kit';
  *
  * export const appConfig = {
  *   providers: [

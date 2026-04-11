@@ -28,12 +28,12 @@ import {
   UISidebarGroup,
   UISidebarItem,
   UISidebarNav,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 import {
   ArrayTreeDatasource,
   StorageService,
   UISurface,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 
 import type { NavigationNode } from "./navigation-page.utils";
 

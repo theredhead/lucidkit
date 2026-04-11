@@ -1138,7 +1138,7 @@ The system consists of three layers:
 
 Field components are resolved at runtime through a DI-based **field registry**.
 Call \`provideBuiltInFormFields()\` in your app config to register the default
-\`@theredhead/ui-kit\` field set, or supply your own mappings with
+\`@theredhead/lucid-kit\` field set, or supply your own mappings with
 \`provideFormFields()\`.`,
       },
     },
@@ -1250,8 +1250,8 @@ export const Playground: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/ui-forms';
-import type { FormSchema, FormValues } from '@theredhead/ui-forms';
+import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/lucid-forms';
+import type { FormSchema, FormValues } from '@theredhead/lucid-forms';
 
 const schema: FormSchema = {
   id: 'contact',
@@ -1347,8 +1347,8 @@ export const ContactForm: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/ui-forms';
-import type { FormSchema, FormValues } from '@theredhead/ui-forms';
+import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/lucid-forms';
+import type { FormSchema, FormValues } from '@theredhead/lucid-forms';
 
 const schema: FormSchema = {
   id: 'contact',
@@ -1438,8 +1438,8 @@ export const ConditionalFields: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/ui-forms';
-import type { FormSchema, FormValues } from '@theredhead/ui-forms';
+import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/lucid-forms';
+import type { FormSchema, FormValues } from '@theredhead/lucid-forms';
 
 const schema: FormSchema = {
   id: 'conditional',
@@ -1545,8 +1545,8 @@ export const WizardForm: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIFormWizard, FormEngine, provideBuiltInFormFields } from '@theredhead/ui-forms';
-import type { FormSchema, FormValues } from '@theredhead/ui-forms';
+import { UIFormWizard, FormEngine, provideBuiltInFormFields } from '@theredhead/lucid-forms';
+import type { FormSchema, FormValues } from '@theredhead/lucid-forms';
 
 const schema: FormSchema = {
   id: 'wizard',
@@ -1657,8 +1657,8 @@ export const ValidationDemo: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/ui-forms';
-import type { FormSchema, FormValues } from '@theredhead/ui-forms';
+import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/lucid-forms';
+import type { FormSchema, FormValues } from '@theredhead/lucid-forms';
 
 // Validation rules live in the schema — no extra code needed.
 const schema: FormSchema = {
@@ -1762,8 +1762,8 @@ export const WithoutSubmitButton: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIForm, FormEngine } from '@theredhead/ui-forms';
-import type { FormSchema } from '@theredhead/ui-forms';
+import { UIForm, FormEngine } from '@theredhead/lucid-forms';
+import type { FormSchema } from '@theredhead/lucid-forms';
 
 @Component({
   selector: 'app-inline-form',
@@ -1831,7 +1831,7 @@ export const WizardCustomLabels: Story = {
 />
 
 // ── TypeScript ──
-import { UIFormWizard, FormEngine } from '@theredhead/ui-forms';
+import { UIFormWizard, FormEngine } from '@theredhead/lucid-forms';
 
 // Just set the label inputs — no extra code required.
 
@@ -1874,8 +1874,8 @@ export const VehicleRegistration: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/ui-forms';
-import type { FormSchema, FormValues } from '@theredhead/ui-forms';
+import { UIForm, FormEngine, provideBuiltInFormFields } from '@theredhead/lucid-forms';
+import type { FormSchema, FormValues } from '@theredhead/lucid-forms';
 
 const schema: FormSchema = {
   id: 'vehicle-registration',

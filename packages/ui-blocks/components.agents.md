@@ -1,4 +1,4 @@
-# @theredhead/ui-blocks — API Inventory
+# @theredhead/lucid-blocks — API Inventory
 
 > Machine-readable inventory of all public exports.
 > Referenced from the root [AGENTS.md](../../AGENTS.md).

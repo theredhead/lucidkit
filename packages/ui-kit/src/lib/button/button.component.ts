@@ -5,7 +5,7 @@ import {
   InjectionToken,
   input,
 } from "@angular/core";
-import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/foundation";
+import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/lucid-foundation";
 
 export type ButtonVariant = "filled" | "outlined" | "ghost";
 export type ButtonSize = "small" | "medium" | "large";

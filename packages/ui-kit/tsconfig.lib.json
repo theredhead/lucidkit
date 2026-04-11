@@ -5,8 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "@theredhead/foundation": ["../../dist/foundation"],
-      "@theredhead/ui-theme": ["../../dist/ui-theme"]
+      "@theredhead/lucid-foundation": ["../../dist/foundation"],
+      "@theredhead/lucid-theme": ["../../dist/ui-theme"]
     }
   },
   "include": ["src/**/*.ts"],

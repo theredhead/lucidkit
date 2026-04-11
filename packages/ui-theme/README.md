@@ -1,4 +1,4 @@
-# @theredhead/ui-theme
+# @theredhead/lucid-theme
 
 Light/dark mode theming with CSS custom properties for theredhead Angular
 applications. **No Angular Material dependency** — colours and typography are
@@ -14,7 +14,7 @@ tokens via `var(--ui-*)` — they never redeclare their own dark-mode tiers.
 ## Installation
 
 ```bash
-npm install @theredhead/ui-theme
+npm install @theredhead/lucid-theme
 ```
 
 ---
@@ -26,7 +26,7 @@ npm install @theredhead/ui-theme
 In your application's main `styles.scss`:
 
 ```scss
-@use "@theredhead/ui-theme" as theme;
+@use "@theredhead/lucid-theme" as theme;
 
 // Apply the full theme (sets all --ui-* custom properties on html)
 @include theme.theredhead-theme();
@@ -36,7 +36,7 @@ In your application's main `styles.scss`:
 
 ```typescript
 import { Component, inject } from "@angular/core";
-import { ThemeService } from "@theredhead/ui-theme";
+import { ThemeService } from "@theredhead/lucid-theme";
 
 @Component({
   selector: "app-root",
@@ -120,7 +120,7 @@ the duplication that the original per-component pattern required.
 
 ## UISurface — Declarative Surface Styling
 
-The `UISurface` host directive (from `@theredhead/foundation`) maps a
+The `UISurface` host directive (from `@theredhead/lucid-foundation`) maps a
 `surfaceType` input to CSS classes on the host element. The theme stylesheet
 (`_surfaces.scss`) provides the visual treatment for each type.
 
@@ -146,7 +146,7 @@ The `UISurface` host directive (from `@theredhead/foundation`) maps a
 Components can declare a default surface type with `UI_DEFAULT_SURFACE_TYPE`:
 
 ```typescript
-import { UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 @Component({
   providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "panel" }],
@@ -212,7 +212,7 @@ This pattern keeps components themeable at multiple granularity levels.
 Override colours by passing parameters to the `theredhead-theme()` mixin:
 
 ```scss
-@use "@theredhead/ui-theme" as theme;
+@use "@theredhead/lucid-theme" as theme;
 
 @include theme.theredhead-theme(
   $primary-color: #006b5e,
@@ -329,7 +329,7 @@ The `ui-tokens.ts` module exports a `UI_TOKENS` constant that maps every
 for reading token values from TypeScript at runtime:
 
 ```typescript
-import { UI_TOKENS } from "@theredhead/ui-theme";
+import { UI_TOKENS } from "@theredhead/lucid-theme";
 
 const accent = getComputedStyle(el).getPropertyValue(UI_TOKENS.accent);
 ```

@@ -1,6 +1,6 @@
 /**
- * Re-exported from `@theredhead/foundation`.
+ * Re-exported from `@theredhead/lucid-foundation`.
  *
- * @see `@theredhead/foundation` — `FilterableArrayDatasource`
+ * @see `@theredhead/lucid-foundation` — `FilterableArrayDatasource`
  */
-export { FilterableArrayDatasource } from "@theredhead/foundation";
+export { FilterableArrayDatasource } from "@theredhead/lucid-foundation";

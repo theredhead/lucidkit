@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 
 import { UIRadioGroup } from "./radio-group.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A single radio button within a `<ui-radio-group>`.

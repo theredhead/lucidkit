@@ -1,4 +1,4 @@
-import type { SelectOption } from "@theredhead/ui-kit";
+import type { SelectOption } from "@theredhead/lucid-kit";
 
 /**
  * Supported field types for a property sheet row.

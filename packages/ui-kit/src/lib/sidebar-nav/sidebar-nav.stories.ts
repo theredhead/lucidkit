@@ -444,7 +444,7 @@ export const Default: Story = {
 import { Component, signal } from '@angular/core';
 import {
   UISidebarNav, UISidebarItem, UISidebarGroup, UIIcons,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-shell',
@@ -503,7 +503,7 @@ export const CollapsedGroups: Story = {
 import { Component } from '@angular/core';
 import {
   UISidebarNav, UISidebarItem, UISidebarGroup, UIIcons,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -550,7 +550,7 @@ export const WithBadges: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UISidebarNav, UISidebarItem, UIIcons } from '@theredhead/ui-kit';
+import { UISidebarNav, UISidebarItem, UIIcons } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-mailbox',
@@ -627,7 +627,7 @@ export const Navigation: Story = {
 import { Component, signal, computed } from '@angular/core';
 import {
   UISidebarNav, UISidebarItem, UISidebarGroup, UIIcons,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 interface NavPage {
   id: string;

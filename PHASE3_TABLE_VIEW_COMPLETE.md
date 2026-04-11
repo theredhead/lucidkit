@@ -23,7 +23,7 @@ Successfully refactored UITableView to delegate sorting and filtering to datasou
 **Usage:**
 
 ```typescript
-import { toComparator } from "@theredhead/ui-kit";
+import { toComparator } from "@theredhead/lucid-kit";
 
 const state = { key: "name", direction: "asc" };
 const comparator = toComparator(state);

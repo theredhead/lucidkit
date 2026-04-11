@@ -435,7 +435,7 @@ import { Component } from '@angular/core';
 import {
   UIToolbar, UIButtonTool, UISeparatorTool,
   type ToolActionEvent,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   standalone: true,
@@ -482,7 +482,7 @@ import { Component, signal } from '@angular/core';
 import {
   UIToolbar, UIToggleTool, UIToggleGroupTool, UISeparatorTool,
   UIIcons, type ToolActionEvent,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   standalone: true,
@@ -533,7 +533,7 @@ import { Component, signal } from '@angular/core';
 import {
   UIToolbar, UIDropdownTool, UISelectTool,
   type ToolActionEvent, type SelectOption,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   standalone: true,
@@ -583,7 +583,7 @@ export const TemplateTool: Story = {
 import { Component, signal } from '@angular/core';
 import {
   UIToolbar, UIButtonTool, UITemplateTool, UIIcons,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
         `,
       },
     },
@@ -619,7 +619,7 @@ import { Component } from '@angular/core';
 import {
   UIToolbar, UIButtonGroupTool, UIButtonTool, UISeparatorTool,
   UIIcons, type ToolActionEvent,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
         `,
       },
     },

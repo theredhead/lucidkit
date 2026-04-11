@@ -7,7 +7,7 @@ import {
   model,
   output,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** @internal — DI token for the parent accordion controller. */
 export const ACCORDION_CONTROLLER = new InjectionToken<AccordionController>(

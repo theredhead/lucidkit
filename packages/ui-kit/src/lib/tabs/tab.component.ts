@@ -7,7 +7,7 @@ import {
   TemplateRef,
   viewChild,
 } from "@angular/core";
-import { LoggerFactory, UISurface } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 
 import { TAB_HEADER_ITEM } from "./tab-header-item";
 

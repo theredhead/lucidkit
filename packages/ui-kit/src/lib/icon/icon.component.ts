@@ -6,7 +6,7 @@ import {
   input,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/foundation";
+import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Inline SVG icon component.
@@ -60,7 +60,7 @@ import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/foundation";
  * ### 2. Use in a template
  *
  * ```ts
- * import { UIIcon } from '@theredhead/ui-kit';
+ * import { UIIcon } from '@theredhead/lucid-kit';
  * import { AppIcons } from './app-icons';
  *
  * @Component({

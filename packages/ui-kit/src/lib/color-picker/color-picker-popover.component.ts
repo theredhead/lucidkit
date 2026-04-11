@@ -26,7 +26,7 @@ import {
   rgbaToHex,
   rgbaToHsla,
 } from "./color-picker.utils";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 // ── Modes ──────────────────────────────────────────────────────────
 

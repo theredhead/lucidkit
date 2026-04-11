@@ -5,7 +5,7 @@ import { vi } from "vitest";
 import {
   ArrayDatasource,
   SortableArrayDatasource,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 
 import { UITableView } from "./table-view.component";
 import { UITextColumn } from "./columns/text-column/text-column.component";

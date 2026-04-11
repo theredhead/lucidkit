@@ -16,9 +16,9 @@ Angular libraries:
 
 | Package              | npm name                | Purpose                                                                |
 | -------------------- | ----------------------- | ---------------------------------------------------------------------- |
-| `packages/ui-theme`  | `@theredhead/ui-theme`  | SCSS theme with light / dark mode, CSS custom properties, ThemeService |
-| `packages/ui-kit`    | `@theredhead/ui-kit`    | Core reusable components (Button, Table View, Filter, Tree View, …)    |
-| `packages/ui-blocks` | `@theredhead/ui-blocks` | Higher-level compositions (Master-Detail View)                         |
+| `packages/ui-theme`  | `@theredhead/lucid-theme`  | SCSS theme with light / dark mode, CSS custom properties, ThemeService |
+| `packages/ui-kit`    | `@theredhead/lucid-kit`    | Core reusable components (Button, Table View, Filter, Tree View, …)    |
+| `packages/ui-blocks` | `@theredhead/lucid-blocks` | Higher-level compositions (Master-Detail View)                         |
 
 A shared **Storybook** host is wired up at the workspace root for interactive
 component development and documentation.

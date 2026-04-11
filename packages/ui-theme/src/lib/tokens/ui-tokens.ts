@@ -1,12 +1,12 @@
 /**
- * All `--ui-*` CSS custom property names used by `@theredhead/ui-kit`.
+ * All `--ui-*` CSS custom property names used by `@theredhead/lucid-kit`.
  *
  * Import these constants when you need to read or override tokens
  * programmatically (e.g. via `getComputedStyle` or `element.style.setProperty`).
  *
  * @example
  * ```ts
- * import { UI_TOKENS } from '@theredhead/ui-theme';
+ * import { UI_TOKENS } from '@theredhead/lucid-theme';
  *
  * const accent = getComputedStyle(el).getPropertyValue(UI_TOKENS.accent);
  * el.style.setProperty(UI_TOKENS.surface, '#fff');

@@ -18,7 +18,7 @@ import { UITab } from "./tab.component";
 import { TAB_HEADER_ITEM, type TabAlignment } from "./tab-header-item";
 import { UITabSeparator } from "./tab-separator.component";
 import { UITabSpacer } from "./tab-spacer.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Position of the tab headers relative to the content panel. */
 export type TabPosition = "top" | "bottom" | "left" | "right";

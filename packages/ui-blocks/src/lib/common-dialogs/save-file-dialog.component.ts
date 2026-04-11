@@ -14,7 +14,7 @@ import {
   UIDialogBody,
   UIDialogFooter,
   ModalRef,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import { UIFileBrowser } from "../file-browser/file-browser.component";
 import type {
@@ -23,7 +23,7 @@ import type {
   DirectoryChangeEvent,
 } from "../file-browser/file-browser.types";
 import type { SaveFileResult } from "./common-dialog.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Content component for a save-file dialog.

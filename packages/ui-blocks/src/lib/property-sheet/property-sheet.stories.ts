@@ -227,7 +227,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIPropertySheet, type PropertyFieldDefinition } from '@theredhead/ui-blocks';
+import { UIPropertySheet, type PropertyFieldDefinition } from '@theredhead/lucid-blocks';
 
 interface Config {
   name: string;

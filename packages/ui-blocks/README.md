@@ -1,7 +1,7 @@
-# @theredhead/ui-blocks
+# @theredhead/lucid-blocks
 
 Higher-level layout compositions for theredhead Angular applications. Built on
-top of `@theredhead/ui-kit` primitives, standalone, signal-based, and OnPush.
+top of `@theredhead/lucid-kit` primitives, standalone, signal-based, and OnPush.
 
 ---
 
@@ -14,7 +14,7 @@ A responsive master-detail layout. The master pane can render data as either a
 content projection so you can render anything for the selected item.
 
 ```typescript
-import { UIMasterDetailView } from "@theredhead/ui-blocks";
+import { UIMasterDetailView } from "@theredhead/lucid-blocks";
 
 @Component({
   selector: "app-users",

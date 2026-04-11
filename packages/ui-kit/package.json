@@ -1,10 +1,10 @@
 {
-  "name": "@theredhead/ui-kit",
+  "name": "@theredhead/lucid-kit",
   "version": "0.0.1",
   "description": "theredhead UI Kit - Core Components Library",
   "private": false,
   "dependencies": {
-    "@theredhead/ui-theme": "^0.0.1"
+    "@theredhead/lucid-theme": "^0.0.1"
   },
   "peerDependencies": {
     "@angular/common": "^21.0.0",

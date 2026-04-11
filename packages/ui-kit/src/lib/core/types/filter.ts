@@ -1,5 +1,5 @@
 /**
- * Re-exported from `@theredhead/foundation`.
- * @see {@link @theredhead/foundation!CompiledFilter}
+ * Re-exported from `@theredhead/lucid-foundation`.
+ * @see {@link @theredhead/lucid-foundation!CompiledFilter}
  */
-export type { CompiledFilter, FilterExpression } from "@theredhead/foundation";
+export type { CompiledFilter, FilterExpression } from "@theredhead/lucid-foundation";

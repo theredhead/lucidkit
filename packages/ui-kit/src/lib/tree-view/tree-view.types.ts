@@ -1,8 +1,8 @@
 /**
- * Re-exported from `@theredhead/foundation`.
+ * Re-exported from `@theredhead/lucid-foundation`.
  */
 export type {
   TreeNode,
   ITreeDatasource,
   TreeSelectionMode,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";

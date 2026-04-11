@@ -5,7 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "@theredhead/foundation": ["../../dist/foundation"]
+      "@theredhead/lucid-foundation": ["../../dist/foundation"]
     }
   },
   "include": ["src/**/*.ts"],

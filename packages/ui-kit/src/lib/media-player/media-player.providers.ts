@@ -45,7 +45,7 @@ export const MEDIA_EMBED_PROVIDERS = new InjectionToken<MediaEmbedProvider[]>(
  *   provideMediaEmbedProviders,
  *   youTubeEmbedProvider,
  *   vimeoEmbedProvider,
- * } from '@theredhead/ui-kit';
+ * } from '@theredhead/lucid-kit';
  *
  * export const appConfig = {
  *   providers: [

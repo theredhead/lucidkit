@@ -17,11 +17,11 @@
     "moduleResolution": "bundler",
     "types": ["vitest/globals"],
     "paths": {
-      "@theredhead/ui-kit": ["./packages/ui-kit/src/public-api.ts", "./dist/ui-kit"],
-      "@theredhead/ui-blocks": ["./packages/ui-blocks/src/public-api.ts", "./dist/ui-blocks"],
-      "@theredhead/ui-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"],
-      "@theredhead/foundation": ["./packages/foundation/src/public-api.ts", "./dist/foundation"],
-      "@theredhead/ui-forms": ["./packages/ui-forms/src/public-api.ts", "./dist/ui-forms"]
+      "@theredhead/lucid-kit": ["./packages/ui-kit/src/public-api.ts", "./dist/ui-kit"],
+      "@theredhead/lucid-blocks": ["./packages/ui-blocks/src/public-api.ts", "./dist/ui-blocks"],
+      "@theredhead/lucid-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"],
+      "@theredhead/lucid-foundation": ["./packages/foundation/src/public-api.ts", "./dist/foundation"],
+      "@theredhead/lucid-forms": ["./packages/ui-forms/src/public-api.ts", "./dist/ui-forms"]
     }
   },
   "angularCompilerOptions": {

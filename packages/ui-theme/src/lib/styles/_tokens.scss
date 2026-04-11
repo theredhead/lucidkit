@@ -2,7 +2,7 @@
 // =============================================================================
 //
 // Centralised light / dark values for every `--ui-*` CSS custom property used
-// across @theredhead/ui-kit.  Include this file via the `theredhead-theme()`
+// across @theredhead/lucid-kit.  Include this file via the `theredhead-theme()`
 // mixin so that every token is available at the `:root` level and components
 // only need to consume `var(--ui-*)` without re-declaring defaults.
 //

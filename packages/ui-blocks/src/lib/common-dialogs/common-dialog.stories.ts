@@ -6,7 +6,7 @@ import {
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIButton } from "@theredhead/ui-kit";
+import { UIButton } from "@theredhead/lucid-kit";
 
 import { CommonDialogService } from "./common-dialog.service";
 import type {
@@ -275,7 +275,7 @@ const meta: Meta<UIDemoCommonDialogs> = {
           "- **About** — application information with logo, version, credits",
           "",
           "All methods are `async` and return `Promise`-based results.",
-          "The service uses `ModalService` from `@theredhead/ui-kit` internally.",
+          "The service uses `ModalService` from `@theredhead/lucid-kit` internally.",
         ].join("\n"),
       },
     },
@@ -319,11 +319,11 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, inject } from '@angular/core';
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 import {
   CommonDialogService,
   type FileBrowserDatasource,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',

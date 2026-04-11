@@ -18,7 +18,7 @@ import {
   FilterableArrayDatasource,
   type IDatasource,
   UISurface,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 import {
   UIButton,
   UIDialog,
@@ -39,7 +39,7 @@ import {
   type FilterExpression,
   type FilterFieldDefinition,
   type PageChangeEvent,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import { SavedSearchService } from "./saved-search.service";
 import type { SavedSearch } from "./saved-search.types";

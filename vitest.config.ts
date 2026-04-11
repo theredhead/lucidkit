@@ -28,20 +28,20 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@theredhead/foundation": resolve(
+      "@theredhead/lucid-foundation": resolve(
         root,
         "packages/foundation/src/public-api.ts",
       ),
-      "@theredhead/ui-kit": resolve(root, "packages/ui-kit/src/public-api.ts"),
-      "@theredhead/ui-blocks": resolve(
+      "@theredhead/lucid-kit": resolve(root, "packages/ui-kit/src/public-api.ts"),
+      "@theredhead/lucid-blocks": resolve(
         root,
         "packages/ui-blocks/src/public-api.ts",
       ),
-      "@theredhead/ui-forms": resolve(
+      "@theredhead/lucid-forms": resolve(
         root,
         "packages/ui-forms/src/public-api.ts",
       ),
-      "@theredhead/ui-theme": resolve(
+      "@theredhead/lucid-theme": resolve(
         root,
         "packages/ui-theme/src/public-api.ts",
       ),

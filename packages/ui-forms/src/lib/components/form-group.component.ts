@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 import type { GroupState } from "../engine/form-engine";
 import { UIFormField } from "./form-field/form-field.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Renders a group of form fields as a visual section (fieldset).

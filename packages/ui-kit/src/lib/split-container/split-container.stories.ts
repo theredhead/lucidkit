@@ -283,7 +283,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { UISplitContainer } from "@theredhead/ui-kit";
+import { UISplitContainer } from "@theredhead/lucid-kit";
 
 @Component({
   selector: "app-split-demo",
@@ -340,7 +340,7 @@ export const Vertical: Story = {
 
 // ── TypeScript ──
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { UISplitContainer } from "@theredhead/ui-kit";
+import { UISplitContainer } from "@theredhead/lucid-kit";
 
 @Component({
   selector: "app-vertical-split-demo",
@@ -401,7 +401,7 @@ export const Constrained: Story = {
 
 // ── TypeScript ──
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { UISplitContainer } from "@theredhead/ui-kit";
+import { UISplitContainer } from "@theredhead/lucid-kit";
 
 @Component({
   selector: "app-constrained-split-demo",
@@ -463,7 +463,7 @@ export const DoubleClickCollapse: Story = {
 
 // ── TypeScript ──
 import { Component, ChangeDetectionStrategy, signal } from "@angular/core";
-import { UISplitContainer, SplitResizeEvent } from "@theredhead/ui-kit";
+import { UISplitContainer, SplitResizeEvent } from "@theredhead/lucid-kit";
 
 @Component({
   selector: "app-collapse-split-demo",
@@ -529,7 +529,7 @@ export const Persistent: Story = {
 
 // ── TypeScript ──
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { UISplitContainer } from "@theredhead/ui-kit";
+import { UISplitContainer } from "@theredhead/lucid-kit";
 
 @Component({
   selector: "app-persistent-split-demo",
@@ -586,7 +586,7 @@ export const CustomDividerWidth: Story = {
 
 // ── TypeScript ──
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { UISplitContainer } from "@theredhead/ui-kit";
+import { UISplitContainer } from "@theredhead/lucid-kit";
 
 @Component({
   selector: "app-divider-width-demo",

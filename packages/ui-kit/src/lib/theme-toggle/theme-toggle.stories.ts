@@ -110,7 +110,7 @@ export const Default: Story = {
           "### How it works\n" +
           "Clicking the toggle cycles through three states: **light → dark → " +
           "system → light**. It works in concert with `ThemeService` from " +
-          "`@theredhead/ui-theme` to apply the correct CSS class (`light-theme` " +
+          "`@theredhead/lucid-theme` to apply the correct CSS class (`light-theme` " +
           "or `dark-theme`) on the `<html>` element and persist the choice in " +
           "`localStorage`.\n\n" +
           "### Variants\n" +
@@ -131,7 +131,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIThemeToggle } from '@theredhead/ui-kit';
+import { UIThemeToggle } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -170,7 +170,7 @@ export const ButtonVariant: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIThemeToggle } from '@theredhead/ui-kit';
+import { UIThemeToggle } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

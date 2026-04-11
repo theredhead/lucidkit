@@ -4,7 +4,7 @@ import {
   input,
   model,
 } from "@angular/core";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * A read-only rich text renderer.

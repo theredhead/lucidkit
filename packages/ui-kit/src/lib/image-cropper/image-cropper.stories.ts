@@ -327,7 +327,7 @@ export const FreeCrop: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { Component, signal, viewChild } from '@angular/core';
-import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+import { UIImageCropper, CropRegion } from '@theredhead/lucid-kit';
 
 @Component({ /* ... */ })
 export class MyImageCropperExample {
@@ -385,7 +385,7 @@ export const Square: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { Component, signal, viewChild } from '@angular/core';
-import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+import { UIImageCropper, CropRegion } from '@theredhead/lucid-kit';
 
 @Component({ /* ... */ })
 export class MySquareCropExample {
@@ -444,7 +444,7 @@ export const Widescreen: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { Component, signal, viewChild } from '@angular/core';
-import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+import { UIImageCropper, CropRegion } from '@theredhead/lucid-kit';
 
 @Component({ /* ... */ })
 export class MyWidescreenCropExample {
@@ -503,7 +503,7 @@ export const Portrait: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { Component, signal, viewChild } from '@angular/core';
-import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+import { UIImageCropper, CropRegion } from '@theredhead/lucid-kit';
 
 @Component({ /* ... */ })
 export class MyPortraitCropExample {
@@ -561,7 +561,7 @@ export const JpegExport: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { Component, signal, viewChild } from '@angular/core';
-import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+import { UIImageCropper, CropRegion } from '@theredhead/lucid-kit';
 
 @Component({ /* ... */ })
 export class MyJpegCropExample {
@@ -617,7 +617,7 @@ export const ProgrammaticImageData: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { AfterViewInit, Component, signal, viewChild } from '@angular/core';
-import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+import { UIImageCropper, CropRegion } from '@theredhead/lucid-kit';
 
 @Component({ /* ... */ })
 export class MyImageDataCropExample implements AfterViewInit {
@@ -681,7 +681,7 @@ export const ImageDataWithAspectRatio: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { AfterViewInit, Component, signal, viewChild } from '@angular/core';
-import { UIImageCropper, CropRegion } from '@theredhead/ui-kit';
+import { UIImageCropper, CropRegion } from '@theredhead/lucid-kit';
 
 @Component({ /* ... */ })
 export class MyImageDataSquareCropExample implements AfterViewInit {

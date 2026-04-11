@@ -309,8 +309,8 @@ export const VerticalAlternate: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITimeline } from '@theredhead/ui-kit';
-import { ArrayDatasource } from '@theredhead/foundation';
+import { UITimeline } from '@theredhead/lucid-kit';
+import { ArrayDatasource } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: 'app-example',
@@ -378,8 +378,8 @@ export const VerticalStart: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITimeline } from '@theredhead/ui-kit';
-import { ArrayDatasource } from '@theredhead/foundation';
+import { UITimeline } from '@theredhead/lucid-kit';
+import { ArrayDatasource } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: 'app-example',
@@ -437,8 +437,8 @@ export const Horizontal: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITimeline } from '@theredhead/ui-kit';
-import { ArrayDatasource } from '@theredhead/foundation';
+import { UITimeline } from '@theredhead/lucid-kit';
+import { ArrayDatasource } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: 'app-example',
@@ -492,8 +492,8 @@ export const WithComponentResolver: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITimeline, type TimelineComponentResolver } from '@theredhead/ui-kit';
-import { ArrayDatasource } from '@theredhead/foundation';
+import { UITimeline, type TimelineComponentResolver } from '@theredhead/lucid-kit';
+import { ArrayDatasource } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: 'app-example',

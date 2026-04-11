@@ -1,6 +1,6 @@
 /**
- * Re-exported from `@theredhead/foundation`.
+ * Re-exported from `@theredhead/lucid-foundation`.
  *
- * @see `@theredhead/foundation` — `RestDatasource`
+ * @see `@theredhead/lucid-foundation` — `RestDatasource`
  */
-export { RestDatasource } from "@theredhead/foundation";
+export { RestDatasource } from "@theredhead/lucid-foundation";

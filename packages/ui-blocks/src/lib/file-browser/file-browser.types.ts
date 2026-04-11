@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import type { TreeNode } from "@theredhead/ui-kit";
+import type { TreeNode } from "@theredhead/lucid-kit";
 
 /**
  * View modes supported by the file browser contents panel.

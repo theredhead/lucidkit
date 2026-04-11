@@ -12,9 +12,9 @@ import {
   signal,
   untracked,
 } from "@angular/core";
-import { LoggerFactory, UISurface } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 import { UIDashboardPanel } from "./dashboard-panel.component";
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 import type {
   DashboardColumns,
   DashboardDockPosition,

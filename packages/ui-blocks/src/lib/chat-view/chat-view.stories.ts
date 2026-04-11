@@ -181,7 +181,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIChatView, ChatMessage, ChatParticipant, MessageSendEvent } from '@theredhead/ui-blocks';
+import { UIChatView, ChatMessage, ChatParticipant, MessageSendEvent } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-chat',
@@ -241,7 +241,7 @@ export const RichTextComposer: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIChatView, ChatMessage, ChatParticipant } from '@theredhead/ui-blocks';
+import { UIChatView, ChatMessage, ChatParticipant } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-rich-chat',
@@ -299,7 +299,7 @@ export const EmptyChat: Story = {
 <ui-chat-view [messages]="[]" [currentUser]="me" />
 
 // ── TypeScript ──
-import { UIChatView, ChatParticipant } from '@theredhead/ui-blocks';
+import { UIChatView, ChatParticipant } from '@theredhead/lucid-blocks';
 // Shows "No messages yet" empty state.
 
 // ── SCSS ──

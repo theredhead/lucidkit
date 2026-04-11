@@ -176,7 +176,7 @@ describe("AngularComponentExportStrategy", () => {
   it("should import UI-kit components directly", () => {
     const result = strategy.export(SAMPLE_SCHEMA);
     expect(result.content).toContain("UIInput");
-    expect(result.content).toContain("from '@theredhead/ui-kit'");
+    expect(result.content).toContain("from '@theredhead/lucid-kit'");
   });
 
   it("should NOT import FormEngine or UIForm", () => {

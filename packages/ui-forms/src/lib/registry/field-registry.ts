@@ -86,8 +86,8 @@ export const FORM_FIELD_REGISTRATIONS = new InjectionToken<
  * @example
  * ```ts
  * // app.config.ts
- * import { provideFormFields } from '@theredhead/ui-forms';
- * import { UIInput, UISelect, UICheckbox } from '@theredhead/ui-kit';
+ * import { provideFormFields } from '@theredhead/lucid-forms';
+ * import { UIInput, UISelect, UICheckbox } from '@theredhead/lucid-kit';
  *
  * export const appConfig = {
  *   providers: [

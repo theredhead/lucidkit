@@ -1,4 +1,4 @@
-import type { FilterDescriptor } from "@theredhead/ui-kit";
+import type { FilterDescriptor } from "@theredhead/lucid-kit";
 
 /**
  * A named, serialisable saved search — stores the filter state so it

@@ -13,13 +13,13 @@ import {
   UIInput,
   UISelect,
   UISlider,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import type {
   PropertyChangeEvent,
   PropertyFieldDefinition,
 } from "./property-sheet.types";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 /**
  * Grouped field set used internally to organise fields by group.

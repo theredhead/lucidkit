@@ -19,7 +19,7 @@ library codebase create several problems:
 ## Decision
 
 All production library code logs through `LoggerFactory` from
-`@theredhead/foundation`. Direct `console.*` calls are forbidden in library
+`@theredhead/lucid-foundation`. Direct `console.*` calls are forbidden in library
 source (allowed in Storybook stories and JSDoc examples for brevity).
 
 ```ts

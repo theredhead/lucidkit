@@ -11,7 +11,7 @@ import {
   untracked,
   viewChild,
 } from "@angular/core";
-import { LoggerFactory, UISurface } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 import type {
   CropHandle,
   CropRegion,

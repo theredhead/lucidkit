@@ -9,7 +9,7 @@ import {
   signal,
   type OnInit,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Lazy-loading image component.

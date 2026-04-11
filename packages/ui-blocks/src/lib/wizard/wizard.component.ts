@@ -9,11 +9,11 @@ import {
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 import { UIWizardStep } from "./wizard-step.component";
 import type { StepChangeEvent } from "./wizard.types";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 /**
  * A multi-step workflow shell with a step indicator, navigation

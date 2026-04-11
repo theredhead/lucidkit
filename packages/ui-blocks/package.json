@@ -1,13 +1,13 @@
 {
-  "name": "@theredhead/ui-blocks",
+  "name": "@theredhead/lucid-blocks",
   "version": "0.0.1",
   "description": "theredhead UI Blocks - Advanced Layout Components",
   "private": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
-    "@theredhead/ui-kit": "0.0.1",
-    "@theredhead/ui-theme": "0.0.1"
+    "@theredhead/lucid-kit": "0.0.1",
+    "@theredhead/lucid-theme": "0.0.1"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",

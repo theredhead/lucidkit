@@ -5,7 +5,7 @@ import {
   input,
   model,
 } from "@angular/core";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 /** A single option rendered inside a {@link UISelect}. */
 export interface SelectOption {

@@ -10,7 +10,7 @@ import {
   type AccordionController,
   UIAccordionItem,
 } from "./accordion-item.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Expansion mode for the accordion. */
 export type AccordionMode = "single" | "multi";

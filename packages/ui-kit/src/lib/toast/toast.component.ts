@@ -8,7 +8,7 @@ import {
 
 import { ToastService } from "./toast.service";
 import type { ToastInstance, ToastPosition } from "./toast.types";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Renders active toasts at the specified screen position.

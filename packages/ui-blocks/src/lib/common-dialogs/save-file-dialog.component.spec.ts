@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { UISaveFileDialog } from "./save-file-dialog.component";
-import { ModalRef } from "@theredhead/ui-kit";
+import { ModalRef } from "@theredhead/lucid-kit";
 import type { FileBrowserDatasource } from "../file-browser/file-browser.types";
 
 describe("UISaveFileDialog", () => {

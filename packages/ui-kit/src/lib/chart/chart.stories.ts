@@ -1549,13 +1549,13 @@ export const SideBySideComparison: Story = {
 </div>
 
 // ── TypeScript ──
-import { UIChart } from '@theredhead/ui-kit';
+import { UIChart } from '@theredhead/lucid-kit';
 import {
   BarGraphStrategy,
   LineGraphStrategy,
   ScatterPlotStrategy,
   PieChartStrategy,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 readonly salesData = [
   { month: 'Jan', revenue: 12400 },
@@ -1727,7 +1727,7 @@ import {
   UIChart,
   StackedBarGraphStrategy,
   type ChartLayer,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   standalone: true,
@@ -1779,7 +1779,7 @@ export const StackedBarNormalised: Story = {
 />
 
 // ── TypeScript ──
-import { StackedBarGraphStrategy } from '@theredhead/ui-kit';
+import { StackedBarGraphStrategy } from '@theredhead/lucid-kit';
 
 readonly strategy = new StackedBarGraphStrategy({ normalised: true });
 `,

@@ -7,7 +7,7 @@ import {
   signal,
   untracked,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Named size preset for the avatar. */
 export type AvatarSizeName =

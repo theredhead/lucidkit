@@ -126,7 +126,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIColorPicker } from '@theredhead/ui-kit';
+import { UIColorPicker } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -170,7 +170,7 @@ export const RgbaMode: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIColorPicker } from '@theredhead/ui-kit';
+import { UIColorPicker } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-rgba-example',
@@ -214,7 +214,7 @@ export const HslaMode: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIColorPicker } from '@theredhead/ui-kit';
+import { UIColorPicker } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-hsla-example',
@@ -258,7 +258,7 @@ export const GridMode: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIColorPicker } from '@theredhead/ui-kit';
+import { UIColorPicker } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-grid-example',
@@ -297,7 +297,7 @@ export const Disabled: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIColorPicker } from '@theredhead/ui-kit';
+import { UIColorPicker } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-disabled-example',
@@ -345,7 +345,7 @@ export const Interactive: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIColorPicker } from '@theredhead/ui-kit';
+import { UIColorPicker } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-interactive-example',

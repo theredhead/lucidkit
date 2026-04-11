@@ -1,4 +1,4 @@
-# @theredhead/ui-kit
+# @theredhead/lucid-kit
 
 Core reusable UI components library for theredhead Angular applications.
 Every component is **standalone**, uses **signal-based** inputs/state, and
@@ -110,7 +110,7 @@ All columns extend `UITableViewColumn` and register via DI forwarding:
 ## Quick start
 
 ```typescript
-import { UIButton, UITableView, UITextColumn } from "@theredhead/ui-kit";
+import { UIButton, UITableView, UITextColumn } from "@theredhead/lucid-kit";
 
 @Component({
   selector: "app-demo",

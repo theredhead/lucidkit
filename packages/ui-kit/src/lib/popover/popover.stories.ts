@@ -682,7 +682,7 @@ export const HoverTooltip: Story = {
 
 // ── TypeScript ──
 import { Component, inject, ElementRef, viewChild, DestroyRef } from '@angular/core';
-import { PopoverService, PopoverRef, UIButton } from '@theredhead/ui-kit';
+import { PopoverService, PopoverRef, UIButton } from '@theredhead/lucid-kit';
 
 @Component({ ... })
 export class HoverTooltipExample {
@@ -855,7 +855,7 @@ export const Arrow: Story = {
         code: `
 // ── TypeScript ──
 import { Component, inject, ElementRef, viewChild } from '@angular/core';
-import { PopoverService } from '@theredhead/ui-kit';
+import { PopoverService } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

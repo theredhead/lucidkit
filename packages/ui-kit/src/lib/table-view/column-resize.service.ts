@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 
-import { StorageService } from "@theredhead/foundation";
+import { StorageService } from "@theredhead/lucid-foundation";
 
 const STORAGE_PREFIX = "ui-table-col-widths";
 

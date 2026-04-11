@@ -1,5 +1,5 @@
 /*
- * Public API Surface of @theredhead/foundation
+ * Public API Surface of @theredhead/lucid-foundation
  */
 export * from "./lib/logger";
 export * from "./lib/types";

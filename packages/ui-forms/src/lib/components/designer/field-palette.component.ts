@@ -1,8 +1,8 @@
 // ── UIFieldPalette ──────────────────────────────────────────────────
 
 import { ChangeDetectionStrategy, Component, output } from "@angular/core";
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
-import { UISurface } from '@theredhead/foundation';
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Metadata for a draggable field type shown in the palette.

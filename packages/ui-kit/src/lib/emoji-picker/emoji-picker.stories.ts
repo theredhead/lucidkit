@@ -49,7 +49,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIEmojiPicker } from '@theredhead/ui-kit';
+import { UIEmojiPicker } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -105,7 +105,7 @@ export const CustomCategories: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIEmojiPicker, EmojiCategory } from '@theredhead/ui-kit';
+import { UIEmojiPicker, EmojiCategory } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

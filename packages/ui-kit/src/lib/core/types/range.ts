@@ -1,5 +1,5 @@
 /**
- * Re-exported from `@theredhead/foundation`.
- * @see {@link @theredhead/foundation!RangeDefinition}
+ * Re-exported from `@theredhead/lucid-foundation`.
+ * @see {@link @theredhead/lucid-foundation!RangeDefinition}
  */
-export type { RangeDefinition } from "@theredhead/foundation";
+export type { RangeDefinition } from "@theredhead/lucid-foundation";

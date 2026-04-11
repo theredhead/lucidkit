@@ -10,7 +10,7 @@ import {
   UITableViewCellContext,
   UITableViewColumn,
 } from "../table-column.directive";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: "ui-text-column",

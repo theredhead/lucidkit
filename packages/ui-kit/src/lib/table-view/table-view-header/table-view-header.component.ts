@@ -11,7 +11,7 @@ import {
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { MIN_COLUMN_WIDTH } from "../table-view.constants";
 import type { SelectionMode } from "../../core/selection-model";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 export interface SortState {
   key: string;

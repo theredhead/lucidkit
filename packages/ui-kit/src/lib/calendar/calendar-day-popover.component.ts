@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { PopoverRef } from "../popover/popover.types";
 import type { CalendarEvent, CalendarMonthDay } from "./calendar.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Popover content component that displays all events for a given

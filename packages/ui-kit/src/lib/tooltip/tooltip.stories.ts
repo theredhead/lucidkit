@@ -100,7 +100,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITooltip } from '@theredhead/ui-kit';
+import { UITooltip } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-tooltip-demo',
@@ -151,7 +151,7 @@ export const AllPositions: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITooltip } from '@theredhead/ui-kit';
+import { UITooltip } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-all-positions-demo',

@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { firstValueFrom } from "rxjs";
 
-import { ModalService } from "@theredhead/ui-kit";
+import { ModalService } from "@theredhead/lucid-kit";
 
 import { UIAlertDialog } from "./alert-dialog.component";
 import { UIConfirmDialog } from "./confirm-dialog.component";

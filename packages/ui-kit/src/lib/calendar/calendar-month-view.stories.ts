@@ -414,8 +414,8 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICalendarMonthView, ArrayCalendarDatasource } from '@theredhead/ui-kit';
-import type { CalendarEvent } from '@theredhead/ui-kit';
+import { UICalendarMonthView, ArrayCalendarDatasource } from '@theredhead/lucid-kit';
+import type { CalendarEvent } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

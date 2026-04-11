@@ -19,7 +19,7 @@ import {
   type TreeKeyboardDelegate,
 } from "./tree-keyboard-handler";
 import type { ITreeDatasource, TreeNode } from "./tree-view.types";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Context provided to a custom node template.

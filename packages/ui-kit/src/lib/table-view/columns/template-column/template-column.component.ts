@@ -9,7 +9,7 @@ import {
   UITableViewCellContext,
   UITableViewColumn,
 } from "../table-column.directive";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * A table column whose cell content is defined entirely by the consumer

@@ -6,7 +6,7 @@ import {
   model,
   output,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Visual appearance of the checkbox control. */
 export type CheckboxVariant = "checkbox" | "switch";

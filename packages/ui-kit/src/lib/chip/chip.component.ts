@@ -4,7 +4,7 @@ import {
   input,
   output,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Color preset for the chip. */
 export type ChipColor =

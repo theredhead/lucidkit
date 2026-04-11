@@ -4,7 +4,7 @@ import { Component, signal, viewChild } from "@angular/core";
 import { UIRepeater } from "./repeater.component";
 import { ArrayDatasource } from "../table-view/datasources/array-datasource";
 import { FilterableArrayDatasource } from "../table-view/datasources/filterable-array-datasource";
-import { SortableArrayDatasource } from "@theredhead/foundation";
+import { SortableArrayDatasource } from "@theredhead/lucid-foundation";
 import type { IDatasource } from "../table-view/datasources/datasource";
 import type {
   RepeaterReorderEvent,

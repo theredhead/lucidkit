@@ -12,7 +12,7 @@ import {
 
 import { JsonPipe } from "@angular/common";
 
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 import type { FormSchema, FormValues } from "../../types/form-schema.types";
 import { FormEngine } from "../../engine/form-engine";
@@ -21,7 +21,7 @@ import { FormDesignerEngine } from "./designer-engine";
 import { UIFieldPalette } from "./field-palette.component";
 import { UIDesignerCanvas } from "./designer-canvas.component";
 import { UIPropertyInspector } from "./property-inspector.component";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Full-featured form designer that lets users visually build

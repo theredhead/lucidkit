@@ -4,7 +4,7 @@ import {
   computed,
   input,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Visual variant of the badge. */
 export type BadgeVariant = "count" | "dot" | "label";

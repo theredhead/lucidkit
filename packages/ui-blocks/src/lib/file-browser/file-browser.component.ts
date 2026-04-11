@@ -25,9 +25,9 @@ import {
   UIIcons,
   type TreeNode,
   type ITreeDatasource,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
-import { StorageService, UISurface } from "@theredhead/foundation";
+import { StorageService, UISurface } from "@theredhead/lucid-foundation";
 
 import { NgTemplateOutlet } from "@angular/common";
 

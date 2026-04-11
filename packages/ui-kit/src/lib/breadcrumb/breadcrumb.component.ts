@@ -4,7 +4,7 @@ import {
   input,
   output,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** A single item in the breadcrumb trail. */
 export interface BreadcrumbItem {

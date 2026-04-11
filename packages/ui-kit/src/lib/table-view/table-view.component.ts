@@ -23,7 +23,7 @@ import {
   isSortableDatasource,
   UISurface,
   UI_DEFAULT_SURFACE_TYPE,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 
 import { ColumnResizeService } from "./column-resize.service";
 import { UITableViewColumn } from "./columns/table-column.directive";

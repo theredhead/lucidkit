@@ -26,7 +26,7 @@ import {
   pointsToPolylinePath,
   type TileDescriptor,
 } from "./map-view.utils";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 // ── Internal rendered-element types ─────────────────────────────────
 

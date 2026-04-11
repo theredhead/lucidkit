@@ -95,8 +95,8 @@ export const Elevated: Story = {
 import { Component } from '@angular/core';
 import {
   UICard, UICardHeader, UICardBody, UICardFooter,
-} from '@theredhead/ui-kit';
-import { UIButton } from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -149,7 +149,7 @@ export const Outlined: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UICard, UICardHeader, UICardBody } from '@theredhead/ui-kit';
+import { UICard, UICardHeader, UICardBody } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -198,7 +198,7 @@ export const Filled: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UICard, UICardHeader, UICardBody } from '@theredhead/ui-kit';
+import { UICard, UICardHeader, UICardBody } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -254,7 +254,7 @@ export const Interactive: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UICard, UICardHeader, UICardBody } from '@theredhead/ui-kit';
+import { UICard, UICardHeader, UICardBody } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -303,7 +303,7 @@ export const BodyOnly: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UICard, UICardBody } from '@theredhead/ui-kit';
+import { UICard, UICardBody } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -368,7 +368,7 @@ export const AllVariants: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UICard, UICardHeader, UICardBody } from '@theredhead/ui-kit';
+import { UICard, UICardHeader, UICardBody } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

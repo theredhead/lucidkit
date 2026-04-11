@@ -13,7 +13,7 @@ import { UIIcons } from "../icon/lucide-icons.generated";
 import { PopoverService } from "../popover/popover.service";
 import type { ColorPickerMode } from "./color-picker.types";
 import { UIColorPickerPopover } from "./color-picker-popover.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A colour-picker trigger button.

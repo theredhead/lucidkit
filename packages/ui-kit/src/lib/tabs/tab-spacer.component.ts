@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 import { TAB_HEADER_ITEM } from "./tab-header-item";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * A flexible spacer in the `<ui-tab-group>` header that pushes

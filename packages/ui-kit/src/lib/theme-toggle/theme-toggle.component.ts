@@ -5,8 +5,8 @@ import {
   input,
 } from "@angular/core";
 
-import { ThemeService } from "@theredhead/ui-theme";
-import { UISurface } from "@theredhead/foundation";
+import { ThemeService } from "@theredhead/lucid-theme";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 export type ThemeToggleVariant = "icon" | "button";
 
@@ -21,7 +21,7 @@ const MOON_ICON =
 /**
  * A toggle button for switching between light and dark mode.
  *
- * Uses the {@link ThemeService} from `@theredhead/ui-theme` to manage
+ * Uses the {@link ThemeService} from `@theredhead/lucid-theme` to manage
  * theme state. Renders inline SVG icons — no external icon font required.
  *
  * @example

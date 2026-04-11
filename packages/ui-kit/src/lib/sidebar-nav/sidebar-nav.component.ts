@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 
 import { UIIcon } from "../icon/icon.component";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 /**
  * A single navigation item in the sidebar.

@@ -28,17 +28,17 @@ using or modifying the API.
 
 ## Project Overview
 
-This is an **Angular 21** component library workspace (`theredhead-fe-workspace`)
+This is an **Angular 21** component library workspace (`lucidkit-workspace`)
 built with standalone components, signals, and zero external runtime dependencies
 beyond Angular core and CDK. It ships three npm packages:
 
 | Package                  | Scope      | Purpose                                                                                     |
 | ------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
-| `@theredhead/foundation` | Core       | Logger, type utilities, base classes — shared by all higher-level packages                  |
-| `@theredhead/ui-kit`     | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
-| `@theredhead/ui-blocks`  | Composites | Master-Detail View, Navigation Page, Dashboard, Kanban, Chat, File Browser, etc.            |
-| `@theredhead/ui-forms`   | Forms      | Schema-driven forms, validation, conditional logic, form designer                           |
-| `@theredhead/ui-theme`   | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
+| `@theredhead/lucid-foundation` | Core       | Logger, type utilities, base classes — shared by all higher-level packages                  |
+| `@theredhead/lucid-kit`     | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
+| `@theredhead/lucid-blocks`  | Composites | Master-Detail View, Navigation Page, Dashboard, Kanban, Chat, File Browser, etc.            |
+| `@theredhead/lucid-forms`   | Forms      | Schema-driven forms, validation, conditional logic, form designer                           |
+| `@theredhead/lucid-theme`   | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
 
 ### API Inventories
 
@@ -148,12 +148,12 @@ implicit `public`. This applies to constructors as well (`public constructor`,
 ## Logging
 
 **Never call `console.log` / `console.warn` / `console.error` directly in
-production code.** Use the `Logger` from `@theredhead/foundation` instead.
+production code.** Use the `Logger` from `@theredhead/lucid-foundation` instead.
 
 Inject `LoggerFactory` and create a context-scoped logger:
 
 ```ts
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory } from "@theredhead/lucid-foundation";
 
 export class UIMyComponent {
   private readonly log = inject(LoggerFactory).createLogger("UIMyComponent");
@@ -187,7 +187,7 @@ Key rules:
 SVG content from the `UIIcons` registry instead.
 
 ```ts
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 @Component({
   imports: [UIIcon],
@@ -204,7 +204,7 @@ export class UIMyComponent {
 Key rules:
 
 - **Import** `UIIcon` (component) and `UIIcons` (registry) from
-  `@theredhead/ui-kit`.
+  `@theredhead/lucid-kit`.
 - Add `UIIcon` to the component `imports` array.
 - Reference icons via the categorised registry:
   `UIIcons.Lucide.<Category>.<IconName>`.
@@ -386,7 +386,7 @@ light/dark switching automatically.
 ### UISurface directive — surface types
 
 Components acquire background, border, and text colour through the `UISurface`
-host directive (from `@theredhead/foundation`). The directive maps a
+host directive (from `@theredhead/lucid-foundation`). The directive maps a
 `surfaceType` input to CSS classes (`ui-surface-type-<value>`) defined in
 `_surfaces.scss`.
 
@@ -596,7 +596,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIButton } from '@theredhead/ui-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -617,7 +617,7 @@ export class ExampleComponent {}
 
 Key rules:
 
-- **Imports** must reference the published package name (`@theredhead/ui-kit`),
+- **Imports** must reference the published package name (`@theredhead/lucid-kit`),
   never relative paths.
 - Show realistic, minimal usage — enough for a consumer to copy-paste.
 - When the story wraps a demo component, the source block should show the

@@ -3,7 +3,7 @@
  * Add UISurface hostDirective to all ui-* components.
  *
  * For each component file with selector: 'ui-*':
- *  1. Add `import { UISurface } from '@theredhead/foundation'` (or adjust relative path for foundation itself)
+ *  1. Add `import { UISurface } from '@theredhead/lucid-foundation'` (or adjust relative path for foundation itself)
  *  2. Add `hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }]` to @Component metadata
  */
 
@@ -49,7 +49,7 @@ for (const file of files) {
     if (!rel.startsWith('.')) rel = './' + rel;
     importPath = rel + '/surface.directive';
   } else {
-    importPath = '@theredhead/foundation';
+    importPath = '@theredhead/lucid-foundation';
   }
 
   // 1. Add import for UISurface

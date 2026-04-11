@@ -630,7 +630,7 @@ import {
   UITextColumn,
   UIBadgeColumn,
   type UIDensity,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 density: UIDensity = 'comfortable'; // 'small' | 'compact' | 'comfortable' | 'generous'
 adapter = new JsonPlaceholderPostsDatasource(25);
@@ -728,7 +728,7 @@ import {
   UINumberColumn,
   UITextColumn,
   UIBadgeColumn,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 adapter = new JsonPlaceholderPostsDatasource(25);
 
@@ -1533,8 +1533,8 @@ import {
   UITableView, UITextColumn, UINumberColumn, UIBadgeColumn, UITemplateColumn,
   UIButton, UIFilter, UIDensityDirective,
   FilterableArrayDatasource, SelectionModel,
-} from '@theredhead/ui-kit';
-import type { FilterExpression, FilterFieldDefinition } from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
+import type { FilterExpression, FilterFieldDefinition } from '@theredhead/lucid-kit';
 
 interface Row { id: number; name: string; email: string; age: number; status: string; }
 

@@ -73,85 +73,85 @@ function inferType(value) {
 // ── Component / owner inference ────────────────────────────────────
 
 const COMPONENT_MAP = {
-  "_tokens.scss": { owner: "ThemeService", pkg: "@theredhead/ui-theme" },
-  "_elevation.scss": { owner: "ThemeService", pkg: "@theredhead/ui-theme" },
-  "button.component": { owner: "UIButton", pkg: "@theredhead/ui-kit" },
-  "input.component": { owner: "UIInput", pkg: "@theredhead/ui-kit" },
-  "select.component": { owner: "UISelect", pkg: "@theredhead/ui-kit" },
+  "_tokens.scss": { owner: "ThemeService", pkg: "@theredhead/lucid-theme" },
+  "_elevation.scss": { owner: "ThemeService", pkg: "@theredhead/lucid-theme" },
+  "button.component": { owner: "UIButton", pkg: "@theredhead/lucid-kit" },
+  "input.component": { owner: "UIInput", pkg: "@theredhead/lucid-kit" },
+  "select.component": { owner: "UISelect", pkg: "@theredhead/lucid-kit" },
   "autocomplete.component": {
     owner: "UIAutocomplete",
-    pkg: "@theredhead/ui-kit",
+    pkg: "@theredhead/lucid-kit",
   },
-  "filter.component": { owner: "UIFilter", pkg: "@theredhead/ui-kit" },
-  "table-view.component": { owner: "UITableView", pkg: "@theredhead/ui-kit" },
-  "table-view-caption": { owner: "UITableViewCaption", pkg: "@theredhead/ui-kit" },
-  "badge-column": { owner: "UIBadgeColumn", pkg: "@theredhead/ui-kit" },
-  "badge.component": { owner: "UIBadge", pkg: "@theredhead/ui-kit" },
-  "slider.component": { owner: "UISlider", pkg: "@theredhead/ui-kit" },
-  "progress-bar": { owner: "UIProgressBar", pkg: "@theredhead/ui-kit" },
-  "toggle.component": { owner: "UIToggle", pkg: "@theredhead/ui-kit" },
-  "tooltip": { owner: "UITooltip", pkg: "@theredhead/ui-kit" },
-  "chip.component": { owner: "UIChip", pkg: "@theredhead/ui-kit" },
-  "avatar.component": { owner: "UIAvatar", pkg: "@theredhead/ui-kit" },
-  "card.component": { owner: "UICard", pkg: "@theredhead/ui-kit" },
-  "tabs.component": { owner: "UITabs", pkg: "@theredhead/ui-kit" },
-  "clock.component": { owner: "UIClock", pkg: "@theredhead/ui-kit" },
-  "dialog.component": { owner: "UIDialog", pkg: "@theredhead/ui-kit" },
-  "dialog-header": { owner: "UIDialogHeader", pkg: "@theredhead/ui-kit" },
-  "dialog-body": { owner: "UIDialogBody", pkg: "@theredhead/ui-kit" },
-  "dialog-footer": { owner: "UIDialogFooter", pkg: "@theredhead/ui-kit" },
-  "dialog.service": { owner: "ModalService", pkg: "@theredhead/ui-kit" },
-  "drawer.component": { owner: "UIDrawer", pkg: "@theredhead/ui-kit" },
-  "dropdown": { owner: "UIDropdownList", pkg: "@theredhead/ui-kit" },
-  "toast": { owner: "UIToast", pkg: "@theredhead/ui-kit" },
-  "calendar.component": { owner: "UICalendar", pkg: "@theredhead/ui-kit" },
-  "timeline.component": { owner: "UITimeline", pkg: "@theredhead/ui-kit" },
-  "map-view": { owner: "UIMapView", pkg: "@theredhead/ui-kit" },
-  "chart.component": { owner: "UIChart", pkg: "@theredhead/ui-kit" },
-  "gauge": { owner: "UIGauge", pkg: "@theredhead/ui-kit" },
-  "gantt": { owner: "UIGanttChart", pkg: "@theredhead/ui-kit" },
-  "image.component": { owner: "UIImage", pkg: "@theredhead/ui-kit" },
-  "loading-bar": { owner: "UILoadingBar", pkg: "@theredhead/ui-kit" },
-  "tree-view": { owner: "UITreeView", pkg: "@theredhead/ui-kit" },
-  "rich-text": { owner: "UIRichTextEditor", pkg: "@theredhead/ui-kit" },
-  "density.component": { owner: "UIDensity", pkg: "@theredhead/ui-kit" },
-  "color-picker": { owner: "UIColorPicker", pkg: "@theredhead/ui-kit" },
-  "emoji-picker": { owner: "UIEmojiPicker", pkg: "@theredhead/ui-kit" },
-  "video-player": { owner: "UIVideoPlayer", pkg: "@theredhead/ui-kit" },
-  "carousel": { owner: "UICarousel", pkg: "@theredhead/ui-kit" },
-  "upload": { owner: "UIUpload", pkg: "@theredhead/ui-kit" },
-  "infinite-scroll": { owner: "UIInfiniteScroll", pkg: "@theredhead/ui-kit" },
-  "sidebar": { owner: "UISidebar", pkg: "@theredhead/ui-kit" },
+  "filter.component": { owner: "UIFilter", pkg: "@theredhead/lucid-kit" },
+  "table-view.component": { owner: "UITableView", pkg: "@theredhead/lucid-kit" },
+  "table-view-caption": { owner: "UITableViewCaption", pkg: "@theredhead/lucid-kit" },
+  "badge-column": { owner: "UIBadgeColumn", pkg: "@theredhead/lucid-kit" },
+  "badge.component": { owner: "UIBadge", pkg: "@theredhead/lucid-kit" },
+  "slider.component": { owner: "UISlider", pkg: "@theredhead/lucid-kit" },
+  "progress-bar": { owner: "UIProgressBar", pkg: "@theredhead/lucid-kit" },
+  "toggle.component": { owner: "UIToggle", pkg: "@theredhead/lucid-kit" },
+  "tooltip": { owner: "UITooltip", pkg: "@theredhead/lucid-kit" },
+  "chip.component": { owner: "UIChip", pkg: "@theredhead/lucid-kit" },
+  "avatar.component": { owner: "UIAvatar", pkg: "@theredhead/lucid-kit" },
+  "card.component": { owner: "UICard", pkg: "@theredhead/lucid-kit" },
+  "tabs.component": { owner: "UITabs", pkg: "@theredhead/lucid-kit" },
+  "clock.component": { owner: "UIClock", pkg: "@theredhead/lucid-kit" },
+  "dialog.component": { owner: "UIDialog", pkg: "@theredhead/lucid-kit" },
+  "dialog-header": { owner: "UIDialogHeader", pkg: "@theredhead/lucid-kit" },
+  "dialog-body": { owner: "UIDialogBody", pkg: "@theredhead/lucid-kit" },
+  "dialog-footer": { owner: "UIDialogFooter", pkg: "@theredhead/lucid-kit" },
+  "dialog.service": { owner: "ModalService", pkg: "@theredhead/lucid-kit" },
+  "drawer.component": { owner: "UIDrawer", pkg: "@theredhead/lucid-kit" },
+  "dropdown": { owner: "UIDropdownList", pkg: "@theredhead/lucid-kit" },
+  "toast": { owner: "UIToast", pkg: "@theredhead/lucid-kit" },
+  "calendar.component": { owner: "UICalendar", pkg: "@theredhead/lucid-kit" },
+  "timeline.component": { owner: "UITimeline", pkg: "@theredhead/lucid-kit" },
+  "map-view": { owner: "UIMapView", pkg: "@theredhead/lucid-kit" },
+  "chart.component": { owner: "UIChart", pkg: "@theredhead/lucid-kit" },
+  "gauge": { owner: "UIGauge", pkg: "@theredhead/lucid-kit" },
+  "gantt": { owner: "UIGanttChart", pkg: "@theredhead/lucid-kit" },
+  "image.component": { owner: "UIImage", pkg: "@theredhead/lucid-kit" },
+  "loading-bar": { owner: "UILoadingBar", pkg: "@theredhead/lucid-kit" },
+  "tree-view": { owner: "UITreeView", pkg: "@theredhead/lucid-kit" },
+  "rich-text": { owner: "UIRichTextEditor", pkg: "@theredhead/lucid-kit" },
+  "density.component": { owner: "UIDensity", pkg: "@theredhead/lucid-kit" },
+  "color-picker": { owner: "UIColorPicker", pkg: "@theredhead/lucid-kit" },
+  "emoji-picker": { owner: "UIEmojiPicker", pkg: "@theredhead/lucid-kit" },
+  "video-player": { owner: "UIVideoPlayer", pkg: "@theredhead/lucid-kit" },
+  "carousel": { owner: "UICarousel", pkg: "@theredhead/lucid-kit" },
+  "upload": { owner: "UIUpload", pkg: "@theredhead/lucid-kit" },
+  "infinite-scroll": { owner: "UIInfiniteScroll", pkg: "@theredhead/lucid-kit" },
+  "sidebar": { owner: "UISidebar", pkg: "@theredhead/lucid-kit" },
 
   "master-detail-view": {
     owner: "UIMasterDetailView",
-    pkg: "@theredhead/ui-blocks",
+    pkg: "@theredhead/lucid-blocks",
   },
-  "search-view": { owner: "UISearchView", pkg: "@theredhead/ui-blocks" },
-  "chat-view": { owner: "UIChatView", pkg: "@theredhead/ui-blocks" },
-  "wizard.component": { owner: "UIWizard", pkg: "@theredhead/ui-blocks" },
-  "dashboard.component": { owner: "UIDashboard", pkg: "@theredhead/ui-blocks" },
+  "search-view": { owner: "UISearchView", pkg: "@theredhead/lucid-blocks" },
+  "chat-view": { owner: "UIChatView", pkg: "@theredhead/lucid-blocks" },
+  "wizard.component": { owner: "UIWizard", pkg: "@theredhead/lucid-blocks" },
+  "dashboard.component": { owner: "UIDashboard", pkg: "@theredhead/lucid-blocks" },
   "dashboard-panel": {
     owner: "UIDashboardPanel",
-    pkg: "@theredhead/ui-blocks",
+    pkg: "@theredhead/lucid-blocks",
   },
   "command-palette": {
     owner: "UICommandPalette",
-    pkg: "@theredhead/ui-blocks",
+    pkg: "@theredhead/lucid-blocks",
   },
-  "file-browser": { owner: "UIFileBrowser", pkg: "@theredhead/ui-blocks" },
-  "kanban-board": { owner: "UIKanbanBoard", pkg: "@theredhead/ui-blocks" },
+  "file-browser": { owner: "UIFileBrowser", pkg: "@theredhead/lucid-blocks" },
+  "kanban-board": { owner: "UIKanbanBoard", pkg: "@theredhead/lucid-blocks" },
   "navigation-page": {
     owner: "UINavigationPage",
-    pkg: "@theredhead/ui-blocks",
+    pkg: "@theredhead/lucid-blocks",
   },
   "property-sheet": {
     owner: "UIPropertySheet",
-    pkg: "@theredhead/ui-blocks",
+    pkg: "@theredhead/lucid-blocks",
   },
 
-  "form-designer": { owner: "UIFormDesigner", pkg: "@theredhead/ui-forms" },
-  "form-field": { owner: "UIFormField", pkg: "@theredhead/ui-forms" },
+  "form-designer": { owner: "UIFormDesigner", pkg: "@theredhead/lucid-forms" },
+  "form-field": { owner: "UIFormField", pkg: "@theredhead/lucid-forms" },
 };
 
 function resolveOwner(filePath) {
@@ -164,15 +164,15 @@ function resolveOwner(filePath) {
   return {
     owner: dir,
     pkg: rel.includes("ui-kit")
-      ? "@theredhead/ui-kit"
+      ? "@theredhead/lucid-kit"
       : rel.includes("ui-blocks")
-        ? "@theredhead/ui-blocks"
+        ? "@theredhead/lucid-blocks"
         : rel.includes("ui-forms")
-          ? "@theredhead/ui-forms"
+          ? "@theredhead/lucid-forms"
           : rel.includes("ui-theme")
-            ? "@theredhead/ui-theme"
+            ? "@theredhead/lucid-theme"
             : rel.includes("foundation")
-              ? "@theredhead/foundation"
+              ? "@theredhead/lucid-foundation"
               : "unknown",
   };
 }
@@ -764,7 +764,7 @@ const manifest = {
     "Used by the Theme Studio to expose tweakable design tokens to developers.",
   tokenCount: sorted.length,
   namespaces: {
-    ui: "Global design tokens (defined in @theredhead/ui-theme, consumed everywhere)",
+    ui: "Global design tokens (defined in @theredhead/lucid-theme, consumed everywhere)",
     cv: "Chat view component tokens (UIChatView)",
     cp: "Command palette component tokens (UICommandPalette)",
     wz: "Wizard component tokens (UIWizard)",

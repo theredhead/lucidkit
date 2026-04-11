@@ -4,7 +4,7 @@
   "description": "Complete manifest of all CSS custom properties in the @theredhead UI library. Used by the Theme Studio to expose tweakable design tokens to developers.",
   "tokenCount": 122,
   "namespaces": {
-    "ui": "Global design tokens (defined in @theredhead/ui-theme, consumed everywhere)",
+    "ui": "Global design tokens (defined in @theredhead/lucid-theme, consumed everywhere)",
     "cv": "Chat view component tokens (UIChatView)",
     "cp": "Command palette component tokens (UICommandPalette)",
     "wz": "Wizard component tokens (UIWizard)",
@@ -28,35 +28,35 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 35,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 151,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 91,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 122,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-blocks/src/lib/common-dialogs/confirm-dialog.component.ts",
           "line": 74,
           "owner": "UIDialog",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -76,14 +76,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 37,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 153,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -103,14 +103,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 36,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 152,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -130,14 +130,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 77,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 193,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -157,14 +157,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 91,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 207,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -184,14 +184,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 92,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 208,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -211,14 +211,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 90,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 206,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -238,7 +238,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 95,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -258,7 +258,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 94,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -278,14 +278,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 82,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 198,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -305,14 +305,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 83,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 199,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -332,14 +332,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 81,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 197,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -359,7 +359,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 93,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -379,14 +379,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 85,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 201,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -406,14 +406,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 86,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 202,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -433,14 +433,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 84,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 200,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -460,14 +460,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 78,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 194,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -487,14 +487,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 88,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 204,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -514,14 +514,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 89,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 205,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -541,14 +541,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 87,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 203,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -568,14 +568,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 57,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 173,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -595,7 +595,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 133,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -615,14 +615,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 62,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 178,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -642,14 +642,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 63,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 179,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -669,28 +669,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 48,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 164,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 88,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 119,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -710,14 +710,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 98,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 211,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -737,14 +737,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 99,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 212,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -764,7 +764,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 130,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -784,14 +784,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 107,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 25,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -811,14 +811,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 115,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 221,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -838,14 +838,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 117,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 223,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -865,14 +865,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 116,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 222,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -892,7 +892,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 129,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -912,7 +912,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 127,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -932,7 +932,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 128,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -952,7 +952,7 @@
           "file": "packages/ui-kit/src/lib/split-container/split-container.component.scss",
           "line": 9,
           "owner": "split-container",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -972,28 +972,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 43,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 159,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 109,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 140,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1013,14 +1013,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 120,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 226,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1040,14 +1040,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 49,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 165,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1067,28 +1067,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 66,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 182,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/filter/filter.component.scss",
           "line": 5,
           "owner": "UIFilter",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 4,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1108,21 +1108,21 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 71,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 187,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 16,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1142,28 +1142,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 67,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 183,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/filter/filter.component.scss",
           "line": 7,
           "owner": "UIFilter",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 14,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1183,21 +1183,21 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 69,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 185,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 13,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1217,21 +1217,21 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 70,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 186,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 15,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1251,28 +1251,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 68,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 184,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/filter/filter.component.scss",
           "line": 8,
           "owner": "UIFilter",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 12,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1292,21 +1292,21 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 72,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 188,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 17,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1326,7 +1326,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 131,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -1346,14 +1346,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 58,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 174,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1373,7 +1373,7 @@
           "file": "packages/ui-kit/src/lib/image/image.component.scss",
           "line": 15,
           "owner": "UIImage",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1393,28 +1393,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 40,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 156,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 100,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 131,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1434,7 +1434,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 132,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -1454,14 +1454,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 38,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 154,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1481,14 +1481,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 39,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 155,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1508,21 +1508,21 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 74,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 190,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 20,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1542,28 +1542,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 73,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 189,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-kit/src/lib/filter/filter.component.scss",
           "line": 9,
           "owner": "UIFilter",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 21,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1583,14 +1583,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 34,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 150,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1610,14 +1610,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 44,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 160,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1637,14 +1637,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 56,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 172,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1664,14 +1664,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 47,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 163,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1691,7 +1691,7 @@
           "file": "packages/ui-blocks/src/lib/dashboard/dashboard-panel.component.scss",
           "line": 7,
           "owner": "UIDashboardPanel",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -1711,14 +1711,14 @@
           "file": "packages/ui-blocks/src/lib/dashboard/dashboard-panel.component.scss",
           "line": 8,
           "owner": "UIDashboardPanel",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         },
         {
           "file": "packages/ui-blocks/src/lib/dashboard/dashboard-panel.component.scss",
           "line": 23,
           "owner": "UIDashboardPanel",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "dark"
         }
       ]
@@ -1738,14 +1738,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 123,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 229,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1765,14 +1765,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 124,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 230,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1792,14 +1792,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 55,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 171,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1819,14 +1819,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 108,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 26,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1846,21 +1846,21 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 134,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-blocks/src/lib/master-detail-view/master-detail-view.component.scss",
           "line": 5,
           "owner": "UIMasterDetailView",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         },
         {
           "file": "packages/ui-blocks/src/lib/search-view/search-view.component.scss",
           "line": 5,
           "owner": "UISearchView",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -1880,14 +1880,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 101,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 8,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1907,14 +1907,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 102,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 9,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -1934,7 +1934,7 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 104,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -1954,28 +1954,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 45,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 161,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 94,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 125,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -1995,14 +1995,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 105,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 213,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2022,14 +2022,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 106,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 214,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2049,14 +2049,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 103,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 24,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2076,14 +2076,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 59,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 175,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2103,14 +2103,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 141,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 237,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2130,14 +2130,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 139,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 235,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2157,14 +2157,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 138,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 234,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2184,14 +2184,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 137,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 233,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2211,14 +2211,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 140,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 236,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2238,7 +2238,7 @@
           "file": "packages/ui-blocks/src/lib/navigation-page/navigation-page.component.scss",
           "line": 6,
           "owner": "UINavigationPage",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2258,28 +2258,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 42,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 158,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 106,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 137,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2299,14 +2299,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 52,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 168,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2326,14 +2326,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 53,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 169,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2353,14 +2353,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 54,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 170,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2380,28 +2380,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 46,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 162,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 97,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 128,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2421,14 +2421,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 32,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 148,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2448,14 +2448,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 33,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 149,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2475,14 +2475,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 112,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 218,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2502,7 +2502,7 @@
           "file": "packages/ui-kit/src/lib/timeline/timeline.component.scss",
           "line": 4,
           "owner": "UITimeline",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2522,7 +2522,7 @@
           "file": "packages/ui-kit/src/lib/timeline/timeline.component.scss",
           "line": 6,
           "owner": "UITimeline",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2542,7 +2542,7 @@
           "file": "packages/ui-kit/src/lib/timeline/timeline.component.scss",
           "line": 3,
           "owner": "UITimeline",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2562,7 +2562,7 @@
           "file": "packages/ui-kit/src/lib/timeline/timeline.component.scss",
           "line": 5,
           "owner": "UITimeline",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2582,14 +2582,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 111,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 217,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2609,7 +2609,7 @@
           "file": "packages/ui-kit/src/lib/file-upload/file-upload.component.scss",
           "line": 5,
           "owner": "UIUpload",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2629,14 +2629,14 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 100,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-kit/src/lib/table-view/table-view.component.scss",
           "line": 7,
           "owner": "UITableView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2656,28 +2656,28 @@
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 41,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_tokens.scss",
           "line": 157,
           "owner": "ThemeService",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 103,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/styles/_theme.scss",
           "line": 134,
           "owner": "styles",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2697,7 +2697,7 @@
           "file": "packages/ui-blocks/src/lib/command-palette/command-palette.component.scss",
           "line": 5,
           "owner": "UICommandPalette",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2717,7 +2717,7 @@
           "file": "packages/ui-blocks/src/lib/file-browser/file-browser.component.scss",
           "line": 7,
           "owner": "UIFileBrowser",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2737,7 +2737,7 @@
           "file": "packages/ui-blocks/src/lib/file-browser/file-browser.component.scss",
           "line": 6,
           "owner": "UIFileBrowser",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2757,7 +2757,7 @@
           "file": "packages/ui-blocks/src/lib/file-browser/file-browser.component.scss",
           "line": 5,
           "owner": "UIFileBrowser",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2777,7 +2777,7 @@
           "file": "packages/ui-blocks/src/lib/kanban-board/kanban-board.component.scss",
           "line": 6,
           "owner": "UIKanbanBoard",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2797,7 +2797,7 @@
           "file": "packages/ui-blocks/src/lib/kanban-board/kanban-board.component.scss",
           "line": 8,
           "owner": "UIKanbanBoard",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2817,7 +2817,7 @@
           "file": "packages/ui-blocks/src/lib/kanban-board/kanban-board.component.scss",
           "line": 5,
           "owner": "UIKanbanBoard",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2837,7 +2837,7 @@
           "file": "packages/ui-blocks/src/lib/kanban-board/kanban-board.component.scss",
           "line": 7,
           "owner": "UIKanbanBoard",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2857,7 +2857,7 @@
           "file": "packages/ui-blocks/src/lib/kanban-board/kanban-board.component.scss",
           "line": 4,
           "owner": "UIKanbanBoard",
-          "package": "@theredhead/ui-blocks",
+          "package": "@theredhead/lucid-blocks",
           "mode": "light"
         }
       ]
@@ -2877,7 +2877,7 @@
           "file": "packages/ui-kit/src/lib/map-view/map-view.component.scss",
           "line": 8,
           "owner": "UIMapView",
-          "package": "@theredhead/ui-kit",
+          "package": "@theredhead/lucid-kit",
           "mode": "light"
         }
       ]
@@ -2897,14 +2897,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 96,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 116,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2924,14 +2924,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 98,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 118,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2951,14 +2951,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 97,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 117,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -2978,14 +2978,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 91,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 111,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3005,14 +3005,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 95,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 115,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3032,7 +3032,7 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 104,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -3052,14 +3052,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 99,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 119,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3079,14 +3079,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 100,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 120,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3106,14 +3106,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 101,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 121,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3133,14 +3133,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 105,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 123,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3160,14 +3160,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 106,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 124,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3187,7 +3187,7 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 103,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         }
       ]
@@ -3207,14 +3207,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 102,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 122,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3234,14 +3234,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 92,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 112,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3261,14 +3261,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 93,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 113,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]
@@ -3288,14 +3288,14 @@
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 94,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "light"
         },
         {
           "file": "packages/ui-theme/src/lib/services/theme-studio-html.ts",
           "line": 114,
           "owner": "services",
-          "package": "@theredhead/ui-theme",
+          "package": "@theredhead/lucid-theme",
           "mode": "dark"
         }
       ]

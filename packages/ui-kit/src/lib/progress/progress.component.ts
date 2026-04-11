@@ -6,7 +6,7 @@ import {
 } from "@angular/core";
 
 import type { ProgressMode, ProgressVariant } from "./progress.types";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A progress indicator in linear (bar) or circular (ring) form.

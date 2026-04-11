@@ -7,14 +7,14 @@ import {
   output,
 } from "@angular/core";
 
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 import { isFlairComponent } from "../../types/form-schema.types";
 import type {
   FormDesignerEngine,
   MutableGroupDefinition,
 } from "./designer-engine";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * The central canvas of the form designer. Displays all groups

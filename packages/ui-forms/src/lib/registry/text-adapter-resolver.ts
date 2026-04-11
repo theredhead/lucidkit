@@ -20,7 +20,7 @@ import {
   UuidTextAdapter,
   CronTextAdapter,
   UppercaseTextAdapter,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 /**
  * Factory map from adapter key strings (as stored in form schema

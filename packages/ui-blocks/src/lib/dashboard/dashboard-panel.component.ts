@@ -12,8 +12,8 @@ import {
   LoggerFactory,
   UISurface,
   UI_DEFAULT_SURFACE_TYPE,
-} from "@theredhead/foundation";
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+} from "@theredhead/lucid-foundation";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 import type { DashboardPanelConfig } from "./dashboard.types";
 
 /**

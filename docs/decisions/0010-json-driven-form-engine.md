@@ -22,7 +22,7 @@ JSON-serialisable form definition enables:
 
 ## Decision
 
-The `@theredhead/ui-forms` package provides a **JSON-driven form engine**:
+The `@theredhead/lucid-forms` package provides a **JSON-driven form engine**:
 
 ### Schema model
 

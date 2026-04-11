@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 import { TAB_HEADER_ITEM } from "./tab-header-item";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * A small visual gap between tabs in a `<ui-tab-group>` header.

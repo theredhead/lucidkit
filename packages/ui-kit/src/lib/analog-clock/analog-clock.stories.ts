@@ -451,7 +451,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -485,7 +485,7 @@ export const FixedTime: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -520,7 +520,7 @@ export const NoSeconds: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -554,7 +554,7 @@ export const Minimal: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -590,7 +590,7 @@ export const Small: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -623,7 +623,7 @@ export const Large: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -662,7 +662,7 @@ export const DayVsNight: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -704,7 +704,7 @@ export const SizeGallery: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -747,7 +747,7 @@ export const Comparison: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -794,7 +794,7 @@ export const WorldClocks: Story = {
 
 // ── TypeScript ──
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { UIAnalogClock } from '@theredhead/ui-kit';
+import { UIAnalogClock } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-world-clocks',
@@ -859,7 +859,7 @@ export const CustomIcons: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIAnalogClock, UIIcons } from '@theredhead/ui-kit';
+import { UIAnalogClock, UIIcons } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

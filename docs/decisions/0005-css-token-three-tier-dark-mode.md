@@ -83,7 +83,7 @@ This gives consumers three override levels:
 
 ### Typed token registry
 
-`@theredhead/ui-theme` exports a `UI_TOKENS` constant and `UI_TokenName` union
+`@theredhead/lucid-theme` exports a `UI_TOKENS` constant and `UI_TokenName` union
 type, providing a typed, discoverable catalogue of all token names.
 
 ## Consequences

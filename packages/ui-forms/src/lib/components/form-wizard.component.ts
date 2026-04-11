@@ -14,7 +14,7 @@ import { FormEngine, type GroupState } from "../engine/form-engine";
 import type { FormValues } from "../types/form-schema.types";
 import { FORM_SETTINGS } from "./form-settings";
 import { UIFormGroup } from "./form-group.component";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Renders a {@link FormEngine}'s groups as wizard steps — one group

@@ -20,7 +20,7 @@ import type {
   TimelineEventContext,
   TimelineOrientation,
 } from "./timeline.types";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A visual timeline that renders events from a datasource.

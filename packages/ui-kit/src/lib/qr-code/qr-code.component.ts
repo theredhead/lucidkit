@@ -5,7 +5,7 @@ import {
   computed,
 } from "@angular/core";
 import { generateQRCodeMatrix } from "./qr-code.utils";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: "ui-qr-code",

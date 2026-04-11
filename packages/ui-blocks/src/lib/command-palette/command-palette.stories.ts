@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIIcons, UIButton } from "@theredhead/ui-kit";
+import { UIIcons, UIButton } from "@theredhead/lucid-kit";
 
 import { UICommandPalette } from "./command-palette.component";
 import type {
@@ -314,8 +314,8 @@ import {
   UICommandPalette,
   type CommandPaletteItem,
   type CommandExecuteEvent,
-} from '@theredhead/ui-blocks';
-import { UIIcons } from '@theredhead/ui-kit';
+} from '@theredhead/lucid-blocks';
+import { UIIcons } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

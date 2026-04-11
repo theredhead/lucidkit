@@ -147,8 +147,8 @@ export const Basic: Story = {
 import { Component } from '@angular/core';
 import {
   UIDropdownMenu, UIDropdownItem, UIDropdownDivider,
-} from '@theredhead/ui-kit';
-import { UIButton } from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -202,8 +202,8 @@ export const Alignment: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIDropdownMenu, UIDropdownItem } from '@theredhead/ui-kit';
-import { UIButton } from '@theredhead/ui-kit';
+import { UIDropdownMenu, UIDropdownItem } from '@theredhead/lucid-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -251,8 +251,8 @@ export const WithIcons: Story = {
 import { Component } from '@angular/core';
 import {
   UIDropdownMenu, UIDropdownItem, UIDropdownDivider,
-} from '@theredhead/ui-kit';
-import { UIButton } from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
+import { UIButton } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

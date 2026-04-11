@@ -1,5 +1,5 @@
 {
-  "name": "@theredhead/foundation",
+  "name": "@theredhead/lucid-foundation",
   "version": "0.0.1",
   "description": "theredhead Foundation - Core utilities, types, and base classes for the theredhead UI library family",
   "private": false,

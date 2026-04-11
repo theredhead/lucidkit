@@ -9,7 +9,7 @@ import {
   signal,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { LoggerFactory, UISurface } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 import { UIIcons } from "../icon";
 
 /**

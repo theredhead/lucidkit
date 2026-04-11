@@ -243,7 +243,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, DateInputAdapter } from '@theredhead/ui-kit';
+import { UIInput, DateInputAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -321,7 +321,7 @@ export const DateAndTime: Story = {
 <ui-input [adapter]="timeAdapter" [(text)]="timeText" placeholder="HH:mm" ariaLabel="Time" />
 
 // ── TypeScript ──
-import { UIInput, DateInputAdapter, TimeTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, DateInputAdapter, TimeTextAdapter } from '@theredhead/lucid-kit';
 
 readonly dateAdapter = new DateInputAdapter({ format: 'yyyy-MM-dd' });
 readonly timeAdapter = new TimeTextAdapter();

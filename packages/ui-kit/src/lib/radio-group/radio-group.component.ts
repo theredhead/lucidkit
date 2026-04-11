@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 
 import { UIRadioButton } from "./radio-button.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Option definition for data-driven radio groups. */
 export interface RadioOption {

@@ -589,7 +589,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab } from '@theredhead/ui-kit';
+import { UITabGroup, UITab } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -636,7 +636,7 @@ export const SecondTabSelected: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab } from '@theredhead/ui-kit';
+import { UITabGroup, UITab } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -683,7 +683,7 @@ export const DisabledTab: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab } from '@theredhead/ui-kit';
+import { UITabGroup, UITab } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -735,7 +735,7 @@ export const ManyTabs: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab } from '@theredhead/ui-kit';
+import { UITabGroup, UITab } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -795,7 +795,7 @@ export const TabPositions: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab } from '@theredhead/ui-kit';
+import { UITabGroup, UITab } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -939,7 +939,7 @@ export const PanelStyles: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab } from '@theredhead/ui-kit';
+import { UITabGroup, UITab } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -998,7 +998,7 @@ export const WithIcons: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab, UIIcons } from '@theredhead/ui-kit';
+import { UITabGroup, UITab, UIIcons } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1064,7 +1064,7 @@ export const IconOnly: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab, UIIcons } from '@theredhead/ui-kit';
+import { UITabGroup, UITab, UIIcons } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1124,7 +1124,7 @@ export const Alignment: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab } from '@theredhead/ui-kit';
+import { UITabGroup, UITab } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1186,7 +1186,7 @@ export const SeparatorAndSpacer: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/ui-kit';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1237,7 +1237,7 @@ export const IdeToolbar: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/ui-kit';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1298,7 +1298,7 @@ export const AppNavigation: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/ui-kit';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1368,7 +1368,7 @@ export const KitchenSink: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UITabGroup, UITab, UITabSeparator, UITabSpacer, UIIcons } from '@theredhead/ui-kit';
+import { UITabGroup, UITab, UITabSeparator, UITabSpacer, UIIcons } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

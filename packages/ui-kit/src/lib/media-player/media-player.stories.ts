@@ -607,7 +607,7 @@ export const Playground: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIMediaPlayer, MediaSource } from '@theredhead/ui-kit';
+import { UIMediaPlayer, MediaSource } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -669,7 +669,7 @@ export const Audio: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIMediaPlayer, MediaSource } from '@theredhead/ui-kit';
+import { UIMediaPlayer, MediaSource } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -721,7 +721,7 @@ export const WithTracks: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIMediaPlayer, MediaSource, MediaTrack } from '@theredhead/ui-kit';
+import { UIMediaPlayer, MediaSource, MediaTrack } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -776,7 +776,7 @@ export const BlobSource: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIMediaPlayer, MediaSource } from '@theredhead/ui-kit';
+import { UIMediaPlayer, MediaSource } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -829,7 +829,7 @@ export const Programmatic: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIMediaPlayer, MediaSource } from '@theredhead/ui-kit';
+import { UIMediaPlayer, MediaSource } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -884,7 +884,7 @@ import {
   MediaSource,
   provideMediaEmbedProviders,
   youTubeEmbedProvider,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 // In your app config or route providers:
 // provideMediaEmbedProviders(youTubeEmbedProvider)
@@ -943,7 +943,7 @@ import {
   MediaSource,
   provideMediaEmbedProviders,
   vimeoEmbedProvider,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 // In your app config or route providers:
 // provideMediaEmbedProviders(vimeoEmbedProvider)
@@ -1007,7 +1007,7 @@ import {
   provideMediaEmbedProviders,
   youTubeEmbedProvider,
   vimeoEmbedProvider,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 // 1. Implement the MediaEmbedProvider interface
 const peertubeProvider: MediaEmbedProvider = {
@@ -1091,7 +1091,7 @@ export const ErrorState: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIMediaPlayer, MediaSource } from '@theredhead/ui-kit';
+import { UIMediaPlayer, MediaSource } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

@@ -16,7 +16,7 @@ import {
   UIIcons,
   UIInput,
   UISelect,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import { isFlairComponent } from "../../types/form-schema.types";
 import type {
@@ -31,7 +31,7 @@ import type {
   ValidationRule,
   ValidationRuleType,
 } from "../../types/validation.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /** Available component keys for the component selector. */
 const COMPONENT_OPTIONS: SelectOption[] = [

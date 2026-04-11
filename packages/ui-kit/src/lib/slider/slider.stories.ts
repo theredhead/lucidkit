@@ -331,7 +331,7 @@ export const Ticks: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UISlider, type SliderTick } from '@theredhead/ui-kit';
+import { UISlider, type SliderTick } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

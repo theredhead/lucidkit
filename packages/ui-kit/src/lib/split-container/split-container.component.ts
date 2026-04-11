@@ -11,7 +11,7 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { StorageService, UISurface } from "@theredhead/foundation";
+import { StorageService, UISurface } from "@theredhead/lucid-foundation";
 
 import type {
   SplitCollapseTarget,

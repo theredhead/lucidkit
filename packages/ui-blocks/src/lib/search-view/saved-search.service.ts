@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { StorageService } from "@theredhead/foundation";
+import { StorageService } from "@theredhead/lucid-foundation";
 
 import type { SavedSearch } from "./saved-search.types";
 
@@ -34,7 +34,7 @@ import type { SavedSearch } from "./saved-search.types";
  *
  * ### Swapping the storage backend
  *
- * Override the `STORAGE_STRATEGY` token from `@theredhead/foundation`:
+ * Override the `STORAGE_STRATEGY` token from `@theredhead/lucid-foundation`:
  *
  * ```ts
  * providers: [

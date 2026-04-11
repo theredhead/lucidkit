@@ -1,13 +1,13 @@
 {
-  "name": "@theredhead/ui-forms",
+  "name": "@theredhead/lucid-forms",
   "version": "0.0.1",
   "description": "theredhead UI Forms - JSON-driven, signal-based form engine with dynamic field rendering",
   "private": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
-    "@theredhead/foundation": "0.0.1",
-    "@theredhead/ui-kit": "0.0.1"
+    "@theredhead/lucid-foundation": "0.0.1",
+    "@theredhead/lucid-kit": "0.0.1"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",

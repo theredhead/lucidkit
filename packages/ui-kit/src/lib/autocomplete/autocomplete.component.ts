@@ -13,11 +13,11 @@ import {
   TemplateRef,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
-import type { AutocompleteDatasource } from "@theredhead/foundation";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
-// Re-export so consumers importing from @theredhead/ui-kit keep working.
-export type { AutocompleteDatasource } from "@theredhead/foundation";
+// Re-export so consumers importing from @theredhead/lucid-kit keep working.
+export type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
 
 // ── Component ──────────────────────────────────────────────────────
 

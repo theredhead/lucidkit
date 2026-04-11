@@ -900,8 +900,8 @@ export const Reorderable: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIRepeater, RepeaterReorderEvent } from '@theredhead/ui-kit';
-import { ArrayDatasource } from '@theredhead/foundation';
+import { UIRepeater, RepeaterReorderEvent } from '@theredhead/lucid-kit';
+import { ArrayDatasource } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: 'app-reorder-example',
@@ -981,8 +981,8 @@ export const TransferBetweenLists: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIRepeater, RepeaterTransferEvent } from '@theredhead/ui-kit';
-import { ArrayDatasource } from '@theredhead/foundation';
+import { UIRepeater, RepeaterTransferEvent } from '@theredhead/lucid-kit';
+import { ArrayDatasource } from '@theredhead/lucid-foundation';
 
 @Component({
   selector: 'app-transfer-example',

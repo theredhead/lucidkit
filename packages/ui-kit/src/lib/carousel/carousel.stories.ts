@@ -466,7 +466,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICarousel } from '@theredhead/ui-kit';
+import { UICarousel } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -556,7 +556,7 @@ export const Coverflow: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICarousel, CoverflowCarouselStrategy } from '@theredhead/ui-kit';
+import { UICarousel, CoverflowCarouselStrategy } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -641,7 +641,7 @@ export const Scroll: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICarousel, ScrollCarouselStrategy } from '@theredhead/ui-kit';
+import { UICarousel, ScrollCarouselStrategy } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

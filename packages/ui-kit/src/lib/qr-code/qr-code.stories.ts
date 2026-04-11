@@ -55,7 +55,7 @@ export const Playground: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIQRCode } from '@theredhead/ui-kit';
+import { UIQRCode } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -96,7 +96,7 @@ export const CustomColors: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIQRCode } from '@theredhead/ui-kit';
+import { UIQRCode } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -138,7 +138,7 @@ export const WiFi: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIQRCode } from '@theredhead/ui-kit';
+import { UIQRCode } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-wifi-qr',

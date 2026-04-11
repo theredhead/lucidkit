@@ -1,4 +1,4 @@
-import type { TreeNode } from "@theredhead/ui-kit";
+import type { TreeNode } from "@theredhead/lucid-kit";
 
 import type { NavigationNodeData } from "./navigation-page.component";
 

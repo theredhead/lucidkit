@@ -1,4 +1,4 @@
-# @theredhead/ui-forms — API Inventory
+# @theredhead/lucid-forms — API Inventory
 
 > Machine-readable inventory of all public exports.
 > Referenced from the root [AGENTS.md](../../AGENTS.md).

@@ -185,7 +185,7 @@ export const AllSeverities: Story = {
 
 // ── TypeScript ──
 import { Component, inject } from '@angular/core';
-import { UIToastContainer, ToastService } from '@theredhead/ui-kit';
+import { UIToastContainer, ToastService } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-root',
@@ -230,7 +230,7 @@ export const WithActions: Story = {
 
 // ── TypeScript ──
 import { Component, inject } from '@angular/core';
-import { UIToastContainer, ToastService } from '@theredhead/ui-kit';
+import { UIToastContainer, ToastService } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -282,7 +282,7 @@ export const Positions: Story = {
 
 // ── TypeScript ──
 import { Component, inject } from '@angular/core';
-import { UIToastContainer, ToastService } from '@theredhead/ui-kit';
+import { UIToastContainer, ToastService } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-root',

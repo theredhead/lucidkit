@@ -6,7 +6,7 @@ import {
   model,
   output,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Size variant for the toggle switch. */
 export type ToggleSize = "small" | "medium" | "large";

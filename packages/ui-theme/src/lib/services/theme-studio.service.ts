@@ -1,7 +1,7 @@
 import { DOCUMENT } from "@angular/common";
 import { inject, Injectable } from "@angular/core";
 
-import { LoggerFactory } from "@theredhead/foundation";
+import { LoggerFactory } from "@theredhead/lucid-foundation";
 
 import { generateThemeStudioHtml } from "./theme-studio-html";
 
@@ -83,7 +83,7 @@ interface StudioReadyMessage {
  *
  * @example
  * ```typescript
- * import { ThemeStudioService } from '@theredhead/ui-theme';
+ * import { ThemeStudioService } from '@theredhead/lucid-theme';
  *
  * export class DevToolbarComponent {
  *   private readonly studio = inject(ThemeStudioService);

@@ -5,7 +5,7 @@ import {
   model,
   output,
 } from "@angular/core";
-import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/foundation";
+import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/lucid-foundation";
 
 /** Side from which the drawer slides in. */
 export type DrawerPosition = "left" | "right";

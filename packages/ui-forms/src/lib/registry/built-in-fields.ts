@@ -1,4 +1,4 @@
-// ── Built-in field registrations for @theredhead/ui-kit ──────────────
+// ── Built-in field registrations for @theredhead/lucid-kit ──────────────
 
 import type { EnvironmentProviders } from "@angular/core";
 
@@ -18,7 +18,7 @@ import {
   UIFileUpload,
   UIImage,
   UIMediaPlayer,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import {
   provideFormFields,
@@ -28,7 +28,7 @@ import { resolveTextAdapter } from "./text-adapter-resolver";
 
 /**
  * Built-in field registrations that map common component keys
- * to `@theredhead/ui-kit` components.
+ * to `@theredhead/lucid-kit` components.
  *
  * | Key             | Component           | Model property |
  * |-----------------|---------------------|----------------|
@@ -103,11 +103,11 @@ export const BUILT_IN_FIELDS: Readonly<Record<string, FormFieldRegistration>> =
 
 /**
  * Convenience provider that registers all built-in
- * `@theredhead/ui-kit` field types.
+ * `@theredhead/lucid-kit` field types.
  *
  * @example
  * ```ts
- * import { provideBuiltInFormFields } from '@theredhead/ui-forms';
+ * import { provideBuiltInFormFields } from '@theredhead/lucid-forms';
  *
  * export const appConfig = {
  *   providers: [provideBuiltInFormFields()],

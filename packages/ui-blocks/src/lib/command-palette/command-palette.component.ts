@@ -11,14 +11,14 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { UIIcon, UIIcons } from "@theredhead/ui-kit";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 import type {
   CommandExecuteEvent,
   CommandGroup,
   CommandPaletteItem,
 } from "./command-palette.types";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A keyboard-triggered command palette that provides quick access

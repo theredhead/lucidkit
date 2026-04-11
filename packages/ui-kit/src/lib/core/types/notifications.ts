@@ -1,7 +1,7 @@
 /**
- * Re-exported from `@theredhead/foundation`.
+ * Re-exported from `@theredhead/lucid-foundation`.
  */
 export type {
   RowChangedNotification,
   RowRangeChangedNotification,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";

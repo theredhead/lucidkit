@@ -1,5 +1,5 @@
 import { TestBed } from "@angular/core/testing";
-import { StorageService } from "@theredhead/foundation";
+import { StorageService } from "@theredhead/lucid-foundation";
 import { ColumnResizeService } from "./column-resize.service";
 
 describe("ColumnResizeService", () => {

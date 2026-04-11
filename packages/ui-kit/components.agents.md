@@ -1,4 +1,4 @@
-# @theredhead/ui-kit — API Inventory
+# @theredhead/lucid-kit — API Inventory
 
 > Machine-readable inventory of all public exports.
 > Referenced from the root [AGENTS.md](../../AGENTS.md).

@@ -20,7 +20,7 @@ import {
   type IDatasource,
   type Predicate,
   UISurface,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 import {
   FilterableArrayDatasource,
   SelectionModel,
@@ -43,7 +43,7 @@ import {
   type SplitPanelConstraints,
   type TreeNode,
   type TreeNodeContext,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 /**
  * Context provided to the detail template.

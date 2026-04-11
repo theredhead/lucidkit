@@ -10,7 +10,7 @@ import { FormsModule } from "@angular/forms";
 import { UIIcon } from "../../icon/icon.component";
 import { UIIcons } from "../../icon/lucide-icons.generated";
 import { PopoverRef, type UIPopoverContent } from "../../popover/popover.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 // ── Result type ────────────────────────────────────────────────────
 

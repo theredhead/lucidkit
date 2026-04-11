@@ -1,9 +1,9 @@
 /**
- * Re-exported from `@theredhead/foundation`.
+ * Re-exported from `@theredhead/lucid-foundation`.
  */
 export {
   SortDirection,
   type SortExpression,
   compileSortExpression,
   compileTreeSortExpression,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";

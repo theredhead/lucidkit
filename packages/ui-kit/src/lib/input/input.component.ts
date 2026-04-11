@@ -31,7 +31,7 @@ import {
   LoggerFactory,
   UISurface,
   UI_DEFAULT_SURFACE_TYPE,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 
 /**
  * Thin wrapper around a native `<input>` or `<textarea>` element.

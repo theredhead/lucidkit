@@ -13,7 +13,7 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { LoggerFactory, UISurface } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 
 import type { FieldState } from "../../engine/form-engine";
 import { FormFieldRegistry } from "../../registry/field-registry";

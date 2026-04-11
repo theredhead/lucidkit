@@ -21,7 +21,7 @@ import {
   isRemovableDatasource,
   isInsertableDatasource,
   UISurface,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 import type {
   RepeaterItemContext,
   RepeaterReorderEvent,
@@ -54,7 +54,7 @@ import { RepeaterDragHandler } from "./repeater-drag-handler";
  * @example
  * With filtering:
  * ```ts
- * import { FilterableArrayDatasource } from '@theredhead/foundation';
+ * import { FilterableArrayDatasource } from '@theredhead/lucid-foundation';
  *
  * const ds = new FilterableArrayDatasource(items);
  * ds.filterBy([{ predicate: item => item.active }]);
@@ -63,7 +63,7 @@ import { RepeaterDragHandler } from "./repeater-drag-handler";
  * @example
  * With sorting:
  * ```ts
- * import { SortableArrayDatasource } from '@theredhead/foundation';
+ * import { SortableArrayDatasource } from '@theredhead/lucid-foundation';
  *
  * const ds = new SortableArrayDatasource(items);
  * ds.applyComparator((a, b) => a.name.localeCompare(b.name));

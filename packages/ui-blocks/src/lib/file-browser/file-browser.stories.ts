@@ -508,7 +508,7 @@ import {
   type FileBrowserDatasource,
   type FileBrowserEntry,
   type FileActivateEvent,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 class MyDatasource implements FileBrowserDatasource {
   getChildren(parent: FileBrowserEntry | null): FileBrowserEntry[] {
@@ -625,7 +625,7 @@ import {
   UIFileBrowser,
   type FileBrowserEntry,
   type MetadataField,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-icon-view',
@@ -679,7 +679,7 @@ export const DetailView: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIFileBrowser } from '@theredhead/ui-blocks';
+import { UIFileBrowser } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-detail-view',
@@ -725,7 +725,7 @@ export const ColumnView: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIFileBrowser } from '@theredhead/ui-blocks';
+import { UIFileBrowser } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-column-view',
@@ -775,7 +775,7 @@ import {
   UIFileBrowser,
   type FileBrowserEntry,
   type MetadataField,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-details-pane',

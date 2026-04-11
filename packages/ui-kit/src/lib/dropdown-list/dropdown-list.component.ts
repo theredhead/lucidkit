@@ -17,7 +17,7 @@ import { UIIcons } from "../icon/lucide-icons.generated";
 import { PopoverRef, type UIPopoverContent } from "../popover/popover.types";
 import { PopoverService } from "../popover/popover.service";
 import type { SelectOption } from "../select/select.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Popover content that renders the option list for {@link UIDropdownList}.

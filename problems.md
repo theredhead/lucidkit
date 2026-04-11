@@ -9,7 +9,7 @@
 - [x] Create `packages/foundation/src/lib/datasource/` with base contracts (`IDataSource`, `IPageableDataSource`, etc.)
 - [x] Implement capability interfaces (`IFilterableDataSource`, `ISortableDataSource`, `ITreeDataSource`, `IFilterableTreeDataSource`)
 - [x] Implement type guards (`isFilterableDataSource`, `isSortableDataSource`, `isPageableDataSource`, `isTreeDataSource`, `isFilterableTreeDataSource`)
-- [x] Export all from `@theredhead/foundation` public API
+- [x] Export all from `@theredhead/lucid-foundation` public API
 - [x] Add comprehensive JSDoc and examples to all contracts
 - [x] Verified TypeScript compilation (no errors in datasource/ folder)
 
@@ -73,7 +73,7 @@ export interface IPageableDataSource {
 
 ```ts
 // Use existing types from foundation:
-// import { type FilterExpression, type SortExpression } from "@theredhead/foundation";
+// import { type FilterExpression, type SortExpression } from "@theredhead/lucid-foundation";
 
 /** Optional filtering capability. */
 export interface IFilterableDataSource<T> {

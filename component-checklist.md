@@ -1,7 +1,7 @@
 # Component Checklist
 
-> Tracking existing and planned components across `@theredhead/ui-kit` and
-> `@theredhead/ui-blocks`.
+> Tracking existing and planned components across `@theredhead/lucid-kit` and
+> `@theredhead/lucid-blocks`.
 
 ---
 

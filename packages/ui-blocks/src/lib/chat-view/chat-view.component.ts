@@ -20,7 +20,7 @@ import {
   UIIcon,
   UIIcons,
   UIRichTextEditor,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import type {
   ChatComposerMode,
@@ -31,7 +31,7 @@ import type {
   MessageTemplateContext,
 } from "./chat-view.types";
 import { UIMessageBubble } from "./message-bubble/message-bubble.component";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * A chat / messaging view composing UIAvatar, UIRichTextEditor,

@@ -5,7 +5,7 @@ import {
   TemplateRef,
   viewChild,
 } from "@angular/core";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 /**
  * A single step inside a {@link UIWizard}.

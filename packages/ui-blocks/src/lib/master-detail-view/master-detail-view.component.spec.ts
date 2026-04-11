@@ -8,7 +8,7 @@ import {
   UITextColumn,
   type ITreeDatasource,
   type TreeNode,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import { UIMasterDetailView } from "./master-detail-view.component";
 

@@ -13,7 +13,7 @@ import {
   type FilterDescriptor,
   type FilterExpression,
   type TreeNode,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import { UIMasterDetailView } from "./master-detail-view.component";
 
@@ -740,8 +740,8 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { FilterableArrayDatasource, UITextColumn } from '@theredhead/ui-kit';
-import { UIMasterDetailView } from '@theredhead/ui-blocks';
+import { FilterableArrayDatasource, UITextColumn } from '@theredhead/lucid-kit';
+import { UIMasterDetailView } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',
@@ -789,8 +789,8 @@ export const WithFilter: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { FilterableArrayDatasource, UITemplateColumn, UIAvatar } from '@theredhead/ui-kit';
-import { UIMasterDetailView } from '@theredhead/ui-blocks';
+import { FilterableArrayDatasource, UITemplateColumn, UIAvatar } from '@theredhead/lucid-kit';
+import { UIMasterDetailView } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',

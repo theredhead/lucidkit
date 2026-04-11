@@ -152,7 +152,7 @@ export const Default: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 // standalone: true, imports: [UIRichTextEditor]
 
@@ -199,7 +199,7 @@ export const WithPlaceholders: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly placeholders: RichTextPlaceholder[] = [
@@ -256,7 +256,7 @@ export const WithInitialContent: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly emailBody = signal(
@@ -309,7 +309,7 @@ export const Disabled: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly content = signal('<p>This editor is <b>disabled</b>.</p>');
@@ -356,7 +356,7 @@ export const ReadOnly: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly content = signal(
@@ -403,7 +403,7 @@ export const MinimalToolbar: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly toolbarActions = ['bold', 'italic', 'underline'];
@@ -451,7 +451,7 @@ export const Markdown: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 // standalone: true, imports: [UIRichTextEditor]
 
@@ -501,7 +501,7 @@ export const MarkdownWithPlaceholders: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly template = signal(
@@ -559,7 +559,7 @@ export const MarkdownWithInitialContent: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly content = signal(
@@ -610,7 +610,7 @@ export const WithMaxLength: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 // standalone: true, imports: [UIRichTextEditor]
 
@@ -660,7 +660,7 @@ export const MaxLengthExceeded: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly content = signal(
@@ -720,7 +720,7 @@ export const FullFeatured: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/ui-kit';
+import { UIRichTextEditor, type RichTextPlaceholder } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly emailBody = signal(
@@ -783,7 +783,7 @@ export const MarkdownMaxLength: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { signal } from '@angular/core';
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly content = signal(
@@ -850,7 +850,7 @@ export const WithImageHandler: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIRichTextEditor, type RichTextImageHandler } from '@theredhead/ui-kit';
+import { UIRichTextEditor, type RichTextImageHandler } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly handleImage: RichTextImageHandler = async (file: File) => {
@@ -903,7 +903,7 @@ export const ImageBase64Fallback: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIRichTextEditor } from '@theredhead/ui-kit';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
 
 // No imageHandler provided — pasted images are
 // automatically embedded as inline base64 data URIs.
@@ -1139,7 +1139,7 @@ import {
   UIRichTextEditor,
   MARKDOWN_PARSER,
   createMarkedParser,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-my-editor',
@@ -1267,7 +1267,7 @@ import {
   UIRichTextEditor,
   MARKDOWN_PARSER,
   createMarkdownItParser,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 const mdit = new MarkdownIt({
   html: false,        // disable raw HTML input
@@ -1414,7 +1414,7 @@ import {
   UIRichTextEditor,
   MARKDOWN_PARSER,
   type MarkdownParser,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 // Implement the interface directly — no external dependency needed
 const myParser: MarkdownParser = {

@@ -8,7 +8,7 @@ import {
   input,
   output,
 } from "@angular/core";
-import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/foundation";
+import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/lucid-foundation";
 import type { ToolActionEvent } from "./toolbar-action";
 import { UIToolbarItem } from "./toolbar-item.directive";
 

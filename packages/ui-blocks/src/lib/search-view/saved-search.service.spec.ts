@@ -2,7 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import {
   STORAGE_STRATEGY,
   type IStorageStrategy,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 
 import { SavedSearchService } from "./saved-search.service";
 import type { SavedSearch } from "./saved-search.types";

@@ -26,7 +26,7 @@ import type {
   FilterRule,
 } from "./filter.types";
 import { ANY_FIELD_KEY } from "./filter.types";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 const JUNCTION_OPTIONS: SelectOption[] = [
   { value: "and", label: "all" },

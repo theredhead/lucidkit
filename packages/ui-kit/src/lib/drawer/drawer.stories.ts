@@ -195,7 +195,7 @@ export const Left: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIDrawer } from '@theredhead/ui-kit';
+import { UIDrawer } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -241,7 +241,7 @@ export const Right: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIDrawer } from '@theredhead/ui-kit';
+import { UIDrawer } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -288,7 +288,7 @@ export const Widths: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIDrawer } from '@theredhead/ui-kit';
+import { UIDrawer } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

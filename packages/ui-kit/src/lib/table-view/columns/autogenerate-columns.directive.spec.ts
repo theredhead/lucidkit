@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { UITableView } from "../table-view.component";
 import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive";
 import { Component, signal } from "@angular/core";
-import { ArrayDatasource, type IDatasource } from "@theredhead/foundation";
+import { ArrayDatasource, type IDatasource } from "@theredhead/lucid-foundation";
 
 // ── Test data ───────────────────────────────────────────────────────
 

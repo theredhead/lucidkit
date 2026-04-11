@@ -1,6 +1,6 @@
 /**
- * Re-exported from `@theredhead/foundation`.
+ * Re-exported from `@theredhead/lucid-foundation`.
  *
- * @see `@theredhead/foundation` — `ArrayDatasource`
+ * @see `@theredhead/lucid-foundation` — `ArrayDatasource`
  */
-export { ArrayDatasource } from "@theredhead/foundation";
+export { ArrayDatasource } from "@theredhead/lucid-foundation";

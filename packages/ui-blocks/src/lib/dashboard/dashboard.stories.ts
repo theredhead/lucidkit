@@ -17,7 +17,7 @@ import {
   UIChart,
   BarGraphStrategy,
   UIButton,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 // ── Shared fixtures ──────────────────────────────────────────────
 
@@ -663,7 +663,7 @@ export const Default: Story = {
 import {
   UIDashboard, UIDashboardPanel,
   DashboardPanelConfig,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 export class MyDashboard {
   readonly panels: DashboardPanelConfig[] = [
@@ -730,7 +730,7 @@ export const AutoFill: Story = {
 import {
   UIDashboard, UIDashboardPanel,
   DashboardPanelConfig,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 export class MyDashboard {
   // columns="auto" uses CSS auto-fill with minColumnWidth.
@@ -785,7 +785,7 @@ import { signal, viewChild } from '@angular/core';
 import {
   UIDashboard, UIDashboardPanel,
   DashboardPanelConfig,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 export class MyDashboard {
   readonly dashboard = viewChild.required(UIDashboard);
@@ -865,7 +865,7 @@ export const SpanningLayout: Story = {
 // ── TypeScript ────────────────────────────────────────────────
 import {
   UIDashboard, UIDashboardPanel,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 // Use placement.colSpan and placement.rowSpan in the
 // DashboardPanelConfig to create complex grid layouts.
@@ -912,7 +912,7 @@ export const Notifications: Story = {
 
 // ── TypeScript ────────────────────────────────────────────────
 import { viewChild } from '@angular/core';
-import { UIDashboardPanel } from '@theredhead/ui-blocks';
+import { UIDashboardPanel } from '@theredhead/lucid-blocks';
 
 export class MyDashboard {
   private readonly feedPanel = viewChild.required<UIDashboardPanel>('feedPanel');

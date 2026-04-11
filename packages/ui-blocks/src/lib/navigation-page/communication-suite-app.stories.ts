@@ -35,7 +35,7 @@ import {
   UITemplateColumn,
   UITextColumn,
   UIToggle,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import { UIChatView } from "../chat-view/chat-view.component";
 import type {
@@ -3331,13 +3331,13 @@ import { Component, signal, computed } from '@angular/core';
 import {
   UINavigationPage, navItem, navGroup, type NavigationNode,
   UIMasterDetailView, UIChatView, type ChatParticipant,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 import {
   FilterableArrayDatasource, ArrayCalendarDatasource,
   UICalendarMonthView, UITabGroup, UITab, UITabSpacer,
   UIChip, UIAvatar, UIBadge, UIBadgeColumn, UITemplateColumn,
   UIIcon, UIIcons, UICard, UICardBody, UIButton, UIInput,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-communication-suite',

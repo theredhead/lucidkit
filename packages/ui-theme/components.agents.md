@@ -1,4 +1,4 @@
-# @theredhead/ui-theme — API Inventory
+# @theredhead/lucid-theme — API Inventory
 
 > Machine-readable inventory of all public exports.
 > Referenced from the root [AGENTS.md](../../AGENTS.md).

@@ -1230,7 +1230,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, EmailTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, EmailTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1290,7 +1290,7 @@ export const Plain: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput } from '@theredhead/ui-kit';
+import { UIInput } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1337,7 +1337,7 @@ export const Multiline: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput } from '@theredhead/ui-kit';
+import { UIInput } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1377,7 +1377,7 @@ export const Disabled: Story = {
 <ui-input [disabled]="true" placeholder="Cannot edit" />
 
 // ── TypeScript ──
-import { UIInput } from '@theredhead/ui-kit';
+import { UIInput } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1423,7 +1423,7 @@ export const EmailAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, EmailTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, EmailTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1483,7 +1483,7 @@ export const UrlAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, UrlTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, UrlTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1541,7 +1541,7 @@ export const IPAddressAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, IPAddressTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, IPAddressTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1599,7 +1599,7 @@ import {
   EmailTextAdapter,
   UrlTextAdapter,
   IPAddressTextAdapter,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1661,7 +1661,7 @@ export const MoneyAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, MoneyTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, MoneyTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1687,7 +1687,7 @@ export class MyComponent {
 }
 
 // ── DI override (app.config.ts) ──
-import { provideDefaultCurrency } from '@theredhead/ui-kit';
+import { provideDefaultCurrency } from '@theredhead/lucid-kit';
 
 export const appConfig = {
   providers: [provideDefaultCurrency('EUR')],
@@ -1731,7 +1731,7 @@ export const IntegerAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, IntegerTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, IntegerTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1789,7 +1789,7 @@ export const FloatAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, FloatTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, FloatTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1846,7 +1846,7 @@ export const DecimalAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, DecimalTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, DecimalTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1905,7 +1905,7 @@ export const HexadecimalAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, HexadecimalTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, HexadecimalTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -1964,7 +1964,7 @@ export const PhoneAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, PhoneTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, PhoneTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2023,7 +2023,7 @@ export const CreditCardAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, CreditCardTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, CreditCardTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2080,7 +2080,7 @@ export const PercentageAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, PercentageTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, PercentageTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2138,7 +2138,7 @@ export const DateAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, DateTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, DateTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2195,7 +2195,7 @@ export const TimeAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, TimeTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, TimeTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2253,7 +2253,7 @@ export const ColorAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, ColorTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, ColorTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2311,7 +2311,7 @@ export const SlugAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, SlugTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, SlugTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2368,7 +2368,7 @@ export const UuidAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, UuidTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, UuidTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],
@@ -2425,7 +2425,7 @@ export const CronAdapter: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIInput, CronTextAdapter } from '@theredhead/ui-kit';
+import { UIInput, CronTextAdapter } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UIInput],

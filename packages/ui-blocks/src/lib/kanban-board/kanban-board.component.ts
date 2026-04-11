@@ -24,7 +24,7 @@ import type {
   KanbanCardMoveEvent,
   KanbanCardContext,
 } from "./kanban-board.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Column-based kanban board with drag-and-drop card reordering.

@@ -1,5 +1,5 @@
 /**
- * Re-exported from `@theredhead/foundation`.
+ * Re-exported from `@theredhead/lucid-foundation`.
  *
  * All datasource interfaces and supporting types now live in the
  * foundation package. This module re-exports them for backwards
@@ -18,4 +18,4 @@ export {
   type ISortableDatasource,
   type IFilterableDatasource,
   type IActiveDatasource,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";

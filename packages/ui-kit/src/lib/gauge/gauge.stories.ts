@@ -229,7 +229,7 @@ import {
   UIGauge,
   AnalogGaugeStrategy,
   type GaugeZone,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-speedometer',
@@ -313,7 +313,7 @@ import {
   UIGauge,
   AnalogGaugeStrategy,
   type GaugeZone,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-temp-gauge',
@@ -394,7 +394,7 @@ export const VuMeter: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIGauge, VuMeterStrategy } from '@theredhead/ui-kit';
+import { UIGauge, VuMeterStrategy } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-vu-meter',
@@ -466,7 +466,7 @@ export const Digital: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIGauge, DigitalGaugeStrategy } from '@theredhead/ui-kit';
+import { UIGauge, DigitalGaugeStrategy } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-thermometer',
@@ -538,7 +538,7 @@ export const LCD: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIGauge, LcdGaugeStrategy } from '@theredhead/ui-kit';
+import { UIGauge, LcdGaugeStrategy } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-lcd-thermometer',
@@ -616,7 +616,7 @@ import {
   UIGauge,
   BarGaugeStrategy,
   type GaugeZone,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-cpu-meter',
@@ -716,7 +716,7 @@ import {
   UIGauge,
   AnalogGaugeStrategy,
   type GaugeZone,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-threshold-demo',
@@ -802,7 +802,7 @@ export const CustomFormatter: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIGauge, AnalogGaugeStrategy } from '@theredhead/ui-kit';
+import { UIGauge, AnalogGaugeStrategy } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-revenue-gauge',
@@ -888,7 +888,7 @@ import {
   UIGauge,
   AnalogGaugeStrategy,
   type GaugeZone,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-animated-gauge',
@@ -982,7 +982,7 @@ import {
   UIGauge,
   AnalogGaugeStrategy,
   type GaugeZone,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-responsive-gauge',
@@ -1041,7 +1041,7 @@ import {
   VuMeterStrategy,
   DigitalGaugeStrategy,
   type GaugeZone,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   standalone: true,

@@ -5,7 +5,7 @@ import {
   input,
 } from "@angular/core";
 
-import { UIAvatar, UIIcon } from "@theredhead/ui-kit";
+import { UIAvatar, UIIcon } from "@theredhead/lucid-kit";
 
 import type { ChatMessage } from "../chat-view.types";
 

@@ -9,7 +9,7 @@ import {
   signal,
 } from "@angular/core";
 import { SlicePipe } from "@angular/common";
-import { LoggerFactory, UISurface } from "@theredhead/foundation";
+import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 import { PopoverService } from "../popover/popover.service";
 import { UICalendarDayPopover } from "./calendar-day-popover.component";
 import type {

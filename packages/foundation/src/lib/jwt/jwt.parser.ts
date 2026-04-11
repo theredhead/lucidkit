@@ -62,7 +62,7 @@ function parseSegment<T>(segment: string, label: string): T {
  *
  * @example
  * ```ts
- * import { decodeJwt } from '@theredhead/foundation';
+ * import { decodeJwt } from '@theredhead/lucid-foundation';
  *
  * const jwt = decodeJwt(rawTokenString);
  * console.log(jwt.payload.sub);  // "user-123"

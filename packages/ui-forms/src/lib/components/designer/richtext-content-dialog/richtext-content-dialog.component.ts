@@ -12,8 +12,8 @@ import {
   ModalRef,
   type UIModalContent,
   UIRichTextEditor,
-} from "@theredhead/ui-kit";
-import { UISurface } from '@theredhead/foundation';
+} from "@theredhead/lucid-kit";
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * Modal dialog for editing the HTML content of a `flair:richtext`

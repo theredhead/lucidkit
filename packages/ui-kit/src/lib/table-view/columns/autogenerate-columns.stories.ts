@@ -589,7 +589,7 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -646,7 +646,7 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -708,7 +708,7 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -763,7 +763,7 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -820,7 +820,7 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -885,7 +885,7 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -946,7 +946,7 @@ import {
   UITableView,
   UIAutogenerateColumnsDirective,
   ArrayDatasource,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1026,7 +1026,7 @@ import {
   FilterableArrayDatasource,
   inferFilterFields,
   type FilterExpression,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -1105,7 +1105,7 @@ import {
   inferFilterFields,
   type FilterExpression,
   type FilterFieldDefinition,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

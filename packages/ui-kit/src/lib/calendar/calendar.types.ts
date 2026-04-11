@@ -1,4 +1,4 @@
-import { Emitter } from "@theredhead/foundation";
+import { Emitter } from "@theredhead/lucid-foundation";
 
 // ── Calendar Event ────────────────────────────────────────────────
 

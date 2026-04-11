@@ -135,7 +135,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIWizard, UIWizardStep } from '@theredhead/ui-blocks';
+import { UIWizard, UIWizardStep } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-onboarding',
@@ -190,7 +190,7 @@ export const WithValidation: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIWizard, UIWizardStep } from '@theredhead/ui-blocks';
+import { UIWizard, UIWizardStep } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-signup',

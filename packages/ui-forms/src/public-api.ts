@@ -1,5 +1,5 @@
 /*
- * Public API Surface of @theredhead/ui-forms
+ * Public API Surface of @theredhead/lucid-forms
  */
 
 // ── Types ────────────────────────────────────────────────────────────

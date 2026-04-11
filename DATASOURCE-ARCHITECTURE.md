@@ -35,8 +35,8 @@ export interface IPageableDataSource {
 ## Capability Interfaces (Specialist Behavior)
 
 ```ts
-// Use existing types from @theredhead/foundation:
-// import { type FilterExpression, type SortExpression } from "@theredhead/foundation";
+// Use existing types from @theredhead/lucid-foundation:
+// import { type FilterExpression, type SortExpression } from "@theredhead/lucid-foundation";
 
 /**
  * Optional filtering capability.
@@ -152,7 +152,7 @@ export function isTreeDataSource<T>(ds: unknown): ds is ITreeDataSource<T> {
 
 ## Notes on `FilterExpression` and `SortExpression`
 
-These are defined in `@theredhead/foundation`. They should represent a simple AST capable of:
+These are defined in `@theredhead/lucid-foundation`. They should represent a simple AST capable of:
 
 - **FilterExpression**: Boolean predicate evaluation (equality, range, contains, logical operators).
 - **SortExpression**: Single or multi-field sort directions with custom comparators if needed.

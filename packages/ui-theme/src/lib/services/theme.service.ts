@@ -9,7 +9,7 @@ import {
   type WritableSignal,
 } from "@angular/core";
 
-import { StorageService } from "@theredhead/foundation";
+import { StorageService } from "@theredhead/lucid-foundation";
 
 import {
   DEFAULT_THEME_CONFIG,
@@ -35,7 +35,7 @@ import {
  *
  * @example
  * ```typescript
- * import { ThemeService } from '@theredhead/ui-theme';
+ * import { ThemeService } from '@theredhead/lucid-theme';
  *
  * @Component({...})
  * export class AppComponent {

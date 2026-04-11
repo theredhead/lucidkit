@@ -148,7 +148,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICheckbox } from '@theredhead/ui-kit';
+import { UICheckbox } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UICheckbox],
@@ -183,7 +183,7 @@ export const Checked: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICheckbox } from '@theredhead/ui-kit';
+import { UICheckbox } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UICheckbox],
@@ -223,7 +223,7 @@ export const Indeterminate: Story = {
 
 // ── TypeScript ──
 import { Component, computed, signal } from '@angular/core';
-import { UICheckbox } from '@theredhead/ui-kit';
+import { UICheckbox } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UICheckbox],
@@ -267,7 +267,7 @@ export const Switch: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICheckbox } from '@theredhead/ui-kit';
+import { UICheckbox } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UICheckbox],
@@ -300,7 +300,7 @@ export const SwitchChecked: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICheckbox } from '@theredhead/ui-kit';
+import { UICheckbox } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UICheckbox],
@@ -347,7 +347,7 @@ export const Disabled: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UICheckbox } from '@theredhead/ui-kit';
+import { UICheckbox } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UICheckbox],
@@ -393,7 +393,7 @@ export const AllVariants: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICheckbox } from '@theredhead/ui-kit';
+import { UICheckbox } from '@theredhead/lucid-kit';
 
 @Component({
   imports: [UICheckbox],

@@ -7,7 +7,7 @@
 //
 // Usage (from a component SCSS file):
 //
-//   @use "@theredhead/ui-theme/styles/mixins" as mix;
+//   @use "@theredhead/lucid-theme/styles/mixins" as mix;
 //
 //   :host { --ui-text: #1d232b; }
 //   @include mix.dark-mode { --ui-text: #f2f6fb; }

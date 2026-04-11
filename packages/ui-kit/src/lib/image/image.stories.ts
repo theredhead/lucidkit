@@ -55,7 +55,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIImage } from '@theredhead/ui-kit';
+import { UIImage } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

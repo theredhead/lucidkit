@@ -11,7 +11,7 @@ import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
 import { DEFAULT_EMOJI_CATEGORIES } from "./emoji-picker.data";
 import type { EmojiCategory } from "./emoji-picker.types";
-import { UISurface } from '@theredhead/foundation';
+import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
  * A categorised, searchable emoji picker.

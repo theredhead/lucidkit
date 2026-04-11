@@ -25,7 +25,7 @@ import {
   AngularComponentExportStrategy,
 } from "../../export";
 import { UIFormDesigner } from "./form-designer.component";
-import { UIButton } from "@theredhead/ui-kit";
+import { UIButton } from "@theredhead/lucid-kit";
 
 // ── Demo wrapper ────────────────────────────────────────────────────
 
@@ -298,7 +298,7 @@ or a single panel in preview/JSON mode. It fills its container height.
 
 ### Export Strategies
 Export strategies (\`JsonExportStrategy\`, \`AngularComponentExportStrategy\`) are available
-programmatically via \`@theredhead/ui-forms\` — see the **Export Preview** story.
+programmatically via \`@theredhead/lucid-forms\` — see the **Export Preview** story.
         `,
       },
     },
@@ -335,8 +335,8 @@ export const EmptyDesigner: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIFormDesigner } from '@theredhead/ui-forms';
-import type { FormSchema } from '@theredhead/ui-forms';
+import { UIFormDesigner } from '@theredhead/lucid-forms';
+import type { FormSchema } from '@theredhead/lucid-forms';
 
 @Component({
   selector: 'app-example',
@@ -391,8 +391,8 @@ export const WithExistingSchema: Story = {
 
 // ── TypeScript ──
 import { Component } from '@angular/core';
-import { UIFormDesigner } from '@theredhead/ui-forms';
-import type { FormSchema } from '@theredhead/ui-forms';
+import { UIFormDesigner } from '@theredhead/lucid-forms';
+import type { FormSchema } from '@theredhead/lucid-forms';
 
 @Component({
   selector: 'app-example',
@@ -448,8 +448,8 @@ export const ExportPreview: Story = {
         language: "typescript",
         code: `
 // Use export strategies programmatically:
-import { AngularComponentExportStrategy, JsonExportStrategy } from '@theredhead/ui-forms';
-import type { FormSchema, ExportResult } from '@theredhead/ui-forms';
+import { AngularComponentExportStrategy, JsonExportStrategy } from '@theredhead/lucid-forms';
+import type { FormSchema, ExportResult } from '@theredhead/lucid-forms';
 
 const schema: FormSchema = { /* your schema */ };
 const strategy = new AngularComponentExportStrategy();
@@ -894,8 +894,8 @@ export const VehicleRegistration: Story = {
 
 // \u2500\u2500 TypeScript \u2500\u2500
 import { Component } from '@angular/core';
-import { UIFormDesigner } from '@theredhead/ui-forms';
-import type { FormSchema } from '@theredhead/ui-forms';
+import { UIFormDesigner } from '@theredhead/lucid-forms';
+import type { FormSchema } from '@theredhead/lucid-forms';
 
 @Component({
   selector: 'app-vehicle-designer',

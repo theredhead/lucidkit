@@ -15,7 +15,7 @@ import {
 import { UITableViewColumn } from "../columns/table-column.directive";
 import { DEFAULT_ROW_HEIGHT, MIN_COLUMN_WIDTH } from "../table-view.constants";
 import type { SelectionMode, SelectionModel } from "../../core/selection-model";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/foundation";
+import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
 
 @Component({
   selector: "ui-table-body",

@@ -1,5 +1,5 @@
 /*
- * Public API Surface of @theredhead/ui-blocks
+ * Public API Surface of @theredhead/lucid-blocks
  */
 
 export {

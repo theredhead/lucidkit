@@ -64,7 +64,7 @@ export const DEFAULT_CURRENCY = new InjectionToken<string>("DEFAULT_CURRENCY", {
  * @example
  * ```ts
  * // app.config.ts
- * import { provideDefaultCurrency } from '@theredhead/ui-kit';
+ * import { provideDefaultCurrency } from '@theredhead/lucid-kit';
  *
  * export const appConfig = {
  *   providers: [provideDefaultCurrency('USD')],

@@ -626,7 +626,7 @@ export const Default: Story = {
 import { signal } from '@angular/core';
 import {
   UIGanttChart, GanttArrayDatasource, GanttTask,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly datasource = new GanttArrayDatasource([
@@ -688,7 +688,7 @@ export const WeekView: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIGanttChart, GanttArrayDatasource } from '@theredhead/ui-kit';
+import { UIGanttChart, GanttArrayDatasource } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly datasource = new GanttArrayDatasource(myTasks);
@@ -719,7 +719,7 @@ export const MonthView: Story = {
 />
 
 // ── TypeScript ────────────────────────────────────────────────
-import { UIGanttChart, GanttArrayDatasource } from '@theredhead/ui-kit';
+import { UIGanttChart, GanttArrayDatasource } from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly datasource = new GanttArrayDatasource([
@@ -790,7 +790,7 @@ import { signal } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import {
   UIGanttChart, GanttArrayDatasource, GanttViewMode,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 export class MyComponent {
   readonly modes: GanttViewMode[] = ['day', 'week', 'month'];
@@ -849,7 +849,7 @@ import { ElementRef, inject } from '@angular/core';
 import {
   UIGanttChart, GanttArrayDatasource, GanttTask,
   PopoverService,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 export class MyComponent {
   private readonly popover = inject(PopoverService);

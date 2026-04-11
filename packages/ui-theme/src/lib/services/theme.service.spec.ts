@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   type IStorageStrategy,
   STORAGE_STRATEGY,
-} from "@theredhead/foundation";
+} from "@theredhead/lucid-foundation";
 
 import { DEFAULT_THEME_CONFIG, THEME_CONFIG } from "../tokens/theme.tokens";
 import { ThemeService } from "./theme.service";

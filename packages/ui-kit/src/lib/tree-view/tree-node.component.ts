@@ -10,7 +10,7 @@ import { NgTemplateOutlet } from "@angular/common";
 import { UIIcon } from "../icon/icon.component";
 import type { TreeNodeContext } from "./tree-view.component";
 import type { ITreeDatasource, TreeNode } from "./tree-view.types";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Recursive node renderer for {@link UITreeView}.

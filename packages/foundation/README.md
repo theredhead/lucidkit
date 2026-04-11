@@ -1,4 +1,4 @@
-# @theredhead/foundation
+# @theredhead/lucid-foundation
 
 Core utilities, types, and base classes for the **theredhead** Angular UI
 library family.
@@ -8,16 +8,16 @@ library family.
 ## Installation
 
 ```bash
-npm install @theredhead/foundation
+npm install @theredhead/lucid-foundation
 ```
 
 ---
 
 ## Overview
 
-`@theredhead/foundation` is the lowest-level package in the theredhead
+`@theredhead/lucid-foundation` is the lowest-level package in the theredhead
 ecosystem. It provides framework-agnostic helpers that the higher-level
-packages (`@theredhead/ui-kit`, `@theredhead/ui-blocks`, `@theredhead/ui-theme`)
+packages (`@theredhead/lucid-kit`, `@theredhead/lucid-blocks`, `@theredhead/lucid-theme`)
 can depend on without creating circular references.
 
 Typical contents include:
@@ -34,7 +34,7 @@ Typical contents include:
 Import anything you need directly:
 
 ```ts
-import {} from /* … */ "@theredhead/foundation";
+import {} from /* … */ "@theredhead/lucid-foundation";
 ```
 
 ---

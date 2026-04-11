@@ -27,7 +27,7 @@ import {
   UITemplateColumn,
   UITextColumn,
   UIToggle,
-} from "@theredhead/ui-kit";
+} from "@theredhead/lucid-kit";
 
 import { UIMasterDetailView } from "../master-detail-view/master-detail-view.component";
 import { UINavigationPage } from "./navigation-page.component";
@@ -2491,12 +2491,12 @@ import { Component, signal } from '@angular/core';
 import {
   UINavigationPage, navItem, navGroup, type NavigationNode,
   UIMasterDetailView,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 import {
   FilterableArrayDatasource, UITabGroup, UITab,
   UIChip, UIBadgeColumn, UITemplateColumn, UIIcon, UIIcons,
   UIProgress, UICard, UICardBody, UIButton,
-} from '@theredhead/ui-kit';
+} from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-warehouse',

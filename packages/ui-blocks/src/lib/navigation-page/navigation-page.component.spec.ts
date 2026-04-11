@@ -3,7 +3,7 @@ import { Component, signal, viewChild } from "@angular/core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { UINavigationPage } from "./navigation-page.component";
-import { StorageService } from "@theredhead/foundation";
+import { StorageService } from "@theredhead/lucid-foundation";
 import {
   navItem,
   navGroup,

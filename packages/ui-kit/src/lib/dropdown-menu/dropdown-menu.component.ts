@@ -7,7 +7,7 @@ import {
   output,
   signal,
 } from "@angular/core";
-import { UISurface } from "@theredhead/foundation";
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Alignment of the dropdown relative to the trigger. */
 export type DropdownAlign = "start" | "end";

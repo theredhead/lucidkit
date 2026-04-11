@@ -236,7 +236,7 @@ export const Default: Story = {
           "| `ariaLabel` | `string` | `''` | Accessible label (sets `aria-hidden=\"false\"`) |\n\n" +
           "### Using built-in icons\n" +
           "```ts\n" +
-          "import { UIIcon, UIIcons } from '@theredhead/ui-kit';\n" +
+          "import { UIIcon, UIIcons } from '@theredhead/lucid-kit';\n" +
           "```\n" +
           "```html\n" +
           '<ui-icon [svg]="UIIcons.Lucide.Text.Bold" [size]="20" />\n' +
@@ -261,7 +261,7 @@ export const Default: Story = {
           '<ui-icon [svg]="boldIcon" [size]="24" ariaLabel="Bold" />',
           "",
           "// ── TypeScript ──",
-          "import { UIIcon, UIIcons } from '@theredhead/ui-kit';",
+          "import { UIIcon, UIIcons } from '@theredhead/lucid-kit';",
           "",
           "@Component({",
           "  imports: [UIIcon],",
@@ -315,7 +315,7 @@ export const Sizes: Story = {
           '<ui-icon [svg]="icon" [size]="48" />',
           "",
           "// ── TypeScript ──",
-          "import { UIIcon, UIIcons } from '@theredhead/ui-kit';",
+          "import { UIIcon, UIIcons } from '@theredhead/lucid-kit';",
           "",
           "@Component({",
           "  imports: [UIIcon],",
@@ -383,7 +383,7 @@ export const TextEditing: Story = {
           "</div>",
           "",
           "// ── TypeScript ──",
-          "import { UIIcon, UIIcons } from '@theredhead/ui-kit';",
+          "import { UIIcon, UIIcons } from '@theredhead/lucid-kit';",
           "",
           "@Component({",
           "  imports: [UIIcon],",
@@ -516,7 +516,7 @@ export const CustomIcons: Story = {
           "",
           "// ── TypeScript ──",
           "import { Component } from '@angular/core';",
-          "import { UIIcon } from '@theredhead/ui-kit';",
+          "import { UIIcon } from '@theredhead/lucid-kit';",
           "import { AppIcons } from './app-icons';",
           "",
           "@Component({",

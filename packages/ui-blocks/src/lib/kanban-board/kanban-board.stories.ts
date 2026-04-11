@@ -344,7 +344,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIKanbanBoard, KanbanColumn } from '@theredhead/ui-blocks';
+import { UIKanbanBoard, KanbanColumn } from '@theredhead/lucid-blocks';
 
 interface Task { title: string; description: string; }
 
@@ -389,7 +389,7 @@ export const Minimal: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIKanbanBoard, KanbanColumn } from '@theredhead/ui-blocks';
+import { UIKanbanBoard, KanbanColumn } from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-board',

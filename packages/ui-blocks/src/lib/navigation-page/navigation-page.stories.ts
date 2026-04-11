@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIIcons, UIIcon, UIButton } from "@theredhead/ui-kit";
+import { UIIcons, UIIcon, UIButton } from "@theredhead/lucid-kit";
 
 import { UINavigationPage } from "./navigation-page.component";
 import {
@@ -476,7 +476,7 @@ import {
   navItem,
   navGroup,
   type NavigationNode,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',
@@ -539,7 +539,7 @@ import {
   UINavigationPage,
   navItem,
   navGroup,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',
@@ -596,7 +596,7 @@ import {
   UINavigationPage,
   navItem,
   navGroup,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-example',
@@ -657,7 +657,7 @@ import {
   UINavigationPage,
   routesToNavigation,
   type NavigationNode,
-} from '@theredhead/ui-blocks';
+} from '@theredhead/lucid-blocks';
 
 @Component({
   selector: 'app-shell',

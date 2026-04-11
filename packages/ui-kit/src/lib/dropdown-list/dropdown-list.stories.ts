@@ -212,8 +212,8 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UIDropdownList } from '@theredhead/ui-kit';
-import type { SelectOption } from '@theredhead/ui-kit';
+import { UIDropdownList } from '@theredhead/lucid-kit';
+import type { SelectOption } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',

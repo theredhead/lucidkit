@@ -1,4 +1,4 @@
-import { Emitter } from "@theredhead/foundation";
+import { Emitter } from "@theredhead/lucid-foundation";
 import type { CalendarDatasource, CalendarEvent } from "./calendar.types";
 
 /**

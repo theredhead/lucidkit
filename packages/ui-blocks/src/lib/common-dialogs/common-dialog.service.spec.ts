@@ -2,7 +2,7 @@ import { TestBed, type ComponentFixture } from "@angular/core/testing";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { Subject } from "rxjs";
 
-import { ModalRef, ModalService } from "@theredhead/ui-kit";
+import { ModalRef, ModalService } from "@theredhead/lucid-kit";
 
 import { UIAlertDialog } from "./alert-dialog.component";
 import { UIConfirmDialog } from "./confirm-dialog.component";

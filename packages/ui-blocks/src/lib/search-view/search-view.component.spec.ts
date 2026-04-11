@@ -1,7 +1,7 @@
 import { Component, signal } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FilterableArrayDatasource, UITextColumn } from "@theredhead/ui-kit";
+import { FilterableArrayDatasource, UITextColumn } from "@theredhead/lucid-kit";
 
 import { UISearchView } from "./search-view.component";
 
