@@ -11,7 +11,7 @@
   }
 }
 
-<div class="control" [class.control--hidden]="!state().visible()" [style.width.px]="isTextInput() ? fieldMinWidth() : null">
+<div class="control" [class.control--hidden]="!state().visible()">
   <ng-container #outlet />
 </div>
 

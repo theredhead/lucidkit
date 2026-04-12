@@ -132,8 +132,8 @@ describe("UIPropertySheet", () => {
       expect(checkboxes.length).toBe(1);
     });
 
-    it("should render ui-select for select fields", () => {
-      const selects = el.querySelectorAll("ui-select");
+    it("should render ui-dropdown-list for select fields", () => {
+      const selects = el.querySelectorAll("ui-dropdown-list");
       expect(selects.length).toBe(1);
     });
 

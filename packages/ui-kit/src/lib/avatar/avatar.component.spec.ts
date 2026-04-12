@@ -16,8 +16,9 @@ async function waitForGravatarImg(
   return vi.waitFor(
     () => {
       fixture.detectChanges();
-      const el =
-        fixture.nativeElement.querySelector<HTMLImageElement>(selector);
+      const el = fixture.nativeElement.querySelector(
+        selector,
+      ) as HTMLImageElement | null;
       if (!el) throw new Error(`${selector} not found yet`);
       return el;
     },

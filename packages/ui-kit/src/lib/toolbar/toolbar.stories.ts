@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
-import type { SelectOption } from "../select/select.component";
+import type { SelectOption } from "../dropdown-list";
 import { UIIcons } from "../icon/lucide-icons.generated";
 import type { ToolActionEvent } from "./toolbar-action";
 import { UIToolbar } from "./toolbar.component";

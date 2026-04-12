@@ -32,8 +32,8 @@ const FIELD_META: Readonly<Record<string, FieldMeta>> = {
     defaultValue: "''",
   },
   select: {
-    className: "UISelect",
-    selector: "ui-select",
+    className: "UIDropdownList",
+    selector: "ui-dropdown-list",
     modelProp: "value",
     tsType: "string",
     defaultValue: "''",

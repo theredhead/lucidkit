@@ -18,14 +18,20 @@
   }
 } @else {
   @if (prefixIcon(); as icon) {
-    <button
-      type="button"
-      class="icon icon--prefix"
-      [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Prefix action'"
-      (click)="onPrefixClick()"
-    >
-      <ui-icon [svg]="icon" [size]="16" />
-    </button>
+    @if (prefixHasAction()) {
+      <button
+        type="button"
+        class="icon icon--prefix"
+        [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Prefix action'"
+        (click)="onPrefixClick()"
+      >
+        <ui-icon [svg]="icon" [size]="16" />
+      </button>
+    } @else {
+      <span class="icon icon--prefix" aria-hidden="true">
+        <ui-icon [svg]="icon" [size]="16" />
+      </span>
+    }
   }
   <input
     #nativeInput
@@ -40,14 +46,20 @@
     (keydown)="onInputKeydown($event)"
   />
   @if (suffixIcon(); as icon) {
-    <button
-      type="button"
-      class="icon icon--suffix"
-      [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Suffix action'"
-      (click)="onSuffixClick()"
-    >
-      <ui-icon [svg]="icon" [size]="16" />
-    </button>
+    @if (suffixHasAction()) {
+      <button
+        type="button"
+        class="icon icon--suffix"
+        [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Suffix action'"
+        (click)="onSuffixClick()"
+      >
+        <ui-icon [svg]="icon" [size]="16" />
+      </button>
+    } @else {
+      <span class="icon icon--suffix" aria-hidden="true">
+        <ui-icon [svg]="icon" [size]="16" />
+      </span>
+    }
   }
   @if (isPopupOpen()) {
     <div

@@ -107,7 +107,7 @@
 
           <div class="label">
             Component
-            <ui-select
+            <ui-dropdown-list
               [options]="componentOptions"
               [value]="field.component()"
               (valueChange)="field.component.set($event)"
@@ -175,7 +175,7 @@
               let i = $index
             ) {
               <div class="validation-row">
-                <ui-select
+                <ui-dropdown-list
                   [options]="validationTypeOptions"
                   [value]="rule.type"
                   (valueChange)="
@@ -275,7 +275,7 @@
                   @case ("select") {
                     <div class="label">
                       {{ prop.label }}
-                      <ui-select
+                      <ui-dropdown-list
                         [options]="configSelectOptions(prop)"
                         [value]="'' + (configValue(field, prop.key) ?? '')"
                         (valueChange)="

@@ -29,7 +29,8 @@ import {
   UIIcons,
   UIInput,
   UIProgress,
-  UISelect,
+  UIDropdownList,
+  type SelectOption,
   UITabGroup,
   UITab,
   UITabSeparator,
@@ -979,7 +980,7 @@ function renderStars(rating: number): string {
     UIButton,
     UIIcon,
     UIInput,
-    UISelect,
+    UIDropdownList,
     UICheckbox,
     UIToggle,
     UIBadge,
@@ -2128,29 +2129,26 @@ function renderStars(rating: number): string {
 
                 <div class="form-field">
                   <span class="field-label">Category</span>
-                  <ui-select ariaLabel="Category">
-                    @for (cat of categories; track cat) {
-                      <option [value]="cat">{{ cat }}</option>
-                    }
-                  </ui-select>
+                  <ui-dropdown-list
+                    ariaLabel="Category"
+                    [options]="toOptions(categories)"
+                  />
                 </div>
 
                 <div class="form-field">
                   <span class="field-label">Cuisine</span>
-                  <ui-select ariaLabel="Cuisine">
-                    @for (c of allCuisines; track c) {
-                      <option [value]="c">{{ c }}</option>
-                    }
-                  </ui-select>
+                  <ui-dropdown-list
+                    ariaLabel="Cuisine"
+                    [options]="toOptions(allCuisines)"
+                  />
                 </div>
 
                 <div class="form-field">
                   <span class="field-label">Difficulty</span>
-                  <ui-select ariaLabel="Difficulty">
-                    @for (d of allDifficulties; track d) {
-                      <option [value]="d">{{ d }}</option>
-                    }
-                  </ui-select>
+                  <ui-dropdown-list
+                    ariaLabel="Difficulty"
+                    [options]="toOptions(allDifficulties)"
+                  />
                 </div>
 
                 <div class="form-field">
@@ -2252,13 +2250,10 @@ function renderStars(rating: number): string {
                         Switch between metric and imperial measurements
                       </div>
                     </div>
-                    <ui-select
+                    <ui-dropdown-list
+                      [options]="measurementOptions"
                       ariaLabel="Measurement system"
-                      style="width: 120px;"
-                    >
-                      <option value="metric">Metric</option>
-                      <option value="imperial">Imperial</option>
-                    </ui-select>
+                    />
                   </div>
                   <div class="setting-row">
                     <div>
@@ -2267,15 +2262,10 @@ function renderStars(rating: number): string {
                         Default number of servings when viewing recipes
                       </div>
                     </div>
-                    <ui-select
+                    <ui-dropdown-list
+                      [options]="servingOptions"
                       ariaLabel="Default servings"
-                      style="width: 120px;"
-                    >
-                      <option value="2">2 servings</option>
-                      <option value="4">4 servings</option>
-                      <option value="6">6 servings</option>
-                      <option value="8">8 servings</option>
-                    </ui-select>
+                    />
                   </div>
                   <div class="setting-row">
                     <div>
@@ -2390,6 +2380,20 @@ class UIDemoRecipeBookApp {
   protected readonly categories = [...new Set(RECIPES.map((r) => r.category))];
   protected readonly allCuisines = ALL_CUISINES;
   protected readonly allDifficulties = ALL_DIFFICULTIES;
+  protected readonly measurementOptions: SelectOption[] = [
+    { value: "metric", label: "Metric" },
+    { value: "imperial", label: "Imperial" },
+  ];
+  protected readonly servingOptions: SelectOption[] = [
+    { value: "2", label: "2 servings" },
+    { value: "4", label: "4 servings" },
+    { value: "6", label: "6 servings" },
+    { value: "8", label: "8 servings" },
+  ];
+
+  protected toOptions(items: string[]): SelectOption[] {
+    return items.map((v) => ({ value: v, label: v }));
+  }
   protected readonly allIngredients = ALL_INGREDIENTS;
 
   protected readonly icons = ICONS;

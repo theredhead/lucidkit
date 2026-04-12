@@ -28,6 +28,8 @@
 
 .control {
   display: grid;
+  width: 100%;
+  justify-items: stretch;
   margin-bottom: 2px;
 }
 

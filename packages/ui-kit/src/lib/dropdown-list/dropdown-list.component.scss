@@ -1,34 +1,81 @@
-// ── Light defaults ─────────────────────────────────────────────────
 :host {
   display: inline-flex;
+  position: relative;
+  color: var(--ui-control-text, var(--ui-text));
+
+  // CSS chevron (same technique as ui-select)
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--ui-control-chevron, var(--ui-text-muted));
+    pointer-events: none;
+  }
+
+  &:has(button:disabled)::after {
+    opacity: 0.5;
+  }
 }
 
-// ── Explicit dark class ───────────────────────────────────────────
-
-// ── System preference fallback ────────────────────────────────────
-
-// ── Disabled state ────────────────────────────────────────────────
 :host(.disabled) {
   opacity: 0.5;
   pointer-events: none;
 }
 
-// ── Label ─────────────────────────────────────────────────────────
+.trigger {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-family: var(--ui-font, inherit);
+  font-size: var(--ui-font-body, 0.875rem);
+  color: var(--ui-control-text, var(--ui-text));
+  background-color: var(--ui-control-bg, var(--ui-surface));
+  border: var(--ui-control-border-width, 1px) solid
+    var(--ui-control-border, var(--ui-border));
+  border-radius: var(--ui-control-radius, 0.25rem);
+  padding: var(--ui-control-py, 0.3rem) 2rem var(--ui-control-py, 0.3rem)
+    var(--ui-control-px, 0.5rem);
+  cursor: pointer;
+  min-width: 0;
+  text-align: left;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--ui-control-border-hover, var(--ui-border-strong));
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent));
+    outline-offset: -1px;
+  }
+}
+
 .dropdown-label {
   font-family: var(--ui-font, inherit);
   font-size: var(--ui-font-body, 0.875rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 14rem;
-}
+  flex: 1;
+  min-width: 0;
 
-// ── Chevron indicator ─────────────────────────────────────────────
-.dropdown-chevron {
-  transition: transform 150ms ease;
-  flex-shrink: 0;
-}
-
-.dropdown-chevron--open {
-  transform: rotate(180deg);
+  &.placeholder {
+    color: var(--ui-control-placeholder, var(--ui-text-muted));
+    opacity: 0.55;
+  }
 }

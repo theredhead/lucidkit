@@ -27,7 +27,8 @@ import {
   UIIcons,
   UIInput,
   UIProgress,
-  UISelect,
+  UIDropdownList,
+  type SelectOption,
   UITabGroup,
   UITab,
   UITabSeparator,
@@ -1388,7 +1389,7 @@ function channelIcon(type: string): string {
     UIButton,
     UIIcon,
     UIInput,
-    UISelect,
+    UIDropdownList,
     UICheckbox,
     UIToggle,
     UIBadge,
@@ -2536,24 +2537,19 @@ function channelIcon(type: string): string {
                   </div>
                   <div class="compose-field">
                     <span class="field-label">Type</span>
-                    <ui-select ariaLabel="Meeting type">
-                      <option value="virtual">Virtual</option>
-                      <option value="in-person">In-Person</option>
-                      <option value="hybrid">Hybrid</option>
-                    </ui-select>
+                    <ui-dropdown-list
+                      [options]="meetingTypeOptions"
+                      ariaLabel="Meeting type"
+                    />
                   </div>
                   <div class="compose-field">
                     <span class="field-label"
                       >Room (for in-person / hybrid)</span
                     >
-                    <ui-select ariaLabel="Room selection">
-                      @for (room of allRooms; track room.id) {
-                        <option [value]="room.name">
-                          {{ room.name }} ({{ room.building }}, capacity
-                          {{ room.capacity }})
-                        </option>
-                      }
-                    </ui-select>
+                    <ui-dropdown-list
+                      [options]="roomOptions"
+                      ariaLabel="Room selection"
+                    />
                   </div>
                   <div class="compose-field">
                     <span class="field-label">Description</span>
@@ -2949,11 +2945,10 @@ function channelIcon(type: string): string {
                         Choose between month, week, or day view
                       </div>
                     </div>
-                    <ui-select ariaLabel="Calendar view" style="width: 120px;">
-                      <option value="month">Month</option>
-                      <option value="week">Week</option>
-                      <option value="day">Day</option>
-                    </ui-select>
+                    <ui-dropdown-list
+                      [options]="calendarViewOptions"
+                      ariaLabel="Calendar view"
+                    />
                   </div>
                   <div class="setting-row">
                     <div>
@@ -2971,13 +2966,10 @@ function channelIcon(type: string): string {
                         Affects calendar and meeting times
                       </div>
                     </div>
-                    <ui-select ariaLabel="Time zone" style="width: 180px;">
-                      <option value="est">Eastern (UTC-5)</option>
-                      <option value="cst">Central (UTC-6)</option>
-                      <option value="pst">Pacific (UTC-8)</option>
-                      <option value="cet">Central European (UTC+1)</option>
-                      <option value="jst">Japan Standard (UTC+9)</option>
-                    </ui-select>
+                    <ui-dropdown-list
+                      [options]="timezoneOptions"
+                      ariaLabel="Time zone"
+                    />
                   </div>
                 </div>
               </ui-tab>
@@ -3009,12 +3001,10 @@ function channelIcon(type: string): string {
                         Reminder before meetings start
                       </div>
                     </div>
-                    <ui-select ariaLabel="Reminder time" style="width: 120px;">
-                      <option value="5">5 minutes</option>
-                      <option value="10">10 minutes</option>
-                      <option value="15">15 minutes</option>
-                      <option value="30">30 minutes</option>
-                    </ui-select>
+                    <ui-dropdown-list
+                      [options]="reminderTimeOptions"
+                      ariaLabel="Reminder time"
+                    />
                   </div>
                   <div class="setting-row">
                     <div>
@@ -3055,14 +3045,10 @@ function channelIcon(type: string): string {
                         Who can see your calendar events
                       </div>
                     </div>
-                    <ui-select
+                    <ui-dropdown-list
+                      [options]="calendarVisibilityOptions"
                       ariaLabel="Calendar visibility"
-                      style="width: 160px;"
-                    >
-                      <option value="everyone">Everyone</option>
-                      <option value="team">My Team Only</option>
-                      <option value="private">Private</option>
-                    </ui-select>
+                    />
                   </div>
                 </div>
               </ui-tab>
@@ -3177,6 +3163,38 @@ class UIDemoCommunicationSuiteApp {
   // ── Rooms ──
 
   protected readonly allRooms = ROOMS;
+  protected readonly roomOptions = ROOMS.map((r) => ({
+    value: r.name,
+    label: `${r.name} (${r.building}, capacity ${r.capacity})`,
+  }));
+  protected readonly meetingTypeOptions: SelectOption[] = [
+    { value: "virtual", label: "Virtual" },
+    { value: "in-person", label: "In-Person" },
+    { value: "hybrid", label: "Hybrid" },
+  ];
+  protected readonly calendarViewOptions: SelectOption[] = [
+    { value: "month", label: "Month" },
+    { value: "week", label: "Week" },
+    { value: "day", label: "Day" },
+  ];
+  protected readonly timezoneOptions: SelectOption[] = [
+    { value: "est", label: "Eastern (UTC-5)" },
+    { value: "cst", label: "Central (UTC-6)" },
+    { value: "pst", label: "Pacific (UTC-8)" },
+    { value: "cet", label: "Central European (UTC+1)" },
+    { value: "jst", label: "Japan Standard (UTC+9)" },
+  ];
+  protected readonly reminderTimeOptions: SelectOption[] = [
+    { value: "5", label: "5 minutes" },
+    { value: "10", label: "10 minutes" },
+    { value: "15", label: "15 minutes" },
+    { value: "30", label: "30 minutes" },
+  ];
+  protected readonly calendarVisibilityOptions: SelectOption[] = [
+    { value: "everyone", label: "Everyone" },
+    { value: "team", label: "My Team Only" },
+    { value: "private", label: "Private" },
+  ];
   protected readonly buildings = [
     "All",
     ...new Set(ROOMS.map((r) => r.building)),

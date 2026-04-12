@@ -1,4 +1,4 @@
-import type { SelectOption } from "../select/select.component";
+import type { SelectOption } from "../dropdown-list/dropdown-list.component";
 
 // ---------------------------------------------------------------------------
 // Field types

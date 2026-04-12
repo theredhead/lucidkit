@@ -29,7 +29,7 @@ import {
   UIIcons,
   UIInput,
   UIProgress,
-  UISelect,
+  UIDropdownList,
   UISlider,
   UITabGroup,
   UITab,
@@ -695,7 +695,7 @@ function formatNumber(n: number): string {
     UIButton,
     UIIcon,
     UIInput,
-    UISelect,
+    UIDropdownList,
     UICheckbox,
     UIToggle,
     UIBadge,
@@ -1472,7 +1472,7 @@ function formatNumber(n: number): string {
                 </div>
                 <div class="form-field">
                   <span class="field-label">Category</span>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="categoryOptions"
                     placeholder="Select category"
                     ariaLabel="Category"
@@ -1480,7 +1480,7 @@ function formatNumber(n: number): string {
                 </div>
                 <div class="form-field">
                   <span class="field-label">Visibility</span>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="visibilityOptions"
                     placeholder="Select visibility"
                     ariaLabel="Visibility"
@@ -1825,7 +1825,7 @@ function formatNumber(n: number): string {
                               Set the default video playback quality.
                             </div>
                           </div>
-                          <ui-select
+                          <ui-dropdown-list
                             [options]="qualityOptions"
                             ariaLabel="Default quality"
                           />
@@ -1879,7 +1879,7 @@ function formatNumber(n: number): string {
                               Subtitle language when available.
                             </div>
                           </div>
-                          <ui-select
+                          <ui-dropdown-list
                             [options]="languageOptions"
                             ariaLabel="Subtitle language"
                           />

@@ -6,7 +6,7 @@ import {
   input,
   model,
 } from "@angular/core";
-import { UISelect, type SelectOption } from "../../../select/select.component";
+import { UIDropdownList, type SelectOption } from "../../../dropdown-list";
 import { UIToolbarItem } from "../../toolbar-item.directive";
 
 /**
@@ -31,7 +31,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
 @Component({
   selector: "ui-select-tool",
   standalone: true,
-  imports: [UISelect],
+  imports: [UIDropdownList],
   providers: [
     { provide: UIToolbarItem, useExisting: forwardRef(() => UISelectTool) },
   ],

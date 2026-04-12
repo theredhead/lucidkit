@@ -166,6 +166,20 @@ export class UIInput implements OnDestroy {
   /** @internal Suffix icon SVG from adapter. */
   protected readonly suffixIcon = computed(() => this.adapter()?.suffixIcon);
 
+  /** @internal Whether clicking the prefix icon triggers an action. */
+  protected readonly prefixHasAction = computed(() => {
+    const a = this.adapter();
+    if (!a) return false;
+    return isPopupAdapter(a) || a.onPrefixClick !== undefined;
+  });
+
+  /** @internal Whether clicking the suffix icon triggers an action. */
+  protected readonly suffixHasAction = computed(() => {
+    const a = this.adapter();
+    if (!a) return false;
+    return isPopupAdapter(a) || a.onSuffixClick !== undefined;
+  });
+
   /** Whether the current adapter supports a popup panel. */
   public readonly hasPopup = computed(() => {
     const a = this.adapter();

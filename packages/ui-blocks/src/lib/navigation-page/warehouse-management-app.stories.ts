@@ -19,7 +19,7 @@ import {
   UIIcons,
   UIInput,
   UIProgress,
-  UISelect,
+  UIDropdownList,
   UITabGroup,
   UITab,
   UITabSeparator,
@@ -727,7 +727,7 @@ function formatQty(n: number): string {
     UIButton,
     UIIcon,
     UIInput,
-    UISelect,
+    UIDropdownList,
     UICheckbox,
     UIToggle,
     UIBadge,
@@ -1370,7 +1370,7 @@ function formatQty(n: number): string {
               <div class="form-grid">
                 <div class="form-field">
                   <span class="field-label">Supplier</span>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="supplierOptions"
                     placeholder="Select supplier"
                     ariaLabel="Supplier"
@@ -1396,7 +1396,7 @@ function formatQty(n: number): string {
                 </div>
                 <div class="form-field">
                   <span class="field-label">Storage Location</span>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="locationOptions"
                     placeholder="Select zone & rack"
                     ariaLabel="Storage location"
@@ -1404,7 +1404,7 @@ function formatQty(n: number): string {
                 </div>
                 <div class="form-field">
                   <span class="field-label">Condition</span>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="conditionOptions"
                     placeholder="Select condition"
                     ariaLabel="Part condition"
@@ -2058,7 +2058,7 @@ function formatQty(n: number): string {
                               Currency for pricing and reports.
                             </div>
                           </div>
-                          <ui-select
+                          <ui-dropdown-list
                             [options]="currencyOptions"
                             ariaLabel="Currency"
                           />
@@ -2108,7 +2108,7 @@ function formatQty(n: number): string {
                           Default format for label printing.
                         </div>
                       </div>
-                      <ui-select
+                      <ui-dropdown-list
                         [options]="barcodeFormatOptions"
                         ariaLabel="Barcode format"
                       />

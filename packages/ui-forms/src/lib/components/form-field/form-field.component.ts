@@ -18,7 +18,6 @@ import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
 import type { FieldState } from "../../engine/form-engine";
 import { FormFieldRegistry } from "../../registry/field-registry";
 import { isFlairComponent } from "../../types/form-schema.types";
-import { FORM_SETTINGS } from "../form-settings";
 
 /**
  * Renders a single form field by dynamically creating the component
@@ -51,13 +50,6 @@ export class UIFormField {
   /** The field state managed by the {@link FormEngine}. */
   public readonly state = input.required<FieldState>();
 
-  private readonly settings = inject(FORM_SETTINGS, { optional: true });
-
-  /** Minimum width (in pixels) for the field control, from the parent form. */
-  protected readonly fieldMinWidth = computed(
-    () => this.settings?.fieldMinWidth() ?? 450,
-  );
-
   private readonly registry = inject(FormFieldRegistry);
   private readonly log = inject(LoggerFactory).createLogger("UIFormField");
   private readonly outlet = viewChild<unknown, ViewContainerRef>("outlet", {
@@ -72,11 +64,6 @@ export class UIFormField {
   /** @internal Whether this field is a flair (non-data) component. */
   protected readonly isFlair = computed(() =>
     isFlairComponent(this.state().definition.component),
-  );
-
-  /** @internal Whether this field renders a text input. */
-  protected readonly isTextInput = computed(
-    () => this.state().definition.component === "text",
   );
 
   /** @internal Whether the field has a `required` validation rule. */

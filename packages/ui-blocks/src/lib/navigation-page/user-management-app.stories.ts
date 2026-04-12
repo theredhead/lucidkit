@@ -19,7 +19,7 @@ import {
   UIIcons,
   UIInput,
   UIProgress,
-  UISelect,
+  UIDropdownList,
   UITabGroup,
   UITab,
   UITabSeparator,
@@ -412,7 +412,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
     UIButton,
     UIIcon,
     UIInput,
-    UISelect,
+    UIDropdownList,
     UICheckbox,
     UIToggle,
     UIBadge,
@@ -857,7 +857,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                 </div>
                 <div class="form-field">
                   <span class="field-label">Department</span>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="departmentOptions"
                     placeholder="Select department"
                     ariaLabel="Department"
@@ -865,7 +865,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                 </div>
                 <div class="form-field">
                   <span class="field-label">Role</span>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="roleOptions"
                     placeholder="Select role"
                     ariaLabel="Role"
@@ -980,7 +980,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                       passwords.
                     </div>
                   </div>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="passwordLengthOptions"
                     ariaLabel="Minimum password length"
                   />
@@ -992,7 +992,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                       Automatically log out inactive users after this duration.
                     </div>
                   </div>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="sessionTimeoutOptions"
                     ariaLabel="Session timeout"
                   />
@@ -1021,7 +1021,7 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                       Number of consecutive failures before lockout.
                     </div>
                   </div>
-                  <ui-select
+                  <ui-dropdown-list
                     [options]="maxAttemptsOptions"
                     ariaLabel="Max failed attempts"
                   />
@@ -1146,14 +1146,14 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
                       <span class="field-label"
                         >Default Role for New Users</span
                       >
-                      <ui-select
+                      <ui-dropdown-list
                         [options]="roleOptions"
                         ariaLabel="Default role"
                       />
                     </div>
                     <div class="form-field">
                       <span class="field-label">Default Department</span>
-                      <ui-select
+                      <ui-dropdown-list
                         [options]="departmentOptions"
                         ariaLabel="Default department"
                       />

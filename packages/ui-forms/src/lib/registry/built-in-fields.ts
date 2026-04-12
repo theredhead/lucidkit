@@ -4,7 +4,7 @@ import type { EnvironmentProviders } from "@angular/core";
 
 import {
   UIInput,
-  UISelect,
+  UIDropdownList,
   UICheckbox,
   UIToggle,
   UIRadioGroup,
@@ -33,7 +33,7 @@ import { resolveTextAdapter } from "./text-adapter-resolver";
  * | Key             | Component           | Model property |
  * |-----------------|---------------------|----------------|
  * | `"text"`        | `UIInput`           | `value`        |
- * | `"select"`      | `UISelect`          | `value`        |
+ * | `"select"`      | `UIDropdownList`    | `value`        |
  * | `"checkbox"`    | `UICheckbox`        | `checked`      |
  * | `"toggle"`      | `UIToggle`          | `value`        |
  * | `"radio"`       | `UIRadioGroup`      | `value`        |
@@ -61,7 +61,7 @@ export const BUILT_IN_FIELDS: Readonly<Record<string, FormFieldRegistration>> =
         },
       },
     },
-    select: { component: UISelect, modelProperty: "value" },
+    select: { component: UIDropdownList, modelProperty: "value" },
     checkbox: { component: UICheckbox, modelProperty: "checked" },
     toggle: { component: UIToggle, modelProperty: "value" },
     radio: { component: UIRadioGroup, modelProperty: "value" },

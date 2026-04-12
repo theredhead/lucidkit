@@ -11,13 +11,17 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { UIButton } from "../button/button.component";
-import { UIIcon } from "../icon/icon.component";
-import { UIIcons } from "../icon/lucide-icons.generated";
 import { PopoverRef, type UIPopoverContent } from "../popover/popover.types";
 import { PopoverService } from "../popover/popover.service";
-import type { SelectOption } from "../select/select.component";
 import { UISurface } from "@theredhead/lucid-foundation";
+
+/** A single option for {@link UIDropdownList}. */
+export interface SelectOption {
+  /** The value emitted when this option is chosen. */
+  value: string;
+  /** Human-readable label displayed in the list. */
+  label: string;
+}
 
 /**
  * Popover content that renders the option list for {@link UIDropdownList}.
@@ -122,7 +126,7 @@ export class UIDropdownListPanel implements UIPopoverContent<string> {
 @Component({
   selector: "ui-dropdown-list",
   standalone: true,
-  imports: [UIButton, UIIcon],
+  imports: [],
   templateUrl: "./dropdown-list.component.html",
   styleUrl: "./dropdown-list.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -194,9 +198,6 @@ export class UIDropdownList {
 
   /** @internal — tracks whether the popover is open. */
   protected readonly isOpen = signal(false);
-
-  /** @internal */
-  protected readonly chevronIcon = UIIcons.Lucide.Arrows.ChevronDown;
 
   // ── Private ─────────────────────────────────────────────────────────
 

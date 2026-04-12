@@ -26,7 +26,7 @@
         (valueChange)="onValueChange($event)"
         placeholder="Amount"
       />
-      <ui-select
+      <ui-dropdown-list
         ariaLabel="Time unit"
         [options]="dateUnitOptions"
         [value]="rule().unit ?? 'days'"

@@ -40,7 +40,7 @@
               />
             }
             @case ('select') {
-              <ui-select
+              <ui-dropdown-list
                 [options]="field.options ?? []"
                 [value]="'' + (getValue(field.key) ?? '')"
                 [disabled]="field.readonly ?? false"

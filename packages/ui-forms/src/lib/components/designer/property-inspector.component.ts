@@ -12,10 +12,10 @@ import {
   ModalService,
   type SelectOption,
   UICheckbox,
+  UIDropdownList,
   UIIcon,
   UIIcons,
   UIInput,
-  UISelect,
 } from "@theredhead/lucid-kit";
 
 import { isFlairComponent } from "../../types/form-schema.types";
@@ -31,7 +31,7 @@ import type {
   ValidationRule,
   ValidationRuleType,
 } from "../../types/validation.types";
-import { UISurface } from '@theredhead/lucid-foundation';
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Available component keys for the component selector. */
 const COMPONENT_OPTIONS: SelectOption[] = [
@@ -78,9 +78,9 @@ const VALIDATION_TYPE_OPTIONS: SelectOption[] = (
 @Component({
   selector: "ui-property-inspector",
   standalone: true,
-  imports: [UIIcon, UIInput, UISelect, UICheckbox],
+  imports: [UIIcon, UIInput, UIDropdownList, UICheckbox],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: { class: "ui-property-inspector" },
   templateUrl: "./property-inspector.component.html",
   styleUrl: "./property-inspector.component.scss",

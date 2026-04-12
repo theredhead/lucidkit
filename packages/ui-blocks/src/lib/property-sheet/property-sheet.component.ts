@@ -10,8 +10,8 @@ import {
 import {
   UICheckbox,
   UIColorPicker,
+  UIDropdownList,
   UIInput,
-  UISelect,
   UISlider,
 } from "@theredhead/lucid-kit";
 
@@ -19,7 +19,10 @@ import type {
   PropertyChangeEvent,
   PropertyFieldDefinition,
 } from "./property-sheet.types";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
+import {
+  UISurface,
+  UI_DEFAULT_SURFACE_TYPE,
+} from "@theredhead/lucid-foundation";
 
 /**
  * Grouped field set used internally to organise fields by group.
@@ -59,7 +62,7 @@ interface FieldGroup<T> {
 @Component({
   selector: "ui-property-sheet",
   standalone: true,
-  imports: [UIInput, UISelect, UICheckbox, UIColorPicker, UISlider],
+  imports: [UIInput, UIDropdownList, UICheckbox, UIColorPicker, UISlider],
   templateUrl: "./property-sheet.component.html",
   styleUrl: "./property-sheet.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,

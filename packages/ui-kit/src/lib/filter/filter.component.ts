@@ -13,9 +13,7 @@ import { UIButton } from "../button/button.component";
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
 import { UIInput } from "../input/input.component";
-import { UIDropdownList } from "../dropdown-list/dropdown-list.component";
-import { UISelect } from "../select/select.component";
-import type { SelectOption } from "../select/select.component";
+import { UIDropdownList, type SelectOption } from "../dropdown-list";
 import { UIFilterRow } from "./filter-row.component";
 import type {
   FilterExpression,
@@ -26,7 +24,10 @@ import type {
   FilterRule,
 } from "./filter.types";
 import { ANY_FIELD_KEY } from "./filter.types";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
+import {
+  UISurface,
+  UI_DEFAULT_SURFACE_TYPE,
+} from "@theredhead/lucid-foundation";
 
 const JUNCTION_OPTIONS: SelectOption[] = [
   { value: "and", label: "all" },
@@ -54,7 +55,7 @@ const JUNCTION_OPTIONS: SelectOption[] = [
 @Component({
   selector: "ui-filter",
   standalone: true,
-  imports: [UIDropdownList, UISelect, UIButton, UIIcon, UIInput, UIFilterRow],
+  imports: [UIDropdownList, UIButton, UIIcon, UIInput, UIFilterRow],
   templateUrl: "./filter.component.html",
   styleUrl: "./filter.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,

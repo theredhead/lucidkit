@@ -17,11 +17,12 @@ input,
 textarea {
   font-family: var(--ui-font, inherit);
   font-size: var(--ui-font-body, 0.875rem);
-  color: var(--ui-text);
-  background-color: var(--ui-surface);
-  border: 1px solid var(--ui-border);
-  border-radius: 0.25rem;
-  padding: 0.3rem 0.5rem;
+  color: var(--ui-control-text, var(--ui-text));
+  background-color: var(--ui-control-bg, var(--ui-surface));
+  border: var(--ui-control-border-width, 1px) solid
+    var(--ui-control-border, var(--ui-border));
+  border-radius: var(--ui-control-radius, 0.25rem);
+  padding: var(--ui-control-py, 0.3rem) var(--ui-control-px, 0.5rem);
   min-width: 0;
   flex: 1;
   transition:
@@ -29,7 +30,7 @@ textarea {
     background-color anim.$duration-normal anim.$easing-default;
 
   &:hover:not(:disabled) {
-    border-color: var(--ui-border-strong);
+    border-color: var(--ui-control-border-hover, var(--ui-border-strong));
   }
 
   &:disabled {
@@ -41,7 +42,7 @@ textarea {
   }
 
   &::placeholder {
-    color: var(--ui-text-muted);
+    color: var(--ui-control-placeholder, var(--ui-text-muted));
     opacity: 0.55;
   }
 }
@@ -118,16 +119,20 @@ textarea {
   align-items: center;
   justify-content: center;
   padding: 0.3rem 0.4rem;
-  cursor: pointer;
   line-height: 1;
   color: var(--ui-text-muted);
   background-color: var(--ui-surface-2);
-  transition:
-    color anim.$duration-normal anim.$easing-default,
-    background-color anim.$duration-normal anim.$easing-default;
 
-  &:hover {
-    color: var(--ui-text);
+  // Only interactive (button) icons get hover highlight and pointer cursor
+  &:is(button) {
+    cursor: pointer;
+    transition:
+      color anim.$duration-normal anim.$easing-default,
+      background-color anim.$duration-normal anim.$easing-default;
+
+    &:hover {
+      color: var(--ui-text);
+    }
   }
 
   &--prefix {

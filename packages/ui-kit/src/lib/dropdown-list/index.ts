@@ -1,1 +1,5 @@
-export { UIDropdownList, UIDropdownListPanel } from "./dropdown-list.component";
+export {
+  UIDropdownList,
+  UIDropdownListPanel,
+  type SelectOption,
+} from "./dropdown-list.component";

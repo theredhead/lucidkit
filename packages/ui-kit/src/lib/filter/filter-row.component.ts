@@ -11,10 +11,8 @@ import {
   type AutocompleteDatasource,
 } from "../autocomplete/autocomplete.component";
 import { UIButton } from "../button/button.component";
-import { UIDropdownList } from "../dropdown-list/dropdown-list.component";
+import { UIDropdownList, type SelectOption } from "../dropdown-list";
 import { UIInput } from "../input/input.component";
-import { UISelect } from "../select/select.component";
-import type { SelectOption } from "../select/select.component";
 import {
   DATE_UNIT_OPTIONS,
   type FilterFieldDefinition,
@@ -23,7 +21,7 @@ import {
   isNoValueOperator,
   operatorsForType,
 } from "./filter.types";
-import { UISurface } from '@theredhead/lucid-foundation';
+import { UISurface } from "@theredhead/lucid-foundation";
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
@@ -58,11 +56,11 @@ type ValueInputMode = "select" | "autocomplete" | "text";
 @Component({
   selector: "ui-filter-row",
   standalone: true,
-  imports: [UISelect, UIInput, UIButton, UIAutocomplete, UIDropdownList],
+  imports: [UIInput, UIButton, UIAutocomplete, UIDropdownList],
   templateUrl: "./filter-row.component.html",
   styleUrl: "./filter-row.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: { class: "ui-filter-row" },
 })
 export class UIFilterRow {

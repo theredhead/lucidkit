@@ -7,7 +7,10 @@ import {
   signal,
   untracked,
 } from "@angular/core";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
+import {
+  UISurface,
+  UI_DEFAULT_SURFACE_TYPE,
+} from "@theredhead/lucid-foundation";
 import { UISkeleton } from "../skeleton/skeleton.component";
 
 /** Named size preset for the avatar. */

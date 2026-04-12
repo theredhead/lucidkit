@@ -62,9 +62,7 @@ describe("UIDropdownList", () => {
     it("should apply placeholder class when no value", () => {
       const el: HTMLElement = fixture.nativeElement;
       const label = el.querySelector(".dropdown-label");
-      expect(label?.classList.contains("dropdown-label--placeholder")).toBe(
-        true,
-      );
+      expect(label?.classList.contains("placeholder")).toBe(true);
     });
 
     it("should remove placeholder class when value is set", () => {
@@ -72,9 +70,7 @@ describe("UIDropdownList", () => {
       fixture.detectChanges();
       const el: HTMLElement = fixture.nativeElement;
       const label = el.querySelector(".dropdown-label");
-      expect(label?.classList.contains("dropdown-label--placeholder")).toBe(
-        false,
-      );
+      expect(label?.classList.contains("placeholder")).toBe(false);
     });
   });
 
@@ -88,22 +84,19 @@ describe("UIDropdownList", () => {
     it("should apply disabled class when disabled", () => {
       fixture.componentRef.setInput("disabled", true);
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.classList.contains("disabled"),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("disabled")).toBe(true);
     });
   });
 
   describe("button", () => {
-    it("should render an outlined button", () => {
-      const btn = fixture.nativeElement.querySelector("ui-button");
+    it("should render a native trigger button", () => {
+      const btn = fixture.nativeElement.querySelector("button.trigger");
       expect(btn).toBeTruthy();
-      expect(btn.classList.contains("outlined")).toBe(true);
     });
 
-    it("should render a chevron icon", () => {
+    it("should render a chevron via CSS (no ui-icon element)", () => {
       const icon = fixture.nativeElement.querySelector("ui-icon");
-      expect(icon).toBeTruthy();
+      expect(icon).toBeNull();
     });
 
     it("should disable the button when disabled", () => {
@@ -172,9 +165,7 @@ describe("UIDropdownList", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).toggle();
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.classList.contains("open"),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("open")).toBe(true);
     });
 
     it("should set isOpen to false when popover closes", () => {

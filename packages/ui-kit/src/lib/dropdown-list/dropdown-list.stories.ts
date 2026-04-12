@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDropdownList, UIDropdownListPanel } from "./dropdown-list.component";
-import type { SelectOption } from "../select/select.component";
+import {
+  UIDropdownList,
+  UIDropdownListPanel,
+  type SelectOption,
+} from "./dropdown-list.component";
 
 // ── Demo wrapper ──────────────────────────────────────────────────
 

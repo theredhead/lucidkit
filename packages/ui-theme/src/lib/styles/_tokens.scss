@@ -21,6 +21,7 @@
 //  11. Rich-text editor  – placeholder highlights
 //  12. Density           – spacing scale tokens (mode-invariant)
 //  13. Elevation         – shadow scale (sm → xl)
+//  14. Form controls     – shared input / select / textarea appearance
 // =============================================================================
 
 @use "elevation" as elev;
@@ -139,6 +140,18 @@
   --ui-shadow-lg: #{elev.$shadow-lg-light};
   --ui-shadow-xl: #{elev.$shadow-xl-light};
   --ui-shadow-dropdown: #{elev.$shadow-dropdown-light};
+
+  // 14. Form controls
+  --ui-control-bg: var(--ui-surface);
+  --ui-control-text: var(--ui-text);
+  --ui-control-placeholder: var(--ui-text-muted);
+  --ui-control-border: var(--ui-border);
+  --ui-control-border-hover: var(--ui-border-strong);
+  --ui-control-border-width: 1px;
+  --ui-control-radius: 0.25rem;
+  --ui-control-py: 0.3rem;
+  --ui-control-px: 0.5rem;
+  --ui-control-chevron: var(--ui-text-muted);
 }
 
 // ── Dark-mode tokens ───────────────────────────────────────────────
@@ -235,4 +248,16 @@
   --ui-shadow-lg: #{elev.$shadow-lg-dark};
   --ui-shadow-xl: #{elev.$shadow-xl-dark};
   --ui-shadow-dropdown: #{elev.$shadow-dropdown-dark};
+
+  // 14. Form controls
+  --ui-control-bg: var(--ui-surface);
+  --ui-control-text: var(--ui-text);
+  --ui-control-placeholder: var(--ui-text-muted);
+  --ui-control-border: var(--ui-border);
+  --ui-control-border-hover: var(--ui-border-strong);
+  --ui-control-border-width: 1px;
+  --ui-control-radius: 0.25rem;
+  --ui-control-py: 0.3rem;
+  --ui-control-px: 0.5rem;
+  --ui-control-chevron: var(--ui-text-muted);
 }
