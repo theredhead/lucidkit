@@ -92,7 +92,7 @@ export class UIDropdownListPanel implements UIPopoverContent<string> {
   public readonly popoverRef = inject(PopoverRef<string>);
 
   /** Available options. */
-  public readonly options = input<SelectOption[]>([]);
+  public readonly options = input<readonly SelectOption[]>([]);
 
   /** Currently selected value (used for visual highlight). */
   public readonly selectedValue = input<string>("");
@@ -141,7 +141,7 @@ export class UIDropdownList {
   // ── Inputs ──────────────────────────────────────────────────────────
 
   /** Available options. */
-  public readonly options = input.required<SelectOption[]>();
+  public readonly options = input.required<readonly SelectOption[]>();
 
   /** Placeholder text shown when no value is selected. */
   public readonly placeholder = input<string>("— Select —");

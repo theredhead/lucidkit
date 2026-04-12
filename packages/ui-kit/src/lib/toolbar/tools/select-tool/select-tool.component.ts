@@ -51,9 +51,7 @@ export class UISelectTool extends UIToolbarItem {
   public readonly value = model<string>("");
 
   /** @internal */
-  protected readonly selectOptions = computed(
-    () => this.options() as readonly SelectOption[],
-  );
+  protected readonly selectOptions = computed(() => this.options());
 
   /** @internal */
   protected onSelectionChange(newValue: string): void {
