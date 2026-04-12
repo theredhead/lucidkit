@@ -6,10 +6,10 @@ runtime dependencies beyond Angular core and CDK.
 
 This image bundles two documentation sites served by nginx:
 
-| Path         | Contents                                              |
-| ------------ | ----------------------------------------------------- |
-| `/storybook` | Interactive component explorer (Storybook)            |
-| `/docs`      | Full API reference generated from JSDoc (TypeDoc)     |
+| Path         | Contents                                          |
+| ------------ | ------------------------------------------------- |
+| `/storybook` | Interactive component explorer (Storybook)        |
+| `/docs`      | Full API reference generated from JSDoc (TypeDoc) |
 
 ## Quick start
 
@@ -18,13 +18,14 @@ docker run --rm -p 8080:80 theredhead/lucidkit-docs:latest
 ```
 
 Then open:
+
 - **http://localhost:8080/storybook** — browse and interact with every component
 - **http://localhost:8080/docs** — full API reference
 
 ## Tags
 
-| Tag      | Description             |
-| -------- | ----------------------- |
+| Tag      | Description              |
+| -------- | ------------------------ |
 | `latest` | Most recent stable build |
 
 ## Packages
