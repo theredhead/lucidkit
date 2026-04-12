@@ -50,6 +50,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
   styleUrl: "./form-wizard.component.scss",
 })
 export class UIFormWizard {
+
   /** The form engine instance that drives this wizard. */
   public readonly engine = input.required<FormEngine>();
 

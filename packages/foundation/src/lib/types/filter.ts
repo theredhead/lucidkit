@@ -14,12 +14,15 @@ import type { Predicate } from "@angular/core";
  */
 export type CompiledFilter<T, K extends keyof T = keyof T> = (
   | {
+
       /** The property of `T` to filter on. */
       property: K;
+
       /** Predicate that receives the property's value and returns `true` to keep the row. */
       predicate: Predicate<T[K]>;
     }
   | {
+
       /** Predicate that receives the full row object and returns `true` to keep it. */
       predicate: Predicate<T>;
     }

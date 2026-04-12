@@ -5,7 +5,6 @@
  *
  * @internal
  */
-
 /**
  * Returns a new `Date` set to midnight of the given date.
  */

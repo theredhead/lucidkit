@@ -42,8 +42,10 @@ import { TAB_HEADER_ITEM } from "./tab-header-item";
   providers: [{ provide: TAB_HEADER_ITEM, useExisting: UITab }],
 })
 export class UITab {
+
   /** @internal — discriminant for the tab header item union. */
   public readonly kind = "tab" as const;
+
   /** The text label displayed in the tab header. Optional when `icon` is set. */
   public readonly label = input<string | undefined>(undefined);
 

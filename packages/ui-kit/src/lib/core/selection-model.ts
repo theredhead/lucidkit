@@ -26,6 +26,7 @@ export type SelectionMode = "none" | "single" | "multiple";
  * with new references but represent the same record.
  */
 export class SelectionModel<T = unknown> {
+
   /** The active selection mode. */
   readonly mode: WritableSignal<SelectionMode>;
 

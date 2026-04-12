@@ -4,7 +4,6 @@
  * Centralising "magic numbers" here makes it easy to keep TypeScript
  * logic, template bindings, and SCSS tokens in sync.
  */
-
 /** Minimum width (px) a column can be resized to via drag. */
 export const MIN_COLUMN_WIDTH = 40;
 

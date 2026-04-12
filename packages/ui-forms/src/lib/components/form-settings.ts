@@ -8,6 +8,7 @@ import { InjectionToken, type Signal } from "@angular/core";
  * `UIFormField` via DI.
  */
 export interface FormSettings {
+
   /** Minimum width (in pixels) for field controls. */
   readonly fieldMinWidth: Signal<number>;
 }

@@ -30,6 +30,7 @@ import { UIIcon } from "../icon/icon.component";
   },
 })
 export class UIEmptyState {
+
   /** Primary heading text. */
   public readonly heading = input.required<string>();
 

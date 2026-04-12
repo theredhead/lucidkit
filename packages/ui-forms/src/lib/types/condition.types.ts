@@ -33,6 +33,7 @@ export type ConditionOperator =
  * ```
  */
 export interface FieldCondition {
+
   /** ID of the field whose value is evaluated. */
   readonly field: string;
 
@@ -53,6 +54,7 @@ export interface FieldCondition {
  * When `mode` is `"some"`, **at least one** must pass.
  */
 export interface ConditionGroup {
+
   /** How to combine the conditions. Defaults to `"every"`. */
   readonly mode?: "every" | "some";
 

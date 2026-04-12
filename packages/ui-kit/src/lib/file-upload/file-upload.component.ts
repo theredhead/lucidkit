@@ -13,8 +13,10 @@ import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation
 
 /** A single file entry tracked by the upload component. */
 export interface UIFileEntry {
+
   /** The native File object. */
   readonly file: File;
+
   /** Unique id for tracking. */
   readonly id: string;
 }

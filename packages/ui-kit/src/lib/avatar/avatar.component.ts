@@ -166,6 +166,7 @@ export class UIAvatar {
 
   /** @internal — SHA-256 hex digest of the normalised email. */
   private readonly gravatarHash = signal<string | undefined>(undefined);
+
   /** @internal — true while sha256 hash is being computed. */
   private readonly gravatarLoading = signal(false);
   // ── Constructor ────────────────────────────────────────────────

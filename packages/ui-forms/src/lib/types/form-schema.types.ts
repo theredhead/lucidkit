@@ -14,6 +14,7 @@ import type { ValidationRule } from "./validation.types";
 export interface FormFieldOption {
   readonly label: string;
   readonly value: unknown;
+
   /** Whether the option is disabled. */
   readonly disabled?: boolean;
 }
@@ -40,6 +41,7 @@ export interface FormFieldOption {
  * ```
  */
 export interface FormFieldDefinition {
+
   /** Unique ID — used as the key in the form values object. */
   readonly id: string;
 
@@ -107,6 +109,7 @@ export interface FormFieldDefinition {
  * ```
  */
 export interface FormGroupDefinition {
+
   /** Unique ID for the group. */
   readonly id: string;
 
@@ -151,6 +154,7 @@ export interface FormGroupDefinition {
  * ```
  */
 export interface FormSchema {
+
   /** Unique form identifier. */
   readonly id: string;
 

@@ -29,6 +29,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
   styleUrl: "./rich-text-view.component.scss",
 })
 export class UIRichTextView {
+
   /** The HTML content to render. */
   public readonly content = model<string>("");
 

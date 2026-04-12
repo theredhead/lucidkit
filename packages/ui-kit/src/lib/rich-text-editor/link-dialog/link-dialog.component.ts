@@ -19,6 +19,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
  * `undefined` means the dialog was cancelled.
  */
 export interface LinkDialogResult {
+
   /** The URL the link should point to. */
   readonly url: string;
 

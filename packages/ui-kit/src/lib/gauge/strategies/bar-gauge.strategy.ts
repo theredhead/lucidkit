@@ -11,6 +11,7 @@ import { GaugePresentationStrategy } from "./gauge-presentation-strategy";
  * Configuration options for the {@link BarGaugeStrategy}.
  */
 export interface BarGaugeOptions {
+
   /**
    * Number of equally-spaced tick marks along the track.
    * Set to `0` to hide ticks entirely.

@@ -4,6 +4,7 @@
  * @typeParam C - Optional context type carried on the command.
  */
 export interface CommandPaletteItem<C = unknown> {
+
   /** Unique identifier for this command. */
   readonly id: string;
 
@@ -45,6 +46,7 @@ export interface CommandPaletteItem<C = unknown> {
  * @typeParam C - Optional context type carried on the command.
  */
 export interface CommandExecuteEvent<C = unknown> {
+
   /** The command that was executed. */
   readonly command: CommandPaletteItem<C>;
 

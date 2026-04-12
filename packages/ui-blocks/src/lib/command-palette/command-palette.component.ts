@@ -113,10 +113,13 @@ export class UICommandPalette<C = unknown> {
 
   /** @internal */
   protected readonly searchIcon = UIIcons.Lucide.Social.Search;
+
   /** @internal */
   protected readonly returnIcon = UIIcons.Lucide.Arrows.CornerDownLeft;
+
   /** @internal */
   protected readonly arrowUpIcon = UIIcons.Lucide.Arrows.ArrowUp;
+
   /** @internal */
   protected readonly arrowDownIcon = UIIcons.Lucide.Arrows.ArrowDown;
 

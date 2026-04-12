@@ -7,6 +7,7 @@ import type { CarouselItemStyle, CarouselStrategy } from "./carousel.types";
  * classic Cover Flow effect out of the box.
  */
 export interface CoverflowOptions {
+
   /**
    * Horizontal distance from the centre item to the first
    * neighbour (px). Subsequent items stack with a much

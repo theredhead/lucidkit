@@ -23,6 +23,7 @@ export class FilterableArrayDatasource<T>
   extends ArrayDatasource<T>
   implements IFilterableDatasource<T>
 {
+
   /** The full, unfiltered dataset. */
   private readonly _allRows: readonly T[];
 

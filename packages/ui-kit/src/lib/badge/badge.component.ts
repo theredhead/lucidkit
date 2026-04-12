@@ -47,6 +47,7 @@ export type BadgeColor =
   },
 })
 export class UIBadge {
+
   /** Visual variant. */
   public readonly variant = input<BadgeVariant>("count");
 

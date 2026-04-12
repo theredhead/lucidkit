@@ -28,6 +28,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
   },
 })
 export class UITabSpacer {
+
   /** @internal — discriminant for the tab header item union. */
   public readonly kind = "spacer" as const;
 }

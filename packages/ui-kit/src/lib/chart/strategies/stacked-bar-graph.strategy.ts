@@ -16,6 +16,7 @@ import { GraphPresentationStrategy } from "./graph-presentation-strategy";
  * Options for the {@link StackedBarGraphStrategy}.
  */
 export interface StackedBarGraphOptions {
+
   /**
    * Fraction of the column width used by the bar (0–1).
    * @default 0.6

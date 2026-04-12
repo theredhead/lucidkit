@@ -41,6 +41,7 @@ export type CardVariant = "elevated" | "outlined" | "filled";
   },
 })
 export class UICard {
+
   /** Visual variant controlling elevation, border, and background. */
   public readonly variant = input<CardVariant>("elevated");
 

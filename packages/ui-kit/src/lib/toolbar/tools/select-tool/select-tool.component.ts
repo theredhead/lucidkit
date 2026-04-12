@@ -44,6 +44,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   },
 })
 export class UISelectTool extends UIToolbarItem {
+
   /** Available select options. */
   public readonly options = input<SelectOption[]>([]);
 

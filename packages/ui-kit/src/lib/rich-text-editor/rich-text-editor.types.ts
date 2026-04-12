@@ -14,6 +14,7 @@
  * ```
  */
 export interface RichTextPlaceholder {
+
   /** Unique token key, e.g. `'firstName'`. */
   readonly key: string;
 
@@ -118,12 +119,16 @@ export const DEFAULT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] = [
  * @internal
  */
 export interface ToolbarButtonMeta {
+
   /** The action this button triggers. */
   readonly action: RichTextFormatAction;
+
   /** Accessible label / tooltip text. */
   readonly label: string;
+
   /** SVG inner content rendered inside a `<ui-icon>` component. */
   readonly icon: string;
+
   /** Optional grouping separator rendered before this button. */
   readonly group?: string;
 }
@@ -301,8 +306,10 @@ export const TOOLBAR_BUTTON_REGISTRY: Record<
  * @internal
  */
 export interface ToolbarGroupMeta {
+
   /** Accessible label for the dropdown trigger. */
   readonly label: string;
+
   /** SVG inner content rendered on the dropdown trigger button. */
   readonly icon: string;
 }

@@ -8,6 +8,7 @@ export type ChatComposerMode = "text" | "rich-text";
  * A chat participant (user, bot, or system).
  */
 export interface ChatParticipant {
+
   /** Unique identifier for this participant. */
   readonly id: string;
 
@@ -27,6 +28,7 @@ export interface ChatParticipant {
  * @typeParam M — Extra metadata attached to each message.
  */
 export interface ChatMessage<M = unknown> {
+
   /** Unique message identifier. */
   readonly id: string;
 
@@ -50,6 +52,7 @@ export interface ChatMessage<M = unknown> {
  * Emitted when the user sends a message via the composer.
  */
 export interface MessageSendEvent {
+
   /** The composed message content. */
   readonly content: string;
 }
@@ -59,6 +62,7 @@ export interface MessageSendEvent {
  * @internal
  */
 export interface MessageDateGroup<M = unknown> {
+
   /** ISO date string key. */
   readonly date: string;
 
@@ -76,6 +80,7 @@ export interface MessageDateGroup<M = unknown> {
  * @typeParam M — Extra metadata type.
  */
 export interface MessageTemplateContext<M = unknown> {
+
   /** The message (also available as `$implicit`). */
   readonly $implicit: ChatMessage<M>;
 

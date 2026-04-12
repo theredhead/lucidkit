@@ -9,6 +9,7 @@ import { Emitter } from "@theredhead/lucid-foundation";
  *               attached to the event.
  */
 export interface CalendarEvent<T = unknown> {
+
   /** Unique identifier for this event. */
   readonly id: string;
 
@@ -50,16 +51,22 @@ export interface CalendarEvent<T = unknown> {
  * @internal Used by the month-view component template.
  */
 export interface CalendarMonthDay {
+
   /** The date this cell represents. */
   readonly date: Date;
+
   /** ISO date string `YYYY-MM-DD` (used as track key). */
   readonly iso: string;
+
   /** Day-of-month number (1–31). */
   readonly day: number;
+
   /** Whether this day belongs to the currently displayed month. */
   readonly inMonth: boolean;
+
   /** Whether this day is today. */
   readonly isToday: boolean;
+
   /** Events that fall on this day. */
   readonly events: readonly CalendarEvent[];
 }
@@ -83,6 +90,7 @@ export interface CalendarMonthDay {
  * ```
  */
 export interface CalendarDatasource<T = unknown> {
+
   /**
    * Returns all events whose date range intersects `[rangeStart, rangeEnd]`.
    *

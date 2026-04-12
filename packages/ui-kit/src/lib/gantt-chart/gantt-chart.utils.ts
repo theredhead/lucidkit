@@ -74,6 +74,7 @@ export function endOfMonth(date: Date): Date {
  * A single column in the timeline header.
  */
 export interface TimelineColumn {
+
   /** Label displayed in the header cell. */
   readonly label: string;
 
@@ -88,6 +89,7 @@ export interface TimelineColumn {
  * Top-level header group (e.g. month name when view mode is "day" or "week").
  */
 export interface TimelineGroup {
+
   /** Display label (e.g. "Mar 2026"). */
   readonly label: string;
 
@@ -99,6 +101,7 @@ export interface TimelineGroup {
  * Complete timeline metadata for the Gantt chart.
  */
 export interface TimelineInfo {
+
   /** Start of the visible range (midnight UTC). */
   readonly rangeStart: Date;
 

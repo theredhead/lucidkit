@@ -51,6 +51,7 @@ export type ToggleSize = "small" | "medium" | "large";
   },
 })
 export class UIToggle {
+
   /** Whether the toggle is on. Supports two-way binding via `[(value)]`. */
   public readonly value = model(false);
 

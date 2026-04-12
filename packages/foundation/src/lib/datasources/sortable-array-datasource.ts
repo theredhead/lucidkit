@@ -20,6 +20,7 @@ export class SortableArrayDatasource<T>
   extends ArrayDatasource<T>
   implements ISortableDatasource<T>
 {
+
   /** The full, unsorted dataset. */
   private readonly _allRows: readonly T[];
 

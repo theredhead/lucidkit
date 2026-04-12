@@ -38,6 +38,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
   },
 })
 export class UISlider {
+
   /** Slider mode: single thumb or range (two thumbs). */
   public readonly mode = input<SliderMode>("single");
 

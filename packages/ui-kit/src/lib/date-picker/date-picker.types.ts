@@ -25,16 +25,22 @@ export type DateFormat =
 
 /** Represents a calendar day inside the month grid. */
 export interface CalendarDay {
+
   /** The full date this cell represents. */
   readonly date: Date;
+
   /** Day of the month (1–31). */
   readonly day: number;
+
   /** Whether this day belongs to the currently displayed month. */
   readonly isCurrentMonth: boolean;
+
   /** Whether this day is today. */
   readonly isToday: boolean;
+
   /** Whether this day matches the currently selected date. */
   readonly isSelected: boolean;
+
   /** Whether this day is outside the allowed min/max range. */
   readonly isDisabled: boolean;
 }
@@ -63,8 +69,10 @@ export interface WeekdayLabel {
  * ```
  */
 export interface DatePickerDefaults {
+
   /** Default date format. */
   readonly format?: DateFormat;
+
   /** Default first day of the week (`0` = Sunday … `6` = Saturday). */
   readonly firstDayOfWeek?: number;
 }

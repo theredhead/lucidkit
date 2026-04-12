@@ -32,13 +32,13 @@ This is an **Angular 21** component library workspace (`lucidkit-workspace`)
 built with standalone components, signals, and zero external runtime dependencies
 beyond Angular core and CDK. It ships three npm packages:
 
-| Package                  | Scope      | Purpose                                                                                     |
-| ------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
+| Package                        | Scope      | Purpose                                                                                     |
+| ------------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
 | `@theredhead/lucid-foundation` | Core       | Logger, type utilities, base classes — shared by all higher-level packages                  |
-| `@theredhead/lucid-kit`     | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
-| `@theredhead/lucid-blocks`  | Composites | Master-Detail View, Navigation Page, Dashboard, Kanban, Chat, File Browser, etc.            |
-| `@theredhead/lucid-forms`   | Forms      | Schema-driven forms, validation, conditional logic, form designer                           |
-| `@theredhead/lucid-theme`   | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
+| `@theredhead/lucid-kit`        | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
+| `@theredhead/lucid-blocks`     | Composites | Master-Detail View, Navigation Page, Dashboard, Kanban, Chat, File Browser, etc.            |
+| `@theredhead/lucid-forms`      | Forms      | Schema-driven forms, validation, conditional logic, form designer                           |
+| `@theredhead/lucid-theme`      | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
 
 ### API Inventories
 
@@ -133,6 +133,53 @@ Host bindings use declarative `host: {}` metadata — never `@HostBinding` / `@H
 - All public members get JSDoc comments
 - Internal/protected methods: `/** @internal */`
 - Types exported alongside the component get JSDoc too
+- Always use multiline syntax (`/** … */`), never single-line `// …` for documentation
+- Always prepend JSDoc with one blank line above the `/**` opener
+- The closing `*/\n` must be immediately followed by the element it documents (no additional blank line between them)
+- The only exception is single-tag flag comments such as `/** @inheritdoc */` and `/** @internal */` — these may appear inline as single-line blocks, though still must be preceeded by an empty line.
+
+```ts
+// ✅ correct
+/** @inheritdoc */
+public override ngOnDestroy(): void { … }
+
+// ✅ correct
+/** @internal */
+protected readonly selectOptions = computed(() => this.options());
+
+// ✅ correct
+export class UIExample {
+
+  /**
+   * The current label value.
+   */
+  public readonly label = input<string>("");
+
+  /**
+   * Emits whenever the label changes.
+   */
+  public readonly labelChange = output<string>();
+}
+
+// ❌ wrong — no blank line before the comment
+export class UIExample {
+  /**
+   * The current label value.
+   */
+  public readonly label = input<string>("");
+  /**
+   * Emits whenever the label changes.
+   */
+  public readonly labelChange = output<string>();
+}
+
+// ❌ wrong — blank line between comment and member
+/**
+ * The current label value.
+ */
+
+public readonly label = input<string>("");
+```
 
 ---
 

@@ -10,6 +10,7 @@
  * ```
  */
 export interface EmojiCategory {
+
   /** Display name for the category tab/header. */
   readonly name: string;
 

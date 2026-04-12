@@ -45,6 +45,7 @@ export type ToolbarOrientation = "horizontal" | "vertical";
   },
 })
 export class UIToolbar {
+
   /** Layout orientation of the toolbar. */
   public readonly orientation = input<ToolbarOrientation>("horizontal");
 

@@ -56,6 +56,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
   styleUrl: "./form-designer.component.scss",
 })
 export class UIFormDesigner {
+
   /**
    * Optional initial schema to load into the designer.
    * When set, the designer engine imports it on init.

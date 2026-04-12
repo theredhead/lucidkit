@@ -8,6 +8,7 @@ export interface MapLatLng {
  * A marker placed on the map at a geographic position.
  */
 export interface MapMarker {
+
   /** Geographic position. */
   position: MapLatLng;
 
@@ -44,6 +45,7 @@ export interface MapMarker {
  * A polyline rendered as an SVG path on the map.
  */
 export interface MapPolyline {
+
   /** Ordered list of geographic vertices. */
   points: MapLatLng[];
 
@@ -70,6 +72,7 @@ export interface MapPolyline {
  * A closed polygon rendered as an SVG path on the map.
  */
 export interface MapPolygon {
+
   /** Ordered list of geographic vertices. The path is closed automatically. */
   points: MapLatLng[];
 

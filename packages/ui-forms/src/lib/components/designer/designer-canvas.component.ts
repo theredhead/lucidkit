@@ -37,6 +37,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
   styleUrl: "./designer-canvas.component.scss",
 })
 export class UIDesignerCanvas {
+
   /** The designer engine driving this canvas. */
   public readonly engine = input.required<FormDesignerEngine>();
 

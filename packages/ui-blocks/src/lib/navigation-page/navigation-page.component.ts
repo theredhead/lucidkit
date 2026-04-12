@@ -47,6 +47,7 @@ import type { NavigationNode } from "./navigation-page.utils";
  * holds the domain-specific fields.
  */
 export interface NavigationNodeData {
+
   /** Display label shown in the sidebar and breadcrumb trail. */
   readonly label: string;
 
@@ -68,8 +69,10 @@ export interface NavigationNodeData {
 
 /** Template context for the projected content template. */
 export interface NavigationPageContext {
+
   /** The currently active navigation node. */
   readonly $implicit: NavigationNode;
+
   /** The currently active navigation node (named binding). */
   readonly page: NavigationNode;
 }

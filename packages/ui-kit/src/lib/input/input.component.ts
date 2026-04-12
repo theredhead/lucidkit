@@ -83,6 +83,7 @@ import {
   },
 })
 export class UIInput implements OnDestroy {
+
   /** Native input type (ignored when {@link multiline} is `true`). */
   public readonly type = input<
     "text" | "number" | "date" | "email" | "password" | "tel" | "url"

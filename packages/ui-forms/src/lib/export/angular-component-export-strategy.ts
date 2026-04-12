@@ -11,14 +11,19 @@ import type { ExportResult, ExportStrategy } from "./export-strategy";
 // ── Component-key → UI-kit metadata ────────────────────────────────
 
 interface FieldMeta {
+
   /** Angular component class name. */
   readonly className: string;
+
   /** Element selector used in templates. */
   readonly selector: string;
+
   /** The model property for two-way binding (`value`, `checked`, …). */
   readonly modelProp: string;
+
   /** TypeScript type for the interface property. */
   readonly tsType: string;
+
   /** Default value literal. */
   readonly defaultValue: string;
 }

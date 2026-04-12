@@ -14,10 +14,13 @@ export type FilterFieldType = "string" | "number" | "date";
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface FilterFieldDefinition<T = any> {
+
   /** Property key on the row object. */
   key: keyof T & string;
+
   /** Human-readable label shown in the field dropdown. */
   label: string;
+
   /** Data type — determines which operators are available. */
   type: FilterFieldType;
 }
@@ -93,16 +96,22 @@ export type NoValueOperator = "isEmpty" | "isNotEmpty";
  * A single filter rule — one row in the predicate builder.
  */
 export interface FilterRule {
+
   /** Unique id for `@for` tracking. */
   id: number;
+
   /** The field key to filter on. */
   field: string;
+
   /** The comparison operator. */
   operator: FilterOperator;
+
   /** Primary comparison value (string-encoded for form compatibility). */
   value: string;
+
   /** Secondary value — used by `between` operators. */
   valueTo?: string;
+
   /** Time unit — used by `inTheLast` date operator. */
   unit?: DateUnit;
 }
@@ -117,8 +126,10 @@ export type FilterJunction = "and" | "or";
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface FilterExpression<_T = any> {
+
   /** How the rules are combined (`and` = all must match, `or` = any). */
   junction: FilterJunction;
+
   /** The individual filter rules. */
   rules: FilterRule[];
 }

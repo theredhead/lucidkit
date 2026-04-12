@@ -17,6 +17,7 @@ export interface UITableViewCellContext<T = unknown> {
 })
 export abstract class UITableViewColumn {
     public headerText = input<string>('');
+
     /**
      * Represents the property in the row object that represents this column
      */

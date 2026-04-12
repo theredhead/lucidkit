@@ -25,6 +25,7 @@ export type PropertyFieldType =
  * @typeParam T - The data object type.
  */
 export interface PropertyFieldDefinition<T = Record<string, unknown>> {
+
   /** The key on the data object this field reads/writes. */
   readonly key: string & keyof T;
 
@@ -65,6 +66,7 @@ export interface PropertyFieldDefinition<T = Record<string, unknown>> {
  * @typeParam T - The data object type.
  */
 export interface PropertyChangeEvent<T = Record<string, unknown>> {
+
   /** The field key that changed. */
   readonly key: string & keyof T;
 

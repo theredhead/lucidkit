@@ -44,6 +44,7 @@ export type ChipColor =
   },
 })
 export class UIChip {
+
   /** Color preset. */
   public readonly color = input<ChipColor>("neutral");
 

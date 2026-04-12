@@ -38,6 +38,7 @@ export class ArrayDatasource<T>
     IInsertableDatasource<T>,
     IRemovableDatasource<T>
 {
+
   /** @inheritdoc */
   public readonly noteRowChanged = new Emitter<RowChangedNotification>();
 

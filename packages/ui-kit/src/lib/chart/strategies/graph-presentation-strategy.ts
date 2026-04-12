@@ -31,6 +31,7 @@ import type {
  * ```
  */
 export abstract class GraphPresentationStrategy {
+
   /**
    * Human-readable name shown in legends / tooltips when identifying
    * the active strategy.

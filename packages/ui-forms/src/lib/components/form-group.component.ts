@@ -32,6 +32,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
   styleUrl: "./form-group.component.scss",
 })
 export class UIFormGroup {
+
   /** The group state managed by the {@link FormEngine}. */
   public readonly state = input.required<GroupState>();
 }

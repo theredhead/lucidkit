@@ -111,8 +111,10 @@ export class UIImageCropper implements AfterViewInit {
 
   /** The drawable source (HTMLImageElement, offscreen canvas, etc.). */
   private source: CanvasImageSource | null = null;
+
   /** Source image width in pixels. */
   private sourceWidth = 0;
+
   /** Source image height in pixels. */
   private sourceHeight = 0;
   private fit: ImageFit = { x: 0, y: 0, width: 0, height: 0, scale: 1 };

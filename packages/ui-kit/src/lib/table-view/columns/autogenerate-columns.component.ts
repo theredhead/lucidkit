@@ -78,6 +78,7 @@ export class UITextColumnGenerated extends UITableViewColumn {
   templateUrl: "./autogenerate-columns.component.html",
 })
 export class UIAutogenerateColumns {
+
   /**
    * The row data to introspect. This is typically a signal that emits
    * the first available row from your datasource.

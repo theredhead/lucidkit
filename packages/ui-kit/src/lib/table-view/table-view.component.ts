@@ -86,7 +86,6 @@ import { type SelectionMode, SelectionModel } from "../core/selection-model";
  * @standalone true
  * @imports UITableViewHeader, UITableBody, UITableFooter, ColumnResizeService, DatasourceAdapter
  */
-
 @Component({
   selector: "ui-table-view",
   standalone: true,

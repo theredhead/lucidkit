@@ -7,6 +7,7 @@ export type ConfirmVariant = "primary" | "danger" | "warning";
 
 /** Options for {@link CommonDialogService.alert}. */
 export interface AlertOptions {
+
   /** Dialog title. */
   readonly title: string;
 
@@ -24,6 +25,7 @@ export interface AlertOptions {
 
 /** Options for {@link CommonDialogService.confirm}. */
 export interface ConfirmOptions {
+
   /** Dialog title. */
   readonly title: string;
 
@@ -47,6 +49,7 @@ export interface ConfirmOptions {
 
 /** Options for {@link CommonDialogService.prompt}. */
 export interface PromptOptions {
+
   /** Dialog title. */
   readonly title: string;
 
@@ -73,6 +76,7 @@ export interface PromptOptions {
 
 /** Options for {@link CommonDialogService.openFile}. */
 export interface OpenFileOptions<M = unknown> {
+
   /** Datasource powering the file browser. */
   readonly datasource: FileBrowserDatasource<M>;
 
@@ -91,6 +95,7 @@ export interface OpenFileOptions<M = unknown> {
 
 /** Result returned by {@link CommonDialogService.openFile}. */
 export interface OpenFileResult<M = unknown> {
+
   /** The selected file(s). */
   readonly files: readonly FileBrowserEntry<M>[];
 }
@@ -99,6 +104,7 @@ export interface OpenFileResult<M = unknown> {
 
 /** Options for {@link CommonDialogService.saveFile}. */
 export interface SaveFileOptions<M = unknown> {
+
   /** Datasource powering the file browser. */
   readonly datasource: FileBrowserDatasource<M>;
 
@@ -117,6 +123,7 @@ export interface SaveFileOptions<M = unknown> {
 
 /** Result returned by {@link CommonDialogService.saveFile}. */
 export interface SaveFileResult<M = unknown> {
+
   /** The directory path the user is currently browsing. */
   readonly directory: FileBrowserEntry<M> | null;
 
@@ -128,6 +135,7 @@ export interface SaveFileResult<M = unknown> {
 
 /** Options for {@link CommonDialogService.about}. */
 export interface AboutOptions {
+
   /** Application name. */
   readonly appName: string;
 

@@ -13,6 +13,7 @@ import { GaugePresentationStrategy } from "./gauge-presentation-strategy";
  * Configuration options for the {@link AnalogGaugeStrategy}.
  */
 export interface AnalogGaugeOptions {
+
   /**
    * Number of major (labelled) ticks around the arc.
    * @default 10

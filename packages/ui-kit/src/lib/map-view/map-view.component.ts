@@ -54,8 +54,10 @@ interface RenderedMarker {
   width: number;
   height: number;
   isCustom: boolean;
+
   /** Data-URI for custom icons. */
   dataUri: string;
+
   /** Inline colour for default pin (empty → CSS default). */
   color: string;
   label: string | undefined;

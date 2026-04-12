@@ -30,6 +30,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   },
 })
 export class UIButtonTool extends UIToolbarItem {
+
   /** @internal */
   protected onClick(event: MouseEvent): void {
     if (!this.disabled()) {

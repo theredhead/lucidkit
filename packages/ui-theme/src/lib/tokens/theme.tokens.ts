@@ -9,12 +9,16 @@ export type ThemeMode = 'light' | 'dark' | 'system';
  * Theme configuration options
  */
 export interface ThemeConfig {
+
     /** Default theme mode */
     defaultMode: ThemeMode;
+
     /** Storage key for persisting theme preference */
     storageKey: string;
+
     /** CSS class applied to the document for dark mode */
     darkModeClass: string;
+
     /** CSS class applied to the document for light mode */
     lightModeClass: string;
 }

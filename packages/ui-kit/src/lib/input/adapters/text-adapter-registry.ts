@@ -13,6 +13,7 @@ import type { TextAdapter } from "./text-adapter";
  * Describes an adapter available in the registry.
  */
 export interface TextAdapterRegistration {
+
   /** Human-readable label shown in UI pickers (e.g. "Email"). */
   readonly label: string;
 

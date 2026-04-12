@@ -44,6 +44,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   host: { class: "ui-template-tool" },
 })
 export class UITemplateTool extends UIToolbarItem {
+
   /**
    * The consumer-provided template.
    * Receives `UITemplateTool` as `$implicit` context.

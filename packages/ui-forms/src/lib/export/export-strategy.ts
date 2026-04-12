@@ -9,6 +9,7 @@ import type { FormSchema } from "../types/form-schema.types";
  * about the suggested file name and MIME type.
  */
 export interface ExportResult {
+
   /** MIME type for the exported content (e.g. `"application/json"`, `"text/typescript"`). */
   readonly mimeType: string;
 
@@ -42,6 +43,7 @@ export interface ExportResult {
  * ```
  */
 export interface ExportStrategy {
+
   /** Human-readable label displayed in the export format selector. */
   readonly label: string;
 

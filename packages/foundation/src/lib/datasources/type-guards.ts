@@ -28,7 +28,6 @@
  * }
  * ```
  */
-
 import type {
   IFilterableDatasource,
   IInsertableDatasource,

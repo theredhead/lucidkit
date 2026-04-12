@@ -37,6 +37,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
   },
 })
 export class UIPagination {
+
   /** Total number of items. */
   public readonly totalItems = input(0);
 

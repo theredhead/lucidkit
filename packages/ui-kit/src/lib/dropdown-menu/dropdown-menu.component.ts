@@ -39,6 +39,7 @@ export type DropdownAlign = "start" | "end";
   styleUrl: "./dropdown-item.component.scss",
 })
 export class UIDropdownItem {
+
   /** Whether this item is disabled. */
   public readonly disabled = input(false);
 
@@ -103,6 +104,7 @@ export class UIDropdownDivider {}
   },
 })
 export class UIDropdownMenu {
+
   /** Horizontal alignment of the menu relative to the trigger. */
   public readonly align = input<DropdownAlign>("start");
 

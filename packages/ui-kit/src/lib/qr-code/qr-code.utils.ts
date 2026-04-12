@@ -5,7 +5,6 @@
  * Supports versions 1-10 (up to ~271 characters).
  * Based on the ISO/IEC 18004 spec; no external dependencies.
  */
-
 export type QRCodeMatrix = number[][]; // 0 = light, 1 = dark
 
 // ── Galois-field arithmetic over GF(256) with polynomial 0x11d ──

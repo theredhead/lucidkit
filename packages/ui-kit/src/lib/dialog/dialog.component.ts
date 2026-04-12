@@ -59,6 +59,7 @@ import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation
   },
 })
 export class UIDialog {
+
   /** Whether the dialog is open. Supports two-way binding. */
   public readonly open = model(false);
 

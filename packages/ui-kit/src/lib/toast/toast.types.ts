@@ -12,6 +12,7 @@ export type ToastSeverity = "info" | "success" | "warning" | "error";
 
 /** Configuration for opening a toast. */
 export interface ToastConfig {
+
   /** The message text to display. */
   message: string;
 
@@ -36,6 +37,7 @@ export interface ToastConfig {
 
 /** Runtime state of a single toast instance. */
 export interface ToastInstance extends Required<Omit<ToastConfig, "actionFn">> {
+
   /** Unique ID for tracking. */
   readonly id: string;
 

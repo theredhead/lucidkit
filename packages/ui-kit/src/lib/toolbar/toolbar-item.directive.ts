@@ -16,6 +16,7 @@ import type { ToolActionEvent } from "./toolbar-action";
  */
 @Directive({ standalone: true })
 export abstract class UIToolbarItem {
+
   /** Unique identifier for this toolbar item. */
   public readonly id = input.required<string>();
 

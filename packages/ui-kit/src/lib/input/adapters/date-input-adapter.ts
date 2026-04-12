@@ -17,12 +17,16 @@ import type { TextAdapterValidationResult } from "./text-adapter";
  * Options for configuring a {@link DateInputAdapter}.
  */
 export interface DateInputAdapterOptions {
+
   /** Date format for display and parsing. Defaults to locale detection. */
   readonly format?: DateFormat;
+
   /** Minimum selectable date. */
   readonly min?: Date | null;
+
   /** Maximum selectable date. */
   readonly max?: Date | null;
+
   /** First day of the week (`0` = Sunday … `6` = Saturday). Defaults to locale detection. */
   readonly firstDayOfWeek?: number;
 }
@@ -45,6 +49,7 @@ export interface DateInputAdapterOptions {
  * ```
  */
 export class DateInputAdapter implements PopupTextAdapter {
+
   /** Calendar icon displayed as a prefix button. */
   public readonly prefixIcon = UIIcons.Lucide.Time.Calendar;
 

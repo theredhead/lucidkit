@@ -19,6 +19,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
  * `undefined` means the dialog was cancelled.
  */
 export interface ImageDialogResult {
+
   /** The URL of the image. */
   readonly src: string;
 

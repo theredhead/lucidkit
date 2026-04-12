@@ -27,6 +27,7 @@ export type ValidationRuleType =
  * ```
  */
 export interface ValidationRule {
+
   /** The validator to apply. */
   readonly type: ValidationRuleType;
 
@@ -55,6 +56,7 @@ export interface ValidationRule {
  * A single validation error produced by the validation engine.
  */
 export interface ValidationError {
+
   /** The rule type that failed. */
   readonly type: string;
 
@@ -66,6 +68,7 @@ export interface ValidationError {
  * Complete validation result for a single field.
  */
 export interface ValidationResult {
+
   /** Whether all rules passed. */
   readonly valid: boolean;
 

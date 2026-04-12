@@ -83,6 +83,7 @@ import { RepeaterDragHandler } from "./repeater-drag-handler";
   },
 })
 export class UIRepeater<T = unknown> {
+
   /**
    * The datasource providing items.
    * Any {@link IDatasource} implementation is accepted.

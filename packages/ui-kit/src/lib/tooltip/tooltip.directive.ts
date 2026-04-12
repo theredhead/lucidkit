@@ -23,6 +23,7 @@ import type { TooltipPosition } from "./tooltip.types";
   },
 })
 export class UITooltip implements OnDestroy {
+
   /** The tooltip text content. */
   public readonly uiTooltip = input.required<string>();
 

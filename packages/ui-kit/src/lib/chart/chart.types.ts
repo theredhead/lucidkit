@@ -2,10 +2,13 @@
  * A single data point extracted from the source data, ready for rendering.
  */
 export interface ChartDataPoint {
+
   /** Display label for this data point. */
   readonly label: string;
+
   /** Numeric value for this data point. */
   readonly value: number;
+
   /** Color assigned from the palette. */
   readonly color: string;
 }
@@ -14,10 +17,13 @@ export interface ChartDataPoint {
  * Descriptor for a single legend entry.
  */
 export interface ChartLegendEntry {
+
   /** Display label. */
   readonly label: string;
+
   /** Swatch color. */
   readonly color: string;
+
   /** Numeric value. */
   readonly value: number;
 }
@@ -26,8 +32,10 @@ export interface ChartLegendEntry {
  * Chart dimensions in CSS pixels.
  */
 export interface ChartSize {
+
   /** Width in CSS pixels. */
   readonly width: number;
+
   /** Height in CSS pixels. */
   readonly height: number;
 }
@@ -46,12 +54,16 @@ export type ChartRenderOutput =
  * Layout area available for the actual chart drawing (excluding padding).
  */
 export interface ChartArea {
+
   /** Left offset. */
   readonly x: number;
+
   /** Top offset. */
   readonly y: number;
+
   /** Drawable width. */
   readonly width: number;
+
   /** Drawable height. */
   readonly height: number;
 }
@@ -80,10 +92,13 @@ export interface ChartArea {
  * ```
  */
 export interface ChartLayer<T> {
+
   /** Display name for this series (shown in the legend). */
   readonly name: string;
+
   /** Data array for this layer. Falls back to the component-level `data` if omitted. */
   readonly data?: readonly T[];
+
   /** Override the component-level `valueProperty` for this layer. */
   readonly valueProperty?: keyof T;
 }
@@ -96,10 +111,13 @@ export interface ChartLayer<T> {
  * and render all series on the same chart.
  */
 export interface ChartSeriesData {
+
   /** Display name of this series. */
   readonly name: string;
+
   /** Primary colour assigned to this series from the palette. */
   readonly color: string;
+
   /** Extracted data points for this series. */
   readonly points: readonly ChartDataPoint[];
 }

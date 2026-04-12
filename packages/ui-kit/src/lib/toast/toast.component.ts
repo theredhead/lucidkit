@@ -41,6 +41,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
   },
 })
 export class UIToastContainer {
+
   /** Screen position for this container. Defaults to `"top-right"`. */
   public readonly position = input<ToastPosition>("top-right");
 

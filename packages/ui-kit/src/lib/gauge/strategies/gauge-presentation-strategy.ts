@@ -27,6 +27,7 @@ import type { GaugeRenderContext, GaugeRenderOutput } from "../gauge.types";
  * ```
  */
 export abstract class GaugePresentationStrategy {
+
   /**
    * Human-readable name for this strategy (e.g. `"Analog"`, `"VU Meter"`).
    */

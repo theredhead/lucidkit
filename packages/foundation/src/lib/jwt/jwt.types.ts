@@ -5,6 +5,7 @@
  * intersecting with their own type.
  */
 export interface JwtHeader {
+
   /** Algorithm used to sign the token (e.g. `"RS256"`, `"HS256"`). */
   readonly alg: string;
 
@@ -25,6 +26,7 @@ export interface JwtHeader {
  * consumers to read custom claims without casting.
  */
 export interface JwtPayload {
+
   /** Issuer — identifies the principal that issued the JWT. */
   readonly iss?: string;
 
@@ -66,6 +68,7 @@ export interface JwtPayload {
  * keys or a JWKS endpoint.
  */
 export interface JwtToken<TPayload extends JwtPayload = JwtPayload> {
+
   /** Decoded JOSE header. */
   readonly header: JwtHeader;
 
@@ -88,6 +91,7 @@ export type JwtValidationSeverity = "error" | "warning";
  * A single validation issue found when inspecting a JWT.
  */
 export interface JwtValidationIssue {
+
   /** Machine-readable error code. */
   readonly code: JwtValidationCode;
 
@@ -119,6 +123,7 @@ export type JwtValidationCode =
  * provided will be executed.
  */
 export interface JwtValidationOptions {
+
   /**
    * If set, the token's `iss` claim must match this value.
    */

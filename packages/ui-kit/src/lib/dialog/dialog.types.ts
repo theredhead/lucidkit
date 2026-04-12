@@ -82,6 +82,7 @@ export class ModalRef<R = unknown> {
  * ```
  */
 export interface UIModalContent<R = unknown> {
+
   /** Injected reference used to close the modal and return a result. */
   readonly modalRef: ModalRef<R>;
 }
@@ -92,6 +93,7 @@ export interface UIModalContent<R = unknown> {
  * Configuration object passed to {@link ModalService.openModal}.
  */
 export interface OpenModalConfig<T> {
+
   /** The standalone component class to render inside the dialog. */
   readonly component: Type<T>;
 

@@ -102,6 +102,7 @@ import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/lucid-foundation
   styleUrl: "./icon.component.scss",
 })
 export class UIIcon {
+
   /**
    * SVG inner content — the markup inside the `<svg>` element
    * (paths, circles, lines, etc.).

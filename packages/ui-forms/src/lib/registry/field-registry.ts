@@ -18,6 +18,7 @@ import {
  * JSON-friendly config keys to complex runtime objects.
  */
 export interface ConfigTransform {
+
   /** The actual component input name to set. */
   readonly inputKey: string;
 
@@ -29,6 +30,7 @@ export interface ConfigTransform {
  * Describes how a component is integrated into the form system.
  */
 export interface FormFieldRegistration {
+
   /**
    * The Angular component class to instantiate.
    * Must be a standalone component.

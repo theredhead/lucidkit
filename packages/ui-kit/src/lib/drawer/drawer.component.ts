@@ -43,6 +43,7 @@ export type DrawerWidth = "narrow" | "medium" | "wide" | string;
   },
 })
 export class UIDrawer {
+
   /** Whether the drawer is open. Supports two-way binding via `[(open)]`. */
   public readonly open = model(false);
 

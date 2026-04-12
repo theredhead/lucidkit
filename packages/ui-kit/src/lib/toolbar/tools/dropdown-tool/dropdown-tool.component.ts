@@ -46,6 +46,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   },
 })
 export class UIDropdownTool extends UIToolbarItem {
+
   /** Items to display in the dropdown panel (takes priority over projected content). */
   public readonly items = input<DropdownToolItem[]>([]);
 

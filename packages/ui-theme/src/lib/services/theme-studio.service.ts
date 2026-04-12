@@ -10,18 +10,25 @@ import { generateThemeStudioHtml } from "./theme-studio-html";
  * Only the fields needed by the studio are declared here.
  */
 export interface ThemeStudioToken {
+
   /** CSS custom property name, e.g. `--ui-accent` */
   readonly name: string;
+
   /** Human-readable purpose description */
   readonly description: string;
+
   /** Value type: color, length, font, shadow, number, string, reference, keyword */
   readonly type: string;
+
   /** `"global"` or `"component"` */
   readonly scope: string;
+
   /** Namespace prefix, e.g. `"ui"`, `"cv"`, `"kb"` */
   readonly namespace: string;
+
   /** Default values per colour scheme */
   readonly values: { readonly light?: string; readonly dark?: string };
+
   /** Definition sites */
   readonly definitions?: readonly {
     readonly file: string;
@@ -45,15 +52,19 @@ export interface ThemeStudioManifest {
  * Configuration options for {@link ThemeStudioService.open}.
  */
 export interface ThemeStudioOptions {
+
   /** Window width in pixels (default `960`) */
   readonly width?: number;
+
   /** Window height in pixels (default `720`) */
   readonly height?: number;
+
   /**
    * The full token manifest. When omitted the service fetches
    * `/assets/css-token-manifest.json` from the application root.
    */
   readonly manifest?: ThemeStudioManifest;
+
   /**
    * URL from which to fetch the manifest when `manifest` is not provided.
    * Defaults to `"assets/css-token-manifest.json"`.

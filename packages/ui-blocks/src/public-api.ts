@@ -1,7 +1,6 @@
 /*
  * Public API Surface of @theredhead/lucid-blocks
  */
-
 export {
   UIMasterDetailView,
   type MasterDetailContext,

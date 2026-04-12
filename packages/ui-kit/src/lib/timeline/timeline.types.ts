@@ -6,12 +6,16 @@ import type { Type } from "@angular/core";
  * @typeParam T - The event data type.
  */
 export interface TimelineEventContext<T> {
+
   /** The event object (also available via the implicit `let-event` variable). */
   readonly $implicit: T;
+
   /** Zero-based index of this event in the timeline. */
   readonly index: number;
+
   /** Whether this is the first event. */
   readonly first: boolean;
+
   /** Whether this is the last event. */
   readonly last: boolean;
 }

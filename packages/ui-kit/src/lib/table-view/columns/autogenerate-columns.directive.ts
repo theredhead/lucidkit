@@ -38,6 +38,7 @@ import { humanizeKey } from "../../filter/infer-filter-fields";
   standalone: true,
 })
 export class UIAutogenerateColumnsDirective {
+
   /**
    * Configuration for column auto-generation.
    */

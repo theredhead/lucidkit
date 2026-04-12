@@ -11,8 +11,10 @@ export type GaugeDetailLevel = "high" | "medium" | "low";
  * Target dimensions for gauge rendering (CSS pixels).
  */
 export interface GaugeSize {
+
   /** Width in CSS pixels. */
   readonly width: number;
+
   /** Height in CSS pixels. */
   readonly height: number;
 }
@@ -44,12 +46,16 @@ export type GaugeRenderOutput =
  * ```
  */
 export interface GaugeZone {
+
   /** Start of this zone (inclusive), in the same unit as `min` / `max`. */
   readonly from: number;
+
   /** End of this zone (exclusive), in the same unit as `min` / `max`. */
   readonly to: number;
+
   /** Fill colour for this zone arc. */
   readonly color: string;
+
   /** Optional label for this zone (e.g. "Safe", "Warning", "Danger"). */
   readonly label?: string;
 }
@@ -61,22 +67,31 @@ export interface GaugeZone {
  * All values are pre-clamped and validated by the `UIGauge` component.
  */
 export interface GaugeRenderContext {
+
   /** Current value (clamped between `min` and `max`). */
   readonly value: number;
+
   /** Scale minimum. */
   readonly min: number;
+
   /** Scale maximum. */
   readonly max: number;
+
   /** Unit label displayed beside the value (e.g. `"km/h"`, `"dB"`). */
   readonly unit: string;
+
   /** Optional coloured zones. */
   readonly zones: readonly GaugeZone[];
+
   /** Target render size. */
   readonly size: GaugeSize;
+
   /** CSS custom-property tokens resolved from the host element. */
   readonly tokens: GaugeTokens;
+
   /** Level of visual detail the strategy should render. */
   readonly detailLevel: GaugeDetailLevel;
+
   /**
    * Optional consumer-supplied formatter for numeric values.
    *
@@ -85,6 +100,7 @@ export interface GaugeRenderContext {
    * each strategy falls back to its own default formatting.
    */
   readonly formatValue?: (value: number) => string;
+
   /**
    * Optional reference values rendered as marker lines on the gauge.
    *
@@ -100,14 +116,19 @@ export interface GaugeRenderContext {
  * the gauge respects light / dark themes.
  */
 export interface GaugeTokens {
+
   /** Foreground text colour. */
   readonly text: string;
+
   /** Background / face colour. */
   readonly face: string;
+
   /** Needle / indicator colour. */
   readonly needle: string;
+
   /** Tick-mark colour. */
   readonly tick: string;
+
   /** Brand / accent colour. */
   readonly accent: string;
 }

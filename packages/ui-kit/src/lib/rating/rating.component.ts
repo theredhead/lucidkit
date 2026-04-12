@@ -44,6 +44,7 @@ export type { RatingSize };
   },
 })
 export class UIRating {
+
   /** Current rating value (two-way). */
   public readonly value = model<number>(0);
 

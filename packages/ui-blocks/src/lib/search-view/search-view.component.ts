@@ -229,6 +229,7 @@ export class UISearchView<T = unknown> {
 
   /** @internal */
   protected readonly chevronRight = UIIcons.Lucide.Arrows.ChevronRight;
+
   /** @internal */
   protected readonly chevronDown = UIIcons.Lucide.Arrows.ChevronDown;
 
@@ -465,6 +466,7 @@ export class UISearchView<T = unknown> {
 
   /** @internal */
   protected readonly saveIcon = UIIcons.Lucide.Files.Save;
+
   /** @internal */
   protected readonly xIcon = UIIcons.Lucide.Math.X;
 

@@ -11,6 +11,7 @@ export type GanttViewMode = "day" | "week" | "month";
  * Style overrides for an individual task bar.
  */
 export interface GanttBarStyle {
+
   /** Bar fill colour. Falls back to the palette colour. */
   readonly color?: string;
 
@@ -27,6 +28,7 @@ export interface GanttBarStyle {
  * @typeParam T - Optional payload type for extra data.
  */
 export interface GanttTask<T = unknown> {
+
   /** Unique identifier. */
   readonly id: string;
 
@@ -69,6 +71,7 @@ export interface GanttTask<T = unknown> {
  * connector lines.
  */
 export interface GanttDependencyLink {
+
   /** ID of the predecessor (from) task. */
   readonly fromId: string;
 
@@ -86,6 +89,7 @@ export interface GanttDependencyLink {
  * @typeParam T - Optional payload type on each {@link GanttTask}.
  */
 export interface IGanttDatasource<T = unknown> {
+
   /** Returns all tasks. */
   getTasks(): readonly GanttTask<T>[];
 

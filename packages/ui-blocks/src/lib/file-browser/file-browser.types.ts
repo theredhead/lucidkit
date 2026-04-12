@@ -50,8 +50,10 @@ export const FILE_ICON_REGISTRY = new InjectionToken<FileIconRegistry>(
  * A key-value metadata pair displayed in the details pane.
  */
 export interface MetadataField {
+
   /** Human-readable label for the field. */
   readonly label: string;
+
   /** Displayable value. */
   readonly value: string | number | boolean;
 }
@@ -71,6 +73,7 @@ export type MetadataProvider<M = unknown> = (
  *               (size, modified date, permissions, etc.).
  */
 export interface FileBrowserEntry<M = unknown> {
+
   /** Unique identifier for the entry. */
   readonly id: string;
 
@@ -100,6 +103,7 @@ export interface FileBrowserEntry<M = unknown> {
  * @typeParam M - Optional metadata type carried on each entry.
  */
 export interface FileBrowserDatasource<M = unknown> {
+
   /**
    * Returns the entries (files and directories) inside the given
    * directory node. For the root directory, `parent` is `null`.
@@ -122,6 +126,7 @@ export interface FileBrowserDatasource<M = unknown> {
  * @typeParam M - Optional metadata type.
  */
 export interface FileActivateEvent<M = unknown> {
+
   /** The activated file entry. */
   readonly entry: FileBrowserEntry<M>;
 
@@ -136,6 +141,7 @@ export interface FileActivateEvent<M = unknown> {
  * @typeParam M - Optional metadata type.
  */
 export interface DirectoryChangeEvent<M = unknown> {
+
   /** The directory the user navigated to (`null` for root). */
   readonly directory: FileBrowserEntry<M> | null;
 

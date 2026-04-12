@@ -5,7 +5,6 @@
  * Each panel declares its grid placement (column/row span)
  * and optional metadata (title, collapsible, removable).
  */
-
 // ── Grid placement ────────────────────────────────────────────────
 
 /**
@@ -15,8 +14,10 @@
  * All values default to `1` when omitted.
  */
 export interface DashboardGridPlacement {
+
   /** Number of columns the panel spans. */
   readonly colSpan?: number;
+
   /** Number of rows the panel spans. */
   readonly rowSpan?: number;
 }
@@ -29,6 +30,7 @@ export interface DashboardGridPlacement {
  * Passed as the `[config]` input to `<ui-dashboard-panel>`.
  */
 export interface DashboardPanelConfig {
+
   /** Unique identifier for this panel. */
   readonly id: string;
 

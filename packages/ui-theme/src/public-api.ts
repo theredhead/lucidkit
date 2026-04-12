@@ -1,7 +1,6 @@
 /*
  * Public API Surface of @theredhead/lucid-theme
  */
-
 // Services
 export * from "./lib/services/theme.service";
 export * from "./lib/services/theme-studio.service";

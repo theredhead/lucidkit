@@ -96,6 +96,7 @@ export function provideDefaultCurrency(currency: string): EnvironmentProviders {
  * ```
  */
 export class MoneyTextAdapter implements TextAdapter {
+
   /** ISO 4217 currency code this adapter is configured for. */
   public readonly currency: string;
 

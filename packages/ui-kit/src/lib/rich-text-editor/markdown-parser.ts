@@ -28,6 +28,7 @@ import { InjectionToken } from "@angular/core";
  * ```
  */
 export interface MarkdownParser {
+
   /**
    * Converts a Markdown string to an HTML string.
    *

@@ -8,10 +8,13 @@ import { UISurface } from "@theredhead/lucid-foundation";
 
 /** A single item in the breadcrumb trail. */
 export interface BreadcrumbItem {
+
   /** Display label. */
   readonly label: string;
+
   /** Optional route or URL. When absent, the item is non-clickable. */
   readonly url?: string;
+
   /** Optional icon identifier. */
   readonly icon?: string;
 }
@@ -45,6 +48,7 @@ export type BreadcrumbVariant = "link" | "button";
   },
 })
 export class UIBreadcrumb {
+
   /** Whether the breadcrumb is disabled. */
   public readonly disabled = input<boolean>(false);
 

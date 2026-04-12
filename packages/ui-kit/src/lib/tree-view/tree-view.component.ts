@@ -27,12 +27,16 @@ import { UISurface } from "@theredhead/lucid-foundation";
  * @typeParam T - The data payload type.
  */
 export interface TreeNodeContext<T = unknown> {
+
   /** The tree node (also available as the implicit `let-node`). */
   $implicit: TreeNode<T>;
+
   /** The depth level (0 = root). */
   level: number;
+
   /** Whether the node is currently expanded. */
   expanded: boolean;
+
   /** Whether the node has children. */
   hasChildren: boolean;
 }

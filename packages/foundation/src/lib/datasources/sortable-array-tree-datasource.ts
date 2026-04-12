@@ -28,6 +28,7 @@ export class SortableArrayTreeDatasource<T = unknown>
   extends ArrayTreeDatasource<T>
   implements ISortableTreeDatasource<T>
 {
+
   /** The full, unsorted tree. */
   private readonly _allRoots: TreeNode<T>[];
 

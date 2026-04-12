@@ -46,6 +46,7 @@ export type SkeletonVariant = "text" | "rect" | "circle";
   },
 })
 export class UISkeleton {
+
   /** Shape variant. */
   public readonly variant = input<SkeletonVariant>("text");
 

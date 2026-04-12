@@ -24,6 +24,7 @@ import { evaluateCondition } from "./condition-evaluator";
  * Runtime state for a single field managed by the form engine.
  */
 export interface FieldState {
+
   /** The field definition from the schema. */
   readonly definition: FormFieldDefinition;
 
@@ -52,6 +53,7 @@ export interface FieldState {
  * Runtime state for a field group.
  */
 export interface GroupState {
+
   /** The group definition from the schema. */
   readonly definition: FormGroupDefinition;
 
@@ -87,6 +89,7 @@ export interface GroupState {
  * ```
  */
 export class FormEngine {
+
   /** All field states indexed by field ID. */
   private readonly fieldMap = new Map<string, FieldState>();
 

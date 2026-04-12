@@ -5,6 +5,7 @@
  * renders as a structured form control.
  */
 export interface ConfigPropertySchema {
+
   /** The config key name (e.g. `"type"`, `"multiline"`). */
   readonly key: string;
 

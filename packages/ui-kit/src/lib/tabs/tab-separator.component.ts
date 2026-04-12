@@ -30,6 +30,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
   },
 })
 export class UITabSeparator {
+
   /** @internal — discriminant for the tab header item union. */
   public readonly kind = "separator" as const;
 }

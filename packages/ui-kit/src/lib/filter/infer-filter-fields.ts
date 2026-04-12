@@ -8,8 +8,10 @@ import type { FilterFieldDefinition, FilterFieldType } from "./filter.types";
  * utility can be tested without Angular DI.
  */
 export interface ColumnMeta {
+
   /** Property key on the row object. */
   key: string;
+
   /** Human-readable header text (may be empty). */
   headerText: string;
 }

@@ -32,6 +32,7 @@ export class FilterableArrayTreeDatasource<T = unknown>
   extends ArrayTreeDatasource<T>
   implements IFilterableTreeDatasource<T>
 {
+
   /** The full, unfiltered tree. */
   private readonly _allRoots: TreeNode<T>[];
 

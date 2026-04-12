@@ -1,5 +1,6 @@
 /** A single item in a segmented control. */
 export interface SegmentedItem {
+
   /** Unique identifier — used as the bound value. */
   readonly id: string;
 

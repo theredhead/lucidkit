@@ -43,6 +43,7 @@ export type AccordionMode = "single" | "multi";
   styleUrl: "./accordion.component.scss",
 })
 export class UIAccordion implements AccordionController {
+
   /** Whether the accordion is disabled. */
   public readonly disabled = input<boolean>(false);
 

@@ -28,8 +28,10 @@ export type TabPanelStyle = "flat" | "outline" | "raised";
 
 /** Injectable defaults for UITabGroup. */
 export interface TabGroupDefaults {
+
   /** Default tab header position. */
   readonly tabPosition: TabPosition;
+
   /** Default content panel style. */
   readonly panelStyle: TabPanelStyle;
 }
@@ -110,6 +112,7 @@ export function provideTabDefaults(
   },
 })
 export class UITabGroup {
+
   /** Position of the tab headers: top, bottom, left, or right. */
   public readonly tabPosition = input<TabPosition | undefined>(undefined);
 

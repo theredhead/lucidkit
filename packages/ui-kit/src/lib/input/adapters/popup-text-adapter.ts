@@ -15,6 +15,7 @@ import type { TextAdapter } from "./text-adapter";
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface InputPopupPanel<T = any> {
+
   /** Emitted when the user selects a value from the popup. */
   readonly valueSelected: OutputEmitterRef<T>;
 
@@ -38,6 +39,7 @@ export interface InputPopupPanel<T = any> {
  * ```
  */
 export interface PopupTextAdapter extends TextAdapter {
+
   /** The Angular component type to render inside the popup. */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly popupPanel: Type<InputPopupPanel<any>>;

@@ -76,6 +76,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
   },
 })
 export class UITimeline<T = unknown> {
+
   /** The datasource providing timeline events. */
   public readonly datasource = input.required<IDatasource<T>>();
 

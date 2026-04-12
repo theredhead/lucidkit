@@ -6,7 +6,6 @@
  *
  * @internal — not part of the public API.
  */
-
 interface DragState {
   readonly pointerId: number;
   readonly element: HTMLElement;
@@ -33,6 +32,7 @@ export class RepeaterDragHandler {
   private drag: DragState | null = null;
 
   public constructor(
+
     /** The host element of the repeater (container). */
     public readonly container: HTMLElement,
     private readonly onReorder: (

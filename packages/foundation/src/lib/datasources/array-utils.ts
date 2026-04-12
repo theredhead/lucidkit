@@ -8,7 +8,6 @@
  * Both functions mutate the arrays **in place** so datasource
  * implementations can operate directly on their backing store.
  */
-
 /**
  * Moves an item within `array` from `fromIndex` to `toIndex`,
  * shifting other elements to accommodate. The array is mutated

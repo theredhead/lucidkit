@@ -48,6 +48,7 @@ import { entryToTreeNode, FILE_ICON_REGISTRY } from "./file-browser.types";
  * @typeParam M - Metadata type carried on each entry.
  */
 export interface EntryTemplateContext<M = unknown> {
+
   /** The entry (also available as the implicit `let-entry`). */
   $implicit: FileBrowserEntry<M>;
 }

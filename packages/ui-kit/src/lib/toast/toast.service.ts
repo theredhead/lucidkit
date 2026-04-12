@@ -40,6 +40,7 @@ let nextId = 0;
  */
 @Injectable({ providedIn: "root" })
 export class ToastService {
+
   /** All currently active toast instances. */
   public readonly toasts = signal<readonly ToastInstance[]>([]);
 

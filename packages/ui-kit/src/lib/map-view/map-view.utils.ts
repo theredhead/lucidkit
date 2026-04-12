@@ -42,12 +42,16 @@ export function latLngToViewport(
 
 /** Metadata for a single tile `<img>` to render. */
 export interface TileDescriptor {
+
   /** Unique key for `@for` tracking. */
   key: string;
+
   /** Resolved tile image URL. */
   url: string;
+
   /** Viewport-relative left offset in pixels. */
   left: number;
+
   /** Viewport-relative top offset in pixels. */
   top: number;
 }

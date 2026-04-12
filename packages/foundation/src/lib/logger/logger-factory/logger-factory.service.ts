@@ -27,6 +27,7 @@ import {
  */
 @Injectable({ providedIn: "root" })
 export class LoggerFactory {
+
   /**
    * Creates a new {@link Logger} bound to the given context.
    *

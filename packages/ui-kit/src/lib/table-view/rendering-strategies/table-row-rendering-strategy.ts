@@ -7,6 +7,7 @@ import { InjectionToken } from "@angular/core";
  * and how programmatic scrolling to a specific row is performed.
  */
 export interface ITableRowRenderingStrategy {
+
   /** Scroll the row at the given index into the visible area. */
   scrollToIndex(index: number): void;
 }

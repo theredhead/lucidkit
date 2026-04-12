@@ -8,6 +8,7 @@ import type { FilterDescriptor } from "@theredhead/lucid-kit";
  *   {@link FilterDescriptor} typing).
  */
 export interface SavedSearch<T = unknown> {
+
   /** Unique identifier (UUID). */
   readonly id: string;
 

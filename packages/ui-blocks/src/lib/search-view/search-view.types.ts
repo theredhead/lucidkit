@@ -13,6 +13,7 @@ export type SearchViewLayout = "table" | "custom";
  * @typeParam T - The row object type.
  */
 export interface SearchViewResultsContext<T> {
+
   /** The current slice of items (also available as `let-items`). */
   $implicit: readonly T[];
 }
@@ -21,6 +22,7 @@ export interface SearchViewResultsContext<T> {
  * Context object provided to the projected `#empty` template.
  */
 export interface SearchViewEmptyContext {
+
   /** The current search/filter state produced zero results. */
   $implicit: true;
 }

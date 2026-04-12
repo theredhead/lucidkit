@@ -21,6 +21,7 @@ export type RowResult<T> = T | Promise<T>;
  * @typeParam T - The row object type.
  */
 export interface IDatasource<T = unknown> {
+
   /** Returns the total number of items, synchronously or asynchronously. */
   getNumberOfItems(): number | Promise<number>;
 
@@ -39,6 +40,7 @@ export interface IDatasource<T = unknown> {
  * @typeParam T - The row object type.
  */
 export interface ISortableDatasource<T = unknown> extends IDatasource<T> {
+
   /**
    * Applies the given sort expression to the datasource.
    *
@@ -58,6 +60,7 @@ export interface ISortableDatasource<T = unknown> extends IDatasource<T> {
  * @typeParam T - The row object type.
  */
 export interface IFilterableDatasource<T = unknown> extends IDatasource<T> {
+
   /**
    * Applies the given filter expression to the datasource.
    *
@@ -77,11 +80,13 @@ export interface IFilterableDatasource<T = unknown> extends IDatasource<T> {
  * @typeParam T - The row object type.
  */
 export interface IActiveDatasource<T = unknown> extends IDatasource<T> {
+
   /**
    * Fires when a specific row has changed.
    * The event includes the index of the changed row.
    */
   noteRowChanged?: Emitter<RowChangedNotification>;
+
   /**
    * Fires when a range of rows has changed.
    * The event includes the definition of the changed range.
@@ -112,6 +117,7 @@ export interface AutocompleteDatasource<T> {
  * @typeParam T - The data payload type carried by each node.
  */
 export interface TreeNode<T = unknown> {
+
   /** Unique identifier for the node. */
   id: string;
 
@@ -147,6 +153,7 @@ export interface TreeNode<T = unknown> {
  * @typeParam T - The data payload type.
  */
 export interface ITreeDatasource<T = unknown> {
+
   /**
    * Returns the root-level nodes of the tree.
    *
@@ -197,6 +204,7 @@ export type TreeSelectionMode = "none" | "single" | "path" | "multiple";
 export interface IFilterableTreeDatasource<
   T = unknown,
 > extends ITreeDatasource<T> {
+
   /**
    * Apply a filter expression to the tree datasource.
    *
@@ -219,6 +227,7 @@ export interface IFilterableTreeDatasource<
 export interface ISortableTreeDatasource<
   T = unknown,
 > extends ITreeDatasource<T> {
+
   /**
    * Applies a serializable sort expression to the tree datasource.
    *
@@ -243,6 +252,7 @@ export interface ISortableTreeDatasource<
  * @typeParam T - The row object type.
  */
 export interface IReorderableDatasource<T = unknown> extends IDatasource<T> {
+
   /**
    * Moves the item at `fromIndex` to `toIndex`, shifting other items
    * to accommodate.
@@ -267,6 +277,7 @@ export interface IReorderableDatasource<T = unknown> extends IDatasource<T> {
  * @typeParam T - The row object type.
  */
 export interface IInsertableDatasource<T = unknown> extends IDatasource<T> {
+
   /**
    * Inserts `item` at `index`, shifting subsequent items to the right.
    *
@@ -290,6 +301,7 @@ export interface IInsertableDatasource<T = unknown> extends IDatasource<T> {
  * @typeParam T - The row object type.
  */
 export interface IRemovableDatasource<T = unknown> extends IDatasource<T> {
+
   /**
    * Removes and returns the item at `index`, shifting subsequent items
    * to the left.

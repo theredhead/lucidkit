@@ -31,6 +31,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
   },
 })
 export class UIRadioButton {
+
   /** The value this radio button represents. */
   public readonly value = input.required<unknown>();
 

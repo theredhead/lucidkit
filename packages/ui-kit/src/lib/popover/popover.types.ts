@@ -98,6 +98,7 @@ export class PopoverRef<R = unknown> {
  * ```
  */
 export interface UIPopoverContent<R = unknown> {
+
   /** Injected reference used to close the popover and return a result. */
   readonly popoverRef: PopoverRef<R>;
 }
@@ -108,6 +109,7 @@ export interface UIPopoverContent<R = unknown> {
  * Configuration object passed to {@link PopoverService.openPopover}.
  */
 export interface OpenPopoverConfig<T> {
+
   /** The standalone component class to render inside the popover. */
   readonly component: Type<T>;
 

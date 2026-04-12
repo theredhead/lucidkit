@@ -23,6 +23,7 @@ export type RichTextEditorMode = "html" | "markdown";
  * giving them everything they need.
  */
 export interface RichTextEditorContext {
+
   /** The contenteditable `<div>` (WYSIWYG area). */
   readonly editorEl: HTMLDivElement;
 

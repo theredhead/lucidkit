@@ -26,6 +26,7 @@ export interface CarouselItemStyle {
  * interface.
  */
 export interface CarouselStrategy {
+
   /** Human-readable name (useful for debugging / stories). */
   readonly name: string;
 
@@ -55,12 +56,16 @@ export interface CarouselStrategy {
  * each carousel item.
  */
 export interface CarouselItemContext<T = unknown> {
+
   /** The data item (implicit `let` variable). */
   readonly $implicit: T;
+
   /** Named alias. */
   readonly item: T;
+
   /** Zero-based index of this item. */
   readonly index: number;
+
   /** Whether this item is the currently active (centred) one. */
   readonly active: boolean;
 }

@@ -12,8 +12,10 @@ import { UISurface } from "@theredhead/lucid-foundation";
 
 /** Option definition for data-driven radio groups. */
 export interface RadioOption {
+
   /** Human-readable label. */
   label: string;
+
   /** The value submitted when this option is chosen. */
   value: string;
 }
@@ -47,6 +49,7 @@ export interface RadioOption {
   },
 })
 export class UIRadioGroup {
+
   /** The name attribute shared by all radio buttons in this group. */
   public readonly name = input.required<string>();
 

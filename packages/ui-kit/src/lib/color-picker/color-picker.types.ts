@@ -14,8 +14,10 @@ export type ColorPickerMode = "theme" | "grid" | "rgba" | "hsla" | "named";
  * A named CSS colour with a human-readable label and hex value.
  */
 export interface NamedColor {
+
   /** Human-readable colour name (e.g. "Coral"). */
   readonly name: string;
+
   /** Hex value (`#rrggbb`). */
   readonly hex: string;
 }
@@ -148,6 +150,7 @@ export interface HslaColor {
  * colour strings at different luminosity stops.
  */
 export interface ThemePaletteGroup {
+
   /** Human-readable name for the swatch row. */
   readonly label: string;
 

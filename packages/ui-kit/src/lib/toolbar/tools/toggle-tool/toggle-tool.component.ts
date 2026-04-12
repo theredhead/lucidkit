@@ -41,6 +41,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   },
 })
 export class UIToggleTool extends UIToolbarItem {
+
   /** Two-way bindable checked state. */
   public readonly checked = model<boolean>(false);
 

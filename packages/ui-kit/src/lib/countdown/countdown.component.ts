@@ -48,6 +48,7 @@ export type { CountdownFormat, CountdownMode, CountdownParts };
   },
 })
 export class UICountdown implements OnInit {
+
   /** Target date or Unix timestamp (ms). */
   public readonly target = input.required<Date | number>();
 

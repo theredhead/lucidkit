@@ -62,6 +62,7 @@ export type MediaPreload = "none" | "metadata" | "auto";
  * ```
  */
 export interface MediaSource {
+
   /** Network URL of the media resource. */
   readonly url?: string;
 
@@ -109,6 +110,7 @@ export type MediaTrackKind =
  * ```
  */
 export interface MediaTrack {
+
   /** The kind of text track. */
   readonly kind: MediaTrackKind;
 
@@ -131,6 +133,7 @@ export interface MediaTrack {
  * All time values are in **seconds**.
  */
 export interface MediaPlayerState {
+
   /** Whether media is currently playing. */
   readonly playing: boolean;
 
@@ -172,6 +175,7 @@ export interface MediaPlayerState {
  * Structured information about a media playback error.
  */
 export interface MediaErrorInfo {
+
   /** The `MediaError.code` value from the native element. */
   readonly code: number;
 
@@ -183,6 +187,7 @@ export interface MediaErrorInfo {
  * Events emitted by the media player component.
  */
 export interface MediaPlayerEvent {
+
   /** Source element reference for advanced consumers. */
   readonly nativeElement: HTMLMediaElement;
 }
@@ -207,6 +212,7 @@ export interface MediaPlayerEvent {
  * ```
  */
 export interface MediaEmbedConfig {
+
   /**
    * The full `src` URL for the embed `<iframe>`.
    *
@@ -251,6 +257,7 @@ export interface MediaEmbedConfig {
  * ```
  */
 export interface MediaEmbedProvider {
+
   /** Human-readable name shown in diagnostics. */
   readonly name: string;
 

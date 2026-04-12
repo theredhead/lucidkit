@@ -2,6 +2,7 @@
  * Result of validating raw text through a {@link TextAdapter}.
  */
 export interface TextAdapterValidationResult {
+
   /** Whether the current text is considered valid. */
   readonly valid: boolean;
 
@@ -37,6 +38,7 @@ export interface TextAdapterValidationResult {
  * ```
  */
 export interface TextAdapter {
+
   /**
    * Transform the raw text into the adapted value.
    *

@@ -41,6 +41,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
   },
 })
 export class UIProgress {
+
   /** Shape: linear bar or circular ring. */
   public readonly variant = input<ProgressVariant>("linear");
 

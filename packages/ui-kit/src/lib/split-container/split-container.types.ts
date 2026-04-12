@@ -21,8 +21,10 @@ export type SplitCollapseTarget = "first" | "second" | "none";
  * dragged in either direction.
  */
 export interface SplitPanelConstraints {
+
   /** Minimum panel size in pixels. Defaults to `0`. */
   min?: number;
+
   /** Maximum panel size in pixels. Defaults to `Infinity`. */
   max?: number;
 }
@@ -34,8 +36,10 @@ export interface SplitPanelConstraints {
  * is the percentage of the container occupied by that panel.
  */
 export interface SplitResizeEvent {
+
   /** Panel sizes as percentages (0–100). */
   sizes: readonly [number, number];
+
   /** The orientation of the split at the time of the event. */
   orientation: SplitOrientation;
 }

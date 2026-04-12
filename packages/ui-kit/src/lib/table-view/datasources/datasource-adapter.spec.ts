@@ -159,6 +159,7 @@ describe("DatasourceAdapter", () => {
       noteRowRangeChanged: new Emitter<RowRangeChangedNotification>(),
       getNumberOfItems: () => items.length,
       getObjectAtRowIndex: (i: number) => items[i],
+
       /** Mutate in-place so tests can verify the adapter picks up changes. */
       _items: items,
     };

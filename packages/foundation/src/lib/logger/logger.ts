@@ -7,12 +7,16 @@
  * browser console.
  */
 export interface ILoggingStrategy {
+
   /** Emit an debug message. */
   debug(context: string, message: string, args: unknown[]): void;
+
   /** Emit an informational message. */
   info(context: string, message: string, args: unknown[]): void;
+
   /** Emit a warning. */
   warn(context: string, message: string, args: unknown[]): void;
+
   /** Emit an error. */
   error(context: string, message: string, args: unknown[]): void;
 }
@@ -68,6 +72,7 @@ export class Logger {
  * additional arguments spread into the console call.
  */
 export class ConsoleLoggingStrategy implements ILoggingStrategy {
+
   /** @inheritdoc */
   public debug(context: string, message: string, args: unknown[]): void {
     console.debug(

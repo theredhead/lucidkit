@@ -9,6 +9,7 @@ import { inject, Injectable, InjectionToken } from "@angular/core";
  * All methods should handle errors internally and never throw.
  */
 export interface IStorageStrategy {
+
   /** Retrieve a value by key. Returns `null` when the key does not exist. */
   getItem(key: string): string | null;
 

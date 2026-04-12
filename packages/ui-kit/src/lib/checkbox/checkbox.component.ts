@@ -42,6 +42,7 @@ export type CheckboxVariant = "checkbox" | "switch";
   },
 })
 export class UICheckbox {
+
   /** Visual variant: traditional checkbox or toggle switch. */
   public readonly variant = input<CheckboxVariant>("checkbox");
 

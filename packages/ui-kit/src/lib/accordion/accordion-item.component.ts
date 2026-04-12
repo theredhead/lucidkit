@@ -46,6 +46,7 @@ export interface AccordionController {
   },
 })
 export class UIAccordionItem {
+
   /** Header label text. */
   public readonly label = input.required<string>();
 

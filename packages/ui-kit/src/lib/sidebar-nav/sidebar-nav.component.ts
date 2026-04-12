@@ -41,6 +41,7 @@ import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation
   styleUrl: "./sidebar-item.component.scss",
 })
 export class UISidebarItem {
+
   /** Display label for this navigation item. */
   public readonly label = input.required<string>();
 
@@ -91,6 +92,7 @@ export class UISidebarItem {
   styleUrl: "./sidebar-group.component.scss",
 })
 export class UISidebarGroup {
+
   /** Display label for the group header. */
   public readonly label = input.required<string>();
 
@@ -148,6 +150,7 @@ export class UISidebarGroup {
   styleUrl: "./sidebar-nav.component.scss",
 })
 export class UISidebarNav {
+
   /** Accessible label for the navigation landmark. */
   public readonly ariaLabel = input<string>("Sidebar navigation");
 
