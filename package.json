@@ -20,6 +20,7 @@
     "docs:watch": "typedoc --watch",
     "publish:all": "npm run test && npm run build && cd dist/foundation && npm publish && cd ../ui-theme && npm publish && cd ../ui-kit && npm publish && cd ../ui-blocks && npm publish && cd ../ui-forms && npm publish",
     "docker:build": "docker build -t theredhead-lucidkit-docs .",
+    "docker:docs:publish": "docker build -t theredhead/lucidkit-docs:latest . && docker push theredhead/lucidkit-docs:latest",
     "prepare": "husky"
   },
   "lint-staged": {
