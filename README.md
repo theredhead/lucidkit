@@ -26,6 +26,18 @@ Angular libraries:
 | `packages/ui-blocks`  | `@theredhead/lucid-blocks`     | Higher-level compositions (Master-Detail View, NavigationPage)         |
 | `packages/ui-forms`   | `@theredhead/lucid-forms`      | Schema-driven forms, validation, conditional logic, form designer      |
 
+All packages are published to npm. Install only what you need:
+
+```bash
+npm install @theredhead/lucid-kit
+# or
+npm install @theredhead/lucid-blocks
+# or
+npm install @theredhead/lucid-forms
+```
+
+`lucid-foundation` and `lucid-theme` are peer dependencies and will be pulled in automatically.
+
 A shared **Storybook** host is wired up at the workspace root for interactive
 component development and documentation.
 
