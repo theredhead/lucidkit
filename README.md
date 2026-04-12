@@ -144,14 +144,37 @@ Open `dev-docs/index.html` in a browser after generation.
 
 ## Docker
 
-A `Dockerfile` is included for serving the TypeDoc documentation site.
+A multi-stage `Dockerfile` is included that builds **Storybook** and **TypeDoc** inside
+the container and serves both from an nginx-based image.
+
+### Pull from Docker Hub
+
+The latest pre-built image is available on Docker Hub:
 
 ```bash
-# Build the docs Docker image
+# Pull and run — Storybook at /storybook, TypeDoc at /docs
+docker pull theredhead/lucidkit-docs:latest
+docker run --rm -p 8080:80 theredhead/lucidkit-docs:latest
+```
+
+Open [http://localhost:8080/storybook](http://localhost:8080/storybook) and
+[http://localhost:8080/docs](http://localhost:8080/docs).
+
+### Build and run locally
+
+```bash
+# Build the image from source
 npm run docker:build
 
-# Run the docs server on port 8080
-docker run -p 8080:80 theredhead-docs
+# Run the locally built image
+docker run --rm -p 8080:80 theredhead-lucidkit-docs
+```
+
+### Publish to Docker Hub
+
+```bash
+# Build and push theredhead/lucidkit-docs:latest in one step
+npm run docker:docs:publish
 ```
 
 ---
