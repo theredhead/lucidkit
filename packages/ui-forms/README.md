@@ -3,6 +3,10 @@
 Schema-driven, signal-based Angular form engine with validation, conditional
 logic, and a visual form designer. Part of the **LucidKit** UI library family.
 
+> **Early-stage — not production ready.** This package is still undergoing
+> active development and is subject to breaking changes without notice until
+> a stable `1.0` release.
+
 ---
 
 ## Installation

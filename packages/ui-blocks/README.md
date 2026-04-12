@@ -3,6 +3,10 @@
 Higher-level layout compositions for theredhead Angular applications. Built on
 top of `@theredhead/lucid-kit` primitives, standalone, signal-based, and OnPush.
 
+> **Early-stage — not production ready.** This package is still undergoing
+> active development and is subject to breaking changes without notice until
+> a stable `1.0` release.
+
 ---
 
 ## Components

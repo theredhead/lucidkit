@@ -1,6 +1,6 @@
 {
   "name": "@theredhead/lucid-kit",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Standalone, signal-based Angular UI component library — buttons, inputs, tables, filters, autocomplete, dropdowns, and more",
   "license": "MIT",
   "author": "theredhead",
@@ -34,7 +34,7 @@
   },
   "private": false,
   "dependencies": {
-    "@theredhead/lucid-theme": "^0.0.1"
+    "@theredhead/lucid-theme": "^0.1.0"
   },
   "peerDependencies": {
     "@angular/common": "^21.0.0",

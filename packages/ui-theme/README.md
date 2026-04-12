@@ -9,6 +9,10 @@ All colour, surface, and spacing decisions flow through a single set of
 by the `theredhead-theme()` SCSS mixin. Individual components consume these
 tokens via `var(--ui-*)` — they never redeclare their own dark-mode tiers.
 
+> **Early-stage — not production ready.** This package is still undergoing
+> active development and is subject to breaking changes without notice until
+> a stable `1.0` release.
+
 ---
 
 ## Installation

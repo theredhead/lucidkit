@@ -3,6 +3,10 @@
 Core utilities, types, and base classes for the **theredhead** Angular UI
 library family.
 
+> **Early-stage — not production ready.** This package is still undergoing
+> active development and is subject to breaking changes without notice until
+> a stable `1.0` release.
+
 ---
 
 ## Installation

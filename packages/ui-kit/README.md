@@ -5,6 +5,10 @@ Every component is **standalone**, uses **signal-based** inputs/state, and
 **OnPush** change detection. There are no runtime dependencies beyond Angular
 core and `@angular/cdk`.
 
+> **Early-stage — not production ready.** This package is still undergoing
+> active development and is subject to breaking changes without notice until
+> a stable `1.0` release.
+
 ---
 
 ## Components at a glance
