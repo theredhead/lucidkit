@@ -170,13 +170,6 @@ npm run docker:build
 docker run --rm -p 8080:80 theredhead-lucidkit-docs
 ```
 
-### Publish to Docker Hub
-
-```bash
-# Build and push theredhead/lucidkit-docs:latest in one step
-npm run docker:docs:publish
-```
-
 ---
 
 ## Toolchain
