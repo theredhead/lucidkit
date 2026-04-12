@@ -13,7 +13,7 @@ core and `@angular/cdk`.
 | -------------------------------- | ------------------------------------ | ------------------------------------------------------------------------- |
 | **UIButton**                     | `ui-button`                          | Push button with `filled`, `outlined`, `text`, and `ghost` variants       |
 | **UIInput**                      | `ui-input`                           | Styled text input with label and two-way `[(value)]` binding              |
-| **UISelect**                     | `ui-select`                          | Native `<select>` wrapper with label and two-way `[(value)]` binding      |
+| **UIDropdownList**               | `ui-dropdown-list`                   | Popup dropdown select with `SelectOption[]` binding and keyboard nav      |
 | **UICheckbox**                   | `ui-checkbox`                        | Styled checkbox with label and two-way model                              |
 | **UIRadioGroup / UIRadioButton** | `ui-radio-group` / `ui-radio-button` | Radio button group with two-way value binding                             |
 | **UISlider**                     | `ui-slider`                          | Range slider supporting single-value and range modes                      |

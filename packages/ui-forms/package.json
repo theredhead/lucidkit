@@ -1,13 +1,40 @@
 {
   "name": "@theredhead/lucid-forms",
   "version": "0.0.1",
-  "description": "theredhead UI Forms - JSON-driven, signal-based form engine with dynamic field rendering",
+  "description": "Schema-driven, signal-based Angular form engine with validation, conditional logic, and a visual form designer",
+  "license": "MIT",
+  "author": "theredhead",
+  "keywords": [
+    "angular",
+    "ui",
+    "forms",
+    "lucidkit",
+    "signals",
+    "standalone",
+    "schema-driven",
+    "dynamic-forms",
+    "form-validation",
+    "form-builder",
+    "form-designer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theredhead/lucidkit.git",
+    "directory": "packages/ui-forms"
+  },
+  "homepage": "https://github.com/theredhead/lucidkit#readme",
+  "bugs": {
+    "url": "https://github.com/theredhead/lucidkit/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "private": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
-    "@theredhead/lucid-foundation": "0.0.1",
-    "@theredhead/lucid-kit": "0.0.1"
+    "@theredhead/lucid-foundation": "^0.0.1",
+    "@theredhead/lucid-kit": "^0.0.1"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",

@@ -1,7 +1,32 @@
 {
   "name": "@theredhead/lucid-theme",
   "version": "0.0.1",
-  "description": "theredhead UI Theme - Light/Dark Mode Theming with CSS Custom Properties",
+  "description": "Light/dark theming for LucidKit Angular apps via CSS custom properties — no Angular Material required",
+  "license": "MIT",
+  "author": "theredhead",
+  "keywords": [
+    "angular",
+    "ui",
+    "theme",
+    "dark-mode",
+    "css-custom-properties",
+    "design-tokens",
+    "lucidkit",
+    "scss",
+    "material-3"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theredhead/lucidkit.git",
+    "directory": "packages/ui-theme"
+  },
+  "homepage": "https://github.com/theredhead/lucidkit#readme",
+  "bugs": {
+    "url": "https://github.com/theredhead/lucidkit/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "private": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",

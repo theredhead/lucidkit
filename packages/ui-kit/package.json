@@ -1,7 +1,37 @@
 {
   "name": "@theredhead/lucid-kit",
   "version": "0.0.1",
-  "description": "theredhead UI Kit - Core Components Library",
+  "description": "Standalone, signal-based Angular UI component library — buttons, inputs, tables, filters, autocomplete, dropdowns, and more",
+  "license": "MIT",
+  "author": "theredhead",
+  "keywords": [
+    "angular",
+    "ui",
+    "component-library",
+    "lucidkit",
+    "signals",
+    "standalone",
+    "onpush",
+    "button",
+    "input",
+    "table",
+    "filter",
+    "autocomplete",
+    "dropdown",
+    "datepicker"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theredhead/lucidkit.git",
+    "directory": "packages/ui-kit"
+  },
+  "homepage": "https://github.com/theredhead/lucidkit#readme",
+  "bugs": {
+    "url": "https://github.com/theredhead/lucidkit/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "private": false,
   "dependencies": {
     "@theredhead/lucid-theme": "^0.0.1"
