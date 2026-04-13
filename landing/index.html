@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LucidKit — Angular UI Component Library</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --border:    #2a2d3e;
+      --accent:    #7c6af7;
+      --accent-2:  #56cfb2;
+      --text:      #e8eaf6;
+      --muted:     #8b90a8;
+      --radius:    12px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 720px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: color-mix(in srgb, var(--accent) 15%, transparent);
+      color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text) 40%, var(--muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: 1.125rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 540px;
+      margin: 0 auto 3rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      text-decoration: none;
+      text-align: left;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+
+    .card-icon--storybook {
+      background: color-mix(in srgb, var(--accent) 15%, transparent);
+    }
+
+    .card-icon--docs {
+      background: color-mix(in srgb, var(--accent-2) 15%, transparent);
+    }
+
+    .card-icon--github {
+      background: color-mix(in srgb, #a8b4c8 15%, transparent);
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.375rem;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .card-arrow {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .card:nth-child(2) .card-arrow {
+      color: var(--accent-2);
+    }
+
+    .card-arrow--github {
+      color: #a8b4c8;
+    }
+
+    .packages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .pkg {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.25rem 0.625rem;
+      font-size: 0.8125rem;
+      font-family: ui-monospace, monospace;
+      color: var(--muted);
+    }
+
+    footer {
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* SVG icons inlined to avoid any external requests */
+    .icon-book svg, .icon-component svg {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">Angular UI Library</div>
+
+    <h1>LucidKit</h1>
+
+    <p class="tagline">
+      Accessible, themeable Angular components built with standalone APIs,
+      signals, and zero external runtime dependencies.
+    </p>
+
+    <div class="cards">
+      <a href="/storybook/" class="card" aria-label="Open Storybook component explorer">
+        <div class="card-icon card-icon--storybook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c6af7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </div>
+        <div class="card-title">Component Explorer</div>
+        <div class="card-desc">
+          Browse, interact with, and copy usage examples for every component in the library.
+        </div>
+        <span class="card-arrow">Open Storybook →</span>
+      </a>
+
+      <a href="/docs/" class="card" aria-label="Open API reference documentation">
+        <div class="card-icon card-icon--docs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#56cfb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <div class="card-title">API Reference</div>
+        <div class="card-desc">
+          Full TypeDoc-generated API docs — inputs, outputs, types, and service methods.
+        </div>
+        <span class="card-arrow">Open Docs →</span>
+      </a>
+
+      <a href="https://github.com/theredhead/lucidkit" target="_blank" rel="noopener" class="card" aria-label="View source on GitHub">
+        <div class="card-icon card-icon--github">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a8b4c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </div>
+        <div class="card-title">Source Code</div>
+        <div class="card-desc">
+          Browse the repository, open issues, or contribute on GitHub.
+        </div>
+        <span class="card-arrow card-arrow--github">View on GitHub →</span>
+      </a>
+    </div>
+
+    <div class="packages">
+      <span class="pkg">@theredhead/lucid-foundation</span>
+      <span class="pkg">@theredhead/lucid-theme</span>
+      <span class="pkg">@theredhead/lucid-kit</span>
+      <span class="pkg">@theredhead/lucid-blocks</span>
+      <span class="pkg">@theredhead/lucid-forms</span>
+    </div>
+
+    <footer>
+      Available on
+      <a href="https://www.npmjs.com/~theredhead" target="_blank" rel="noopener">npm</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/theredhead/lucidkit" target="_blank" rel="noopener">GitHub</a>
+    </footer>
+  </div>
+</body>
+</html>

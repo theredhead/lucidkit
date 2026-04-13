@@ -33,6 +33,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy build artefacts
 COPY --from=build /app/dist/storybook /usr/share/nginx/html/storybook
 COPY --from=build /app/dev-docs       /usr/share/nginx/html/docs
+COPY landing/index.html               /usr/share/nginx/html/landing/index.html
 
 EXPOSE 80
 
