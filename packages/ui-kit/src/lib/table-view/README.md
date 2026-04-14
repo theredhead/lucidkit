@@ -48,14 +48,11 @@ The table view uses Angular's dependency injection (DI) forwarding system to ena
 
 ## Datasource Model
 
-`UITableView` requires `datasource` input of type `DatasourceAdapter<T>`.
+`UITableView` requires a `datasource` input that implements `IDatasource<T>`. The built-in implementations are:
 
-`DatasourceAdapter` provides:
-
-- `pageIndex` signal
-- `pageSize` signal
-- `totalItems` signal
-- `visibleWindow` computed rows in the current page
+- `ArrayDatasource<T>` — wraps a plain array (from `@theredhead/lucid-foundation`)
+- `FilterableArrayDatasource<T>` — array datasource with built-in filter support
+- `JsonPlaceholderDatasource<T>` — for Storybook/demo scenarios only, not for production use
 
 Rows can be synchronous or asynchronous (`T | Promise<T>`). `UITableView` resolves visible rows before rendering.
 
@@ -69,16 +66,20 @@ Rows can be synchronous or asynchronous (`T | Promise<T>`). `UITableView` resolv
 
 ## Example Usage
 
+```ts
+import { ArrayDatasource } from "@theredhead/lucid-foundation";
+
+export class MyComponent {
+  protected readonly datasource = new ArrayDatasource(users);
+}
+```
+
 ```html
-<ui-table-view [datasource]="adapter">
+<ui-table-view [datasource]="datasource">
   <ui-text-column key="name" headerText="Name" [sortable]="true" />
   <ui-text-column key="email" headerText="Email" [truncate]="true" />
   <ui-badge-column key="status" headerText="Status" variant="success" />
 </ui-table-view>
-```
-
-```ts
-const adapter = new DatasourceAdapter(new ArrayDatasource(users));
 ```
 
 ### Density
@@ -86,7 +87,7 @@ const adapter = new DatasourceAdapter(new ArrayDatasource(users));
 Use the shared `uiDensity` directive to control component density consistently:
 
 ```html
-<ui-table-view uiDensity="compact" [datasource]="adapter">
+<ui-table-view uiDensity="compact" [datasource]="datasource">
   <ui-text-column key="name" headerText="Name" />
 </ui-table-view>
 ```
@@ -96,7 +97,7 @@ Use the shared `uiDensity` directive to control component density consistently:
 Set `showBuiltInPaginator` to `false` when you want to provide external pagination controls.
 
 ```html
-<ui-table-view [datasource]="adapter" [showBuiltInPaginator]="false">
+<ui-table-view [datasource]="datasource" [showBuiltInPaginator]="false">
   <ui-text-column key="name" headerText="Name" [sortable]="true" />
 </ui-table-view>
 ```
