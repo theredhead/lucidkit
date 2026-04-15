@@ -361,6 +361,58 @@ export const COMPONENT_CONFIG_SCHEMAS: Readonly<
     },
   ],
 
+  signature: [
+    {
+      key: "allowDraw",
+      label: "Allow draw",
+      editor: "boolean",
+      defaultValue: true,
+    },
+    {
+      key: "allowPaste",
+      label: "Allow paste",
+      editor: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "allowDrop",
+      label: "Allow drop",
+      editor: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "allowBrowse",
+      label: "Allow browse",
+      editor: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "pressureEnabled",
+      label: "Pressure-sensitive",
+      editor: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "strokeColor",
+      label: "Stroke colour",
+      editor: "text",
+      placeholder: "e.g. #1d232b",
+      defaultValue: "#1d232b",
+    },
+    {
+      key: "minStrokeWidth",
+      label: "Min stroke width (px)",
+      editor: "number",
+      defaultValue: 1.5,
+    },
+    {
+      key: "maxStrokeWidth",
+      label: "Max stroke width (px)",
+      editor: "number",
+      defaultValue: 3.5,
+    },
+  ],
+
   // ── Flair components ────────────────────────────────────────────────
 
   "flair:richtext": [

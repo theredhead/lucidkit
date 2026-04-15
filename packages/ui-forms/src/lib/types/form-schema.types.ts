@@ -56,7 +56,7 @@ export interface FormFieldDefinition {
    *
    * Built-in keys: `"text"`, `"select"`, `"checkbox"`, `"toggle"`,
    * `"radio"`, `"autocomplete"`, `"date"`, `"time"`, `"datetime"`,
-   * `"color"`, `"slider"`, `"richtext"`, `"file"`.
+   * `"color"`, `"slider"`, `"richtext"`, `"file"`, `"signature"`.
    */
   readonly component: string;
 

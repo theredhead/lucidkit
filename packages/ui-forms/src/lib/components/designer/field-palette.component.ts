@@ -102,6 +102,12 @@ const PALETTE_FIELDS: readonly PaletteFieldType[] = [
     description: "File upload",
     icon: UIIcons.Lucide.Files.FileUp,
   },
+  {
+    key: "signature",
+    label: "Signature",
+    description: "Handwritten signature field",
+    icon: UIIcons.Lucide.Design.PenLine,
+  },
 ];
 
 /** Flair (non-data) types available in the palette. */

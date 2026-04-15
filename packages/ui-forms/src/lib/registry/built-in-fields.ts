@@ -18,6 +18,7 @@ import {
   UIFileUpload,
   UIImage,
   UIMediaPlayer,
+  UISignature,
 } from "@theredhead/lucid-kit";
 
 import {
@@ -45,6 +46,7 @@ import { resolveTextAdapter } from "./text-adapter-resolver";
  * | `"slider"`      | `UISlider`          | `value`        |
  * | `"richtext"`    | `UIRichTextEditor`  | `value`        |
  * | `"file"`        | `UIFileUpload`      | `files`        |
+ * | `"signature"`   | `UISignature`       | `value`        |
  * | `"flair:richtext"` | `UIRichTextView`   | `content`       |
  * | `"flair:image"` | `UIImage`           | `src`          |
  * | `"flair:media"` | `UIMediaPlayer`     | `source`       |
@@ -89,6 +91,7 @@ export const BUILT_IN_FIELDS: Readonly<Record<string, FormFieldRegistration>> =
     },
     richtext: { component: UIRichTextEditor, modelProperty: "value" },
     file: { component: UIFileUpload, modelProperty: "files" },
+    signature: { component: UISignature, modelProperty: "value" },
     "flair:richtext": {
       component: UIRichTextView,
       modelProperty: "content",

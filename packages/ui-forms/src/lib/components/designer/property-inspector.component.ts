@@ -48,6 +48,7 @@ const COMPONENT_OPTIONS: SelectOption[] = [
   "slider",
   "richtext",
   "file",
+  "signature",
   "flair:richtext",
   "flair:image",
   "flair:media",
