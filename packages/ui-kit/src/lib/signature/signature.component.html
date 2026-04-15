@@ -1,0 +1,82 @@
+<div
+  class="surface"
+  role="region"
+  [attr.aria-label]="ariaLabel()"
+  (dragenter)="onDragEnter($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+  (paste)="onPaste($event)"
+  [attr.tabindex]="canInteract() ? 0 : -1"
+>
+  <canvas
+    #canvas
+    class="canvas"
+    [attr.aria-label]="ariaLabel()"
+    role="img"
+    [style.cursor]="canDraw() ? 'crosshair' : 'default'"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerCancel($event)"
+  ></canvas>
+
+  @if (isEmpty()) {
+    <div class="empty-state" aria-hidden="true">
+      @if (allowDraw()) {
+        <ui-icon [svg]="icons.pen" [size]="24" />
+      } @else {
+        <ui-icon [svg]="icons.image" [size]="24" />
+      }
+      <span class="empty-hint">{{ emptyHint() }}</span>
+    </div>
+  }
+
+  @if (isDragging()) {
+    <div class="drop-overlay" aria-hidden="true">
+      <ui-icon [svg]="icons.image" [size]="32" />
+      <span>Drop image here</span>
+    </div>
+  }
+
+  @if (isReplaying()) {
+    <div class="replay-overlay" aria-hidden="true">
+      <span>Replaying&hellip;</span>
+    </div>
+  }
+</div>
+
+<div class="toolbar" role="group" [attr.aria-label]="ariaLabel() + ' controls'">
+  @if (!isEmpty() && canInteract()) {
+    <ui-button variant="ghost" size="small" ariaLabel="Clear signature" (click)="onClearClick()">
+      <ui-icon [svg]="icons.clear" [size]="16" />
+      Clear
+    </ui-button>
+  }
+
+  @if (isStrokeBased() && !isReplaying()) {
+    <ui-button variant="ghost" size="small" ariaLabel="Replay signature" (click)="onReplayClick()">
+      <ui-icon [svg]="icons.replay" [size]="16" />
+      Replay
+    </ui-button>
+  }
+
+  @if (allowBrowse() && canInteract()) {
+    <ui-button variant="ghost" size="small" ariaLabel="Browse for signature image" (click)="onBrowseClick()">
+      <ui-icon [svg]="icons.browse" [size]="16" />
+      Browse
+    </ui-button>
+  }
+</div>
+
+@if (allowBrowse()) {
+  <input
+    #fileInput
+    type="file"
+    class="visually-hidden"
+    accept="image/*"
+    aria-hidden="true"
+    tabindex="-1"
+    (change)="onFileInputChange($event)"
+  />
+}

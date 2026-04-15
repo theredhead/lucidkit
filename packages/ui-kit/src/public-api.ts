@@ -58,6 +58,7 @@ export * from "./lib/emoji-picker";
 export * from "./lib/toolbar";
 export * from "./lib/skeleton/skeleton.component";
 export * from "./lib/empty-state/empty-state.component";
+export * from "./lib/signature";
 export * from "./lib/segmented-control";
 export * from "./lib/rating/rating.component";
 export * from "./lib/rating/rating.types";
