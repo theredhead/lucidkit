@@ -1,4 +1,4 @@
-@use 'mixins' as mix;
+@use "mixins" as mix;
 
 :host {
   display: flex;
@@ -7,6 +7,9 @@
   min-height: 500px;
   border-radius: 8px;
   overflow: hidden;
+  border: 1px solid var(--ui-border, #d7dce2);
+  background: var(--ui-bg, #f6f7f8);
+  color: var(--ui-text, #1d232b);
 }
 
 /* Toolbar */
@@ -16,6 +19,9 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
+  background: var(--ui-surface, #fff);
+  color: var(--ui-text, #1d232b);
+  border-bottom: 1px solid var(--ui-border, #d7dce2);
 }
 
 .toolbar-title {
@@ -29,6 +35,8 @@
   gap: 2px;
   border-radius: 6px;
   padding: 2px;
+  background: var(--ui-surface-2, #f0f2f5);
+  border: 1px solid var(--ui-border, #d7dce2);
 }
 
 .toolbar-btn {
@@ -39,11 +47,29 @@
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.12s ease;
+  background: transparent;
+  color: var(--ui-text-muted, #5a6470);
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+
+.toolbar-btn:hover:not(.toolbar-btn--active) {
+  background: var(--ui-hover-bg, #f0f2f5);
+  color: var(--ui-text, #1d232b);
+}
+
+.toolbar-btn--active {
+  background: var(--ui-accent, #3584e4);
+  color: var(--ui-accent-contrast, #fff);
 }
 
 .toolbar-btn--active:hover {
-  opacity: 0.9;
+  background: var(
+    --ui-accent-hover,
+    color-mix(in srgb, var(--ui-accent, #3584e4) 85%, black)
+  );
+  color: var(--ui-accent-contrast, #fff);
 }
 
 /* Body */
@@ -109,6 +135,13 @@
   letter-spacing: 0;
   padding: 1px 8px;
   border-radius: 10px;
+  background: var(--ui-badge-danger-bg, #fdecef);
+  color: var(--ui-badge-danger-fg, #8a1f29);
+}
+
+.preview-live-badge--valid {
+  background: var(--ui-badge-success-bg, #e9f7ee);
+  color: var(--ui-badge-success-fg, #135c38);
 }
 
 .preview-live-json {
@@ -118,6 +151,8 @@
   font-size: 0.8125rem;
   overflow: auto;
   max-height: 300px;
+  background: var(--ui-surface-2, #f0f2f5);
+  color: var(--ui-text, #1d232b);
 }
 
 /* JSON */
@@ -142,7 +177,15 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  background: var(--ui-surface, #fff);
+  color: var(--ui-text, #1d232b);
+  border: 1px solid var(--ui-border, #d7dce2);
   transition: background 0.12s ease;
+}
+
+.copy-btn:hover {
+  background: var(--ui-hover-bg, #f0f2f5);
+  color: var(--ui-text, #1d232b);
 }
 
 .json-pre {
@@ -151,13 +194,8 @@
   white-space: pre-wrap;
   word-break: break-word;
   margin: 0;
-}
-
-/* Dark mode — explicit class */
-
-@include mix.dark-mode {
-
-  .toolbar-btn--active:hover {
-    opacity: 0.9;
-  }
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--ui-surface-2, #f0f2f5);
+  color: var(--ui-text, #1d232b);
 }

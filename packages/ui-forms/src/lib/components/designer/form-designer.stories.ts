@@ -69,22 +69,22 @@ import { UIButton } from "@theredhead/lucid-kit";
 
     @if (lastExport()) {
       <div
-        style="color: var(--ui-text, #1d232b); background: #f0f4e8; margin-top: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
+        style="color: var(--ui-text, #1d232b); background: var(--ui-surface-2, #f0f2f5); margin-top: 16px; padding: 16px; border: 1px solid var(--ui-border, #d7dce2); border-radius: 8px"
       >
         <div
           style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
         >
-          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700">
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700; color: var(--ui-text, #1d232b)">
             Export Result
           </h4>
           <span
-            style="color: #4a6620; font-size: 0.75rem; font-family: monospace"
+            style="color: var(--ui-text-muted, #5a6470); font-size: 0.75rem; font-family: monospace"
           >
             {{ lastExport()!.fileName }} ({{ lastExport()!.mimeType }})
           </span>
         </div>
         <pre
-          style="color: var(--ui-text, #1d232b); font-size: 0.75rem; margin: 0; white-space: pre-wrap; word-break: break-word; max-height: 400px; overflow: auto"
+          style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #fff); border: 1px solid var(--ui-border, #d7dce2); font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 400px; overflow: auto"
           >{{ lastExport()!.content }}</pre
         >
       </div>
@@ -133,22 +133,22 @@ class StoryDesignerDemo {
   template: `
     @for (result of results(); track result.fileName) {
       <div
-        style="color: var(--ui-text, #1d232b); background: #f0f4e8; margin-bottom: 16px; padding: 16px; border: 1px solid #b5c98a; border-radius: 8px"
+        style="color: var(--ui-text, #1d232b); background: var(--ui-surface-2, #f0f2f5); margin-bottom: 16px; padding: 16px; border: 1px solid var(--ui-border, #d7dce2); border-radius: 8px"
       >
         <div
           style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
         >
-          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700">
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700; color: var(--ui-text, #1d232b)">
             {{ result.fileName }}
           </h4>
           <span
-            style="color: #4a6620; font-size: 0.75rem; font-family: monospace"
+            style="color: var(--ui-text-muted, #5a6470); font-size: 0.75rem; font-family: monospace"
           >
             {{ result.mimeType }}
           </span>
         </div>
         <pre
-          style="color: var(--ui-text, #1d232b); background: #fafdf5; font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow: auto; border: 1px solid #d5e3b5"
+          style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #fff); border: 1px solid var(--ui-border, #d7dce2); font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow: auto"
           >{{ result.content }}</pre
         >
       </div>

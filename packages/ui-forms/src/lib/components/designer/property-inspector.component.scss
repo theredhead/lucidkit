@@ -7,6 +7,9 @@
   overflow-y: auto;
   min-width: 260px;
   max-width: 320px;
+  background: var(--ui-surface, #fff);
+  color: var(--ui-text, #1d232b);
+  border-left: 1px solid var(--ui-border, #d7dce2);
 }
 
 .heading {
@@ -56,12 +59,18 @@
   padding: 6px 8px;
   font-size: 0.8125rem;
   font-family: inherit;
+  background: var(--ui-surface, #fff);
+  color: var(--ui-text, #1d232b);
+  border: 1px solid var(--ui-border, #d7dce2);
 }
 
 .input:focus,
 .textarea:focus,
 .select:focus {
-  outline-offset: -1px;
+  outline: none;
+  border-color: var(--ui-accent, #3584e4);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--ui-accent, #3584e4) 25%, transparent);
 }
 
 .input--sm {
@@ -110,6 +119,16 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
+  background: transparent;
+  color: var(--ui-text-muted, #5a6470);
+  transition:
+    background 0.1s ease,
+    color 0.1s ease;
+}
+
+.icon-btn:hover {
+  background: var(--ui-hover-bg, #f0f2f5);
+  color: var(--ui-text, #1d232b);
 }
 
 .add-btn {
@@ -119,6 +138,16 @@
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 500;
+  background: var(--ui-surface-2, #f0f2f5);
+  color: var(--ui-text, #1d232b);
+  border: 1px solid var(--ui-border, #d7dce2);
+  transition: background 0.1s ease;
+}
+
+.add-btn:hover {
+  background: var(--ui-hover-bg, #f0f2f5);
+  color: var(--ui-text, #1d232b);
+  border-color: var(--ui-border-strong, #b0b7c0);
 }
 
 .edit-content-btn {
@@ -132,14 +161,26 @@
   font-size: 0.75rem;
   font-weight: 500;
   font-family: inherit;
+  border: none;
+  background: var(--ui-accent, #3584e4);
+  color: var(--ui-accent-contrast, #fff);
   transition:
     background-color 80ms ease,
     color 80ms ease;
 }
 
+.edit-content-btn:hover {
+  background: var(
+    --ui-accent-hover,
+    color-mix(in srgb, var(--ui-accent, #3584e4) 85%, black)
+  );
+  color: var(--ui-accent-contrast, #fff);
+}
+
 .error {
   font-size: 0.75rem;
   margin: 2px 0 0;
+  color: var(--ui-error, #ba1a1a);
 }
 
 .empty {
@@ -150,6 +191,7 @@
   text-align: center;
   font-size: 0.8125rem;
   padding: 24px;
+  color: var(--ui-text-muted, #5a6470);
 }
 
 /* Dark mode */
