@@ -37,9 +37,9 @@ export class UIRichTextView {
   public readonly content = model<string>("");
 
   /** The HTML content to render, as trusted */
-  public readonly trustedContent = computed(() => {
-    this.sanitizer.bypassSecurityTrustHtml(this.content());
-  });
+  public readonly trustedContent = computed(() =>
+    this.sanitizer.bypassSecurityTrustHtml(this.content())
+  );
 
   /** Accessible label for the container. */
   public readonly ariaLabel = input<string>("Rich text content");
