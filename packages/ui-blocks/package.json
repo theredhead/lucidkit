@@ -1,6 +1,6 @@
 {
   "name": "@theredhead/lucid-blocks",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Higher-level layout compositions for LucidKit — master-detail, navigation pages, dashboards, kanban, and more",
   "license": "MIT",
   "author": "theredhead",
