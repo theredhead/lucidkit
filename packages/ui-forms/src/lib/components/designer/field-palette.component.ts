@@ -2,13 +2,12 @@
 
 import { ChangeDetectionStrategy, Component, output } from "@angular/core";
 import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
-import { UISurface } from '@theredhead/lucid-foundation';
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Metadata for a draggable field type shown in the palette.
  */
 export interface PaletteFieldType {
-
   /** Registry component key (e.g. `"text"`, `"select"`). */
   readonly key: string;
 
@@ -147,13 +146,12 @@ const PALETTE_FLAIR: readonly PaletteFieldType[] = [
   standalone: true,
   imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: { class: "ui-field-palette" },
   templateUrl: "./field-palette.component.html",
   styleUrl: "./field-palette.component.scss",
 })
 export class UIFieldPalette {
-
   /** Emitted when the user clicks a field type to add it. */
   public readonly fieldRequested = output<string>();
 
