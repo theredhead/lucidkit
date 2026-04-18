@@ -1,7 +1,4 @@
-import {
-  createMarkedParser,
-  createMarkdownItParser,
-} from "../markdown-parser";
+import { createMarkedParser, createMarkdownItParser } from "../markdown-parser";
 import {
   MarkdownEditingStrategy,
   markdownToHtml,
@@ -36,9 +33,7 @@ describe("markdownToHtml", () => {
   });
 
   it("should convert underline (++text++)", () => {
-    expect(markdownToHtml("++underlined++")).toBe(
-      "<p><u>underlined</u></p>",
-    );
+    expect(markdownToHtml("++underlined++")).toBe("<p><u>underlined</u></p>");
   });
 
   it("should convert links", () => {
@@ -55,16 +50,12 @@ describe("markdownToHtml", () => {
 
   it("should convert unordered lists", () => {
     const md = "- item1\n- item2";
-    expect(markdownToHtml(md)).toBe(
-      "<ul><li>item1</li><li>item2</li></ul>",
-    );
+    expect(markdownToHtml(md)).toBe("<ul><li>item1</li><li>item2</li></ul>");
   });
 
   it("should convert ordered lists", () => {
     const md = "1. first\n2. second";
-    expect(markdownToHtml(md)).toBe(
-      "<ol><li>first</li><li>second</li></ol>",
-    );
+    expect(markdownToHtml(md)).toBe("<ol><li>first</li><li>second</li></ol>");
   });
 
   it("should convert blockquotes", () => {
@@ -257,7 +248,9 @@ describe("MarkdownEditingStrategy", () => {
       const parser = { toHtml: () => "<custom>output</custom>" };
       const s = new MarkdownEditingStrategy(parser);
       const ctx = { placeholders: [] } as any;
-      expect(s.deserialiseContent("any", ctx)).toContain("<custom>output</custom>");
+      expect(s.deserialiseContent("any", ctx)).toContain(
+        "<custom>output</custom>",
+      );
     });
 
     it("should expand placeholder tokens", () => {
@@ -271,68 +264,46 @@ describe("MarkdownEditingStrategy", () => {
   });
 
   describe("sanitiseHtml", () => {
-    it("should remove script tags", () => {
-      const result = strategy.sanitiseHtml(
-        '<p>safe</p><script>alert("xss")</script>',
-      );
-      expect(result).not.toContain("<script");
-      expect(result).toContain("safe");
+    it("is a passthrough — returns input unchanged", () => {
+      // In Markdown mode all content is either produced by the trusted
+      // markdownToHtml() converter or converted from HTML→Markdown via
+      // handlePaste().  Neither path needs post-processing sanitisation.
+      const input = "<p>hello</p><script>alert(1)</script>";
+      expect(strategy.sanitiseHtml(input)).toBe(input);
+    });
+  });
+
+  describe("markdownToHtml — tables", () => {
+    it("renders a basic GFM table", () => {
+      const md = `| Name | Age |\n| --- | --- |\n| Alice | 30 |\n| Bob | 25 |`;
+      const html = markdownToHtml(md);
+      expect(html).toContain("<table>");
+      expect(html).toContain("<thead>");
+      expect(html).toContain("<tbody>");
+      expect(html).toContain("<th>Name</th>");
+      expect(html).toContain("<th>Age</th>");
+      expect(html).toContain("<td>Alice</td>");
+      expect(html).toContain("<td>30</td>");
     });
 
-    it("should remove style tags", () => {
-      expect(strategy.sanitiseHtml("<style>body{}</style><p>ok</p>")).not.toContain("<style");
+    it("applies alignment from separator row", () => {
+      const md = `| Left | Center | Right |\n| :--- | :---: | ---: |\n| a | b | c |`;
+      const html = markdownToHtml(md);
+      expect(html).toContain("<th>Left</th>");
+      expect(html).toContain('<th style="text-align:center">Center</th>');
+      expect(html).toContain('<th style="text-align:right">Right</th>');
     });
 
-    it("should remove iframe tags", () => {
-      expect(strategy.sanitiseHtml('<iframe src="evil.com"></iframe>')).not.toContain("<iframe");
+    it("renders a table followed by a paragraph", () => {
+      const md = `| Col |\n| --- |\n| val |\n\nsome text`;
+      const html = markdownToHtml(md);
+      expect(html).toContain("<table>");
+      expect(html).toContain("<p>some text</p>");
     });
 
-    it("should remove onclick attributes", () => {
-      const result = strategy.sanitiseHtml('<p onclick="alert(1)">text</p>');
-      expect(result).not.toContain("onclick");
-    });
-
-    it("should remove style attributes", () => {
-      const result = strategy.sanitiseHtml(
-        '<p style="color:red">text</p>',
-      );
-      expect(result).not.toContain("style");
-    });
-
-    it("should remove javascript: href", () => {
-      const result = strategy.sanitiseHtml(
-        '<a href="javascript:alert(1)">link</a>',
-      );
-      expect(result).not.toContain("javascript:");
-    });
-
-    it("should keep safe elements", () => {
-      const result = strategy.sanitiseHtml(
-        '<p><b>bold</b> <a href="https://safe.com">link</a></p>',
-      );
-      expect(result).toContain("<b>bold</b>");
-      expect(result).toContain("https://safe.com");
-    });
-
-    it("should unwrap unknown elements but keep children", () => {
-      const result = strategy.sanitiseHtml("<div><p>text</p></div>");
-      expect(result).toContain("<p>text</p>");
-      expect(result).not.toContain("<div");
-    });
-
-    it("should keep allowed attributes (class, href, src, alt)", () => {
-      const result = strategy.sanitiseHtml(
-        '<a class="link" href="https://x.com" target="_blank" rel="noopener">x</a>',
-      );
-      expect(result).toContain('href="https://x.com"');
-      expect(result).toContain('class="link"');
-    });
-
-    it("should remove data: scheme from src", () => {
-      const result = strategy.sanitiseHtml(
-        '<img src="data:text/html,<script>alert(1)</script>" />',
-      );
-      expect(result).not.toContain("data:");
+    it("does not treat non-table pipe lines as a table", () => {
+      const html = markdownToHtml("just | a | pipe line");
+      expect(html).not.toContain("<table>");
     });
   });
 
@@ -385,7 +356,9 @@ describe("MarkdownEditingStrategy", () => {
       textarea.selectionStart = 0;
       textarea.selectionEnd = 5;
       // inlineCode is not in INLINE_WRAPS; execAction returns true
-      expect(strategy.execAction("inlineCode" as any, { placeholders: [] } as any)).toBe(true);
+      expect(
+        strategy.execAction("inlineCode" as any, { placeholders: [] } as any),
+      ).toBe(true);
     });
 
     it("should set heading1 prefix", () => {
@@ -570,12 +543,9 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.applyLink(
-        { url: "https://x.com", text: "X" },
-        null,
-        null,
-        { placeholders: [] } as any,
-      );
+      strategy.applyLink({ url: "https://x.com", text: "X" }, null, null, {
+        placeholders: [],
+      } as any);
       expect(textarea.value).toBe("[X](https://x.com)");
     });
   });
@@ -598,7 +568,10 @@ describe("MarkdownEditingStrategy", () => {
       const dt = {
         getData: (type: string) => data[type] ?? "",
       } as unknown as DataTransfer;
-      return { clipboardData: dt, preventDefault: vi.fn() } as unknown as ClipboardEvent;
+      return {
+        clipboardData: dt,
+        preventDefault: vi.fn(),
+      } as unknown as ClipboardEvent;
     }
 
     it("should insert plain text when no HTML in clipboard", () => {

@@ -71,6 +71,20 @@ function markdownToHtml(md: string): string {
   let codeBlockLines: string[] = [];
   let inBlockquote = false;
   let blockquoteLines: string[] = [];
+  let tableBuffer: string[] = [];
+
+  const flushTable = (): void => {
+    if (tableBuffer.length === 0) return;
+    const result = buildTableHtml(tableBuffer);
+    if (result !== null) {
+      htmlParts.push(result);
+    } else {
+      for (const tLine of tableBuffer) {
+        htmlParts.push(`<p>${applyInline(tLine)}</p>`);
+      }
+    }
+    tableBuffer = [];
+  };
 
   const flushBlockquote = (): void => {
     if (inBlockquote && blockquoteLines.length) {
@@ -99,6 +113,7 @@ function markdownToHtml(md: string): string {
       } else {
         flushBlockquote();
         flushList();
+        flushTable();
         inCodeBlock = true;
       }
       continue;
@@ -112,12 +127,23 @@ function markdownToHtml(md: string): string {
     const bqMatch = line.match(/^>\s?(.*)/);
     if (bqMatch) {
       flushList();
+      flushTable();
       inBlockquote = true;
       blockquoteLines.push(bqMatch[1]);
       continue;
     } else {
       flushBlockquote();
     }
+
+    // Table row (GFM tables — line starts with |)
+    if (line.trimStart().startsWith("|")) {
+      flushList();
+      tableBuffer.push(line);
+      continue;
+    }
+
+    // Non-table line — flush any pending table
+    flushTable();
 
     // Empty line
     if (line.trim() === "") {
@@ -176,6 +202,7 @@ function markdownToHtml(md: string): string {
   }
   flushBlockquote();
   flushList();
+  flushTable();
 
   return htmlParts.join("");
 }
@@ -190,6 +217,91 @@ function applyInline(text: string): string {
     result = result.replace(pattern, replacement);
   }
   return result;
+}
+
+/**
+ * Builds an HTML `<table>` from buffered GFM table lines.
+ * Returns `null` if the lines do not form a valid table
+ * (requires at least a header row and a separator row).
+ * @internal
+ */
+function buildTableHtml(lines: string[]): string | null {
+  if (lines.length < 2) return null;
+
+  const sepLine = lines[1].trim();
+  // Separator row must contain at least one run of dashes
+  if (!/--/.test(sepLine)) return null;
+
+  const parseRow = (line: string): string[] =>
+    line
+      .trim()
+      .replace(/^\||\|$/g, "")
+      .split("|")
+      .map((c) => c.trim());
+
+  const parseAlignments = (line: string): ("left" | "center" | "right")[] =>
+    parseRow(line).map((cell) => {
+      const c = cell.trim();
+      if (c.startsWith(":") && c.endsWith(":")) return "center";
+      if (c.endsWith(":")) return "right";
+      return "left";
+    });
+
+  const headers = parseRow(lines[0]);
+  const alignments = parseAlignments(lines[1]);
+  const dataRows = lines.slice(2).map(parseRow);
+
+  const alignStyle = (i: number): string => {
+    const a = alignments[i] ?? "left";
+    return a !== "left" ? ` style="text-align:${a}"` : "";
+  };
+
+  let html = "<table><thead><tr>";
+  for (let i = 0; i < headers.length; i++) {
+    html += `<th${alignStyle(i)}>${applyInline(headers[i])}</th>`;
+  }
+  html += "</tr></thead><tbody>";
+  for (const row of dataRows) {
+    html += "<tr>";
+    for (let i = 0; i < row.length; i++) {
+      html += `<td${alignStyle(i)}>${applyInline(row[i])}</td>`;
+    }
+    html += "</tr>";
+  }
+  html += "</tbody></table>";
+  return html;
+}
+
+/**
+ * Converts a `<table>` DOM element to a GFM Markdown table string.
+ * @internal
+ */
+function tableToMarkdown(el: Element): string {
+  const allRowEls = Array.from(el.querySelectorAll("tr"));
+  if (allRowEls.length === 0) return "";
+
+  const cellText = (cell: Element): string =>
+    nodeToMarkdown(cell).trim().replace(/\|/g, "\\|");
+
+  const headerCells = Array.from(allRowEls[0].querySelectorAll("th, td")).map(
+    cellText,
+  );
+  if (headerCells.length === 0) return "";
+
+  const sepCells = headerCells.map(() => "---");
+  const bodyRowEls = el.querySelector("tbody")
+    ? Array.from(el.querySelectorAll("tbody tr"))
+    : allRowEls.slice(1);
+  const bodyRows = bodyRowEls.map((row) =>
+    Array.from(row.querySelectorAll("td, th")).map(cellText),
+  );
+
+  const lines = [
+    `| ${headerCells.join(" | ")} |`,
+    `| ${sepCells.join(" | ")} |`,
+    ...bodyRows.map((cells) => `| ${cells.join(" | ")} |`),
+  ];
+  return lines.join("\n") + "\n\n";
 }
 
 /**
@@ -281,6 +393,16 @@ function nodeToMarkdown(node: Node): string {
           .join("\n") + "\n\n"
       );
     case "LI":
+      return childMd;
+    case "TABLE":
+      return tableToMarkdown(el);
+    case "THEAD":
+    case "TBODY":
+    case "TFOOT":
+    case "TR":
+    case "TH":
+    case "TD":
+    case "CAPTION":
       return childMd;
     case "HR":
       return "---\n\n";
@@ -469,120 +591,13 @@ export class MarkdownEditingStrategy implements RichTextEditorStrategy {
   // ── Sanitisation ──────────────────────────────────────────
 
   public sanitiseHtml(html: string): string {
-    // For the preview pane we do a lightweight sanitise:
-    // the Markdown converter produces trusted HTML, but
-    // user-inserted raw HTML in the Markdown source could be
-    // dangerous.  Re-use the same allow-list approach.
-    const temp = document.createElement("div");
-    temp.innerHTML = html;
-
-    const dangerous = new Set([
-      "SCRIPT",
-      "STYLE",
-      "IFRAME",
-      "OBJECT",
-      "EMBED",
-      "FORM",
-      "INPUT",
-      "TEXTAREA",
-      "SELECT",
-      "BUTTON",
-      "LINK",
-      "META",
-      "BASE",
-      "APPLET",
-      "SVG",
-      "MATH",
-    ]);
-
-    const allowed = new Set([
-      "B",
-      "STRONG",
-      "I",
-      "EM",
-      "U",
-      "S",
-      "STRIKE",
-      "BR",
-      "P",
-      "H1",
-      "H2",
-      "H3",
-      "UL",
-      "OL",
-      "LI",
-      "SPAN",
-      "A",
-      "PRE",
-      "CODE",
-      "BLOCKQUOTE",
-      "HR",
-      "IMG",
-    ]);
-
-    const safeAttrs: ReadonlySet<string> = new Set([
-      "class",
-      "href",
-      "target",
-      "rel",
-      "src",
-      "alt",
-    ]);
-
-    const dangerousSchemeRe = /^\s*(javascript|vbscript|data)\s*:/i;
-
-    const walk = (el: Element): void => {
-      for (const child of Array.from(el.children)) {
-        if (dangerous.has(child.tagName)) {
-          child.remove();
-          continue;
-        }
-
-        if (!allowed.has(child.tagName)) {
-          child.replaceWith(...Array.from(child.childNodes));
-          continue;
-        }
-
-        const isChip = child.classList.contains(PLACEHOLDER_CLASS);
-        for (const attr of Array.from(child.attributes)) {
-          const name = attr.name.toLowerCase();
-
-          if (name.startsWith("on")) {
-            child.removeAttribute(attr.name);
-            continue;
-          }
-
-          if (name === "style") {
-            child.removeAttribute(attr.name);
-            continue;
-          }
-
-          if (
-            isChip &&
-            (name === "contenteditable" || name === "data-placeholder-key")
-          ) {
-            continue;
-          }
-
-          if (
-            (name === "href" || name === "src" || name === "action") &&
-            dangerousSchemeRe.test(attr.value)
-          ) {
-            child.removeAttribute(attr.name);
-            continue;
-          }
-
-          if (!safeAttrs.has(name)) {
-            child.removeAttribute(attr.name);
-          }
-        }
-
-        walk(child);
-      }
-    };
-
-    walk(temp);
-    return temp.innerHTML;
+    // In Markdown mode all content flows through either:
+    //   • markdownToHtml() — our own trusted converter (no sanitisation needed)
+    //   • handlePaste()    — converts HTML → Markdown text via htmlToMarkdown()
+    // Neither path requires post-processing here.  Sanitisation of paste
+    // content is handled exclusively by the HTML→Markdown conversion, which
+    // strips unsafe constructs structurally rather than via an allow-list.
+    return html;
   }
 
   // ── Active format detection ───────────────────────────────

@@ -40,7 +40,7 @@ const meta: Meta<UIRichTextView> = {
     docs: {
       description: {
         component:
-          "`UIRichTextView` is a read-only renderer for HTML or Markdown content. It auto-detects the format by default (`strategy=\"auto\"`), or you can explicitly specify `\"html\"` or `\"markdown\"`.",
+          '`UIRichTextView` is a read-only renderer for HTML or Markdown content. It auto-detects the format by default (`strategy="auto"`), or you can explicitly specify `"html"` or `"markdown"`.',
       },
     },
   },
