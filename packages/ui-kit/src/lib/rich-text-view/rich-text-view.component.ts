@@ -8,16 +8,38 @@ import {
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { UISurface } from "@theredhead/lucid-foundation";
+import { markdownToHtml } from "../rich-text-editor/strategies/markdown-editing.strategy";
+/**
+ * The rendering strategy for {@link UIRichTextView}.
+ *
+ * - `'html'`     — Render content as raw HTML (default when content looks like HTML).
+ * - `'markdown'` — Convert Markdown → HTML before rendering.
+ * - `'auto'`     — Detect automatically: if the content starts with a recognised
+ *                  HTML tag it is treated as HTML, otherwise as Markdown.
+ */
+export type RichTextViewStrategy = "html" | "markdown" | "auto";
+
+/** @internal Heuristic: does the string look like HTML? */
+function looksLikeHtml(content: string): boolean {
+  return /^\s*<[a-zA-Z]/.test(content);
+}
 
 /**
  * A read-only rich text renderer.
  *
- * Displays HTML content inline without any editing chrome.
- * Used by the form engine for `flair:richtext` elements.
+ * Displays HTML or Markdown content inline without any editing chrome.
+ * Used by the form engine for `flair:richtext` elements and anywhere
+ * rich content needs to be rendered.
+ *
+ * The `strategy` input controls how content is interpreted:
+ * - `'auto'` (default) — detects HTML vs Markdown automatically.
+ * - `'html'`           — always treats content as HTML.
+ * - `'markdown'`       — always converts Markdown to HTML first.
  *
  * @example
  * ```html
  * <ui-rich-text-view [content]="'<p>Hello <strong>world</strong></p>'" />
+ * <ui-rich-text-view strategy="markdown" [content]="'# Hello\n**world**'" />
  * ```
  */
 @Component({
@@ -33,14 +55,31 @@ import { UISurface } from "@theredhead/lucid-foundation";
 })
 export class UIRichTextView {
   private readonly sanitizer = inject(DomSanitizer);
-  /** The raw HTML content to render. */
+
+  /** The raw content to render (HTML or Markdown depending on `strategy`). */
   public readonly content = model<string>("");
 
-  /** The HTML content to render, as trusted */
-  public readonly trustedContent = computed(() =>
-    this.sanitizer.bypassSecurityTrustHtml(this.content())
-  );
+  /**
+   * Controls how `content` is interpreted.
+   * - `'auto'`     — auto-detect HTML vs Markdown (default).
+   * - `'html'`     — always render as HTML.
+   * - `'markdown'` — always convert Markdown → HTML first.
+   */
+  public readonly strategy = input<RichTextViewStrategy>("auto");
 
   /** Accessible label for the container. */
   public readonly ariaLabel = input<string>("Rich text content");
+
+  /** The HTML to render, resolved from content + strategy. */
+  public readonly trustedContent = computed(() => {
+    const raw = this.content();
+    const strat = this.strategy();
+    let html: string;
+    if (strat === "markdown" || (strat === "auto" && !looksLikeHtml(raw))) {
+      html = markdownToHtml(raw);
+    } else {
+      html = raw;
+    }
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  });
 }

@@ -1,6 +1,6 @@
 {
   "name": "@theredhead/lucid-foundation",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Core utilities, logging, datasource abstractions and base classes for the LucidKit Angular UI library",
   "license": "MIT",
   "author": "theredhead",

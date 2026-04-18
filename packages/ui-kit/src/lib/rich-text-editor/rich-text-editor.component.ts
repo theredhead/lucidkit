@@ -134,6 +134,11 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
     "[class.disabled]": "disabled()",
     "[class.readonly]": "readonly()",
     "[class.markdown]": "mode() === 'markdown'",
+    "[class.fullscreen]": "isFullscreen()",
+    "[class.split-horizontal]":
+      "isMarkdownMode() && effectiveSplitDirection() === 'horizontal'",
+    "[class.split-vertical]":
+      "isMarkdownMode() && effectiveSplitDirection() === 'vertical'",
   },
 })
 export class UIRichTextEditor implements OnInit, AfterViewInit {
@@ -220,6 +225,15 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    * When non-empty a placeholder picker appears in the toolbar.
    */
   public readonly placeholders = input<readonly RichTextPlaceholder[]>([]);
+
+  /**
+   * Layout of the markdown editor + preview split pane.
+   * Only meaningful when `mode === 'markdown'`.
+   *
+   * - `'vertical'`   — textarea above, preview below (default).
+   * - `'horizontal'` — textarea left, preview right (side-by-side).
+   */
+  public readonly splitDirection = input<"horizontal" | "vertical">("vertical");
 
   /**
    * Whether to sanitise HTML content before rendering.
@@ -321,6 +335,27 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** Whether the emoji picker dropdown is open. */
   protected readonly isEmojiPickerOpen = signal(false);
 
+  /** Whether the editor is in full-screen (full-window) mode. */
+  public readonly isFullscreen = signal(false);
+
+  /**
+   * Internal override for the split-pane direction, set by the toolbar
+   * toggle button.  Takes precedence over the `splitDirection` input.
+   * @internal
+   */
+  private readonly _splitDirectionOverride = signal<
+    "horizontal" | "vertical" | null
+  >(null);
+
+  /**
+   * The effective split-pane direction — the internal override if set,
+   * otherwise the `splitDirection` input value.
+   * @internal
+   */
+  public readonly effectiveSplitDirection = computed(
+    () => this._splitDirectionOverride() ?? this.splitDirection(),
+  );
+
   /** SVG content for the source-toggle toolbar button. @internal */
   protected readonly sourceIcon = UIIcons.Lucide.Development.CodeXml;
 
@@ -345,6 +380,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     Image: UIIcons.Lucide.Files.ImagePlus,
     Link: UIIcons.Lucide.Text.Link,
     RemoveFormat: UIIcons.Lucide.Text.RemoveFormatting,
+    Fullscreen: UIIcons.Lucide.Layout.Maximize2,
+    ExitFullscreen: UIIcons.Lucide.Layout.Minimize2,
+    SplitHorizontal: UIIcons.Lucide.Layout.Columns2,
+    SplitVertical: UIIcons.Lucide.Layout.Rows2,
   } as const;
 
   /**
@@ -352,9 +391,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    * textarea is always visible as the primary editing surface.
    * @internal
    */
-  protected readonly isMarkdownMode = computed(
-    () => this.mode() === "markdown",
-  );
+  public readonly isMarkdownMode = computed(() => this.mode() === "markdown");
 
   /**
    * Current character count of the editor content, computed
@@ -662,6 +699,17 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     this.lastSyncedValue = val;
     this.renderToEditor(val);
     this.initialised = true;
+
+    // Exit full-screen when Escape is pressed anywhere in the document
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && this.isFullscreen()) {
+        this.isFullscreen.set(false);
+      }
+    };
+    document.addEventListener("keydown", onEscape, { capture: true });
+    this.destroyRef.onDestroy(() =>
+      document.removeEventListener("keydown", onEscape, { capture: true }),
+    );
   }
 
   // ── Context factory ────────────────────────────────────────
@@ -692,6 +740,14 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const id = event.itemId;
     if (id === "source-mode") {
       this.toggleSourceMode();
+      return;
+    }
+    if (id === "fullscreen") {
+      this.toggleFullscreen();
+      return;
+    }
+    if (id === "split-direction") {
+      this.cycleSplitDirection();
       return;
     }
     if (id === "block" || id === "list") {
@@ -1128,6 +1184,74 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   }
 
   /**
+   * Toggles the editor between full-screen (full-window overlay) and
+   * normal inline mode.
+   *
+   * @internal
+   */
+  protected toggleFullscreen(): void {
+    this.isFullscreen.update((v) => !v);
+  }
+
+  /**
+   * Cycles the markdown split-pane direction between `'vertical'` and
+   * `'horizontal'`.  Has no effect unless `mode === 'markdown'`.
+   *
+   * @internal
+   */
+  protected cycleSplitDirection(): void {
+    const next =
+      this.effectiveSplitDirection() === "horizontal"
+        ? "vertical"
+        : "horizontal";
+    this._splitDirectionOverride.set(next);
+  }
+
+  /**
+   * Begins a drag-resize interaction on the split pane handle.
+   * Tracks `pointermove` on `document` until `pointerup`/`pointercancel`,
+   * adjusting the flex-basis of the textarea pane.
+   *
+   * @internal
+   */
+  protected onSplitPointerDown(event: PointerEvent): void {
+    const handle = event.target as HTMLElement;
+    if (!handle.classList.contains("split-handle")) return;
+    event.preventDefault();
+
+    const host = this.elRef.nativeElement;
+    const isHorizontal = this.effectiveSplitDirection() === "horizontal";
+    const textarea = host.querySelector(
+      ".markdown-editor",
+    ) as HTMLTextAreaElement | null;
+    if (!textarea) return;
+
+    const startPos = isHorizontal ? event.clientX : event.clientY;
+    const startSize = isHorizontal
+      ? textarea.offsetWidth
+      : textarea.offsetHeight;
+
+    const onMove = (e: PointerEvent) => {
+      const delta = (isHorizontal ? e.clientX : e.clientY) - startPos;
+      const hostSize = isHorizontal ? host.offsetWidth : host.offsetHeight;
+      const newSize = Math.min(Math.max(startSize + delta, 80), hostSize - 80);
+      textarea.style.flexBasis = `${newSize}px`;
+      textarea.style.flexGrow = "0";
+      textarea.style.flexShrink = "0";
+    };
+
+    const onUp = () => {
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerup", onUp);
+      document.removeEventListener("pointercancel", onUp);
+    };
+
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerup", onUp);
+    document.addEventListener("pointercancel", onUp);
+  }
+
+  /**
    * Handles input events from the source-mode `<textarea>`.
    *
    * In HTML mode: writes raw HTML to `value` and live-renders
@@ -1438,9 +1562,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const strat = this.strategy();
     const editor = this.editorRef().nativeElement;
     const expanded = strat.deserialiseContent(val, ctx);
-    editor.innerHTML = this.sanitise()
-      ? strat.sanitiseHtml(expanded)
-      : expanded;
+    editor.innerHTML = expanded;
   }
 
   /**

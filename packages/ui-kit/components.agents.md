@@ -14,7 +14,7 @@
 | `UIFilter`              | `src/lib/filter/filter.component.ts`                                          | `ui-filter`                 | Predicate builder for composing filter rules against typed fields                                                                  |
 | `UIAutocomplete`        | `src/lib/autocomplete/autocomplete.component.ts`                              | `ui-autocomplete`           | Type-ahead component with optional custom item template                                                                            |
 | `UICalendarPanel`       | `src/lib/calendar-panel/calendar-panel.component.ts`                          | `ui-calendar-panel`         | Standalone calendar grid panel for date selection                                                                                  |
-| `UIRichTextView`        | `src/lib/rich-text-view/rich-text-view.component.ts`                          | `ui-rich-text-view`         | Read-only rich text renderer displaying HTML content inline                                                                        |
+| `UIRichTextView`        | `src/lib/rich-text-view/rich-text-view.component.ts`                          | `ui-rich-text-view`         | Read-only renderer for HTML or Markdown content; auto-detects format via `strategy` input (`'html'\|'markdown'\|'auto'`)           |
 | `UIThemeToggle`         | `src/lib/theme-toggle/theme-toggle.component.ts`                              | `ui-theme-toggle`           | Toggle button for switching between light and dark mode                                                                            |
 | `UITableView`           | `src/lib/table-view/table-view.component.ts`                                  | `ui-table-view`             | Table with sorting, filtering, selection, column resizing, and pluggable rendering strategy (`'plain'` or `'virtual'`)             |
 | `UITableHeader`         | `src/lib/table-view/table-view-header/table-view-header.component.ts`         | `ui-table-header`           | Table header row (internal)                                                                                                        |
@@ -79,7 +79,7 @@
 | `UIQRCode`              | `src/lib/qr-code/qr-code.component.ts`                                        | `ui-qr-code`                | QR code generator and renderer                                                                                                     |
 | `UITimeline`            | `src/lib/timeline/timeline.component.ts`                                      | `ui-timeline`               | Timeline displaying sequential events                                                                                              |
 | `UIEmojiPicker`         | `src/lib/emoji-picker/emoji-picker.component.ts`                              | `ui-emoji-picker`           | Emoji picker with category navigation                                                                                              |
-| `UIRichTextEditor`      | `src/lib/rich-text-editor/rich-text-editor.component.ts`                      | `ui-rich-text-editor`       | Rich-text editor supporting HTML and Markdown modes                                                                                |
+| `UIRichTextEditor`      | `src/lib/rich-text-editor/rich-text-editor.component.ts`                      | `ui-rich-text-editor`       | Rich-text editor: HTML WYSIWYG + Markdown modes with split-pane preview (`splitDirection`) and full-screen toggle                  |
 | `UISkeleton`            | `src/lib/skeleton/skeleton.component.ts`                                      | `ui-skeleton`               | Animated shimmer placeholder while content loads — `text`, `rect`, and `circle` variants                                           |
 | `UIEmptyState`          | `src/lib/empty-state/empty-state.component.ts`                                | `ui-empty-state`            | Zero-data placeholder with heading, optional message, optional icon, and projected action slot                                     |
 | `UISegmentedControl`    | `src/lib/segmented-control/segmented-control.component.ts`                    | `ui-segmented-control`      | iOS-style mutually exclusive option button row via `items` input and `[(value)]` binding                                           |
@@ -168,6 +168,12 @@ This pattern allows for extensibility - new column types can be added without mo
 | `CoverflowCarouselStrategy` | `src/lib/carousel/coverflow-strategy.ts`                           | Carousel with 3D coverflow effect |
 | `HtmlEditingStrategy`       | `src/lib/rich-text-editor/strategies/html-editing.strategy.ts`     | Rich text WYSIWYG editing         |
 | `MarkdownEditingStrategy`   | `src/lib/rich-text-editor/strategies/markdown-editing.strategy.ts` | Markdown plain-text editing       |
+
+## Types
+
+| Name                   | File                                                 | Description                                                                |
+| ---------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------- |
+| `RichTextViewStrategy` | `src/lib/rich-text-view/rich-text-view.component.ts` | `'html' \| 'markdown' \| 'auto'` — rendering strategy for `UIRichTextView` |
 
 ## Text Input Adapters
 

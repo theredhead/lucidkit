@@ -205,6 +205,24 @@
     />
   }
 
+  <!-- Split-direction toggle (Markdown mode only) -->
+  @if (isMarkdownMode()) {
+    <ui-separator-tool id="sep-split" />
+    <ui-button-tool
+      id="split-direction"
+      [icon]="effectiveSplitDirection() === 'horizontal' ? teIcons.SplitVertical : teIcons.SplitHorizontal"
+      [ariaLabel]="effectiveSplitDirection() === 'horizontal' ? 'Switch to vertical split' : 'Switch to side-by-side split'"
+    />
+  }
+
+  <!-- Fullscreen toggle -->
+  <ui-separator-tool id="sep-fullscreen" />
+  <ui-button-tool
+    id="fullscreen"
+    [icon]="isFullscreen() ? teIcons.ExitFullscreen : teIcons.Fullscreen"
+    [ariaLabel]="isFullscreen() ? 'Exit full screen' : 'Full screen'"
+  />
+
 </ui-toolbar>
 
 <!-- ── HTML source textarea (HTML mode only) ──────────────── -->
@@ -223,7 +241,7 @@
   <div class="preview-label" aria-hidden="true">Preview</div>
 }
 
-<!-- ── Markdown textarea (Markdown mode) ─────────────────── -->
+<!-- ── Markdown textarea + split handle (Markdown mode) ──── -->
 @if (isMarkdownMode()) {
   <textarea
     #mdTextarea
@@ -241,15 +259,23 @@
     (keydown)="onEditorKeydown($event)"
     spellcheck="true"
   ></textarea>
-  <div class="preview-label" aria-hidden="true">Preview</div>
+  <div
+    class="split-handle"
+    role="separator"
+    aria-label="Resize panes"
+    (pointerdown)="onSplitPointerDown($event)"
+  ></div>
 }
 
-<!-- ── WYSIWYG editor / preview ──────────────────────────── -->
+<!-- ── WYSIWYG editor / markdown preview ─────────────────── -->
 <div
   class="editor-wrapper"
   [class.editor-wrapper--focused]="isFocused() && !isSourceMode() && !isMarkdownMode()"
   [class.editor-wrapper--preview]="isSourceMode() || isMarkdownMode()"
 >
+  @if (isMarkdownMode()) {
+    <div class="preview-label" aria-hidden="true">Preview</div>
+  }
   <div
     #editorEl
     class="editor"

@@ -649,12 +649,39 @@ describe("UIRichTextEditor", () => {
       expect(sanitised).toContain("Text");
     });
 
-    it("should strip style attributes", () => {
+    it("should strip dangerous style values (background: url)", () => {
       const sanitised = (component as any)
         .strategy()
         .sanitiseHtml('<p style="background:url(evil)">Styled</p>');
-      expect(sanitised).not.toContain("style");
+      expect(sanitised).not.toContain("url(evil)");
       expect(sanitised).toContain("Styled");
+    });
+
+    it("should preserve text-align in style attributes", () => {
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<p style="text-align: center">Centred</p>');
+      expect(sanitised).toContain("text-align");
+      expect(sanitised).toContain("center");
+      expect(sanitised).toContain("Centred");
+    });
+
+    it("should preserve safe inline styles (color, font-size, font-weight)", () => {
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          '<p style="color: red; font-size: 14px; font-weight: bold">Text</p>',
+        );
+      expect(sanitised).toContain("color");
+      expect(sanitised).toContain("font-size");
+      expect(sanitised).toContain("font-weight");
+    });
+
+    it("should strip expression() and javascript: from style values", () => {
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml('<p style="width: expression(alert(1))">Text</p>');
+      expect(sanitised).not.toContain("expression");
     });
 
     it("should strip javascript: URIs from href", () => {
@@ -695,24 +722,52 @@ describe("UIRichTextEditor", () => {
       expect(sanitised).toContain("in a div");
     });
 
-    it("should sanitise content set via external value binding", () => {
-      component.value.set('<p>Safe</p><script>alert("xss")</script>');
+    it("should render content set via value binding without sanitising", () => {
+      // The editor renders value as-is; sanitisation only applies to paste.
+      component.value.set('<p style="text-align:center">Safe</p>');
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
         fixture.nativeElement.querySelector(".editor");
       expect(editor.innerHTML).toContain("Safe");
-      expect(editor.innerHTML).not.toContain("script");
-      expect(editor.innerHTML).not.toContain("alert");
+      const p = editor.querySelector("p");
+      expect(p?.getAttribute("style")).toContain("text-align");
     });
 
-    it("should allow dangerous content when sanitise is false", () => {
-      fixture.componentRef.setInput("sanitise", false);
+    it("should preserve text-align style on content set via value binding", () => {
+      component.value.set(
+        '<p style="text-align: center">Centred paragraph</p>',
+      );
       fixture.detectChanges();
 
-      const dangerousHtml =
-        '<p onclick="alert(1)" style="color:red">Styled</p>';
-      component.value.set(dangerousHtml);
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      const p = editor.querySelector("p");
+      expect(p).toBeTruthy();
+      expect(p!.getAttribute("style")).toContain("text-align");
+      expect(p!.textContent).toBe("Centred paragraph");
+    });
+
+    it("should round-trip rich content without stripping safe styles", () => {
+      const html =
+        '<p style="text-align: center">Centre</p>' +
+        '<p style="text-align: right">Right</p>' +
+        "<p><strong>Bold</strong> and <em>italic</em></p>";
+      component.value.set(html);
+      fixture.detectChanges();
+
+      const serialised = component.value();
+      expect(serialised).toContain("text-align");
+      expect(serialised).toContain("center");
+      expect(serialised).toContain("right");
+      expect(serialised).toContain("<strong>");
+      expect(serialised).toContain("<em>");
+    });
+
+    it("should render value content as-is regardless of sanitise flag", () => {
+      // sanitise only affects paste; value is never touched.
+      const html = '<p onclick="alert(1)" style="color:red">Styled</p>';
+      component.value.set(html);
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
@@ -2330,45 +2385,36 @@ describe("UIRichTextEditor", () => {
   });
 
   describe("sanitiser data:image/ handling", () => {
-    it("should preserve data:image/ URIs on <img> src", () => {
+    it("should preserve data:image/ URIs on <img> src via sanitiseHtml", () => {
       const dataUri = "data:image/png;base64,iVBORw0KGgo=";
-      fixture.componentRef.setInput(
-        "value",
-        `<p>Text</p><img src="${dataUri}" alt="test">`,
-      );
-      fixture.detectChanges();
-
-      const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".editor");
-      const img = editor.querySelector("img");
-      expect(img).toBeTruthy();
-      expect(img!.getAttribute("src")).toBe(dataUri);
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(`<p>Text</p><img src="${dataUri}" alt="test">`);
+      expect(sanitised).toContain(dataUri);
     });
 
-    it("should strip data: URIs from <a> href", () => {
-      fixture.componentRef.setInput(
-        "value",
-        '<a href="data:text/html,<script>alert(1)</script>">click</a>',
-      );
-      fixture.detectChanges();
-
-      const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".editor");
-      const a = editor.querySelector("a");
+    it("should strip data: URIs from <a> href via sanitiseHtml", () => {
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          '<a href="data:text/html,<script>alert(1)</script>">click</a>',
+        );
+      const tmp = document.createElement("div");
+      tmp.innerHTML = sanitised;
+      const a = tmp.querySelector("a");
       expect(a).toBeTruthy();
       expect(a!.getAttribute("href")).toBeNull();
     });
 
-    it("should strip non-image data: URIs from <img> src", () => {
-      fixture.componentRef.setInput(
-        "value",
-        '<img src="data:text/html,<script>alert(1)</script>" alt="x">',
-      );
-      fixture.detectChanges();
-
-      const editor: HTMLDivElement =
-        fixture.nativeElement.querySelector(".editor");
-      const img = editor.querySelector("img");
+    it("should strip non-image data: URIs from <img> src via sanitiseHtml", () => {
+      const sanitised = (component as any)
+        .strategy()
+        .sanitiseHtml(
+          '<img src="data:text/html,<script>alert(1)</script>" alt="x">',
+        );
+      const tmp = document.createElement("div");
+      tmp.innerHTML = sanitised;
+      const img = tmp.querySelector("img");
       expect(img).toBeTruthy();
       expect(img!.getAttribute("src")).toBeNull();
     });

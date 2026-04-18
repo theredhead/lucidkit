@@ -226,7 +226,12 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
           }
 
           if (name === "style") {
-            child.removeAttribute(attr.name);
+            const sanitisedStyle = this.sanitiseStyleAttr(attr.value);
+            if (sanitisedStyle) {
+              child.setAttribute("style", sanitisedStyle);
+            } else {
+              child.removeAttribute("style");
+            }
             continue;
           }
 
@@ -264,6 +269,25 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
 
     walk(temp);
     return temp.innerHTML;
+  }
+
+  /**
+   * Filters a `style` attribute value, keeping only safe CSS
+   * properties and stripping dangerous values such as
+   * `url(...)`, `expression(...)`, and `javascript:`.
+   *
+   * Returns the cleaned style string, or an empty string if
+   * nothing safe remains.
+   * @internal
+   */
+  private sanitiseStyleAttr(style: string): string {
+    const dangerous = /url\s*\(|expression\s*\(|javascript\s*:/i;
+    const result = style
+      .split(";")
+      .map((decl) => decl.trim())
+      .filter((decl) => decl && !dangerous.test(decl))
+      .join("; ");
+    return result;
   }
 
   // ── Active format detection ───────────────────────────────
