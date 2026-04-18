@@ -1,5 +1,14 @@
+@if (animateSelection()) {
+  <div
+    class="indicator"
+    aria-hidden="true"
+    [style.left.px]="indicatorLeft()"
+    [style.width.px]="indicatorWidth()"
+  ></div>
+}
 @for (item of items(); track item.id) {
   <button
+    #segmentBtn
     class="segment"
     type="button"
     role="radio"
