@@ -317,6 +317,13 @@ ui-toolbar {
     min-height: 4rem;
     cursor: default;
   }
+
+  .markdown-preview {
+    flex: 1;
+    overflow: auto;
+    padding: 0.5rem;
+    min-height: 4rem;
+  }
 }
 
 /* ── Disabled state ────────────────────────────────────── */

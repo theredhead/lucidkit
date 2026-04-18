@@ -1,6 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, signal } from "@angular/core";
 import { UIRichTextEditor } from "./rich-text-editor.component";
+import { UIRichTextView } from "../rich-text-view/rich-text-view.component";
+import { UIButton } from "../button/button.component";
+import { UISplitContainer } from "../split-container/split-container.component";
+import { UISplitPanel } from "../split-container/split-panel.component";
 import type {
   RichTextPlaceholder,
   RichTextImageHandler,
@@ -1447,6 +1451,348 @@ export class MyEditorComponent {
 
 // ── SCSS ──────────────────────────────────────────────────────
 /* No custom styles needed. */
+`,
+      },
+    },
+  },
+};
+
+// ── Mail-merge story ───────────────────────────────────────────────────────
+
+interface MailMergeRecord {
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  addressLine1: string;
+  addressLine2: string;
+  birthdate: string;
+  email: string;
+  invoiceNumber: string;
+  invoiceDate: string;
+  dueDate: string;
+  accountRef: string;
+  orderId: string;
+  productName: string;
+  quantity: string;
+  unitPrice: string;
+  totalExVat: string;
+  vatAmount: string;
+  totalIncVat: string;
+}
+
+const mailMergeMembers: MailMergeRecord[] = [
+  {
+    firstName: "Alice",
+    lastName: "Hartwell",
+    fullName: "Alice Hartwell",
+    addressLine1: "14 Maple Street",
+    addressLine2: "Brighton BN1 4JT",
+    birthdate: "12 March 1985",
+    email: "alice.hartwell@example.com",
+    invoiceNumber: "INV-2026-0041",
+    invoiceDate: "18 April 2026",
+    dueDate: "18 May 2026",
+    accountRef: "ACT-00142",
+    orderId: "ORD-88421",
+    productName: "Professional License — LucidKit UI",
+    quantity: "1",
+    unitPrice: "£249.00",
+    totalExVat: "£249.00",
+    vatAmount: "£49.80",
+    totalIncVat: "£298.80",
+  },
+  {
+    firstName: "Benjamin",
+    lastName: "Okafor",
+    fullName: "Benjamin Okafor",
+    addressLine1: "Flat 3, Ashdown House",
+    addressLine2: "Manchester M4 2LG",
+    birthdate: "7 August 1979",
+    email: "b.okafor@example.com",
+    invoiceNumber: "INV-2026-0042",
+    invoiceDate: "18 April 2026",
+    dueDate: "18 May 2026",
+    accountRef: "ACT-00198",
+    orderId: "ORD-88434",
+    productName: "Enterprise License — LucidKit UI (×3 seats)",
+    quantity: "3",
+    unitPrice: "£599.00",
+    totalExVat: "£1,797.00",
+    vatAmount: "£359.40",
+    totalIncVat: "£2,156.40",
+  },
+  {
+    firstName: "Chloé",
+    lastName: "Dupont",
+    fullName: "Chloé Dupont",
+    addressLine1: "22 rue des Lilas",
+    addressLine2: "Paris 75011",
+    birthdate: "30 November 1992",
+    email: "chloe.dupont@example.fr",
+    invoiceNumber: "INV-2026-0043",
+    invoiceDate: "18 April 2026",
+    dueDate: "18 May 2026",
+    accountRef: "ACT-00207",
+    orderId: "ORD-88451",
+    productName: "Starter License — LucidKit UI",
+    quantity: "1",
+    unitPrice: "€89.00",
+    totalExVat: "€89.00",
+    vatAmount: "€17.80",
+    totalIncVat: "€106.80",
+  },
+  {
+    firstName: "Tariq",
+    lastName: "Al-Rashid",
+    fullName: "Tariq Al-Rashid",
+    addressLine1: "9 Westfield Gardens",
+    addressLine2: "Edinburgh EH3 7SN",
+    birthdate: "22 June 1988",
+    email: "tariq.alrashid@example.com",
+    invoiceNumber: "INV-2026-0044",
+    invoiceDate: "18 April 2026",
+    dueDate: "18 May 2026",
+    accountRef: "ACT-00231",
+    orderId: "ORD-88463",
+    productName: "Professional License — LucidKit UI",
+    quantity: "2",
+    unitPrice: "£249.00",
+    totalExVat: "£498.00",
+    vatAmount: "£99.60",
+    totalIncVat: "£597.60",
+  },
+];
+
+const mailMergePlaceholders: RichTextPlaceholder[] = [
+  { key: "firstName",     label: "First Name",         category: "Contact" },
+  { key: "lastName",      label: "Last Name",          category: "Contact" },
+  { key: "fullName",      label: "Full Name",          category: "Contact" },
+  { key: "addressLine1",  label: "Address Line 1",     category: "Contact" },
+  { key: "addressLine2",  label: "Address Line 2",     category: "Contact" },
+  { key: "birthdate",     label: "Date of Birth",      category: "Contact" },
+  { key: "email",         label: "Email Address",      category: "Contact" },
+  { key: "invoiceNumber", label: "Invoice Number",     category: "Invoice" },
+  { key: "invoiceDate",   label: "Invoice Date",       category: "Invoice" },
+  { key: "dueDate",       label: "Due Date",           category: "Invoice" },
+  { key: "accountRef",    label: "Account Reference",  category: "Invoice" },
+  { key: "orderId",       label: "Order ID",           category: "Invoice" },
+  { key: "productName",   label: "Product",            category: "Order"   },
+  { key: "quantity",      label: "Quantity",           category: "Order"   },
+  { key: "unitPrice",     label: "Unit Price",         category: "Order"   },
+  { key: "totalExVat",    label: "Total (ex. VAT)",    category: "Order"   },
+  { key: "vatAmount",     label: "VAT Amount",         category: "Order"   },
+  { key: "totalIncVat",   label: "Total (inc. VAT)",   category: "Order"   },
+];
+
+const mailMergeTemplate = [
+  "**{{fullName}}**  ",
+  "{{addressLine1}}  ",
+  "{{addressLine2}}  ",
+  "DOB: {{birthdate}}  ",
+  "{{email}}",
+  "",
+  "---",
+  "",
+  "# Invoice {{invoiceNumber}}",
+  "",
+  "**Invoice date:** {{invoiceDate}}  ",
+  "**Due date:** {{dueDate}}  ",
+  "**Account ref:** {{accountRef}}  ",
+  "**Order:** {{orderId}}",
+  "",
+  "---",
+  "",
+  "| Description | Qty | Unit Price | Total (ex. VAT) |",
+  "| :--- | :---: | ---: | ---: |",
+  "| {{productName}} | {{quantity}} | {{unitPrice}} | {{totalExVat}} |",
+  "",
+  "---",
+  "",
+  "| | |",
+  "| ---: | ---: |",
+  "| Subtotal | {{totalExVat}} |",
+  "| VAT (20%) | {{vatAmount}} |",
+  "| **Total due** | **{{totalIncVat}}** |",
+  "",
+  "---",
+  "",
+  "Please arrange payment by **{{dueDate}}**.",
+  "",
+  "Thank you for your business, {{firstName}}.",
+].join("\n");
+
+@Component({
+  selector: "ui-demo-mail-merge",
+  standalone: true,
+  imports: [UIRichTextEditor, UIRichTextView, UIButton, UISplitContainer, UISplitPanel],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <ui-split-container
+      name="mail-merge-demo"
+      orientation="horizontal"
+      style="height: 640px; display: block;"
+    >
+      <ui-split-panel>
+      <div style="display: flex; flex-direction: column; height: 100%;">
+        <div style="padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ui-text-muted, #5a6470); background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);">
+          Template
+        </div>
+        <ui-rich-text-editor
+          mode="markdown"
+          [(value)]="content"
+          [placeholders]="placeholders"
+          placeholder="Edit your invoice template…"
+          ariaLabel="Mail-merge invoice template"
+          style="flex: 1; min-height: 0; display: flex; flex-direction: column;"
+        />
+      </div>
+      </ui-split-panel>
+
+      <ui-split-panel>
+      <div style="display: flex; flex-direction: column; height: 100%;">
+        <!-- Member navigator -->
+        <div style="display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);">
+          <ui-button
+            variant="ghost"
+            size="small"
+            [disabled]="currentIndex() === 0"
+            ariaLabel="Previous member"
+            (click)="prev()"
+          >←</ui-button>
+          <span style="flex: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--ui-text, #1d232b);">
+            {{ members[currentIndex()].fullName }}
+            <span style="font-weight: 400; color: var(--ui-text-muted, #5a6470);">({{ currentIndex() + 1 }} / {{ members.length }})</span>
+          </span>
+          <ui-button
+            variant="ghost"
+            size="small"
+            [disabled]="currentIndex() === members.length - 1"
+            ariaLabel="Next member"
+            (click)="next()"
+          >→</ui-button>
+        </div>
+        <!-- Rendered invoice -->
+        <div style="flex: 1; overflow: auto; padding: 16px; background: var(--ui-surface, #f7f8fa); color: var(--ui-text, #1d232b);">
+          <ui-rich-text-view
+            [content]="renderedContent()"
+            strategy="markdown"
+            ariaLabel="Invoice preview"
+          />
+        </div>
+      </div>
+      </ui-split-panel>
+    </ui-split-container>
+  `,
+})
+class DemoMailMerge {
+
+  protected readonly currentIndex = signal(0);
+
+  protected readonly content = signal(mailMergeTemplate);
+
+  protected readonly renderedContent = computed(() => {
+    const member = this.members[this.currentIndex()] as unknown as Record<string, string>;
+    let result = this.content();
+    for (const [key, value] of Object.entries(member)) {
+      result = result.replaceAll(`{{${key}}}`, value);
+    }
+    return result;
+  });
+
+  protected readonly members = mailMergeMembers;
+
+  protected readonly placeholders = mailMergePlaceholders;
+
+  protected prev(): void {
+    this.currentIndex.update((i) => Math.max(0, i - 1));
+  }
+
+  protected next(): void {
+    this.currentIndex.update((i) => Math.min(this.members.length - 1, i + 1));
+  }
+}
+
+/**
+ * **Mail-merge** — A complete mail-merge workflow built entirely from
+ * `UIRichTextEditor` + `UIRichTextView`. Edit the Markdown invoice template
+ * on the left (inserting merge-field tokens via the toolbar placeholder
+ * picker), then page through the four fictional members on the right to see
+ * each personalised invoice rendered live.
+ *
+ * The template uses GFM tables for the line-item and totals rows.
+ * All token replacement is a single `computed()` — no loops or server
+ * round-trips required.
+ */
+export const MailMerge: Story = {
+  name: "Mail-merge — invoice demo",
+  render: () => ({
+    template: `<ui-demo-mail-merge />`,
+  }),
+  decorators: [
+    moduleMetadata({
+      imports: [DemoMailMerge],
+    }),
+  ],
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="markdown"
+  [(value)]="template"
+  [placeholders]="placeholders"
+/>
+
+<!-- Rendered preview for the selected member -->
+<ui-rich-text-view
+  [content]="renderedContent()"
+  strategy="markdown"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, computed, signal } from '@angular/core';
+import {
+  UIRichTextEditor,
+  UIRichTextView,
+  type RichTextPlaceholder,
+} from '@theredhead/lucid-kit';
+
+@Component({
+  standalone: true,
+  imports: [UIRichTextEditor, UIRichTextView],
+  templateUrl: './mail-merge.component.html',
+})
+export class MailMergeComponent {
+  readonly template = signal(
+    'Dear {{fullName}},\\n\\nYour invoice {{invoiceNumber}} …'
+  );
+
+  readonly currentMember = signal({
+    fullName: 'Alice Hartwell',
+    invoiceNumber: 'INV-001',
+    // …
+  });
+
+  readonly placeholders: RichTextPlaceholder[] = [
+    { key: 'fullName',      label: 'Full Name',      category: 'Contact' },
+    { key: 'invoiceNumber', label: 'Invoice Number', category: 'Invoice' },
+    // …
+  ];
+
+  readonly renderedContent = computed(() => {
+    const member = this.currentMember() as Record<string, string>;
+    let result = this.template();
+    for (const [key, value] of Object.entries(member)) {
+      result = result.replaceAll(\`{{\${key}}}\`, value);
+    }
+    return result;
+  });
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed — layout handled by host flexbox. */
 `,
       },
     },

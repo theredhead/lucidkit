@@ -45,11 +45,10 @@
   class="split"
   [initialSizes]="splitSizes()"
   [name]="splitName()"
-  [collapseTarget]="splitCollapseTarget()"
-  [firstConstraints]="listConstraints()"
   ariaLabel="Resize list and detail panels"
 >
-  <aside first class="list">
+  <ui-split-panel [min]="listConstraints().min" [max]="listConstraints().max">
+  <aside class="list">
     <header class="ui-surface-type-panel">
       <h2 class="title">{{ title() }}</h2>
     </header>
@@ -93,8 +92,10 @@
       </div>
     }
   </aside>
+  </ui-split-panel>
 
-  <main second class="detail">
+  <ui-split-panel>
+  <main class="detail">
     @if (detailContext(); as ctx) {
       @if (detailTemplate(); as tpl) {
         <section class="detail-content">
@@ -107,4 +108,5 @@
       </div>
     }
   </main>
+  </ui-split-panel>
 </ui-split-container>

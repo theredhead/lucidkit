@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  contentChildren,
   ElementRef,
   inject,
   input,
@@ -10,62 +11,65 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
 
 import { StorageService, UISurface } from "@theredhead/lucid-foundation";
 
 import type {
-  SplitCollapseTarget,
   SplitOrientation,
-  SplitPanelConstraints,
   SplitResizeEvent,
 } from "./split-container.types";
+
+import { UISplitPanel } from "./split-panel.component";
 
 /** localStorage key prefix for persisted panel sizes. */
 const STORAGE_PREFIX = "ui-split-container:";
 
 /**
- * A resizable split container that hosts two content panels separated
- * by a draggable divider.
+ * A resizable split container that renders N panels separated by
+ * draggable dividers. Place `<ui-split-panel>` elements as children —
+ * one divider is automatically inserted between every adjacent pair.
  *
- * Project two `ng-template` children with `#first` and `#second`
- * template references.
+ * Each divider only ever adjusts its two immediately adjacent panels;
+ * all other panels are unaffected.
  *
  * ### Basic usage
  * ```html
  * <ui-split-container>
- *   <ng-template #first>Left panel</ng-template>
- *   <ng-template #second>Right panel</ng-template>
+ *   <ui-split-panel>Left</ui-split-panel>
+ *   <ui-split-panel>Right</ui-split-panel>
  * </ui-split-container>
  * ```
  *
- * ### Vertical orientation
+ * ### Three-pane layout
+ * ```html
+ * <ui-split-container orientation="horizontal">
+ *   <ui-split-panel [min]="120">Nav</ui-split-panel>
+ *   <ui-split-panel>Editor</ui-split-panel>
+ *   <ui-split-panel [min]="160">Inspector</ui-split-panel>
+ * </ui-split-container>
+ * ```
+ *
+ * ### Vertical orientation with initial sizes
  * ```html
  * <ui-split-container orientation="vertical" [initialSizes]="[30, 70]">
- *   <ng-template #first>Top panel</ng-template>
- *   <ng-template #second>Bottom panel</ng-template>
+ *   <ui-split-panel>Top</ui-split-panel>
+ *   <ui-split-panel>Bottom</ui-split-panel>
  * </ui-split-container>
  * ```
  *
- * ### Persistent sizes
+ * ### Persistent sizes (localStorage)
  * ```html
  * <ui-split-container name="editor-layout">
- *   <ng-template #first>Sidebar</ng-template>
- *   <ng-template #second>Main</ng-template>
- * </ui-split-container>
- * ```
- *
- * ### Double-click collapse
- * ```html
- * <ui-split-container collapseTarget="first">
- *   <ng-template #first>Sidebar</ng-template>
- *   <ng-template #second>Main</ng-template>
+ *   <ui-split-panel>Sidebar</ui-split-panel>
+ *   <ui-split-panel>Main</ui-split-panel>
  * </ui-split-container>
  * ```
  */
 @Component({
   selector: "ui-split-container",
   standalone: true,
-  imports: [],
+  imports: [NgTemplateOutlet],
   templateUrl: "./split-container.component.html",
   styleUrl: "./split-container.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -80,6 +84,7 @@ const STORAGE_PREFIX = "ui-split-container:";
   },
 })
 export class UISplitContainer implements AfterViewInit {
+
   // ── Inputs ──────────────────────────────────────────────────────────
 
   /** Whether the split container is disabled. */
@@ -89,10 +94,10 @@ export class UISplitContainer implements AfterViewInit {
   public readonly orientation = input<SplitOrientation>("horizontal");
 
   /**
-   * Initial panel sizes as a `[first, second]` percentage tuple.
-   * Must sum to 100. Defaults to `[50, 50]`.
+   * Initial panel sizes as percentages. Must sum to 100 and have one
+   * entry per `<ui-split-panel>` child. Defaults to equal distribution.
    */
-  public readonly initialSizes = input<readonly [number, number]>([50, 50]);
+  public readonly initialSizes = input<readonly number[]>([]);
 
   /**
    * Optional name used as the localStorage key for persisting sizes.
@@ -101,22 +106,10 @@ export class UISplitContainer implements AfterViewInit {
    */
   public readonly name = input<string | undefined>(undefined);
 
-  /** Size constraints for the first (left / top) panel. */
-  public readonly firstConstraints = input<SplitPanelConstraints>({});
-
-  /** Size constraints for the second (right / bottom) panel. */
-  public readonly secondConstraints = input<SplitPanelConstraints>({});
-
-  /** Width (or height, in vertical mode) of the divider bar in pixels. */
+  /** Width (or height, in vertical mode) of each divider bar in pixels. */
   public readonly dividerWidth = input(6);
 
-  /**
-   * Which panel to collapse when the divider is double-clicked.
-   * Set to `'none'` (default) to disable double-click collapse.
-   */
-  public readonly collapseTarget = input<SplitCollapseTarget>("none");
-
-  /** Accessible label for the divider. */
+  /** Accessible label for each divider. */
   public readonly ariaLabel = input<string>("Resize panels");
 
   // ── Outputs ─────────────────────────────────────────────────────────
@@ -127,99 +120,89 @@ export class UISplitContainer implements AfterViewInit {
   /** Emits continuously while the user is dragging. */
   public readonly resizing = output<SplitResizeEvent>();
 
-  // ── View queries ────────────────────────────────────────────────────
+  // ── Queries ─────────────────────────────────────────────────────────
 
   /** @internal */
   protected readonly containerRef =
     viewChild.required<ElementRef<HTMLElement>>("container");
 
+  /** @internal */
+  protected readonly panels = contentChildren(UISplitPanel);
+
   // ── Computed ────────────────────────────────────────────────────────
 
-  /** Panel sizes as a `[first, second]` percentage tuple. */
-  public readonly sizes = computed<readonly [number, number]>(() => [
-    this.firstPercent(),
-    this.secondPercent(),
-  ]);
-
-  /** @internal — CSS flex value for the first panel. */
-  protected readonly firstFlex = computed(() => `${this.firstPercent()} 1 0%`);
-
-  /** @internal — CSS flex value for the second panel. */
-  protected readonly secondFlex = computed(
-    () => `${this.secondPercent()} 1 0%`,
-  );
+  /**
+   * Current panel sizes as a percentage array.
+   * One entry per `<ui-split-panel>` child.
+   */
+  public readonly sizes = computed<readonly number[]>(() => this._sizes());
 
   // ── Protected fields ──────────────────────────────────────────────
 
   /** @internal — whether a drag is active. */
   protected readonly dragging = signal(false);
 
-  /** @internal — percentage of the first panel. */
-  protected readonly firstPercent = signal(50);
-
-  /** @internal — percentage of the second panel. */
-  protected readonly secondPercent = signal(50);
-
-  /**
-   * The sizes before a collapse. Stored so double-clicking again
-   * can restore the original sizes.
-   * @internal
-   */
-  protected readonly preCollapsePercent = signal<
-    readonly [number, number] | null
-  >(null);
-
   // ── Private fields ────────────────────────────────────────────────
 
+  private readonly _sizes = signal<number[]>([]);
   private readonly storage = inject(StorageService);
 
   // ── Lifecycle ─────────────────────────────────────────────────────
 
   public ngAfterViewInit(): void {
-    // Restore from localStorage or use initial sizes
-    const storedSizes = this.loadSizes();
-    const init = storedSizes ?? this.initialSizes();
-    this.firstPercent.set(init[0]);
-    this.secondPercent.set(init[1]);
+    const n = this.panels().length;
+    const stored = this.loadSizes(n);
+    const initial = stored ?? this.resolveInitialSizes(n);
+    this._sizes.set([...initial]);
+  }
+
+  // ── Public methods ────────────────────────────────────────────────
+
+  /**
+   * CSS flex value for the panel at the given index.
+   * @internal — called from template.
+   */
+  public panelFlex(index: number): string {
+    return `${this._sizes()[index] ?? 0} 1 0%`;
   }
 
   // ── Protected methods (template) ──────────────────────────────────
 
   /** @internal — starts pointer-based divider dragging. */
-  protected onDividerPointerDown(event: PointerEvent): void {
+  protected onDividerPointerDown(event: PointerEvent, dividerIndex: number): void {
     event.preventDefault();
     const divider = event.currentTarget as HTMLElement;
     divider.setPointerCapture(event.pointerId);
-
     this.dragging.set(true);
 
     const container = this.containerRef().nativeElement;
     const rect = container.getBoundingClientRect();
     const isHorizontal = this.orientation() === "horizontal";
     const totalSize = isHorizontal ? rect.width : rect.height;
-    const dividerPx = this.dividerWidth();
+    const numDividers = this.panels().length - 1;
+    const usableSize = totalSize - numDividers * this.dividerWidth();
 
     const onMove = (e: PointerEvent): void => {
-      const cursor = isHorizontal
-        ? e.clientX - rect.left
-        : e.clientY - rect.top;
+      // Compute the cursor position relative to the container start
+      const cursor = (isHorizontal ? e.clientX - rect.left : e.clientY - rect.top)
+        - dividerIndex * this.dividerWidth();
 
-      // Convert cursor position to a percentage, accounting for
-      // the divider width.
-      const usableSize = totalSize - dividerPx;
+      // Sum of all panels before this divider gives the offset baseline
+      const sizes = this._sizes();
+      const precedingPct = sizes.slice(0, dividerIndex).reduce((a, b) => a + b, 0);
+      const pairTotal = sizes[dividerIndex] + sizes[dividerIndex + 1];
+
+      // Convert cursor to a percentage within the full usable space
       if (usableSize <= 0) return;
+      let leftPct = (cursor / usableSize) * 100 - precedingPct;
+      leftPct = this.clampPair(leftPct, pairTotal, dividerIndex, usableSize);
 
-      let firstPct = (cursor / totalSize) * 100;
-      firstPct = this.clampPercent(firstPct, usableSize);
+      const newSizes = [...sizes];
+      newSizes[dividerIndex] = leftPct;
+      newSizes[dividerIndex + 1] = pairTotal - leftPct;
+      this._sizes.set(newSizes);
 
-      this.firstPercent.set(firstPct);
-      this.secondPercent.set(100 - firstPct);
-      this.preCollapsePercent.set(null);
-
-      this.resizing.emit({
-        sizes: [firstPct, 100 - firstPct],
-        orientation: this.orientation(),
-      });
+      this.resizing.emit({ sizes: newSizes, orientation: this.orientation() });
     };
 
     const onUp = (): void => {
@@ -227,16 +210,9 @@ export class UISplitContainer implements AfterViewInit {
       divider.removeEventListener("pointermove", onMove);
       divider.removeEventListener("pointerup", onUp);
       divider.removeEventListener("pointercancel", onUp);
-
-      const currentSizes: readonly [number, number] = [
-        this.firstPercent(),
-        this.secondPercent(),
-      ];
-      this.saveSizes(currentSizes);
-      this.resized.emit({
-        sizes: currentSizes,
-        orientation: this.orientation(),
-      });
+      const finalSizes = this._sizes();
+      this.saveSizes(finalSizes);
+      this.resized.emit({ sizes: finalSizes, orientation: this.orientation() });
     };
 
     divider.addEventListener("pointermove", onMove);
@@ -244,42 +220,36 @@ export class UISplitContainer implements AfterViewInit {
     divider.addEventListener("pointercancel", onUp);
   }
 
-  /** @internal — handles double-click on divider to collapse/restore. */
-  protected onDividerDblClick(): void {
-    const target = this.collapseTarget();
-    if (target === "none") return;
+  /** @internal — double-click on a divider collapses the smaller adjacent panel. */
+  protected onDividerDblClick(dividerIndex: number): void {
+    const sizes = [...this._sizes()];
+    const a = sizes[dividerIndex];
+    const b = sizes[dividerIndex + 1];
+    const total = a + b;
 
-    const pre = this.preCollapsePercent();
-    if (pre !== null) {
-      // Restore previous sizes
-      this.firstPercent.set(pre[0]);
-      this.secondPercent.set(pre[1]);
-      this.preCollapsePercent.set(null);
+    // Toggle: if either adjacent panel is already ~0 restore 50/50 of total;
+    // otherwise collapse whichever is smaller.
+    if (a < 1) {
+      sizes[dividerIndex] = total / 2;
+      sizes[dividerIndex + 1] = total / 2;
+    } else if (b < 1) {
+      sizes[dividerIndex] = total / 2;
+      sizes[dividerIndex + 1] = total / 2;
+    } else if (a <= b) {
+      sizes[dividerIndex] = 0;
+      sizes[dividerIndex + 1] = total;
     } else {
-      // Collapse the target panel
-      this.preCollapsePercent.set([this.firstPercent(), this.secondPercent()]);
-      if (target === "first") {
-        this.firstPercent.set(0);
-        this.secondPercent.set(100);
-      } else {
-        this.firstPercent.set(100);
-        this.secondPercent.set(0);
-      }
+      sizes[dividerIndex] = total;
+      sizes[dividerIndex + 1] = 0;
     }
 
-    const currentSizes: readonly [number, number] = [
-      this.firstPercent(),
-      this.secondPercent(),
-    ];
-    this.saveSizes(currentSizes);
-    this.resized.emit({
-      sizes: currentSizes,
-      orientation: this.orientation(),
-    });
+    this._sizes.set(sizes);
+    this.saveSizes(sizes);
+    this.resized.emit({ sizes, orientation: this.orientation() });
   }
 
-  /** @internal — keyboard support for divider (left/right/up/down). */
-  protected onDividerKeydown(event: KeyboardEvent): void {
+  /** @internal — keyboard support for divider (arrow keys). */
+  protected onDividerKeydown(event: KeyboardEvent, dividerIndex: number): void {
     const step = event.shiftKey ? 5 : 1;
     const isHorizontal = this.orientation() === "horizontal";
 
@@ -297,79 +267,86 @@ export class UISplitContainer implements AfterViewInit {
     event.preventDefault();
     const container = this.containerRef().nativeElement;
     const rect = container.getBoundingClientRect();
-    const totalSize = isHorizontal ? rect.width : rect.height;
-    const usableSize = totalSize - this.dividerWidth();
+    const isHoriz = this.orientation() === "horizontal";
+    const totalSize = isHoriz ? rect.width : rect.height;
+    const numDividers = this.panels().length - 1;
+    const usableSize = totalSize - numDividers * this.dividerWidth();
 
-    let firstPct = this.firstPercent() + delta;
-    firstPct = this.clampPercent(firstPct, usableSize);
+    const sizes = [...this._sizes()];
+    const pairTotal = sizes[dividerIndex] + sizes[dividerIndex + 1];
+    let newLeft = sizes[dividerIndex] + delta;
+    newLeft = this.clampPair(newLeft, pairTotal, dividerIndex, usableSize);
 
-    this.firstPercent.set(firstPct);
-    this.secondPercent.set(100 - firstPct);
-    this.preCollapsePercent.set(null);
-
-    const currentSizes: readonly [number, number] = [firstPct, 100 - firstPct];
-    this.saveSizes(currentSizes);
-    this.resized.emit({
-      sizes: currentSizes,
-      orientation: this.orientation(),
-    });
+    sizes[dividerIndex] = newLeft;
+    sizes[dividerIndex + 1] = pairTotal - newLeft;
+    this._sizes.set(sizes);
+    this.saveSizes(sizes);
+    this.resized.emit({ sizes, orientation: this.orientation() });
   }
 
   // ── Private methods ───────────────────────────────────────────────
 
   /**
-   * Clamps the first-panel percentage according to both panel
-   * constraints.
+   * Clamps the left panel of a pair using its and its neighbour's
+   * `min`/`max` constraints from the corresponding `UISplitPanel` inputs.
    */
-  private clampPercent(firstPct: number, usablePx: number): number {
-    const first = this.firstConstraints();
-    const second = this.secondConstraints();
+  private clampPair(
+    leftPct: number,
+    pairTotalPct: number,
+    dividerIndex: number,
+    usablePx: number,
+  ): number {
+    const panelArray = this.panels();
+    const leftConstraints = panelArray[dividerIndex]?.constraints ?? {};
+    const rightConstraints = panelArray[dividerIndex + 1]?.constraints ?? {};
 
-    // Convert pixel constraints to percentages
-    const firstMinPct =
-      usablePx > 0 && first.min != null ? (first.min / usablePx) * 100 : 0;
-    const firstMaxPct =
-      usablePx > 0 && first.max != null ? (first.max / usablePx) * 100 : 100;
-    const secondMinPct =
-      usablePx > 0 && second.min != null ? (second.min / usablePx) * 100 : 0;
-    const secondMaxPct =
-      usablePx > 0 && second.max != null ? (second.max / usablePx) * 100 : 100;
+    const toPercent = (px: number): number =>
+      usablePx > 0 ? (px / usablePx) * 100 : 0;
 
-    // Clamp: first panel must be ≥ firstMin and ≤ firstMax
-    let clamped = Math.max(firstMinPct, Math.min(firstMaxPct, firstPct));
+    const leftMin  = leftConstraints.min  != null ? toPercent(leftConstraints.min)  : 0;
+    const leftMax  = leftConstraints.max  != null ? toPercent(leftConstraints.max)  : pairTotalPct;
+    const rightMin = rightConstraints.min != null ? toPercent(rightConstraints.min) : 0;
+    const rightMax = rightConstraints.max != null ? toPercent(rightConstraints.max) : pairTotalPct;
 
-    // The second panel = 100 − first, so enforce second constraints
-    // as limits on first.
-    // second ≥ secondMin  →  first ≤ 100 − secondMin
-    clamped = Math.min(clamped, 100 - secondMinPct);
-    // second ≤ secondMax  →  first ≥ 100 − secondMax
-    clamped = Math.max(clamped, 100 - secondMaxPct);
+    // left ≥ leftMin, left ≤ leftMax
+    // right = pairTotal - left  →  right ≥ rightMin  ↔  left ≤ pairTotal - rightMin
+    //                           →  right ≤ rightMax  ↔  left ≥ pairTotal - rightMax
+    let clamped = Math.max(leftMin, Math.min(leftMax, leftPct));
+    clamped = Math.min(clamped, pairTotalPct - rightMin);
+    clamped = Math.max(clamped, pairTotalPct - rightMax);
 
     return clamped;
   }
 
+  /** Returns equal-distribution sizes for N panels. */
+  private resolveInitialSizes(n: number): number[] {
+    const provided = this.initialSizes();
+    if (provided.length === n && Math.abs(provided.reduce((a, b) => a + b, 0) - 100) < 0.01) {
+      return [...provided];
+    }
+    if (n === 0) return [];
+    const base = Math.floor(100 / n);
+    const remainder = 100 - base * n;
+    return Array.from({ length: n }, (_, i) => base + (i === n - 1 ? remainder : 0));
+  }
+
   /** Persists sizes to storage (if a name is set). */
-  private saveSizes(sizes: readonly [number, number]): void {
+  private saveSizes(sizes: readonly number[]): void {
     const key = this.name();
     if (!key) return;
     this.storage.setItem(STORAGE_PREFIX + key, JSON.stringify(sizes));
   }
 
-  /** Restores sizes from storage (if a name is set). */
-  private loadSizes(): readonly [number, number] | null {
+  /** Restores sizes from storage (if a name is set and count matches). */
+  private loadSizes(n: number): number[] | null {
     const key = this.name();
     if (!key) return null;
     try {
       const raw = this.storage.getItem(STORAGE_PREFIX + key);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
-      if (
-        Array.isArray(parsed) &&
-        parsed.length === 2 &&
-        typeof parsed[0] === "number" &&
-        typeof parsed[1] === "number"
-      ) {
-        return parsed as [number, number];
+      if (Array.isArray(parsed) && parsed.length === n && parsed.every((v) => typeof v === "number")) {
+        return parsed as number[];
       }
     } catch {
       // Corrupt data — ignore.

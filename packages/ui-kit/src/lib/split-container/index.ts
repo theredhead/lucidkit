@@ -1,7 +1,7 @@
 export { UISplitContainer } from "./split-container.component";
+export { UISplitPanel } from "./split-panel.component";
 export type {
   SplitOrientation,
-  SplitCollapseTarget,
   SplitPanelConstraints,
   SplitResizeEvent,
 } from "./split-container.types";

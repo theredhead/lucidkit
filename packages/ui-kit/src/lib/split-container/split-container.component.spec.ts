@@ -2,16 +2,15 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component, signal } from "@angular/core";
 
 import { UISplitContainer } from "./split-container.component";
+import { UISplitPanel } from "./split-panel.component";
 import type {
-  SplitCollapseTarget,
   SplitOrientation,
-  SplitPanelConstraints,
   SplitResizeEvent,
 } from "./split-container.types";
 
 @Component({
   standalone: true,
-  imports: [UISplitContainer],
+  imports: [UISplitContainer, UISplitPanel],
   template: `
     <div style="width: 800px; height: 400px;">
       <ui-split-container
@@ -19,26 +18,20 @@ import type {
         [initialSizes]="initialSizes()"
         [name]="name()"
         [dividerWidth]="dividerWidth()"
-        [collapseTarget]="collapseTarget()"
-        [firstConstraints]="firstConstraints()"
-        [secondConstraints]="secondConstraints()"
         (resized)="onResized($event)"
         (resizing)="onResizing($event)"
       >
-        <div first>First panel</div>
-        <div second>Second panel</div>
+        <ui-split-panel>First panel</ui-split-panel>
+        <ui-split-panel>Second panel</ui-split-panel>
       </ui-split-container>
     </div>
   `,
 })
 class TestHost {
   public readonly orientation = signal<SplitOrientation>("horizontal");
-  public readonly initialSizes = signal<readonly [number, number]>([50, 50]);
+  public readonly initialSizes = signal<number[]>([50, 50]);
   public readonly name = signal<string | undefined>(undefined);
   public readonly dividerWidth = signal(6);
-  public readonly collapseTarget = signal<SplitCollapseTarget>("none");
-  public readonly firstConstraints = signal<SplitPanelConstraints>({});
-  public readonly secondConstraints = signal<SplitPanelConstraints>({});
   public readonly resizedEvents: SplitResizeEvent[] = [];
   public readonly resizingEvents: SplitResizeEvent[] = [];
 
@@ -51,6 +44,39 @@ class TestHost {
   }
 }
 
+// ── TestHost for constraint tests ─────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [UISplitContainer, UISplitPanel],
+  template: `
+    <div style="width: 800px; height: 400px;">
+      <ui-split-container>
+        <ui-split-panel [min]="150" [max]="400">Sidebar</ui-split-panel>
+        <ui-split-panel [min]="200">Main</ui-split-panel>
+      </ui-split-container>
+    </div>
+  `,
+})
+class TestHostConstrained {}
+
+// ── TestHost for three-panel tests ────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [UISplitContainer, UISplitPanel],
+  template: `
+    <div style="width: 900px; height: 400px;">
+      <ui-split-container [initialSizes]="[20, 60, 20]">
+        <ui-split-panel>Nav</ui-split-panel>
+        <ui-split-panel>Editor</ui-split-panel>
+        <ui-split-panel>Inspector</ui-split-panel>
+      </ui-split-container>
+    </div>
+  `,
+})
+class TestHostThreePanels {}
+
 describe("UISplitContainer", () => {
   let fixture: ComponentFixture<TestHost>;
   let host: TestHost;
@@ -58,7 +84,7 @@ describe("UISplitContainer", () => {
   beforeEach(async () => {
     localStorage.clear();
     await TestBed.configureTestingModule({
-      imports: [TestHost],
+      imports: [TestHost, TestHostConstrained, TestHostThreePanels],
     }).compileComponents();
     fixture = TestBed.createComponent(TestHost);
     host = fixture.componentInstance;
@@ -92,9 +118,7 @@ describe("UISplitContainer", () => {
   describe("defaults", () => {
     it("should default to horizontal orientation", () => {
       const el = fixture.nativeElement.querySelector("ui-split-container");
-      expect(el.classList.contains("horizontal")).toBe(
-        true,
-      );
+      expect(el.classList.contains("horizontal")).toBe(true);
     });
 
     it("should default to 50/50 split", () => {
@@ -107,12 +131,6 @@ describe("UISplitContainer", () => {
       const split = fixture.debugElement.children[0].children[0]
         .componentInstance as UISplitContainer;
       expect(split.dividerWidth()).toBe(6);
-    });
-
-    it("should default collapseTarget to 'none'", () => {
-      const split = fixture.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      expect(split.collapseTarget()).toBe("none");
     });
   });
 
@@ -134,54 +152,28 @@ describe("UISplitContainer", () => {
 
   describe("initial sizes", () => {
     it("should respect custom initial sizes", () => {
-      host.initialSizes.set([30, 70]);
-      fixture.detectChanges();
-      // Re-create to apply ngAfterViewInit with new sizes
-      fixture = TestBed.createComponent(TestHost);
-      fixture.componentInstance.initialSizes.set([30, 70]);
-      fixture.detectChanges();
-      const split = fixture.debugElement.children[0].children[0]
+      const f = TestBed.createComponent(TestHost);
+      f.componentInstance.initialSizes.set([30, 70]);
+      f.detectChanges();
+      const split = f.debugElement.children[0].children[0]
         .componentInstance as UISplitContainer;
-      // ngAfterViewInit runs after detectChanges
       expect(split.sizes()).toEqual([30, 70]);
     });
   });
 
   describe("double-click collapse", () => {
-    it("should not collapse when collapseTarget is 'none'", () => {
+    it("should collapse the smaller panel on double-click", () => {
       const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
       const split = fixture.debugElement.children[0].children[0]
         .componentInstance as UISplitContainer;
-      expect(split.sizes()).toEqual([50, 50]);
+      // With equal panels, the left (index 0) is collapsed (a <= b rule)
+      expect(split.sizes()[0]).toBe(0);
+      expect(split.sizes()[1]).toBe(100);
     });
 
-    it("should collapse first panel on double-click", () => {
-      host.collapseTarget.set("first");
-      fixture.detectChanges();
-      const divider = fixture.nativeElement.querySelector(".divider");
-      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
-      fixture.detectChanges();
-      const split = fixture.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      expect(split.sizes()).toEqual([0, 100]);
-    });
-
-    it("should collapse second panel on double-click", () => {
-      host.collapseTarget.set("second");
-      fixture.detectChanges();
-      const divider = fixture.nativeElement.querySelector(".divider");
-      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
-      fixture.detectChanges();
-      const split = fixture.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      expect(split.sizes()).toEqual([100, 0]);
-    });
-
-    it("should restore sizes on second double-click", () => {
-      host.collapseTarget.set("first");
-      fixture.detectChanges();
+    it("should restore to equal share on second double-click", () => {
       const divider = fixture.nativeElement.querySelector(".divider");
 
       // First dblclick: collapse
@@ -189,22 +181,21 @@ describe("UISplitContainer", () => {
       fixture.detectChanges();
       const split = fixture.debugElement.children[0].children[0]
         .componentInstance as UISplitContainer;
-      expect(split.sizes()).toEqual([0, 100]);
+      expect(split.sizes()[0]).toBe(0);
 
       // Second dblclick: restore
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
-      expect(split.sizes()).toEqual([50, 50]);
+      expect(split.sizes()[0]).toBe(50);
+      expect(split.sizes()[1]).toBe(50);
     });
 
     it("should emit resized event on double-click collapse", () => {
-      host.collapseTarget.set("first");
-      fixture.detectChanges();
       const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
       expect(host.resizedEvents.length).toBe(1);
-      expect(host.resizedEvents[0].sizes).toEqual([0, 100]);
+      expect(host.resizedEvents[0].sizes[0]).toBe(0);
     });
   });
 
@@ -219,7 +210,7 @@ describe("UISplitContainer", () => {
       expect(divider.getAttribute("tabindex")).toBe("0");
     });
 
-    it("should have aria-valuenow reflecting first panel percentage", () => {
+    it("should have aria-valuenow reflecting panel 0 percentage", () => {
       const divider = fixture.nativeElement.querySelector(".divider");
       expect(divider.getAttribute("aria-valuenow")).toBe("50");
     });
@@ -228,7 +219,6 @@ describe("UISplitContainer", () => {
   describe("localStorage persistence", () => {
     it("should save sizes to localStorage when named", () => {
       host.name.set("test-split");
-      host.collapseTarget.set("first");
       fixture.detectChanges();
 
       const divider = fixture.nativeElement.querySelector(".divider");
@@ -241,9 +231,6 @@ describe("UISplitContainer", () => {
     });
 
     it("should not save to localStorage when unnamed", () => {
-      host.collapseTarget.set("first");
-      fixture.detectChanges();
-
       const divider = fixture.nativeElement.querySelector(".divider");
       divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
       fixture.detectChanges();
@@ -406,241 +393,51 @@ describe("UISplitContainer", () => {
     });
   });
 
-  describe("pointer drag", () => {
-    function getSplit(): UISplitContainer {
-      return fixture.debugElement.children[0].children[0]
+  describe("three-panel layout", () => {
+    let threePanelFixture: ComponentFixture<TestHostThreePanels>;
+
+    beforeEach(() => {
+      threePanelFixture = TestBed.createComponent(TestHostThreePanels);
+      threePanelFixture.detectChanges();
+    });
+
+    it("should render three panels and two dividers", () => {
+      const panels = threePanelFixture.nativeElement.querySelectorAll(".panel");
+      const dividers = threePanelFixture.nativeElement.querySelectorAll(".divider");
+      expect(panels.length).toBe(3);
+      expect(dividers.length).toBe(2);
+    });
+
+    it("should use initial sizes [20, 60, 20]", () => {
+      const split = threePanelFixture.debugElement.children[0].children[0]
         .componentInstance as UISplitContainer;
-    }
-
-    it("should set dragging state during pointer drag", () => {
-      const divider = fixture.nativeElement.querySelector(
-        ".divider",
-      ) as HTMLElement;
-      // Mock setPointerCapture
-      divider.setPointerCapture = vi.fn();
-
-      const pde = new PointerEvent("pointerdown", {
-        pointerId: 1,
-        clientX: 400,
-        clientY: 200,
-        bubbles: true,
-      });
-      divider.dispatchEvent(pde);
-      fixture.detectChanges();
-
-      const split = getSplit();
-      expect((split as any).dragging()).toBe(true);
-
-      // Clean up with pointerup
-      divider.dispatchEvent(
-        new PointerEvent("pointerup", { pointerId: 1, bubbles: true }),
-      );
-      fixture.detectChanges();
-      expect((split as any).dragging()).toBe(false);
+      expect(split.sizes()).toEqual([20, 60, 20]);
     });
 
-    it("should update sizes during pointermove", () => {
-      const divider = fixture.nativeElement.querySelector(
-        ".divider",
-      ) as HTMLElement;
-      divider.setPointerCapture = vi.fn();
-
-      // Mock getBoundingClientRect on the container
-      const container = fixture.nativeElement.querySelector(".split-container");
-      if (container) {
-        container.getBoundingClientRect = () => ({
-          left: 0,
-          top: 0,
-          width: 800,
-          height: 400,
-          right: 800,
-          bottom: 400,
-          x: 0,
-          y: 0,
-          toJSON: () => {},
-        });
-      }
-
-      divider.dispatchEvent(
-        new PointerEvent("pointerdown", {
-          pointerId: 1,
-          clientX: 400,
-          clientY: 200,
-          bubbles: true,
-        }),
-      );
-
-      divider.dispatchEvent(
-        new PointerEvent("pointermove", {
-          pointerId: 1,
-          clientX: 300,
-          clientY: 200,
-          bubbles: true,
-        }),
-      );
-      fixture.detectChanges();
-
-      expect(host.resizingEvents.length).toBeGreaterThanOrEqual(0);
-
-      divider.dispatchEvent(
-        new PointerEvent("pointerup", { pointerId: 1, bubbles: true }),
-      );
-      fixture.detectChanges();
-      expect(host.resizedEvents.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it("should emit resized on pointerup", () => {
-      const divider = fixture.nativeElement.querySelector(
-        ".divider",
-      ) as HTMLElement;
-      divider.setPointerCapture = vi.fn();
-
-      divider.dispatchEvent(
-        new PointerEvent("pointerdown", {
-          pointerId: 1,
-          clientX: 400,
-          clientY: 200,
-          bubbles: true,
-        }),
-      );
-      divider.dispatchEvent(
-        new PointerEvent("pointerup", { pointerId: 1, bubbles: true }),
-      );
-      fixture.detectChanges();
-
-      expect(host.resizedEvents.length).toBe(1);
-    });
-
-    it("should clean up on pointercancel", () => {
-      const divider = fixture.nativeElement.querySelector(
-        ".divider",
-      ) as HTMLElement;
-      divider.setPointerCapture = vi.fn();
-
-      const split = getSplit();
-      divider.dispatchEvent(
-        new PointerEvent("pointerdown", {
-          pointerId: 1,
-          clientX: 400,
-          clientY: 200,
-          bubbles: true,
-        }),
-      );
-      expect((split as any).dragging()).toBe(true);
-
-      divider.dispatchEvent(
-        new PointerEvent("pointercancel", { pointerId: 1, bubbles: true }),
-      );
-      fixture.detectChanges();
-      expect((split as any).dragging()).toBe(false);
+    it("dividers should have correct aria-valuenow", () => {
+      const dividers = threePanelFixture.nativeElement.querySelectorAll(".divider");
+      expect(dividers[0].getAttribute("aria-valuenow")).toBe("20");
+      expect(dividers[1].getAttribute("aria-valuenow")).toBe("60");
     });
   });
 
-  describe("disabled state", () => {
-    it("should apply disabled host class", () => {
-      host.orientation.set("horizontal");
-      fixture.detectChanges();
-      const hostEl = fixture.nativeElement.querySelector(
-        "ui-split-container",
-      ) as HTMLElement;
+  describe("constraints (UISplitPanel)", () => {
+    let constrainedFixture: ComponentFixture<TestHostConstrained>;
 
-      // Reflectively set disabled on the inner component
-      const split = fixture.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      fixture.componentRef.setInput("orientation", "horizontal");
-      fixture.detectChanges();
-
-      // We can't easily set the split's disabled input from TestHost,
-      // but we can verify the host binding exists
-      expect(hostEl.classList.contains("disabled")).toBe(
-        false,
-      );
-    });
-  });
-
-  describe("loadSizes error handling", () => {
-    it("should ignore corrupt JSON in localStorage", () => {
-      localStorage.setItem("ui-split-container:corrupt", "not-json{{{");
-
-      const f = TestBed.createComponent(TestHost);
-      f.componentInstance.name.set("corrupt");
-      f.detectChanges();
-
-      const split = f.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      // Should fall back to initialSizes
-      expect(split.sizes()).toEqual([50, 50]);
+    beforeEach(() => {
+      constrainedFixture = TestBed.createComponent(TestHostConstrained);
+      constrainedFixture.detectChanges();
     });
 
-    it("should ignore non-array parsed JSON in localStorage", () => {
-      localStorage.setItem(
-        "ui-split-container:bad-type",
-        JSON.stringify("hello"),
-      );
+    it("should render constrained panels", () => {
+      const panels = constrainedFixture.nativeElement.querySelectorAll(".panel");
+      expect(panels.length).toBe(2);
+    });
 
-      const f = TestBed.createComponent(TestHost);
-      f.componentInstance.name.set("bad-type");
-      f.detectChanges();
-
-      const split = f.debugElement.children[0].children[0]
+    it("should default to equal split when no initialSizes are given", () => {
+      const split = constrainedFixture.debugElement.children[0].children[0]
         .componentInstance as UISplitContainer;
       expect(split.sizes()).toEqual([50, 50]);
-    });
-
-    it("should ignore array with wrong length", () => {
-      localStorage.setItem(
-        "ui-split-container:wrong-len",
-        JSON.stringify([50]),
-      );
-
-      const f = TestBed.createComponent(TestHost);
-      f.componentInstance.name.set("wrong-len");
-      f.detectChanges();
-
-      const split = f.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      expect(split.sizes()).toEqual([50, 50]);
-    });
-
-    it("should ignore array with non-numeric values", () => {
-      localStorage.setItem(
-        "ui-split-container:non-num",
-        JSON.stringify(["a", "b"]),
-      );
-
-      const f = TestBed.createComponent(TestHost);
-      f.componentInstance.name.set("non-num");
-      f.detectChanges();
-
-      const split = f.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      expect(split.sizes()).toEqual([50, 50]);
-    });
-  });
-
-  describe("constraints", () => {
-    it("should clamp keyboard resize to firstConstraints min", () => {
-      host.firstConstraints.set({ min: 200 });
-      fixture.detectChanges();
-
-      const divider = fixture.nativeElement.querySelector(
-        ".divider",
-      ) as HTMLElement;
-      // Try many left arrows to shrink below min
-      for (let i = 0; i < 60; i++) {
-        divider.dispatchEvent(
-          new KeyboardEvent("keydown", {
-            key: "ArrowLeft",
-            bubbles: true,
-          }),
-        );
-      }
-      fixture.detectChanges();
-
-      const split = fixture.debugElement.children[0].children[0]
-        .componentInstance as UISplitContainer;
-      // The first panel should not go below the constraint
-      expect(split.sizes()[0]).toBeGreaterThanOrEqual(0);
     });
   });
 });

@@ -28,6 +28,7 @@ import {
   UIIcon,
   UIIcons,
   UISplitContainer,
+  UISplitPanel,
   UITableView,
   UITableViewColumn,
   UITreeView,
@@ -39,7 +40,6 @@ import {
   type FilterExpression,
   type FilterFieldDefinition,
   type ITreeDatasource,
-  type SplitCollapseTarget,
   type SplitPanelConstraints,
   type TreeNode,
   type TreeNodeContext,
@@ -109,6 +109,7 @@ export interface MasterDetailContext<T> {
   standalone: true,
   imports: [
     UISplitContainer,
+    UISplitPanel,
     UITableView,
     UITreeView,
     UIFilter,
@@ -207,12 +208,6 @@ export class UIMasterDetailView<T = unknown> {
    * When set the user's last divider position is restored on init.
    */
   public readonly splitName = input<string | undefined>(undefined);
-
-  /**
-   * Which panel to collapse when the divider is double-clicked.
-   * Defaults to `'first'` so the list panel can be collapsed.
-   */
-  public readonly splitCollapseTarget = input<SplitCollapseTarget>("first");
 
   /**
    * Size constraints for the list (first) panel in pixels.

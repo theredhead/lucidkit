@@ -65,6 +65,7 @@ import type {
 import { HtmlEditingStrategy } from "./strategies/html-editing.strategy";
 import { MarkdownEditingStrategy } from "./strategies/markdown-editing.strategy";
 import { MARKDOWN_PARSER, type MarkdownParser } from "./markdown-parser";
+import { UIRichTextView } from "../rich-text-view/rich-text-view.component";
 
 /**
  * The CSS class applied to placeholder chips inside the editable area.
@@ -124,6 +125,7 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
     UIDropdownTool,
     UIButtonGroupTool,
     UIToggleGroupTool,
+    UIRichTextView,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],

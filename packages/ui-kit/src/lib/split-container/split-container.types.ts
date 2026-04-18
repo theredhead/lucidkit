@@ -6,19 +6,10 @@
 export type SplitOrientation = "horizontal" | "vertical";
 
 /**
- * Which panel to collapse when the divider is double-clicked.
- *
- * - `"first"` — collapse the first (left / top) panel.
- * - `"second"` — collapse the second (right / bottom) panel.
- * - `"none"` — double-click-to-collapse is disabled.
- */
-export type SplitCollapseTarget = "first" | "second" | "none";
-
-/**
  * Panel size constraint (in pixels).
  *
- * Set `min` and / or `max` to restrict how far the divider can be
- * dragged in either direction.
+ * Set `min` and / or `max` to restrict how far a divider can be
+ * dragged in either direction. Apply via `<ui-split-panel [min]="..." [max]="...">`.
  */
 export interface SplitPanelConstraints {
 
@@ -32,13 +23,17 @@ export interface SplitPanelConstraints {
 /**
  * Event emitted when the split sizes change.
  *
- * Sizes are expressed as a `[first, second]` tuple where each value
- * is the percentage of the container occupied by that panel.
+ * Sizes are expressed as an array of percentages, one per panel,
+ * where each value is the percentage of the container occupied by
+ * that panel. Values sum to 100.
  */
 export interface SplitResizeEvent {
 
-  /** Panel sizes as percentages (0–100). */
-  sizes: readonly [number, number];
+  /**
+   * Panel sizes as percentages (0–100).
+   * One entry per `<ui-split-panel>` child.
+   */
+  sizes: readonly number[];
 
   /** The orientation of the split at the time of the event. */
   orientation: SplitOrientation;

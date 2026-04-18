@@ -275,14 +275,22 @@
 >
   @if (isMarkdownMode()) {
     <div class="preview-label" aria-hidden="true">Preview</div>
+    <ui-rich-text-view
+      class="markdown-preview"
+      [content]="value()"
+      strategy="markdown"
+      [ariaLabel]="ariaLabel() + ' (preview)'"
+    />
   }
+  <!-- #editorEl must remain in the DOM — it is required by viewChild.required -->
   <div
     #editorEl
     class="editor"
+    [hidden]="isMarkdownMode()"
     role="textbox"
     tabindex="0"
     aria-multiline="true"
-    [attr.aria-label]="isMarkdownMode() ? ariaLabel() + ' (preview)' : ariaLabel()"
+    [attr.aria-label]="ariaLabel()"
     [attr.contenteditable]="!disabled() && !readonly() && !isSourceMode() && !isMarkdownMode()"
     [attr.data-placeholder]="placeholder()"
     (input)="onEditorInput()"
