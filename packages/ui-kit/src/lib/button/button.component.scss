@@ -130,3 +130,10 @@ button {
     background-color: var(--ui-hover-bg, rgba(0, 0, 0, 0.04));
   }
 }
+
+/* ---------- ripple colour overrides ---------- */
+
+:host(.outlined) button,
+:host(.ghost) button {
+  --ui-ripple-color: rgba(0, 0, 0, 0.1);
+}

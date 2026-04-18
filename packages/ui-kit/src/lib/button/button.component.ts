@@ -6,6 +6,7 @@ import {
   input,
 } from "@angular/core";
 import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/lucid-foundation";
+import { UIIndicatesTouch } from "../indicates-touch/indicates-touch.directive";
 
 export type ButtonVariant = "filled" | "outlined" | "ghost";
 export type ButtonSize = "small" | "medium" | "large";
@@ -56,6 +57,7 @@ export const UI_BUTTON_DEFAULTS = new InjectionToken<ButtonDefaults>(
 @Component({
   selector: "ui-button",
   standalone: true,
+  imports: [UIIndicatesTouch],
   templateUrl: "./button.component.html",
   styleUrl: "./button.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,

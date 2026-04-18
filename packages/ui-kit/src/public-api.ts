@@ -6,6 +6,7 @@ export * from "./lib/dropdown-list";
 export * from "./lib/input/input.component";
 export * from "./lib/input/adapters";
 export * from "./lib/icon";
+export * from "./lib/indicates-touch";
 export * from "./lib/filter";
 export * from "./lib/autocomplete";
 export * from "./lib/calendar-panel";
