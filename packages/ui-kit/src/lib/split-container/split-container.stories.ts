@@ -55,7 +55,9 @@ const PANEL_STYLE = `
         <ui-split-panel>
           <div class="demo-panel demo-panel--b">
             <h4 style="margin: 0 0 .5rem">Right Panel</h4>
-            <p style="margin: 0; font-size: .88rem">This is the second panel.</p>
+            <p style="margin: 0; font-size: .88rem">
+              This is the second panel.
+            </p>
           </div>
         </ui-split-panel>
       </ui-split-container>
@@ -140,8 +142,8 @@ class SplitConstrainedDemo {}
           <div class="demo-panel demo-panel--a">
             <h4 style="margin: 0 0 .5rem">Sidebar</h4>
             <p style="margin: 0; font-size: .88rem">
-              Double-click the divider to collapse this panel. Double-click again
-              to restore.
+              Double-click the divider to collapse this panel. Double-click
+              again to restore.
             </p>
           </div>
         </ui-split-panel>
@@ -158,7 +160,6 @@ class SplitConstrainedDemo {}
   `,
 })
 class SplitCollapseDemo {
-
   protected readonly lastResize = signal("—");
 
   protected onResized(event: SplitResizeEvent): void {
@@ -602,7 +603,7 @@ export const Documentation: Story = {
           "## Key Features",
           "",
           "- **N-panel layout** — place any number of `<ui-split-panel>` children; dividers are inserted automatically",
-          "- **Orientation** — `\"horizontal\"` or `\"vertical\"` (default: horizontal)",
+          '- **Orientation** — `"horizontal"` or `"vertical"` (default: horizontal)',
           "- **Per-panel constraints** — set `[min]` and `[max]` pixel limits on each `<ui-split-panel>`",
           "- **Independent dividers** — each divider only adjusts its two immediately adjacent panels",
           "- **Double-click collapse** — double-click any divider to collapse the smaller adjacent panel",
@@ -612,12 +613,12 @@ export const Documentation: Story = {
           "",
           "| Input | Type | Default | Description |",
           "|-------|------|---------|-------------|",
-          "| `orientation` | `string` | `\"horizontal\"` | Split direction |",
+          '| `orientation` | `string` | `"horizontal"` | Split direction |',
           "| `initialSizes` | `number[]` | equal split | Panel sizes as percentages |",
           "| `dividerWidth` | `number` | `6` | Divider thickness in pixels |",
           "| `name` | `string` | — | Key for localStorage persistence |",
           "| `disabled` | `boolean` | `false` | Disables resizing |",
-          "| `ariaLabel` | `string` | `\"Resize panels\"` | Label for each divider |",
+          '| `ariaLabel` | `string` | `"Resize panels"` | Label for each divider |',
           "",
           "## Panel Inputs (`<ui-split-panel>`)",
           "",

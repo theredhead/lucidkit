@@ -12,7 +12,6 @@ export type SplitOrientation = "horizontal" | "vertical";
  * dragged in either direction. Apply via `<ui-split-panel [min]="..." [max]="...">`.
  */
 export interface SplitPanelConstraints {
-
   /** Minimum panel size in pixels. Defaults to `0`. */
   min?: number;
 
@@ -28,7 +27,6 @@ export interface SplitPanelConstraints {
  * that panel. Values sum to 100.
  */
 export interface SplitResizeEvent {
-
   /**
    * Panel sizes as percentages (0–100).
    * One entry per `<ui-split-panel>` child.

@@ -84,7 +84,6 @@ const STORAGE_PREFIX = "ui-split-container:";
   },
 })
 export class UISplitContainer implements AfterViewInit {
-
   // ── Inputs ──────────────────────────────────────────────────────────
 
   /** Whether the split container is disabled. */
@@ -169,7 +168,10 @@ export class UISplitContainer implements AfterViewInit {
   // ── Protected methods (template) ──────────────────────────────────
 
   /** @internal — starts pointer-based divider dragging. */
-  protected onDividerPointerDown(event: PointerEvent, dividerIndex: number): void {
+  protected onDividerPointerDown(
+    event: PointerEvent,
+    dividerIndex: number,
+  ): void {
     event.preventDefault();
     const divider = event.currentTarget as HTMLElement;
     divider.setPointerCapture(event.pointerId);
@@ -184,12 +186,15 @@ export class UISplitContainer implements AfterViewInit {
 
     const onMove = (e: PointerEvent): void => {
       // Compute the cursor position relative to the container start
-      const cursor = (isHorizontal ? e.clientX - rect.left : e.clientY - rect.top)
-        - dividerIndex * this.dividerWidth();
+      const cursor =
+        (isHorizontal ? e.clientX - rect.left : e.clientY - rect.top) -
+        dividerIndex * this.dividerWidth();
 
       // Sum of all panels before this divider gives the offset baseline
       const sizes = this._sizes();
-      const precedingPct = sizes.slice(0, dividerIndex).reduce((a, b) => a + b, 0);
+      const precedingPct = sizes
+        .slice(0, dividerIndex)
+        .reduce((a, b) => a + b, 0);
       const pairTotal = sizes[dividerIndex] + sizes[dividerIndex + 1];
 
       // Convert cursor to a percentage within the full usable space
@@ -303,10 +308,18 @@ export class UISplitContainer implements AfterViewInit {
     const toPercent = (px: number): number =>
       usablePx > 0 ? (px / usablePx) * 100 : 0;
 
-    const leftMin  = leftConstraints.min  != null ? toPercent(leftConstraints.min)  : 0;
-    const leftMax  = leftConstraints.max  != null ? toPercent(leftConstraints.max)  : pairTotalPct;
-    const rightMin = rightConstraints.min != null ? toPercent(rightConstraints.min) : 0;
-    const rightMax = rightConstraints.max != null ? toPercent(rightConstraints.max) : pairTotalPct;
+    const leftMin =
+      leftConstraints.min != null ? toPercent(leftConstraints.min) : 0;
+    const leftMax =
+      leftConstraints.max != null
+        ? toPercent(leftConstraints.max)
+        : pairTotalPct;
+    const rightMin =
+      rightConstraints.min != null ? toPercent(rightConstraints.min) : 0;
+    const rightMax =
+      rightConstraints.max != null
+        ? toPercent(rightConstraints.max)
+        : pairTotalPct;
 
     // left ≥ leftMin, left ≤ leftMax
     // right = pairTotal - left  →  right ≥ rightMin  ↔  left ≤ pairTotal - rightMin
@@ -321,13 +334,19 @@ export class UISplitContainer implements AfterViewInit {
   /** Returns equal-distribution sizes for N panels. */
   private resolveInitialSizes(n: number): number[] {
     const provided = this.initialSizes();
-    if (provided.length === n && Math.abs(provided.reduce((a, b) => a + b, 0) - 100) < 0.01) {
+    if (
+      provided.length === n &&
+      Math.abs(provided.reduce((a, b) => a + b, 0) - 100) < 0.01
+    ) {
       return [...provided];
     }
     if (n === 0) return [];
     const base = Math.floor(100 / n);
     const remainder = 100 - base * n;
-    return Array.from({ length: n }, (_, i) => base + (i === n - 1 ? remainder : 0));
+    return Array.from(
+      { length: n },
+      (_, i) => base + (i === n - 1 ? remainder : 0),
+    );
   }
 
   /** Persists sizes to storage (if a name is set). */
@@ -345,7 +364,11 @@ export class UISplitContainer implements AfterViewInit {
       const raw = this.storage.getItem(STORAGE_PREFIX + key);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length === n && parsed.every((v) => typeof v === "number")) {
+      if (
+        Array.isArray(parsed) &&
+        parsed.length === n &&
+        parsed.every((v) => typeof v === "number")
+      ) {
         return parsed as number[];
       }
     } catch {

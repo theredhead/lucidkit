@@ -1,5 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
-import { ChangeDetectionStrategy, Component, computed, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from "@angular/core";
 import { UIRichTextEditor } from "./rich-text-editor.component";
 import { UIRichTextView } from "../rich-text-view/rich-text-view.component";
 import { UIButton } from "../button/button.component";
@@ -1564,24 +1569,24 @@ const mailMergeMembers: MailMergeRecord[] = [
 ];
 
 const mailMergePlaceholders: RichTextPlaceholder[] = [
-  { key: "firstName",     label: "First Name",         category: "Contact" },
-  { key: "lastName",      label: "Last Name",          category: "Contact" },
-  { key: "fullName",      label: "Full Name",          category: "Contact" },
-  { key: "addressLine1",  label: "Address Line 1",     category: "Contact" },
-  { key: "addressLine2",  label: "Address Line 2",     category: "Contact" },
-  { key: "birthdate",     label: "Date of Birth",      category: "Contact" },
-  { key: "email",         label: "Email Address",      category: "Contact" },
-  { key: "invoiceNumber", label: "Invoice Number",     category: "Invoice" },
-  { key: "invoiceDate",   label: "Invoice Date",       category: "Invoice" },
-  { key: "dueDate",       label: "Due Date",           category: "Invoice" },
-  { key: "accountRef",    label: "Account Reference",  category: "Invoice" },
-  { key: "orderId",       label: "Order ID",           category: "Invoice" },
-  { key: "productName",   label: "Product",            category: "Order"   },
-  { key: "quantity",      label: "Quantity",           category: "Order"   },
-  { key: "unitPrice",     label: "Unit Price",         category: "Order"   },
-  { key: "totalExVat",    label: "Total (ex. VAT)",    category: "Order"   },
-  { key: "vatAmount",     label: "VAT Amount",         category: "Order"   },
-  { key: "totalIncVat",   label: "Total (inc. VAT)",   category: "Order"   },
+  { key: "firstName", label: "First Name", category: "Contact" },
+  { key: "lastName", label: "Last Name", category: "Contact" },
+  { key: "fullName", label: "Full Name", category: "Contact" },
+  { key: "addressLine1", label: "Address Line 1", category: "Contact" },
+  { key: "addressLine2", label: "Address Line 2", category: "Contact" },
+  { key: "birthdate", label: "Date of Birth", category: "Contact" },
+  { key: "email", label: "Email Address", category: "Contact" },
+  { key: "invoiceNumber", label: "Invoice Number", category: "Invoice" },
+  { key: "invoiceDate", label: "Invoice Date", category: "Invoice" },
+  { key: "dueDate", label: "Due Date", category: "Invoice" },
+  { key: "accountRef", label: "Account Reference", category: "Invoice" },
+  { key: "orderId", label: "Order ID", category: "Invoice" },
+  { key: "productName", label: "Product", category: "Order" },
+  { key: "quantity", label: "Quantity", category: "Order" },
+  { key: "unitPrice", label: "Unit Price", category: "Order" },
+  { key: "totalExVat", label: "Total (ex. VAT)", category: "Order" },
+  { key: "vatAmount", label: "VAT Amount", category: "Order" },
+  { key: "totalIncVat", label: "Total (inc. VAT)", category: "Order" },
 ];
 
 const mailMergeTemplate = [
@@ -1624,7 +1629,13 @@ const mailMergeTemplate = [
 @Component({
   selector: "ui-demo-mail-merge",
   standalone: true,
-  imports: [UIRichTextEditor, UIRichTextView, UIButton, UISplitContainer, UISplitPanel],
+  imports: [
+    UIRichTextEditor,
+    UIRichTextView,
+    UIButton,
+    UISplitContainer,
+    UISplitPanel,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-split-container
@@ -1633,65 +1644,80 @@ const mailMergeTemplate = [
       style="height: 640px; display: block;"
     >
       <ui-split-panel>
-      <div style="display: flex; flex-direction: column; height: 100%;">
-        <div style="padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ui-text-muted, #5a6470); background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);">
-          Template
+        <div style="display: flex; flex-direction: column; height: 100%;">
+          <div
+            style="padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ui-text-muted, #5a6470); background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);"
+          >
+            Template
+          </div>
+          <ui-rich-text-editor
+            mode="markdown"
+            [(value)]="content"
+            [placeholders]="placeholders"
+            placeholder="Edit your invoice template…"
+            ariaLabel="Mail-merge invoice template"
+            style="flex: 1; min-height: 0; display: flex; flex-direction: column;"
+          />
         </div>
-        <ui-rich-text-editor
-          mode="markdown"
-          [(value)]="content"
-          [placeholders]="placeholders"
-          placeholder="Edit your invoice template…"
-          ariaLabel="Mail-merge invoice template"
-          style="flex: 1; min-height: 0; display: flex; flex-direction: column;"
-        />
-      </div>
       </ui-split-panel>
 
       <ui-split-panel>
-      <div style="display: flex; flex-direction: column; height: 100%;">
-        <!-- Member navigator -->
-        <div style="display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);">
-          <ui-button
-            variant="ghost"
-            size="small"
-            [disabled]="currentIndex() === 0"
-            ariaLabel="Previous member"
-            (click)="prev()"
-          >←</ui-button>
-          <span style="flex: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--ui-text, #1d232b);">
-            {{ members[currentIndex()].fullName }}
-            <span style="font-weight: 400; color: var(--ui-text-muted, #5a6470);">({{ currentIndex() + 1 }} / {{ members.length }})</span>
-          </span>
-          <ui-button
-            variant="ghost"
-            size="small"
-            [disabled]="currentIndex() === members.length - 1"
-            ariaLabel="Next member"
-            (click)="next()"
-          >→</ui-button>
+        <div style="display: flex; flex-direction: column; height: 100%;">
+          <!-- Member navigator -->
+          <div
+            style="display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);"
+          >
+            <ui-button
+              variant="ghost"
+              size="small"
+              [disabled]="currentIndex() === 0"
+              ariaLabel="Previous member"
+              (click)="prev()"
+              >←</ui-button
+            >
+            <span
+              style="flex: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--ui-text, #1d232b);"
+            >
+              {{ members[currentIndex()].fullName }}
+              <span
+                style="font-weight: 400; color: var(--ui-text-muted, #5a6470);"
+                >({{ currentIndex() + 1 }} / {{ members.length }})</span
+              >
+            </span>
+            <ui-button
+              variant="ghost"
+              size="small"
+              [disabled]="currentIndex() === members.length - 1"
+              ariaLabel="Next member"
+              (click)="next()"
+              >→</ui-button
+            >
+          </div>
+          <!-- Rendered invoice -->
+          <div
+            style="flex: 1; overflow: auto; padding: 16px; background: var(--ui-surface, #f7f8fa); color: var(--ui-text, #1d232b);"
+          >
+            <ui-rich-text-view
+              [content]="renderedContent()"
+              strategy="markdown"
+              ariaLabel="Invoice preview"
+            />
+          </div>
         </div>
-        <!-- Rendered invoice -->
-        <div style="flex: 1; overflow: auto; padding: 16px; background: var(--ui-surface, #f7f8fa); color: var(--ui-text, #1d232b);">
-          <ui-rich-text-view
-            [content]="renderedContent()"
-            strategy="markdown"
-            ariaLabel="Invoice preview"
-          />
-        </div>
-      </div>
       </ui-split-panel>
     </ui-split-container>
   `,
 })
 class DemoMailMerge {
-
   protected readonly currentIndex = signal(0);
 
   protected readonly content = signal(mailMergeTemplate);
 
   protected readonly renderedContent = computed(() => {
-    const member = this.members[this.currentIndex()] as unknown as Record<string, string>;
+    const member = this.members[this.currentIndex()] as unknown as Record<
+      string,
+      string
+    >;
     let result = this.content();
     for (const [key, value] of Object.entries(member)) {
       result = result.replaceAll(`{{${key}}}`, value);
