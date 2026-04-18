@@ -1452,3 +1452,85 @@ export class MyEditorComponent {
     },
   },
 };
+
+const sampleTableMarkdown = [
+  "## Package Comparison",
+  "",
+  "| Package | Purpose | Standalone |",
+  "| :--- | :--- | :---: |",
+  "| `lucid-foundation` | Core utilities & logger | Yes |",
+  "| `lucid-theme` | Design tokens & dark mode | Yes |",
+  "| `lucid-kit` | UI primitives | Yes |",
+  "| `lucid-blocks` | Composite views | Yes |",
+  "| `lucid-forms` | Schema-driven forms | Yes |",
+  "",
+  "### Alignment demo",
+  "",
+  "| Left | Center | Right |",
+  "| :--- | :---: | ---: |",
+  "| apple | banana | cherry |",
+  "| 1 | 2 | 3 |",
+].join("\n");
+
+/**
+ * **Markdown Table** — The editor in Markdown mode with a pre-populated
+ * GFM pipe table. The split-pane preview renders column alignment correctly.
+ * Edit any cell value and watch the preview update live.
+ */
+export const MarkdownTable: Story = {
+  name: "Markdown — table support",
+  render: (args) => ({
+    props: { ...args, initialValue: sampleTableMarkdown },
+    template: `
+      <ui-rich-text-editor
+        mode="markdown"
+        [value]="initialValue"
+        splitDirection="horizontal"
+        placeholder="Write Markdown…"
+        ariaLabel="Markdown table demo"
+        style="height: 420px; display: block;"
+      />
+    `,
+  }),
+  args: {},
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="markdown"
+  [(value)]="content"
+  splitDirection="horizontal"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { Component, signal } from '@angular/core';
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIRichTextEditor],
+  template: \`
+    <ui-rich-text-editor
+      mode="markdown"
+      [(value)]="content"
+      splitDirection="horizontal"
+    />
+  \`,
+})
+export class ExampleComponent {
+  readonly content = signal(
+    '| Name | Role |\\n| :--- | ---: |\\n| Alice | Admin |'
+  );
+}
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* No custom styles needed. */
+`,
+      },
+    },
+  },
+};

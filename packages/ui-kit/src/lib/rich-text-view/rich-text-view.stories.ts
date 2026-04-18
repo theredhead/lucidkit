@@ -258,6 +258,82 @@ export class ExampleComponent {
 };
 
 /**
+ * **Markdown Table** — Demonstrates GFM pipe-table support. The built-in
+ * Markdown converter parses GitHub-Flavoured Markdown tables — including
+ * column alignment via `:---`, `:---:`, and `---:` — into a native
+ * `<table>` element styled with `--ui-*` tokens.
+ */
+export const MarkdownTable: Story = {
+  name: "Markdown — table support",
+  render: (args) => ({
+    props: {
+      ...args,
+      content: [
+        "## Package Comparison",
+        "",
+        "| Package | Purpose | Standalone |",
+        "| :--- | :--- | :---: |",
+        "| `lucid-foundation` | Core utilities & logger | Yes |",
+        "| `lucid-theme` | Design tokens & dark mode | Yes |",
+        "| `lucid-kit` | UI primitives | Yes |",
+        "| `lucid-blocks` | Composite views | Yes |",
+        "| `lucid-forms` | Schema-driven forms | Yes |",
+        "",
+        "### Alignment demo",
+        "",
+        "| Left | Center | Right |",
+        "| :--- | :---: | ---: |",
+        "| apple | banana | cherry |",
+        "| 1 | 2 | 3 |",
+      ].join("\n"),
+    },
+    template: `
+      <ui-rich-text-view
+        [content]="content"
+        strategy="markdown"
+        [ariaLabel]="ariaLabel"
+      />
+    `,
+  }),
+  args: {
+    ariaLabel: "Markdown table demo",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-rich-text-view strategy="markdown" [content]="markdownContent" />
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UIRichTextView } from '@theredhead/lucid-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIRichTextView],
+  template: \`<ui-rich-text-view strategy="markdown" [content]="markdownContent" />\`,
+})
+export class ExampleComponent {
+  markdownContent = [
+    '| Name | Role |',
+    '| :--- | ---: |',
+    '| Alice | Admin |',
+    '| Bob | Viewer |',
+  ].join('\\n');
+}
+
+// ── SCSS ──
+/* No custom styles needed — the component uses --ui-* tokens. */
+`,
+      },
+    },
+  },
+};
+
+/**
  * **Empty** — Shows the component with no content (renders nothing).
  */
 export const Empty: Story = {
