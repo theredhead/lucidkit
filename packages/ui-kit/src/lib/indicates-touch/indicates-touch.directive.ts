@@ -49,7 +49,6 @@ function ensureRippleStyles(doc: Document): void {
   },
 })
 export class UIIndicatesTouch implements OnDestroy {
-
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
 
   private readonly doc = inject(DOCUMENT);

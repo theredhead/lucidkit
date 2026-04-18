@@ -5,7 +5,10 @@ import {
   InjectionToken,
   input,
 } from "@angular/core";
-import { UI_DEFAULT_SURFACE_TYPE, UISurface } from "@theredhead/lucid-foundation";
+import {
+  UI_DEFAULT_SURFACE_TYPE,
+  UISurface,
+} from "@theredhead/lucid-foundation";
 import { UIIndicatesTouch } from "../indicates-touch/indicates-touch.directive";
 
 export type ButtonVariant = "filled" | "outlined" | "ghost";
