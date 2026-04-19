@@ -26,6 +26,7 @@ import {
   UIButtonTool,
   UIToggleTool,
   UISeparatorTool,
+  UISpacerTool,
   UIDropdownTool,
   UIButtonGroupTool,
   UIToggleGroupTool,
@@ -122,6 +123,7 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
     UIButtonTool,
     UIToggleTool,
     UISeparatorTool,
+    UISpacerTool,
     UIDropdownTool,
     UIButtonGroupTool,
     UIToggleGroupTool,
@@ -334,6 +336,22 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** Whether the editor is in raw source editing mode. */
   protected readonly isSourceMode = signal(false);
 
+  /**
+   * Whether the Markdown preview pane is visible.
+   * Toggled by the preview toolbar button in Markdown mode.
+   */
+  public readonly showMarkdownPreview = signal(true);
+
+  /**
+   * Whether the current value is valid (non-empty) Markdown.
+   * Used to show a validity indicator in the Markdown toolbar.
+   * @internal
+   */
+  protected readonly isValidMarkdown = computed(() => {
+    if (!this.isMarkdownMode()) return true;
+    return this.value().trim().length > 0;
+  });
+
   /** Whether the emoji picker dropdown is open. */
   protected readonly isEmojiPickerOpen = signal(false);
 
@@ -386,6 +404,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     ExitFullscreen: UIIcons.Lucide.Layout.Minimize2,
     SplitHorizontal: UIIcons.Lucide.Layout.Columns2,
     SplitVertical: UIIcons.Lucide.Layout.Rows2,
+    PreviewShow: UIIcons.Lucide.Accessibility.Eye,
+    PreviewHide: UIIcons.Lucide.Accessibility.EyeOff,
+    ValidMarkdown: UIIcons.Lucide.Notifications.CircleCheck,
+    InvalidMarkdown: UIIcons.Lucide.Notifications.CircleAlert,
   } as const;
 
   /**
@@ -750,6 +772,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     }
     if (id === "split-direction") {
       this.cycleSplitDirection();
+      return;
+    }
+    if (id === "toggle-preview") {
+      this.showMarkdownPreview.update((v) => !v);
       return;
     }
     if (id === "block" || id === "list") {

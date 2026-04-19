@@ -1692,11 +1692,15 @@ const mailMergeProcessor = new TextTemplateProcessor({ missingKey: "keep" });
     UISplitPanel,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    style:
+      "display: flex; flex-direction: column; height: 100vh; overflow: hidden;",
+  },
   template: `
     <ui-split-container
       name="mail-merge-demo"
       orientation="horizontal"
-      style="height: 640px; display: block;"
+      style="flex: 1; min-height: 0; display: flex;"
     >
       <ui-split-panel>
         <div style="display: flex; flex-direction: column; height: 100%;">
@@ -1811,6 +1815,8 @@ export const MailMerge: Story = {
     }),
   ],
   parameters: {
+    layout: "fullscreen",
+    hideThemeToggle: true,
     docs: {
       source: {
         language: "html",

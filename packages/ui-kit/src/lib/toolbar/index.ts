@@ -9,3 +9,4 @@ export { UISelectTool } from "./tools/select-tool/select-tool.component";
 export { UITemplateTool } from "./tools/template-tool/template-tool.component";
 export { UIButtonGroupTool } from "./tools/button-group-tool/button-group-tool.component";
 export { UIToggleGroupTool } from "./tools/toggle-group-tool/toggle-group-tool.component";
+export { UISpacerTool } from "./tools/spacer-tool/spacer-tool.component";

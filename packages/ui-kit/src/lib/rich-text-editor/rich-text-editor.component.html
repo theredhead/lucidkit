@@ -205,18 +205,35 @@
     />
   }
 
-  <!-- Split-direction toggle (Markdown mode only) -->
+  <!-- Split-direction toggle + preview toggle + validity indicator (Markdown mode only) -->
   @if (isMarkdownMode()) {
-    <ui-separator-tool id="sep-split" />
+    <ui-spacer-tool id="spacer-before-md-tools" />
     <ui-button-tool
       id="split-direction"
       [icon]="effectiveSplitDirection() === 'horizontal' ? teIcons.SplitVertical : teIcons.SplitHorizontal"
       [ariaLabel]="effectiveSplitDirection() === 'horizontal' ? 'Switch to vertical split' : 'Switch to side-by-side split'"
     />
+    <ui-separator-tool id="sep-preview" />
+    <ui-toggle-tool
+      id="toggle-preview"
+      [icon]="showMarkdownPreview() ? teIcons.PreviewShow : teIcons.PreviewHide"
+      [ariaLabel]="showMarkdownPreview() ? 'Hide preview' : 'Show preview'"
+      [checked]="showMarkdownPreview()"
+    />
+    <ui-separator-tool id="sep-validity" />
+    <ui-icon
+      class="markdown-validity-indicator"
+      [class.valid]="isValidMarkdown()"
+      [class.invalid]="!isValidMarkdown()"
+      [svg]="isValidMarkdown() ? teIcons.ValidMarkdown : teIcons.InvalidMarkdown"
+      [size]="16"
+      [attr.aria-label]="isValidMarkdown() ? 'Valid markdown' : 'Empty — no markdown content'"
+      role="img"
+    />
   }
 
-  <!-- Fullscreen toggle -->
-  <ui-separator-tool id="sep-fullscreen" />
+  <!-- Fullscreen toggle — pushed to the right by the spacer -->
+  <ui-spacer-tool id="spacer-before-fullscreen" />
   <ui-button-tool
     id="fullscreen"
     [icon]="isFullscreen() ? teIcons.ExitFullscreen : teIcons.Fullscreen"
@@ -273,7 +290,7 @@
   [class.editor-wrapper--focused]="isFocused() && !isSourceMode() && !isMarkdownMode()"
   [class.editor-wrapper--preview]="isSourceMode() || isMarkdownMode()"
 >
-  @if (isMarkdownMode()) {
+  @if (isMarkdownMode() && showMarkdownPreview()) {
     <div class="preview-label" aria-hidden="true">Preview</div>
     <ui-rich-text-view
       class="markdown-preview"

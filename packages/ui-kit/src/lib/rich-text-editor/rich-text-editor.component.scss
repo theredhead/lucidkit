@@ -6,6 +6,7 @@
 :host {
   display: flex;
   flex-direction: column;
+  min-height: 0;
   font-family: var(--ui-font, inherit);
   font-size: var(--ui-font-body, 0.875rem);
 }
@@ -136,6 +137,11 @@ ui-toolbar {
 /* ── Editor wrapper ────────────────────────────────────── */
 
 .editor-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   border-radius: 0 0 0.25rem 0.25rem;
   color: var(--ui-text, #1d232b);
   background: var(--ui-surface, #ffffff);
@@ -149,6 +155,7 @@ ui-toolbar {
 }
 
 .editor {
+  flex: 1;
   min-height: 8rem;
   padding: 0.5rem 0.6rem;
   line-height: 1.5;
@@ -378,6 +385,14 @@ ui-toolbar {
       min-height: 4rem;
       cursor: default;
     }
+
+    .markdown-preview {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 0.5rem;
+      pointer-events: auto;
+    }
   }
 }
 
@@ -433,6 +448,24 @@ ui-toolbar {
 
 .char-count {
   font-variant-numeric: tabular-nums;
+}
+
+/* ── Markdown validity indicator ───────────────────────── */
+
+.markdown-validity-indicator {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  padding: 0 0.25rem;
+  flex-shrink: 0;
+
+  &.valid {
+    color: var(--ui-success, #22c55e);
+  }
+
+  &.invalid {
+    color: var(--ui-warning, #f59e0b);
+  }
 }
 
 /* ── Split pane (Markdown mode) ────────────────────────── */
