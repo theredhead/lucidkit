@@ -1,6 +1,6 @@
 {
   "name": "@theredhead/lucid-forms",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Schema-driven, signal-based Angular form engine with validation, conditional logic, and a visual form designer",
   "license": "MIT",
   "author": "theredhead",
