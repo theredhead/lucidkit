@@ -7,3 +7,4 @@ export * from "./lib/datasources";
 export * from "./lib/jwt";
 export * from "./lib/storage";
 export * from "./lib/surface";
+export * from "./lib/templating";

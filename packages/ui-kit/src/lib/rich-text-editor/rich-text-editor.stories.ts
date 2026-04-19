@@ -21,6 +21,7 @@ import {
   createMarkdownItParser,
   type MarkdownParser,
 } from "./markdown-parser";
+import { TextTemplateProcessor } from "@theredhead/lucid-foundation";
 
 const samplePlaceholders: RichTextPlaceholder[] = [
   { key: "firstName", label: "First Name", category: "Contact" },
@@ -1464,6 +1465,13 @@ export class MyEditorComponent {
 
 // ── Mail-merge story ───────────────────────────────────────────────────────
 
+interface InvoiceLine {
+  description: string;
+  quantity: string;
+  unitPrice: string;
+  lineTotal: string;
+}
+
 interface MailMergeRecord {
   firstName: string;
   lastName: string;
@@ -1477,9 +1485,7 @@ interface MailMergeRecord {
   dueDate: string;
   accountRef: string;
   orderId: string;
-  productName: string;
-  quantity: string;
-  unitPrice: string;
+  lines: InvoiceLine[];
   totalExVat: string;
   vatAmount: string;
   totalIncVat: string;
@@ -1499,12 +1505,23 @@ const mailMergeMembers: MailMergeRecord[] = [
     dueDate: "18 May 2026",
     accountRef: "ACT-00142",
     orderId: "ORD-88421",
-    productName: "Professional License — LucidKit UI",
-    quantity: "1",
-    unitPrice: "£249.00",
-    totalExVat: "£249.00",
-    vatAmount: "£49.80",
-    totalIncVat: "£298.80",
+    lines: [
+      {
+        description: "Professional License — LucidKit UI",
+        quantity: "1",
+        unitPrice: "£249.00",
+        lineTotal: "£249.00",
+      },
+      {
+        description: "Priority Support (12 months)",
+        quantity: "1",
+        unitPrice: "£49.00",
+        lineTotal: "£49.00",
+      },
+    ],
+    totalExVat: "£298.00",
+    vatAmount: "£59.60",
+    totalIncVat: "£357.60",
   },
   {
     firstName: "Benjamin",
@@ -1519,12 +1536,29 @@ const mailMergeMembers: MailMergeRecord[] = [
     dueDate: "18 May 2026",
     accountRef: "ACT-00198",
     orderId: "ORD-88434",
-    productName: "Enterprise License — LucidKit UI (×3 seats)",
-    quantity: "3",
-    unitPrice: "£599.00",
-    totalExVat: "£1,797.00",
-    vatAmount: "£359.40",
-    totalIncVat: "£2,156.40",
+    lines: [
+      {
+        description: "Enterprise License — LucidKit UI (×3 seats)",
+        quantity: "3",
+        unitPrice: "£599.00",
+        lineTotal: "£1,797.00",
+      },
+      {
+        description: "Onboarding Workshop (half day)",
+        quantity: "1",
+        unitPrice: "£395.00",
+        lineTotal: "£395.00",
+      },
+      {
+        description: "Priority Support (12 months)",
+        quantity: "3",
+        unitPrice: "£49.00",
+        lineTotal: "£147.00",
+      },
+    ],
+    totalExVat: "£2,339.00",
+    vatAmount: "£467.80",
+    totalIncVat: "£2,806.80",
   },
   {
     firstName: "Chloé",
@@ -1539,9 +1573,14 @@ const mailMergeMembers: MailMergeRecord[] = [
     dueDate: "18 May 2026",
     accountRef: "ACT-00207",
     orderId: "ORD-88451",
-    productName: "Starter License — LucidKit UI",
-    quantity: "1",
-    unitPrice: "€89.00",
+    lines: [
+      {
+        description: "Starter License — LucidKit UI",
+        quantity: "1",
+        unitPrice: "€89.00",
+        lineTotal: "€89.00",
+      },
+    ],
     totalExVat: "€89.00",
     vatAmount: "€17.80",
     totalIncVat: "€106.80",
@@ -1559,12 +1598,29 @@ const mailMergeMembers: MailMergeRecord[] = [
     dueDate: "18 May 2026",
     accountRef: "ACT-00231",
     orderId: "ORD-88463",
-    productName: "Professional License — LucidKit UI",
-    quantity: "2",
-    unitPrice: "£249.00",
-    totalExVat: "£498.00",
-    vatAmount: "£99.60",
-    totalIncVat: "£597.60",
+    lines: [
+      {
+        description: "Professional License — LucidKit UI",
+        quantity: "2",
+        unitPrice: "£249.00",
+        lineTotal: "£498.00",
+      },
+      {
+        description: "Component Customisation Pack",
+        quantity: "1",
+        unitPrice: "£125.00",
+        lineTotal: "£125.00",
+      },
+      {
+        description: "Extended Support (6 months)",
+        quantity: "2",
+        unitPrice: "£29.00",
+        lineTotal: "£58.00",
+      },
+    ],
+    totalExVat: "£681.00",
+    vatAmount: "£136.20",
+    totalIncVat: "£817.20",
   },
 ];
 
@@ -1581,12 +1637,9 @@ const mailMergePlaceholders: RichTextPlaceholder[] = [
   { key: "dueDate", label: "Due Date", category: "Invoice" },
   { key: "accountRef", label: "Account Reference", category: "Invoice" },
   { key: "orderId", label: "Order ID", category: "Invoice" },
-  { key: "productName", label: "Product", category: "Order" },
-  { key: "quantity", label: "Quantity", category: "Order" },
-  { key: "unitPrice", label: "Unit Price", category: "Order" },
-  { key: "totalExVat", label: "Total (ex. VAT)", category: "Order" },
-  { key: "vatAmount", label: "VAT Amount", category: "Order" },
-  { key: "totalIncVat", label: "Total (inc. VAT)", category: "Order" },
+  { key: "totalExVat", label: "Total (ex. VAT)", category: "Totals" },
+  { key: "vatAmount", label: "VAT Amount", category: "Totals" },
+  { key: "totalIncVat", label: "Total (inc. VAT)", category: "Totals" },
 ];
 
 const mailMergeTemplate = [
@@ -1609,8 +1662,8 @@ const mailMergeTemplate = [
   "",
   "| Description | Qty | Unit Price | Total (ex. VAT) |",
   "| :--- | :---: | ---: | ---: |",
-  "| {{productName}} | {{quantity}} | {{unitPrice}} | {{totalExVat}} |",
-  "",
+  "{{ @loop lines }}| {{ description }} | {{ quantity }} | {{ unitPrice }} | {{ lineTotal }} |",
+  "{{ @endloop }}",
   "---",
   "",
   "| | |",
@@ -1625,6 +1678,8 @@ const mailMergeTemplate = [
   "",
   "Thank you for your business, {{firstName}}.",
 ].join("\n");
+
+const mailMergeProcessor = new TextTemplateProcessor({ missingKey: "keep" });
 
 @Component({
   selector: "ui-demo-mail-merge",
@@ -1716,13 +1771,9 @@ class DemoMailMerge {
   protected readonly renderedContent = computed(() => {
     const member = this.members[this.currentIndex()] as unknown as Record<
       string,
-      string
+      unknown
     >;
-    let result = this.content();
-    for (const [key, value] of Object.entries(member)) {
-      result = result.replaceAll(`{{${key}}}`, value);
-    }
-    return result;
+    return mailMergeProcessor.expand(this.content(), member);
   });
 
   protected readonly members = mailMergeMembers;
