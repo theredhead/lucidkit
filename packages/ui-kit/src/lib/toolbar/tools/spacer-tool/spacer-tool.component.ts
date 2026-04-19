@@ -30,4 +30,4 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
     role: "none",
   },
 })
-export class UISpacerTool {}
+export class UISpacerTool extends UIToolbarItem {}
