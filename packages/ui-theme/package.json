@@ -1,6 +1,6 @@
 {
   "name": "@theredhead/lucid-theme",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "Light/dark theming for LucidKit Angular apps via CSS custom properties — no Angular Material required",
   "license": "MIT",
   "author": "theredhead",
