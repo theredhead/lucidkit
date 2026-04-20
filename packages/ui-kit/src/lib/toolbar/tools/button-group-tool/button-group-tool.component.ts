@@ -55,6 +55,7 @@ export class UIButtonGroupTool extends UIToolbarItem {
       this._childSubs.forEach((s) => s.unsubscribe());
       this._childSubs.length = 0;
       for (const item of this.childItems()) {
+        if (!item) continue;
         this._childSubs.push(
           item.itemAction.subscribe((e) => this.itemAction.emit(e)),
         );

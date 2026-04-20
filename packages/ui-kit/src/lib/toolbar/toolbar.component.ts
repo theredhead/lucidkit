@@ -66,6 +66,7 @@ export class UIToolbar {
       this._subs.forEach((s) => s.unsubscribe());
       this._subs.length = 0;
       for (const item of this.items()) {
+        if (!item) continue;
         this._subs.push(
           item.itemAction.subscribe((e) => this.toolAction.emit(e)),
         );
