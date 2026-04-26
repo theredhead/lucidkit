@@ -1,1149 +1,201 @@
 import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  signal,
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	signal,
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
+import communicationSuiteData from "./data/communication-suite-app.data.json";
+
 import {
-  ArrayCalendarDatasource,
-  type CalendarEvent,
-  FilterableArrayDatasource,
-  UIAccordion,
-  UIAccordionItem,
-  UIAvatar,
-  UIBadge,
-  UIBadgeColumn,
-  UIButton,
-  UICalendarMonthView,
-  UICard,
-  UICardBody,
-  UICardFooter,
-  UICardHeader,
-  UICheckbox,
-  UIChip,
-  UIIcon,
-  UIIcons,
-  UIInput,
-  UIProgress,
-  UIDropdownList,
-  type SelectOption,
-  UITabGroup,
-  UITab,
-  UITabSeparator,
-  UITabSpacer,
-  UITemplateColumn,
-  UITextColumn,
-  UIToggle,
+	ArrayCalendarDatasource,
+	type CalendarEvent,
+	FilterableArrayDatasource,
+	UIAccordion,
+	UIAccordionItem,
+	UIAvatar,
+	UIBadge,
+	UIBadgeColumn,
+	UIButton,
+	UICalendarMonthView,
+	UICard,
+	UICardBody,
+	UICardFooter,
+	UICardHeader,
+	UICheckbox,
+	UIChip,
+	UIIcon,
+	UIIcons,
+	UIInput,
+	UIProgress,
+	UIDropdownList,
+	type SelectOption,
+	UITabGroup,
+	UITab,
+	UITabSeparator,
+	UITabSpacer,
+	UITemplateColumn,
+	UITextColumn,
+	UIToggle,
 } from "@theredhead/lucid-kit";
 
 import { UIChatView } from "../chat-view/chat-view.component";
 import type {
-  ChatMessage as ChatViewMessage,
-  ChatParticipant,
+	ChatMessage as ChatViewMessage,
+	ChatParticipant,
 } from "../chat-view/chat-view.types";
 import { UIMasterDetailView } from "../master-detail-view/master-detail-view.component";
 import { UINavigationPage } from "./navigation-page.component";
 import {
-  navItem,
-  navGroup,
-  type NavigationNode,
+	navItem,
+	navGroup,
+	type NavigationNode,
 } from "./navigation-page.utils";
 
 // ── Domain types ─────────────────────────────────────────────────────
 
 interface MailMessage {
-  readonly id: number;
-  readonly from: string;
-  readonly fromEmail: string;
-  readonly to: string;
-  readonly toEmail: string;
-  readonly subject: string;
-  readonly preview: string;
-  readonly body: string;
-  readonly date: string;
-  readonly read: boolean;
-  readonly starred: boolean;
-  readonly folder: "inbox" | "sent" | "drafts" | "archive" | "trash";
-  readonly labels: readonly string[];
-  readonly hasAttachment: boolean;
-  readonly priority: "low" | "normal" | "high" | "urgent";
+	readonly id: number;
+	readonly from: string;
+	readonly fromEmail: string;
+	readonly to: string;
+	readonly toEmail: string;
+	readonly subject: string;
+	readonly preview: string;
+	readonly body: string;
+	readonly date: string;
+	readonly read: boolean;
+	readonly starred: boolean;
+	readonly folder: "inbox" | "sent" | "drafts" | "archive" | "trash";
+	readonly labels: readonly string[];
+	readonly hasAttachment: boolean;
+	readonly priority: "low" | "normal" | "high" | "urgent";
 }
 
 interface Contact {
-  readonly id: number;
-  readonly name: string;
-  readonly email: string;
-  readonly department: string;
-  readonly title: string;
-  readonly phone: string;
-  readonly avatar: string;
-  readonly status: "online" | "busy" | "away" | "offline";
-  readonly company: string;
-  readonly external: boolean;
+	readonly id: number;
+	readonly name: string;
+	readonly email: string;
+	readonly department: string;
+	readonly title: string;
+	readonly phone: string;
+	readonly avatar: string;
+	readonly status: "online" | "busy" | "away" | "offline";
+	readonly company: string;
+	readonly external: boolean;
 }
 
 interface ChatChannel {
-  readonly id: number;
-  readonly name: string;
-  readonly type: "direct" | "group" | "channel";
-  readonly members: number;
-  readonly lastMessage: string;
-  readonly lastSender: string;
-  readonly lastTime: string;
-  readonly unread: number;
-  readonly description: string;
-  readonly pinned: boolean;
+	readonly id: number;
+	readonly name: string;
+	readonly type: "direct" | "group" | "channel";
+	readonly members: number;
+	readonly lastMessage: string;
+	readonly lastSender: string;
+	readonly lastTime: string;
+	readonly unread: number;
+	readonly description: string;
+	readonly pinned: boolean;
 }
 
 interface ChatMessage {
-  readonly id: number;
-  readonly channelId: number;
-  readonly sender: string;
-  readonly text: string;
-  readonly time: string;
-  readonly reactions: readonly string[];
+	readonly id: number;
+	readonly channelId: number;
+	readonly sender: string;
+	readonly text: string;
+	readonly time: string;
+	readonly reactions: readonly string[];
 }
 
 interface Meeting {
-  readonly id: number;
-  readonly title: string;
-  readonly organizer: string;
-  readonly date: string;
-  readonly startTime: string;
-  readonly endTime: string;
-  readonly type: "virtual" | "in-person" | "hybrid";
-  readonly room: string;
-  readonly link: string;
-  readonly attendees: readonly string[];
-  readonly status: "confirmed" | "tentative" | "cancelled";
-  readonly description: string;
-  readonly recurring: boolean;
-  readonly recurrence: string;
+	readonly id: number;
+	readonly title: string;
+	readonly organizer: string;
+	readonly date: string;
+	readonly startTime: string;
+	readonly endTime: string;
+	readonly type: "virtual" | "in-person" | "hybrid";
+	readonly room: string;
+	readonly link: string;
+	readonly attendees: readonly string[];
+	readonly status: "confirmed" | "tentative" | "cancelled";
+	readonly description: string;
+	readonly recurring: boolean;
+	readonly recurrence: string;
 }
 
 interface Room {
-  readonly id: number;
-  readonly name: string;
-  readonly building: string;
-  readonly floor: number;
-  readonly capacity: number;
-  readonly amenities: readonly string[];
-  readonly available: boolean;
-  readonly nextAvailable: string;
-  readonly image: string;
+	readonly id: number;
+	readonly name: string;
+	readonly building: string;
+	readonly floor: number;
+	readonly capacity: number;
+	readonly amenities: readonly string[];
+	readonly available: boolean;
+	readonly nextAvailable: string;
+	readonly image: string;
 }
 
-// ── Seed data ────────────────────────────────────────────────────────
+// ── External data ───────────────────────────────────────────────────
 
-const CONTACTS: Contact[] = [
-  {
-    id: 1,
-    name: "Alice Chen",
-    email: "alice.chen@acme.com",
-    department: "Engineering",
-    title: "Staff Engineer",
-    phone: "+1 555-0101",
-    avatar: "AC",
-    status: "online",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 2,
-    name: "Bob Martinez",
-    email: "bob.martinez@acme.com",
-    department: "Product",
-    title: "Product Manager",
-    phone: "+1 555-0102",
-    avatar: "BM",
-    status: "busy",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 3,
-    name: "Carol Davis",
-    email: "carol.davis@acme.com",
-    department: "Design",
-    title: "Senior Designer",
-    phone: "+1 555-0103",
-    avatar: "CD",
-    status: "online",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    email: "david.kim@acme.com",
-    department: "Engineering",
-    title: "Senior Developer",
-    phone: "+1 555-0104",
-    avatar: "DK",
-    status: "away",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 5,
-    name: "Eva Johansson",
-    email: "eva.j@partners.io",
-    department: "Sales",
-    title: "Account Executive",
-    phone: "+46 70-555-0105",
-    avatar: "EJ",
-    status: "online",
-    company: "Nordic Partners",
-    external: true,
-  },
-  {
-    id: 6,
-    name: "Frank Müller",
-    email: "frank.mueller@techgmbh.de",
-    department: "Engineering",
-    title: "Solutions Architect",
-    phone: "+49 170-555-0106",
-    avatar: "FM",
-    status: "offline",
-    company: "Tech GmbH",
-    external: true,
-  },
-  {
-    id: 7,
-    name: "Grace Okafor",
-    email: "grace.okafor@acme.com",
-    department: "HR",
-    title: "HR Director",
-    phone: "+1 555-0107",
-    avatar: "GO",
-    status: "online",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 8,
-    name: "Henry Tanaka",
-    email: "henry.tanaka@acme.com",
-    department: "Finance",
-    title: "CFO",
-    phone: "+1 555-0108",
-    avatar: "HT",
-    status: "busy",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 9,
-    name: "Irene Vasquez",
-    email: "irene.v@clientco.com",
-    department: "Legal",
-    title: "General Counsel",
-    phone: "+1 555-0109",
-    avatar: "IV",
-    status: "offline",
-    company: "ClientCo",
-    external: true,
-  },
-  {
-    id: 10,
-    name: "James Wright",
-    email: "james.wright@acme.com",
-    department: "Marketing",
-    title: "Marketing Lead",
-    phone: "+1 555-0110",
-    avatar: "JW",
-    status: "online",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 11,
-    name: "Karen Lee",
-    email: "karen.lee@acme.com",
-    department: "Engineering",
-    title: "QA Lead",
-    phone: "+1 555-0111",
-    avatar: "KL",
-    status: "away",
-    company: "Acme Corp",
-    external: false,
-  },
-  {
-    id: 12,
-    name: "Lars Petersen",
-    email: "lars.p@scandinavia.dk",
-    department: "Operations",
-    title: "Operations Director",
-    phone: "+45 20-555-0112",
-    avatar: "LP",
-    status: "online",
-    company: "Scandinavia Ltd",
-    external: true,
-  },
-];
-
-const MAIL_MESSAGES: MailMessage[] = [
-  {
-    id: 1,
-    from: "Alice Chen",
-    fromEmail: "alice.chen@acme.com",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "Q3 Architecture Review — Action Required",
-    preview:
-      "Hi, please review the attached architecture diagrams before Friday...",
-    body: "Hi,\n\nPlease review the attached architecture diagrams before Friday's meeting. We need sign-off on the microservices migration plan and the new event-driven integration layer.\n\nKey topics:\n- Service mesh configuration\n- API gateway rate limits\n- Database sharding strategy\n\nLet me know if you have any questions.\n\nBest,\nAlice",
-    date: "10:32 AM",
-    read: false,
-    starred: true,
-    folder: "inbox",
-    labels: ["engineering", "urgent"],
-    hasAttachment: true,
-    priority: "high",
-  },
-  {
-    id: 2,
-    from: "Bob Martinez",
-    fromEmail: "bob.martinez@acme.com",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "Sprint Planning — Next Week",
-    preview:
-      "Team, let's align on sprint priorities for next week. I've drafted...",
-    body: "Team,\n\nLet's align on sprint priorities for next week. I've drafted the backlog in Jira and we need to finalize story points.\n\nAgenda:\n1. Carry-over items from Sprint 14\n2. New feature: real-time notifications\n3. Tech debt budget (15%)\n4. Bug triage\n\nPlease come prepared with your capacity estimates.\n\nThanks,\nBob",
-    date: "9:15 AM",
-    read: false,
-    starred: false,
-    folder: "inbox",
-    labels: ["product"],
-    hasAttachment: false,
-    priority: "normal",
-  },
-  {
-    id: 3,
-    from: "Carol Davis",
-    fromEmail: "carol.davis@acme.com",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "Design System — New Component Proposals",
-    preview:
-      "I've put together mockups for the date range picker and timeline...",
-    body: "Hey,\n\nI've put together mockups for the date range picker and timeline components. They follow our existing Material 3 token structure.\n\nFigma link: [internal-link]\n\nI'd love your feedback on:\n- The interaction patterns for range selection\n- Timeline node density options\n- Dark mode contrast ratios\n\nCheers,\nCarol",
-    date: "Yesterday",
-    read: true,
-    starred: true,
-    folder: "inbox",
-    labels: ["design"],
-    hasAttachment: true,
-    priority: "normal",
-  },
-  {
-    id: 4,
-    from: "Eva Johansson",
-    fromEmail: "eva.j@partners.io",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "Partnership Renewal — Contract Review",
-    preview:
-      "Please find attached the updated partnership agreement for FY2027...",
-    body: "Dear team,\n\nPlease find attached the updated partnership agreement for FY2027. Key changes include:\n\n- Extended SLA terms (99.95% uptime)\n- New pricing tier for enterprise customers\n- Data residency clause for EU operations\n\nPlease review with your legal team and revert by end of month.\n\nKind regards,\nEva Johansson\nNordic Partners",
-    date: "Yesterday",
-    read: true,
-    starred: false,
-    folder: "inbox",
-    labels: ["external", "legal"],
-    hasAttachment: true,
-    priority: "high",
-  },
-  {
-    id: 5,
-    from: "Grace Okafor",
-    fromEmail: "grace.okafor@acme.com",
-    to: "All Staff",
-    toEmail: "all@acme.com",
-    subject: "Company Town Hall — March 28",
-    preview: "Join us for the quarterly town hall next Thursday at 3 PM EST...",
-    body: "Hi everyone,\n\nJoin us for the quarterly town hall next Thursday at 3 PM EST.\n\nAgenda:\n- Q1 performance review (Henry)\n- Product roadmap update (Bob)\n- Engineering highlights (Alice)\n- Open Q&A session\n\nVirtual attendees: Meeting link will be sent 30 minutes before.\nIn-person: Main auditorium, Building A, Floor 1.\n\nPlease submit questions in advance via the HR portal.\n\nBest,\nGrace",
-    date: "Mar 20",
-    read: true,
-    starred: false,
-    folder: "inbox",
-    labels: ["company", "event"],
-    hasAttachment: false,
-    priority: "normal",
-  },
-  {
-    id: 6,
-    from: "You",
-    fromEmail: "me@acme.com",
-    to: "Frank Müller",
-    toEmail: "frank.mueller@techgmbh.de",
-    subject: "Re: Integration API — Technical Specs",
-    preview:
-      "Frank, thanks for the detailed spec. I have a few questions about...",
-    body: "Frank,\n\nThanks for the detailed spec. I have a few questions about the authentication flow:\n\n1. Are you using OAuth 2.0 with PKCE or standard client credentials?\n2. What's the token refresh interval?\n3. Do you support webhook callbacks for async operations?\n\nWe can discuss on our call Thursday.\n\nRegards",
-    date: "Mar 19",
-    read: true,
-    starred: false,
-    folder: "sent",
-    labels: ["engineering", "external"],
-    hasAttachment: false,
-    priority: "normal",
-  },
-  {
-    id: 7,
-    from: "You",
-    fromEmail: "me@acme.com",
-    to: "Henry Tanaka",
-    toEmail: "henry.tanaka@acme.com",
-    subject: "Budget Approval — Cloud Infrastructure Q2",
-    preview:
-      "Henry, attached is the Q2 infrastructure budget proposal covering...",
-    body: "Henry,\n\nAttached is the Q2 infrastructure budget proposal covering:\n\n- AWS compute scaling: +$12K/mo\n- Database cluster upgrade: $8K one-time\n- CDN expansion to APAC: +$3K/mo\n- Monitoring stack (Datadog): $5K/mo\n\nTotal incremental: $28K/month\nROI analysis is on page 4.\n\nHappy to walk through the numbers at your convenience.\n\nThanks",
-    date: "Mar 18",
-    read: true,
-    starred: true,
-    folder: "sent",
-    labels: ["finance"],
-    hasAttachment: true,
-    priority: "high",
-  },
-  {
-    id: 8,
-    from: "You",
-    fromEmail: "me@acme.com",
-    to: "Team",
-    toEmail: "eng-team@acme.com",
-    subject: "Draft: Incident Response Playbook v2",
-    preview:
-      "Team, here's the updated incident response playbook. Please review...",
-    body: "Team,\n\nHere's the updated incident response playbook. Major changes:\n\n- Severity classification updated (P0–P3 scale)\n- On-call rotation now 1 week instead of 2\n- Mandatory post-mortem for P0/P1\n- Slack channel naming convention standardized\n\nThis is still a draft — please add comments directly.\n\n[Draft will be finalized next week]",
-    date: "Mar 17",
-    read: true,
-    starred: false,
-    folder: "drafts",
-    labels: ["engineering"],
-    hasAttachment: false,
-    priority: "normal",
-  },
-  {
-    id: 9,
-    from: "James Wright",
-    fromEmail: "james.wright@acme.com",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "Product Launch Campaign — Asset Review",
-    preview:
-      "Can you take a look at the launch page copy and the demo video...",
-    body: "Hey,\n\nCan you take a look at the launch page copy and the demo video script? We're targeting April 15 for the public launch.\n\nDeliverables needed from engineering:\n- Interactive demo environment\n- API documentation portal\n- Performance benchmarks page\n\nDeadline for assets: April 5.\n\nThanks,\nJames",
-    date: "Mar 16",
-    read: true,
-    starred: false,
-    folder: "inbox",
-    labels: ["marketing"],
-    hasAttachment: true,
-    priority: "normal",
-  },
-  {
-    id: 10,
-    from: "Karen Lee",
-    fromEmail: "karen.lee@acme.com",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "QA Report — Release Candidate 4.2.0",
-    preview: "RC 4.2.0 regression suite complete. 3 blockers identified in...",
-    body: "Hi,\n\nRC 4.2.0 regression suite complete.\n\nResults:\n- Total tests: 2,847\n- Passed: 2,831\n- Failed: 13\n- Skipped: 3\n\nBlockers (3):\n1. Payment flow timeout on high latency connections\n2. Calendar sync loses recurring events on timezone change\n3. File upload progress bar freezes at 99%\n\nFull report attached. Please triage before Wednesday.\n\nKaren",
-    date: "Mar 15",
-    read: true,
-    starred: true,
-    folder: "inbox",
-    labels: ["engineering", "qa"],
-    hasAttachment: true,
-    priority: "urgent",
-  },
-  {
-    id: 11,
-    from: "David Kim",
-    fromEmail: "david.kim@acme.com",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "Code Review — Event Bus Implementation",
-    preview: "I've pushed the event bus PR. Key changes in src/core/events...",
-    body: "Hey,\n\nI've pushed the event bus PR (#1847). Key changes:\n\n- New EventBus class with typed channels\n- Backpressure handling for high-throughput streams\n- Dead letter queue for failed deliveries\n- Unit tests (98% coverage)\n\nPR: github.com/acme/platform/pull/1847\n\nCould use a review before EOD if possible.\n\nThanks,\nDavid",
-    date: "Mar 14",
-    read: true,
-    starred: false,
-    folder: "archive",
-    labels: ["engineering"],
-    hasAttachment: false,
-    priority: "normal",
-  },
-  {
-    id: 12,
-    from: "Irene Vasquez",
-    fromEmail: "irene.v@clientco.com",
-    to: "You",
-    toEmail: "me@acme.com",
-    subject: "Data Processing Agreement — Updates Required",
-    preview: "Per GDPR Article 28, we need to update our DPA to include...",
-    body: "Dear team,\n\nPer GDPR Article 28, we need to update our Data Processing Agreement to include:\n\n1. Sub-processor notification requirements\n2. Cross-border data transfer mechanisms (SCCs updated)\n3. Data retention schedule alignment\n4. Breach notification timeline (72 hours)\n\nPlease have your DPO review and sign by April 1.\n\nRegards,\nIrene Vasquez\nGeneral Counsel, ClientCo",
-    date: "Mar 12",
-    read: true,
-    starred: false,
-    folder: "archive",
-    labels: ["legal", "external"],
-    hasAttachment: true,
-    priority: "high",
-  },
-];
-
-const CHAT_CHANNELS: ChatChannel[] = [
-  {
-    id: 1,
-    name: "general",
-    type: "channel",
-    members: 48,
-    lastMessage: "Town hall recording has been posted to the intranet",
-    lastSender: "Grace Okafor",
-    lastTime: "11:42 AM",
-    unread: 3,
-    description: "Company-wide announcements and general discussion",
-    pinned: true,
-  },
-  {
-    id: 2,
-    name: "engineering",
-    type: "channel",
-    members: 22,
-    lastMessage:
-      "Deployed v4.1.9 to staging — please smoke test the calendar module",
-    lastSender: "Alice Chen",
-    lastTime: "10:58 AM",
-    unread: 7,
-    description: "Engineering team discussions, PR reviews, and incidents",
-    pinned: true,
-  },
-  {
-    id: 3,
-    name: "design-system",
-    type: "channel",
-    members: 12,
-    lastMessage: "New icon set pushed to the registry, 14 new glyphs",
-    lastSender: "Carol Davis",
-    lastTime: "9:30 AM",
-    unread: 2,
-    description: "Component library, tokens, and design system updates",
-    pinned: false,
-  },
-  {
-    id: 4,
-    name: "Alice Chen",
-    type: "direct",
-    members: 2,
-    lastMessage: "Sounds good, I'll update the PR",
-    lastSender: "Alice Chen",
-    lastTime: "10:15 AM",
-    unread: 0,
-    description: "",
-    pinned: false,
-  },
-  {
-    id: 5,
-    name: "Bob Martinez",
-    type: "direct",
-    members: 2,
-    lastMessage: "Sprint retro moved to 3 PM",
-    lastSender: "Bob Martinez",
-    lastTime: "9:05 AM",
-    unread: 1,
-    description: "",
-    pinned: false,
-  },
-  {
-    id: 6,
-    name: "Project Phoenix",
-    type: "group",
-    members: 8,
-    lastMessage:
-      "Milestone 3 is on track — deployment scheduled for next Tuesday",
-    lastSender: "David Kim",
-    lastTime: "Yesterday",
-    unread: 0,
-    description: "Cross-functional team for the Phoenix migration project",
-    pinned: true,
-  },
-  {
-    id: 7,
-    name: "incidents",
-    type: "channel",
-    members: 30,
-    lastMessage:
-      "RESOLVED: API latency spike on us-east-1 — root cause: connection pool exhaustion",
-    lastSender: "Karen Lee",
-    lastTime: "Yesterday",
-    unread: 0,
-    description: "Production incident coordination and post-mortems",
-    pinned: false,
-  },
-  {
-    id: 8,
-    name: "random",
-    type: "channel",
-    members: 48,
-    lastMessage: "Has anyone tried the new coffee blend in the kitchen?",
-    lastSender: "James Wright",
-    lastTime: "Yesterday",
-    unread: 0,
-    description: "Water cooler chat and non-work banter",
-    pinned: false,
-  },
-  {
-    id: 9,
-    name: "Eva Johansson",
-    type: "direct",
-    members: 2,
-    lastMessage: "Contract revision sent — thanks for the quick turnaround",
-    lastSender: "Eva Johansson",
-    lastTime: "Mar 20",
-    unread: 0,
-    description: "",
-    pinned: false,
-  },
-  {
-    id: 10,
-    name: "leadership",
-    type: "group",
-    members: 6,
-    lastMessage: "Q2 OKR draft is ready for review",
-    lastSender: "Henry Tanaka",
-    lastTime: "Mar 19",
-    unread: 0,
-    description: "Senior leadership coordination and strategic discussions",
-    pinned: false,
-  },
-];
-
-const CHAT_MESSAGES: ChatMessage[] = [
-  {
-    id: 1,
-    channelId: 2,
-    sender: "Alice Chen",
-    text: "Deployed v4.1.9 to staging — please smoke test the calendar module",
-    time: "10:58 AM",
-    reactions: [],
-  },
-  {
-    id: 2,
-    channelId: 2,
-    sender: "David Kim",
-    text: "On it. I'll check the recurring event sync first since that was flaky",
-    time: "11:02 AM",
-    reactions: [],
-  },
-  {
-    id: 3,
-    channelId: 2,
-    sender: "Karen Lee",
-    text: "Calendar looks good so far. File upload still has the 99% freeze though",
-    time: "11:15 AM",
-    reactions: [],
-  },
-  {
-    id: 4,
-    channelId: 2,
-    sender: "Alice Chen",
-    text: "That's in a separate PR (#1853). Should land tomorrow morning",
-    time: "11:18 AM",
-    reactions: [],
-  },
-  {
-    id: 5,
-    channelId: 2,
-    sender: "David Kim",
-    text: "Recurring events confirmed working. Timezone edge case also fixed",
-    time: "11:34 AM",
-    reactions: [],
-  },
-  {
-    id: 6,
-    channelId: 1,
-    sender: "Grace Okafor",
-    text: "Town hall recording has been posted to the intranet. Thanks everyone for attending!",
-    time: "11:42 AM",
-    reactions: [],
-  },
-  {
-    id: 7,
-    channelId: 1,
-    sender: "Bob Martinez",
-    text: "Great session. The product roadmap slide was very clear this time",
-    time: "11:45 AM",
-    reactions: [],
-  },
-  {
-    id: 8,
-    channelId: 1,
-    sender: "James Wright",
-    text: "Agreed! Also loved the engineering demo. Well done @Alice",
-    time: "11:48 AM",
-    reactions: [],
-  },
-  {
-    id: 9,
-    channelId: 3,
-    sender: "Carol Davis",
-    text: "New icon set pushed to the registry, 14 new glyphs added to the Communication category",
-    time: "9:30 AM",
-    reactions: [],
-  },
-  {
-    id: 10,
-    channelId: 3,
-    sender: "Carol Davis",
-    text: "Also updated the Figma component library with the new card variants",
-    time: "9:32 AM",
-    reactions: [],
-  },
-];
-
-// ── Chat participants (for UIChatView) ───────────────────────────
+const CONTACTS = communicationSuiteData.contacts as Contact[];
+const MAIL_MESSAGES = communicationSuiteData.mailMessages as MailMessage[];
+const CHAT_CHANNELS = communicationSuiteData.chatChannels as ChatChannel[];
+const CHAT_MESSAGES = communicationSuiteData.chatMessages as ChatMessage[];
+const currentUserData = communicationSuiteData.currentUser as {
+	readonly id: string;
+	readonly name: string;
+};
 
 const CURRENT_USER: ChatParticipant = {
-  id: "you",
-  name: "You",
-  avatarEmail: "you@acme.com",
+	id: currentUserData.id,
+	name: currentUserData.name,
+	avatarEmail: "kris.thompson@acme.com",
 };
 
-const CHAT_PARTICIPANTS: Record<string, ChatParticipant> = {
-  "Alice Chen": {
-    id: "alice",
-    name: "Alice Chen",
-    avatarEmail: "alice@acme.com",
-  },
-  "David Kim": {
-    id: "david",
-    name: "David Kim",
-    avatarEmail: "david@acme.com",
-  },
-  "Karen Lee": {
-    id: "karen",
-    name: "Karen Lee",
-    avatarEmail: "karen@acme.com",
-  },
-  "Grace Okafor": {
-    id: "grace",
-    name: "Grace Okafor",
-    avatarEmail: "grace@acme.com",
-  },
-  "Bob Martinez": {
-    id: "bob",
-    name: "Bob Martinez",
-    avatarEmail: "bob@acme.com",
-  },
-  "James Wright": {
-    id: "james",
-    name: "James Wright",
-    avatarEmail: "james@acme.com",
-  },
-  "Carol Davis": {
-    id: "carol",
-    name: "Carol Davis",
-    avatarEmail: "carol@acme.com",
-  },
-  "Eva Johansson": {
-    id: "eva",
-    name: "Eva Johansson",
-    avatarEmail: "eva@acme.com",
-  },
-  "Henry Tanaka": {
-    id: "henry",
-    name: "Henry Tanaka",
-    avatarEmail: "henry@acme.com",
-  },
-};
+const CHAT_PARTICIPANTS: Record<string, ChatParticipant> = Object.fromEntries(
+	CONTACTS.map((contact) => [
+		contact.name,
+		{
+			id: `contact-${contact.id}`,
+			name: contact.name,
+			avatarEmail: contact.email,
+		},
+	]),
+) as Record<string, ChatParticipant>;
+
+CHAT_PARTICIPANTS[CURRENT_USER.name] = CURRENT_USER;
 
 function toChatViewMessages(msgs: ChatMessage[]): ChatViewMessage[] {
-  const today = new Date("2026-03-25");
-  return msgs.map((m) => {
-    const match = m.time.match(/(\d+):(\d+)\s*(AM|PM)/i);
-    let h = match ? parseInt(match[1], 10) : 0;
-    const min = match ? parseInt(match[2], 10) : 0;
-    if (match && match[3].toUpperCase() === "PM" && h < 12) h += 12;
-    if (match && match[3].toUpperCase() === "AM" && h === 12) h = 0;
-    const ts = new Date(today);
-    ts.setHours(h, min, 0, 0);
-    return {
-      id: String(m.id),
-      content: m.text,
-      timestamp: ts,
-      sender: CHAT_PARTICIPANTS[m.sender] ?? {
-        id: m.sender.toLowerCase().replace(/\s/g, "-"),
-        name: m.sender,
-      },
-    };
-  });
+	const today = new Date("2026-03-25");
+	return msgs.map((m) => {
+		const match = m.time.match(/(\d+):(\d+)(?:\s*(AM|PM))?/i);
+		let hour = match ? parseInt(match[1], 10) : 0;
+		const minute = match ? parseInt(match[2], 10) : 0;
+		const meridiem = match?.[3]?.toUpperCase();
+		if (meridiem === "PM" && hour < 12) {
+			hour += 12;
+		}
+		if (meridiem === "AM" && hour === 12) {
+			hour = 0;
+		}
+		const ts = new Date(today);
+		ts.setHours(hour, minute, 0, 0);
+		return {
+			id: String(m.id),
+			content: m.text,
+			timestamp: ts,
+			sender: CHAT_PARTICIPANTS[m.sender] ?? {
+				id: m.sender.toLowerCase().replace(/\s/g, "-"),
+				name: m.sender,
+			},
+		};
+	});
 }
 
-const MEETINGS: Meeting[] = [
-  {
-    id: 1,
-    title: "Sprint Planning — Sprint 15",
-    organizer: "Bob Martinez",
-    date: "2026-03-25",
-    startTime: "10:00",
-    endTime: "11:30",
-    type: "hybrid",
-    room: "Collaboration Hub",
-    link: "https://meet.acme.com/sprint-15",
-    attendees: [
-      "Alice Chen",
-      "Bob Martinez",
-      "David Kim",
-      "Karen Lee",
-      "Carol Davis",
-    ],
-    status: "confirmed",
-    description:
-      "Sprint planning for Sprint 15. Review backlog, estimate stories, assign tasks.",
-    recurring: true,
-    recurrence: "Every 2 weeks",
-  },
-  {
-    id: 2,
-    title: "Architecture Review",
-    organizer: "Alice Chen",
-    date: "2026-03-26",
-    startTime: "14:00",
-    endTime: "15:00",
-    type: "virtual",
-    room: "",
-    link: "https://meet.acme.com/arch-review",
-    attendees: ["Alice Chen", "David Kim", "Frank Müller"],
-    status: "confirmed",
-    description:
-      "Review the microservices migration plan and event-driven architecture proposal.",
-    recurring: false,
-    recurrence: "",
-  },
-  {
-    id: 3,
-    title: "1:1 — Henry Tanaka",
-    organizer: "You",
-    date: "2026-03-25",
-    startTime: "13:00",
-    endTime: "13:30",
-    type: "in-person",
-    room: "Executive Boardroom",
-    link: "",
-    attendees: ["Henry Tanaka"],
-    status: "confirmed",
-    description: "Monthly budget review and Q2 planning discussion.",
-    recurring: true,
-    recurrence: "Monthly",
-  },
-  {
-    id: 4,
-    title: "Design Review — New Components",
-    organizer: "Carol Davis",
-    date: "2026-03-27",
-    startTime: "11:00",
-    endTime: "12:00",
-    type: "hybrid",
-    room: "Design Lab",
-    link: "https://meet.acme.com/design-review",
-    attendees: ["Carol Davis", "Alice Chen", "Bob Martinez"],
-    status: "confirmed",
-    description:
-      "Review mockups for date range picker, timeline, and notification center components.",
-    recurring: true,
-    recurrence: "Weekly",
-  },
-  {
-    id: 5,
-    title: "All Hands — Town Hall",
-    organizer: "Grace Okafor",
-    date: "2026-03-28",
-    startTime: "15:00",
-    endTime: "16:30",
-    type: "hybrid",
-    room: "Main Auditorium",
-    link: "https://meet.acme.com/town-hall-q1",
-    attendees: [
-      "All Staff",
-      "Grace Okafor",
-      "Henry Tanaka",
-      "Bob Martinez",
-      "Alice Chen",
-    ],
-    status: "confirmed",
-    description:
-      "Quarterly town hall: Q1 review, product roadmap, engineering highlights, open Q&A.",
-    recurring: true,
-    recurrence: "Quarterly",
-  },
-  {
-    id: 6,
-    title: "Client Sync — Nordic Partners",
-    organizer: "Eva Johansson",
-    date: "2026-03-26",
-    startTime: "09:00",
-    endTime: "09:45",
-    type: "virtual",
-    room: "",
-    link: "https://meet.partners.io/acme-sync",
-    attendees: ["Eva Johansson", "Lars Petersen"],
-    status: "confirmed",
-    description: "Partnership renewal discussion and FY2027 contract review.",
-    recurring: true,
-    recurrence: "Biweekly",
-  },
-  {
-    id: 7,
-    title: "Incident Post-Mortem — API Latency",
-    organizer: "Karen Lee",
-    date: "2026-03-27",
-    startTime: "14:00",
-    endTime: "14:45",
-    type: "virtual",
-    room: "",
-    link: "https://meet.acme.com/postmortem-api",
-    attendees: ["Karen Lee", "Alice Chen", "David Kim"],
-    status: "confirmed",
-    description:
-      "Post-mortem for the us-east-1 API latency incident. Root cause: connection pool exhaustion.",
-    recurring: false,
-    recurrence: "",
-  },
-  {
-    id: 8,
-    title: "Product Launch Kickoff",
-    organizer: "James Wright",
-    date: "2026-03-28",
-    startTime: "10:00",
-    endTime: "11:00",
-    type: "in-person",
-    room: "Innovation Suite",
-    link: "",
-    attendees: ["James Wright", "Bob Martinez", "Carol Davis", "Alice Chen"],
-    status: "tentative",
-    description:
-      "Kick off the April 15 product launch campaign. Asset assignments and timeline review.",
-    recurring: false,
-    recurrence: "",
-  },
-  {
-    id: 9,
-    title: "Legal Review — DPA Update",
-    organizer: "Irene Vasquez",
-    date: "2026-03-28",
-    startTime: "11:30",
-    endTime: "12:15",
-    type: "virtual",
-    room: "",
-    link: "https://meet.clientco.com/dpa-review",
-    attendees: ["Irene Vasquez", "Grace Okafor"],
-    status: "tentative",
-    description:
-      "Review updated Data Processing Agreement per GDPR Article 28 requirements.",
-    recurring: false,
-    recurrence: "",
-  },
-  {
-    id: 10,
-    title: "Engineering Standup",
-    organizer: "Alice Chen",
-    date: "2026-03-25",
-    startTime: "09:15",
-    endTime: "09:30",
-    type: "virtual",
-    room: "",
-    link: "https://meet.acme.com/standup",
-    attendees: ["Alice Chen", "David Kim", "Karen Lee"],
-    status: "confirmed",
-    description: "Daily engineering standup — blockers, progress, plans.",
-    recurring: true,
-    recurrence: "Daily (weekdays)",
-  },
-  {
-    id: 11,
-    title: "Team Lunch — Engineering",
-    organizer: "Alice Chen",
-    date: "2026-03-26",
-    startTime: "12:00",
-    endTime: "13:00",
-    type: "in-person",
-    room: "Cafeteria",
-    link: "",
-    attendees: ["Alice Chen", "David Kim", "Karen Lee", "Carol Davis"],
-    status: "confirmed",
-    description: "Monthly team lunch. This month: Italian catering.",
-    recurring: true,
-    recurrence: "Monthly",
-  },
-  {
-    id: 12,
-    title: "Security Audit Planning",
-    organizer: "David Kim",
-    date: "2026-03-29",
-    startTime: "10:00",
-    endTime: "11:00",
-    type: "virtual",
-    room: "",
-    link: "https://meet.acme.com/security-audit",
-    attendees: ["David Kim", "Alice Chen", "Irene Vasquez"],
-    status: "confirmed",
-    description:
-      "Plan the Q2 security audit scope: penetration testing, dependency scanning, access reviews.",
-    recurring: false,
-    recurrence: "",
-  },
-];
-
-const ROOMS: Room[] = [
-  {
-    id: 1,
-    name: "Collaboration Hub",
-    building: "Building A",
-    floor: 2,
-    capacity: 12,
-    amenities: [
-      "Video conferencing",
-      "Whiteboard",
-      "Dual monitors",
-      "Standing desk option",
-    ],
-    available: true,
-    nextAvailable: "Now",
-    image: "collab-hub.jpg",
-  },
-  {
-    id: 2,
-    name: "Executive Boardroom",
-    building: "Building A",
-    floor: 5,
-    capacity: 20,
-    amenities: [
-      "Video conferencing",
-      "Projector",
-      "Catering service",
-      "Soundproofed",
-    ],
-    available: false,
-    nextAvailable: "2:00 PM",
-    image: "boardroom.jpg",
-  },
-  {
-    id: 3,
-    name: "Design Lab",
-    building: "Building B",
-    floor: 1,
-    capacity: 8,
-    amenities: [
-      "Large display",
-      "Drawing tablets",
-      "Whiteboard wall",
-      "Natural light",
-    ],
-    available: true,
-    nextAvailable: "Now",
-    image: "design-lab.jpg",
-  },
-  {
-    id: 4,
-    name: "Main Auditorium",
-    building: "Building A",
-    floor: 1,
-    capacity: 200,
-    amenities: [
-      "Stage",
-      "Projector",
-      "PA system",
-      "Live streaming",
-      "Recording",
-    ],
-    available: false,
-    nextAvailable: "Tomorrow 8:00 AM",
-    image: "auditorium.jpg",
-  },
-  {
-    id: 5,
-    name: "Innovation Suite",
-    building: "Building B",
-    floor: 3,
-    capacity: 16,
-    amenities: [
-      "Video conferencing",
-      "Interactive display",
-      "Breakout area",
-      "Snack bar",
-    ],
-    available: true,
-    nextAvailable: "Now",
-    image: "innovation.jpg",
-  },
-  {
-    id: 6,
-    name: "Focus Pod Alpha",
-    building: "Building A",
-    floor: 3,
-    capacity: 2,
-    amenities: ["Soundproofed", "Monitor", "Standing desk"],
-    available: true,
-    nextAvailable: "Now",
-    image: "focus-pod.jpg",
-  },
-  {
-    id: 7,
-    name: "Focus Pod Beta",
-    building: "Building A",
-    floor: 3,
-    capacity: 2,
-    amenities: ["Soundproofed", "Monitor", "Standing desk"],
-    available: false,
-    nextAvailable: "3:30 PM",
-    image: "focus-pod.jpg",
-  },
-  {
-    id: 8,
-    name: "Training Room",
-    building: "Building B",
-    floor: 2,
-    capacity: 30,
-    amenities: [
-      "Projector",
-      "Individual workstations",
-      "Video conferencing",
-      "Recording",
-    ],
-    available: true,
-    nextAvailable: "Now",
-    image: "training.jpg",
-  },
-  {
-    id: 9,
-    name: "Cafeteria Meeting Nook",
-    building: "Building A",
-    floor: 1,
-    capacity: 6,
-    amenities: ["Informal", "Coffee available", "Natural light"],
-    available: true,
-    nextAvailable: "Now",
-    image: "cafe-nook.jpg",
-  },
-  {
-    id: 10,
-    name: "Rooftop Terrace",
-    building: "Building B",
-    floor: 5,
-    capacity: 25,
-    amenities: ["Outdoor", "Weather dependent", "Portable whiteboard", "Wi-Fi"],
-    available: true,
-    nextAvailable: "Now",
-    image: "rooftop.jpg",
-  },
-];
+const MEETINGS = communicationSuiteData.meetings as Meeting[];
+const ROOMS = communicationSuiteData.rooms as Room[];
 
 // ── Calendar events (generated from meetings) ────────────────────────
 

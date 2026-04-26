@@ -11,6 +11,8 @@ import {
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
+import videoSharingData from "./data/video-sharing-app.data.json";
+
 import {
   FilterableArrayDatasource,
   UIAccordion,
@@ -62,7 +64,12 @@ interface Video {
   readonly likes: number;
   readonly dislikes: number;
   readonly comments: number;
-  readonly status: "published" | "processing" | "draft" | "removed";
+  readonly status:
+    | "published"
+    | "processing"
+    | "draft"
+    | "scheduled"
+    | "removed";
 }
 
 interface Channel {
@@ -94,486 +101,12 @@ interface Playlist {
   readonly lastUpdated: string;
 }
 
-// ── Video data generator ─────────────────────────────────────────────
+// ── External data ───────────────────────────────────────────────────
 
-const VIDEO_TITLES_EXTRA: readonly string[] = [
-  "CSS Grid vs Flexbox — When to Use Which",
-  "Exploring Patagonia on a Budget",
-  "Deep House Mix — Late Night Session",
-  "How Batteries Actually Work",
-  "Sushi at Home — Beginner's Guide",
-  "Building CLI Tools with Node.js",
-  "30-Day Fitness Challenge Results",
-  "The Physics of Black Holes Explained",
-  "Night Photography Masterclass",
-  "React vs Angular vs Vue in 2026",
-  "Thai Street Food Tour — Bangkok",
-  "Ambient Study Music — 4 Hour Mix",
-  "How GPS Satellites Work",
-  "One-Pan Pasta Recipes — 5 Ideas",
-  "Debugging Like a Senior Developer",
-  "HIIT Workout — No Equipment Needed",
-  "What Happens Inside a Nuclear Reactor",
-  "Film Photography on a Budget",
-  "Docker & Kubernetes Crash Course",
-  "Hidden Beaches of Portugal",
-  "Jazz Piano Improvisation Tips",
-  "The Science of Sleep",
-  "Korean BBQ at Home — Full Guide",
-  "Git Rebase vs Merge — Finally Explained",
-  "Cycling Across Japan — Day 1",
-  "Lo-fi Jazz & Rain Sounds — 3 Hours",
-  "How Transistors Changed the World",
-  "Meal Prep Sunday — Healthy Lunches",
-  "System Design Interview Prep",
-  "Sunrise Yoga on the Beach",
-  "The True Scale of the Universe",
-  "Macro Photography Tips & Tricks",
-  "Building a Game Engine from Scratch",
-  "Backpacking Through Vietnam",
-  "Acoustic Guitar Covers Playlist",
-  "How mRNA Vaccines Work",
-  "Perfect Sourdough Bread Recipe",
-  "Rust Programming for Beginners",
-  "Full Body Stretch Routine — 15 Min",
-  "Why the Ocean is Salty",
-  "Architectural Photography Guide",
-];
-
-const CHANNEL_POOL: readonly { name: string; avatar: string }[] = [
-  { name: "CodeCraft Studio", avatar: "CC" },
-  { name: "ChillWave Radio", avatar: "CW" },
-  { name: "Wanderlust Diaries", avatar: "WD" },
-  { name: "ScienceNova", avatar: "SN" },
-  { name: "Umami Kitchen", avatar: "UK" },
-  { name: "DevTools Daily", avatar: "DD" },
-  { name: "ZenBody Fitness", avatar: "ZB" },
-  { name: "LensLife", avatar: "LL" },
-  { name: "PixelPlay", avatar: "PP" },
-  { name: "BeatStream", avatar: "BS" },
-];
-
-const CATEGORY_POOL: readonly string[] = [
-  "Education",
-  "Music",
-  "Travel",
-  "Science",
-  "Food",
-  "Fitness",
-  "Gaming",
-];
-
-const VIEW_POOL: readonly string[] = [
-  "1.2M views",
-  "845K views",
-  "3.4M views",
-  "210K views",
-  "560K views",
-  "92K views",
-  "1.7M views",
-  "430K views",
-  "2.1M views",
-  "78K views",
-  "1.5M views",
-  "320K views",
-];
-
-const UPLOAD_POOL: readonly string[] = [
-  "2 hours ago",
-  "1 day ago",
-  "3 days ago",
-  "1 week ago",
-  "2 weeks ago",
-  "1 month ago",
-  "3 months ago",
-  "6 months ago",
-];
-
-function generateDuration(idx: number): string {
-  const mins = 5 + ((idx * 7 + 3) % 55);
-  const secs = (idx * 13 + 7) % 60;
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
-}
-
-function generateExtendedVideos(seed: Video[], total: number): Video[] {
-  const result = [...seed];
-  let nextId = seed.length + 1;
-  for (let i = 0; result.length < total; i++) {
-    const titleIdx = i % VIDEO_TITLES_EXTRA.length;
-    const ch = CHANNEL_POOL[i % CHANNEL_POOL.length];
-    const cat = CATEGORY_POOL[i % CATEGORY_POOL.length];
-    result.push({
-      id: nextId++,
-      title: VIDEO_TITLES_EXTRA[titleIdx],
-      channel: ch.name,
-      channelAvatar: ch.avatar,
-      views: VIEW_POOL[i % VIEW_POOL.length],
-      uploaded: UPLOAD_POOL[i % UPLOAD_POOL.length],
-      duration: generateDuration(i),
-      category: cat,
-      likes: 1000 + ((i * 1237) % 90000),
-      dislikes: 10 + ((i * 37) % 800),
-      comments: 50 + ((i * 89) % 5000),
-      status: "published",
-    });
-  }
-  return result;
-}
-
-// ── Seed data ────────────────────────────────────────────────────────
-
-const VIDEOS_SEED: Video[] = [
-  {
-    id: 1,
-    title: "Building a REST API from Scratch — Full Course",
-    channel: "CodeCraft Studio",
-    channelAvatar: "CC",
-    views: "1.2M views",
-    uploaded: "2 weeks ago",
-    duration: "3:24:10",
-    category: "Education",
-    likes: 42300,
-    dislikes: 812,
-    comments: 3480,
-    status: "published",
-  },
-  {
-    id: 2,
-    title: "Lo-fi Beats to Code & Relax To",
-    channel: "ChillWave Radio",
-    channelAvatar: "CW",
-    views: "8.4M views",
-    uploaded: "6 months ago",
-    duration: "11:54:32",
-    category: "Music",
-    likes: 195000,
-    dislikes: 2100,
-    comments: 12400,
-    status: "published",
-  },
-  {
-    id: 3,
-    title: "Top 10 Hidden Gems in Iceland — Travel Vlog",
-    channel: "Wanderlust Diaries",
-    channelAvatar: "WD",
-    views: "572K views",
-    uploaded: "1 month ago",
-    duration: "22:18",
-    category: "Travel",
-    likes: 23100,
-    dislikes: 340,
-    comments: 1850,
-    status: "published",
-  },
-  {
-    id: 4,
-    title: "Why Quantum Computers Will Change Everything",
-    channel: "ScienceNova",
-    channelAvatar: "SN",
-    views: "3.1M views",
-    uploaded: "3 weeks ago",
-    duration: "18:45",
-    category: "Science",
-    likes: 98700,
-    dislikes: 1560,
-    comments: 7200,
-    status: "published",
-  },
-  {
-    id: 5,
-    title: "Perfect Homemade Ramen — Chef's Recipe",
-    channel: "Umami Kitchen",
-    channelAvatar: "UK",
-    views: "2.7M views",
-    uploaded: "2 months ago",
-    duration: "16:33",
-    category: "Food",
-    likes: 87600,
-    dislikes: 910,
-    comments: 4320,
-    status: "published",
-  },
-  {
-    id: 6,
-    title: "Advanced TypeScript Patterns You Should Know",
-    channel: "CodeCraft Studio",
-    channelAvatar: "CC",
-    views: "340K views",
-    uploaded: "5 days ago",
-    duration: "45:12",
-    category: "Education",
-    likes: 15200,
-    dislikes: 110,
-    comments: 892,
-    status: "published",
-  },
-  {
-    id: 7,
-    title: "Morning Yoga Flow — 20 Minute Routine",
-    channel: "ZenBody Fitness",
-    channelAvatar: "ZB",
-    views: "1.8M views",
-    uploaded: "4 months ago",
-    duration: "21:07",
-    category: "Fitness",
-    likes: 67400,
-    dislikes: 420,
-    comments: 2910,
-    status: "published",
-  },
-  {
-    id: 8,
-    title: "The History of the Internet in 30 Minutes",
-    channel: "ScienceNova",
-    channelAvatar: "SN",
-    views: "890K views",
-    uploaded: "1 week ago",
-    duration: "31:22",
-    category: "Science",
-    likes: 34100,
-    dislikes: 280,
-    comments: 1640,
-    status: "published",
-  },
-  {
-    id: 9,
-    title: "Street Photography Tips for Beginners",
-    channel: "LensLife",
-    channelAvatar: "LL",
-    views: "445K views",
-    uploaded: "3 months ago",
-    duration: "14:58",
-    category: "Education",
-    likes: 19800,
-    dislikes: 150,
-    comments: 1120,
-    status: "published",
-  },
-  {
-    id: 10,
-    title: "Uploading new content — processing",
-    channel: "CodeCraft Studio",
-    channelAvatar: "CC",
-    views: "0 views",
-    uploaded: "Just now",
-    duration: "8:20",
-    category: "Education",
-    likes: 0,
-    dislikes: 0,
-    comments: 0,
-    status: "processing",
-  },
-  {
-    id: 11,
-    title: "Draft: Gaming Setup Tour 2026",
-    channel: "PixelPlay",
-    channelAvatar: "PP",
-    views: "0 views",
-    uploaded: "—",
-    duration: "12:44",
-    category: "Gaming",
-    likes: 0,
-    dislikes: 0,
-    comments: 0,
-    status: "draft",
-  },
-  {
-    id: 12,
-    title: "[Removed] Community guideline violation",
-    channel: "Unknown",
-    channelAvatar: "XX",
-    views: "12K views",
-    uploaded: "2 weeks ago",
-    duration: "5:10",
-    category: "Other",
-    likes: 0,
-    dislikes: 0,
-    comments: 0,
-    status: "removed",
-  },
-];
-
-const VIDEOS = generateExtendedVideos(VIDEOS_SEED, 60);
-
-const CHANNELS: Channel[] = [
-  {
-    id: 1,
-    name: "CodeCraft Studio",
-    handle: "@codecraft",
-    subscribers: "1.4M",
-    totalViews: "42M",
-    videoCount: 284,
-    joinedDate: "2019-06-15",
-    verified: true,
-    description:
-      "Programming tutorials, code reviews, and developer tooling. New videos every Tuesday & Friday.",
-  },
-  {
-    id: 2,
-    name: "ChillWave Radio",
-    handle: "@chillwave",
-    subscribers: "3.2M",
-    totalViews: "180M",
-    videoCount: 52,
-    joinedDate: "2020-01-10",
-    verified: true,
-    description:
-      "24/7 lo-fi hip hop & ambient mixes for studying, coding, and relaxing.",
-  },
-  {
-    id: 3,
-    name: "Wanderlust Diaries",
-    handle: "@wanderlust",
-    subscribers: "890K",
-    totalViews: "28M",
-    videoCount: 127,
-    joinedDate: "2018-03-22",
-    verified: false,
-    description:
-      "Solo travel vlogs from around the world. Budget tips, hidden spots, and cultural deep dives.",
-  },
-  {
-    id: 4,
-    name: "ScienceNova",
-    handle: "@sciencenova",
-    subscribers: "5.6M",
-    totalViews: "320M",
-    videoCount: 198,
-    joinedDate: "2017-09-01",
-    verified: true,
-    description:
-      "Making complex science accessible. Physics, biology, tech, and everything in between.",
-  },
-  {
-    id: 5,
-    name: "Umami Kitchen",
-    handle: "@umamikitchen",
-    subscribers: "2.1M",
-    totalViews: "95M",
-    videoCount: 310,
-    joinedDate: "2016-11-28",
-    verified: true,
-    description:
-      "Restaurant-quality recipes made simple. Japanese, Korean, and fusion cuisine.",
-  },
-  {
-    id: 6,
-    name: "ZenBody Fitness",
-    handle: "@zenbody",
-    subscribers: "780K",
-    totalViews: "18M",
-    videoCount: 89,
-    joinedDate: "2021-02-14",
-    verified: false,
-    description:
-      "Yoga, meditation, and bodyweight workouts for all levels. Your daily dose of mindful movement.",
-  },
-];
-
-const COMMENTS: Comment[] = [
-  {
-    id: 1,
-    author: "DevMaster42",
-    text: "This is exactly what I needed! Been struggling with REST APIs for weeks.",
-    timestamp: "2 days ago",
-    likes: 342,
-    replies: 12,
-  },
-  {
-    id: 2,
-    author: "SarahCodes",
-    text: "The section on middleware was incredibly clear. Subscribed!",
-    timestamp: "1 week ago",
-    likes: 128,
-    replies: 3,
-  },
-  {
-    id: 3,
-    author: "NightOwlDev",
-    text: "I listen to this every night while coding. It never gets old.",
-    timestamp: "3 weeks ago",
-    likes: 2100,
-    replies: 45,
-  },
-  {
-    id: 4,
-    author: "TechReviewer",
-    text: "Great explanation but I think you missed the point about error handling at 14:22.",
-    timestamp: "5 days ago",
-    likes: 67,
-    replies: 8,
-  },
-  {
-    id: 5,
-    author: "WandererJane",
-    text: "Iceland is on my bucket list! These hidden gems look amazing.",
-    timestamp: "2 weeks ago",
-    likes: 215,
-    replies: 6,
-  },
-  {
-    id: 6,
-    author: "FoodLover99",
-    text: "Made this last weekend. My family couldn't believe it was homemade!",
-    timestamp: "1 month ago",
-    likes: 890,
-    replies: 22,
-  },
-  {
-    id: 7,
-    author: "QuantumFanatic",
-    text: "Finally a video that explains quantum computing without dumbing it down too much.",
-    timestamp: "4 days ago",
-    likes: 456,
-    replies: 15,
-  },
-  {
-    id: 8,
-    author: "BeginnerCoder",
-    text: "Can you do a follow-up on GraphQL vs REST? Would love to see a comparison!",
-    timestamp: "1 day ago",
-    likes: 89,
-    replies: 2,
-  },
-];
-
-const PLAYLISTS: Playlist[] = [
-  {
-    id: 1,
-    name: "Watch Later",
-    videoCount: 47,
-    visibility: "private",
-    lastUpdated: "Today",
-  },
-  {
-    id: 2,
-    name: "Programming Tutorials",
-    videoCount: 23,
-    visibility: "public",
-    lastUpdated: "2 days ago",
-  },
-  {
-    id: 3,
-    name: "Cooking Inspiration",
-    videoCount: 15,
-    visibility: "public",
-    lastUpdated: "1 week ago",
-  },
-  {
-    id: 4,
-    name: "Study Music",
-    videoCount: 8,
-    visibility: "unlisted",
-    lastUpdated: "3 days ago",
-  },
-  {
-    id: 5,
-    name: "Travel Plans 2026",
-    videoCount: 31,
-    visibility: "private",
-    lastUpdated: "5 days ago",
-  },
-];
+const VIDEOS = videoSharingData.videos as Video[];
+const CHANNELS = videoSharingData.channels as Channel[];
+const COMMENTS = videoSharingData.comments as Comment[];
+const PLAYLISTS = videoSharingData.playlists as Playlist[];
 
 // ── Icon constants ───────────────────────────────────────────────────
 
@@ -732,7 +265,8 @@ function formatNumber(n: number): string {
         position: sticky;
         top: -1.5rem;
         z-index: 2;
-        background: var(--ui-content-bg, #f9fafb);
+        background: var(--ui-surface, #1f242c);
+        color: var(--ui-text, #1d232b);
         margin: -1.5rem -1.5rem 1rem;
         padding: 1.5rem 1.5rem 0.75rem;
       }
@@ -797,7 +331,7 @@ function formatNumber(n: number): string {
       }
       .video-thumb {
         aspect-ratio: 16 / 9;
-        background: var(--ui-surface-dim, #e8eaed);
+        background: var(--ui-surface-dim, #2a313c);
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -947,7 +481,7 @@ function formatNumber(n: number): string {
       .trending-thumb {
         width: 160px;
         aspect-ratio: 16 / 9;
-        background: var(--ui-surface-dim, #e8eaed);
+        background: var(--ui-surface-dim, #2a313c);
         border-radius: 6px;
         display: flex;
         align-items: center;
@@ -2014,7 +1548,7 @@ class VideoSharingAppDemo {
   protected readonly activePage = signal("home");
   protected readonly selectedCategory = signal("All");
 
-  protected readonly allVideos = VIDEOS;
+  protected readonly allVideos = VIDEOS.filter((v) => v.status !== "removed");
   protected readonly publishedVideos = VIDEOS.filter(
     (v) => v.status === "published",
   );
