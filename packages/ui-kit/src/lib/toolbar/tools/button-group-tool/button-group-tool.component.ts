@@ -42,7 +42,6 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   host: { class: "ui-button-group-tool" },
 })
 export class UIButtonGroupTool extends UIToolbarItem {
-
   /** Direct {@link UIToolbarItem} content children of this group. */
   public readonly childItems = contentChildren(UIToolbarItem);
 

@@ -44,7 +44,6 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   host: { class: "ui-toggle-group-tool" },
 })
 export class UIToggleGroupTool extends UIToolbarItem {
-
   /**
    * Direct {@link UIToolbarItem} content children of this group.
    * Expected to be {@link UIToggleTool} instances.
@@ -63,11 +62,13 @@ export class UIToggleGroupTool extends UIToolbarItem {
         if (!item) continue;
         this._childSubs.push(
           item.itemAction.subscribe((e) => {
-            this.childItems().filter(Boolean).forEach((t) => {
-              if (t !== item) {
-                t.deactivate();
-              }
-            });
+            this.childItems()
+              .filter(Boolean)
+              .forEach((t) => {
+                if (t !== item) {
+                  t.deactivate();
+                }
+              });
             this.itemAction.emit(e);
           }),
         );
