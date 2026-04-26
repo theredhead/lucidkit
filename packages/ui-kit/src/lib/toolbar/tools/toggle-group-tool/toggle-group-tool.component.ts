@@ -44,6 +44,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   host: { class: "ui-toggle-group-tool" },
 })
 export class UIToggleGroupTool extends UIToolbarItem {
+
   /**
    * Direct {@link UIToolbarItem} content children of this group.
    * Expected to be {@link UIToggleTool} instances.

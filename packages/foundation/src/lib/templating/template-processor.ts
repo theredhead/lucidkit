@@ -34,6 +34,7 @@ export type MissingKeyBehavior =
  * Options for {@link TextTemplateProcessor}.
  */
 export interface TextTemplateOptions {
+
   /**
    * How to handle a missing key during identifier expansion.
    * Defaults to `'keep'`.
@@ -45,6 +46,7 @@ export interface TextTemplateOptions {
  * Contract for text template processors.
  */
 export interface ITextTemplateProcessor {
+
   /**
    * Fully expands a template string against the given context, resolving
    * all block directives and identifier substitutions in one pass.
@@ -88,6 +90,7 @@ export interface ITextTemplateProcessor {
  * ```
  */
 export interface ITextTemplateDirective {
+
   /**
    * Returns `true` if this directive is standalone (no close tag required).
    * Returns `false` if it is a block directive that wraps a body and requires

@@ -148,6 +148,7 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
   },
 })
 export class UIRichTextEditor implements OnInit, AfterViewInit {
+
   /** @internal Compact editor toolbar actions for chat-style composition. */
   private static readonly COMPACT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] =
     ["bold", "italic", "underline"];

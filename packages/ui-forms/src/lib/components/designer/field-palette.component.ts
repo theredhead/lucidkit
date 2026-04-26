@@ -8,6 +8,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
  * Metadata for a draggable field type shown in the palette.
  */
 export interface PaletteFieldType {
+
   /** Registry component key (e.g. `"text"`, `"select"`). */
   readonly key: string;
 
@@ -152,6 +153,7 @@ const PALETTE_FLAIR: readonly PaletteFieldType[] = [
   styleUrl: "./field-palette.component.scss",
 })
 export class UIFieldPalette {
+
   /** Emitted when the user clicks a field type to add it. */
   public readonly fieldRequested = output<string>();
 

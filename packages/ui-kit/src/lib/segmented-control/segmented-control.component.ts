@@ -46,6 +46,7 @@ export type { SegmentedItem };
   },
 })
 export class UISegmentedControl {
+
   /** Items to render as segments. */
   public readonly items = input.required<SegmentedItem[]>();
 

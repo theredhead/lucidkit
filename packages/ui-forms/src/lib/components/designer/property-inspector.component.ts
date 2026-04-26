@@ -87,6 +87,7 @@ const VALIDATION_TYPE_OPTIONS: SelectOption[] = (
   styleUrl: "./property-inspector.component.scss",
 })
 export class UIPropertyInspector {
+
   /** The designer engine driving this inspector. */
   public readonly engine = input.required<FormDesignerEngine>();
 

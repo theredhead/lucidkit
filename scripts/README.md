@@ -14,19 +14,19 @@ Some scripts rewrite files in place. Review the diff after running them.
 
 ## Script index
 
-| Script | Purpose |
-| --- | --- |
-| `add-surface-directive.mjs` | Adds the `UISurface` host directive to `ui-*` components that do not already have it. |
-| `capture-storybook-screenshots.mjs` | Captures Storybook story screenshots and writes a manifest for the generated assets. |
-| `coverage-report.mjs` | Reads Vitest coverage output and prints a prioritized under-coverage report. |
-| `find-jsdoc-violations.mjs` | Reports JSDoc spacing violations in TypeScript files. |
-| `fix-jsdoc-spacing.mjs` | Fixes the JSDoc spacing issues reported by `find-jsdoc-violations.mjs`. |
-| `generate-icon-registry.mjs` | Builds the generated Lucide icon registry TypeScript file from raw SVG assets. |
-| `generate-showcase-story-data.mjs` | Regenerates demo JSON datasets used by showcase stories. |
-| `generate-token-manifest.mjs` | Scans source files for CSS custom properties and writes a token manifest JSON file. |
-| `refactor-dark-mode.mjs` | Migrates older SCSS dark-mode blocks to the shared mixin-based pattern. |
-| `storybook-screenshot-overrides.mjs` | Provides per-component and per-story overrides for screenshot capture. |
-| `strip-colors.mjs` | Removes color-related SCSS declarations from component stylesheets. |
+| Script                               | Purpose                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------- |
+| `add-surface-directive.mjs`          | Adds the `UISurface` host directive to `ui-*` components that do not already have it. |
+| `capture-storybook-screenshots.mjs`  | Captures Storybook story screenshots and writes a manifest for the generated assets.  |
+| `coverage-report.mjs`                | Reads Vitest coverage output and prints a prioritized under-coverage report.          |
+| `find-jsdoc-violations.mjs`          | Reports JSDoc spacing violations in TypeScript files.                                 |
+| `fix-jsdoc-spacing.mjs`              | Fixes the JSDoc spacing issues reported by `find-jsdoc-violations.mjs`.               |
+| `generate-icon-registry.mjs`         | Builds the generated Lucide icon registry TypeScript file from raw SVG assets.        |
+| `generate-showcase-story-data.mjs`   | Regenerates demo JSON datasets used by showcase stories.                              |
+| `generate-token-manifest.mjs`        | Scans source files for CSS custom properties and writes a token manifest JSON file.   |
+| `refactor-dark-mode.mjs`             | Migrates older SCSS dark-mode blocks to the shared mixin-based pattern.               |
+| `storybook-screenshot-overrides.mjs` | Provides per-component and per-story overrides for screenshot capture.                |
+| `strip-colors.mjs`                   | Removes color-related SCSS declarations from component stylesheets.                   |
 
 ## `add-surface-directive.mjs`
 

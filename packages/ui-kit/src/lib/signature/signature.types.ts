@@ -12,6 +12,7 @@ export type SignatureValue = SignatureStrokeValue | SignatureImageValue | null;
  * Stroke data is ordered and replayable.
  */
 export interface SignatureStrokeValue {
+
   /** Discriminator – always `'strokes'`. */
   kind: "strokes";
 
@@ -34,11 +35,13 @@ export interface SignatureStrokeValue {
  * SVG export is not supported for this kind.
  */
 export interface SignatureImageValue {
+
   /** Discriminator – always `'image'`. */
   kind: "image";
 
   /** The imported image payload. */
   image: {
+
     /** MIME type of the original image (e.g. `'image/png'`). */
     mimeType: string;
 
@@ -58,6 +61,7 @@ export interface SignatureImageValue {
  * sequence of sample points.
  */
 export interface StrokeGroup {
+
   /** Ordered sample points within this stroke. */
   points: StrokePoint[];
 }
@@ -66,6 +70,7 @@ export interface StrokeGroup {
  * A single sampled position within a stroke.
  */
 export interface StrokePoint {
+
   /** Horizontal canvas coordinate in pixels. */
   x: number;
 

@@ -39,6 +39,7 @@ import type { SplitPanelConstraints } from "./split-container.types";
   template: `<ng-template><ng-content /></ng-template>`,
 })
 export class UISplitPanel {
+
   /**
    * Minimum panel size in pixels.
    * Forwarded to the container's constraint logic.

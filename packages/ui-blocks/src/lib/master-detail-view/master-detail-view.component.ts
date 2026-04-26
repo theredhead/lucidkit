@@ -51,6 +51,7 @@ import {
  * @typeParam T - The row object type.
  */
 export interface MasterDetailContext<T> {
+
   /** The selected item (also available as `let-object`). */
   $implicit: T;
 }

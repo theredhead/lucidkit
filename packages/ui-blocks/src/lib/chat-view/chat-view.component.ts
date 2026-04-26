@@ -75,6 +75,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
   },
 })
 export class UIChatView<M = unknown> implements AfterViewInit {
+
   /** @internal Compact chat composer toolbar actions. */
   private static readonly DEFAULT_COMPACT_COMPOSER_ACTIONS: readonly RichTextFormatAction[] =
     ["bold", "italic", "strikethrough", "link"];
