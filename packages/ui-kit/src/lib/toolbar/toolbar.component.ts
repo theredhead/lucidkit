@@ -9,6 +9,7 @@ import {
   input,
   model,
   output,
+  signal,
 } from "@angular/core";
 import {
   UI_DEFAULT_SURFACE_TYPE,
@@ -24,6 +25,13 @@ export type ToolbarOrientation = "horizontal" | "vertical";
 
 /** Presentation mode for {@link UIToolbar}. */
 export type ToolbarDisplayMode = "inline" | "floating-toggle";
+
+/** @internal */
+type ToolbarFloatingState =
+  | "expanded"
+  | "expanding"
+  | "collapsing"
+  | "collapsed";
 
 /**
  * Container component that collects {@link UIToolbarItem} content children
@@ -55,6 +63,10 @@ export type ToolbarDisplayMode = "inline" | "floating-toggle";
     "[class.vertical]": "orientation() === 'vertical'",
     "[class.floating-toggle]": "displayMode() === 'floating-toggle'",
     "[class.collapsed]": "displayMode() === 'floating-toggle' && collapsed()",
+    "[class.collapsing]":
+      "displayMode() === 'floating-toggle' && floatingState() === 'collapsing'",
+    "[class.expanding]":
+      "displayMode() === 'floating-toggle' && floatingState() === 'expanding'",
   },
 })
 export class UIToolbar {
@@ -90,7 +102,13 @@ export class UIToolbar {
   );
 
   /** @internal */
+  protected readonly floatingState = signal<ToolbarFloatingState>("expanded");
+
+  /** @internal */
   private readonly _subs: { unsubscribe(): void }[] = [];
+
+  /** @internal */
+  private _hasSyncedFloatingState = false;
 
   /** @internal */
   private readonly _toggleIcons = {
@@ -109,18 +127,52 @@ export class UIToolbar {
         );
       }
     });
+
+    effect(() => {
+      if (!this.isFloatingToggleMode()) {
+        this._hasSyncedFloatingState = false;
+        this.floatingState.set("expanded");
+        return;
+      }
+
+      const nextState = this.collapsed() ? "collapsed" : "expanded";
+
+      if (!this._hasSyncedFloatingState) {
+        this.floatingState.set(nextState);
+        this._hasSyncedFloatingState = true;
+        return;
+      }
+
+      if (this.collapsed()) {
+        if (
+          this.floatingState() === "expanded" ||
+          this.floatingState() === "expanding"
+        ) {
+          this.floatingState.set("collapsing");
+        }
+        return;
+      }
+
+      if (
+        this.floatingState() === "collapsed" ||
+        this.floatingState() === "collapsing"
+      ) {
+        this.floatingState.set("expanding");
+      }
+    });
+
     inject(DestroyRef).onDestroy(() =>
       this._subs.forEach((s) => s.unsubscribe()),
     );
   }
 
   /** @internal */
-  protected getToggleIcon(): string {
+  protected getFloatingToggleIcon(): string {
     return this.collapsed() ? this._toggleIcons.show : this._toggleIcons.hide;
   }
 
   /** @internal */
-  protected getToggleLabel(): string {
+  protected getFloatingToggleLabel(): string {
     return this.collapsed() ? "Show toolbar" : "Hide toolbar";
   }
 
@@ -131,5 +183,21 @@ export class UIToolbar {
     }
 
     this.collapsed.update((value) => !value);
+  }
+
+  /** @internal */
+  protected handleShellAnimationEnd(): void {
+    if (!this.isFloatingToggleMode()) {
+      return;
+    }
+
+    if (this.floatingState() === "collapsing") {
+      this.floatingState.set("collapsed");
+      return;
+    }
+
+    if (this.floatingState() === "expanding") {
+      this.floatingState.set("expanded");
+    }
   }
 }

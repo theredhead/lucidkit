@@ -224,22 +224,69 @@ describe("UIToolbar", () => {
 
       expect(host.collapsed()).toBe(false);
       expect(toolbar.classList).not.toContain("collapsed");
+      expect(toolbar.classList).toContain("expanding");
     });
 
-    it("should collapse again when the inline collapse button is clicked", () => {
+    it("should collapse again when the floating toggle button is clicked", () => {
       host.collapsed.set(false);
       fixture.detectChanges();
 
       const toolbar: HTMLElement =
         fixture.nativeElement.querySelector("ui-toolbar");
-      const collapseToggle: HTMLButtonElement | null =
-        toolbar.querySelector(".collapse-toggle");
+      const floatingToggle: HTMLButtonElement | null = toolbar.querySelector(
+        ".floating-toggle-button",
+      );
 
-      collapseToggle?.click();
+      floatingToggle?.click();
       fixture.detectChanges();
 
       expect(host.collapsed()).toBe(true);
       expect(toolbar.classList).toContain("collapsed");
+      expect(toolbar.classList).toContain("collapsing");
+    });
+
+    it("should keep the shell mounted until collapse animation completes", () => {
+      host.collapsed.set(false);
+      fixture.detectChanges();
+
+      const toolbar: HTMLElement =
+        fixture.nativeElement.querySelector("ui-toolbar");
+      const shell: HTMLElement | null = toolbar.querySelector(".toolbar-shell");
+      const floatingToggle: HTMLButtonElement | null = toolbar.querySelector(
+        ".floating-toggle-button",
+      );
+
+      floatingToggle?.click();
+      fixture.detectChanges();
+
+      expect(shell).toBeTruthy();
+      expect(toolbar.classList).toContain("collapsing");
+
+      shell?.dispatchEvent(new Event("animationend"));
+      fixture.detectChanges();
+
+      expect(toolbar.classList).not.toContain("collapsing");
+      expect(toolbar.classList).toContain("collapsed");
+    });
+
+    it("should settle back to expanded after the open animation completes", () => {
+      const toolbar: HTMLElement =
+        fixture.nativeElement.querySelector("ui-toolbar");
+      const shell: HTMLElement | null = toolbar.querySelector(".toolbar-shell");
+      const floatingToggle: HTMLButtonElement | null = toolbar.querySelector(
+        ".floating-toggle-button",
+      );
+
+      floatingToggle?.click();
+      fixture.detectChanges();
+
+      expect(toolbar.classList).toContain("expanding");
+
+      shell?.dispatchEvent(new Event("animationend"));
+      fixture.detectChanges();
+
+      expect(toolbar.classList).not.toContain("expanding");
+      expect(toolbar.classList).not.toContain("collapsed");
     });
   });
 });
