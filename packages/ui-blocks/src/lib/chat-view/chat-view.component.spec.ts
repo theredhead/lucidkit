@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
 import { UIChatView } from "./chat-view.component";
+import { UIRichTextEditor } from "@theredhead/lucid-kit";
 import type { ChatMessage, ChatParticipant } from "./chat-view.types";
 
 const alice: ChatParticipant = { id: "alice", name: "Alice" };
@@ -48,6 +50,19 @@ describe("UIChatView", () => {
       expect(component.composerMode()).toBe("text");
     });
 
+    it('should default rich-text composer presentation to "compact"', () => {
+      expect(component.composerPresentation()).toBe("compact");
+    });
+
+    it("should default compact rich-text composer actions to the chat set", () => {
+      expect(component.composerToolbarActions()).toEqual([
+        "bold",
+        "italic",
+        "strikethrough",
+        "link",
+      ]);
+    });
+
     it("should default placeholder", () => {
       expect(component.placeholder()).toBe("Type a message…");
     });
@@ -92,12 +107,8 @@ describe("UIChatView", () => {
 
       const el: HTMLElement = fixture.nativeElement;
       const messageEls = el.querySelectorAll("ui-message-bubble");
-      expect(messageEls[0].classList.contains("mine")).toBe(
-        false,
-      );
-      expect(messageEls[1].classList.contains("mine")).toBe(
-        true,
-      );
+      expect(messageEls[0].classList.contains("mine")).toBe(false);
+      expect(messageEls[1].classList.contains("mine")).toBe(true);
     });
 
     it("should show avatar for other users only", () => {
@@ -197,8 +208,51 @@ describe("UIChatView", () => {
       fixture.detectChanges();
 
       const el: HTMLElement = fixture.nativeElement;
-      expect(el.querySelector("ui-rich-text-editor")).toBeTruthy();
+      const richTextEditor = fixture.debugElement.query(
+        By.directive(UIRichTextEditor),
+      )?.componentInstance as UIRichTextEditor | undefined;
+
+      expect(richTextEditor).toBeTruthy();
+      expect(richTextEditor?.presentation()).toBe("compact");
+      expect(richTextEditor?.compactToolbarActions()).toEqual([
+        "bold",
+        "italic",
+        "strikethrough",
+        "link",
+      ]);
       expect(el.querySelector(".chat-composer-input")).toBeNull();
+    });
+
+    it("should allow overriding the rich-text composer presentation", () => {
+      fixture.componentRef.setInput("composerMode", "rich-text");
+      fixture.componentRef.setInput("composerPresentation", "default");
+      fixture.detectChanges();
+
+      const richTextEditor = fixture.debugElement.query(
+        By.directive(UIRichTextEditor),
+      )?.componentInstance as UIRichTextEditor | undefined;
+
+      expect(richTextEditor?.presentation()).toBe("default");
+    });
+
+    it("should allow overriding the compact rich-text composer actions", () => {
+      fixture.componentRef.setInput("composerMode", "rich-text");
+      fixture.componentRef.setInput("composerToolbarActions", [
+        "bold",
+        "italic",
+        "link",
+      ]);
+      fixture.detectChanges();
+
+      const richTextEditor = fixture.debugElement.query(
+        By.directive(UIRichTextEditor),
+      )?.componentInstance as UIRichTextEditor | undefined;
+
+      expect(richTextEditor?.compactToolbarActions()).toEqual([
+        "bold",
+        "italic",
+        "link",
+      ]);
     });
 
     it("should disable send button when composer is empty", () => {

@@ -12,15 +12,9 @@ import {
   TemplateRef,
   viewChild,
 } from "@angular/core";
-import { NgTemplateOutlet, DatePipe } from "@angular/common";
+import { NgTemplateOutlet } from "@angular/common";
 
-import {
-  UIAvatar,
-  UIButton,
-  UIIcon,
-  UIIcons,
-  UIRichTextEditor,
-} from "@theredhead/lucid-kit";
+import { UIIcon, UIIcons, UIRichTextEditor } from "@theredhead/lucid-kit";
 
 import type {
   ChatComposerMode,
@@ -30,6 +24,7 @@ import type {
   MessageSendEvent,
   MessageTemplateContext,
 } from "./chat-view.types";
+import type { RichTextFormatAction } from "@theredhead/lucid-kit";
 import { UIMessageBubble } from "./message-bubble/message-bubble.component";
 import { UISurface } from "@theredhead/lucid-foundation";
 
@@ -70,15 +65,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
 @Component({
   selector: "ui-chat-view",
   standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    DatePipe,
-    UIAvatar,
-    UIButton,
-    UIIcon,
-    UIMessageBubble,
-    UIRichTextEditor,
-  ],
+  imports: [NgTemplateOutlet, UIIcon, UIMessageBubble, UIRichTextEditor],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   templateUrl: "./chat-view.component.html",
@@ -88,6 +75,10 @@ import { UISurface } from "@theredhead/lucid-foundation";
   },
 })
 export class UIChatView<M = unknown> implements AfterViewInit {
+  /** @internal Compact chat composer toolbar actions. */
+  private static readonly DEFAULT_COMPACT_COMPOSER_ACTIONS: readonly RichTextFormatAction[] =
+    ["bold", "italic", "strikethrough", "link"];
+
   // ── Inputs ────────────────────────────────────────────────────────
 
   /** The list of messages to display. */
@@ -98,6 +89,25 @@ export class UIChatView<M = unknown> implements AfterViewInit {
 
   /** Composer input mode. */
   public readonly composerMode = input<ChatComposerMode>("text");
+
+  /**
+   * Rich-text composer presentation.
+   *
+   * - `'compact'` — small floating-toolbar composer (default)
+   * - `'default'` — full rich-text editor chrome
+   */
+  public readonly composerPresentation = input<"default" | "compact">(
+    "compact",
+  );
+
+  /**
+   * Toolbar actions for the compact rich-text composer.
+   *
+   * Defaults to a small chat-oriented set.
+   */
+  public readonly composerToolbarActions = input<
+    readonly RichTextFormatAction[]
+  >(UIChatView.DEFAULT_COMPACT_COMPOSER_ACTIONS);
 
   /** Placeholder text for the composer. */
   public readonly placeholder = input<string>("Type a message…");

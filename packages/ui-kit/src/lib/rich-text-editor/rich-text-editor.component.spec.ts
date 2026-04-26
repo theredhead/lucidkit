@@ -85,6 +85,10 @@ describe("UIRichTextEditor", () => {
       expect(component.toolbarActions()).toBe(DEFAULT_TOOLBAR_ACTIONS);
     });
 
+    it('should default presentation to "default"', () => {
+      expect(component.presentation()).toBe("default");
+    });
+
     it("should default placeholders to empty array", () => {
       expect(component.placeholders()).toEqual([]);
     });
@@ -234,6 +238,62 @@ describe("UIRichTextEditor", () => {
         fixture.nativeElement.querySelectorAll("ui-separator-tool");
       expect(separators.length).toBeGreaterThan(0);
     });
+
+    it("should switch to a compact floating toolbar with only inline actions", () => {
+      fixture.componentRef.setInput("presentation", "compact");
+      fixture.detectChanges();
+
+      const toolbar: HTMLElement =
+        fixture.nativeElement.querySelector("ui-toolbar");
+
+      expect(toolbar.classList).toContain("floating-toggle");
+      expect(toolbar.classList).toContain("collapsed");
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Bold"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Italic"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Underline"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Hyperlink"]'),
+      ).toBeNull();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Insert emoji"]'),
+      ).toBeNull();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Full screen"]'),
+      ).toBeNull();
+    });
+
+    it("should allow overriding compact toolbar actions", () => {
+      fixture.componentRef.setInput("presentation", "compact");
+      fixture.componentRef.setInput("compactToolbarActions", [
+        "bold",
+        "italic",
+        "strikethrough",
+        "link",
+      ]);
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Bold"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Italic"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Strikethrough"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Hyperlink"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Underline"]'),
+      ).toBeNull();
+    });
   });
 
   describe("editor area", () => {
@@ -283,6 +343,38 @@ describe("UIRichTextEditor", () => {
 
       const editor = fixture.nativeElement.querySelector(".editor");
       expect(editor.getAttribute("contenteditable")).toBe("false");
+    });
+  });
+
+  describe("compact markdown mode", () => {
+    beforeEach(() => {
+      fixture.componentRef.setInput("presentation", "compact");
+      fixture.componentRef.setInput("mode", "markdown");
+      fixture.detectChanges();
+    });
+
+    it("should default markdown preview to hidden", () => {
+      const previewToggle = fixture.nativeElement.querySelector(
+        '[aria-label="Show preview"]',
+      );
+
+      expect(previewToggle).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector(".markdown-preview"),
+      ).toBeNull();
+      expect(fixture.nativeElement.querySelector(".split-handle")?.hidden).toBe(
+        true,
+      );
+    });
+
+    it("should show the markdown preview when the preview toggle is triggered", () => {
+      (component as any).onToolAction({ itemId: "toggle-preview" });
+      fixture.detectChanges();
+
+      expect(component.showMarkdownPreview()).toBe(true);
+      expect(
+        fixture.nativeElement.querySelector(".markdown-preview"),
+      ).toBeTruthy();
     });
   });
 

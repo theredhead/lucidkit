@@ -11,6 +11,10 @@
   font-size: var(--ui-font-body, 0.875rem);
 }
 
+:host.compact {
+  position: relative;
+}
+
 /* ── Toolbar ───────────────────────────────────────────── */
 
 ui-toolbar {
@@ -20,6 +24,14 @@ ui-toolbar {
   flex-wrap: wrap;
   color: var(--ui-text, #1d232b);
   background: var(--ui-surface, #ffffff);
+}
+
+:host.compact ui-toolbar {
+  align-self: auto;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  z-index: 20;
 }
 
 /* Bare button used for the placeholder trigger and emoji button inside the toolbar */
@@ -164,6 +176,17 @@ ui-toolbar {
   }
 }
 
+.editor-wrapper[hidden],
+.split-handle[hidden],
+.editor[hidden] {
+  display: none !important;
+}
+
+:host.compact .editor-wrapper {
+  border-top: 1px solid var(--ui-border, #d4d8dd);
+  border-radius: calc(var(--ui-radius, 0.375rem) * 1.6);
+}
+
 .editor {
   flex: 1;
   min-height: 8rem;
@@ -253,6 +276,11 @@ ui-toolbar {
   }
 }
 
+:host.compact .editor {
+  min-height: 5.5rem;
+  padding: 0.7rem 0.85rem;
+}
+
 /* ── Placeholder chips inside the editor ───────────────── */
 
 :host ::ng-deep .rte-placeholder {
@@ -324,6 +352,16 @@ ui-toolbar {
     opacity: 0.5;
     cursor: not-allowed;
   }
+}
+
+:host.compact .source-editor {
+  min-height: 5.5rem;
+  border: 1px solid var(--ui-border, #d4d8dd);
+  border-radius: calc(var(--ui-radius, 0.375rem) * 1.6);
+}
+
+:host.compact.markdown .source-editor {
+  border-bottom: 1px solid var(--ui-border, #d4d8dd);
 }
 
 .preview-label {
@@ -413,6 +451,16 @@ ui-toolbar {
       padding: 0.5rem;
       pointer-events: auto;
     }
+  }
+}
+
+:host.compact.markdown {
+  .markdown-editor {
+    min-height: 5.5rem;
+  }
+
+  .editor-wrapper {
+    margin-top: 0.5rem;
   }
 }
 

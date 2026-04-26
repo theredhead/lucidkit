@@ -32,6 +32,7 @@ import {
   UIToggleGroupTool,
   type ToolActionEvent,
   type DropdownToolItem,
+  type ToolbarDisplayMode,
 } from "../toolbar";
 import type { EmojiCategory } from "../emoji-picker/emoji-picker.types";
 import { PopoverService } from "../popover/popover.service";
@@ -138,6 +139,7 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
     "[class.disabled]": "disabled()",
     "[class.readonly]": "readonly()",
     "[class.markdown]": "mode() === 'markdown'",
+    "[class.compact]": "presentation() === 'compact'",
     "[class.fullscreen]": "isFullscreen()",
     "[class.split-horizontal]":
       "isMarkdownMode() && effectiveSplitDirection() === 'horizontal'",
@@ -146,6 +148,10 @@ const PLACEHOLDER_CLASS = "rte-placeholder";
   },
 })
 export class UIRichTextEditor implements OnInit, AfterViewInit {
+  /** @internal Compact editor toolbar actions for chat-style composition. */
+  private static readonly COMPACT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] =
+    ["bold", "italic", "underline"];
+
   private readonly elRef = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly popoverService = inject(PopoverService);
@@ -202,6 +208,14 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** Whether the editor is disabled (non-interactive). */
   public readonly disabled = input<boolean>(false);
 
+  /**
+   * Presentation style of the editor chrome.
+   *
+   * - `'default'` — full editor chrome with the standard toolbar.
+   * - `'compact'` — chat-style editor with a minimal floating toolbar.
+   */
+  public readonly presentation = input<"default" | "compact">("default");
+
   /** Whether the editor is read-only (content visible but not editable). */
   public readonly readonly = input<boolean>(false);
 
@@ -223,6 +237,16 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   public readonly toolbarActions = input<readonly RichTextFormatAction[]>(
     DEFAULT_TOOLBAR_ACTIONS,
   );
+
+  /**
+   * Optional compact-mode toolbar actions.
+   *
+   * When omitted, compact presentation falls back to the built-in
+   * minimal toolbar set.
+   */
+  public readonly compactToolbarActions = input<
+    readonly RichTextFormatAction[] | undefined
+  >(undefined);
 
   /**
    * Available placeholder definitions.
@@ -327,6 +351,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** Whether the placeholder picker dropdown is open. */
   protected readonly isPlaceholderPickerOpen = signal(false);
 
+  /** @internal Whether the compact floating toolbar is collapsed. */
+  protected readonly isCompactToolbarCollapsed = signal(false);
+
   /** Search term for filtering the placeholder picker. */
   protected readonly placeholderSearchTerm = signal("");
 
@@ -341,6 +368,26 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    * Toggled by the preview toolbar button in Markdown mode.
    */
   public readonly showMarkdownPreview = signal(true);
+
+  /** @internal True when the editor uses compact chat-style chrome. */
+  protected readonly isCompactPresentation = computed(
+    () => this.presentation() === "compact",
+  );
+
+  /** @internal Effective toolbar actions after applying presentation defaults. */
+  protected readonly effectiveToolbarActions = computed<
+    readonly RichTextFormatAction[]
+  >(() =>
+    this.isCompactPresentation()
+      ? (this.compactToolbarActions() ??
+        UIRichTextEditor.COMPACT_TOOLBAR_ACTIONS)
+      : this.toolbarActions(),
+  );
+
+  /** @internal Toolbar display mode for the current presentation. */
+  protected readonly toolbarDisplayMode = computed<ToolbarDisplayMode>(() =>
+    this.isCompactPresentation() ? "floating-toggle" : "inline",
+  );
 
   /**
    * Whether the current value is valid (non-empty) Markdown.
@@ -473,7 +520,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** @internal Dropdown items for the block-styles dropdown. */
   protected readonly blockDropdownItems = computed<DropdownToolItem[]>(() => {
-    const actions = this.toolbarActions();
+    const actions = this.effectiveToolbarActions();
     return (
       [
         "paragraph",
@@ -494,7 +541,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** @internal Dropdown items for the lists dropdown. */
   protected readonly listDropdownItems = computed<DropdownToolItem[]>(() => {
-    const actions = this.toolbarActions();
+    const actions = this.effectiveToolbarActions();
     return (
       [
         "unorderedList",
@@ -513,12 +560,12 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** @internal True when at least one history action is in the toolbar. */
   protected readonly showHistoryGroup = computed(() =>
-    this.toolbarActions().some((a) => a === "undo" || a === "redo"),
+    this.effectiveToolbarActions().some((a) => a === "undo" || a === "redo"),
   );
 
   /** @internal True when at least one inline-format action is in the toolbar. */
   protected readonly showInlineGroup = computed(() =>
-    this.toolbarActions().some(
+    this.effectiveToolbarActions().some(
       (a) =>
         a === "bold" ||
         a === "italic" ||
@@ -529,7 +576,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** @internal True when at least one alignment action is in the toolbar. */
   protected readonly showAlignGroup = computed(() =>
-    this.toolbarActions().some(
+    this.effectiveToolbarActions().some(
       (a) =>
         a === "alignLeft" ||
         a === "alignCenter" ||
@@ -540,12 +587,14 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** @internal True when at least one insert action is in the toolbar. */
   protected readonly showInsertGroup = computed(() =>
-    this.toolbarActions().some((a) => a === "horizontalRule" || a === "image"),
+    this.effectiveToolbarActions().some(
+      (a) => a === "horizontalRule" || a === "image",
+    ),
   );
 
   /** Resolved toolbar button metadata from the actions list. */
   protected readonly toolbarButtons = computed<ToolbarButtonMeta[]>(() =>
-    this.toolbarActions()
+    this.effectiveToolbarActions()
       .map((a) => TOOLBAR_BUTTON_REGISTRY[a])
       .filter(Boolean),
   );
@@ -679,6 +728,17 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     });
   });
 
+  /** Resets compact-only UI state when presentation or mode changes. */
+  private readonly compactPresentationEffect = effect(() => {
+    const isCompact = this.isCompactPresentation();
+    const isMarkdown = this.isMarkdownMode();
+
+    untracked(() => {
+      this.isCompactToolbarCollapsed.set(isCompact);
+      this.showMarkdownPreview.set(!(isCompact && isMarkdown));
+    });
+  });
+
   // ── Lifecycle ──────────────────────────────────────────────
 
   public ngOnInit(): void {
@@ -796,7 +856,12 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** @internal Returns true when the given action is in the toolbar. */
   protected hasToolbarAction(action: RichTextFormatAction): boolean {
-    return this.toolbarActions().includes(action);
+    return this.effectiveToolbarActions().includes(action);
+  }
+
+  /** @internal Syncs the compact floating toolbar collapsed state. */
+  protected onToolbarCollapsedChange(value: boolean): void {
+    this.isCompactToolbarCollapsed.set(value);
   }
 
   protected execAction(action: RichTextFormatAction, anchorEl?: Element): void {

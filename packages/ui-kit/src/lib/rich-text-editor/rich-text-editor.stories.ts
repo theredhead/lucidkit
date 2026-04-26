@@ -73,6 +73,12 @@ const meta: Meta<UIRichTextEditor> = {
       description:
         'Editing strategy: `"html"` uses contenteditable with rich WYSIWYG formatting; `"markdown"` uses a plain textarea with toolbar-driven Markdown syntax insertion.',
     },
+    presentation: {
+      control: "select",
+      options: ["default", "compact"],
+      description:
+        'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
+    },
   },
 };
 export default meta;
@@ -528,6 +534,62 @@ export class MyComponent {
 
 // ── SCSS ──────────────────────────────────────────────────────
 /* No custom styles needed. */
+`,
+      },
+    },
+  },
+};
+
+/**
+ * **Compact chat composer** — A smaller chat-style editor with a floating
+ * inline-format toolbar. In Markdown mode the preview starts hidden and can
+ * be toggled from the floating toolbar.
+ */
+export const CompactChat: Story = {
+  render: (args) => ({
+    props: {
+      ...args,
+      value: "Hey **team** - this supports _quick_ formatting.",
+    },
+    template: `
+      <div style="position: relative; max-width: 34rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 1rem; border-radius: 1.25rem; border: 1px solid var(--ui-border, #d4d8dd);">
+        <ui-rich-text-editor
+          [mode]="mode"
+          [presentation]="presentation"
+          [(value)]="value"
+          [placeholder]="placeholder"
+          [ariaLabel]="ariaLabel"
+        />
+      </div>
+    `,
+  }),
+  args: {
+    mode: "markdown",
+    presentation: "compact",
+    placeholder: "Message…",
+    ariaLabel: "Chat composer",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──────────────────────────────────────────────────────
+<ui-rich-text-editor
+  mode="markdown"
+  presentation="compact"
+  placeholder="Message…"
+  ariaLabel="Chat composer"
+/>
+
+// ── TypeScript ────────────────────────────────────────────────
+import { UIRichTextEditor } from '@theredhead/lucid-kit';
+
+// standalone: true, imports: [UIRichTextEditor]
+
+// ── SCSS ──────────────────────────────────────────────────────
+/* Compact mode uses a rounded chat-style editor shell with
+   a minimal floating toolbar. */
 `,
       },
     },

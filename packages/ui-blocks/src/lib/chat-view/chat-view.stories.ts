@@ -145,6 +145,17 @@ const meta: Meta<UIChatView> = {
       options: ["text", "rich-text"],
       description: "Composer input mode.",
     },
+    composerPresentation: {
+      control: "select",
+      options: ["compact", "default"],
+      description:
+        'Rich-text composer presentation. `"compact"` is the chat-style default; `"default"` uses the full editor chrome.',
+    },
+    composerToolbarActions: {
+      control: "object",
+      description:
+        "Toolbar actions used by the compact rich-text composer. Defaults to bold, italic, strikethrough, and link.",
+    },
     placeholder: {
       control: "text",
       description: "Placeholder text for the composer.",

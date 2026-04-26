@@ -1,5 +1,12 @@
 <!-- ── Toolbar ─────────────────────────────────────────────── -->
-<ui-toolbar role="toolbar" aria-label="Formatting" (toolAction)="onToolAction($event)">
+<ui-toolbar
+  role="toolbar"
+  aria-label="Formatting"
+  [displayMode]="toolbarDisplayMode()"
+  [collapsed]="isCompactToolbarCollapsed()"
+  (collapsedChange)="onToolbarCollapsedChange($event)"
+  (toolAction)="onToolAction($event)"
+>
 
   <!-- History: Undo / Redo -->
   @if (showHistoryGroup()) {
@@ -110,7 +117,7 @@
   }
 
   <!-- Placeholder picker -->
-  @if (placeholders().length > 0) {
+  @if (!isCompactPresentation() && placeholders().length > 0) {
     <ui-separator-tool id="sep-placeholder" />
     <div class="placeholder-picker">
       <button
@@ -168,33 +175,35 @@
   }
 
   <!-- Emoji picker -->
-  <ui-separator-tool id="sep-emoji" />
-  <div class="emoji-picker-wrapper">
-    <button
-      type="button"
-      class="tool-btn"
-      aria-label="Insert emoji"
-      title="Insert emoji"
-      [disabled]="isEditorDisabled()"
-      [attr.aria-expanded]="isEmojiPickerOpen()"
-      (mousedown)="$event.preventDefault()"
-      (click)="toggleEmojiPicker()"
-    >
-      <ui-icon [svg]="emojiIcon" [size]="16" />
-    </button>
+  @if (!isCompactPresentation()) {
+    <ui-separator-tool id="sep-emoji" />
+    <div class="emoji-picker-wrapper">
+      <button
+        type="button"
+        class="tool-btn"
+        aria-label="Insert emoji"
+        title="Insert emoji"
+        [disabled]="isEditorDisabled()"
+        [attr.aria-expanded]="isEmojiPickerOpen()"
+        (mousedown)="$event.preventDefault()"
+        (click)="toggleEmojiPicker()"
+      >
+        <ui-icon [svg]="emojiIcon" [size]="16" />
+      </button>
 
-    @if (isEmojiPickerOpen()) {
-      <div class="emoji-picker-dropdown">
-        <ui-emoji-picker
-          [categories]="emojiCategories()"
-          (emojiSelected)="insertEmoji($event)"
-        />
-      </div>
-    }
-  </div>
+      @if (isEmojiPickerOpen()) {
+        <div class="emoji-picker-dropdown">
+          <ui-emoji-picker
+            [categories]="emojiCategories()"
+            (emojiSelected)="insertEmoji($event)"
+          />
+        </div>
+      }
+    </div>
+  }
 
   <!-- Source toggle (HTML mode only) -->
-  @if (!isMarkdownMode()) {
+  @if (!isCompactPresentation() && !isMarkdownMode()) {
     <ui-separator-tool id="sep-source" />
     <ui-toggle-tool
       id="source-mode"
@@ -207,38 +216,44 @@
 
   <!-- Split-direction toggle + preview toggle + validity indicator (Markdown mode only) -->
   @if (isMarkdownMode()) {
-    <ui-spacer-tool id="spacer-before-md-tools" />
-    <ui-button-tool
-      id="split-direction"
-      [icon]="effectiveSplitDirection() === 'horizontal' ? teIcons.SplitVertical : teIcons.SplitHorizontal"
-      [ariaLabel]="effectiveSplitDirection() === 'horizontal' ? 'Switch to vertical split' : 'Switch to side-by-side split'"
-    />
-    <ui-separator-tool id="sep-preview" />
+    @if (!isCompactPresentation()) {
+      <ui-spacer-tool id="spacer-before-md-tools" />
+      <ui-button-tool
+        id="split-direction"
+        [icon]="effectiveSplitDirection() === 'horizontal' ? teIcons.SplitVertical : teIcons.SplitHorizontal"
+        [ariaLabel]="effectiveSplitDirection() === 'horizontal' ? 'Switch to vertical split' : 'Switch to side-by-side split'"
+      />
+      <ui-separator-tool id="sep-preview" />
+    }
     <ui-toggle-tool
       id="toggle-preview"
       [icon]="showMarkdownPreview() ? teIcons.PreviewShow : teIcons.PreviewHide"
       [ariaLabel]="showMarkdownPreview() ? 'Hide preview' : 'Show preview'"
       [checked]="showMarkdownPreview()"
     />
-    <ui-separator-tool id="sep-validity" />
-    <ui-icon
-      class="markdown-validity-indicator"
-      [class.valid]="isValidMarkdown()"
-      [class.invalid]="!isValidMarkdown()"
-      [svg]="isValidMarkdown() ? teIcons.ValidMarkdown : teIcons.InvalidMarkdown"
-      [size]="16"
-      [attr.aria-label]="isValidMarkdown() ? 'Valid markdown' : 'Empty — no markdown content'"
-      role="img"
-    />
+    @if (!isCompactPresentation()) {
+      <ui-separator-tool id="sep-validity" />
+      <ui-icon
+        class="markdown-validity-indicator"
+        [class.valid]="isValidMarkdown()"
+        [class.invalid]="!isValidMarkdown()"
+        [svg]="isValidMarkdown() ? teIcons.ValidMarkdown : teIcons.InvalidMarkdown"
+        [size]="16"
+        [attr.aria-label]="isValidMarkdown() ? 'Valid markdown' : 'Empty — no markdown content'"
+        role="img"
+      />
+    }
   }
 
   <!-- Fullscreen toggle — pushed to the right by the spacer -->
-  <ui-spacer-tool id="spacer-before-fullscreen" />
-  <ui-button-tool
-    id="fullscreen"
-    [icon]="isFullscreen() ? teIcons.ExitFullscreen : teIcons.Fullscreen"
-    [ariaLabel]="isFullscreen() ? 'Exit full screen' : 'Full screen'"
-  />
+  @if (!isCompactPresentation()) {
+    <ui-spacer-tool id="spacer-before-fullscreen" />
+    <ui-button-tool
+      id="fullscreen"
+      [icon]="isFullscreen() ? teIcons.ExitFullscreen : teIcons.Fullscreen"
+      [ariaLabel]="isFullscreen() ? 'Exit full screen' : 'Full screen'"
+    />
+  }
 
 </ui-toolbar>
 
@@ -280,6 +295,7 @@
     class="split-handle"
     role="separator"
     aria-label="Resize panes"
+    [hidden]="!showMarkdownPreview()"
     (pointerdown)="onSplitPointerDown($event)"
   ></div>
 }
@@ -289,6 +305,7 @@
   class="editor-wrapper"
   [class.editor-wrapper--focused]="isFocused() && !isSourceMode() && !isMarkdownMode()"
   [class.editor-wrapper--preview]="isSourceMode() || isMarkdownMode()"
+  [hidden]="isMarkdownMode() && !showMarkdownPreview()"
 >
   @if (isMarkdownMode() && showMarkdownPreview()) {
     <div class="preview-label" aria-hidden="true">Preview</div>
