@@ -4,6 +4,7 @@ import { Component, signal } from "@angular/core";
 import { UICarousel } from "./carousel.component";
 import { ScrollCarouselStrategy } from "./scroll-strategy";
 import { CoverflowCarouselStrategy } from "./coverflow-strategy";
+import { SingleCarouselStrategy } from "./single-strategy";
 import type { CarouselStrategy } from "./carousel.types";
 
 @Component({
@@ -39,6 +40,25 @@ class TestHost {
   public readonly showIndicators = signal(true);
   public readonly wrap = signal(false);
   public readonly activeIndex = signal(0);
+}
+
+@Component({
+  standalone: true,
+  imports: [UICarousel],
+  template: `
+    <ui-carousel [items]="items()">
+      <ng-template let-item>
+        <div class="test-slide">{{ item }}</div>
+      </ng-template>
+    </ui-carousel>
+  `,
+})
+class DefaultStrategyHost {
+  public readonly items = signal<readonly string[]>([
+    "Alpha",
+    "Bravo",
+    "Charlie",
+  ]);
 }
 
 describe("UICarousel", () => {
@@ -176,9 +196,7 @@ describe("UICarousel", () => {
     });
 
     it("should navigate on dot click", () => {
-      const dots = el.querySelectorAll(
-        ".dot",
-      ) as NodeListOf<HTMLButtonElement>;
+      const dots = el.querySelectorAll(".dot") as NodeListOf<HTMLButtonElement>;
       dots[3].click();
       fixture.detectChanges();
       expect(host.activeIndex()).toBe(3);
@@ -212,6 +230,17 @@ describe("UICarousel", () => {
   });
 
   describe("strategies", () => {
+    it("should default to scroll strategy", async () => {
+      const defaultFixture = TestBed.createComponent(DefaultStrategyHost);
+      defaultFixture.detectChanges();
+
+      const carousel = defaultFixture.debugElement.children[0]
+        .componentInstance as UICarousel;
+
+      expect(carousel.strategy()).toBeInstanceOf(ScrollCarouselStrategy);
+      expect(carousel["trackStyle"]()).toEqual({});
+    });
+
     it("should return scroll strategy track style", () => {
       const carousel = fixture.debugElement.children[0]
         .componentInstance as UICarousel;
@@ -240,6 +269,15 @@ describe("UICarousel", () => {
 
       const coverflowStyles = carousel["itemStyles"]();
       expect(coverflowStyles[0].transform).not.toBe(scrollTransform);
+    });
+
+    it("should mark items as fill layout for single strategy", () => {
+      host.strategy.set(new SingleCarouselStrategy());
+      fixture.detectChanges();
+
+      const items = el.querySelectorAll(".item");
+      expect(items[0].classList).toContain("item--fill");
+      expect(items[1].classList).toContain("item--fill");
     });
   });
 
@@ -334,6 +372,24 @@ describe("UICarousel", () => {
       const style = strategy.getItemStyle(4, 0, 5, false);
       expect(style.transform).toContain("rotateY(-72deg)");
       expect(style.zIndex).toBe(96);
+    });
+  });
+
+  describe("single strategy", () => {
+    it("should keep the active item visible and hide the rest", () => {
+      const strategy = new SingleCarouselStrategy();
+
+      expect(strategy.getItemStyle(2, 2)).toMatchObject({
+        layout: "fill",
+        opacity: 1,
+        pointerEvents: "auto",
+      });
+
+      expect(strategy.getItemStyle(1, 2)).toMatchObject({
+        layout: "fill",
+        opacity: 0,
+        pointerEvents: "none",
+      });
     });
   });
 

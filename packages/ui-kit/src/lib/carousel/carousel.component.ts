@@ -19,7 +19,7 @@ import type {
   CarouselItemStyle,
   CarouselStrategy,
 } from "./carousel.types";
-import { CoverflowCarouselStrategy } from "./coverflow-strategy";
+import { ScrollCarouselStrategy } from "./scroll-strategy";
 import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
@@ -33,6 +33,7 @@ import { UISurface } from "@theredhead/lucid-foundation";
  *
  * Two strategies ship out of the box:
  *
+ * - {@link SingleCarouselStrategy} — one visible item filling the viewport
  * - {@link ScrollCarouselStrategy} — horizontal slide
  * - {@link CoverflowCarouselStrategy} — 3D perspective fan
  *
@@ -76,12 +77,13 @@ export class UICarousel<T = unknown> {
   /**
    * Layout / animation strategy.
    *
-   * Defaults to {@link CoverflowCarouselStrategy} (3D coverflow).
-   * Switch to {@link ScrollCarouselStrategy} for a simpler
+   * Defaults to {@link ScrollCarouselStrategy} for a simpler
    * horizontal slide.
+   * Switch to {@link CoverflowCarouselStrategy} for a
+   * 3D coverflow presentation.
    */
   public readonly strategy = input<CarouselStrategy>(
-    new CoverflowCarouselStrategy(),
+    new ScrollCarouselStrategy(),
   );
 
   /** Whether to show the previous / next navigation buttons. */
@@ -229,7 +231,9 @@ export class UICarousel<T = unknown> {
   /** @internal Convert a CarouselItemStyle to an inline style object. */
   protected toStyleMap(style: CarouselItemStyle): Record<string, string> {
     const map: Record<string, string> = {};
-    if (style.transform != null) {
+    if (style.layout === "fill") {
+      map["transform"] = style.transform ?? "none";
+    } else if (style.transform != null) {
       map["transform"] = `translate(-50%, -50%) ${style.transform}`;
     } else {
       map["transform"] = "translate(-50%, -50%)";

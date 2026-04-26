@@ -39,6 +39,18 @@ const preview: Preview = {
     options: {
       storySort: {
         method: "alphabetical",
+        order: [
+          "@theredhead",
+          [
+            "Showcases",
+            ["A Quick Tour", "*"],
+            "UI Kit",
+            "UI Blocks",
+            "UI Forms",
+            "*",
+          ],
+          "*",
+        ],
       },
     },
     docs: {

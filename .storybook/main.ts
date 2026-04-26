@@ -32,7 +32,13 @@ const config: StorybookConfig = {
       },
     },
   },
-  staticDirs: ["../public"],
+  staticDirs: [
+    "../public",
+    {
+      from: "../artifacts/storybook-screenshots",
+      to: "/storybook-screenshots",
+    },
+  ],
   core: {
     disableTelemetry: true,
   },

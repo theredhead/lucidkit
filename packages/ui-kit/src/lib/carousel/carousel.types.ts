@@ -5,6 +5,7 @@
  * properties that the strategy returns.
  */
 export interface CarouselItemStyle {
+  readonly layout?: "centered" | "fill";
   readonly transform?: string;
   readonly opacity?: number;
   readonly zIndex?: number;
@@ -19,6 +20,7 @@ export interface CarouselItemStyle {
  *
  * Two built-in implementations ship with the library:
  *
+ * - {@link SingleCarouselStrategy} — one visible item filling the viewport
  * - {@link ScrollCarouselStrategy} — simple slide-by-slide scroll
  * - {@link CoverflowCarouselStrategy} — 3D perspective coverflow
  *
@@ -26,7 +28,6 @@ export interface CarouselItemStyle {
  * interface.
  */
 export interface CarouselStrategy {
-
   /** Human-readable name (useful for debugging / stories). */
   readonly name: string;
 
@@ -56,7 +57,6 @@ export interface CarouselStrategy {
  * each carousel item.
  */
 export interface CarouselItemContext<T = unknown> {
-
   /** The data item (implicit `let` variable). */
   readonly $implicit: T;
 

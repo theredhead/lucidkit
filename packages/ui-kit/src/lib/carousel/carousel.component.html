@@ -4,6 +4,7 @@
       <div
         class="item"
         [class.item--active]="$index === activeIndex()"
+        [class.item--fill]="itemStyles()[$index].layout === 'fill'"
         [ngStyle]="toStyleMap(itemStyles()[$index])"
         (click)="goTo($index)"
         (keydown.enter)="goTo($index)"

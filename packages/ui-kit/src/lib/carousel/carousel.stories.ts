@@ -10,6 +10,7 @@ import {
 import { UICarousel } from "./carousel.component";
 import { ScrollCarouselStrategy } from "./scroll-strategy";
 import { CoverflowCarouselStrategy } from "./coverflow-strategy";
+import { SingleCarouselStrategy } from "./single-strategy";
 
 /* ── Shared slide data (picsum.photos — same service as repeater) ── */
 
@@ -58,6 +59,7 @@ function buildSlides(count = 7, width = 280, height = 200): readonly Slide[] {
 const SCROLL_SLIDES = buildSlides(50, 280, 200);
 const COVER_SLIDES = buildSlides(50, 240, 240);
 const DENSE_SLIDES = buildSlides(50, 180, 180);
+const SINGLE_SLIDES = buildSlides(7, 1200, 720);
 
 /* ── Interactive demo components ── */
 
@@ -315,6 +317,99 @@ class CarouselDenseCoverflowDemo {
   );
 }
 
+@Component({
+  selector: "ui-carousel-single-demo",
+  standalone: true,
+  imports: [UICarousel],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      :host {
+        display: block;
+      }
+
+      .shell {
+        width: 100%;
+        max-width: 56rem;
+        margin: 0 auto;
+      }
+
+      ui-carousel {
+        aspect-ratio: 16 / 9;
+      }
+
+      .frame {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 1rem;
+        overflow: hidden;
+        color: #f7f8fa;
+        background: #111827;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.22);
+      }
+
+      .frame img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .frame-caption {
+        position: absolute;
+        inset: auto 0 0;
+        padding: 1rem 1.1rem;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+        color: #f7f8fa;
+      }
+
+      .frame-caption strong,
+      .frame-caption p {
+        margin: 0;
+      }
+
+      .frame-caption p {
+        margin-top: 0.35rem;
+        font-size: 0.9rem;
+        opacity: 0.86;
+      }
+    `,
+  ],
+  template: `
+    <div class="shell">
+      <ui-carousel
+        [items]="slides"
+        [strategy]="strategy"
+        [showControls]="showControls()"
+        [showIndicators]="showIndicators()"
+        [wrap]="wrap()"
+        [(activeIndex)]="active"
+        ariaLabel="Image carousel (single frame)"
+      >
+        <ng-template let-slide>
+          <div class="frame">
+            <img [src]="slide.url" [alt]="slide.name" loading="lazy" />
+            <div class="frame-caption">
+              <strong>{{ slide.name }}</strong>
+              <p>One visible slide at a time, filling the available frame.</p>
+            </div>
+          </div>
+        </ng-template>
+      </ui-carousel>
+    </div>
+  `,
+})
+class CarouselSingleDemo {
+  public readonly showControls = input(true);
+  public readonly showIndicators = input(true);
+  public readonly wrap = input(true);
+
+  public readonly slides = SINGLE_SLIDES;
+  public readonly active = signal(0);
+  public readonly strategy = new SingleCarouselStrategy();
+}
+
 /* ── Shared argTypes ── */
 
 const carouselArgTypes = {
@@ -399,6 +494,7 @@ const meta: Meta<UICarousel> = {
   decorators: [
     moduleMetadata({
       imports: [
+        CarouselSingleDemo,
         CarouselScrollDemo,
         CarouselCoverflowDemo,
         CarouselDenseCoverflowDemo,
@@ -410,38 +506,28 @@ export default meta;
 type Story = StoryObj;
 
 /**
- * Default coverflow carousel with 50 items, tight spacing,
- * endless wrap, and no blur. This is the component's default
- * configuration — no strategy or options needed.
+ * Default horizontal scroll carousel. This matches the component's
+ * built-in default strategy and keeps one active image centred at a time.
  *
- * Use the **Controls** panel to experiment — try toggling
- * blur on, increasing peekOffset, or disabling wrap.
+ * Use the **Controls** panel to adjust spacing, width, and wrap behavior.
  */
 export const Default: Story = {
-  argTypes: coverflowArgTypes,
+  argTypes: scrollArgTypes,
   args: {
-    peekOffset: 42,
-    stackGap: 18,
-    rotateY: 72,
-    sideScale: 0.82,
-    depthOffset: 80,
-    blur: false,
     fade: false,
+    gap: 16,
+    itemWidth: 280,
     showControls: true,
     showIndicators: false,
-    wrap: true,
+    wrap: false,
   } as Record<string, unknown>,
   render: (args) => ({
     props: args,
     template: `
-      <ui-carousel-dense-coverflow-demo
-        [peekOffset]="peekOffset"
-        [stackGap]="stackGap"
-        [rotateY]="rotateY"
-        [sideScale]="sideScale"
-        [depthOffset]="depthOffset"
-        [blur]="blur"
+      <ui-carousel-scroll-demo
         [fade]="fade"
+        [gap]="gap"
+        [itemWidth]="itemWidth"
         [showControls]="showControls"
         [showIndicators]="showIndicators"
         [wrap]="wrap"
@@ -455,8 +541,9 @@ export const Default: Story = {
 // ── HTML ──
 <ui-carousel
   [items]="photos"
+  [strategy]="strategy"
   [showIndicators]="false"
-  [wrap]="true"
+  [wrap]="false"
   [(activeIndex)]="active"
 >
   <ng-template let-photo>
@@ -466,7 +553,7 @@ export const Default: Story = {
 
 // ── TypeScript ──
 import { Component, signal } from '@angular/core';
-import { UICarousel } from '@theredhead/lucid-kit';
+import { UICarousel, ScrollCarouselStrategy } from '@theredhead/lucid-kit';
 
 @Component({
   selector: 'app-example',
@@ -488,8 +575,9 @@ import { UICarousel } from '@theredhead/lucid-kit';
 export class ExampleComponent {
   readonly photos = Array.from({ length: 50 }, (_, i) => ({
     name: 'Photo ' + (i + 1),
-    url: 'https://picsum.photos/seed/carousel' + (i + 1) + '/180/180',
+    url: 'https://picsum.photos/seed/carousel' + (i + 1) + '/280/200',
   }));
+  readonly strategy = new ScrollCarouselStrategy();
   readonly active = signal(25);
 }
 
@@ -674,6 +762,88 @@ export class ExampleComponent {
 };
 
 /**
+ * Single-frame strategy. One image is visible at a time and the slide fills
+ * the carousel viewport, which pairs well with `object-fit: cover` imagery.
+ */
+export const Single: Story = {
+  argTypes: carouselArgTypes,
+  args: {
+    showControls: true,
+    showIndicators: true,
+    wrap: true,
+  } as Record<string, unknown>,
+  render: (args) => ({
+    props: args,
+    template: `
+      <ui-carousel-single-demo
+        [showControls]="showControls"
+        [showIndicators]="showIndicators"
+        [wrap]="wrap"
+      />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-carousel [items]="photos" [strategy]="strategy" [(activeIndex)]="active">
+  <ng-template let-photo>
+    <div class="frame">
+      <img [src]="photo.url" [alt]="photo.name" />
+    </div>
+  </ng-template>
+</ui-carousel>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import { UICarousel, SingleCarouselStrategy } from '@theredhead/lucid-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UICarousel],
+  template: \
+    \
+    <ui-carousel [items]="photos" [strategy]="strategy" [(activeIndex)]="active">
+      <ng-template let-photo>
+        <div class="frame">
+          <img [src]="photo.url" [alt]="photo.name" />
+        </div>
+      </ng-template>
+    </ui-carousel>
+  \
+    ,
+})
+export class ExampleComponent {
+  readonly photos = [
+    { name: 'Whiskers', url: 'https://picsum.photos/seed/carousel1/1200/720' },
+    { name: 'Mittens', url: 'https://picsum.photos/seed/carousel2/1200/720' },
+    { name: 'Shadow', url: 'https://picsum.photos/seed/carousel3/1200/720' },
+  ];
+  readonly strategy = new SingleCarouselStrategy();
+  readonly active = signal(0);
+}
+
+// ── SCSS ──
+.frame {
+  width: 100%;
+  height: 100%;
+}
+
+.frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+`,
+      },
+    },
+  },
+};
+
+/**
  * _API Reference_ — features, inputs, strategies, and coverflow options.
  */
 export const Documentation: Story = {
@@ -684,7 +854,7 @@ export const Documentation: Story = {
       description: {
         story:
           "### Features\n" +
-          "- **Strategy pattern** — swap between scroll and coverflow (or custom) layouts\n" +
+          "- **Strategy pattern** — swap between single, scroll, coverflow, or custom layouts\n" +
           "- **Keyboard navigation** — arrow keys move between items\n" +
           "- **Wheel / trackpad** — horizontal scroll navigates items\n" +
           "- **Click-to-select** — click any item to centre it\n" +
@@ -696,7 +866,7 @@ export const Documentation: Story = {
           "| Input | Type | Default | Description |\n" +
           "|-------|------|---------|-------------|\n" +
           "| `items` | `T[]` | *(required)* | Data items to display |\n" +
-          "| `strategy` | `CarouselStrategy` | `CoverflowCarouselStrategy` | Layout / animation strategy |\n" +
+          "| `strategy` | `CarouselStrategy` | `ScrollCarouselStrategy` | Layout / animation strategy |\n" +
           "| `activeIndex` | `number` | `0` | Currently active item (model) |\n" +
           "| `showControls` | `boolean` | `true` | Show prev / next buttons |\n" +
           "| `showIndicators` | `boolean` | `true` | Show dot indicators |\n" +
@@ -705,8 +875,9 @@ export const Documentation: Story = {
           "### Strategies\n" +
           "| Strategy | Effect |\n" +
           "|----------|--------|\n" +
-          "| `CoverflowCarouselStrategy` | 3D perspective fan (classic iPod / macOS) — **default** |\n" +
-          "| `ScrollCarouselStrategy` | Horizontal slide, item-by-item |\n\n" +
+          "| `ScrollCarouselStrategy` | Horizontal slide, item-by-item — **default** |\n" +
+          "| `SingleCarouselStrategy` | One visible item at a time, stretched to the carousel frame |\n" +
+          "| `CoverflowCarouselStrategy` | 3D perspective fan (classic iPod / macOS) |\n\n" +
           "### Coverflow Options\n" +
           "| Option | Type | Default | Description |\n" +
           "|--------|------|---------|-------------|\n" +
