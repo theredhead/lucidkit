@@ -147,10 +147,20 @@ ui-toolbar {
   background: var(--ui-surface, #ffffff);
   border: 1px solid var(--ui-border, #d4d8dd);
   border-top: none;
-  transition: border-color 120ms ease;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease;
 
   &:focus-within {
     border-color: var(--ui-accent, #3584e4);
+    background: color-mix(
+      in srgb,
+      var(--ui-accent, #3584e4) 3%,
+      var(--ui-surface, #ffffff)
+    );
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--ui-accent, #3584e4) 18%, transparent);
   }
 }
 
@@ -161,6 +171,11 @@ ui-toolbar {
   line-height: 1.5;
   outline: none;
   overflow-y: auto;
+
+  &::selection {
+    color: var(--ui-text, #1d232b);
+    background: color-mix(in srgb, var(--ui-accent, #3584e4) 28%, transparent);
+  }
 
   // Placeholder via :empty pseudo-element
   &:empty::before {
@@ -299,6 +314,11 @@ ui-toolbar {
   tab-size: 2;
   white-space: pre;
   overflow-x: auto;
+
+  &::selection {
+    color: var(--ui-text, #1d232b);
+    background: color-mix(in srgb, var(--ui-accent, #3584e4) 28%, transparent);
+  }
 
   &:disabled {
     opacity: 0.5;

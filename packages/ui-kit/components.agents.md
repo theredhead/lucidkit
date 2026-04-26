@@ -95,19 +95,19 @@ All toolbar components use the **DI forwarding pattern** — each tool extends
 `UIToolbarItem` and provides itself via `{ provide: UIToolbarItem, useExisting: forwardRef(...) }`.
 `UIToolbar` collects direct content children via `contentChildren(UIToolbarItem)`.
 
-| Name                | File                                                                     | Selector               | Description                                                                                  |
-| ------------------- | ------------------------------------------------------------------------ | ---------------------- | -------------------------------------------------------------------------------------------- |
-| `UIToolbar`         | `src/lib/toolbar/toolbar.component.ts`                                   | `ui-toolbar`           | Container that collects `UIToolbarItem` children and re-emits their actions via `toolAction` |
-| `UIToolbarItem`     | `src/lib/toolbar/toolbar-item.directive.ts`                              | _(abstract directive)_ | Abstract base for all toolbar tool components                                                |
-| `UIButtonTool`      | `src/lib/toolbar/tools/button-tool/button-tool.component.ts`             | `ui-button-tool`       | Clickable button tool; emits `ToolActionEvent` on click                                      |
-| `UIToggleTool`      | `src/lib/toolbar/tools/toggle-tool/toggle-tool.component.ts`             | `ui-toggle-tool`       | Toggle button with `checked` model; `deactivate()` sets checked to false                     |
-| `UISeparatorTool`   | `src/lib/toolbar/tools/separator-tool/separator-tool.component.ts`       | `ui-separator-tool`    | Visual divider; does not emit actions                                                        |
-| `UISpacerTool`      | `src/lib/toolbar/tools/spacer-tool/spacer-tool.component.ts`             | `ui-spacer-tool`       | Flexible spacer (`flex: 1 1 auto`) that pushes subsequent items to the trailing edge         |
-| `UIDropdownTool`    | `src/lib/toolbar/tools/dropdown-tool/dropdown-tool.component.ts`         | `ui-dropdown-tool`     | Dropdown panel via `items` input or projected content; `selectedItemId` signal               |
-| `UISelectTool`      | `src/lib/toolbar/tools/select-tool/select-tool.component.ts`             | `ui-select-tool`       | Wraps `<ui-select>`; emits with `event: null` on change; `value` model                       |
-| `UITemplateTool`    | `src/lib/toolbar/tools/template-tool/template-tool.component.ts`         | `ui-template-tool`     | Renders consumer template via `NgTemplateOutlet`; `$implicit` context is the tool itself     |
-| `UIButtonGroupTool` | `src/lib/toolbar/tools/button-group-tool/button-group-tool.component.ts` | `ui-button-group-tool` | Visual group; re-emits direct children's actions unchanged                                   |
-| `UIToggleGroupTool` | `src/lib/toolbar/tools/toggle-group-tool/toggle-group-tool.component.ts` | `ui-toggle-group-tool` | Radio-style group; deactivates siblings on child action, then re-emits                       |
+| Name                | File                                                                     | Selector               | Description                                                                                                                                    |
+| ------------------- | ------------------------------------------------------------------------ | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `UIToolbar`         | `src/lib/toolbar/toolbar.component.ts`                                   | `ui-toolbar`           | Container that collects `UIToolbarItem` children, re-emits their actions via `toolAction`, and supports inline or floating-toggle presentation |
+| `UIToolbarItem`     | `src/lib/toolbar/toolbar-item.directive.ts`                              | _(abstract directive)_ | Abstract base for all toolbar tool components                                                                                                  |
+| `UIButtonTool`      | `src/lib/toolbar/tools/button-tool/button-tool.component.ts`             | `ui-button-tool`       | Clickable button tool; emits `ToolActionEvent` on click                                                                                        |
+| `UIToggleTool`      | `src/lib/toolbar/tools/toggle-tool/toggle-tool.component.ts`             | `ui-toggle-tool`       | Toggle button with `checked` model; `deactivate()` sets checked to false                                                                       |
+| `UISeparatorTool`   | `src/lib/toolbar/tools/separator-tool/separator-tool.component.ts`       | `ui-separator-tool`    | Visual divider; does not emit actions                                                                                                          |
+| `UISpacerTool`      | `src/lib/toolbar/tools/spacer-tool/spacer-tool.component.ts`             | `ui-spacer-tool`       | Flexible spacer (`flex: 1 1 auto`) that pushes subsequent items to the trailing edge                                                           |
+| `UIDropdownTool`    | `src/lib/toolbar/tools/dropdown-tool/dropdown-tool.component.ts`         | `ui-dropdown-tool`     | Dropdown panel via `items` input or projected content; `selectedItemId` signal                                                                 |
+| `UISelectTool`      | `src/lib/toolbar/tools/select-tool/select-tool.component.ts`             | `ui-select-tool`       | Wraps `<ui-select>`; emits with `event: null` on change; `value` model                                                                         |
+| `UITemplateTool`    | `src/lib/toolbar/tools/template-tool/template-tool.component.ts`         | `ui-template-tool`     | Renders consumer template via `NgTemplateOutlet`; `$implicit` context is the tool itself                                                       |
+| `UIButtonGroupTool` | `src/lib/toolbar/tools/button-group-tool/button-group-tool.component.ts` | `ui-button-group-tool` | Visual group; re-emits direct children's actions unchanged                                                                                     |
+| `UIToggleGroupTool` | `src/lib/toolbar/tools/toggle-group-tool/toggle-group-tool.component.ts` | `ui-toggle-group-tool` | Radio-style group; deactivates siblings on child action, then re-emits                                                                         |
 
 ### Types
 
@@ -115,6 +115,7 @@ All toolbar components use the **DI forwarding pattern** — each tool extends
 | -------------------- | -------------------------------------- | ------------------------------------------------------------------- |
 | `ToolActionEvent`    | `src/lib/toolbar/toolbar-action.ts`    | Payload emitted by all toolbar tools (`itemId`, `itemRef`, `event`) |
 | `DropdownToolItem`   | `src/lib/toolbar/toolbar-action.ts`    | Item descriptor for `UIDropdownTool` items input                    |
+| `ToolbarDisplayMode` | `src/lib/toolbar/toolbar.component.ts` | `'inline' \| 'floating-toggle'`                                     |
 | `ToolbarOrientation` | `src/lib/toolbar/toolbar.component.ts` | `'horizontal' \| 'vertical'`                                        |
 
 ## Table-View Columns

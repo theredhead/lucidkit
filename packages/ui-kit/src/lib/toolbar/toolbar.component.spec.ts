@@ -50,6 +50,30 @@ class ConditionalHost {
   }
 }
 
+@Component({
+  standalone: true,
+  imports: [UIToolbar, UIButtonTool],
+  template: `
+    <div class="anchor">
+      <ui-toolbar
+        displayMode="floating-toggle"
+        ariaLabel="Floating toolbar"
+        [collapsed]="collapsed()"
+        (collapsedChange)="onCollapsedChange($event)"
+      >
+        <ui-button-tool id="format" label="Format" />
+      </ui-toolbar>
+    </div>
+  `,
+})
+class FloatingToggleHost {
+  public readonly collapsed = signal(true);
+
+  public onCollapsedChange(value: boolean): void {
+    this.collapsed.set(value);
+  }
+}
+
 // ── Tests ─────────────────────────────────────────────────────────────
 
 describe("UIToolbar", () => {
@@ -161,6 +185,61 @@ describe("UIToolbar", () => {
         fixture.nativeElement.querySelectorAll("button");
       btns[1].click();
       expect(host.lastAction?.itemId).toBe("extra");
+    });
+  });
+
+  describe("floating toggle mode", () => {
+    let fixture: ComponentFixture<FloatingToggleHost>;
+    let host: FloatingToggleHost;
+
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [FloatingToggleHost],
+      }).compileComponents();
+      fixture = TestBed.createComponent(FloatingToggleHost);
+      host = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it("should show only the floating toggle button when collapsed", () => {
+      const toolbar: HTMLElement =
+        fixture.nativeElement.querySelector("ui-toolbar");
+      const shell = toolbar.querySelector(".toolbar-shell");
+      const floatingToggle = toolbar.querySelector(".floating-toggle-button");
+
+      expect(toolbar.classList).toContain("collapsed");
+      expect(shell).toBeTruthy();
+      expect(floatingToggle).toBeTruthy();
+    });
+
+    it("should expand when the floating toggle button is clicked", () => {
+      const toolbar: HTMLElement =
+        fixture.nativeElement.querySelector("ui-toolbar");
+      const floatingToggle: HTMLButtonElement | null = toolbar.querySelector(
+        ".floating-toggle-button",
+      );
+
+      floatingToggle?.click();
+      fixture.detectChanges();
+
+      expect(host.collapsed()).toBe(false);
+      expect(toolbar.classList).not.toContain("collapsed");
+    });
+
+    it("should collapse again when the inline collapse button is clicked", () => {
+      host.collapsed.set(false);
+      fixture.detectChanges();
+
+      const toolbar: HTMLElement =
+        fixture.nativeElement.querySelector("ui-toolbar");
+      const collapseToggle: HTMLButtonElement | null =
+        toolbar.querySelector(".collapse-toggle");
+
+      collapseToggle?.click();
+      fixture.detectChanges();
+
+      expect(host.collapsed()).toBe(true);
+      expect(toolbar.classList).toContain("collapsed");
     });
   });
 });

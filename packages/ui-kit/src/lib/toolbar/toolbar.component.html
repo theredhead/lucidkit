@@ -1,1 +1,36 @@
-<ng-content></ng-content>
+<div
+	class="toolbar-shell"
+	uiSurface
+	[surfaceType]="shellSurfaceType()"
+	role="toolbar"
+	[attr.aria-label]="ariaLabel()"
+>
+	<div class="toolbar-content">
+		<ng-content></ng-content>
+	</div>
+
+	@if (isFloatingToggleMode()) {
+		<button
+			type="button"
+			class="toolbar-toggle collapse-toggle"
+			[attr.aria-label]="getToggleLabel()"
+			[title]="getToggleLabel()"
+			(click)="toggleCollapsed()"
+		>
+			<ui-icon [svg]="getToggleIcon()" [size]="14" />
+		</button>
+	}
+</div>
+
+@if (isFloatingToggleMode()) {
+	<button
+		type="button"
+		class="toolbar-toggle floating-toggle-button"
+		[attr.aria-label]="getToggleLabel()"
+		[attr.aria-expanded]="!collapsed()"
+		[title]="getToggleLabel()"
+		(click)="toggleCollapsed()"
+	>
+		<ui-icon [svg]="getToggleIcon()" [size]="14" />
+	</button>
+}

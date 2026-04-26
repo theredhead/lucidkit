@@ -1,4 +1,8 @@
-export { UIToolbar, type ToolbarOrientation } from "./toolbar.component";
+export {
+  UIToolbar,
+  type ToolbarDisplayMode,
+  type ToolbarOrientation,
+} from "./toolbar.component";
 export { UIToolbarItem } from "./toolbar-item.directive";
 export { type ToolActionEvent, type DropdownToolItem } from "./toolbar-action";
 export { UIButtonTool } from "./tools/button-tool/button-tool.component";

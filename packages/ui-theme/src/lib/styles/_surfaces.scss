@@ -24,6 +24,17 @@
   background-color: var(--ui-surface, inherit);
 }
 
+.ui-surface-type-toolbar-floating {
+  --ui-toolbar-shell-text: var(--ui-text, #1d232b);
+  --ui-toolbar-shell-bg: var(--ui-surface, #f7f8fa);
+  --ui-toolbar-shell-border: color-mix(
+    in srgb,
+    var(--ui-border, #cdd5df) 82%,
+    transparent
+  );
+  --ui-toolbar-shell-shadow: none;
+}
+
 .ui-surface-type-avatar {
   color: var(--ui-text, #1d232b);
   background-color: var(--ui-surface-2, #e8ecf0);

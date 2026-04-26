@@ -22,19 +22,26 @@ import { UIToggleTool } from "./tools/toggle-tool/toggle-tool.component";
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
+      .story-frame {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #ffffff);
+      }
+
       .action-log {
         font-size: 0.875rem;
-        color: #1d232b;
-        background: #f7f8fa;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface-2, #f7f8fa);
         padding: 6px 10px;
         border-radius: 4px;
       }
     `,
   ],
   template: `
-    <div
-      style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #fff; color: #1d232b;"
-    >
+    <div class="story-frame">
       <ui-toolbar (toolAction)="onAction($event)">
         <ui-button-tool
           id="undo"
@@ -95,20 +102,33 @@ class UIToolbarBasicDemo {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
+      .story-frame {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #ffffff);
+      }
+
+      .story-note {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--ui-text, #1d232b);
+      }
+
       .action-log {
         font-size: 0.875rem;
-        color: #1d232b;
-        background: #f7f8fa;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface-2, #f7f8fa);
         padding: 6px 10px;
         border-radius: 4px;
       }
     `,
   ],
   template: `
-    <div
-      style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #fff; color: #1d232b;"
-    >
-      <p style="margin: 0; font-size: 0.875rem; color: #1d232b;">
+    <div class="story-frame">
+      <p class="story-note">
         Standalone toggle tools + radio-style toggle group:
       </p>
       <ui-toolbar (toolAction)="onAction($event)">
@@ -194,19 +214,26 @@ class UIToolbarToggleDemo {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
+      .story-frame {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #ffffff);
+      }
+
       .action-log {
         font-size: 0.875rem;
-        color: #1d232b;
-        background: #f7f8fa;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface-2, #f7f8fa);
         padding: 6px 10px;
         border-radius: 4px;
       }
     `,
   ],
   template: `
-    <div
-      style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #fff; color: #1d232b;"
-    >
+    <div class="story-frame">
       <ui-toolbar (toolAction)="onAction($event)">
         <ui-dropdown-tool id="insert" label="Insert" [items]="insertItems" />
         <ui-select-tool
@@ -257,10 +284,25 @@ class UIToolbarDropdownsDemo {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
+      .story-frame {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #ffffff);
+      }
+
+      .story-note {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--ui-text, #1d232b);
+      }
+
       .action-log {
         font-size: 0.875rem;
-        color: #1d232b;
-        background: #f7f8fa;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface-2, #f7f8fa);
         padding: 6px 10px;
         border-radius: 4px;
       }
@@ -272,19 +314,17 @@ class UIToolbarDropdownsDemo {
         gap: 6px;
         padding: 4px 8px;
         font-size: 0.8125rem;
-        color: #1d232b;
-        background: #f7f8fa;
-        border: 1px solid #cdd5df;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface-2, #f7f8fa);
+        border: 1px solid var(--ui-border, #cdd5df);
         border-radius: 4px;
         font-family: monospace;
       }
     `,
   ],
   template: `
-    <div
-      style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #fff; color: #1d232b;"
-    >
-      <p style="margin: 0; font-size: 0.875rem; color: #1d232b;">
+    <div class="story-frame">
+      <p class="story-note">
         Custom template tool used to display live zoom level:
       </p>
       <ui-toolbar (toolAction)="onAction($event)">
@@ -336,20 +376,33 @@ class UIToolbarTemplateDemo {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
+      .story-frame {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #ffffff);
+      }
+
+      .story-note {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--ui-text, #1d232b);
+      }
+
       .action-log {
         font-size: 0.875rem;
-        color: #1d232b;
-        background: #f7f8fa;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface-2, #f7f8fa);
         padding: 6px 10px;
         border-radius: 4px;
       }
     `,
   ],
   template: `
-    <div
-      style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #fff; color: #1d232b;"
-    >
-      <p style="margin: 0; font-size: 0.875rem; color: #1d232b;">
+    <div class="story-frame">
+      <p class="story-note">
         UIButtonGroupTool renders children with a shared border:
       </p>
       <ui-toolbar (toolAction)="onAction($event)">
@@ -388,6 +441,100 @@ class UIToolbarButtonGroupDemo {
   }
 }
 
+@Component({
+  selector: "ui-toolbar-floating-toggle-demo",
+  standalone: true,
+  imports: [UIToolbar, UIButtonTool, UISeparatorTool],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .host-surface {
+        position: relative;
+        min-height: 13rem;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--ui-border, #cdd5df);
+        color: var(--ui-text, #1d232b);
+        background:
+          radial-gradient(
+            circle at top right,
+            color-mix(in srgb, var(--ui-accent, #3584e4) 14%, transparent),
+            transparent 32%
+          ),
+          linear-gradient(
+            180deg,
+            var(--ui-surface, #ffffff),
+            var(--ui-surface-2, #f7f8fa) 72%
+          );
+      }
+
+      .copy {
+        max-width: 32rem;
+        padding-top: 2.5rem;
+      }
+
+      .copy h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+      }
+
+      .copy p {
+        margin: 0;
+        line-height: 1.55;
+        color: var(--ui-text-muted, #5a6470);
+      }
+    `,
+  ],
+  template: `
+    <div class="host-surface">
+      <ui-toolbar
+        displayMode="floating-toggle"
+        ariaLabel="Floating formatting toolbar"
+        [collapsed]="collapsed()"
+        (collapsedChange)="collapsed.set($event)"
+      >
+        <ui-button-tool
+          id="bold"
+          label="Bold"
+          [icon]="icons.Bold"
+          tooltip="Bold"
+        />
+        <ui-button-tool
+          id="italic"
+          label="Italic"
+          [icon]="icons.Italic"
+          tooltip="Italic"
+        />
+        <ui-separator-tool id="sep1" />
+        <ui-button-tool
+          id="link"
+          label="Link"
+          [icon]="icons.Link"
+          tooltip="Insert link"
+        />
+      </ui-toolbar>
+
+      <div class="copy">
+        <h3>Floating host surface</h3>
+        <p>
+          This host container is <strong>position: relative</strong>, so the
+          toolbar can collapse into a compact floating affordance in the
+          top-right corner and expand back over the content when needed.
+        </p>
+      </div>
+    </div>
+  `,
+})
+class UIToolbarFloatingToggleDemo {
+  protected readonly icons = {
+    Bold: UIIcons.Lucide.Text.Bold,
+    Italic: UIIcons.Lucide.Text.Italic,
+    Link: UIIcons.Lucide.Text.Link,
+  } as const;
+
+  protected readonly collapsed = signal(true);
+}
+
 // ── Meta ──────────────────────────────────────────────────────────────
 
 const meta: Meta<UIToolbar> = {
@@ -402,6 +549,7 @@ const meta: Meta<UIToolbar> = {
         UIToolbarDropdownsDemo,
         UIToolbarTemplateDemo,
         UIToolbarButtonGroupDemo,
+        UIToolbarFloatingToggleDemo,
       ],
     }),
   ],
@@ -620,6 +768,60 @@ import {
   UIToolbar, UIButtonGroupTool, UIButtonTool, UISeparatorTool,
   UIIcons, type ToolActionEvent,
 } from '@theredhead/lucid-kit';
+        `,
+      },
+    },
+  },
+};
+
+/** Floating toggle mode collapses the toolbar into a compact reveal button. */
+export const FloatingToggle: Story = {
+  render: () => ({
+    template: `<ui-toolbar-floating-toggle-demo />`,
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<div class="editor-shell">
+  <ui-toolbar
+    displayMode="floating-toggle"
+    ariaLabel="Formatting toolbar"
+    [collapsed]="toolbarCollapsed()"
+    (collapsedChange)="toolbarCollapsed.set($event)"
+  >
+    <ui-button-tool id="bold" [icon]="UIIcons.Lucide.Text.Bold" />
+    <ui-button-tool id="italic" [icon]="UIIcons.Lucide.Text.Italic" />
+    <ui-separator-tool id="sep1" />
+    <ui-button-tool id="link" [icon]="UIIcons.Lucide.Text.Link" />
+  </ui-toolbar>
+
+  <div class="editor-body">Editor content...</div>
+</div>
+
+// ── TypeScript ──
+import { Component, signal } from '@angular/core';
+import {
+  UIToolbar, UIButtonTool, UISeparatorTool,
+  UIIcons,
+} from '@theredhead/lucid-kit';
+
+@Component({
+  standalone: true,
+  imports: [UIToolbar, UIButtonTool, UISeparatorTool],
+  template: '<div class="editor-shell">...</div>',
+})
+export class ExampleComponent {
+  protected readonly UIIcons = UIIcons;
+  protected readonly toolbarCollapsed = signal(true);
+}
+
+// ── SCSS ──
+.editor-shell {
+  position: relative;
+}
         `,
       },
     },

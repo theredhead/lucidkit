@@ -1,16 +1,130 @@
 :host {
   display: inline-flex;
+  position: relative;
+  max-width: 100%;
+}
+
+.toolbar-shell {
+  display: flex;
+  flex: 1 1 auto;
   flex-flow: row nowrap;
   align-items: center;
   gap: 0.125rem;
+  min-width: 0;
   padding: 0.25rem;
-  border: 1px solid var(--ui-border, #cdd5df);
+  border: 1px solid var(--ui-toolbar-shell-border, var(--ui-border, #cdd5df));
   border-radius: var(--ui-radius, 0.375rem);
-  background: var(--ui-surface, #f7f8fa);
-  color: var(--ui-text, #1d232b);
+  background: var(--ui-toolbar-shell-bg, var(--ui-surface, #f7f8fa));
+  background-clip: padding-box;
+  color: var(--ui-toolbar-shell-text, var(--ui-text, #1d232b));
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  box-shadow: var(--ui-toolbar-shell-shadow, 0 6px 16px rgba(0, 0, 0, 0.08));
 }
 
-:host.vertical {
+.toolbar-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.toolbar-toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--ui-text, #1d232b);
+  background: color-mix(in srgb, var(--ui-surface, #f7f8fa) 88%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--ui-border, #cdd5df) 90%, transparent);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    opacity 120ms ease;
+
+  &:hover {
+    background: color-mix(
+      in srgb,
+      var(--ui-surface, #f7f8fa) 96%,
+      var(--ui-accent, #3584e4) 4%
+    );
+    border-color: var(--ui-border, #cdd5df);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent, #3584e4));
+    outline-offset: 2px;
+  }
+}
+
+.collapse-toggle {
+  display: none;
+}
+
+.floating-toggle-button {
+  display: none;
+  opacity: 0.72;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+  }
+}
+
+:host.vertical .toolbar-shell,
+:host.vertical .toolbar-content {
   flex-flow: column nowrap;
   align-items: stretch;
+}
+
+:host.floating-toggle {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 20;
+}
+
+:host.floating-toggle .toolbar-shell {
+  gap: 0.375rem;
+  padding: 0.375rem;
+  border-radius: calc(var(--ui-radius, 0.375rem) * 2.5);
+}
+
+:host.floating-toggle .toolbar-toggle {
+  border-color: var(--ui-toolbar-shell-border, var(--ui-border, #cdd5df));
+  background: color-mix(in srgb, var(--ui-surface, #f7f8fa) 94%, transparent);
+}
+
+:host.floating-toggle .toolbar-toggle:hover {
+  border-color: var(--ui-toolbar-shell-border, var(--ui-border, #cdd5df));
+}
+
+:host.floating-toggle ::ng-deep ui-separator-tool {
+  opacity: 0.82;
+}
+
+:host.floating-toggle .collapse-toggle {
+  display: inline-flex;
+}
+
+:host.floating-toggle.collapsed .toolbar-shell {
+  display: none;
+}
+
+:host.floating-toggle.collapsed .floating-toggle-button {
+  display: inline-flex;
+  border-radius: calc(var(--ui-radius, 0.375rem) * 2.75);
+  box-shadow: none;
 }
