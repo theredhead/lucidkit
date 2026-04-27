@@ -149,6 +149,12 @@ ui-toolbar {
   }
 }
 
+.block-option {
+  align-items: center;
+  flex-direction: row;
+  gap: 0.45rem;
+}
+
 .placeholder-label {
   font-weight: 600;
 }
@@ -363,6 +369,50 @@ ui-toolbar {
   > .content {
     min-height: 1.5rem;
     padding: 0.45rem 0.55rem;
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+  }
+}
+
+:host ::ng-deep tr.rte-template-block.table-row-block {
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+
+  > td {
+    padding: 0.35rem;
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+    border: 1px solid var(--ui-border, #d4d8dd);
+  }
+
+  .shell {
+    overflow: hidden;
+    border: 1px solid var(--ui-border, #d4d8dd);
+    border-radius: 0.35rem;
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+  }
+
+  .header {
+    display: block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: var(--ui-cursor-click, pointer);
+    color: var(--ui-accent, #3584e4);
+    background: var(--ui-primary-container, #dbeafe);
+    border-bottom: 1px solid var(--ui-border, #d4d8dd);
+  }
+
+  .table-content {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+  }
+
+  .content {
+    min-height: 1.5rem;
     color: var(--ui-text, #1d232b);
     background: var(--ui-surface, #ffffff);
   }

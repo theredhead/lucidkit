@@ -187,6 +187,31 @@ registerRichTextTemplateBlockUiProvider({
   formatLabel: (attributes) => `Loop ${attributes["items"] ?? ""}`.trim(),
 });
 
+registerRichTextTemplateBlockUiProvider({
+  name: "email",
+  label: "Email",
+  selfClosing: true,
+  display: "inline",
+  attributes: [
+    {
+      key: "email",
+      label: "Email Field",
+      type: "string",
+      required: true,
+      placeholder: "email",
+    },
+    {
+      key: "text",
+      label: "Text Field",
+      type: "string",
+      required: true,
+      placeholder: "fullName",
+    },
+  ],
+  formatLabel: (attributes) =>
+    `Email ${attributes["email"] ?? ""}`.trim(),
+});
+
 /**
  * Callback that handles an image file and returns a URL string.
  *

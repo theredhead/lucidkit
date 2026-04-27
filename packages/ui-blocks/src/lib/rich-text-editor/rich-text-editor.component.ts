@@ -16,7 +16,12 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
+import {
+  getRegisteredTextTemplateBlockProviders,
+  LoggerFactory,
+  UISurface,
+  type TemplateBlockProvider,
+} from "@theredhead/lucid-foundation";
 
 import {
   UIEmojiPicker,
@@ -82,6 +87,56 @@ import {
  * @internal
  */
 const PLACEHOLDER_CLASS = "rte-placeholder";
+
+/** @internal */
+const RICH_CONTENT_BLOCK_NAMES = new Set([
+  "a",
+  "article",
+  "b",
+  "blockquote",
+  "br",
+  "caption",
+  "code",
+  "del",
+  "div",
+  "dl",
+  "dt",
+  "dd",
+  "em",
+  "figcaption",
+  "figure",
+  "footer",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "header",
+  "hr",
+  "i",
+  "img",
+  "li",
+  "main",
+  "nav",
+  "ol",
+  "p",
+  "pre",
+  "s",
+  "section",
+  "span",
+  "strike",
+  "strong",
+  "table",
+  "tbody",
+  "td",
+  "tfoot",
+  "th",
+  "thead",
+  "tr",
+  "u",
+  "ul",
+]);
 
 /** @internal */
 interface PlaceholderPickerGroup {
@@ -749,32 +804,73 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   });
 
   /**
+   * Whether the unified template insert picker has anything to show.
+   *
+   * @internal
+   */
+  protected hasTemplateInsertItems(): boolean {
+    return (
+      this.hasPlaceholderPickerItems() ||
+      this.templateBlockProviderItems().length > 0
+    );
+  }
+
+  /**
    * Insertable template block providers for the toolbar dropdown.
    *
    * @internal
    */
-  protected readonly templateBlockDropdownItems = computed<DropdownToolItem[]>(
-    () => {
-      const placeholderItems = this.templateBlockPlaceholderItems().map(
-        (item) => ({
-          id: `${UIRichTextEditor.TEMPLATE_PLACEHOLDER_ITEM_PREFIX}${item.id}`,
-          label: `Placeholder: ${item.showPath ? item.path : item.label}`,
-          icon: UIIcons.Lucide.Development.CodeXml,
-        }),
-      );
-      const providerItems = getRichTextTemplateBlockUiProviders()
-        .filter((provider) => provider.name !== "placeholder")
-        .map((provider) => ({
-          id: provider.name,
-          label: provider.label,
-          icon:
-            provider.display === "block"
-              ? UIIcons.Lucide.Layout.PanelTop
-              : UIIcons.Lucide.Development.CodeXml,
-        }));
-      return [...placeholderItems, ...providerItems];
-    },
-  );
+  protected templateBlockDropdownItems(): DropdownToolItem[] {
+    const placeholderItems = this.templateBlockPlaceholderItems().map(
+      (item) => ({
+        id: `${UIRichTextEditor.TEMPLATE_PLACEHOLDER_ITEM_PREFIX}${item.id}`,
+        label: `Placeholder: ${item.showPath ? item.path : item.label}`,
+        icon: UIIcons.Lucide.Development.CodeXml,
+      }),
+    );
+    const uiProviders = getRichTextTemplateBlockUiProviders();
+    const providerItems = uiProviders
+      .filter((provider) => provider.name !== "placeholder")
+      .map((provider) => ({
+        id: provider.name,
+        label: provider.label,
+        icon:
+          provider.display === "block"
+            ? UIIcons.Lucide.Layout.PanelTop
+            : UIIcons.Lucide.Development.CodeXml,
+      }));
+    const uiProviderNames = new Set(
+      uiProviders.map((provider) => provider.name),
+    );
+    const genericProviderItems = getRegisteredTextTemplateBlockProviders()
+      .filter(
+        (provider) =>
+          provider.name !== "placeholder" &&
+          !uiProviderNames.has(provider.name) &&
+          !RICH_CONTENT_BLOCK_NAMES.has(provider.name),
+      )
+      .map((provider) => ({
+        id: provider.name,
+        label: this.humanizeTemplateBlockName(provider.name),
+        icon:
+          provider.contentModel === "container"
+            ? UIIcons.Lucide.Layout.PanelTop
+            : UIIcons.Lucide.Development.CodeXml,
+      }));
+    return [...placeholderItems, ...providerItems, ...genericProviderItems];
+  }
+
+  /**
+   * Insertable non-placeholder template blocks for the unified picker.
+   *
+   * @internal
+   */
+  protected templateBlockProviderItems(): DropdownToolItem[] {
+    return this.templateBlockDropdownItems().filter(
+      (item) =>
+        !item.id.startsWith(UIRichTextEditor.TEMPLATE_PLACEHOLDER_ITEM_PREFIX),
+    );
+  }
 
   /**
    * Placeholder leaves exposed in the unified XML block dropdown.
@@ -1316,7 +1412,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     anchorEl?: Element,
   ): void {
     if (this.disabled() || this.readonly()) return;
-    const provider = getRichTextTemplateBlockUiProvider(blockName);
+    const provider = this.getTemplateBlockUiProvider(blockName);
     if (!provider) return;
     const ref = this.popoverService.openPopover<
       UITemplateBlockDialog,
@@ -1386,7 +1482,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const selfClosingBlock = target.closest<HTMLElement>(
       "[data-template-block][data-template-self-closing='true']",
     );
-    const header = target.closest<HTMLElement>(".rte-template-block > .header");
+    const header = target.closest<HTMLElement>(".rte-template-block .header");
     const block = selfClosingBlock ?? header?.closest<HTMLElement>("[data-template-block]");
     if (!block) return;
     event.preventDefault();
@@ -1442,6 +1538,20 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected closePlaceholderPicker(): void {
     this.isPlaceholderPickerOpen.set(false);
     this.placeholderSearchTerm.set("");
+  }
+
+  /**
+   * Opens the block property sheet from the unified template insert picker.
+   *
+   * @internal
+   */
+  protected insertTemplateBlockFromPicker(
+    blockName: string,
+    event: MouseEvent,
+  ): void {
+    const anchor = event.currentTarget as Element | null;
+    this.openTemplateBlockDialog(blockName, anchor ?? undefined);
+    this.closePlaceholderPicker();
   }
 
   // ── Emoji picker ──────────────────────────────────────────
@@ -2134,6 +2244,21 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       );
     }
 
+    if (provider.name === "email") {
+      const placeholderOptions = this.getCurrentContextPlaceholderOptions();
+      if (!placeholderOptions.length) return attributes;
+
+      return attributes.map((field) =>
+        field.key === "email" || field.key === "text"
+          ? {
+              ...field,
+              type: "select",
+              options: placeholderOptions,
+            }
+          : field,
+      );
+    }
+
     if (provider.name !== "loop") return attributes;
 
     const arrayOptions = this.getCurrentContextArrayOptions();
@@ -2259,7 +2384,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   private renderTemplateBlockNodes(xml: string): Node[] {
     const ctx = this.buildContext();
     const html = this.strategy().deserialiseContent(xml, ctx);
-    const container = document.createElement("div");
+    const container = html.trimStart().startsWith("<tr")
+      ? document.createElement("tbody")
+      : document.createElement("div");
     container.innerHTML = html;
     return Array.from(container.childNodes);
   }
@@ -2361,12 +2488,97 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   ): RichTextTemplateBlockUiProvider {
     const name = block.dataset["templateBlock"] ?? "block";
     const selfClosing = block.dataset["templateSelfClosing"] === "true";
+    const registeredProvider = getRegisteredTextTemplateBlockProviders().find(
+      (provider) => provider.name === name,
+    );
+    if (registeredProvider) {
+      return this.createGenericTemplateBlockUiProviderFromProvider(
+        registeredProvider,
+        selfClosing,
+      );
+    }
     return {
       name,
-      label: name,
+      label: this.humanizeTemplateBlockName(name),
       selfClosing,
       display: selfClosing ? "inline" : "block",
     };
+  }
+
+  /**
+   * Resolves custom block UI metadata from either the RTE UI registry or the
+   * foundation runtime provider registry.
+   *
+   * @internal
+   */
+  private getTemplateBlockUiProvider(
+    blockName: string,
+  ): RichTextTemplateBlockUiProvider | undefined {
+    const uiProvider = getRichTextTemplateBlockUiProvider(blockName);
+    if (uiProvider) return uiProvider;
+    const blockProvider = getRegisteredTextTemplateBlockProviders().find(
+      (provider) => provider.name === blockName,
+    );
+    return blockProvider
+      ? this.createGenericTemplateBlockUiProviderFromProvider(blockProvider)
+      : undefined;
+  }
+
+  /**
+   * Creates fallback UI metadata from a foundation block provider.
+   *
+   * @internal
+   */
+  private createGenericTemplateBlockUiProviderFromProvider(
+    provider: TemplateBlockProvider,
+    selfClosingOverride?: boolean,
+  ): RichTextTemplateBlockUiProvider {
+    const selfClosing =
+      selfClosingOverride ?? provider.contentModel === "self-closing";
+    return {
+      name: provider.name,
+      label: this.humanizeTemplateBlockName(provider.name),
+      selfClosing,
+      display: selfClosing ? "inline" : "block",
+      attributes: [
+        ...(provider.requiredAttributes ?? []).map((key) =>
+          this.createGenericTemplateBlockAttribute(key, true),
+        ),
+        ...(provider.optionalAttributes ?? []).map((key) =>
+          this.createGenericTemplateBlockAttribute(key, false),
+        ),
+      ],
+    };
+  }
+
+  /**
+   * Creates generic property-sheet metadata for a block attribute.
+   *
+   * @internal
+   */
+  private createGenericTemplateBlockAttribute(
+    key: string,
+    required: boolean,
+  ): RichTextTemplateBlockAttributeDefinition {
+    return {
+      key,
+      label: this.humanizeTemplateBlockName(key),
+      type: "string",
+      required,
+      placeholder: key,
+    };
+  }
+
+  /**
+   * Converts XML-ish block and attribute names into a readable label.
+   *
+   * @internal
+   */
+  private humanizeTemplateBlockName(name: string): string {
+    return name
+      .replace(/[-_]+/g, " ")
+      .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 
   /**

@@ -152,6 +152,30 @@ describe("TextTemplateProcessor XML blocks", () => {
     });
   });
 
+  describe("email block", () => {
+    it("renders a mailto link from context fields", () => {
+      expect(
+        proc().expand('<email email="email" text="fullName" />', {
+          email: "ada@example.com",
+          fullName: "Ada Lovelace",
+        }),
+      ).toBe('<a href="mailto:ada@example.com">Ada Lovelace</a>');
+    });
+
+    it("renders a mailto link from literal attributes", () => {
+      expect(
+        proc().expand(
+          '<email email="support@example.com" text="Support" />',
+          {},
+        ),
+      ).toBe('<a href="mailto:support@example.com">Support</a>');
+    });
+
+    it("requires email and text attributes", () => {
+      expect(() => proc().expand("<email />", {})).toThrow(SyntaxError);
+    });
+  });
+
   describe("block provider registry", () => {
     const provider: TemplateBlockProvider = {
       name: "upper",

@@ -116,93 +116,101 @@
       [disabled]="isEditorDisabled()" />
   }
 
-  <!-- Placeholder picker -->
-  @if (!isCompactPresentation() && hasPlaceholderPickerItems()) {
+  <!-- Template insert picker -->
+  @if (!isCompactPresentation() && hasTemplateInsertItems()) {
     <ui-separator-tool id="sep-placeholder" />
     <div class="placeholder-picker">
       <button
         type="button"
         class="tool-btn placeholder-trigger"
-        aria-label="Insert placeholder"
-        title="Insert placeholder"
+        aria-label="Insert template block"
+        title="Insert template block"
         [disabled]="isEditorDisabled()"
         [attr.aria-expanded]="isPlaceholderPickerOpen()"
         (mousedown)="$event.preventDefault()"
         (click)="togglePlaceholderPicker()"
       >
-        &lt;/&gt;
+        <ui-icon [svg]="sourceIcon" [size]="16" />
       </button>
 
       @if (isPlaceholderPickerOpen()) {
         <div
           class="placeholder-dropdown"
           role="listbox"
-          aria-label="Available placeholders"
+          aria-label="Available template blocks"
         >
-          <div class="placeholder-search">
-            <input
-              type="text"
-              class="placeholder-search-input"
-              placeholder="Search placeholders…"
-              aria-label="Filter placeholders"
-              (input)="onPlaceholderSearch($event)"
-              (mousedown)="$event.stopPropagation()"
-            />
-          </div>
-          @for (group of placeholderPickerGroups(); track group.category) {
-            @if (group.category) {
-              <div class="placeholder-category">{{ group.category }}</div>
-            }
-            @for (ph of group.items; track ph.id) {
-              @if (ph.isGroup) {
-                <div
-                  class="placeholder-group"
-                  role="presentation"
-                  [style.padding-left.rem]="0.6 + ph.depth * 0.9"
-                >
-                  <span class="placeholder-label">{{ ph.label }}</span>
-                  @if (ph.showPath) {
-                    <span class="placeholder-path">{{ ph.path }}</span>
-                  }
-                </div>
-              } @else {
-                <button
-                  type="button"
-                  class="placeholder-option"
-                  role="option"
-                  [attr.aria-label]="'Insert ' + ph.path"
-                  [attr.aria-selected]="false"
-                  [attr.data-placeholder-key]="ph.key"
-                  [style.padding-left.rem]="0.6 + ph.depth * 0.9"
-                  (mousedown)="$event.preventDefault()"
-                  (click)="insertPlaceholder(ph)"
-                >
-                  <span class="placeholder-label">{{ ph.label }}</span>
-                  @if (ph.showPath) {
-                    <span class="placeholder-path">{{ ph.path }}</span>
-                  }
-                </button>
+          @if (hasPlaceholderPickerItems()) {
+            <div class="placeholder-search">
+              <input
+                type="text"
+                class="placeholder-search-input"
+                placeholder="Search placeholders…"
+                aria-label="Filter placeholders"
+                (input)="onPlaceholderSearch($event)"
+                (mousedown)="$event.stopPropagation()"
+              />
+            </div>
+            @for (group of placeholderPickerGroups(); track group.category) {
+              @if (group.category) {
+                <div class="placeholder-category">{{ group.category }}</div>
+              }
+              @for (ph of group.items; track ph.id) {
+                @if (ph.isGroup) {
+                  <div
+                    class="placeholder-group"
+                    role="presentation"
+                    [style.padding-left.rem]="0.6 + ph.depth * 0.9"
+                  >
+                    <span class="placeholder-label">{{ ph.label }}</span>
+                    @if (ph.showPath) {
+                      <span class="placeholder-path">{{ ph.path }}</span>
+                    }
+                  </div>
+                } @else {
+                  <button
+                    type="button"
+                    class="placeholder-option"
+                    role="option"
+                    [attr.aria-label]="'Insert ' + ph.path"
+                    [attr.aria-selected]="false"
+                    [attr.data-placeholder-key]="ph.key"
+                    [style.padding-left.rem]="0.6 + ph.depth * 0.9"
+                    (mousedown)="$event.preventDefault()"
+                    (click)="insertPlaceholder(ph)"
+                  >
+                    <span class="placeholder-label">{{ ph.label }}</span>
+                    @if (ph.showPath) {
+                      <span class="placeholder-path">{{ ph.path }}</span>
+                    }
+                  </button>
+                }
               }
             }
+            @if (placeholderPickerGroups().length === 0) {
+              <div class="placeholder-empty">No matches</div>
+            }
           }
-          @if (placeholderPickerGroups().length === 0) {
-            <div class="placeholder-empty">No matches</div>
+          @if (templateBlockProviderItems().length > 0) {
+            <div class="placeholder-category">Blocks</div>
+            @for (block of templateBlockProviderItems(); track block.id) {
+              <button
+                type="button"
+                class="placeholder-option block-option"
+                role="option"
+                [attr.aria-label]="'Insert ' + block.label"
+                [attr.aria-selected]="false"
+                [attr.data-template-block-name]="block.id"
+                (mousedown)="$event.preventDefault()"
+                (click)="insertTemplateBlockFromPicker(block.id, $event)"
+              >
+                <ui-icon [svg]="block.icon" [size]="14" />
+                <span class="placeholder-label">{{ block.label }}</span>
+              </button>
+            }
           }
         </div>
       }
     </div>
-  }
-
-  <!-- Template block picker -->
-  @if (!isCompactPresentation() && templateBlockDropdownItems().length > 0) {
-    <ui-separator-tool id="sep-template-block" />
-    <ui-dropdown-tool
-      id="template-block"
-      [icon]="sourceIcon"
-      ariaLabel="Insert template block"
-      [items]="templateBlockDropdownItems()"
-      [disabled]="isEditorDisabled()"
-    />
   }
 
   <!-- Emoji picker -->

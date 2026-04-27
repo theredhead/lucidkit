@@ -1116,7 +1116,7 @@ class DemoMarkedParser {
  *
  * - Toolbar actions still insert raw Markdown syntax (`**bold**`, etc.)
  * - The `value` model still contains raw Markdown text
- * - Placeholder `{{key}}` tokens are expanded in the preview
+ * - XML placeholder blocks are rendered in the preview
  * - HTML sanitisation is still applied to the preview output
  *
  * ### Fallback behaviour
@@ -1922,12 +1922,12 @@ class DemoMailMerge {
 /**
  * **Mail-merge** — A complete mail-merge workflow built entirely from
  * `UIRichTextEditor` + `UIRichTextView`. Edit the Markdown invoice template
- * on the left (inserting merge-field tokens via the toolbar placeholder
+ * on the left (inserting XML template blocks via the toolbar template-block
  * picker), then page through the four fictional members on the right to see
  * each personalised invoice rendered live.
  *
  * The template uses GFM tables for the line-item and totals rows.
- * All token replacement is a single `computed()` — no loops or server
+ * All block expansion is a single `computed()` — no loops or server
  * round-trips required.
  */
 export const MailMerge: Story = {

@@ -3,7 +3,6 @@ export {
   XmlTemplateParser,
   XmlTemplateProcessor,
   XmlTemplateSerializer,
-  type ITextTemplateDirective,
   type ITextTemplateProcessor,
   type MissingKeyBehavior,
   type TemplateBlockContentModel,
@@ -18,8 +17,4 @@ export {
   unregisterTextTemplateBlockProvider,
   haveRegisteredTextTemplateBlockProvider,
   getRegisteredTextTemplateBlockProviders,
-  registerTextTemplateDirective,
-  unregisterTextTemplateDirective,
-  haveRegisteredTextTemplateDirective,
-  getRegisteredTextTemplateDirectives,
 } from "./template-processor";

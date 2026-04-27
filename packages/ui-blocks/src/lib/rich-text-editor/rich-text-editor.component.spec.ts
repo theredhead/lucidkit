@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TextTemplateProcessor } from "@theredhead/lucid-foundation";
+import {
+  registerTextTemplateBlockProvider,
+  TextTemplateProcessor,
+  unregisterTextTemplateBlockProvider,
+} from "@theredhead/lucid-foundation";
 import { PopoverRef, PopoverService } from "@theredhead/lucid-kit";
 import { UIRichTextEditor } from "./rich-text-editor.component";
 import {
@@ -123,8 +127,8 @@ describe("UIRichTextEditor", () => {
     it("should render dropdown triggers for grouped actions", () => {
       const dropdownTools =
         fixture.nativeElement.querySelectorAll("ui-dropdown-tool");
-      // block (Styles), list (Lists), and template blocks — align is a toggle group
-      expect(dropdownTools.length).toBe(3);
+      // block (Styles) and list (Lists) — align is a toggle group, template insert is custom.
+      expect(dropdownTools.length).toBe(2);
     });
 
     it("should show dropdown panel with actions on trigger click", () => {
@@ -203,10 +207,12 @@ describe("UIRichTextEditor", () => {
       expect(
         fixture.nativeElement.querySelector('[aria-label="Undo"]'),
       ).toBeNull();
-      // Template block dropdown is independent of formatting actions
       expect(
         fixture.nativeElement.querySelectorAll("ui-dropdown-tool").length,
-      ).toBe(1);
+      ).toBe(0);
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Insert template block"]'),
+      ).toBeTruthy();
     });
 
     it("should disable all toolbar buttons when disabled", () => {
@@ -421,6 +427,15 @@ describe("UIRichTextEditor", () => {
 
       const editor: HTMLDivElement =
         fixture.nativeElement.querySelector(".editor");
+      const loop = editor.querySelector<HTMLElement>(
+        'tr[data-template-block="loop"]',
+      );
+      expect(loop).toBeTruthy();
+      expect(loop!.querySelector(".header")?.textContent).toContain(
+        "Loop lines",
+      );
+      expect(loop!.querySelector(".content tr")).toBeTruthy();
+
       editor.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
@@ -539,12 +554,12 @@ describe("UIRichTextEditor", () => {
       expect(btn).toBeTruthy();
     });
 
-    it("should not show placeholder picker when no placeholders", () => {
+    it("should show template picker when only block providers are available", () => {
       fixture.componentRef.setInput("placeholders", []);
       fixture.detectChanges();
 
       const btn = fixture.nativeElement.querySelector(".placeholder-trigger");
-      expect(btn).toBeNull();
+      expect(btn).toBeTruthy();
     });
 
     it("should toggle dropdown on click", () => {
@@ -575,9 +590,10 @@ describe("UIRichTextEditor", () => {
       const categories = fixture.nativeElement.querySelectorAll(
         ".placeholder-category",
       );
-      expect(categories.length).toBe(2);
+      expect(categories.length).toBe(3);
       expect(categories[0].textContent.trim()).toBe("Contact");
       expect(categories[1].textContent.trim()).toBe("Account");
+      expect(categories[2].textContent.trim()).toBe("Blocks");
     });
 
     it("should render placeholder options", () => {
@@ -588,7 +604,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const options = fixture.nativeElement.querySelectorAll(
-        ".placeholder-option",
+        ".placeholder-option:not(.block-option)",
       );
       expect(options.length).toBe(3);
     });
@@ -705,7 +721,7 @@ describe("UIRichTextEditor", () => {
       expect(component.value()).toContain('<loop items="lines">');
     });
 
-    it("should expose context placeholders in the template block dropdown", () => {
+    it("should expose context placeholders and blocks in the unified template picker", () => {
       fixture.componentRef.setInput("placeholders", []);
       fixture.componentRef.setInput("placeholderContext", {
         fullName: "Alice Hartwell",
@@ -718,23 +734,51 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        'ui-dropdown-tool[id="template-block"] .dropdown-trigger',
+        ".placeholder-trigger",
       );
       trigger.click();
       fixture.detectChanges();
 
       const labels = Array.from<Element>(
-        fixture.nativeElement.querySelectorAll(
-          'ui-dropdown-tool[id="template-block"] .dropdown-panel-item',
-        ),
+        fixture.nativeElement.querySelectorAll(".placeholder-label"),
       ).map((el) => (el.textContent ?? "").trim());
-      expect(labels).toContain("Placeholder: fullName");
-      expect(labels).not.toContain("Placeholder: lines[].description");
+      const placeholderKeys = Array.from<Element>(
+        fixture.nativeElement.querySelectorAll("[data-placeholder-key]"),
+      ).map((el) => el.getAttribute("data-placeholder-key"));
+      expect(labels).toContain("fullName");
+      expect(placeholderKeys).not.toContain("description");
       expect(labels).toContain("If");
       expect(labels).toContain("Loop");
+      expect(labels).toContain("Email");
     });
 
-    it("should expose loop item placeholders in the template block dropdown when scoped inside a loop", () => {
+    it("should expose registered foundation blocks through generic dropdown UI", () => {
+      registerTextTemplateBlockProvider({
+        name: "sms",
+        contentModel: "self-closing",
+        requiredAttributes: ["phone"],
+        expand: () => "",
+      });
+      try {
+        fixture.detectChanges();
+
+        const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
+          ".placeholder-trigger",
+        );
+        trigger.click();
+        fixture.detectChanges();
+
+        const labels = Array.from<Element>(
+          fixture.nativeElement.querySelectorAll(".block-option .placeholder-label"),
+        ).map((el) => (el.textContent ?? "").trim());
+        expect(labels).toContain("Sms");
+        expect(labels).not.toContain("Section");
+      } finally {
+        unregisterTextTemplateBlockProvider("sms");
+      }
+    });
+
+    it("should expose loop item placeholders in the unified template picker when scoped inside a loop", () => {
       fixture.componentRef.setInput("placeholders", []);
       fixture.componentRef.setInput("placeholderContext", {
         fullName: "Alice Hartwell",
@@ -760,16 +804,13 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const trigger: HTMLButtonElement = fixture.nativeElement.querySelector(
-        'ui-dropdown-tool[id="template-block"] .dropdown-trigger',
+        ".placeholder-trigger",
       );
       trigger.click();
       fixture.detectChanges();
 
-      const descriptionOption = Array.from<HTMLButtonElement>(
-        fixture.nativeElement.querySelectorAll(
-          'ui-dropdown-tool[id="template-block"] .dropdown-panel-item',
-        ),
-      ).find((item) => (item.textContent ?? "").includes("Placeholder: description"));
+      const descriptionOption: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[data-placeholder-key="description"]');
       descriptionOption!.click();
       fixture.detectChanges();
 
@@ -1427,6 +1468,24 @@ describe("UIRichTextEditor", () => {
 
       const config = openPopoverSpy.mock.calls[0][0];
       expect(config.closeOnOutsideClick).toBe(false);
+    });
+
+    it("should open the attribute editor from a table-row loop header", () => {
+      (component as any).renderToEditor(
+        '<table><tbody><loop items="lines"><tr><td>Line</td></tr></loop></tbody></table>',
+      );
+      fixture.detectChanges();
+
+      const header: HTMLElement = fixture.nativeElement.querySelector(
+        'tr[data-template-block="loop"] .header',
+      );
+      header.click();
+      fixture.detectChanges();
+
+      expect(openPopoverSpy).toHaveBeenCalledTimes(1);
+      const config = openPopoverSpy.mock.calls[0][0];
+      expect(config.inputs.blockName).toBe("loop");
+      expect(config.inputs.initialAttributes).toEqual({ items: "lines" });
     });
 
     it("should offer context placeholder options for placeholder keys", () => {
@@ -2651,7 +2710,7 @@ describe("UIRichTextEditor", () => {
 
       // All 3 options visible
       let options = fixture.nativeElement.querySelectorAll(
-        ".placeholder-option",
+        ".placeholder-option:not(.block-option)",
       );
       expect(options.length).toBe(3);
 
@@ -2659,7 +2718,9 @@ describe("UIRichTextEditor", () => {
       component["placeholderSearchTerm"].set("first");
       fixture.detectChanges();
 
-      options = fixture.nativeElement.querySelectorAll(".placeholder-option");
+      options = fixture.nativeElement.querySelectorAll(
+        ".placeholder-option:not(.block-option)",
+      );
       expect(options.length).toBe(1);
       expect(options[0].textContent.trim()).toBe("First Name");
     });

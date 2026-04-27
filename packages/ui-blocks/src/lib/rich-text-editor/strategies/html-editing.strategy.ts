@@ -613,11 +613,13 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
       .join("");
     if (this.isTableRowContainerBlock(element)) {
       return (
-        `<template class="${TEMPLATE_BLOCK_CLASS} table-row-block" ${dataAttrs}>` +
-        `${body}</template>` +
-        `<tr class="${TEMPLATE_BLOCK_CLASS} block visual-row" data-template-visual-block="${this.escapeAttr(element.tagName)}">` +
-        `<td colspan="999"><span class="header" contenteditable="false">${this.escapeHtml(label)}</span></td>` +
-        "</tr>"
+        `<tr class="${TEMPLATE_BLOCK_CLASS} table-row-block" ${dataAttrs}>` +
+        "<td colspan=\"999\">" +
+        '<div class="shell">' +
+        `<span class="header" contenteditable="false">${this.escapeHtml(label)}</span>` +
+        '<table class="table-content"><tbody class="content">' +
+        `${body}</tbody></table>` +
+        "</div></td></tr>"
       );
     }
     return (

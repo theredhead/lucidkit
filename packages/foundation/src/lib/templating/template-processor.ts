@@ -17,7 +17,6 @@ export type MissingKeyBehavior =
  * Options for XML template processing.
  */
 export interface TextTemplateOptions {
-
   /**
    * How to handle a missing key during block expansion.
    * Defaults to `"keep"`.
@@ -29,7 +28,6 @@ export interface TextTemplateOptions {
  * A parsed XML template document.
  */
 export interface TemplateDocument {
-
   /**
    * Top-level text and block nodes.
    */
@@ -45,7 +43,6 @@ export type TemplateNode = TemplateTextNode | TemplateBlockNode;
  * A literal text/content node.
  */
 export interface TemplateTextNode {
-
   /**
    * Node discriminator.
    */
@@ -62,7 +59,6 @@ export interface TemplateTextNode {
  * single representation.
  */
 export interface TemplateBlockNode {
-
   /**
    * Node discriminator.
    */
@@ -98,7 +94,6 @@ export type TemplateBlockContentModel = "self-closing" | "container" | "any";
  * Context passed to block providers during expansion.
  */
 export interface TemplateBlockExpansionContext {
-
   /**
    * Current data context.
    */
@@ -115,7 +110,6 @@ export interface TemplateBlockExpansionContext {
  * Runtime and validation contract for a named XML template block.
  */
 export interface TemplateBlockProvider {
-
   /**
    * XML tag name handled by this provider.
    */
@@ -150,7 +144,6 @@ export interface TemplateBlockProvider {
  * Contract for XML template processors.
  */
 export interface ITextTemplateProcessor {
-
   /**
    * Fully expands a template string against the given context.
    */
@@ -184,30 +177,6 @@ export interface ITextTemplateProcessor {
    * Resolves a data key for built-in replacement-style blocks.
    */
   processIdentifier(key: string, context: Record<string, unknown>): string;
-}
-
-/**
- * Legacy directive contract retained only as a source-compatible type alias
- * for older consumers. XML block providers are the runtime extension point.
- *
- * @deprecated Use {@link TemplateBlockProvider}.
- */
-export interface ITextTemplateDirective {
-
-  /**
-   * Returns whether the directive is self-closing.
-   */
-  isSelfClosing(): boolean;
-
-  /**
-   * Handles the directive.
-   */
-  handle(
-    arg: string,
-    body: string,
-    context: Record<string, unknown>,
-    processor: ITextTemplateProcessor,
-  ): string;
 }
 
 /** @internal */
@@ -252,73 +221,9 @@ export function getRegisteredTextTemplateBlockProviders(): TemplateBlockProvider
 }
 
 /**
- * Registers a legacy directive by adapting it to the XML block provider
- * contract.
- *
- * @deprecated Use {@link registerTextTemplateBlockProvider}.
- */
-export function registerTextTemplateDirective(
-  key: string,
-  directive: ITextTemplateDirective,
-): void {
-  registerTextTemplateBlockProvider({
-    name: key,
-    contentModel: directive.isSelfClosing() ? "self-closing" : "container",
-    expand: (block, context) =>
-      directive.handle(
-        block.attributes["arg"] ?? "",
-        context.processor.expandNodes(block.children, context.data),
-        context.data,
-        context.processor,
-      ),
-  });
-}
-
-/**
- * Removes a legacy directive/block provider by key.
- *
- * @deprecated Use {@link unregisterTextTemplateBlockProvider}.
- */
-export function unregisterTextTemplateDirective(key: string): void {
-  unregisterTextTemplateBlockProvider(key);
-}
-
-/**
- * Returns `true` if a legacy directive/block provider is registered.
- *
- * @deprecated Use {@link haveRegisteredTextTemplateBlockProvider}.
- */
-export function haveRegisteredTextTemplateDirective(key: string): boolean {
-  return haveRegisteredTextTemplateBlockProvider(key);
-}
-
-/**
- * Returns registered legacy directive-compatible providers.
- *
- * @deprecated Use {@link getRegisteredTextTemplateBlockProviders}.
- */
-export function getRegisteredTextTemplateDirectives(): ITextTemplateDirective[] {
-  return getRegisteredTextTemplateBlockProviders().map((provider) => ({
-    isSelfClosing: () => provider.contentModel === "self-closing",
-    handle: (_arg, body, context, processor) =>
-      provider.expand(
-        {
-          kind: "block",
-          name: provider.name,
-          attributes: {},
-          children: [{ kind: "text", text: body }],
-          selfClosing: provider.contentModel === "self-closing",
-        },
-        { data: context, processor },
-      ),
-  }));
-}
-
-/**
  * Parses XML template strings into the canonical document model.
  */
 export class XmlTemplateParser {
-
   /**
    * Parses an XML template fragment.
    */
@@ -347,7 +252,10 @@ export class XmlTemplateParser {
 
   /** @internal */
   private parseNode(node: Node): TemplateNode | null {
-    if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
+    if (
+      node.nodeType === Node.TEXT_NODE ||
+      node.nodeType === Node.CDATA_SECTION_NODE
+    ) {
       return { kind: "text", text: node.textContent ?? "" };
     }
     if (node.nodeType !== Node.ELEMENT_NODE) {
@@ -374,7 +282,6 @@ export class XmlTemplateParser {
  * Serializes parsed template documents back to canonical XML.
  */
 export class XmlTemplateSerializer {
-
   /**
    * Serializes a complete template document.
    */
@@ -583,7 +490,10 @@ registerTextTemplateBlockProvider({
   contentModel: "self-closing",
   requiredAttributes: ["key"],
   expand: (block, context) =>
-    context.processor.processIdentifier(block.attributes["key"] ?? "", context.data),
+    context.processor.processIdentifier(
+      block.attributes["key"] ?? "",
+      context.data,
+    ),
 });
 
 registerTextTemplateBlockProvider({
@@ -593,7 +503,9 @@ registerTextTemplateBlockProvider({
   expand: (block, context) => {
     const val = context.data[block.attributes["test"] ?? ""];
     const truthy = Array.isArray(val) ? val.length > 0 : Boolean(val);
-    return truthy ? context.processor.expandNodes(block.children, context.data) : "";
+    return truthy
+      ? context.processor.expandNodes(block.children, context.data)
+      : "";
   },
 });
 
@@ -618,6 +530,24 @@ registerTextTemplateBlockProvider({
         return context.processor.expandNodes(block.children, itemCtx);
       })
       .join("");
+  },
+});
+
+registerTextTemplateBlockProvider({
+  name: "email",
+  contentModel: "self-closing",
+  requiredAttributes: ["email", "text"],
+  expand: (block, context) => {
+    const emailAttr = block.attributes["email"] ?? "";
+    const textAttr = block.attributes["text"] ?? "";
+    const href = context.data[emailAttr] ?? emailAttr;
+    const text =
+      context.data[textAttr] ??
+      textAttr ??
+      href;
+    return `<a href="mailto:${escapeAttribute(String(href))}">${escapeText(
+      String(text),
+    )}</a>`;
   },
 });
 
