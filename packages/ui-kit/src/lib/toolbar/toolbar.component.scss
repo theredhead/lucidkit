@@ -45,7 +45,7 @@
   height: 1.9rem;
   padding: 0;
   border-radius: 999px;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   color: var(--ui-text, #1d232b);
   background: color-mix(in srgb, var(--ui-surface, #f7f8fa) 88%, transparent);
   border: 1px solid

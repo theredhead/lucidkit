@@ -21,7 +21,7 @@
   border: none;
   background: transparent;
   color: inherit;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   transition:
     transform 100ms ease,
     color 120ms ease;

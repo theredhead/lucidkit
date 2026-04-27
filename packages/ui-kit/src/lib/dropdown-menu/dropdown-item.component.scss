@@ -3,7 +3,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   font-size: 0.875rem;
   line-height: 1.4;
   border-radius: 0.25rem;

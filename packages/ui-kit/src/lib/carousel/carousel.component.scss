@@ -27,7 +27,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   user-select: none;
   will-change: transform, opacity;
 }
@@ -58,7 +58,7 @@
   border-radius: 50%;
   font-size: 1.25rem;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   transition:
     background 0.15s ease,
     opacity 0.15s ease;
@@ -92,7 +92,7 @@
   border-radius: 50%;
   border: none;
   padding: 0;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   transition:
     background 0.2s ease,
     transform 0.2s ease;

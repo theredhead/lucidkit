@@ -146,3 +146,52 @@ export class DemoComponent {
 - Keyboard accessible with ARIA patterns
 - CSS custom-property theming (`--ui-*` tokens)
 - Light & dark mode support via three-tier pattern
+
+---
+
+## Cursor theme
+
+`@theredhead/lucid-kit` ships an optional cursor layer with semantic cursor
+tokens and utility classes. The default cursor theme uses the flat cursor set
+in light mode and switches to the shadow cursor set in dark mode.
+
+Enable it alongside the normal theme include:
+
+```scss
+@use "@theredhead/lucid-theme/styles" as theme;
+@use "@theredhead/lucid-kit/styles" as ui-kit;
+
+@include theme.theredhead-theme();
+@include ui-kit.ui-cursor-theme();
+```
+
+The mixin sets semantic tokens such as `--ui-cursor-default`,
+`--ui-cursor-click`, `--ui-cursor-help`, `--ui-cursor-trash`,
+`--ui-cursor-external`, and `--ui-cursor-wait`. Common interactive controls in
+the library use the click token automatically when their styles route through
+the shared control mixins.
+
+You can also opt into explicit utility classes when a component or consumer
+template needs a specific cursor:
+
+- `.ui-cursor-default`
+- `.ui-cursor-click`
+- `.ui-cursor-help`
+- `.ui-cursor-add`
+- `.ui-cursor-remove`
+- `.ui-cursor-trash`
+- `.ui-cursor-external`
+- `.ui-cursor-wait`
+
+Flat and shadow variants are available as explicit classes too, for example:
+
+- `.ui-cursor-default-flat`
+- `.ui-cursor-default-shadow`
+- `.ui-cursor-click-flat`
+- `.ui-cursor-click-shadow`
+- `.ui-cursor-trash-flat`
+- `.ui-cursor-trash-shadow`
+- `.ui-cursor-external-flat`
+- `.ui-cursor-external-shadow`
+- `.ui-cursor-wait-outlined-flat`
+- `.ui-cursor-wait-outlined-shadow`

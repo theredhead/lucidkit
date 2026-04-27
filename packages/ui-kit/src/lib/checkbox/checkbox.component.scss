@@ -5,7 +5,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   user-select: none;
   color: var(--ui-text);
 }

@@ -37,7 +37,7 @@ ui-toolbar {
 /* Bare button used for the placeholder trigger and emoji button inside the toolbar */
 .tool-btn {
   appearance: none;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   font-family: inherit;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -117,7 +117,7 @@ ui-toolbar {
   padding: 0.35rem 0.6rem;
   font-family: inherit;
   font-size: 0.8125rem;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   color: var(--ui-text, #1d232b);
   background: transparent;
   transition: background-color 80ms ease;
@@ -267,7 +267,7 @@ ui-toolbar {
     color: var(--ui-accent, #3584e4);
     text-decoration: underline;
     text-underline-offset: 0.15em;
-    cursor: pointer;
+    cursor: var(--ui-cursor-click, pointer);
     word-break: break-all;
 
     &:hover {

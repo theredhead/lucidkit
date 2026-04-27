@@ -43,7 +43,7 @@
   border-radius: var(--ui-control-radius, 0.25rem);
   padding: var(--ui-control-py, 0.3rem) 2rem var(--ui-control-py, 0.3rem)
     var(--ui-control-px, 0.5rem);
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   min-width: 0;
   text-align: left;
   transition:

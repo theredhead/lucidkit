@@ -43,7 +43,7 @@
   font: inherit;
   font-size: var(--ui-font-body, 0.875rem);
   font-weight: 500;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   user-select: none;
   transition: color 150ms ease;
   white-space: nowrap;

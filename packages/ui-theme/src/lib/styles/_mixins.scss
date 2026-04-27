@@ -88,7 +88,7 @@
   appearance: none;
   border: none;
   background: none;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   font-family: var(--ui-font, inherit);
 }
 

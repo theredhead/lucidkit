@@ -23,7 +23,7 @@
     grid-template-columns: auto 1fr;
     gap: var(--ui-timeline-content-gap);
     align-items: start;
-    cursor: pointer;
+    cursor: var(--ui-cursor-click, pointer);
     outline: none;
     border-radius: 6px;
     padding: 4px;
@@ -144,7 +144,7 @@
     flex-direction: column;
     align-items: center;
     gap: var(--ui-timeline-content-gap);
-    cursor: pointer;
+    cursor: var(--ui-cursor-click, pointer);
     outline: none;
     min-width: 120px;
     padding: 4px;

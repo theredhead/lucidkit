@@ -17,7 +17,7 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.25rem 0.5rem;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   user-select: none;
   border-radius: 0.25rem;
   outline: none;
@@ -59,7 +59,7 @@
   padding: 0;
   border: none;
   background: none;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   border-radius: 0.2rem;
 
   &:focus-visible {

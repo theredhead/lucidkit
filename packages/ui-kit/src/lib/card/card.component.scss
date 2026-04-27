@@ -35,7 +35,7 @@
 /* ── Interactive ── */
 
 :host(.interactive) {
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
 }
 
 :host(.interactive:hover) {

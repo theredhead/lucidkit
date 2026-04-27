@@ -73,7 +73,7 @@
 .tv-row-checkbox {
   width: var(--ui-checkbox-size, 0.95rem);
   height: var(--ui-checkbox-size, 0.95rem);
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   margin: 0;
   accent-color: var(--ui-accent);
 }
@@ -81,7 +81,7 @@
 .tv-row-radio {
   width: var(--ui-radio-size, 0.95rem);
   height: var(--ui-radio-size, 0.95rem);
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   margin: 0;
   accent-color: var(--ui-accent);
 }
@@ -89,7 +89,7 @@
 /* ── Selectable row ── */
 
 .table-row--selectable {
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
 }
 
 .table-row--selectable:hover {

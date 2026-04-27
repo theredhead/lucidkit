@@ -1,5 +1,6 @@
 // theredhead UI Theme — light/dark mode via CSS custom properties
 @use "./packages/ui-theme/src/lib/styles" as theme;
+@use "./packages/ui-kit/styles" as ui-kit;
 
 // Apply the full theme (includes light/dark mode and --ui-* design tokens)
 // All colour arguments below are the built-in defaults.
@@ -15,6 +16,8 @@
   $success-color: #1e8e3e,
   $error-color: #ba1a1a
 );
+
+@include ui-kit.ui-cursor-theme();
 
 // Base body styles
 body {

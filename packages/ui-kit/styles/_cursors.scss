@@ -1,0 +1,199 @@
+@function ui-cursor-value($path, $fallback: auto) {
+  @return unquote('url("../cursors/#{$path}"), #{$fallback}');
+}
+
+@mixin ui-cursor-theme() {
+  html {
+    --ui-cursor-default-flat: #{ui-cursor-value("arrow.cur")};
+    --ui-cursor-help-flat: #{ui-cursor-value("arrow-help.cur", help)};
+    --ui-cursor-add-flat: #{ui-cursor-value("arrow-plus.cur", pointer)};
+    --ui-cursor-remove-flat: #{ui-cursor-value("arrow-minus.cur", pointer)};
+    --ui-cursor-trash-flat: #{ui-cursor-value("arrow-trash.cur", pointer)};
+    --ui-cursor-external-flat: #{ui-cursor-value(
+        "external-cursor.cur",
+        pointer
+      )};
+    --ui-cursor-hand-flat: #{ui-cursor-value("mac-mickey-hand.cur", pointer)};
+    --ui-cursor-hand-coloured-flat: #{ui-cursor-value(
+        "mac-mickey-hand-coloured.cur",
+        pointer
+      )};
+    --ui-cursor-wait-plain-flat: #{ui-cursor-value("watch-plain.cur", wait)};
+    --ui-cursor-wait-outlined-flat: #{ui-cursor-value(
+        "watch-outlined.cur",
+        wait
+      )};
+
+    --ui-cursor-default-shadow: #{ui-cursor-value(
+        "shadow/default-cursor-shadow.cur"
+      )};
+    --ui-cursor-click-shadow: #{ui-cursor-value(
+        "shadow/click-cursor-shadow.cur",
+        pointer
+      )};
+    --ui-cursor-trash-shadow: #{ui-cursor-value(
+        "shadow/arrow-trash-shadow.cur",
+        pointer
+      )};
+    --ui-cursor-external-shadow: #{ui-cursor-value(
+        "shadow/external-cursor-shadow.cur",
+        pointer
+      )};
+    --ui-cursor-hand-coloured-shadow: #{ui-cursor-value(
+        "shadow/mac-mickey-hand-coloured-shadow.cur",
+        pointer
+      )};
+    --ui-cursor-wait-outlined-shadow: #{ui-cursor-value(
+        "shadow/watch-outlined-shadow.cur",
+        wait
+      )};
+
+    --ui-cursor-default: var(--ui-cursor-default-flat);
+    --ui-cursor-click: var(--ui-cursor-hand-coloured-flat);
+    --ui-cursor-help: var(--ui-cursor-help-flat);
+    --ui-cursor-add: var(--ui-cursor-add-flat);
+    --ui-cursor-remove: var(--ui-cursor-remove-flat);
+    --ui-cursor-trash: var(--ui-cursor-trash-flat);
+    --ui-cursor-external: var(--ui-cursor-external-flat);
+    --ui-cursor-wait: var(--ui-cursor-wait-outlined-flat);
+
+    cursor: var(--ui-cursor-default);
+  }
+
+  html.dark-theme {
+    --ui-cursor-default: var(--ui-cursor-default-shadow);
+    --ui-cursor-click: var(--ui-cursor-click-shadow);
+    --ui-cursor-trash: var(--ui-cursor-trash-shadow);
+    --ui-cursor-external: var(--ui-cursor-external-shadow);
+    --ui-cursor-wait: var(--ui-cursor-wait-outlined-shadow);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not(.light-theme):not(.dark-theme) {
+      --ui-cursor-default: var(--ui-cursor-default-shadow);
+      --ui-cursor-click: var(--ui-cursor-click-shadow);
+      --ui-cursor-trash: var(--ui-cursor-trash-shadow);
+      --ui-cursor-external: var(--ui-cursor-external-shadow);
+      --ui-cursor-wait: var(--ui-cursor-wait-outlined-shadow);
+    }
+  }
+
+  button,
+  [type="button"],
+  [type="reset"],
+  [type="submit"],
+  a[href],
+  label[for],
+  summary,
+  [role="button"] {
+    cursor: var(--ui-cursor-click);
+  }
+
+  a[href][target="_blank"] {
+    cursor: var(--ui-cursor-external);
+  }
+
+  [aria-busy="true"] {
+    cursor: var(--ui-cursor-wait);
+  }
+
+  .ui-cursor-default {
+    cursor: var(--ui-cursor-default);
+  }
+
+  .ui-cursor-click {
+    cursor: var(--ui-cursor-click);
+  }
+
+  .ui-cursor-help {
+    cursor: var(--ui-cursor-help);
+  }
+
+  .ui-cursor-add {
+    cursor: var(--ui-cursor-add);
+  }
+
+  .ui-cursor-remove {
+    cursor: var(--ui-cursor-remove);
+  }
+
+  .ui-cursor-trash {
+    cursor: var(--ui-cursor-trash);
+  }
+
+  .ui-cursor-external {
+    cursor: var(--ui-cursor-external);
+  }
+
+  .ui-cursor-wait {
+    cursor: var(--ui-cursor-wait);
+  }
+
+  .ui-cursor-default-flat {
+    cursor: var(--ui-cursor-default-flat);
+  }
+
+  .ui-cursor-default-shadow {
+    cursor: var(--ui-cursor-default-shadow);
+  }
+
+  .ui-cursor-click-flat {
+    cursor: var(--ui-cursor-hand-coloured-flat);
+  }
+
+  .ui-cursor-click-shadow {
+    cursor: var(--ui-cursor-click-shadow);
+  }
+
+  .ui-cursor-help-flat {
+    cursor: var(--ui-cursor-help-flat);
+  }
+
+  .ui-cursor-add-flat {
+    cursor: var(--ui-cursor-add-flat);
+  }
+
+  .ui-cursor-remove-flat {
+    cursor: var(--ui-cursor-remove-flat);
+  }
+
+  .ui-cursor-trash-flat {
+    cursor: var(--ui-cursor-trash-flat);
+  }
+
+  .ui-cursor-trash-shadow {
+    cursor: var(--ui-cursor-trash-shadow);
+  }
+
+  .ui-cursor-external-flat {
+    cursor: var(--ui-cursor-external-flat);
+  }
+
+  .ui-cursor-external-shadow {
+    cursor: var(--ui-cursor-external-shadow);
+  }
+
+  .ui-cursor-hand-flat {
+    cursor: var(--ui-cursor-hand-flat);
+  }
+
+  .ui-cursor-hand-coloured-flat {
+    cursor: var(--ui-cursor-hand-coloured-flat);
+  }
+
+  .ui-cursor-hand-coloured-shadow {
+    cursor: var(--ui-cursor-hand-coloured-shadow);
+  }
+
+  .ui-cursor-wait-plain-flat {
+    cursor: var(--ui-cursor-wait-plain-flat);
+  }
+
+  .ui-cursor-wait-outlined-flat {
+    cursor: var(--ui-cursor-wait-outlined-flat);
+  }
+
+  .ui-cursor-wait-outlined-shadow {
+    cursor: var(--ui-cursor-wait-outlined-shadow);
+  }
+}

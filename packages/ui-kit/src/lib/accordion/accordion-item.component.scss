@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   user-select: none;
   outline: none;
   color: var(--ui-text);

@@ -61,7 +61,7 @@
 .tv-select-all-checkbox {
   width: var(--ui-checkbox-size, 0.95rem);
   height: var(--ui-checkbox-size, 0.95rem);
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   margin: 0;
   accent-color: var(--ui-accent);
 }
@@ -73,7 +73,7 @@
 }
 
 .table-header-cell.sortable {
-  cursor: pointer;
+  cursor: var(--ui-cursor-click, pointer);
   user-select: none;
 }
 
