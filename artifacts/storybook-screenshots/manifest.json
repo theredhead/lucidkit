@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-26T20:12:58.735Z",
-  "baseUrl": "",
+  "generatedAt": "2026-04-27T15:30:00.651Z",
+  "baseUrl": "http://127.0.0.1:56164",
   "outputDir": "artifacts/storybook-screenshots",
   "components": [
     {
