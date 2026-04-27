@@ -14,12 +14,12 @@ import {
   TimeTextAdapter,
   UIColorPicker,
   UISlider,
-  UIRichTextEditor,
   UIFileUpload,
   UIImage,
   UIMediaPlayer,
   UISignature,
 } from "@theredhead/lucid-kit";
+import { UIRichTextEditor } from "@theredhead/lucid-blocks";
 
 import {
   provideFormFields,

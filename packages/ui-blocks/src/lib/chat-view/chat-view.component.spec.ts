@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { UIChatView } from "./chat-view.component";
-import { UIRichTextEditor } from "@theredhead/lucid-kit";
+import { UIRichTextEditor } from "../rich-text-editor";
 import type { ChatMessage, ChatParticipant } from "./chat-view.types";
 
 const alice: ChatParticipant = { id: "alice", name: "Alice" };

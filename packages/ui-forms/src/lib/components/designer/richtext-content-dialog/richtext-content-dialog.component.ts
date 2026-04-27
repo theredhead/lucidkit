@@ -8,11 +8,8 @@ import {
   signal,
 } from "@angular/core";
 
-import {
-  ModalRef,
-  type UIModalContent,
-  UIRichTextEditor,
-} from "@theredhead/lucid-kit";
+import { ModalRef, type UIModalContent } from "@theredhead/lucid-kit";
+import { UIRichTextEditor } from "@theredhead/lucid-blocks";
 import { UISurface } from '@theredhead/lucid-foundation';
 
 /**

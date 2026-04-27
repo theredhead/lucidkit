@@ -12,7 +12,7 @@ logic, and a visual form designer. Part of the **LucidKit** UI library family.
 ## Installation
 
 ```bash
-npm install @theredhead/lucid-forms @theredhead/lucid-kit @theredhead/lucid-foundation
+npm install @theredhead/lucid-forms @theredhead/lucid-blocks @theredhead/lucid-kit @theredhead/lucid-foundation
 ```
 
 ---
@@ -20,14 +20,14 @@ npm install @theredhead/lucid-forms @theredhead/lucid-kit @theredhead/lucid-foun
 ## Overview
 
 `@theredhead/lucid-forms` lets you define forms as plain JSON/TypeScript objects
-and renders them using `@theredhead/lucid-kit` components. No template boilerplate,
-no `FormGroup` wiring — just a schema and a binding.
+and renders them using LucidKit components. No template boilerplate, no
+`FormGroup` wiring — just a schema and a binding.
 
 ### Key features
 
 - **Schema-driven** — describe fields, groups, validation, and defaults in a `FormSchema` object
 - **Dynamic field rendering** — maps field types (`text`, `select`, `checkbox`, `date`, …) to
-  the correct `@theredhead/lucid-kit` component automatically
+  the correct LucidKit component automatically
 - **Conditional logic** — show/hide or enable/disable fields based on other field values
 - **Validation** — `required`, `minLength`, `maxLength`, `min`, `max`, `pattern`, `email` rules
   with per-field error messages
@@ -110,4 +110,5 @@ Custom field types can be registered via `provideFormFields()`.
 | `@angular/core`                  | `^21.0.0` |
 | `@angular/common`                | `^21.0.0` |
 | `@theredhead/lucid-foundation`   | `^0.0.1`  |
+| `@theredhead/lucid-blocks`       | `^0.0.1`  |
 | `@theredhead/lucid-kit`          | `^0.0.1`  |

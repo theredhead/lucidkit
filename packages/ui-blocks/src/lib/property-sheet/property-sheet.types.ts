@@ -47,6 +47,9 @@ export interface PropertyFieldDefinition<T = Record<string, unknown>> {
   /** Whether this field is read-only. */
   readonly readonly?: boolean;
 
+  /** Whether this field must have a non-empty value. */
+  readonly required?: boolean;
+
   /** Options for `'select'` fields. */
   readonly options?: readonly SelectOption[];
 

@@ -10,7 +10,6 @@ export * from "./lib/indicates-touch";
 export * from "./lib/filter";
 export * from "./lib/autocomplete";
 export * from "./lib/calendar-panel";
-export * from "./lib/rich-text-editor";
 export * from "./lib/rich-text-view/rich-text-view.component";
 export * from "./lib/popover";
 export * from "./lib/map-view";

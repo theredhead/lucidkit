@@ -81,7 +81,6 @@
 | `UIQRCode`              | `src/lib/qr-code/qr-code.component.ts`                                        | `ui-qr-code`                | QR code generator and renderer                                                                                                     |
 | `UITimeline`            | `src/lib/timeline/timeline.component.ts`                                      | `ui-timeline`               | Timeline displaying sequential events                                                                                              |
 | `UIEmojiPicker`         | `src/lib/emoji-picker/emoji-picker.component.ts`                              | `ui-emoji-picker`           | Emoji picker with category navigation                                                                                              |
-| `UIRichTextEditor`      | `src/lib/rich-text-editor/rich-text-editor.component.ts`                      | `ui-rich-text-editor`       | Rich-text editor: HTML WYSIWYG + Markdown modes with split-pane preview or compact chat-style floating-toolbar presentation        |
 | `UISkeleton`            | `src/lib/skeleton/skeleton.component.ts`                                      | `ui-skeleton`               | Animated shimmer placeholder while content loads — `text`, `rect`, and `circle` variants                                           |
 | `UIEmptyState`          | `src/lib/empty-state/empty-state.component.ts`                                | `ui-empty-state`            | Zero-data placeholder with heading, optional message, optional icon, and projected action slot                                     |
 | `UISegmentedControl`    | `src/lib/segmented-control/segmented-control.component.ts`                    | `ui-segmented-control`      | iOS-style mutually exclusive option button row via `items` input and `[(value)]` binding                                           |
@@ -171,8 +170,6 @@ This pattern allows for extensibility - new column types can be added without mo
 | `ScrollCarouselStrategy`    | `src/lib/carousel/scroll-strategy.ts`                              | Carousel via horizontal scroll                  |
 | `SingleCarouselStrategy`    | `src/lib/carousel/single-strategy.ts`                              | Carousel showing one full-frame slide at a time |
 | `CoverflowCarouselStrategy` | `src/lib/carousel/coverflow-strategy.ts`                           | Carousel with 3D coverflow effect               |
-| `HtmlEditingStrategy`       | `src/lib/rich-text-editor/strategies/html-editing.strategy.ts`     | Rich text WYSIWYG editing                       |
-| `MarkdownEditingStrategy`   | `src/lib/rich-text-editor/strategies/markdown-editing.strategy.ts` | Markdown plain-text editing                     |
 
 ## Types
 

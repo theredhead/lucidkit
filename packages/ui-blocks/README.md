@@ -11,6 +11,33 @@ top of `@theredhead/lucid-kit` primitives, standalone, signal-based, and OnPush.
 
 ## Components
 
+### UIRichTextEditor
+
+A template-aware rich-text editor with HTML and Markdown editing modes,
+placeholder chips, XML template blocks, and optional compact chat-style
+presentation.
+
+```typescript
+import { UIRichTextEditor } from "@theredhead/lucid-blocks";
+
+@Component({
+  selector: "app-message-editor",
+  standalone: true,
+  imports: [UIRichTextEditor],
+  template: `
+    <ui-rich-text-editor
+      [(value)]="body"
+      [placeholders]="placeholders"
+      ariaLabel="Message body"
+    />
+  `,
+})
+export class MessageEditorComponent {
+  body = "";
+  placeholders = [{ key: "firstName", label: "First Name" }];
+}
+```
+
 ### UIMasterDetailView
 
 A responsive master-detail layout. The master pane can render data as either a

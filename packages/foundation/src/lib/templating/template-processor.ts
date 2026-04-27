@@ -1,28 +1,11 @@
 /**
- * A handler for a named block directive.
+ * Controls how a template processor reacts when a block references a key that
+ * does not exist in the expansion context.
  *
- * @param arg       - The argument after the directive name (trimmed).
- * @param body      - The raw template content between the open/close tags.
- * @param context   - The current expansion context.
- * @param processor - The processor instance, allowing recursive `expand` calls.
- *
- * @internal
- */
-type BlockDirectiveHandler = (
-  arg: string,
-  body: string,
-  context: Record<string, unknown>,
-  processor: ITextTemplateProcessor,
-) => string;
-
-/**
- * Controls how a {@link TextTemplateProcessor} reacts when a template
- * references a key that does not exist in the expansion context.
- *
- * - `'keep'`   — leave the original `{{key}}` token in place *(default)*
- * - `'empty'`  — replace with `""`
- * - `'error'`  — throw a `RangeError`
- * - `(key) => string` — call the function and use its return value
+ * - `"keep"` keeps the original XML block in place.
+ * - `"empty"` replaces the block with an empty string.
+ * - `"error"` throws a `RangeError`.
+ * - A function receives the missing key and returns a replacement string.
  */
 export type MissingKeyBehavior =
   | "keep"
@@ -31,82 +14,193 @@ export type MissingKeyBehavior =
   | ((key: string) => string);
 
 /**
- * Options for {@link TextTemplateProcessor}.
+ * Options for XML template processing.
  */
 export interface TextTemplateOptions {
 
   /**
-   * How to handle a missing key during identifier expansion.
-   * Defaults to `'keep'`.
+   * How to handle a missing key during block expansion.
+   * Defaults to `"keep"`.
    */
   readonly missingKey?: MissingKeyBehavior;
 }
 
 /**
- * Contract for text template processors.
+ * A parsed XML template document.
  */
-export interface ITextTemplateProcessor {
+export interface TemplateDocument {
 
   /**
-   * Fully expands a template string against the given context, resolving
-   * all block directives and identifier substitutions in one pass.
+   * Top-level text and block nodes.
    */
-  expand(template: string, context: Record<string, unknown>): string;
+  readonly children: readonly TemplateNode[];
+}
+
+/**
+ * Any parsed template node.
+ */
+export type TemplateNode = TemplateTextNode | TemplateBlockNode;
+
+/**
+ * A literal text/content node.
+ */
+export interface TemplateTextNode {
 
   /**
-   * Resolves a single identifier against the context.
-   * Called for every `{{ key }}` token encountered outside a block.
+   * Node discriminator.
    */
-  processIdentifier(key: string, context: Record<string, unknown>): string;
+  readonly kind: "text";
 
   /**
-   * Processes a block directive and returns the fully expanded result.
-   *
-   * @param func - The directive name (e.g. `"if"`, `"loop"`).
-   * @param arg  - The argument after the directive name (e.g. `"condition"`).
-   * @param body - The raw template content between the open and close tags.
-   * @param context - The current expansion context.
+   * Literal text content.
    */
-  processBlock(
-    func: string,
-    arg: string,
-    body: string,
-    context: Record<string, unknown>,
+  readonly text: string;
+}
+
+/**
+ * A block node. All template constructs, including placeholders, use this
+ * single representation.
+ */
+export interface TemplateBlockNode {
+
+  /**
+   * Node discriminator.
+   */
+  readonly kind: "block";
+
+  /**
+   * XML tag name.
+   */
+  readonly name: string;
+
+  /**
+   * XML attributes keyed by attribute name.
+   */
+  readonly attributes: Readonly<Record<string, string>>;
+
+  /**
+   * Child nodes for container blocks.
+   */
+  readonly children: readonly TemplateNode[];
+
+  /**
+   * Whether the block was parsed or created as self-closing.
+   */
+  readonly selfClosing: boolean;
+}
+
+/**
+ * Controls whether a block must be self-closing or may contain children.
+ */
+export type TemplateBlockContentModel = "self-closing" | "container" | "any";
+
+/**
+ * Context passed to block providers during expansion.
+ */
+export interface TemplateBlockExpansionContext {
+
+  /**
+   * Current data context.
+   */
+  readonly data: Record<string, unknown>;
+
+  /**
+   * Active processor, useful for expanding child nodes with a modified data
+   * context.
+   */
+  readonly processor: ITextTemplateProcessor;
+}
+
+/**
+ * Runtime and validation contract for a named XML template block.
+ */
+export interface TemplateBlockProvider {
+
+  /**
+   * XML tag name handled by this provider.
+   */
+  readonly name: string;
+
+  /**
+   * Whether this block is self-closing, a container, or accepts either shape.
+   */
+  readonly contentModel: TemplateBlockContentModel;
+
+  /**
+   * Required XML attribute names.
+   */
+  readonly requiredAttributes?: readonly string[];
+
+  /**
+   * Optional XML attribute names. When omitted, any extra attributes are
+   * accepted.
+   */
+  readonly optionalAttributes?: readonly string[];
+
+  /**
+   * Expands the block into output content.
+   */
+  expand(
+    block: TemplateBlockNode,
+    context: TemplateBlockExpansionContext,
   ): string;
 }
 
 /**
- * Contract for a single named template directive.
+ * Contract for XML template processors.
+ */
+export interface ITextTemplateProcessor {
+
+  /**
+   * Fully expands a template string against the given context.
+   */
+  expand(template: string, context: Record<string, unknown>): string;
+
+  /**
+   * Expands an already-parsed document.
+   */
+  expandDocument(
+    document: TemplateDocument,
+    context: Record<string, unknown>,
+  ): string;
+
+  /**
+   * Expands a node collection against the given context.
+   */
+  expandNodes(
+    nodes: readonly TemplateNode[],
+    context: Record<string, unknown>,
+  ): string;
+
+  /**
+   * Processes one XML block by dispatching to the registered block provider.
+   */
+  processBlock(
+    block: TemplateBlockNode,
+    context: Record<string, unknown>,
+  ): string;
+
+  /**
+   * Resolves a data key for built-in replacement-style blocks.
+   */
+  processIdentifier(key: string, context: Record<string, unknown>): string;
+}
+
+/**
+ * Legacy directive contract retained only as a source-compatible type alias
+ * for older consumers. XML block providers are the runtime extension point.
  *
- * Implement this interface to create a custom directive and register it
- * with {@link registerTextTemplateDirective}.
- *
- * @example
- * ```ts
- * registerTextTemplateDirective('upper', {
- *   isSelfClosing: () => false,
- *   handle: (arg, body, ctx, processor) => processor.expand(body, ctx).toUpperCase(),
- * });
- * ```
+ * @deprecated Use {@link TemplateBlockProvider}.
  */
 export interface ITextTemplateDirective {
 
   /**
-   * Returns `true` if this directive is standalone (no close tag required).
-   * Returns `false` if it is a block directive that wraps a body and requires
-   * a matching `{{ @endname }}` close tag.
+   * Returns whether the directive is self-closing.
    */
   isSelfClosing(): boolean;
 
   /**
-   * Processes the directive and returns the expanded string.
-   *
-   * @param arg       - The argument after the directive name (trimmed).
-   * @param body      - Raw template content between the open and close tags
-   *                    (empty string for self-closing directives).
-   * @param context   - The current expansion context.
-   * @param processor - The active processor; call `processor.expand(body, ctx)`
-   *                    to recursively expand the body.
+   * Handles the directive.
    */
   handle(
     arg: string,
@@ -116,228 +210,272 @@ export interface ITextTemplateDirective {
   ): string;
 }
 
-// ── module-level directive registry ─────────────────────────────────────────
+/** @internal */
+const TEMPLATE_ROOT = "template-root";
 
 /** @internal */
-const _registry = new Map<string, ITextTemplateDirective>();
+const parserErrorSelector = "parsererror";
+
+/** @internal */
+const blockProviders = new Map<string, TemplateBlockProvider>();
 
 /**
- * Registers a named directive so it is available to all
- * {@link TextTemplateProcessor} instances.
+ * Registers an XML template block provider.
  *
- * Calling this again with the same key replaces the existing directive.
+ * Calling this again with the same block name replaces the existing provider.
+ */
+export function registerTextTemplateBlockProvider(
+  provider: TemplateBlockProvider,
+): void {
+  blockProviders.set(provider.name, provider);
+}
+
+/**
+ * Removes a previously registered XML template block provider.
+ */
+export function unregisterTextTemplateBlockProvider(name: string): void {
+  blockProviders.delete(name);
+}
+
+/**
+ * Returns `true` when a provider for the XML block name is registered.
+ */
+export function haveRegisteredTextTemplateBlockProvider(name: string): boolean {
+  return blockProviders.has(name);
+}
+
+/**
+ * Returns all currently registered XML template block providers.
+ */
+export function getRegisteredTextTemplateBlockProviders(): TemplateBlockProvider[] {
+  return Array.from(blockProviders.values());
+}
+
+/**
+ * Registers a legacy directive by adapting it to the XML block provider
+ * contract.
+ *
+ * @deprecated Use {@link registerTextTemplateBlockProvider}.
  */
 export function registerTextTemplateDirective(
   key: string,
   directive: ITextTemplateDirective,
 ): void {
-  _registry.set(key, directive);
+  registerTextTemplateBlockProvider({
+    name: key,
+    contentModel: directive.isSelfClosing() ? "self-closing" : "container",
+    expand: (block, context) =>
+      directive.handle(
+        block.attributes["arg"] ?? "",
+        context.processor.expandNodes(block.children, context.data),
+        context.data,
+        context.processor,
+      ),
+  });
 }
 
 /**
- * Removes a previously registered directive by key.
- * Has no effect if the key is not registered.
+ * Removes a legacy directive/block provider by key.
+ *
+ * @deprecated Use {@link unregisterTextTemplateBlockProvider}.
  */
 export function unregisterTextTemplateDirective(key: string): void {
-  _registry.delete(key);
+  unregisterTextTemplateBlockProvider(key);
 }
 
 /**
- * Returns `true` if a directive with the given key is currently registered.
+ * Returns `true` if a legacy directive/block provider is registered.
+ *
+ * @deprecated Use {@link haveRegisteredTextTemplateBlockProvider}.
  */
 export function haveRegisteredTextTemplateDirective(key: string): boolean {
-  return _registry.has(key);
+  return haveRegisteredTextTemplateBlockProvider(key);
 }
 
 /**
- * Returns all currently registered directives (in insertion order).
+ * Returns registered legacy directive-compatible providers.
+ *
+ * @deprecated Use {@link getRegisteredTextTemplateBlockProviders}.
  */
 export function getRegisteredTextTemplateDirectives(): ITextTemplateDirective[] {
-  return Array.from(_registry.values());
+  return getRegisteredTextTemplateBlockProviders().map((provider) => ({
+    isSelfClosing: () => provider.contentModel === "self-closing",
+    handle: (_arg, body, context, processor) =>
+      provider.expand(
+        {
+          kind: "block",
+          name: provider.name,
+          attributes: {},
+          children: [{ kind: "text", text: body }],
+          selfClosing: provider.contentModel === "self-closing",
+        },
+        { data: context, processor },
+      ),
+  }));
 }
 
 /**
- * Escapes a string for literal use inside a `RegExp` constructor.
- *
- * @internal
+ * Parses XML template strings into the canonical document model.
  */
-function escapeRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+export class XmlTemplateParser {
 
-/**
- * Matches every `{{ @name ... }}` opening tag (not close tags).
- * Used as the outer scanner in {@link TextTemplateProcessor.expand}.
- *
- * @internal
- */
-const OPEN_TAG_RE = /\{\{\s*@(?!end\w)(\w+)(?:\s+([^}]*?))?\s*\}\}/g;
-
-/**
- * Scans forward from `startPos` to find the close tag that matches the given
- * `funcName`, correctly accounting for nesting.
- *
- * Returns the `{ start, end }` of the matching `{{ @endfuncName }}` token, or
- * `null` if no matching close tag exists.
- *
- * @internal
- */
-function findMatchingCloseTag(
-  template: string,
-  funcName: string,
-  startPos: number,
-): { start: number; end: number } | null {
-  const tagRe = new RegExp(
-    `\\{\\{\\s*@(end)?(${escapeRegex(funcName)})(?:\\s[^}]*)?\\s*\\}\\}`,
-    "g",
-  );
-  tagRe.lastIndex = startPos;
-  let depth = 1;
-  let m: RegExpExecArray | null;
-  while ((m = tagRe.exec(template)) !== null) {
-    if (m[1]) {
-      // close tag
-      depth--;
-      if (depth === 0) return { start: m.index, end: m.index + m[0].length };
-    } else {
-      // open tag of same type — increase nesting depth
-      depth++;
+  /**
+   * Parses an XML template fragment.
+   */
+  public parse(template: string): TemplateDocument {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(
+      `<${TEMPLATE_ROOT}>${template}</${TEMPLATE_ROOT}>`,
+      "application/xml",
+    );
+    const parserError = xml.querySelector(parserErrorSelector);
+    if (parserError) {
+      throw new SyntaxError(
+        `XmlTemplateParser: malformed XML template (${parserError.textContent?.trim() ?? "unknown parser error"})`,
+      );
     }
+    const root = xml.documentElement;
+    if (!root || root.nodeName !== TEMPLATE_ROOT) {
+      throw new SyntaxError("XmlTemplateParser: missing template root");
+    }
+    return {
+      children: Array.from(root.childNodes)
+        .map((node) => this.parseNode(node))
+        .filter((node): node is TemplateNode => node !== null),
+    };
   }
-  return null;
+
+  /** @internal */
+  private parseNode(node: Node): TemplateNode | null {
+    if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
+      return { kind: "text", text: node.textContent ?? "" };
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return null;
+    }
+    const element = node as Element;
+    const attributes: Record<string, string> = {};
+    for (const attr of Array.from(element.attributes)) {
+      attributes[attr.name] = attr.value;
+    }
+    return {
+      kind: "block",
+      name: element.tagName,
+      attributes,
+      children: Array.from(element.childNodes)
+        .map((child) => this.parseNode(child))
+        .filter((child): child is TemplateNode => child !== null),
+      selfClosing: element.childNodes.length === 0,
+    };
+  }
 }
 
 /**
- * Matches a simple identifier token: `{{ key }}` or `{{key}}`.
- *
- * @internal
+ * Serializes parsed template documents back to canonical XML.
  */
-const IDENTIFIER_RE = /\{\{\s*(\w+)\s*\}\}/g;
+export class XmlTemplateSerializer {
+
+  /**
+   * Serializes a complete template document.
+   */
+  public serialize(document: TemplateDocument): string {
+    return this.serializeNodes(document.children);
+  }
+
+  /**
+   * Serializes a node collection.
+   */
+  public serializeNodes(nodes: readonly TemplateNode[]): string {
+    return nodes.map((node) => this.serializeNode(node)).join("");
+  }
+
+  /**
+   * Serializes a single template node.
+   */
+  public serializeNode(node: TemplateNode): string {
+    if (node.kind === "text") {
+      return this.escapeText(node.text);
+    }
+    const attrs = Object.entries(node.attributes)
+      .map(([key, value]) => ` ${key}="${this.escapeAttribute(value)}"`)
+      .join("");
+    if (node.selfClosing || node.children.length === 0) {
+      return `<${node.name}${attrs} />`;
+    }
+    return `<${node.name}${attrs}>${this.serializeNodes(node.children)}</${node.name}>`;
+  }
+
+  /** @internal */
+  private escapeText(value: string): string {
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  }
+
+  /** @internal */
+  private escapeAttribute(value: string): string {
+    return this.escapeText(value).replace(/"/g, "&quot;");
+  }
+}
 
 /**
- * Default implementation of {@link ITextTemplateProcessor}.
- *
- * Supports three template constructs:
- *
- * **Simple substitution**
- * ```
- * Hello, {{ username }}!
- * ```
- *
- * **Conditional block** (`@if` / `@endif`)
- * ```
- * {{ @if isAdmin }}Admin panel{{ @endif }}
- * ```
- * The argument is looked up in the context and tested with JavaScript
- * truthiness. A non-empty array is truthy; an empty array is falsy.
- *
- * **Loop block** (`@loop` / `@endloop`)
- * ```
- * {{ @loop items }}- {{ name }}
- * {{ @endloop }}
- * ```
- * The argument must resolve to an array. Each element is used as the
- * local context for one iteration. Scalar elements are wrapped as
- * `{ value: element }` so `{{ value }}` can reference them.
- *
- * Block bodies are fully expanded (identifiers resolved) before being
- * returned, so a single call to `expand()` resolves everything.
- *
- * @example
- * ```ts
- * const proc = new TextTemplateProcessor({ missingKey: 'empty' });
- * const result = proc.expand("Hi {{ name }}!", { name: "World" });
- * // → "Hi World!"
- * ```
- *
- * Custom directives are registered with {@link registerTextTemplateDirective}:
- * ```ts
- * registerTextTemplateDirective('upper', {
- *   isSelfClosing: () => false,
- *   handle: (arg, body, ctx, p) => p.expand(body, ctx).toUpperCase(),
- * });
- * ```
+ * XML block template processor.
  */
-export class TextTemplateProcessor implements ITextTemplateProcessor {
+export class XmlTemplateProcessor implements ITextTemplateProcessor {
   private readonly missingKeyBehavior: MissingKeyBehavior;
+
+  private readonly parser = new XmlTemplateParser();
+
+  private readonly serializer = new XmlTemplateSerializer();
 
   public constructor(options: TextTemplateOptions = {}) {
     this.missingKeyBehavior = options.missingKey ?? "keep";
   }
 
   /**
-   * Fully expands the template against the context in a single pass.
-   *
-   * Resolution order:
-   * 1. Directive tags (`{{ @name arg }}`) — scanned left-to-right.
-   *    - If the directive's {@link ITextTemplateDirective.isSelfClosing} returns
-   *      `true`, it is called with an empty body and no close tag is expected.
-   *    - Otherwise the scanner looks for a matching `{{ @endname }}` (correctly
-   *      handling same-type nesting). Throws a `SyntaxError` if the close tag
-   *      is missing.
-   *    - Unregistered directives throw a `RangeError`.
-   * 2. Simple identifier tokens (`{{ key }}`).
-   *
-   * Substituted values are never re-scanned, so a value containing `{{`
-   * will not trigger further expansion.
+   * Fully expands an XML template string.
    */
   public expand(template: string, context: Record<string, unknown>): string {
-    let result = "";
-    let pos = 0;
-    const openRe = new RegExp(OPEN_TAG_RE.source, "g");
-
-    let m: RegExpExecArray | null;
-    while ((m = openRe.exec(template)) !== null) {
-      const matchStart = m.index;
-      const matchEnd = m.index + m[0].length;
-      const func = m[1];
-      const arg = (m[2] ?? "").trim();
-
-      result += template.slice(pos, matchStart);
-
-      const directive = _registry.get(func);
-      if (!directive) {
-        throw new RangeError(
-          `TextTemplateProcessor: unknown directive "@${func}"`,
-        );
-      }
-
-      if (directive.isSelfClosing()) {
-        // Standalone — no body, no close tag
-        result += this.processBlock(func, arg, "", context);
-        pos = matchEnd;
-        openRe.lastIndex = matchEnd;
-      } else {
-        // Block directive — require a matching close tag
-        const close = findMatchingCloseTag(template, func, matchEnd);
-        if (!close) {
-          throw new SyntaxError(
-            `TextTemplateProcessor: missing closing tag "{{ @end${func} }}" for "{{ @${func} }}"`,
-          );
-        }
-        result += this.processBlock(
-          func,
-          arg,
-          template.slice(matchEnd, close.start),
-          context,
-        );
-        pos = close.end;
-        openRe.lastIndex = close.end;
-      }
-    }
-
-    result += template.slice(pos);
-
-    return result.replace(IDENTIFIER_RE, (_match, key: string) =>
-      this.processIdentifier(key, context),
-    );
+    return this.expandDocument(this.parser.parse(template), context);
   }
 
   /**
-   * Resolves a single `{{ key }}` identifier.
-   *
-   * Returns `String(value)` for existing keys (null/undefined → `""`).
-   * Missing keys are handled according to {@link TextTemplateOptions.missingKey}.
+   * Fully expands an already parsed template document.
+   */
+  public expandDocument(
+    document: TemplateDocument,
+    context: Record<string, unknown>,
+  ): string {
+    return this.expandNodes(document.children, context);
+  }
+
+  /**
+   * Expands a node collection.
+   */
+  public expandNodes(
+    nodes: readonly TemplateNode[],
+    context: Record<string, unknown>,
+  ): string {
+    return nodes.map((node) => this.expandNode(node, context)).join("");
+  }
+
+  /**
+   * Dispatches one block to its registered provider.
+   */
+  public processBlock(
+    block: TemplateBlockNode,
+    context: Record<string, unknown>,
+  ): string {
+    const provider = blockProviders.get(block.name);
+    if (!provider) {
+      throw new RangeError(
+        `XmlTemplateProcessor: unknown block <${block.name}>`,
+      );
+    }
+    this.validateBlock(block, provider);
+    return provider.expand(block, { data: context, processor: this });
+  }
+
+  /**
+   * Resolves a context key for built-in replacement blocks.
    */
   public processIdentifier(
     key: string,
@@ -350,66 +488,186 @@ export class TextTemplateProcessor implements ITextTemplateProcessor {
     return this.resolveMissing(key);
   }
 
-  /**
-   * Looks up the registered {@link ITextTemplateDirective} for `func` and
-   * calls its `handle` method.
-   *
-   * Throws a `RangeError` for unregistered directives.
-   */
-  public processBlock(
-    func: string,
-    arg: string,
-    body: string,
+  /** @internal */
+  private expandNode(
+    node: TemplateNode,
     context: Record<string, unknown>,
   ): string {
-    const directive = _registry.get(func);
-    if (!directive) {
-      throw new RangeError(
-        `TextTemplateProcessor: unknown directive "@${func}"`,
-      );
-    }
-    return directive.handle(arg, body, context, this);
+    if (node.kind === "text") return node.text;
+    return this.processBlock(node, context);
   }
 
+  /** @internal */
+  private validateBlock(
+    block: TemplateBlockNode,
+    provider: TemplateBlockProvider,
+  ): void {
+    if (provider.contentModel === "self-closing" && block.children.length > 0) {
+      throw new SyntaxError(
+        `XmlTemplateProcessor: <${block.name}> must be self-closing`,
+      );
+    }
+    if (provider.contentModel === "container" && block.selfClosing) {
+      throw new SyntaxError(
+        `XmlTemplateProcessor: <${block.name}> must contain a closing tag`,
+      );
+    }
+    for (const attr of provider.requiredAttributes ?? []) {
+      if (!Object.prototype.hasOwnProperty.call(block.attributes, attr)) {
+        throw new SyntaxError(
+          `XmlTemplateProcessor: <${block.name}> missing required "${attr}" attribute`,
+        );
+      }
+    }
+  }
+
+  /** @internal */
   private resolveMissing(key: string): string {
-    if (this.missingKeyBehavior === "keep") return `{{${key}}}`;
+    if (this.missingKeyBehavior === "keep") {
+      return this.serializer.serializeNode({
+        kind: "block",
+        name: "placeholder",
+        attributes: { key },
+        children: [],
+        selfClosing: true,
+      });
+    }
     if (this.missingKeyBehavior === "empty") return "";
     if (this.missingKeyBehavior === "error") {
-      throw new RangeError(`TextTemplateProcessor: missing key "${key}"`);
+      throw new RangeError(`XmlTemplateProcessor: missing key "${key}"`);
     }
     return this.missingKeyBehavior(key);
   }
 }
 
-// ── built-in directives ───────────────────────────────────────────────────────
+/**
+ * Default processor name retained for consumers that already import
+ * `TextTemplateProcessor`. The implementation is XML-only.
+ */
+export class TextTemplateProcessor extends XmlTemplateProcessor {}
 
-registerTextTemplateDirective("if", {
-  isSelfClosing: () => false,
-  handle: (arg, body, context, processor) => {
-    const val = context[arg];
+/** @internal */
+function registerPassthroughBlock(name: string): void {
+  registerTextTemplateBlockProvider({
+    name,
+    contentModel: "any",
+    expand: (block, context) => {
+      const attrs = Object.entries(block.attributes)
+        .map(([key, value]) => ` ${key}="${escapeAttribute(value)}"`)
+        .join("");
+      if (block.selfClosing || block.children.length === 0) {
+        return `<${block.name}${attrs} />`;
+      }
+      return `<${block.name}${attrs}>${context.processor.expandNodes(
+        block.children,
+        context.data,
+      )}</${block.name}>`;
+    },
+  });
+}
+
+/** @internal */
+function escapeText(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+}
+
+/** @internal */
+function escapeAttribute(value: string): string {
+  return escapeText(value).replace(/"/g, "&quot;");
+}
+
+// ── built-in XML block providers ─────────────────────────────────────────────
+
+registerTextTemplateBlockProvider({
+  name: "placeholder",
+  contentModel: "self-closing",
+  requiredAttributes: ["key"],
+  expand: (block, context) =>
+    context.processor.processIdentifier(block.attributes["key"] ?? "", context.data),
+});
+
+registerTextTemplateBlockProvider({
+  name: "if",
+  contentModel: "container",
+  requiredAttributes: ["test"],
+  expand: (block, context) => {
+    const val = context.data[block.attributes["test"] ?? ""];
     const truthy = Array.isArray(val) ? val.length > 0 : Boolean(val);
-    return truthy ? processor.expand(body, context) : "";
+    return truthy ? context.processor.expandNodes(block.children, context.data) : "";
   },
 });
 
-registerTextTemplateDirective("loop", {
-  isSelfClosing: () => false,
-  handle: (arg, body, context, processor) => {
-    const items = context[arg];
+registerTextTemplateBlockProvider({
+  name: "loop",
+  contentModel: "container",
+  requiredAttributes: ["items"],
+  expand: (block, context) => {
+    const items = context.data[block.attributes["items"] ?? ""];
     if (items == null) return "";
     if (!Array.isArray(items)) {
       throw new TypeError(
-        `TextTemplateProcessor @loop: "${arg}" is not an array (got ${typeof items})`,
+        `XmlTemplateProcessor <loop>: "${block.attributes["items"] ?? ""}" is not an array (got ${typeof items})`,
       );
     }
     return items
       .map((item) => {
         const itemCtx: Record<string, unknown> =
           typeof item === "object" && item !== null
-            ? (item as Record<string, unknown>)
-            : { value: item };
-        return processor.expand(body, itemCtx);
+            ? { ...context.data, ...(item as Record<string, unknown>) }
+            : { ...context.data, value: item };
+        return context.processor.expandNodes(block.children, itemCtx);
       })
       .join("");
   },
 });
+
+for (const tag of [
+  "a",
+  "article",
+  "b",
+  "blockquote",
+  "br",
+  "caption",
+  "code",
+  "div",
+  "del",
+  "dl",
+  "dt",
+  "dd",
+  "em",
+  "figcaption",
+  "figure",
+  "footer",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "header",
+  "hr",
+  "i",
+  "img",
+  "li",
+  "main",
+  "nav",
+  "ol",
+  "p",
+  "pre",
+  "s",
+  "section",
+  "span",
+  "strike",
+  "strong",
+  "table",
+  "tbody",
+  "td",
+  "tfoot",
+  "th",
+  "thead",
+  "tr",
+  "u",
+  "ul",
+]) {
+  registerPassthroughBlock(tag);
+}

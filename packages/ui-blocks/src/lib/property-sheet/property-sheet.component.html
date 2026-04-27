@@ -7,6 +7,9 @@
       <div class="ps-row" [class.ps-row--readonly]="field.readonly">
         <label class="ps-label" [attr.for]="'ps-' + field.key">
           {{ field.label }}
+          @if (field.required) {
+            <span class="ps-required" aria-hidden="true">*</span>
+          }
         </label>
         <div class="ps-editor">
           @switch (field.type) {

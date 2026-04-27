@@ -40,7 +40,6 @@ core and `@angular/cdk`.
 | **UIProgress**                   | `ui-progress`                        | Progress bar (determinate / indeterminate) with colour variants           |
 | **UIRepeater**                   | `ui-repeater`                        | Template repeater with grid, flex-row, flex-column, masonry layouts       |
 | **UIFileUpload**                 | `ui-file-upload`                     | Drag-and-drop file upload zone with accept filter and size limits         |
-| **UIRichTextEditor**             | `ui-rich-text-editor`                | WYSIWYG contenteditable editor with configurable toolbar                  |
 | **UIDialog**                     | `ui-dialog`                          | Modal dialog container with backdrop, size options                        |
 | **UIThemeToggle**                | `ui-theme-toggle`                    | Light/dark mode toggle button with inline SVG icons                       |
 

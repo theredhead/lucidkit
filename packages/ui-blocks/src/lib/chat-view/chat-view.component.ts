@@ -14,7 +14,7 @@ import {
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 
-import { UIIcon, UIIcons, UIRichTextEditor } from "@theredhead/lucid-kit";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 import type {
   ChatComposerMode,
@@ -24,7 +24,10 @@ import type {
   MessageSendEvent,
   MessageTemplateContext,
 } from "./chat-view.types";
-import type { RichTextFormatAction } from "@theredhead/lucid-kit";
+import {
+  UIRichTextEditor,
+  type RichTextFormatAction,
+} from "../rich-text-editor";
 import { UIMessageBubble } from "./message-bubble/message-bubble.component";
 import { UISurface } from "@theredhead/lucid-foundation";
 

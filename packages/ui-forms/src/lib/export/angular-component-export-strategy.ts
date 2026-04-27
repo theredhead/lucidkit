@@ -179,7 +179,7 @@ function optionsPropName(fieldId: string): string {
  * - A typed `<Title>FormValues` interface with one property per field
  * - Individual `signal()` fields for two-way binding
  * - A `computed()` `formValues` signal that assembles the full typed object
- * - A template that directly uses `@theredhead/lucid-kit` components
+ * - A template that directly uses LucidKit components
  *   (`<ui-input>`, `<ui-select>`, …) — no `FormEngine` or `<ui-form>`
  *
  * The component is almost entirely declarative: the TypeScript class
@@ -239,15 +239,32 @@ export class AngularComponentExportStrategy implements ExportStrategy {
     if (hasOutput) angularImports.push("output");
 
     const uiKitComponents = new Set<string>();
+    const uiBlocksComponents = new Set<string>();
     for (const f of fields) {
-      uiKitComponents.add(metaFor(f.component).className);
+      const className = metaFor(f.component).className;
+      if (className === "UIRichTextEditor") {
+        uiBlocksComponents.add(className);
+      } else {
+        uiKitComponents.add(className);
+      }
     }
-    const sorted = [...uiKitComponents].sort();
+    const kitSorted = [...uiKitComponents].sort();
+    const blocksSorted = [...uiBlocksComponents].sort();
 
-    return [
+    const imports = [
       `import { ${angularImports.join(", ")} } from '@angular/core';`,
-      `import { ${sorted.join(", ")} } from '@theredhead/lucid-kit';`,
     ];
+    if (kitSorted.length > 0) {
+      imports.push(
+        `import { ${kitSorted.join(", ")} } from '@theredhead/lucid-kit';`,
+      );
+    }
+    if (blocksSorted.length > 0) {
+      imports.push(
+        `import { ${blocksSorted.join(", ")} } from '@theredhead/lucid-blocks';`,
+      );
+    }
+    return imports;
   }
 
   /** @internal Build the values interface. */

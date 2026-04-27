@@ -1,0 +1,379 @@
+<!-- ── Toolbar ─────────────────────────────────────────────── -->
+<ui-toolbar
+  role="toolbar"
+  aria-label="Formatting"
+  [displayMode]="toolbarDisplayMode()"
+  [collapsed]="isCompactToolbarCollapsed()"
+  (collapsedChange)="onToolbarCollapsedChange($event)"
+  (toolAction)="onToolAction($event)"
+>
+
+  <!-- History: Undo / Redo -->
+  @if (showHistoryGroup()) {
+    <ui-button-group-tool id="history">
+      @if (hasToolbarAction('undo')) {
+        <ui-button-tool id="undo" [icon]="teIcons.Undo" ariaLabel="Undo" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('redo')) {
+        <ui-button-tool id="redo" [icon]="teIcons.Redo" ariaLabel="Redo" [disabled]="isEditorDisabled()" />
+      }
+    </ui-button-group-tool>
+    <ui-separator-tool id="sep-history" />
+  }
+
+  <!-- Inline: Bold / Italic / Underline / Strikethrough -->
+  @if (showInlineGroup()) {
+    <ui-button-group-tool id="inline">
+      @if (hasToolbarAction('bold')) {
+        <ui-toggle-tool id="bold" [icon]="teIcons.Bold" ariaLabel="Bold"
+          [checked]="isActionActive('bold')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('italic')) {
+        <ui-toggle-tool id="italic" [icon]="teIcons.Italic" ariaLabel="Italic"
+          [checked]="isActionActive('italic')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('underline')) {
+        <ui-toggle-tool id="underline" [icon]="teIcons.Underline" ariaLabel="Underline"
+          [checked]="isActionActive('underline')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('strikethrough')) {
+        <ui-toggle-tool id="strikethrough" [icon]="teIcons.Strikethrough" ariaLabel="Strikethrough"
+          [checked]="isActionActive('strikethrough')" [disabled]="isEditorDisabled()" />
+      }
+    </ui-button-group-tool>
+    <ui-separator-tool id="sep-inline" />
+  }
+
+  <!-- Block styles (dropdown) -->
+  @if (blockDropdownItems().length > 0) {
+    <ui-dropdown-tool id="block"
+      [icon]="teIcons.Styles"
+      ariaLabel="Styles"
+      [items]="blockDropdownItems()"
+      [disabled]="isEditorDisabled()"
+    />
+  }
+
+  <!-- Lists (dropdown) -->
+  @if (listDropdownItems().length > 0) {
+    <ui-dropdown-tool id="list"
+      [icon]="teIcons.List"
+      ariaLabel="Lists"
+      [items]="listDropdownItems()"
+      [disabled]="isEditorDisabled()"
+    />
+  }
+
+  <!-- Alignment (radio-style, HTML mode only) -->
+  @if (!isMarkdownMode() && showAlignGroup()) {
+    <ui-separator-tool id="sep-align-before" />
+    <ui-toggle-group-tool id="align" aria-label="Alignment">
+      @if (hasToolbarAction('alignLeft')) {
+        <ui-toggle-tool id="alignLeft" [icon]="teIcons.AlignLeft" ariaLabel="Align left"
+          [checked]="isActionActive('alignLeft')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('alignCenter')) {
+        <ui-toggle-tool id="alignCenter" [icon]="teIcons.AlignCenter" ariaLabel="Align centre"
+          [checked]="isActionActive('alignCenter')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('alignRight')) {
+        <ui-toggle-tool id="alignRight" [icon]="teIcons.AlignRight" ariaLabel="Align right"
+          [checked]="isActionActive('alignRight')" [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('alignJustify')) {
+        <ui-toggle-tool id="alignJustify" [icon]="teIcons.AlignJustify" ariaLabel="Justify"
+          [checked]="isActionActive('alignJustify')" [disabled]="isEditorDisabled()" />
+      }
+    </ui-toggle-group-tool>
+    <ui-separator-tool id="sep-align-after" />
+  }
+
+  <!-- Insert: Horizontal rule / Image -->
+  @if (showInsertGroup()) {
+    <ui-button-group-tool id="insert">
+      @if (hasToolbarAction('horizontalRule')) {
+        <ui-button-tool id="horizontalRule" [icon]="teIcons.HorizontalRule" ariaLabel="Horizontal rule"
+          [disabled]="isEditorDisabled()" />
+      }
+      @if (hasToolbarAction('image')) {
+        <ui-button-tool id="image" [icon]="teIcons.Image" ariaLabel="Insert image"
+          [disabled]="isEditorDisabled()" />
+      }
+    </ui-button-group-tool>
+    <ui-separator-tool id="sep-insert" />
+  }
+
+  <!-- Link -->
+  @if (hasToolbarAction('link')) {
+    <ui-button-tool id="link" [icon]="teIcons.Link" ariaLabel="Hyperlink"
+      [disabled]="isEditorDisabled()" />
+    <ui-separator-tool id="sep-link" />
+  }
+
+  <!-- Remove formatting -->
+  @if (hasToolbarAction('removeFormat')) {
+    <ui-button-tool id="removeFormat" [icon]="teIcons.RemoveFormat" ariaLabel="Clear formatting"
+      [disabled]="isEditorDisabled()" />
+  }
+
+  <!-- Placeholder picker -->
+  @if (!isCompactPresentation() && hasPlaceholderPickerItems()) {
+    <ui-separator-tool id="sep-placeholder" />
+    <div class="placeholder-picker">
+      <button
+        type="button"
+        class="tool-btn placeholder-trigger"
+        aria-label="Insert placeholder"
+        title="Insert placeholder"
+        [disabled]="isEditorDisabled()"
+        [attr.aria-expanded]="isPlaceholderPickerOpen()"
+        (mousedown)="$event.preventDefault()"
+        (click)="togglePlaceholderPicker()"
+      >
+        &lt;/&gt;
+      </button>
+
+      @if (isPlaceholderPickerOpen()) {
+        <div
+          class="placeholder-dropdown"
+          role="listbox"
+          aria-label="Available placeholders"
+        >
+          <div class="placeholder-search">
+            <input
+              type="text"
+              class="placeholder-search-input"
+              placeholder="Search placeholders…"
+              aria-label="Filter placeholders"
+              (input)="onPlaceholderSearch($event)"
+              (mousedown)="$event.stopPropagation()"
+            />
+          </div>
+          @for (group of placeholderPickerGroups(); track group.category) {
+            @if (group.category) {
+              <div class="placeholder-category">{{ group.category }}</div>
+            }
+            @for (ph of group.items; track ph.id) {
+              @if (ph.isGroup) {
+                <div
+                  class="placeholder-group"
+                  role="presentation"
+                  [style.padding-left.rem]="0.6 + ph.depth * 0.9"
+                >
+                  <span class="placeholder-label">{{ ph.label }}</span>
+                  @if (ph.showPath) {
+                    <span class="placeholder-path">{{ ph.path }}</span>
+                  }
+                </div>
+              } @else {
+                <button
+                  type="button"
+                  class="placeholder-option"
+                  role="option"
+                  [attr.aria-label]="'Insert ' + ph.path"
+                  [attr.aria-selected]="false"
+                  [attr.data-placeholder-key]="ph.key"
+                  [style.padding-left.rem]="0.6 + ph.depth * 0.9"
+                  (mousedown)="$event.preventDefault()"
+                  (click)="insertPlaceholder(ph)"
+                >
+                  <span class="placeholder-label">{{ ph.label }}</span>
+                  @if (ph.showPath) {
+                    <span class="placeholder-path">{{ ph.path }}</span>
+                  }
+                </button>
+              }
+            }
+          }
+          @if (placeholderPickerGroups().length === 0) {
+            <div class="placeholder-empty">No matches</div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Template block picker -->
+  @if (!isCompactPresentation() && templateBlockDropdownItems().length > 0) {
+    <ui-separator-tool id="sep-template-block" />
+    <ui-dropdown-tool
+      id="template-block"
+      [icon]="sourceIcon"
+      ariaLabel="Insert template block"
+      [items]="templateBlockDropdownItems()"
+      [disabled]="isEditorDisabled()"
+    />
+  }
+
+  <!-- Emoji picker -->
+  @if (!isCompactPresentation()) {
+    <ui-separator-tool id="sep-emoji" />
+    <div class="emoji-picker-wrapper">
+      <button
+        type="button"
+        class="tool-btn"
+        aria-label="Insert emoji"
+        title="Insert emoji"
+        [disabled]="isEditorDisabled()"
+        [attr.aria-expanded]="isEmojiPickerOpen()"
+        (mousedown)="$event.preventDefault()"
+        (click)="toggleEmojiPicker()"
+      >
+        <ui-icon [svg]="emojiIcon" [size]="16" />
+      </button>
+
+      @if (isEmojiPickerOpen()) {
+        <div class="emoji-picker-dropdown">
+          <ui-emoji-picker
+            [categories]="emojiCategories()"
+            (emojiSelected)="insertEmoji($event)"
+          />
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Source toggle (HTML mode only) -->
+  @if (!isCompactPresentation() && !isMarkdownMode()) {
+    <ui-separator-tool id="sep-source" />
+    <ui-toggle-tool
+      id="source-mode"
+      [icon]="sourceIcon"
+      [ariaLabel]="sourceToggleLabel()"
+      [checked]="isSourceMode()"
+      [disabled]="isEditorDisabled()"
+    />
+  }
+
+  <!-- Split-direction toggle + preview toggle + validity indicator (Markdown mode only) -->
+  @if (isMarkdownMode()) {
+    @if (!isCompactPresentation()) {
+      <ui-spacer-tool id="spacer-before-md-tools" />
+      <ui-button-tool
+        id="split-direction"
+        [icon]="effectiveSplitDirection() === 'horizontal' ? teIcons.SplitVertical : teIcons.SplitHorizontal"
+        [ariaLabel]="effectiveSplitDirection() === 'horizontal' ? 'Switch to vertical split' : 'Switch to side-by-side split'"
+      />
+      <ui-separator-tool id="sep-preview" />
+    }
+    <ui-toggle-tool
+      id="toggle-preview"
+      [icon]="showMarkdownPreview() ? teIcons.PreviewShow : teIcons.PreviewHide"
+      [ariaLabel]="showMarkdownPreview() ? 'Hide preview' : 'Show preview'"
+      [checked]="showMarkdownPreview()"
+    />
+    @if (!isCompactPresentation()) {
+      <ui-separator-tool id="sep-validity" />
+      <ui-icon
+        class="markdown-validity-indicator"
+        [class.valid]="isValidMarkdown()"
+        [class.invalid]="!isValidMarkdown()"
+        [svg]="isValidMarkdown() ? teIcons.ValidMarkdown : teIcons.InvalidMarkdown"
+        [size]="16"
+        [attr.aria-label]="isValidMarkdown() ? 'Valid markdown' : 'Empty — no markdown content'"
+        role="img"
+      />
+    }
+  }
+
+  <!-- Fullscreen toggle — pushed to the right by the spacer -->
+  @if (!isCompactPresentation()) {
+    <ui-spacer-tool id="spacer-before-fullscreen" />
+    <ui-button-tool
+      id="fullscreen"
+      [icon]="isFullscreen() ? teIcons.ExitFullscreen : teIcons.Fullscreen"
+      [ariaLabel]="isFullscreen() ? 'Exit full screen' : 'Full screen'"
+    />
+  }
+
+</ui-toolbar>
+
+<!-- ── HTML source textarea (HTML mode only) ──────────────── -->
+@if (!isMarkdownMode() && isSourceMode()) {
+  <textarea
+    class="source-editor"
+    [attr.aria-label]="ariaLabel() + ' (HTML source)'"
+    [value]="value()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    (input)="onSourceInput($event)"
+    (focus)="onEditorFocus()"
+    (blur)="onEditorBlur()"
+    spellcheck="false"
+  ></textarea>
+  <div class="preview-label" aria-hidden="true">Preview</div>
+}
+
+<!-- ── Markdown textarea + split handle (Markdown mode) ──── -->
+@if (isMarkdownMode()) {
+  <textarea
+    #mdTextarea
+    class="source-editor markdown-editor"
+    [attr.aria-label]="ariaLabel()"
+    [value]="value()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    [attr.data-placeholder]="placeholder()"
+    [attr.placeholder]="placeholder()"
+    (input)="onSourceInput($event)"
+    (focus)="onEditorFocus()"
+    (blur)="onEditorBlur()"
+    (paste)="onEditorPaste($event)"
+    (keydown)="onEditorKeydown($event)"
+    spellcheck="true"
+  ></textarea>
+  <div
+    class="split-handle"
+    role="separator"
+    aria-label="Resize panes"
+    [hidden]="!showMarkdownPreview()"
+    (pointerdown)="onSplitPointerDown($event)"
+  ></div>
+}
+
+<!-- ── WYSIWYG editor / markdown preview ─────────────────── -->
+<div
+  class="editor-wrapper"
+  [class.editor-wrapper--focused]="isFocused() && !isSourceMode() && !isMarkdownMode()"
+  [class.editor-wrapper--preview]="isSourceMode() || isMarkdownMode()"
+  [hidden]="isMarkdownMode() && !showMarkdownPreview()"
+>
+  @if (isMarkdownMode() && showMarkdownPreview()) {
+    <div class="preview-label" aria-hidden="true">Preview</div>
+    <ui-rich-text-view
+      class="markdown-preview"
+      [content]="value()"
+      strategy="markdown"
+      [ariaLabel]="ariaLabel() + ' (preview)'"
+    />
+  }
+  <!-- #editorEl must remain in the DOM — it is required by viewChild.required -->
+  <div
+    #editorEl
+    class="editor"
+    [hidden]="isMarkdownMode()"
+    role="textbox"
+    tabindex="0"
+    aria-multiline="true"
+    [attr.aria-label]="ariaLabel()"
+    [attr.contenteditable]="!disabled() && !readonly() && !isSourceMode() && !isMarkdownMode()"
+    [attr.data-placeholder]="placeholder()"
+    (input)="onEditorInput()"
+    (focus)="onEditorFocus()"
+    (blur)="onEditorBlur()"
+    (click)="onEditorClick($event)"
+    (paste)="onEditorPaste($event)"
+    (keydown)="onEditorKeydown($event)"
+  ></div>
+</div>
+
+<!-- ── Character count footer ────────────────────────────── -->
+@if (maxLength(); as max) {
+  <div
+    class="footer"
+    [class.footer--over]="isOverMaxLength()"
+    aria-live="polite"
+  >
+    <span class="char-count">{{ charCount() }} / {{ max }}</span>
+  </div>
+}

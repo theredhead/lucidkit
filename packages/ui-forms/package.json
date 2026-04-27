@@ -34,6 +34,7 @@
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
     "@theredhead/lucid-foundation": "^0.1.0",
+    "@theredhead/lucid-blocks": "^0.1.0",
     "@theredhead/lucid-kit": "^0.1.0"
   },
   "scripts": {
