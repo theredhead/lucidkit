@@ -130,6 +130,26 @@ describe("UIToolbar", () => {
       btns[1].click();
       expect(host.lastAction?.itemId).toBe("cancel");
     });
+
+    it("should prevent mouse activation from moving focus off the command target", () => {
+      const btn: HTMLButtonElement =
+        fixture.nativeElement.querySelector("button");
+      const event = new MouseEvent("mousedown", {
+        bubbles: true,
+        cancelable: true,
+      });
+
+      btn.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+    });
+
+    it("should keep toolbar buttons out of the tab order", () => {
+      const btn: HTMLButtonElement =
+        fixture.nativeElement.querySelector("button");
+
+      expect(btn.getAttribute("tabindex")).toBe("-1");
+    });
   });
 
   describe("conditional children — regression: undefined contentChildren entries crash", () => {

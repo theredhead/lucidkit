@@ -90,19 +90,74 @@
 
   <!-- Insert: Horizontal rule / Image -->
   @if (showInsertGroup()) {
-    <ui-button-group-tool id="insert">
-      @if (hasToolbarAction('horizontalRule')) {
-        <ui-button-tool id="horizontalRule" [icon]="teIcons.HorizontalRule" ariaLabel="Horizontal rule"
-          [disabled]="isEditorDisabled()" />
-      }
-      @if (hasToolbarAction('image')) {
-        <ui-button-tool id="image" [icon]="teIcons.Image" ariaLabel="Insert image"
-          [disabled]="isEditorDisabled()" />
-      }
-    </ui-button-group-tool>
+    @if (hasToolbarAction('horizontalRule') || hasToolbarAction('image')) {
+      <ui-button-group-tool id="insert">
+        @if (hasToolbarAction('horizontalRule')) {
+          <ui-button-tool id="horizontalRule" [icon]="teIcons.HorizontalRule" ariaLabel="Horizontal rule"
+            [disabled]="isEditorDisabled()" />
+        }
+        @if (hasToolbarAction('image')) {
+          <ui-button-tool id="image" [icon]="teIcons.Image" ariaLabel="Insert image"
+            [disabled]="isEditorDisabled()" />
+        }
+      </ui-button-group-tool>
+    }
+    @if (hasToolbarAction('insertTable')) {
+      <div class="table-picker-wrapper">
+        <button
+          type="button"
+          class="tool-btn"
+          aria-label="Insert table"
+          title="Insert table"
+          tabindex="-1"
+          [disabled]="isEditorDisabled()"
+          [attr.aria-expanded]="isTablePickerOpen()"
+          (mousedown)="$event.preventDefault()"
+          (click)="toggleTablePicker()"
+        >
+          <ui-icon [svg]="teIcons.Table" [size]="16" />
+        </button>
+
+        @if (isTablePickerOpen()) {
+          <div
+            class="table-picker-dropdown"
+            role="grid"
+            aria-label="Choose table size"
+            (mousedown)="$event.preventDefault()"
+          >
+            <div class="table-size-label">{{ tablePickerSizeLabel() }}</div>
+            @for (row of tablePickerRowOptions; track row) {
+              <div class="table-size-row" role="row">
+                @for (col of tablePickerColumnOptions; track col) {
+                  <button
+                    type="button"
+                    class="table-size-cell"
+                    role="gridcell"
+                    tabindex="-1"
+                    [class.active]="isTablePickerCellActive(row, col)"
+                    [attr.aria-label]="col + ' columns, ' + row + ' rows'"
+                    (mouseenter)="setTablePickerSize(row, col)"
+                    (focus)="setTablePickerSize(row, col)"
+                    (click)="insertSelectedTable()"
+                  ></button>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+    @if (!isMarkdownMode() && canEditActiveTable()) {
+      <ui-dropdown-tool
+        id="table"
+        [icon]="teIcons.Table"
+        ariaLabel="Table options"
+        [items]="tableDropdownItems()"
+        [disabled]="isEditorDisabled() || tableDropdownItems().length === 0"
+      />
+    }
     <ui-separator-tool id="sep-insert" />
   }
-
   <!-- Link -->
   @if (hasToolbarAction('link')) {
     <ui-button-tool id="link" [icon]="teIcons.Link" ariaLabel="Hyperlink"
@@ -203,7 +258,9 @@
                 (mousedown)="$event.preventDefault()"
                 (click)="insertTemplateBlockFromPicker(block.id, $event)"
               >
-                <ui-icon [svg]="block.icon" [size]="14" />
+                @if (block.icon) {
+                  <ui-icon [svg]="block.icon" [size]="14" />
+                }
                 <span class="placeholder-label">{{ block.label }}</span>
               </button>
             }
@@ -369,6 +426,7 @@
     (input)="onEditorInput()"
     (focus)="onEditorFocus()"
     (blur)="onEditorBlur()"
+    (mousedown)="onEditorMouseDown($event)"
     (click)="onEditorClick($event)"
     (paste)="onEditorPaste($event)"
     (keydown)="onEditorKeydown($event)"

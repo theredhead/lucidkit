@@ -89,6 +89,18 @@ import {
 const PLACEHOLDER_CLASS = "rte-placeholder";
 
 /** @internal */
+const TEMPLATE_BLOCK_CARET_EDGE_CLASS = "rte-caret-edge";
+
+/** @internal */
+const TEMPLATE_BLOCK_CARET_EDGE_ATTR = "data-rte-caret-edge";
+
+/** @internal */
+const TEMPLATE_BLOCK_CARET_EDGE_DISPLAY_ATTR = "data-rte-caret-edge-display";
+
+/** @internal */
+const ZERO_WIDTH_SPACE = "\u200b";
+
+/** @internal */
 const RICH_CONTENT_BLOCK_NAMES = new Set([
   "a",
   "article",
@@ -227,7 +239,6 @@ interface PlaceholderPickerItem extends RichTextPlaceholder {
   },
 })
 export class UIRichTextEditor implements OnInit, AfterViewInit {
-
   /** @internal Compact editor toolbar actions for chat-style composition. */
   private static readonly COMPACT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] =
     ["bold", "italic", "underline"];
@@ -443,6 +454,15 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** Whether the placeholder picker dropdown is open. */
   protected readonly isPlaceholderPickerOpen = signal(false);
 
+  /** Whether the table size picker dropdown is open. */
+  protected readonly isTablePickerOpen = signal(false);
+
+  /** Rows currently highlighted in the table size picker. */
+  protected readonly tablePickerRows = signal(2);
+
+  /** Columns currently highlighted in the table size picker. */
+  protected readonly tablePickerCols = signal(3);
+
   /** @internal Whether the compact floating toolbar is collapsed. */
   protected readonly isCompactToolbarCollapsed = signal(false);
 
@@ -460,6 +480,12 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    * Toggled by the preview toolbar button in Markdown mode.
    */
   public readonly showMarkdownPreview = signal(true);
+
+  /** @internal Row choices shown by the table picker. */
+  protected readonly tablePickerRowOptions = [1, 2, 3, 4, 5, 6] as const;
+
+  /** @internal Column choices shown by the table picker. */
+  protected readonly tablePickerColumnOptions = [1, 2, 3, 4, 5, 6] as const;
 
   /** @internal True when the editor uses compact chat-style chrome. */
   protected readonly isCompactPresentation = computed(
@@ -536,6 +562,12 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     AlignRight: UIIcons.Lucide.Text.TextAlignEnd,
     AlignJustify: UIIcons.Lucide.Text.TextAlignJustify,
     HorizontalRule: UIIcons.Lucide.Development.Minus,
+    Table: UIIcons.Lucide.Files.Table,
+    RowBefore: UIIcons.Lucide.Layout.BetweenHorizontalStart,
+    RowAfter: UIIcons.Lucide.Layout.BetweenHorizontalEnd,
+    ColumnBefore: UIIcons.Lucide.Layout.BetweenVerticalStart,
+    ColumnAfter: UIIcons.Lucide.Layout.BetweenVerticalEnd,
+    LoopRows: UIIcons.Lucide.Files.TableRowsSplit,
     Image: UIIcons.Lucide.Files.ImagePlus,
     Link: UIIcons.Lucide.Text.Link,
     RemoveFormat: UIIcons.Lucide.Text.RemoveFormatting,
@@ -575,7 +607,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     // Strip HTML tags and decode entities
     const tmp = document.createElement("div");
     tmp.innerHTML = raw;
-    return (tmp.textContent ?? "").trim().length;
+    return (tmp.textContent ?? "").replace(/\u200b/g, "").trim().length;
   });
 
   /**
@@ -596,6 +628,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   /** Last selection range captured inside the editable document. */
   private lastEditorRange: Range | null = null;
+
+  /** Last table cell that contained the editor caret. */
+  private lastActiveTableCell: HTMLTableCellElement | null = null;
 
   /** @internal Triggers context recomputation when the caret moves. */
   private readonly selectionContextRevision = signal(0);
@@ -656,6 +691,24 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       }));
   });
 
+  /** @internal Dropdown items for contextual table editing. */
+  protected readonly tableDropdownItems = computed<DropdownToolItem[]>(() => {
+    if (!this.canEditActiveTable()) return [];
+    return (
+      [
+        "insertTableRowBefore",
+        "insertTableRowAfter",
+        "insertTableColumnBefore",
+        "insertTableColumnAfter",
+        "wrapRowsLoop",
+      ] as RichTextFormatAction[]
+    ).map((a) => ({
+      id: a,
+      label: TOOLBAR_BUTTON_REGISTRY[a].label,
+      icon: TOOLBAR_BUTTON_REGISTRY[a].icon,
+    }));
+  });
+
   /** @internal True when at least one history action is in the toolbar. */
   protected readonly showHistoryGroup = computed(() =>
     this.effectiveToolbarActions().some((a) => a === "undo" || a === "redo"),
@@ -686,8 +739,35 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   /** @internal True when at least one insert action is in the toolbar. */
   protected readonly showInsertGroup = computed(() =>
     this.effectiveToolbarActions().some(
-      (a) => a === "horizontalRule" || a === "image",
+      (a) =>
+        a === "horizontalRule" ||
+        a === "insertTable" ||
+        a === "insertTableRowBefore" ||
+        a === "insertTableRowAfter" ||
+        a === "insertTableColumnBefore" ||
+        a === "insertTableColumnAfter" ||
+        a === "wrapRowsLoop" ||
+        a === "image",
     ),
+  );
+
+  /** @internal Human-readable dimensions for the table picker. */
+  protected readonly tablePickerSizeLabel = computed(
+    () => `${this.tablePickerCols()} columns, ${this.tablePickerRows()} rows`,
+  );
+
+  /** @internal The active table cell under the saved editor caret. */
+  protected readonly activeTableCell = computed(() => {
+    this.selectionContextRevision();
+    return this.getActiveTableCell();
+  });
+
+  /** @internal Whether contextual table editing commands can run. */
+  protected readonly canEditActiveTable = computed(
+    () =>
+      !this.isMarkdownMode() &&
+      !this.isSourceMode() &&
+      this.activeTableCell() !== null,
   );
 
   /** Resolved toolbar button metadata from the actions list. */
@@ -934,6 +1014,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     untracked(() => {
       this.isSourceMode.set(false);
       this.isPlaceholderPickerOpen.set(false);
+      this.isTablePickerOpen.set(false);
       this.isEmojiPickerOpen.set(false);
       this.activeFormats.set(new Set());
       this.renderToEditor(this.value());
@@ -965,23 +1046,29 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       document.removeEventListener("selectionchange", onSelectionChange);
     });
 
-    // Close placeholder / emoji pickers on outside click
+    // Close toolbar pickers on outside click
     const onDocumentClick = (event: MouseEvent) => {
-      if (!this.isPlaceholderPickerOpen() && !this.isEmojiPickerOpen()) {
+      if (
+        !this.isPlaceholderPickerOpen() &&
+        !this.isTablePickerOpen() &&
+        !this.isEmojiPickerOpen()
+      ) {
         return;
       }
       const target = event.target as HTMLElement;
       const host = this.elRef.nativeElement as HTMLElement;
       if (!host.contains(target)) {
         this.isPlaceholderPickerOpen.set(false);
+        this.isTablePickerOpen.set(false);
         this.isEmojiPickerOpen.set(false);
         return;
       }
       const inDropdown = target.closest(
-        ".placeholder-picker, .emoji-picker-wrapper",
+        ".placeholder-picker, .table-picker-wrapper, .emoji-picker-wrapper",
       );
       if (!inDropdown) {
         this.isPlaceholderPickerOpen.set(false);
+        this.isTablePickerOpen.set(false);
         this.isEmojiPickerOpen.set(false);
       }
     };
@@ -1076,7 +1163,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       }
       return;
     }
-    if (id === "block" || id === "list") {
+    if (id === "block" || id === "list" || id === "table") {
       const tool = event.itemRef as UIDropdownTool;
       const actionId = tool.selectedItemId() as
         | RichTextFormatAction
@@ -1109,7 +1196,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     // before executing the action.  In Markdown mode the textarea
     // handles its own focus.
     if (!this.isMarkdownMode()) {
+      const savedRange = this.lastEditorRange?.cloneRange() ?? null;
       this.restoreFocus();
+      this.restoreLastEditorSelection(savedRange);
     }
 
     const ctx = this.buildContext();
@@ -1122,6 +1211,36 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
     if (action === "image") {
       this.openImageDialog(anchorEl ?? null);
+      return;
+    }
+
+    if (action === "insertTable") {
+      this.insertTable();
+      return;
+    }
+
+    if (action === "insertTableRowBefore") {
+      this.insertTableRowAtCursor("before");
+      return;
+    }
+
+    if (action === "insertTableRowAfter") {
+      this.insertTableRowAtCursor("after");
+      return;
+    }
+
+    if (action === "insertTableColumnBefore") {
+      this.insertTableColumnAtCursor("before");
+      return;
+    }
+
+    if (action === "insertTableColumnAfter") {
+      this.insertTableColumnAtCursor("after");
+      return;
+    }
+
+    if (action === "wrapRowsLoop") {
+      this.openWrapTableRowsLoopDialog(anchorEl ?? null);
       return;
     }
 
@@ -1171,19 +1290,14 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     this.restoreLastEditorSelection();
     const strat = this.strategy();
     const chip = strat.createPlaceholderChip(placeholder);
+    const before = this.createTemplateBlockCaretEdge("before", "block");
+    const after = this.createTemplateBlockCaretEdge("after");
 
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0) {
-      const range = sel.getRangeAt(0);
-      range.deleteContents();
-      range.insertNode(chip);
-
-      range.setStartAfter(chip);
-      range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
+      this.insertNodesAtSelection([before, chip, after]);
     } else {
-      this.editorRef().nativeElement.appendChild(chip);
+      this.editorRef().nativeElement.append(before, chip, after);
     }
 
     this.syncValueFromEditor();
@@ -1242,7 +1356,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const loopItems = context[loopItemsKey];
     if (!Array.isArray(loopItems)) return rootItems;
 
-    const sample = loopItems.find((item) => item !== null && item !== undefined);
+    const sample = loopItems.find(
+      (item) => item !== null && item !== undefined,
+    );
     if (!this.isInspectableObject(sample)) return rootItems;
 
     const localItems = this.buildPlaceholderItemsFromContext(sample, {
@@ -1407,10 +1523,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
    *
    * @internal
    */
-  private openTemplateBlockDialog(
-    blockName: string,
-    anchorEl?: Element,
-  ): void {
+  private openTemplateBlockDialog(blockName: string, anchorEl?: Element): void {
     if (this.disabled() || this.readonly()) return;
     const provider = this.getTemplateBlockUiProvider(blockName);
     if (!provider) return;
@@ -1424,7 +1537,8 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
         blockName,
         blockLabel: provider.label,
         initialAttributes: this.defaultTemplateBlockAttributes(provider),
-        attributeDefinitions: this.getTemplateBlockAttributeDefinitions(provider),
+        attributeDefinitions:
+          this.getTemplateBlockAttributeDefinitions(provider),
         editMode: false,
       },
       ariaLabel: `Insert ${provider.label} block`,
@@ -1456,9 +1570,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     }
     if (this.isSourceMode()) {
       const host = this.elRef.nativeElement as HTMLElement;
-      const source = host.querySelector<HTMLTextAreaElement>(
-        ".source-editor",
-      );
+      const source = host.querySelector<HTMLTextAreaElement>(".source-editor");
       if (source) {
         this.insertTextIntoTextarea(source, xml);
       }
@@ -1469,6 +1581,169 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const nodes = this.renderTemplateBlockNodes(xml);
     this.insertNodesAtSelection(nodes);
     this.syncValueFromEditor();
+  }
+
+  /**
+   * Inserts an XML-compatible HTML table at the current caret.
+   *
+   * @internal
+   */
+  private insertTable(columns = 3, rows = 2): void {
+    const colCount = Math.max(1, columns);
+    const rowCount = Math.max(1, rows);
+    const headerCells = Array.from(
+      { length: colCount },
+      (_, index) => `<th>Column ${index + 1}</th>`,
+    ).join("");
+    const bodyRows = Array.from(
+      { length: rowCount },
+      () =>
+        `<tr>${Array.from({ length: colCount }, () => "<td>Value</td>").join("")}</tr>`,
+    ).join("");
+    const tableXml = [
+      "<table>",
+      "<thead>",
+      `<tr>${headerCells}</tr>`,
+      "</thead>",
+      "<tbody>",
+      bodyRows,
+      "</tbody>",
+      "</table>",
+    ].join("");
+
+    if (this.isMarkdownMode()) {
+      const strat = this.strategy();
+      if (strat instanceof MarkdownEditingStrategy && strat.textareaEl) {
+        this.insertTextIntoTextarea(strat.textareaEl, tableXml);
+      }
+      this.syncValueFromEditor();
+      return;
+    }
+
+    if (this.isSourceMode()) {
+      const host = this.elRef.nativeElement as HTMLElement;
+      const source = host.querySelector<HTMLTextAreaElement>(".source-editor");
+      if (source) this.insertTextIntoTextarea(source, tableXml);
+      return;
+    }
+
+    this.restoreFocus();
+    this.restoreLastEditorSelection();
+    const nodes = this.renderTemplateBlockNodes(tableXml);
+    this.insertNodesAtSelection(nodes);
+    this.syncValueFromEditor();
+  }
+
+  /**
+   * Inserts a row before or after the current table row.
+   *
+   * @internal
+   */
+  private insertTableRowAtCursor(position: "before" | "after"): void {
+    if (this.isMarkdownMode() || this.isSourceMode()) return;
+
+    this.restoreLastEditorSelection();
+    const cell = this.getActiveTableCell();
+    const row = cell?.closest<HTMLTableRowElement>("tr");
+    if (!row?.parentElement) return;
+
+    const newRow = this.createTableRowLike(row);
+    if (position === "before") {
+      row.before(newRow);
+    } else {
+      row.after(newRow);
+    }
+    this.syncValueFromEditor();
+    this.doRefreshActiveFormats();
+  }
+
+  /**
+   * Inserts a column before or after the current table column.
+   *
+   * @internal
+   */
+  private insertTableColumnAtCursor(position: "before" | "after"): void {
+    if (this.isMarkdownMode() || this.isSourceMode()) return;
+
+    this.restoreLastEditorSelection();
+    const cell = this.getActiveTableCell();
+    const row = cell?.closest<HTMLTableRowElement>("tr");
+    const table = cell?.closest<HTMLTableElement>("table");
+    if (!cell || !row || !table) return;
+
+    const cellIndex = Array.from(row.cells).indexOf(cell);
+    if (cellIndex < 0) return;
+
+    for (const tableRow of this.getDirectTableRows(table)) {
+      if (tableRow.classList.contains("rte-template-block")) continue;
+      const cells = Array.from(tableRow.cells);
+      const tagName = this.getTableCellTagName(tableRow);
+      const newCell = this.createTableCell(tagName);
+      const insertionIndex = position === "before" ? cellIndex : cellIndex + 1;
+      const referenceCell = cells[insertionIndex] ?? null;
+      tableRow.insertBefore(newCell, referenceCell);
+    }
+
+    this.syncValueFromEditor();
+    this.doRefreshActiveFormats();
+  }
+
+  /**
+   * Opens the loop property sheet and wraps the selected/current table rows.
+   *
+   * @internal
+   */
+  private openWrapTableRowsLoopDialog(anchorEl: Element | null): void {
+    if (this.isMarkdownMode() || this.isSourceMode()) return;
+
+    this.restoreLastEditorSelection();
+    const rows = this.getSelectedWrappableTableRows(anchorEl);
+    if (!rows.length) return;
+
+    const provider = this.getTemplateBlockUiProvider("loop");
+    if (!provider) return;
+
+    const ref = this.popoverService.openPopover<
+      UITemplateBlockDialog,
+      TemplateBlockDialogResult
+    >({
+      component: UITemplateBlockDialog,
+      anchor: anchorEl ?? this.elRef.nativeElement,
+      inputs: {
+        blockName: "loop",
+        blockLabel: provider.label,
+        initialAttributes: this.defaultTemplateBlockAttributes(provider),
+        attributeDefinitions:
+          this.getTemplateBlockAttributeDefinitions(provider),
+        editMode: false,
+      },
+      ariaLabel: "Loop table rows",
+      closeOnOutsideClick: false,
+    });
+
+    ref.closed.subscribe((result) => {
+      if (!result) return;
+      this.wrapTableRowsInTemplateBlock(rows, result, provider);
+    });
+  }
+
+  /**
+   * Handles browser caret edge cases before the native selection settles.
+   *
+   * @internal
+   */
+  protected onEditorMouseDown(event: MouseEvent): void {
+    if (this.disabled() || this.readonly() || this.isMarkdownMode()) return;
+    const target = event.target as HTMLElement;
+    const clickedTemplateUi = target.closest("[data-template-block], .header");
+    if (clickedTemplateUi) return;
+
+    const cell = target.closest<HTMLTableCellElement>("td, th");
+    if (!cell || !this.editorRef().nativeElement.contains(cell)) return;
+    if (!cell.querySelector("[data-template-block]")) return;
+
+    event.preventDefault();
+    this.placeCaretAtEndOfTableCell(cell);
   }
 
   /**
@@ -1483,7 +1758,8 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       "[data-template-block][data-template-self-closing='true']",
     );
     const header = target.closest<HTMLElement>(".rte-template-block .header");
-    const block = selfClosingBlock ?? header?.closest<HTMLElement>("[data-template-block]");
+    const block =
+      selfClosingBlock ?? header?.closest<HTMLElement>("[data-template-block]");
     if (!block) return;
     event.preventDefault();
     this.openExistingTemplateBlockDialog(block, target);
@@ -1512,7 +1788,8 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
         blockName,
         blockLabel: provider.label,
         initialAttributes: this.readTemplateDatasetAttributes(block),
-        attributeDefinitions: this.getTemplateBlockAttributeDefinitions(provider),
+        attributeDefinitions:
+          this.getTemplateBlockAttributeDefinitions(provider),
         editMode: true,
       },
       ariaLabel: `Edit ${provider.label} block`,
@@ -1528,6 +1805,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected togglePlaceholderPicker(): void {
     if (this.disabled() || this.readonly()) return;
     this.isEmojiPickerOpen.set(false);
+    this.isTablePickerOpen.set(false);
     this.isPlaceholderPickerOpen.update((v) => {
       if (v) this.placeholderSearchTerm.set("");
       return !v;
@@ -1538,6 +1816,31 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected closePlaceholderPicker(): void {
     this.isPlaceholderPickerOpen.set(false);
     this.placeholderSearchTerm.set("");
+  }
+
+  /** @internal */
+  protected toggleTablePicker(): void {
+    if (this.disabled() || this.readonly()) return;
+    this.isPlaceholderPickerOpen.set(false);
+    this.isEmojiPickerOpen.set(false);
+    this.isTablePickerOpen.update((value) => !value);
+  }
+
+  /** @internal */
+  protected setTablePickerSize(row: number, col: number): void {
+    this.tablePickerRows.set(row);
+    this.tablePickerCols.set(col);
+  }
+
+  /** @internal */
+  protected isTablePickerCellActive(row: number, col: number): boolean {
+    return row <= this.tablePickerRows() && col <= this.tablePickerCols();
+  }
+
+  /** @internal */
+  protected insertSelectedTable(): void {
+    this.insertTable(this.tablePickerCols(), this.tablePickerRows());
+    this.isTablePickerOpen.set(false);
   }
 
   /**
@@ -1563,6 +1866,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected toggleEmojiPicker(): void {
     if (this.disabled() || this.readonly()) return;
     this.isPlaceholderPickerOpen.set(false);
+    this.isTablePickerOpen.set(false);
     this.isEmojiPickerOpen.update((v) => !v);
   }
 
@@ -1645,6 +1949,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   private openLinkDialog(anchorEl: Element | null): void {
     if (this.disabled() || this.readonly()) return;
     this.isPlaceholderPickerOpen.set(false);
+    this.isTablePickerOpen.set(false);
     this.isEmojiPickerOpen.set(false);
 
     const sel = window.getSelection();
@@ -1729,6 +2034,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   private openImageDialog(anchorEl: Element | null): void {
     if (this.disabled() || this.readonly()) return;
     this.isPlaceholderPickerOpen.set(false);
+    this.isTablePickerOpen.set(false);
     this.isEmojiPickerOpen.set(false);
 
     const sel = window.getSelection();
@@ -1843,6 +2149,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   protected toggleSourceMode(): void {
     if (this.disabled() || this.readonly()) return;
     this.isPlaceholderPickerOpen.set(false);
+    this.isTablePickerOpen.set(false);
     this.isEmojiPickerOpen.set(false);
     const next = !this.isSourceMode();
     this.isSourceMode.set(next);
@@ -2091,6 +2398,14 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     // Placeholder chip protection — HTML mode only
     if (this.isMarkdownMode()) return;
 
+    if (this.handleTableTabNavigation(event)) return;
+
+    if (this.handleTableVerticalNavigation(event)) return;
+
+    if (this.handleTemplateBlockCaretNavigation(event)) return;
+
+    if (this.handleTemplateBlockCaretDeletion(event)) return;
+
     if (event.key === "Backspace" || event.key === "Delete") {
       const sel = window.getSelection();
       if (!sel || sel.rangeCount === 0) return;
@@ -2112,6 +2427,172 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
         this.syncValueFromEditor();
       }
     }
+  }
+
+  /** @internal */
+  private handleTableTabNavigation(event: KeyboardEvent): boolean {
+    if (event.key !== "Tab") return false;
+    if (event.altKey || event.ctrlKey || event.metaKey) return false;
+
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return false;
+
+    const range = this.normaliseTemplateBlockCaretEdgeRange(
+      selection.getRangeAt(0),
+    );
+    if (!this.isRangeInsideEditor(range)) return false;
+
+    const currentCell = this.getTableCellFromRange(range);
+    if (!currentCell) return false;
+
+    const currentRow = currentCell.closest<HTMLTableRowElement>("tr");
+    const table = currentCell.closest<HTMLTableElement>("table");
+    if (!currentRow || !table) return false;
+
+    const rows = this.getDirectTableRows(table).filter(
+      (row) => !row.classList.contains("rte-template-block"),
+    );
+    const rowIndex = rows.indexOf(currentRow);
+    if (rowIndex < 0) return false;
+
+    const columnIndex = Array.from(currentRow.cells).indexOf(currentCell);
+    if (columnIndex < 0) return false;
+
+    const movingBackward = event.shiftKey;
+    let targetRow = currentRow;
+    let targetColumnIndex = movingBackward ? columnIndex - 1 : columnIndex + 1;
+
+    if (targetColumnIndex < 0) {
+      targetRow = rows[rowIndex - 1] ?? null;
+      if (!targetRow) return false;
+      targetColumnIndex = targetRow.cells.length - 1;
+    } else if (targetColumnIndex >= currentRow.cells.length) {
+      targetRow = rows[rowIndex + 1] ?? null;
+      if (!targetRow) return false;
+      targetColumnIndex = 0;
+    }
+
+    const targetCell = targetRow.cells[targetColumnIndex] ?? null;
+    if (!targetCell) return false;
+
+    event.preventDefault();
+    this.selectTableCellContents(targetCell);
+    return true;
+  }
+
+  /** @internal */
+  private handleTableVerticalNavigation(event: KeyboardEvent): boolean {
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return false;
+    if (event.altKey || event.ctrlKey || event.metaKey) return false;
+
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return false;
+
+    const range = this.normaliseTemplateBlockCaretEdgeRange(
+      selection.getRangeAt(0),
+    );
+    if (!this.isRangeInsideEditor(range)) return false;
+
+    const currentCell = this.getTableCellFromRange(range);
+    if (!currentCell) return false;
+
+    const currentRow = currentCell.closest<HTMLTableRowElement>("tr");
+    const table = currentCell.closest<HTMLTableElement>("table");
+    if (!currentRow || !table) return false;
+
+    const rows = this.getDirectTableRows(table).filter(
+      (row) => !row.classList.contains("rte-template-block"),
+    );
+    const rowIndex = rows.indexOf(currentRow);
+    if (rowIndex < 0) return false;
+
+    const targetIndex = event.key === "ArrowUp" ? rowIndex - 1 : rowIndex + 1;
+    const targetRow = rows[targetIndex] ?? null;
+    if (!targetRow) return false;
+
+    const columnIndex = Array.from(currentRow.cells).indexOf(currentCell);
+    if (columnIndex < 0) return false;
+
+    const targetCell =
+      targetRow.cells[Math.min(columnIndex, targetRow.cells.length - 1)] ??
+      null;
+    if (!targetCell) return false;
+
+    event.preventDefault();
+    this.selectTableCellContents(targetCell);
+    return true;
+  }
+
+  /** @internal */
+  private handleTemplateBlockCaretNavigation(event: KeyboardEvent): boolean {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return false;
+
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return false;
+
+    const range = this.normaliseTemplateBlockCaretEdgeRange(
+      selection.getRangeAt(0),
+    );
+    if (!range.collapsed || !this.isRangeInsideEditor(range)) return false;
+
+    const edgeNode =
+      event.key === "ArrowLeft"
+        ? this.previousNode(range.startContainer, range.startOffset)
+        : this.nextNode(range.startContainer, range.startOffset);
+    const edge =
+      edgeNode instanceof HTMLElement
+        ? this.findTemplateBlockCaretEdge(edgeNode)
+        : null;
+    if (!edge) return false;
+
+    const cluster = this.getTemplateBlockCaretCluster(edge);
+    if (!cluster) return false;
+
+    if (event.key === "ArrowRight" && edge === cluster.leadingEdge) {
+      event.preventDefault();
+      this.setCollapsedSelectionAfterNode(cluster.trailingEdge);
+      return true;
+    }
+
+    if (event.key === "ArrowLeft" && edge === cluster.trailingEdge) {
+      event.preventDefault();
+      this.setCollapsedSelectionBeforeNode(cluster.leadingEdge);
+      return true;
+    }
+
+    return false;
+  }
+
+  /** @internal */
+  private handleTemplateBlockCaretDeletion(event: KeyboardEvent): boolean {
+    if (event.key !== "Backspace" && event.key !== "Delete") return false;
+
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return false;
+
+    const range = this.normaliseTemplateBlockCaretEdgeRange(
+      selection.getRangeAt(0),
+    );
+    if (!range.collapsed || !this.isRangeInsideEditor(range)) return false;
+
+    const edgeNode =
+      event.key === "Backspace"
+        ? this.previousNode(range.startContainer, range.startOffset)
+        : this.nextNode(range.startContainer, range.startOffset);
+    const edge =
+      edgeNode instanceof HTMLElement
+        ? this.findTemplateBlockCaretEdge(edgeNode)
+        : null;
+    if (!edge) return false;
+
+    const cluster = this.getTemplateBlockCaretCluster(edge);
+    if (!cluster) return false;
+
+    event.preventDefault();
+    this.removeTemplateBlockCaretCluster(cluster);
+    this.syncValueFromEditor();
+    this.doRefreshActiveFormats();
+    return true;
   }
 
   /**
@@ -2308,7 +2789,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   }
 
   /** @internal */
-  private getCurrentTemplateContextRecord(): Record<string, unknown> | undefined {
+  private getCurrentTemplateContextRecord():
+    | Record<string, unknown>
+    | undefined {
     const context = this.placeholderContext();
     if (!this.isInspectableObject(context)) return undefined;
 
@@ -2318,7 +2801,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const loopItems = context[loopItemsKey];
     if (!Array.isArray(loopItems)) return context;
 
-    const sample = loopItems.find((item) => item !== null && item !== undefined);
+    const sample = loopItems.find(
+      (item) => item !== null && item !== undefined,
+    );
     if (!this.isInspectableObject(sample)) return context;
 
     return { ...context, ...sample };
@@ -2334,10 +2819,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     provider: RichTextTemplateBlockUiProvider,
   ): string {
     const attrs = Object.entries(result.attributes)
-      .map(
-        ([key, value]) =>
-          ` ${key}="${this.escapeXmlAttribute(value)}"`,
-      )
+      .map(([key, value]) => ` ${key}="${this.escapeXmlAttribute(value)}"`)
       .join("");
     if (provider.selfClosing) return `<${result.name}${attrs} />`;
     return `<${result.name}${attrs}>${this.defaultTemplateBlockBody(
@@ -2367,13 +2849,211 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   ): void {
     const { selectionStart, selectionEnd, value } = textarea;
     textarea.value =
-      value.substring(0, selectionStart) +
-      text +
-      value.substring(selectionEnd);
+      value.substring(0, selectionStart) + text + value.substring(selectionEnd);
     textarea.selectionStart = selectionStart + text.length;
     textarea.selectionEnd = selectionStart + text.length;
     textarea.focus();
     textarea.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  /**
+   * Finds the table cell that contains the saved editor caret.
+   *
+   * @internal
+   */
+  private getActiveTableCell(): HTMLTableCellElement | null {
+    const range = this.lastEditorRange;
+    const rangeCell =
+      range && this.isRangeInsideEditor(range)
+        ? this.getTableCellFromRange(range)
+        : null;
+    if (rangeCell) return rangeCell;
+    if (
+      this.lastActiveTableCell &&
+      this.editorRef().nativeElement.contains(this.lastActiveTableCell)
+    ) {
+      return this.lastActiveTableCell;
+    }
+    return null;
+  }
+
+  /** @internal */
+  private getTableCellFromRange(range: Range): HTMLTableCellElement | null {
+    const node = range.commonAncestorContainer;
+    const element =
+      node instanceof Element ? node : (node.parentElement ?? null);
+    const cell = element?.closest<HTMLTableCellElement>("th, td") ?? null;
+    if (!cell || !this.editorRef().nativeElement.contains(cell)) return null;
+    return cell;
+  }
+
+  /**
+   * Creates a new editable table row matching the current row shape.
+   *
+   * @internal
+   */
+  private createTableRowLike(row: HTMLTableRowElement): HTMLTableRowElement {
+    const newRow = document.createElement("tr");
+    const tagName = this.getTableCellTagName(row);
+    const cellCount = Math.max(1, row.cells.length);
+    for (let index = 0; index < cellCount; index += 1) {
+      newRow.append(this.createTableCell(tagName));
+    }
+    return newRow;
+  }
+
+  /**
+   * Creates a default table cell for editor-side table commands.
+   *
+   * @internal
+   */
+  private createTableCell(tagName: "td" | "th"): HTMLTableCellElement {
+    const cell = document.createElement(tagName);
+    cell.textContent = tagName === "th" ? "Column" : "Value";
+    return cell;
+  }
+
+  /**
+   * Returns only rows that belong directly to a table or its direct sections.
+   *
+   * @internal
+   */
+  private getDirectTableRows(table: HTMLTableElement): HTMLTableRowElement[] {
+    const rows: HTMLTableRowElement[] = [];
+    for (const child of Array.from(table.children)) {
+      const tagName = child.tagName.toLowerCase();
+      if (tagName === "tr") {
+        rows.push(child as HTMLTableRowElement);
+        continue;
+      }
+      if (tagName !== "thead" && tagName !== "tbody" && tagName !== "tfoot") {
+        continue;
+      }
+      rows.push(
+        ...Array.from(child.children).filter(
+          (row): row is HTMLTableRowElement =>
+            row.tagName.toLowerCase() === "tr",
+        ),
+      );
+    }
+    return rows;
+  }
+
+  /**
+   * Chooses whether a new cell in the row should be a header or body cell.
+   *
+   * @internal
+   */
+  private getTableCellTagName(row: HTMLTableRowElement): "td" | "th" {
+    const inHeader = row.parentElement?.tagName.toLowerCase() === "thead";
+    const hasHeaderCells = Array.from(row.cells).some(
+      (cell) => cell.tagName.toLowerCase() === "th",
+    );
+    return inHeader || hasHeaderCells ? "th" : "td";
+  }
+
+  /**
+   * Finds selected table body rows that can be wrapped in a container block.
+   *
+   * @internal
+   */
+  private getSelectedWrappableTableRows(
+    anchorEl: Element | null,
+  ): HTMLTableRowElement[] {
+    const selection = window.getSelection();
+    const range =
+      selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+    const anchorRow = this.findClosestTableBodyRow(
+      anchorEl ?? selection?.anchorNode ?? null,
+    );
+    const table =
+      anchorRow?.closest("table") ??
+      this.findClosestTable(range?.commonAncestorContainer ?? null);
+    if (!table) return anchorRow ? [anchorRow] : [];
+
+    const rows = Array.from(
+      table.querySelectorAll<HTMLTableRowElement>("tbody > tr"),
+    ).filter((row) => this.isWrappableTableRow(row));
+    if (!range) return anchorRow ? [anchorRow] : [];
+
+    const selectedRows = rows.filter((row) => range.intersectsNode(row));
+    if (selectedRows.length) return selectedRows;
+    return anchorRow && rows.includes(anchorRow) ? [anchorRow] : [];
+  }
+
+  /**
+   * Wraps table rows in the rendered loop block shape used by the editor.
+   *
+   * @internal
+   */
+  private wrapTableRowsInTemplateBlock(
+    rows: readonly HTMLTableRowElement[],
+    result: TemplateBlockDialogResult,
+    provider: RichTextTemplateBlockUiProvider,
+  ): void {
+    const firstRow = rows[0];
+    if (!firstRow?.parentElement) return;
+
+    const wrapper = document.createElement("tr");
+    wrapper.className = "rte-template-block table-row-block";
+    wrapper.dataset["templateBlock"] = result.name;
+    wrapper.dataset["templateSelfClosing"] = "false";
+    for (const [key, value] of Object.entries(result.attributes)) {
+      wrapper.setAttribute(`data-template-attr-${key}`, value);
+    }
+
+    const cell = document.createElement("td");
+    cell.colSpan = 999;
+    const before = this.createTemplateBlockCaretEdge("before");
+    const shell = document.createElement("div");
+    shell.className = "shell";
+    const header = document.createElement("span");
+    header.className = "header";
+    header.contentEditable = "false";
+    header.textContent =
+      provider.formatLabel?.(result.attributes) ?? provider.label;
+    const table = document.createElement("table");
+    table.className = "table-content";
+    const body = document.createElement("tbody");
+    body.className = "content";
+
+    table.append(body);
+    shell.append(header, table);
+    cell.append(
+      before,
+      shell,
+      this.createTemplateBlockCaretEdge("after", "block"),
+    );
+    wrapper.append(cell);
+
+    firstRow.before(wrapper);
+    for (const row of rows) {
+      body.append(row);
+    }
+
+    this.syncValueFromEditor();
+  }
+
+  /** @internal */
+  private findClosestTableBodyRow(
+    value: Node | Element | null,
+  ): HTMLTableRowElement | null {
+    const element =
+      value instanceof Element ? value : (value?.parentElement ?? null);
+    const row = element?.closest<HTMLTableRowElement>("tbody > tr") ?? null;
+    return row && this.isWrappableTableRow(row) ? row : null;
+  }
+
+  /** @internal */
+  private findClosestTable(value: Node | null): HTMLTableElement | null {
+    const element =
+      value instanceof Element ? value : (value?.parentElement ?? null);
+    return element?.closest<HTMLTableElement>("table") ?? null;
+  }
+
+  /** @internal */
+  private isWrappableTableRow(row: HTMLTableRowElement): boolean {
+    return !row.closest("[data-template-block]");
   }
 
   /**
@@ -2389,6 +3069,45 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       : document.createElement("div");
     container.innerHTML = html;
     return Array.from(container.childNodes);
+  }
+
+  /** @internal */
+  private createTemplateBlockCaretEdge(
+    position: "before" | "after",
+    display: "inline" | "block" = "inline",
+  ): HTMLSpanElement {
+    const edge = document.createElement("span");
+    edge.className = TEMPLATE_BLOCK_CARET_EDGE_CLASS;
+    edge.setAttribute(TEMPLATE_BLOCK_CARET_EDGE_ATTR, position);
+    if (display === "block") {
+      edge.setAttribute(TEMPLATE_BLOCK_CARET_EDGE_DISPLAY_ATTR, "block");
+    }
+    edge.setAttribute("aria-hidden", "true");
+    edge.textContent = ZERO_WIDTH_SPACE;
+    return edge;
+  }
+
+  /** @internal */
+  private placeCaretAtEndOfTableCell(cell: HTMLTableCellElement): void {
+    this.restoreFocus();
+    const range = document.createRange();
+    range.selectNodeContents(cell);
+    range.collapse(false);
+    const selection = window.getSelection();
+    if (!selection) return;
+    selection.removeAllRanges();
+    selection.addRange(range);
+    this.lastEditorRange = range.cloneRange();
+    this.lastActiveTableCell = cell;
+    this.selectionContextRevision.update((value) => value + 1);
+  }
+
+  /** @internal */
+  private selectTableCellContents(cell: HTMLTableCellElement): void {
+    this.restoreFocus();
+    const range = document.createRange();
+    range.selectNodeContents(cell);
+    this.applyEditorSelection(range);
   }
 
   /**
@@ -2445,10 +3164,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     provider: RichTextTemplateBlockUiProvider,
   ): string {
     const attrs = Object.entries(result.attributes)
-      .map(
-        ([key, value]) =>
-          ` ${key}="${this.escapeXmlAttribute(value)}"`,
-      )
+      .map(([key, value]) => ` ${key}="${this.escapeXmlAttribute(value)}"`)
       .join("");
     if (provider.selfClosing) return `<${result.name}${attrs} />`;
     const content = block.querySelector<HTMLElement>(".content");
@@ -2642,19 +3358,186 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
   private captureEditorSelectionFromWindow(): void {
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0) return;
-    const range = selection.getRangeAt(0);
+    const range = this.normaliseTemplateBlockCaretEdgeRange(
+      selection.getRangeAt(0),
+    );
     if (!this.isRangeInsideEditor(range)) return;
+    selection.removeAllRanges();
+    selection.addRange(range);
     this.lastEditorRange = range.cloneRange();
+    this.lastActiveTableCell = this.getTableCellFromRange(range);
     this.selectionContextRevision.update((value) => value + 1);
   }
 
   /** @internal */
-  private restoreLastEditorSelection(): void {
-    if (!this.lastEditorRange) return;
+  private restoreLastEditorSelection(range = this.lastEditorRange): void {
+    if (!range) return;
+    const selection = window.getSelection();
+    if (!selection) return;
+    const restoredRange = this.normaliseTemplateBlockCaretEdgeRange(range);
+    selection.removeAllRanges();
+    selection.addRange(restoredRange);
+    this.lastEditorRange = restoredRange.cloneRange();
+    this.lastActiveTableCell = this.getTableCellFromRange(restoredRange);
+    this.selectionContextRevision.update((value) => value + 1);
+  }
+
+  /** @internal */
+  private normaliseTemplateBlockCaretEdgeRange(input: Range): Range {
+    const range = input.cloneRange();
+    if (!range.collapsed) return range;
+
+    const edge = this.findTemplateBlockCaretEdge(range.startContainer);
+    if (!edge) return range;
+
+    const position = edge.getAttribute(TEMPLATE_BLOCK_CARET_EDGE_ATTR);
+    if (position === "before") {
+      range.setStartBefore(edge);
+    } else {
+      range.setStartAfter(edge);
+    }
+    range.collapse(true);
+
+    const previous = this.previousNode(range.startContainer, range.startOffset);
+    const next = this.nextNode(range.startContainer, range.startOffset);
+    const previousEdge =
+      previous instanceof HTMLElement
+        ? this.findTemplateBlockCaretEdge(previous)
+        : null;
+    if (previousEdge) {
+      const cluster = this.getTemplateBlockCaretCluster(previousEdge);
+      if (
+        cluster &&
+        previousEdge === cluster.leadingEdge &&
+        next === cluster.token
+      ) {
+        range.setStartBefore(cluster.leadingEdge);
+        range.collapse(true);
+        return range;
+      }
+    }
+
+    const nextEdge =
+      next instanceof HTMLElement
+        ? this.findTemplateBlockCaretEdge(next)
+        : null;
+    if (nextEdge) {
+      const cluster = this.getTemplateBlockCaretCluster(nextEdge);
+      if (
+        cluster &&
+        nextEdge === cluster.trailingEdge &&
+        previous === cluster.token
+      ) {
+        range.setStartAfter(cluster.trailingEdge);
+        range.collapse(true);
+      }
+    }
+
+    return range;
+  }
+
+  /** @internal */
+  private findTemplateBlockCaretEdge(node: Node): HTMLElement | null {
+    const element = node instanceof Element ? node : node.parentElement;
+    return (
+      element?.closest<HTMLElement>(`[${TEMPLATE_BLOCK_CARET_EDGE_ATTR}]`) ??
+      null
+    );
+  }
+
+  /** @internal */
+  private getTemplateBlockCaretCluster(edge: HTMLElement): {
+    readonly leadingEdge: HTMLElement;
+    readonly token: HTMLElement;
+    readonly trailingEdge: HTMLElement;
+  } | null {
+    const position = edge.getAttribute(TEMPLATE_BLOCK_CARET_EDGE_ATTR);
+    const token =
+      position === "before"
+        ? edge.nextSibling
+        : position === "after"
+          ? edge.previousSibling
+          : null;
+    if (
+      !(token instanceof HTMLElement) ||
+      !token.hasAttribute("data-template-block")
+    ) {
+      return null;
+    }
+
+    const leadingEdge =
+      position === "before"
+        ? edge
+        : token.previousSibling instanceof HTMLElement
+          ? token.previousSibling
+          : null;
+    const trailingEdge =
+      position === "after"
+        ? edge
+        : token.nextSibling instanceof HTMLElement
+          ? token.nextSibling
+          : null;
+    if (
+      !(leadingEdge instanceof HTMLElement) ||
+      !(trailingEdge instanceof HTMLElement) ||
+      leadingEdge.getAttribute(TEMPLATE_BLOCK_CARET_EDGE_ATTR) !== "before" ||
+      trailingEdge.getAttribute(TEMPLATE_BLOCK_CARET_EDGE_ATTR) !== "after"
+    ) {
+      return null;
+    }
+
+    return { leadingEdge, token, trailingEdge };
+  }
+
+  /** @internal */
+  private setCollapsedSelectionBeforeNode(node: Node): void {
+    const range = document.createRange();
+    range.setStartBefore(node);
+    range.collapse(true);
+    this.applyEditorSelection(range);
+  }
+
+  /** @internal */
+  private setCollapsedSelectionAfterNode(node: Node): void {
+    const range = document.createRange();
+    range.setStartAfter(node);
+    range.collapse(true);
+    this.applyEditorSelection(range);
+  }
+
+  /** @internal */
+  private applyEditorSelection(range: Range): void {
     const selection = window.getSelection();
     if (!selection) return;
     selection.removeAllRanges();
-    selection.addRange(this.lastEditorRange);
+    selection.addRange(range);
+    this.lastEditorRange = range.cloneRange();
+    this.lastActiveTableCell = this.getTableCellFromRange(range);
+    this.selectionContextRevision.update((value) => value + 1);
+  }
+
+  /** @internal */
+  private removeTemplateBlockCaretCluster(cluster: {
+    readonly leadingEdge: HTMLElement;
+    readonly token: HTMLElement;
+    readonly trailingEdge: HTMLElement;
+  }): void {
+    const parent = cluster.leadingEdge.parentNode;
+    if (!parent) return;
+    const nextSibling = cluster.trailingEdge.nextSibling;
+
+    cluster.leadingEdge.remove();
+    cluster.token.remove();
+    cluster.trailingEdge.remove();
+
+    const range = document.createRange();
+    if (nextSibling) {
+      range.setStartBefore(nextSibling);
+    } else {
+      range.setStart(parent, parent.childNodes.length);
+    }
+    range.collapse(true);
+    this.applyEditorSelection(range);
   }
 
   /** @internal */

@@ -5,6 +5,8 @@
   [attr.aria-expanded]="isOpen()"
   [attr.aria-haspopup]="'menu'"
   [attr.title]="tooltip() || undefined"
+  tabindex="-1"
+  (mousedown)="preserveCommandTargetFocus($event)"
   (click)="toggleOpen()"
 >
   @if (icon()) {
@@ -25,6 +27,8 @@
           role="menuitem"
           [disabled]="item.disabled ?? false"
           [class.dropdown-panel-item--selected]="item.id === selectedItemId()"
+          tabindex="-1"
+          (mousedown)="preserveCommandTargetFocus($event)"
           (click)="onItemClick(item, $event)"
         >
           @if (item.icon) {

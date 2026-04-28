@@ -32,6 +32,30 @@ const TEMPLATE_BLOCK_CLASS = "rte-template-block";
 const TEMPLATE_BLOCK_CONTENT_CLASS = "content";
 
 /**
+ * CSS class applied to editor-only caret landing pads at template block edges.
+ * @internal
+ */
+const TEMPLATE_BLOCK_CARET_EDGE_CLASS = "rte-caret-edge";
+
+/**
+ * Attribute that marks editor-only caret landing pads.
+ * @internal
+ */
+const TEMPLATE_BLOCK_CARET_EDGE_ATTR = "data-rte-caret-edge";
+
+/**
+ * Attribute that marks caret landing pads adjacent to block template UI.
+ * @internal
+ */
+const TEMPLATE_BLOCK_CARET_EDGE_DISPLAY_ATTR = "data-rte-caret-edge-display";
+
+/**
+ * Invisible text content used to give the browser a caret position.
+ * @internal
+ */
+const ZERO_WIDTH_SPACE = "\u200b";
+
+/**
  * Rich content tags that should be treated as literal output markup instead of
  * template-editing blocks.
  * @internal
@@ -161,6 +185,13 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
       case "horizontalRule":
         document.execCommand("insertHorizontalRule");
         break;
+      case "insertTable":
+      case "insertTableRowBefore":
+      case "insertTableRowAfter":
+      case "insertTableColumnBefore":
+      case "insertTableColumnAfter":
+      case "wrapRowsLoop":
+        return false;
       case "indent":
         document.execCommand("indent");
         break;
@@ -544,7 +575,10 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
 
   /** @internal */
   private renderTemplateNode(node: Node, ctx: RichTextEditorContext): string {
-    if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
+    if (
+      node.nodeType === Node.TEXT_NODE ||
+      node.nodeType === Node.CDATA_SECTION_NODE
+    ) {
       return this.escapeHtml(node.textContent ?? "");
     }
     if (node.nodeType !== Node.ELEMENT_NODE) return "";
@@ -580,13 +614,18 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
   ): string {
     const attrs = this.readElementAttributes(element);
     const resolvedProvider =
-      provider ?? this.createGenericUiProvider(element.tagName, element.childNodes.length === 0);
+      provider ??
+      this.createGenericUiProvider(
+        element.tagName,
+        element.childNodes.length === 0,
+      );
     if (element.tagName === "placeholder") {
       const key = attrs["key"] ?? "";
       const placeholder = ctx.placeholders.find((p) => p.key === key);
       attrs["label"] = placeholder?.label ?? attrs["label"] ?? key;
     }
-    const label = resolvedProvider.formatLabel?.(attrs) ?? resolvedProvider.label;
+    const label =
+      resolvedProvider.formatLabel?.(attrs) ?? resolvedProvider.label;
     const dataAttrs = this.renderTemplateDataAttributes(
       element.tagName,
       attrs,
@@ -603,8 +642,10 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
           ? `${PLACEHOLDER_CLASS} ${TEMPLATE_BLOCK_CLASS}`
           : TEMPLATE_BLOCK_CLASS;
       return (
+        this.renderTemplateBlockCaretEdge("before") +
         `<span class="${classes}" contenteditable="false"${dataAttrs}${placeholderAttr}>` +
-        `${this.escapeHtml(label)}</span>`
+        `${this.escapeHtml(label)}</span>` +
+        this.renderTemplateBlockCaretEdge("after")
       );
     }
 
@@ -614,19 +655,40 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
     if (this.isTableRowContainerBlock(element)) {
       return (
         `<tr class="${TEMPLATE_BLOCK_CLASS} table-row-block" ${dataAttrs}>` +
-        "<td colspan=\"999\">" +
+        '<td colspan="999">' +
+        this.renderTemplateBlockCaretEdge("before", "block") +
         '<div class="shell">' +
         `<span class="header" contenteditable="false">${this.escapeHtml(label)}</span>` +
         '<table class="table-content"><tbody class="content">' +
         `${body}</tbody></table>` +
-        "</div></td></tr>"
+        "</div>" +
+        this.renderTemplateBlockCaretEdge("after", "block") +
+        "</td></tr>"
       );
     }
     return (
+      this.renderTemplateBlockCaretEdge("before", "block") +
       `<div class="${TEMPLATE_BLOCK_CLASS} block" ${dataAttrs}>` +
       `<span class="header" contenteditable="false">${this.escapeHtml(label)}</span>` +
       `<div class="${TEMPLATE_BLOCK_CONTENT_CLASS}">${body}</div>` +
-      "</div>"
+      "</div>" +
+      this.renderTemplateBlockCaretEdge("after", "block")
+    );
+  }
+
+  /** @internal */
+  private renderTemplateBlockCaretEdge(
+    position: "before" | "after",
+    display: "inline" | "block" = "inline",
+  ): string {
+    const displayAttr =
+      display === "block"
+        ? ` ${TEMPLATE_BLOCK_CARET_EDGE_DISPLAY_ATTR}="block"`
+        : "";
+    return (
+      `<span class="${TEMPLATE_BLOCK_CARET_EDGE_CLASS}" ` +
+      `${TEMPLATE_BLOCK_CARET_EDGE_ATTR}="${position}"${displayAttr} aria-hidden="true">` +
+      `${ZERO_WIDTH_SPACE}</span>`
     );
   }
 
@@ -711,6 +773,7 @@ export class HtmlEditingStrategy implements RichTextEditorStrategy {
     if (node.nodeType !== Node.ELEMENT_NODE) return "";
 
     const element = node as Element;
+    if (element.hasAttribute(TEMPLATE_BLOCK_CARET_EDGE_ATTR)) return "";
     if (element.hasAttribute("data-template-visual-block")) return "";
     if (element instanceof HTMLElement && element.dataset["templateBlock"]) {
       return this.serialiseTemplateBlock(element);

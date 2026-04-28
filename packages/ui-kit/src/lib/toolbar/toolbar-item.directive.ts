@@ -49,6 +49,21 @@ export abstract class UIToolbarItem {
   }
 
   /**
+   * Prevent mouse activation from stealing focus from the surface the toolbar
+   * is commanding, such as a contenteditable editor.
+   *
+   * Keyboard users can still move focus to toolbar controls normally.
+   *
+   * @param event - The originating mouse event.
+   * @internal
+   */
+  protected preserveCommandTargetFocus(event: MouseEvent): void {
+    if (!this.disabled()) {
+      event.preventDefault();
+    }
+  }
+
+  /**
    * Deactivate (un-check / un-press) this item.
    *
    * No-op by default. Overridden by {@link UIToggleTool} to set

@@ -4,6 +4,8 @@
   [attr.aria-label]="ariaLabel() || label() || undefined"
   [attr.aria-pressed]="checked()"
   [attr.title]="tooltip() || undefined"
+  tabindex="-1"
+  (mousedown)="preserveCommandTargetFocus($event)"
   (click)="onClick($event)"
 >
   @if (icon()) {

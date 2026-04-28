@@ -169,6 +169,67 @@ ui-toolbar {
   background: transparent;
 }
 
+/* ── Table picker ──────────────────────────────────────── */
+
+.table-picker-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.table-picker-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 110;
+  margin-top: 0.25rem;
+  padding: 0.45rem;
+  border-radius: 0.25rem;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+  border: 1px solid var(--ui-border, #d4d8dd);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.table-size-label {
+  min-width: 8.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ui-text-muted, #5a6470);
+  background: transparent;
+}
+
+.table-size-row {
+  display: flex;
+  gap: 0.2rem;
+
+  & + & {
+    margin-top: 0.2rem;
+  }
+}
+
+.table-size-cell {
+  appearance: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  cursor: var(--ui-cursor-click, pointer);
+  border-radius: 0.15rem;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+  border: 1px solid var(--ui-border, #d4d8dd);
+
+  &.active {
+    color: var(--ui-accent, #3584e4);
+    background: var(--ui-primary-container, #dbeafe);
+    border-color: var(--ui-accent, #3584e4);
+  }
+
+  &:focus-visible {
+    outline-offset: 1px;
+  }
+}
+
 /* ── Emoji picker ──────────────────────────────────────── */
 
 .emoji-picker-wrapper {
@@ -314,6 +375,32 @@ ui-toolbar {
   }
 }
 
+:host ::ng-deep .editor table {
+  width: 100%;
+  margin: 0.45em 0;
+  border-collapse: collapse;
+  table-layout: auto;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+  border: 1px solid var(--ui-border-strong, #aab2bd);
+}
+
+:host ::ng-deep .editor th,
+:host ::ng-deep .editor td {
+  min-width: 4rem;
+  padding: 0.35rem 0.45rem;
+  vertical-align: top;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+  border: 1px solid var(--ui-border-strong, #aab2bd);
+}
+
+:host ::ng-deep .editor th {
+  font-weight: 700;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface-2, #f0f2f5);
+}
+
 :host.compact .editor {
   min-height: 5.5rem;
   padding: 0.7rem 0.85rem;
@@ -345,6 +432,27 @@ ui-toolbar {
     content: " />";
     opacity: 0.5;
   }
+}
+
+:host ::ng-deep .rte-caret-edge {
+  display: inline;
+  inline-size: 0;
+  min-height: 0;
+  overflow: visible;
+  white-space: pre;
+  user-select: text;
+  color: transparent;
+  caret-color: var(--ui-text, #1d232b);
+  background: transparent;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
+:host ::ng-deep .rte-caret-edge[data-rte-caret-edge-display="block"] {
+  display: block;
+  block-size: 0;
+  min-height: 0;
+  line-height: inherit;
 }
 
 :host ::ng-deep .rte-template-block.block {

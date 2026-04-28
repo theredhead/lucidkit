@@ -211,7 +211,9 @@ describe("UIRichTextEditor", () => {
         fixture.nativeElement.querySelectorAll("ui-dropdown-tool").length,
       ).toBe(0);
       expect(
-        fixture.nativeElement.querySelector('[aria-label="Insert template block"]'),
+        fixture.nativeElement.querySelector(
+          '[aria-label="Insert template block"]',
+        ),
       ).toBeTruthy();
     });
 
@@ -657,8 +659,9 @@ describe("UIRichTextEditor", () => {
 
       (component as any).renderToEditor('<loop items="lines">Line </loop>');
       fixture.detectChanges();
-      const loopContent: HTMLElement =
-        fixture.nativeElement.querySelector('[data-template-block="loop"] .content');
+      const loopContent: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-template-block="loop"] .content',
+      );
       const range = document.createRange();
       range.selectNodeContents(loopContent);
       range.collapse(false);
@@ -694,8 +697,9 @@ describe("UIRichTextEditor", () => {
 
       (component as any).renderToEditor('<loop items="lines">Line </loop>');
       fixture.detectChanges();
-      const loopContent: HTMLElement =
-        fixture.nativeElement.querySelector('[data-template-block="loop"] .content');
+      const loopContent: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-template-block="loop"] .content',
+      );
       const range = document.createRange();
       range.selectNodeContents(loopContent);
       range.collapse(false);
@@ -769,7 +773,9 @@ describe("UIRichTextEditor", () => {
         fixture.detectChanges();
 
         const labels = Array.from<Element>(
-          fixture.nativeElement.querySelectorAll(".block-option .placeholder-label"),
+          fixture.nativeElement.querySelectorAll(
+            ".block-option .placeholder-label",
+          ),
         ).map((el) => (el.textContent ?? "").trim());
         expect(labels).toContain("Sms");
         expect(labels).not.toContain("Section");
@@ -792,8 +798,9 @@ describe("UIRichTextEditor", () => {
 
       (component as any).renderToEditor('<loop items="lines">Line </loop>');
       fixture.detectChanges();
-      const loopContent: HTMLElement =
-        fixture.nativeElement.querySelector('[data-template-block="loop"] .content');
+      const loopContent: HTMLElement = fixture.nativeElement.querySelector(
+        '[data-template-block="loop"] .content',
+      );
       const range = document.createRange();
       range.selectNodeContents(loopContent);
       range.collapse(false);
@@ -810,7 +817,9 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const descriptionOption: HTMLButtonElement =
-        fixture.nativeElement.querySelector('[data-placeholder-key="description"]');
+        fixture.nativeElement.querySelector(
+          '[data-placeholder-key="description"]',
+        );
       descriptionOption!.click();
       fixture.detectChanges();
 
@@ -880,7 +889,9 @@ describe("UIRichTextEditor", () => {
       ]);
       fixture.detectChanges();
 
-      (component as any).renderToEditor('Hello <placeholder key="firstName" />!');
+      (component as any).renderToEditor(
+        'Hello <placeholder key="firstName" />!',
+      );
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
@@ -889,13 +900,72 @@ describe("UIRichTextEditor", () => {
       expect(chip).toBeTruthy();
       expect(chip!.getAttribute("data-placeholder-key")).toBe("firstName");
       expect(chip!.textContent).toContain("First Name");
+      expect(editor.querySelectorAll("[data-rte-caret-edge]").length).toBe(2);
+    });
+
+    it("should normalise caret selections so they do not stay inside edge spans", () => {
+      fixture.componentRef.setInput("placeholders", [
+        { key: "firstName", label: "First Name" },
+      ]);
+      fixture.detectChanges();
+
+      (component as any).renderToEditor(
+        'Hello <placeholder key="firstName" />!',
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      const edge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="before"]',
+      );
+      expect(edge).toBeTruthy();
+
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(edge!);
+      range.collapse(false);
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+
+      (component as any).captureEditorSelectionFromWindow();
+
+      const normalisedRange = selection!.getRangeAt(0);
+      const container = normalisedRange.startContainer;
+      const containerElement =
+        container instanceof Element ? container : container.parentElement;
+      expect(
+        containerElement?.closest("[data-rte-caret-edge]") ?? null,
+      ).toBeNull();
+    });
+
+    it("should not serialise template block caret edges", () => {
+      fixture.componentRef.setInput("placeholders", [
+        { key: "firstName", label: "First Name" },
+      ]);
+      fixture.detectChanges();
+
+      (component as any).renderToEditor(
+        'Hello <placeholder key="firstName" />!',
+      );
+      fixture.detectChanges();
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      editor.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      expect(component.value()).toBe('Hello <placeholder key="firstName" />!');
+      expect(component.value()).not.toContain("rte-caret-edge");
+      expect(component.value()).not.toContain("\u200b");
     });
 
     it("should use key as label when placeholder is not defined", () => {
       fixture.componentRef.setInput("placeholders", []);
       fixture.detectChanges();
 
-      (component as any).renderToEditor('Hello <placeholder key="unknownKey" />!');
+      (component as any).renderToEditor(
+        'Hello <placeholder key="unknownKey" />!',
+      );
       fixture.detectChanges();
 
       const editor: HTMLDivElement =
@@ -969,11 +1039,18 @@ describe("UIRichTextEditor", () => {
 
       const editor: HTMLDivElement =
         fixture.nativeElement.querySelector(".editor");
-      const block = editor.querySelector<HTMLElement>('[data-template-block="if"]');
+      const block = editor.querySelector<HTMLElement>(
+        '[data-template-block="if"]',
+      );
       const chip = editor.querySelector(".rte-placeholder");
       expect(block).toBeTruthy();
       expect(block!.querySelector(".header")?.textContent).toContain("If show");
       expect(chip).toBeTruthy();
+      expect(
+        editor.querySelectorAll(
+          '[data-rte-caret-edge][data-rte-caret-edge-display="block"]',
+        ).length,
+      ).toBe(2);
     });
   });
 
@@ -1488,6 +1565,37 @@ describe("UIRichTextEditor", () => {
       expect(config.inputs.initialAttributes).toEqual({ items: "lines" });
     });
 
+    it("should wrap the current table row in a loop block", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>Line</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const row: HTMLTableRowElement =
+        fixture.nativeElement.querySelector(".editor tbody > tr");
+      const range = document.createRange();
+      range.selectNodeContents(row.cells[0]);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+      (component as any).captureEditorSelectionFromWindow();
+
+      (component as any).execAction(
+        "wrapRowsLoop",
+        document.createElement("button"),
+      );
+      mockPopoverRef.close({
+        name: "loop",
+        attributes: { items: "lines" },
+      });
+      fixture.detectChanges();
+
+      expect(component.value()).toContain(
+        '<tbody><loop items="lines"><tr><td>Line</td></tr></loop></tbody>',
+      );
+    });
+
     it("should offer context placeholder options for placeholder keys", () => {
       fixture.componentRef.setInput("placeholderContext", {
         fullName: "Alice Hartwell",
@@ -1949,6 +2057,182 @@ describe("UIRichTextEditor", () => {
       editor.dispatchEvent(event);
 
       expect(event.defaultPrevented).toBe(false);
+    });
+
+    it("should delete the whole edge-token cluster on Delete from before a token", () => {
+      fixture.componentRef.setInput("placeholders", [
+        { key: "firstName", label: "First Name" },
+      ]);
+      fixture.detectChanges();
+
+      (component as any).renderToEditor(
+        'Hello <placeholder key="firstName" />!',
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      const leadingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="before"]',
+      );
+      const trailingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="after"]',
+      );
+      expect(leadingEdge).toBeTruthy();
+      expect(trailingEdge).toBeTruthy();
+
+      const range = document.createRange();
+      range.setStartBefore(leadingEdge!);
+      range.collapse(true);
+      const selection = window.getSelection()!;
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Delete",
+        bubbles: true,
+        cancelable: true,
+      });
+      editor.dispatchEvent(event);
+      fixture.detectChanges();
+
+      expect(editor.querySelector(".rte-placeholder")).toBeNull();
+      expect(editor.querySelectorAll("[data-rte-caret-edge]").length).toBe(0);
+      expect(component.value()).toBe("Hello !");
+    });
+
+    it("should delete the whole edge-token cluster on Backspace from after a token", () => {
+      fixture.componentRef.setInput("placeholders", [
+        { key: "firstName", label: "First Name" },
+      ]);
+      fixture.detectChanges();
+
+      (component as any).renderToEditor(
+        'Hello <placeholder key="firstName" />!',
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      const leadingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="before"]',
+      );
+      const trailingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="after"]',
+      );
+      expect(leadingEdge).toBeTruthy();
+      expect(trailingEdge).toBeTruthy();
+
+      const range = document.createRange();
+      range.setStartAfter(trailingEdge!);
+      range.collapse(true);
+      const selection = window.getSelection()!;
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Backspace",
+        bubbles: true,
+        cancelable: true,
+      });
+      editor.dispatchEvent(event);
+      fixture.detectChanges();
+
+      expect(editor.querySelector(".rte-placeholder")).toBeNull();
+      expect(editor.querySelectorAll("[data-rte-caret-edge]").length).toBe(0);
+      expect(component.value()).toBe("Hello !");
+    });
+  });
+
+  describe("template block caret navigation", () => {
+    it("should move from before the leading edge to after the trailing edge on ArrowRight", () => {
+      fixture.componentRef.setInput("placeholders", [
+        { key: "firstName", label: "First Name" },
+      ]);
+      fixture.detectChanges();
+
+      (component as any).renderToEditor(
+        'Hello <placeholder key="firstName" />!',
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      const leadingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="before"]',
+      );
+      const trailingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="after"]',
+      );
+      expect(leadingEdge).toBeTruthy();
+      expect(trailingEdge).toBeTruthy();
+
+      const range = document.createRange();
+      range.setStartBefore(leadingEdge!);
+      range.collapse(true);
+      const selection = window.getSelection()!;
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "ArrowRight",
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+      const movedRange = selection.getRangeAt(0);
+      const previous = (component as any).previousNode(
+        movedRange.startContainer,
+        movedRange.startOffset,
+      );
+      expect(previous).toBe(trailingEdge);
+    });
+
+    it("should move from after the trailing edge to before the leading edge on ArrowLeft", () => {
+      fixture.componentRef.setInput("placeholders", [
+        { key: "firstName", label: "First Name" },
+      ]);
+      fixture.detectChanges();
+
+      (component as any).renderToEditor(
+        'Hello <placeholder key="firstName" />!',
+      );
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      const leadingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="before"]',
+      );
+      const trailingEdge = editor.querySelector<HTMLElement>(
+        '[data-rte-caret-edge="after"]',
+      );
+      expect(leadingEdge).toBeTruthy();
+      expect(trailingEdge).toBeTruthy();
+
+      const range = document.createRange();
+      range.setStartAfter(trailingEdge!);
+      range.collapse(true);
+      const selection = window.getSelection()!;
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      editor.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "ArrowLeft",
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+      const movedRange = selection.getRangeAt(0);
+      const next = (component as any).nextNode(
+        movedRange.startContainer,
+        movedRange.startOffset,
+      );
+      expect(next).toBe(leadingEdge);
     });
   });
 
@@ -2572,6 +2856,489 @@ describe("UIRichTextEditor", () => {
       hrBtn.click();
       fixture.detectChanges();
       expect(execCommandSpy).toHaveBeenCalledWith("insertHorizontalRule");
+    });
+  });
+
+  describe("table actions", () => {
+    it("should render the table authoring control", () => {
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Insert table"]'),
+      ).toBeTruthy();
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Table options"]'),
+      ).toBeNull();
+    });
+
+    it("should insert an XML-compatible table from the size picker", () => {
+      const tableBtn: HTMLButtonElement = fixture.nativeElement.querySelector(
+        '[aria-label="Insert table"]',
+      );
+      tableBtn.click();
+      fixture.detectChanges();
+
+      const sizeCell: HTMLButtonElement = fixture.nativeElement.querySelector(
+        '[aria-label="4 columns, 3 rows"]',
+      );
+      sizeCell.dispatchEvent(new MouseEvent("mouseenter"));
+      sizeCell.click();
+      fixture.detectChanges();
+
+      expect(component.value()).toContain("<table>");
+      expect(component.value()).toContain("<thead>");
+      expect(component.value()).toContain("<tbody>");
+      expect(component.value()).toContain("<th>Column 1</th>");
+      expect(component.value()).toContain("<th>Column 4</th>");
+      expect(
+        fixture.nativeElement.querySelectorAll(".editor tbody > tr").length,
+      ).toBe(3);
+      expect(
+        fixture.nativeElement.querySelectorAll(".editor thead th").length,
+      ).toBe(4);
+    });
+
+    it("should keep table popups outside clipped toolbar button groups", () => {
+      const tablePicker = fixture.nativeElement.querySelector(
+        ".table-picker-wrapper",
+      );
+      expect(tablePicker?.closest("ui-button-group-tool")).toBeNull();
+    });
+
+    it("should provide table menu items when only table insertion is configured", () => {
+      fixture.componentRef.setInput("toolbarActions", ["insertTable"]);
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>Line</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cell: HTMLTableCellElement =
+        fixture.nativeElement.querySelector(".editor td");
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+      (component as any).captureEditorSelectionFromWindow();
+      fixture.detectChanges();
+
+      const tableOptionsBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Table options"]');
+      tableOptionsBtn.click();
+      fixture.detectChanges();
+
+      const items = Array.from(
+        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+      ) as HTMLButtonElement[];
+      expect(items.map((item) => item.textContent?.trim())).toContain(
+        "Insert row after",
+      );
+    });
+
+    it("should show table editing commands in one dropdown while the caret is inside a table", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>Line</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cell: HTMLTableCellElement =
+        fixture.nativeElement.querySelector(".editor td");
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+      (component as any).captureEditorSelectionFromWindow();
+      fixture.detectChanges();
+
+      const tableOptionsBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Table options"]');
+      tableOptionsBtn.click();
+      fixture.detectChanges();
+
+      const items = Array.from(
+        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+      ) as HTMLButtonElement[];
+      expect(
+        items.some((item) => item.textContent?.includes("Insert row before")),
+      ).toBe(true);
+      expect(
+        items.some((item) => item.textContent?.includes("Insert row after")),
+      ).toBe(true);
+      expect(
+        items.some((item) =>
+          item.textContent?.includes("Insert column before"),
+        ),
+      ).toBe(true);
+      expect(
+        items.some((item) => item.textContent?.includes("Insert column after")),
+      ).toBe(true);
+      expect(
+        items.some((item) => item.textContent?.includes("Loop table rows")),
+      ).toBe(true);
+    });
+
+    it("should insert a row after the current table row", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>Line</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cell: HTMLTableCellElement =
+        fixture.nativeElement.querySelector(".editor td");
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+      (component as any).captureEditorSelectionFromWindow();
+      fixture.detectChanges();
+
+      const tableOptionsBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Table options"]');
+      tableOptionsBtn.click();
+      fixture.detectChanges();
+      const rowAfterBtn = (
+        Array.from(
+          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        ) as HTMLButtonElement[]
+      ).find((item) => item.textContent?.includes("Insert row after"));
+      rowAfterBtn!.click();
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement.querySelectorAll(".editor tbody > tr").length,
+      ).toBe(2);
+      expect(component.value()).toContain(
+        "<tbody><tr><td>Line</td></tr><tr><td>Value</td></tr></tbody>",
+      );
+    });
+
+    it("should preserve the table cell selection while a toolbar menu is clicked", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>Line</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cell: HTMLTableCellElement =
+        fixture.nativeElement.querySelector(".editor td");
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+      (component as any).captureEditorSelectionFromWindow();
+      fixture.detectChanges();
+
+      const tableOptionsBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Table options"]');
+      selection!.removeAllRanges();
+      tableOptionsBtn.click();
+      fixture.detectChanges();
+      const rowAfterBtn = (
+        Array.from(
+          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        ) as HTMLButtonElement[]
+      ).find((item) => item.textContent?.includes("Insert row after"));
+      rowAfterBtn!.click();
+      fixture.detectChanges();
+
+      expect(component.value()).toContain(
+        "<tbody><tr><td>Line</td></tr><tr><td>Value</td></tr></tbody>",
+      );
+    });
+
+    it("should preserve the table cell selection after toolbar focus churn", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>Line</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cell: HTMLTableCellElement =
+        fixture.nativeElement.querySelector(".editor td");
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+      (component as any).captureEditorSelectionFromWindow();
+      fixture.detectChanges();
+
+      const editor: HTMLDivElement =
+        fixture.nativeElement.querySelector(".editor");
+      const fallbackRange = document.createRange();
+      fallbackRange.selectNodeContents(editor);
+      fallbackRange.collapse(false);
+      selection!.removeAllRanges();
+      selection!.addRange(fallbackRange);
+
+      const tableOptionsBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Table options"]');
+      tableOptionsBtn.click();
+      fixture.detectChanges();
+      const rowAfterBtn = (
+        Array.from(
+          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        ) as HTMLButtonElement[]
+      ).find((item) => item.textContent?.includes("Insert row after"));
+      rowAfterBtn!.click();
+      fixture.detectChanges();
+
+      expect(component.value()).toContain(
+        "<tbody><tr><td>Line</td></tr><tr><td>Value</td></tr></tbody>",
+      );
+    });
+
+    it("should insert a column after the current table column", () => {
+      (component as any).renderToEditor(
+        "<table><thead><tr><th>Column 1</th></tr></thead><tbody><tr><td>Line</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cell: HTMLTableCellElement =
+        fixture.nativeElement.querySelector(".editor td");
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+      (component as any).captureEditorSelectionFromWindow();
+      fixture.detectChanges();
+
+      const tableOptionsBtn: HTMLButtonElement =
+        fixture.nativeElement.querySelector('[aria-label="Table options"]');
+      tableOptionsBtn.click();
+      fixture.detectChanges();
+      const columnAfterBtn = (
+        Array.from(
+          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        ) as HTMLButtonElement[]
+      ).find((item) => item.textContent?.includes("Insert column after"));
+      columnAfterBtn!.click();
+      fixture.detectChanges();
+
+      expect(
+        fixture.nativeElement.querySelectorAll(".editor thead th").length,
+      ).toBe(2);
+      expect(
+        fixture.nativeElement.querySelectorAll(".editor tbody td").length,
+      ).toBe(2);
+      expect(component.value()).toContain(
+        "<thead><tr><th>Column 1</th><th>Column</th></tr></thead>",
+      );
+      expect(component.value()).toContain(
+        "<tbody><tr><td>Line</td><td>Value</td></tr></tbody>",
+      );
+    });
+
+    it("should place the caret in a table cell that contains a template token", () => {
+      (component as any).renderToEditor(
+        '<table><tbody><tr><td><placeholder key="description" /></td></tr></tbody></table>',
+      );
+      fixture.detectChanges();
+
+      const cell: HTMLTableCellElement =
+        fixture.nativeElement.querySelector(".editor td");
+      cell.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+      fixture.detectChanges();
+
+      const selection = window.getSelection();
+      expect(selection?.rangeCount).toBe(1);
+      const range = selection!.getRangeAt(0);
+      expect(range.collapsed).toBe(true);
+      expect(cell.contains(range.startContainer)).toBe(true);
+      expect(
+        fixture.nativeElement.querySelector('[aria-label="Table options"]'),
+      ).toBeTruthy();
+    });
+
+    it("should move down a row in the same column and select the target cell contents", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>A1</td><td>B1</td></tr><tr><td>A2</td><td>B2</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cells = fixture.nativeElement.querySelectorAll(
+        ".editor td",
+      ) as NodeListOf<HTMLTableCellElement>;
+      const sourceCell = cells[1];
+      const targetCell = cells[3];
+      expect(sourceCell).toBeTruthy();
+      expect(targetCell).toBeTruthy();
+
+      const range = document.createRange();
+      range.selectNodeContents(sourceCell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+
+      sourceCell.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "ArrowDown",
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      const movedRange = selection!.getRangeAt(0);
+      expect(movedRange.collapsed).toBe(false);
+      expect(targetCell.contains(movedRange.commonAncestorContainer)).toBe(
+        true,
+      );
+      expect(selection!.toString()).toBe("B2");
+    });
+
+    it("should move up a row in the same column and select the target cell contents", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>A1</td><td>B1</td></tr><tr><td>A2</td><td>B2</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cells = fixture.nativeElement.querySelectorAll(
+        ".editor td",
+      ) as NodeListOf<HTMLTableCellElement>;
+      const sourceCell = cells[2];
+      const targetCell = cells[0];
+      expect(sourceCell).toBeTruthy();
+      expect(targetCell).toBeTruthy();
+
+      const range = document.createRange();
+      range.selectNodeContents(sourceCell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+
+      sourceCell.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "ArrowUp",
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      const movedRange = selection!.getRangeAt(0);
+      expect(movedRange.collapsed).toBe(false);
+      expect(targetCell.contains(movedRange.commonAncestorContainer)).toBe(
+        true,
+      );
+      expect(selection!.toString()).toBe("A1");
+    });
+
+    it("should move to the next cell on Tab and select its contents", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>A1</td><td>B1</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cells = fixture.nativeElement.querySelectorAll(
+        ".editor td",
+      ) as NodeListOf<HTMLTableCellElement>;
+      const sourceCell = cells[0];
+      const targetCell = cells[1];
+
+      const range = document.createRange();
+      range.selectNodeContents(sourceCell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+
+      sourceCell.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Tab",
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      const movedRange = selection!.getRangeAt(0);
+      expect(movedRange.collapsed).toBe(false);
+      expect(targetCell.contains(movedRange.commonAncestorContainer)).toBe(
+        true,
+      );
+      expect(selection!.toString()).toBe("B1");
+    });
+
+    it("should wrap to the first cell of the next row on Tab from the row end", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>A1</td><td>B1</td></tr><tr><td>A2</td><td>B2</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cells = fixture.nativeElement.querySelectorAll(
+        ".editor td",
+      ) as NodeListOf<HTMLTableCellElement>;
+      const sourceCell = cells[1];
+      const targetCell = cells[2];
+
+      const range = document.createRange();
+      range.selectNodeContents(sourceCell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+
+      sourceCell.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Tab",
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      const movedRange = selection!.getRangeAt(0);
+      expect(movedRange.collapsed).toBe(false);
+      expect(targetCell.contains(movedRange.commonAncestorContainer)).toBe(
+        true,
+      );
+      expect(selection!.toString()).toBe("A2");
+    });
+
+    it("should wrap to the last cell of the previous row on Shift+Tab from the row start", () => {
+      (component as any).renderToEditor(
+        "<table><tbody><tr><td>A1</td><td>B1</td></tr><tr><td>A2</td><td>B2</td></tr></tbody></table>",
+      );
+      fixture.detectChanges();
+
+      const cells = fixture.nativeElement.querySelectorAll(
+        ".editor td",
+      ) as NodeListOf<HTMLTableCellElement>;
+      const sourceCell = cells[2];
+      const targetCell = cells[1];
+
+      const range = document.createRange();
+      range.selectNodeContents(sourceCell);
+      range.collapse(false);
+      const selection = window.getSelection();
+      selection!.removeAllRanges();
+      selection!.addRange(range);
+
+      sourceCell.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Tab",
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      const movedRange = selection!.getRangeAt(0);
+      expect(movedRange.collapsed).toBe(false);
+      expect(targetCell.contains(movedRange.commonAncestorContainer)).toBe(
+        true,
+      );
+      expect(selection!.toString()).toBe("B1");
     });
   });
 

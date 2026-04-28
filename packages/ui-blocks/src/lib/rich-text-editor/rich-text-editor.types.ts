@@ -262,6 +262,12 @@ export type RichTextFormatAction =
   | "alignRight"
   | "alignJustify"
   | "horizontalRule"
+  | "insertTable"
+  | "insertTableRowBefore"
+  | "insertTableRowAfter"
+  | "insertTableColumnBefore"
+  | "insertTableColumnAfter"
+  | "wrapRowsLoop"
   | "image"
   | "link"
   | "undo"
@@ -294,6 +300,12 @@ export const DEFAULT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] = [
   "alignRight",
   "alignJustify",
   "horizontalRule",
+  "insertTable",
+  "insertTableRowBefore",
+  "insertTableRowAfter",
+  "insertTableColumnBefore",
+  "insertTableColumnAfter",
+  "wrapRowsLoop",
   "image",
   "link",
   "removeFormat",
@@ -464,6 +476,42 @@ export const TOOLBAR_BUTTON_REGISTRY: Record<
     action: "horizontalRule",
     label: "Horizontal rule",
     icon: UIIcons.Lucide.Development.Minus,
+    group: "insert",
+  },
+  insertTable: {
+    action: "insertTable",
+    label: "Insert table",
+    icon: UIIcons.Lucide.Files.Table,
+    group: "insert",
+  },
+  insertTableRowBefore: {
+    action: "insertTableRowBefore",
+    label: "Insert row before",
+    icon: UIIcons.Lucide.Layout.BetweenHorizontalStart,
+    group: "insert",
+  },
+  insertTableRowAfter: {
+    action: "insertTableRowAfter",
+    label: "Insert row after",
+    icon: UIIcons.Lucide.Layout.BetweenHorizontalEnd,
+    group: "insert",
+  },
+  insertTableColumnBefore: {
+    action: "insertTableColumnBefore",
+    label: "Insert column before",
+    icon: UIIcons.Lucide.Layout.BetweenVerticalStart,
+    group: "insert",
+  },
+  insertTableColumnAfter: {
+    action: "insertTableColumnAfter",
+    label: "Insert column after",
+    icon: UIIcons.Lucide.Layout.BetweenVerticalEnd,
+    group: "insert",
+  },
+  wrapRowsLoop: {
+    action: "wrapRowsLoop",
+    label: "Loop table rows",
+    icon: UIIcons.Lucide.Files.TableRowsSplit,
     group: "insert",
   },
   image: {
