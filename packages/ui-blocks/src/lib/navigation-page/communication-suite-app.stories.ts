@@ -2,7 +2,10 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	computed,
+  ElementRef,
+  effect,
 	signal,
+  viewChild,
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
@@ -28,6 +31,7 @@ import {
 	UIIcon,
 	UIIcons,
 	UIInput,
+  UIPagination,
 	UIProgress,
 	UIDropdownList,
 	type SelectOption,
@@ -481,6 +485,22 @@ function channelIcon(type: string): string {
       .page-fill > ui-tab-group ::ng-deep .panel {
         display: flex;
         flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .meeting-tabs {
+        flex: 1;
+        min-height: 0;
+      }
+
+      .tab-scroll-pane {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding-top: 0.5rem;
+        padding-right: 0.25rem;
       }
 
       .page-header {
@@ -1419,11 +1439,21 @@ function channelIcon(type: string): string {
 
             <div class="calendar-wrap">
               <ui-calendar-month-view
-                [datasource]="calendarDs"
+                [datasource]="calendarDs()"
                 [(selectedDate)]="selectedDate"
                 ariaLabel="Meeting schedule"
               />
             </div>
+
+            @if (selectedMonthCalendarEvents().length > calendarPageSize) {
+              <ui-pagination
+                [totalItems]="selectedMonthCalendarEvents().length"
+                [pageSize]="calendarPageSize"
+                [pageSizeOptions]="[]"
+                [(pageIndex)]="calendarPageIndex"
+                ariaLabel="Calendar event pagination"
+              />
+            }
           </div>
         }
 
@@ -1447,59 +1477,61 @@ function channelIcon(type: string): string {
               </div>
             </div>
 
-            <ui-tab-group panelStyle="flat">
+            <ui-tab-group panelStyle="flat" class="meeting-tabs">
               <ui-tab label="Today" [icon]="icons.clock">
-                <div class="today-meetings" style="padding-top: 0.5rem;">
-                  @for (m of todayMeetings; track m.id) {
-                    <div class="today-meeting-card">
-                      <div class="today-meeting-time">
-                        {{ m.startTime }} - {{ m.endTime }}
-                      </div>
-                      <div class="today-meeting-info">
-                        <div class="today-meeting-title">{{ m.title }}</div>
-                        <div class="today-meeting-sub">
-                          <ui-badge
-                            [color]="meetingTypeColor(m.type)"
-                            size="small"
-                          >
-                            {{ m.type }}
+                <div class="tab-scroll-pane">
+                  <div class="today-meetings">
+                    @for (m of todayMeetings; track m.id) {
+                      <div class="today-meeting-card">
+                        <div class="today-meeting-time">
+                          {{ m.startTime }} - {{ m.endTime }}
+                        </div>
+                        <div class="today-meeting-info">
+                          <div class="today-meeting-title">{{ m.title }}</div>
+                          <div class="today-meeting-sub">
+                            <ui-badge
+                              [color]="meetingTypeColor(m.type)"
+                              size="small"
+                            >
+                              {{ m.type }}
+                            </ui-badge>
+                            @if (m.room) {
+                              <span> {{ m.room }}</span>
+                            }
+                            @if (m.link) {
+                              <span> · {{ m.attendees.length }} attendees</span>
+                            }
+                          </div>
+                        </div>
+                        <div style="display: flex; gap: 0.35rem;">
+                          @if (m.type !== "in-person") {
+                            <ui-button variant="filled" size="small">
+                              <ui-icon [svg]="icons.video" [size]="14" /> Join
+                            </ui-button>
+                          }
+                          <ui-badge [color]="meetingStatusColor(m.status)">
+                            {{ m.status }}
                           </ui-badge>
-                          @if (m.room) {
-                            <span> {{ m.room }}</span>
-                          }
-                          @if (m.link) {
-                            <span> · {{ m.attendees.length }} attendees</span>
-                          }
                         </div>
                       </div>
-                      <div style="display: flex; gap: 0.35rem;">
-                        @if (m.type !== "in-person") {
-                          <ui-button variant="filled" size="small">
-                            <ui-icon [svg]="icons.video" [size]="14" /> Join
-                          </ui-button>
-                        }
-                        <ui-badge [color]="meetingStatusColor(m.status)">
-                          {{ m.status }}
-                        </ui-badge>
+                    } @empty {
+                      <div
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 0; opacity: 0.5;"
+                      >
+                        <ui-icon [svg]="icons.calendarCheck" [size]="48" />
+                        <p style="margin-top: 1rem;">
+                          No meetings scheduled for today
+                        </p>
                       </div>
-                    </div>
-                  } @empty {
-                    <div
-                      style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 0; opacity: 0.5;"
-                    >
-                      <ui-icon [svg]="icons.calendarCheck" [size]="48" />
-                      <p style="margin-top: 1rem;">
-                        No meetings scheduled for today
-                      </p>
-                    </div>
-                  }
+                    }
+                  </div>
                 </div>
               </ui-tab>
 
               <ui-tab label="Upcoming" [icon]="icons.calendarDays">
-                <div class="scroll-area" style="padding-top: 0.5rem;">
+                <div class="tab-scroll-pane">
                   <div class="meeting-grid">
-                    @for (m of allMeetings; track m.id) {
+                    @for (m of visibleMeetings(); track m.id) {
                       <ui-card variant="outlined">
                         <ui-card-body>
                           <div class="meeting-header">
@@ -1562,72 +1594,83 @@ function channelIcon(type: string): string {
                       </ui-card>
                     }
                   </div>
+
+                  @if (hasMoreMeetings()) {
+                    <div
+                      #meetingsLoadMoreSentinel
+                      style="display: flex; justify-content: center; padding: 1rem 0 0.5rem; color: var(--ui-text, #1d232b); opacity: 0.6;"
+                    >
+                      Loading more meetings...
+                    </div>
+                  }
                 </div>
               </ui-tab>
 
               <ui-tab-spacer />
               <ui-tab label="Create" [icon]="icons.plus">
-                <div class="compose-form" style="padding-top: 0.5rem;">
-                  <div class="compose-field">
-                    <span class="field-label">Meeting Title</span>
-                    <ui-input
-                      placeholder="e.g. Sprint Planning"
-                      ariaLabel="Meeting title"
-                    />
-                  </div>
-                  <div
-                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"
-                  >
+                <div class="tab-scroll-pane">
+                  <div class="compose-form">
                     <div class="compose-field">
-                      <span class="field-label">Date</span>
-                      <ui-input placeholder="2026-03-28" ariaLabel="Date" />
+                      <span class="field-label">Meeting Title</span>
+                      <ui-input
+                        placeholder="e.g. Sprint Planning"
+                        ariaLabel="Meeting title"
+                      />
+                    </div>
+                    <div
+                      style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"
+                    >
+                      <div class="compose-field">
+                        <span class="field-label">Date</span>
+                        <ui-input placeholder="2026-03-28" ariaLabel="Date" />
+                      </div>
+                      <div class="compose-field">
+                        <span class="field-label">Time</span>
+                        <ui-input placeholder="10:00 - 11:00" ariaLabel="Time" />
+                      </div>
                     </div>
                     <div class="compose-field">
-                      <span class="field-label">Time</span>
-                      <ui-input placeholder="10:00 - 11:00" ariaLabel="Time" />
+                      <span class="field-label">Type</span>
+                      <ui-dropdown-list
+                        [options]="meetingTypeOptions"
+                        ariaLabel="Meeting type"
+                      />
                     </div>
-                  </div>
-                  <div class="compose-field">
-                    <span class="field-label">Type</span>
-                    <ui-dropdown-list
-                      [options]="meetingTypeOptions"
-                      ariaLabel="Meeting type"
-                    />
-                  </div>
-                  <div class="compose-field">
-                    <span class="field-label"
-                      >Room (for in-person / hybrid)</span
-                    >
-                    <ui-dropdown-list
-                      [options]="roomOptions"
-                      ariaLabel="Room selection"
-                    />
-                  </div>
-                  <div class="compose-field">
-                    <span class="field-label">Description</span>
-                    <ui-input
-                      placeholder="Meeting agenda and notes..."
-                      ariaLabel="Description"
-                    />
-                  </div>
-                  <div class="compose-field">
-                    <span class="field-label">Attendees</span>
-                    <ui-input
-                      placeholder="Search contacts to add..."
-                      ariaLabel="Attendees"
-                    />
-                  </div>
-                  <div style="display: flex; gap: 0.5rem;">
-                    <ui-checkbox ariaLabel="Recurring"
-                      >Recurring meeting</ui-checkbox
-                    >
-                    <ui-checkbox ariaLabel="Send invites"
-                      >Send calendar invites</ui-checkbox
-                    >
-                  </div>
-                  <div class="compose-actions">
-                    <ui-button variant="filled">Schedule Meeting</ui-button>
-                    <ui-button variant="ghost">Cancel</ui-button>
+                    <div class="compose-field">
+                      <span class="field-label"
+                        >Room (for in-person / hybrid)</span
+                      >
+                      <ui-dropdown-list
+                        [options]="roomOptions"
+                        ariaLabel="Room selection"
+                      />
+                    </div>
+                    <div class="compose-field">
+                      <span class="field-label">Description</span>
+                      <ui-input
+                        placeholder="Meeting agenda and notes..."
+                        ariaLabel="Description"
+                      />
+                    </div>
+                    <div class="compose-field">
+                      <span class="field-label">Attendees</span>
+                      <ui-input
+                        placeholder="Search contacts to add..."
+                        ariaLabel="Attendees"
+                      />
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <ui-checkbox ariaLabel="Recurring"
+                        >Recurring meeting</ui-checkbox
+                      >
+                      <ui-checkbox ariaLabel="Send invites"
+                        >Send calendar invites</ui-checkbox
+                      >
+                    </div>
+                    <div class="compose-actions">
+                      <ui-button variant="filled">Schedule Meeting</ui-button>
+                      <ui-button variant="ghost">Cancel</ui-button>
+                    </div>
                   </div>
                 </div>
               </ui-tab>
@@ -2146,6 +2189,14 @@ class UIDemoCommunicationSuiteApp {
   protected readonly selectedDm = signal(4);
   protected readonly selectedDate = signal(new Date("2026-03-25"));
   protected readonly selectedBuilding = signal("All");
+  protected readonly calendarPageIndex = signal(0);
+  protected readonly visibleMeetingsCount = signal(18);
+
+  protected readonly calendarPageSize = 120;
+  protected readonly meetingsPageSize = 18;
+
+  protected readonly meetingsLoadMoreSentinel =
+    viewChild<ElementRef<HTMLElement>>("meetingsLoadMoreSentinel");
 
   protected readonly icons = ICONS;
   protected readonly unreadCount = UNREAD_COUNT;
@@ -2200,7 +2251,29 @@ class UIDemoCommunicationSuiteApp {
 
   // ── Calendar ──
 
-  protected readonly calendarDs = new ArrayCalendarDatasource(CALENDAR_EVENTS);
+  protected readonly selectedMonthCalendarEvents = computed(() => {
+    const selectedDate = this.selectedDate();
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth();
+
+    return CALENDAR_EVENTS.filter(
+      (event) =>
+        event.start.getFullYear() === year &&
+        event.start.getMonth() === month,
+    );
+  });
+
+  protected readonly pagedCalendarEvents = computed(() => {
+    const start = this.calendarPageIndex() * this.calendarPageSize;
+    return this.selectedMonthCalendarEvents().slice(
+      start,
+      start + this.calendarPageSize,
+    );
+  });
+
+  protected readonly calendarDs = computed(
+    () => new ArrayCalendarDatasource(this.pagedCalendarEvents()),
+  );
 
   // ── Meetings ──
 
@@ -2210,6 +2283,12 @@ class UIDemoCommunicationSuiteApp {
   );
   protected readonly todayMeetings = MEETINGS.filter(
     (m) => m.date === "2026-03-25",
+  );
+  protected readonly visibleMeetings = computed(() =>
+    this.allMeetings.slice(0, this.visibleMeetingsCount()),
+  );
+  protected readonly hasMoreMeetings = computed(
+    () => this.visibleMeetingsCount() < this.allMeetings.length,
   );
 
   // ── Rooms ──
@@ -2257,6 +2336,38 @@ class UIDemoCommunicationSuiteApp {
     return b === "All" ? ROOMS : ROOMS.filter((r) => r.building === b);
   });
 
+  public constructor() {
+    effect(() => {
+      const selectedDate = this.selectedDate();
+      selectedDate.getFullYear();
+      selectedDate.getMonth();
+      this.calendarPageIndex.set(0);
+    });
+
+    effect((onCleanup) => {
+      const sentinel = this.meetingsLoadMoreSentinel()?.nativeElement;
+      if (!sentinel) {
+        return;
+      }
+
+      const root = sentinel.closest(".scroll-area");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.loadMoreMeetings();
+          }
+        },
+        {
+          root: root instanceof HTMLElement ? root : null,
+          rootMargin: "0px 0px 320px 0px",
+        },
+      );
+
+      observer.observe(sentinel);
+      onCleanup(() => observer.disconnect());
+    });
+  }
+
   // ── Contacts ──
 
   protected readonly allContacts = CONTACTS;
@@ -2292,6 +2403,16 @@ class UIDemoCommunicationSuiteApp {
 
   protected channelIcon(type: string): string {
     return channelIcon(type);
+  }
+
+  protected loadMoreMeetings(): void {
+    if (!this.hasMoreMeetings()) {
+      return;
+    }
+
+    this.visibleMeetingsCount.update((count) =>
+      Math.min(count + this.meetingsPageSize, this.allMeetings.length),
+    );
   }
 }
 
