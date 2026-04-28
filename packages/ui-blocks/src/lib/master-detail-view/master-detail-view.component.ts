@@ -15,6 +15,7 @@ import {
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import {
+  FilterableArrayDatasource as FoundationFilterableArrayDatasource,
   FilterableArrayTreeDatasource,
   isTreeDatasource,
   type IDatasource,
@@ -22,7 +23,7 @@ import {
   UISurface,
 } from "@theredhead/lucid-foundation";
 import {
-  FilterableArrayDatasource,
+  FilterableArrayDatasource as UIKitFilterableArrayDatasource,
   SelectionModel,
   UIFilter,
   UIIcon,
@@ -33,7 +34,6 @@ import {
   UITableViewColumn,
   UITreeView,
   inferFilterFields,
-  toFilterExpression,
   toPredicate,
   type ColumnMeta,
   type FilterDescriptor,
@@ -51,7 +51,6 @@ import {
  * @typeParam T - The row object type.
  */
 export interface MasterDetailContext<T> {
-
   /** The selected item (also available as `let-object`). */
   $implicit: T;
 }
@@ -381,7 +380,7 @@ export class UIMasterDetailView<T = unknown> {
     if (explicit && !isTreeDatasource(explicit)) {
       return explicit;
     }
-    return new FilterableArrayDatasource<T>([]);
+    return new FoundationFilterableArrayDatasource<T>([]);
   });
 
   /**
@@ -401,7 +400,7 @@ export class UIMasterDetailView<T = unknown> {
 
     // Auto-detect: show filter when the datasource supports filtering
     const ds = this.resolvedTableDatasource();
-    return ds instanceof FilterableArrayDatasource;
+    return ds instanceof FoundationFilterableArrayDatasource;
   });
 
   /**
@@ -444,7 +443,9 @@ export class UIMasterDetailView<T = unknown> {
 
     // Prefer the full unfiltered list when available
     const allRows =
-      ds instanceof FilterableArrayDatasource ? ds.allRows : undefined;
+      ds instanceof FoundationFilterableArrayDatasource
+        ? ds.allRows
+        : undefined;
 
     let sample: T | undefined;
     if (allRows && allRows.length > 0) {
@@ -485,7 +486,12 @@ export class UIMasterDetailView<T = unknown> {
     // Use the full unfiltered dataset when available so that distinct
     // value lists and autocomplete options don't shrink as the user
     // narrows the filter.
-    if (ds instanceof FilterableArrayDatasource) {
+    if (ds instanceof UIKitFilterableArrayDatasource) {
+      const all = ds.allRows;
+      return all.length < 1000 ? all : [];
+    }
+
+    if (ds instanceof FoundationFilterableArrayDatasource) {
       const all = ds.allRows;
       return all.length < 1000 ? all : [];
     }
@@ -567,9 +573,7 @@ export class UIMasterDetailView<T = unknown> {
 
       // FilterableArrayTreeDatasource: compile expression and apply
       if (treeDs instanceof FilterableArrayTreeDatasource) {
-        const fields = this.resolvedFilterFields();
-        const compiled = toFilterExpression(expression, fields);
-        treeDs.filterBy(compiled.length === 0 ? null : compiled);
+        this.applyFoundationTreeFilter(treeDs, expression);
         return;
       }
 
@@ -582,10 +586,14 @@ export class UIMasterDetailView<T = unknown> {
 
     // Table mode: apply expression to FilterableArrayDatasource
     const ds = this.resolvedTableDatasource();
-    if (ds instanceof FilterableArrayDatasource) {
-      const fields = this.resolvedFilterFields();
-      const compiled = toFilterExpression(expression, fields);
-      ds.filterBy(compiled.length === 0 ? null : compiled);
+    if (ds instanceof UIKitFilterableArrayDatasource) {
+      ds.filterBy(expression);
+      this.tableViewChild()?.refreshDatasource();
+      return;
+    }
+
+    if (ds instanceof FoundationFilterableArrayDatasource) {
+      this.applyFoundationTableFilter(ds, expression);
       this.tableViewChild()?.refreshDatasource();
     }
   }
@@ -616,5 +624,21 @@ export class UIMasterDetailView<T = unknown> {
     const roots = ds.getRootNodes();
     if (Array.isArray(roots)) walk(roots);
     return items;
+  }
+
+  private applyFoundationTableFilter(
+    ds: FoundationFilterableArrayDatasource<T>,
+    expression: FilterExpression<T>,
+  ): void {
+    const predicate = toPredicate(expression, this.resolvedFilterFields());
+    ds.filterBy(predicate ? [{ predicate }] : null);
+  }
+
+  private applyFoundationTreeFilter(
+    ds: FilterableArrayTreeDatasource<T>,
+    expression: FilterExpression<T>,
+  ): void {
+    const predicate = toPredicate(expression, this.resolvedFilterFields());
+    ds.filterBy(predicate ? [{ predicate }] : null);
   }
 }

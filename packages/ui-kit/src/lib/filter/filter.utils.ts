@@ -180,7 +180,7 @@ function buildPredicate(
 
 /**
  * Converts a {@link FilterExpression} into a single `Predicate<T>`
- * that can be passed directly to `FilterableArrayDatasource.filterBy()`.
+ * for internal bridging or predicate-based consumers.
  *
  * - **AND** junction → all rules must match.
  * - **OR** junction → at least one rule must match.
@@ -226,7 +226,7 @@ export function toPredicate<T>(
 
 /**
  * Converts a {@link FilterExpression} into a {@link CompiledFilter}
- * that can be passed to `IFilterableDatasource.filterBy()`.
+ * for internal bridging to lower-level predicate-based datasource APIs.
  *
  * - **AND** junction → one property-level predicate per rule.
  * - **OR** junction → a single row-level predicate that passes when

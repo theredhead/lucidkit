@@ -142,7 +142,7 @@ export const Default: Story = {
           "",
           "| Output | Payload | Description |",
           "|--------|---------|-------------|",
-          "| `expressionChange` | `FilterExpression<T>` | Emits a compiled filter expression that can be passed to `FilterableArrayDatasource.filterBy()` |",
+          "| `expressionChange` | `FilterExpression<T>` | Emits the serializable filter descriptor that can be passed directly to `FilterableArrayDatasource.filterBy()` |",
           "",
           "## FilterFieldDefinition",
           "",

@@ -6,15 +6,16 @@ import {
   viewChild,
 } from "@angular/core";
 
-import type { FilterExpression } from "../../core/types/filter";
-
 import { UITableView } from "../table-view.component";
 import { UIAutogenerateColumnsDirective } from "./autogenerate-columns.directive";
 import { ArrayDatasource } from "../datasources/array-datasource";
 import { FilterableArrayDatasource } from "../datasources/filterable-array-datasource";
 import { UIFilter } from "../../filter/filter.component";
 import { inferFilterFields } from "../../filter/infer-filter-fields";
-import { type FilterFieldDefinition } from "../../filter/filter.types";
+import type {
+  FilterExpression,
+  FilterFieldDefinition,
+} from "../../filter/filter.types";
 
 @Component({
   selector: "ui-demo-autogenerate",

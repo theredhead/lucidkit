@@ -15,7 +15,7 @@ import {
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import {
-  FilterableArrayDatasource,
+  FilterableArrayDatasource as FoundationFilterableArrayDatasource,
   type IDatasource,
   UISurface,
 } from "@theredhead/lucid-foundation";
@@ -25,6 +25,7 @@ import {
   UIDialogBody,
   UIDialogFooter,
   UIDialogHeader,
+  FilterableArrayDatasource as UIKitFilterableArrayDatasource,
   UIFilter,
   UIIcon,
   UIIcons,
@@ -33,7 +34,7 @@ import {
   UITableView,
   UITableViewColumn,
   inferFilterFields,
-  toFilterExpression,
+  toPredicate,
   type ColumnMeta,
   type FilterDescriptor,
   type FilterExpression,
@@ -243,7 +244,11 @@ export class UISearchView<T = unknown> {
   protected readonly resolvedShowFilter = computed(() => {
     const explicit = this.showFilter();
     if (explicit !== undefined) return explicit;
-    return this.datasource() instanceof FilterableArrayDatasource;
+    const ds = this.datasource();
+    return (
+      ds instanceof UIKitFilterableArrayDatasource ||
+      ds instanceof FoundationFilterableArrayDatasource
+    );
   });
 
   /** @internal — auto-inferred or explicit filter fields. */
@@ -262,7 +267,10 @@ export class UISearchView<T = unknown> {
 
     // Prefer the full unfiltered list when available
     const allRows =
-      ds instanceof FilterableArrayDatasource ? ds.allRows : undefined;
+      ds instanceof UIKitFilterableArrayDatasource ||
+      ds instanceof FoundationFilterableArrayDatasource
+        ? ds.allRows
+        : undefined;
 
     let sample: T | undefined;
     if (allRows && allRows.length > 0) {
@@ -288,7 +296,12 @@ export class UISearchView<T = unknown> {
     const ds = this.datasource();
     if (!ds) return [];
 
-    if (ds instanceof FilterableArrayDatasource) {
+    if (ds instanceof UIKitFilterableArrayDatasource) {
+      const all = ds.allRows;
+      return all.length < 1000 ? all : [];
+    }
+
+    if (ds instanceof FoundationFilterableArrayDatasource) {
       const all = ds.allRows;
       return all.length < 1000 ? all : [];
     }
@@ -545,12 +558,17 @@ export class UISearchView<T = unknown> {
     this.expressionChange.emit(expression);
 
     const ds = this.datasource();
-    if (ds instanceof FilterableArrayDatasource) {
-      const compiled = toFilterExpression(
-        expression,
-        this.resolvedFilterFields(),
-      );
-      ds.filterBy(compiled.length === 0 ? null : compiled);
+    if (ds instanceof UIKitFilterableArrayDatasource) {
+      ds.filterBy(expression);
+      const count = ds.getNumberOfItems();
+      this.totalItems.set(typeof count === "number" ? count : 0);
+      this.pageIndex.set(0);
+
+      // Tell the table to rebuild its adapter so it picks up the
+      // newly filtered datasource content.
+      this.tableView()?.refreshDatasource();
+    } else if (ds instanceof FoundationFilterableArrayDatasource) {
+      this.applyFoundationFilter(ds, expression);
       const count = ds.getNumberOfItems();
       this.totalItems.set(typeof count === "number" ? count : 0);
       this.pageIndex.set(0);
@@ -565,5 +583,13 @@ export class UISearchView<T = unknown> {
   /** @internal */
   protected onPageChange(event: PageChangeEvent): void {
     this.pageChange.emit(event);
+  }
+
+  private applyFoundationFilter(
+    ds: FoundationFilterableArrayDatasource<T>,
+    expression: FilterExpression<T>,
+  ): void {
+    const predicate = toPredicate(expression, this.resolvedFilterFields());
+    ds.filterBy(predicate ? [{ predicate }] : null);
   }
 }

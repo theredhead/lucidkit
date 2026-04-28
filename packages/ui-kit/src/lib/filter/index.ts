@@ -21,7 +21,7 @@ export {
   operatorsForType,
   isNoValueOperator,
 } from "./filter.types";
-export { toFilterExpression, toPredicate } from "./filter.utils";
+export { toPredicate } from "./filter.utils";
 export {
   inferFilterFields,
   humanizeKey,

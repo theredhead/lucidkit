@@ -567,9 +567,17 @@ describe("UIMasterDetailView — filter mode", () => {
 
   it("should render with a filterable datasource and allow filtering", () => {
     const fds = host.ds();
-    fds.filterBy([
-      { predicate: ((item: Person) => item.role === "Admin") as any },
-    ]);
+    fds.filterBy({
+      junction: "and",
+      rules: [
+        {
+          id: 1,
+          field: "role",
+          operator: "equals",
+          value: "Admin",
+        },
+      ],
+    });
     detectAndFlush();
 
     expect(fds.getNumberOfItems()).toBe(1);

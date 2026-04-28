@@ -5,6 +5,10 @@
  * foundation package. This module re-exports them for backwards
  * compatibility so that existing imports keep working.
  */
+import type { IDatasource } from "@theredhead/lucid-foundation";
+
+import type { FilterExpression } from "../../filter/filter.types";
+
 export {
   Emitter,
   SortDirection,
@@ -16,6 +20,20 @@ export {
   type RowResult,
   type IDatasource,
   type ISortableDatasource,
-  type IFilterableDatasource,
   type IActiveDatasource,
 } from "@theredhead/lucid-foundation";
+
+/**
+ * Public ui-kit datasource contract for serializable filtering.
+ *
+ * Unlike the lower-level foundation datasource contract, this surface
+ * accepts the serializable {@link FilterExpression} emitted by `ui-filter`.
+ */
+export interface IFilterableDatasource<T = unknown> extends IDatasource<T> {
+  /**
+   * Applies the given serializable filter descriptor.
+   *
+   * Pass `null`, `undefined`, or an empty rule list to clear the filter.
+   */
+  filterBy(expression: FilterExpression<T> | null | undefined): void;
+}

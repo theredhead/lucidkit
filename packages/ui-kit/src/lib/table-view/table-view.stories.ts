@@ -7,13 +7,14 @@ import {
   viewChild,
 } from "@angular/core";
 
-import type { FilterExpression } from "../core/types/filter";
-
 import type { Meta, StoryObj } from "@storybook/angular";
 import { moduleMetadata } from "@storybook/angular";
 
 import { UIFilter } from "../filter/filter.component";
-import type { FilterFieldDefinition } from "../filter/filter.types";
+import type {
+  FilterExpression,
+  FilterFieldDefinition,
+} from "../filter/filter.types";
 import { UIDensity, UIDensityDirective } from "../ui-density";
 import { UIBadgeColumn } from "./columns/badge-column/badge-column.component";
 import { UINumberColumn } from "./columns/number-column/number-column.component";

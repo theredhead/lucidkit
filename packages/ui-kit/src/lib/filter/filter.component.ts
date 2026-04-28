@@ -136,11 +136,11 @@ export class UIFilter<T = any> {
   });
 
   /**
-   * Emits a {@link FilterExpression} every time the filter rules change.
+   * Emits a serializable {@link FilterExpression} every time the filter rules change.
    *
    * - Emits an empty array when no valid rules remain (= show all rows).
-   * - Designed to be wired directly into
-   *   `FilterableArrayDatasource.filterBy()`.
+   * - Designed to be wired directly into the public
+   *   `ui-kit` `FilterableArrayDatasource.filterBy()` API.
    */
   readonly expressionChange = output<FilterExpression<T>>();
 
