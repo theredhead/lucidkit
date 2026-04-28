@@ -283,6 +283,9 @@ function formatNumber(n: number): string {
       .page-fill > ui-tab-group ::ng-deep .panel {
         display: flex;
         flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
       }
 
       .page-header {

@@ -215,6 +215,9 @@ function levelColor(level: string): "danger" | "warning" | "neutral" {
       .page-fill > ui-tab-group ::ng-deep .panel {
         display: flex;
         flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
       }
 
       .page-header {
