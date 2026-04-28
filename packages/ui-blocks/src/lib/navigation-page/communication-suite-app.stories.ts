@@ -1,10 +1,10 @@
 import {
-	ChangeDetectionStrategy,
-	Component,
-	computed,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
   ElementRef,
   effect,
-	signal,
+  signal,
   viewChild,
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
@@ -12,133 +12,133 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import communicationSuiteData from "./data/communication-suite-app.data.json";
 
 import {
-	ArrayCalendarDatasource,
-	type CalendarEvent,
-	FilterableArrayDatasource,
-	UIAccordion,
-	UIAccordionItem,
-	UIAvatar,
-	UIBadge,
-	UIBadgeColumn,
-	UIButton,
-	UICalendarMonthView,
-	UICard,
-	UICardBody,
-	UICardFooter,
-	UICardHeader,
-	UICheckbox,
-	UIChip,
-	UIIcon,
-	UIIcons,
-	UIInput,
+  ArrayCalendarDatasource,
+  type CalendarEvent,
+  FilterableArrayDatasource,
+  UIAccordion,
+  UIAccordionItem,
+  UIAvatar,
+  UIBadge,
+  UIBadgeColumn,
+  UIButton,
+  UICalendarMonthView,
+  UICard,
+  UICardBody,
+  UICardFooter,
+  UICardHeader,
+  UICheckbox,
+  UIChip,
+  UIIcon,
+  UIIcons,
+  UIInput,
   UIPagination,
-	UIProgress,
-	UIDropdownList,
-	type SelectOption,
-	UITabGroup,
-	UITab,
-	UITabSeparator,
-	UITabSpacer,
-	UITemplateColumn,
-	UITextColumn,
-	UIToggle,
+  UIProgress,
+  UIDropdownList,
+  type SelectOption,
+  UITabGroup,
+  UITab,
+  UITabSeparator,
+  UITabSpacer,
+  UITemplateColumn,
+  UITextColumn,
+  UIToggle,
 } from "@theredhead/lucid-kit";
 
 import { UIChatView } from "../chat-view/chat-view.component";
 import type {
-	ChatMessage as ChatViewMessage,
-	ChatParticipant,
+  ChatMessage as ChatViewMessage,
+  ChatParticipant,
 } from "../chat-view/chat-view.types";
 import { UIMasterDetailView } from "../master-detail-view/master-detail-view.component";
 import { UINavigationPage } from "./navigation-page.component";
 import {
-	navItem,
-	navGroup,
-	type NavigationNode,
+  navItem,
+  navGroup,
+  type NavigationNode,
 } from "./navigation-page.utils";
 
 // ── Domain types ─────────────────────────────────────────────────────
 
 interface MailMessage {
-	readonly id: number;
-	readonly from: string;
-	readonly fromEmail: string;
-	readonly to: string;
-	readonly toEmail: string;
-	readonly subject: string;
-	readonly preview: string;
-	readonly body: string;
-	readonly date: string;
-	readonly read: boolean;
-	readonly starred: boolean;
-	readonly folder: "inbox" | "sent" | "drafts" | "archive" | "trash";
-	readonly labels: readonly string[];
-	readonly hasAttachment: boolean;
-	readonly priority: "low" | "normal" | "high" | "urgent";
+  readonly id: number;
+  readonly from: string;
+  readonly fromEmail: string;
+  readonly to: string;
+  readonly toEmail: string;
+  readonly subject: string;
+  readonly preview: string;
+  readonly body: string;
+  readonly date: string;
+  readonly read: boolean;
+  readonly starred: boolean;
+  readonly folder: "inbox" | "sent" | "drafts" | "archive" | "trash";
+  readonly labels: readonly string[];
+  readonly hasAttachment: boolean;
+  readonly priority: "low" | "normal" | "high" | "urgent";
 }
 
 interface Contact {
-	readonly id: number;
-	readonly name: string;
-	readonly email: string;
-	readonly department: string;
-	readonly title: string;
-	readonly phone: string;
-	readonly avatar: string;
-	readonly status: "online" | "busy" | "away" | "offline";
-	readonly company: string;
-	readonly external: boolean;
+  readonly id: number;
+  readonly name: string;
+  readonly email: string;
+  readonly department: string;
+  readonly title: string;
+  readonly phone: string;
+  readonly avatar: string;
+  readonly status: "online" | "busy" | "away" | "offline";
+  readonly company: string;
+  readonly external: boolean;
 }
 
 interface ChatChannel {
-	readonly id: number;
-	readonly name: string;
-	readonly type: "direct" | "group" | "channel";
-	readonly members: number;
-	readonly lastMessage: string;
-	readonly lastSender: string;
-	readonly lastTime: string;
-	readonly unread: number;
-	readonly description: string;
-	readonly pinned: boolean;
+  readonly id: number;
+  readonly name: string;
+  readonly type: "direct" | "group" | "channel";
+  readonly members: number;
+  readonly lastMessage: string;
+  readonly lastSender: string;
+  readonly lastTime: string;
+  readonly unread: number;
+  readonly description: string;
+  readonly pinned: boolean;
 }
 
 interface ChatMessage {
-	readonly id: number;
-	readonly channelId: number;
-	readonly sender: string;
-	readonly text: string;
-	readonly time: string;
-	readonly reactions: readonly string[];
+  readonly id: number;
+  readonly channelId: number;
+  readonly sender: string;
+  readonly text: string;
+  readonly time: string;
+  readonly reactions: readonly string[];
 }
 
 interface Meeting {
-	readonly id: number;
-	readonly title: string;
-	readonly organizer: string;
-	readonly date: string;
-	readonly startTime: string;
-	readonly endTime: string;
-	readonly type: "virtual" | "in-person" | "hybrid";
-	readonly room: string;
-	readonly link: string;
-	readonly attendees: readonly string[];
-	readonly status: "confirmed" | "tentative" | "cancelled";
-	readonly description: string;
-	readonly recurring: boolean;
-	readonly recurrence: string;
+  readonly id: number;
+  readonly title: string;
+  readonly organizer: string;
+  readonly date: string;
+  readonly startTime: string;
+  readonly endTime: string;
+  readonly type: "virtual" | "in-person" | "hybrid";
+  readonly room: string;
+  readonly link: string;
+  readonly attendees: readonly string[];
+  readonly status: "confirmed" | "tentative" | "cancelled";
+  readonly description: string;
+  readonly recurring: boolean;
+  readonly recurrence: string;
 }
 
 interface Room {
-	readonly id: number;
-	readonly name: string;
-	readonly building: string;
-	readonly floor: number;
-	readonly capacity: number;
-	readonly amenities: readonly string[];
-	readonly available: boolean;
-	readonly nextAvailable: string;
-	readonly image: string;
+  readonly id: number;
+  readonly name: string;
+  readonly building: string;
+  readonly floor: number;
+  readonly capacity: number;
+  readonly amenities: readonly string[];
+  readonly available: boolean;
+  readonly nextAvailable: string;
+  readonly image: string;
 }
 
 // ── External data ───────────────────────────────────────────────────
@@ -148,54 +148,54 @@ const MAIL_MESSAGES = communicationSuiteData.mailMessages as MailMessage[];
 const CHAT_CHANNELS = communicationSuiteData.chatChannels as ChatChannel[];
 const CHAT_MESSAGES = communicationSuiteData.chatMessages as ChatMessage[];
 const currentUserData = communicationSuiteData.currentUser as {
-	readonly id: string;
-	readonly name: string;
+  readonly id: string;
+  readonly name: string;
 };
 
 const CURRENT_USER: ChatParticipant = {
-	id: currentUserData.id,
-	name: currentUserData.name,
-	avatarEmail: "kris.thompson@acme.com",
+  id: currentUserData.id,
+  name: currentUserData.name,
+  avatarEmail: "kris.thompson@acme.com",
 };
 
 const CHAT_PARTICIPANTS: Record<string, ChatParticipant> = Object.fromEntries(
-	CONTACTS.map((contact) => [
-		contact.name,
-		{
-			id: `contact-${contact.id}`,
-			name: contact.name,
-			avatarEmail: contact.email,
-		},
-	]),
+  CONTACTS.map((contact) => [
+    contact.name,
+    {
+      id: `contact-${contact.id}`,
+      name: contact.name,
+      avatarEmail: contact.email,
+    },
+  ]),
 ) as Record<string, ChatParticipant>;
 
 CHAT_PARTICIPANTS[CURRENT_USER.name] = CURRENT_USER;
 
 function toChatViewMessages(msgs: ChatMessage[]): ChatViewMessage[] {
-	const today = new Date("2026-03-25");
-	return msgs.map((m) => {
-		const match = m.time.match(/(\d+):(\d+)(?:\s*(AM|PM))?/i);
-		let hour = match ? parseInt(match[1], 10) : 0;
-		const minute = match ? parseInt(match[2], 10) : 0;
-		const meridiem = match?.[3]?.toUpperCase();
-		if (meridiem === "PM" && hour < 12) {
-			hour += 12;
-		}
-		if (meridiem === "AM" && hour === 12) {
-			hour = 0;
-		}
-		const ts = new Date(today);
-		ts.setHours(hour, minute, 0, 0);
-		return {
-			id: String(m.id),
-			content: m.text,
-			timestamp: ts,
-			sender: CHAT_PARTICIPANTS[m.sender] ?? {
-				id: m.sender.toLowerCase().replace(/\s/g, "-"),
-				name: m.sender,
-			},
-		};
-	});
+  const today = new Date("2026-03-25");
+  return msgs.map((m) => {
+    const match = m.time.match(/(\d+):(\d+)(?:\s*(AM|PM))?/i);
+    let hour = match ? parseInt(match[1], 10) : 0;
+    const minute = match ? parseInt(match[2], 10) : 0;
+    const meridiem = match?.[3]?.toUpperCase();
+    if (meridiem === "PM" && hour < 12) {
+      hour += 12;
+    }
+    if (meridiem === "AM" && hour === 12) {
+      hour = 0;
+    }
+    const ts = new Date(today);
+    ts.setHours(hour, minute, 0, 0);
+    return {
+      id: String(m.id),
+      content: m.text,
+      timestamp: ts,
+      sender: CHAT_PARTICIPANTS[m.sender] ?? {
+        id: m.sender.toLowerCase().replace(/\s/g, "-"),
+        name: m.sender,
+      },
+    };
+  });
 }
 
 const MEETINGS = communicationSuiteData.meetings as Meeting[];
@@ -1626,7 +1626,10 @@ function channelIcon(type: string): string {
                       </div>
                       <div class="compose-field">
                         <span class="field-label">Time</span>
-                        <ui-input placeholder="10:00 - 11:00" ariaLabel="Time" />
+                        <ui-input
+                          placeholder="10:00 - 11:00"
+                          ariaLabel="Time"
+                        />
                       </div>
                     </div>
                     <div class="compose-field">
@@ -2195,8 +2198,9 @@ class UIDemoCommunicationSuiteApp {
   protected readonly calendarPageSize = 120;
   protected readonly meetingsPageSize = 18;
 
-  protected readonly meetingsLoadMoreSentinel =
-    viewChild<ElementRef<HTMLElement>>("meetingsLoadMoreSentinel");
+  protected readonly meetingsLoadMoreSentinel = viewChild<
+    ElementRef<HTMLElement>
+  >("meetingsLoadMoreSentinel");
 
   protected readonly icons = ICONS;
   protected readonly unreadCount = UNREAD_COUNT;
@@ -2258,8 +2262,7 @@ class UIDemoCommunicationSuiteApp {
 
     return CALENDAR_EVENTS.filter(
       (event) =>
-        event.start.getFullYear() === year &&
-        event.start.getMonth() === month,
+        event.start.getFullYear() === year && event.start.getMonth() === month,
     );
   });
 
