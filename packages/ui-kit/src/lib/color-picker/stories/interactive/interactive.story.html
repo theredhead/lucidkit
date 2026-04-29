@@ -1,0 +1,10 @@
+<div class="colour-demo">
+  <div class="colour-demo__row">
+    <ui-color-picker [(value)]="colour" ariaLabel="Pick a colour" />
+    <span class="colour-demo__hex">{{ colour() }}</span>
+  </div>
+  <div
+    class="colour-demo__preview"
+    [style.background-color]="colour()"
+  ></div>
+</div>

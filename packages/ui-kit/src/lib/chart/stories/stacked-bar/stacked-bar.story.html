@@ -1,0 +1,10 @@
+<ui-chart
+  [source]="financialData"
+  labelProperty="month"
+  valueProperty="revenue"
+  [sources]="[
+    { name: 'Cost',   valueProperty: 'cost' },
+    { name: 'Profit', valueProperty: 'profit' }
+  ]"
+  [strategy]="stackedStrategy"
+/>

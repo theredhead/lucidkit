@@ -214,6 +214,7 @@ function processStoryFile(storyFilePath) {
         storyName,
         storySourceInfo,
         importEntries,
+        topLevelDeclarationMap,
         outputMode: output.mode,
       });
 
@@ -447,6 +448,7 @@ function getGeneratedStorySourceInfo(tsContent) {
 
 function buildWrapperContent({
   sourceText,
+  sourceFile,
   storyFilePath,
   metaObject,
   storyObject,
@@ -454,9 +456,10 @@ function buildWrapperContent({
   storyName,
   storySourceInfo,
   importEntries,
+  topLevelDeclarationMap,
   outputMode,
 }) {
-  const metaProperties = getMetaWrapperProperties(metaObject, sourceText);
+  const metaProperties = getMetaWrapperProperties(sourceFile, metaObject, sourceText);
   const storyProperties = getStoryWrapperProperties(storyObject, sourceText);
   const targetWrapperPath = path.join(
     path.dirname(storyFilePath),
@@ -468,19 +471,39 @@ function buildWrapperContent({
     [...metaProperties.nodes, ...storyProperties.nodes],
     importEntries,
   );
+  const wrapperDependencyStatements = collectTopLevelDependencyStatements(
+    sourceFile,
+    topLevelDeclarationMap,
+    [...metaProperties.nodes, ...storyProperties.nodes],
+  );
+  const wrapperDependencySources = wrapperDependencyStatements.map((statement) =>
+    sourceText.slice(statement.getFullStart(), statement.end).trim(),
+  );
+  const wrapperDependencyImportNames = collectReferencedImportNames(
+    wrapperDependencyStatements,
+    importEntries,
+  );
   const wrapperImports = getRelevantImportStatements(
     importEntries,
     storyFilePath,
     targetWrapperPath,
-    referencedNames,
+    new Set([...referencedNames, ...wrapperDependencyImportNames]),
   );
-  const metaType = metaProperties.componentTypeName
-    ? `Meta<${metaProperties.componentTypeName}>`
-    : "Meta";
-  const storyType = metaProperties.componentTypeName
-    ? `StoryObj<${metaProperties.componentTypeName}>`
-    : "StoryObj";
+  const metaType =
+    metaProperties.metaTypeText ??
+    (metaProperties.componentTypeName
+      ? `Meta<${metaProperties.componentTypeName}>`
+      : "Meta");
+  const storyType =
+    metaProperties.storyTypeText ??
+    (metaProperties.componentTypeName
+      ? `StoryObj<${metaProperties.componentTypeName}>`
+      : "StoryObj");
   const importBlock = wrapperImports.length > 0 ? `${wrapperImports.join("\n")}\n\n` : "";
+  const dependencyBlock =
+    wrapperDependencySources.length > 0
+      ? `${wrapperDependencySources.join("\n\n")}\n\n`
+      : "";
   const metaBody = [...metaProperties.texts, `decorators: [moduleMetadata({ imports: [${storySourceInfo.className}] })]`].join(",\n");
   const originalRenderText = outputMode === "render" ? getRenderPropertyText(storyObject, sourceText) : undefined;
   const storyBody = [
@@ -490,7 +513,7 @@ function buildWrapperContent({
 
   return `import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-${importBlock}import { ${storySourceInfo.className} } from "./${storyName}.story";
+${importBlock}${dependencyBlock}import { ${storySourceInfo.className} } from "./${storyName}.story";
 
 const meta = {
 ${indentLines(metaBody, 2)}
@@ -504,14 +527,22 @@ ${indentLines(storyBody, 2)}
 };`;
 }
 
-function getMetaWrapperProperties(metaObject, sourceText) {
+function getMetaWrapperProperties(sourceFile, metaObject, sourceText) {
   if (!metaObject) {
-    return { texts: [], nodes: [], componentTypeName: undefined };
+    return {
+      texts: [],
+      nodes: [],
+      componentTypeName: undefined,
+      metaTypeText: undefined,
+      storyTypeText: undefined,
+    };
   }
 
   const texts = [];
   const nodes = [];
   let componentTypeName;
+  const metaTypeText = getMetaTypeText(sourceFile, sourceText);
+  const storyTypeText = getStoryTypeText(sourceFile, sourceText, metaTypeText);
 
   for (const propertyName of ["title", "component", "tags", "parameters", "argTypes"]) {
     const property = getProperty(metaObject, propertyName);
@@ -528,7 +559,7 @@ function getMetaWrapperProperties(metaObject, sourceText) {
     nodes.push(property);
   }
 
-  return { texts, nodes, componentTypeName };
+  return { texts, nodes, componentTypeName, metaTypeText, storyTypeText };
 }
 
 function getStoryWrapperProperties(storyObject, sourceText) {
@@ -637,12 +668,50 @@ function collectReferencedImportNames(nodes, importEntries) {
   return referencedNames;
 
   function visit(node) {
-    if (ts.isIdentifier(node) && availableImportNames.has(node.text)) {
+    if (isReferenceIdentifier(node) && availableImportNames.has(node.text)) {
       referencedNames.add(node.text);
     }
 
     ts.forEachChild(node, visit);
   }
+}
+
+function collectTopLevelDependencyStatements(sourceFile, topLevelDeclarationMap, nodes) {
+  const includedStatements = new Set();
+  const pendingStatements = [];
+
+  for (const node of nodes) {
+    for (const referencedName of getReferencedTopLevelNames(node, topLevelDeclarationMap)) {
+      const referencedStatement = topLevelDeclarationMap.get(referencedName);
+
+      if (!referencedStatement || includedStatements.has(referencedStatement)) {
+        continue;
+      }
+
+      includedStatements.add(referencedStatement);
+      pendingStatements.push(referencedStatement);
+    }
+  }
+
+  while (pendingStatements.length > 0) {
+    const currentStatement = pendingStatements.pop();
+
+    for (const referencedName of getReferencedTopLevelNames(
+      currentStatement,
+      topLevelDeclarationMap,
+    )) {
+      const referencedStatement = topLevelDeclarationMap.get(referencedName);
+
+      if (!referencedStatement || includedStatements.has(referencedStatement)) {
+        continue;
+      }
+
+      includedStatements.add(referencedStatement);
+      pendingStatements.push(referencedStatement);
+    }
+  }
+
+  return sourceFile.statements.filter((statement) => includedStatements.has(statement));
 }
 
 function indentLines(content, spaces) {
@@ -1146,7 +1215,7 @@ function getReferencedTopLevelNames(statement, topLevelDeclarationMap) {
   const referencedNames = new Set();
 
   function visit(node) {
-    if (ts.isIdentifier(node) && topLevelDeclarationMap.has(node.text)) {
+    if (isReferenceIdentifier(node) && topLevelDeclarationMap.has(node.text)) {
       referencedNames.add(node.text);
     }
 
@@ -1160,6 +1229,130 @@ function getReferencedTopLevelNames(statement, topLevelDeclarationMap) {
   }
 
   return referencedNames;
+}
+
+function isReferenceIdentifier(node) {
+  if (!ts.isIdentifier(node)) {
+    return false;
+  }
+
+  const parent = node.parent;
+
+  if (!parent) {
+    return true;
+  }
+
+  if (
+    (ts.isPropertyAssignment(parent) || ts.isShorthandPropertyAssignment(parent)) &&
+    parent.name === node
+  ) {
+    return ts.isShorthandPropertyAssignment(parent);
+  }
+
+  if (
+    (ts.isPropertyDeclaration(parent) ||
+      ts.isPropertySignature(parent) ||
+      ts.isMethodDeclaration(parent) ||
+      ts.isMethodSignature(parent) ||
+      ts.isGetAccessorDeclaration(parent) ||
+      ts.isSetAccessorDeclaration(parent) ||
+      ts.isEnumMember(parent) ||
+      ts.isBindingElement(parent)) &&
+    parent.name === node
+  ) {
+    return false;
+  }
+
+  if (
+    (ts.isVariableDeclaration(parent) ||
+      ts.isParameter(parent) ||
+      ts.isTypeParameterDeclaration(parent) ||
+      ts.isClassDeclaration(parent) ||
+      ts.isInterfaceDeclaration(parent) ||
+      ts.isTypeAliasDeclaration(parent) ||
+      ts.isFunctionDeclaration(parent) ||
+      ts.isEnumDeclaration(parent) ||
+      ts.isImportSpecifier(parent) ||
+      ts.isImportClause(parent) ||
+      ts.isNamespaceImport(parent) ||
+      ts.isImportEqualsDeclaration(parent)) &&
+    parent.name === node
+  ) {
+    return false;
+  }
+
+  if (ts.isQualifiedName(parent) && parent.right === node) {
+    return false;
+  }
+
+  return true;
+}
+
+function getMetaTypeText(sourceFile, sourceText) {
+  const metaDeclaration = getMetaDeclaration(sourceFile);
+
+  if (!metaDeclaration?.initializer) {
+    return undefined;
+  }
+
+  if (metaDeclaration.type) {
+    return sourceText.slice(metaDeclaration.type.getStart(), metaDeclaration.type.end).trim();
+  }
+
+  if (
+    ts.isSatisfiesExpression(metaDeclaration.initializer) &&
+    metaDeclaration.initializer.type
+  ) {
+    return sourceText
+      .slice(metaDeclaration.initializer.type.getStart(), metaDeclaration.initializer.type.end)
+      .trim();
+  }
+
+  return undefined;
+}
+
+function getStoryTypeText(sourceFile, sourceText, metaTypeText) {
+  for (const statement of sourceFile.statements) {
+    if (!ts.isTypeAliasDeclaration(statement) || statement.name.text !== "Story") {
+      continue;
+    }
+
+    return sourceText.slice(statement.type.getStart(), statement.type.end).trim();
+  }
+
+  if (!metaTypeText?.startsWith("Meta<") || !metaTypeText.endsWith(">")) {
+    return undefined;
+  }
+
+  return `StoryObj<${metaTypeText.slice("Meta<".length, -1)}>`;
+}
+
+function getMetaDeclaration(sourceFile) {
+  for (const statement of sourceFile.statements) {
+    if (!ts.isExportAssignment(statement) || statement.isExportEquals) {
+      continue;
+    }
+
+    if (!ts.isIdentifier(statement.expression)) {
+      continue;
+    }
+
+    const metaIdentifier = statement.expression.text;
+
+    for (const candidate of sourceFile.statements) {
+      if (!ts.isVariableStatement(candidate)) {
+        continue;
+      }
+
+      for (const declaration of candidate.declarationList.declarations) {
+        if (ts.isIdentifier(declaration.name) && declaration.name.text === metaIdentifier) {
+          return declaration;
+        }
+      }
+    }
+  }
+
+  return undefined;
 }
 
 function rewriteImportSpecifiers(importStatement, sourceFilePath, targetFilePath) {

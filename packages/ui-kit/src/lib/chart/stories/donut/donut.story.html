@@ -1,0 +1,17 @@
+
+    <h3>Donut Chart — Browser Market Share</h3>
+    <ui-chart
+      [source]="data"
+      labelProperty="browser"
+      valueProperty="share"
+      [strategy]="strategy"
+      [width]="360"
+      [height]="360"
+      ariaLabel="Browser market share donut chart"
+    />
+    <p>
+      Donut variant — set <code>innerRadiusRatio</code> on the
+      <code>PieChartStrategy</code> to control the hole size (0 = full pie, 1 =
+      no visible ring).
+    </p>
+  

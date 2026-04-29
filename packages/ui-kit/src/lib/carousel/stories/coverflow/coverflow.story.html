@@ -1,0 +1,8 @@
+<ui-carousel [items]="photos" [strategy]="strategy" [(activeIndex)]="active">
+  <ng-template let-photo>
+    <div class="cover">
+      <img [src]="photo.url" [alt]="photo.name" />
+      <p class="caption">{{ photo.name }}</p>
+    </div>
+  </ng-template>
+</ui-carousel>
