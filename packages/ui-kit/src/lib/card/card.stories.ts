@@ -585,7 +585,9 @@ export const BodyImage: Story = {
         </ui-card-footer>
       </ui-card>
     `,
-    moduleMetadata: { imports: [UICardHeader, UICardBody, UICardImage, UICardFooter, UIButton] },
+    moduleMetadata: {
+      imports: [UICardHeader, UICardBody, UICardImage, UICardFooter, UIButton],
+    },
   }),
   parameters: {
     docs: {

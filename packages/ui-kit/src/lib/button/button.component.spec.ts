@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import {
-  type ButtonColor,
   type ButtonSize,
   type ButtonVariant,
   UI_BUTTON_DEFAULTS,

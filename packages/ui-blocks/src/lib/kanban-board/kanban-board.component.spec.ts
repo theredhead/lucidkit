@@ -8,6 +8,10 @@ import type {
   KanbanCardMoveEvent,
 } from "./kanban-board.types";
 
+interface KanbanBoardTestAccess {
+  onDrop(event: unknown): void;
+}
+
 interface Task {
   title: string;
   priority: string;
@@ -206,9 +210,9 @@ describe("UIKanbanBoard", () => {
         previousIndex: 0,
         currentIndex: 1,
         item: { data: todoCards[0] },
-      } as any;
+      };
 
-      (board as any).onDrop(mockEvent);
+      (board as unknown as KanbanBoardTestAccess).onDrop(mockEvent);
       fixture.detectChanges();
 
       const cols = host.columns();
@@ -235,9 +239,9 @@ describe("UIKanbanBoard", () => {
         previousIndex: 0,
         currentIndex: 0,
         item: { data: movedCard },
-      } as any;
+      };
 
-      (board as any).onDrop(mockEvent);
+      (board as unknown as KanbanBoardTestAccess).onDrop(mockEvent);
       fixture.detectChanges();
 
       const updatedCols = host.columns();

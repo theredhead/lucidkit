@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { describe, expect, it, beforeEach, vi, afterEach } from "vitest";
+import { describe, expect, it, beforeEach, vi } from "vitest";
 
 import { UIGauge } from "./gauge.component";
 import type {

@@ -319,21 +319,6 @@ const STORY_CATALOG_GROUP_ORDER = [
   "Showcases",
 ] as const;
 
-function workflowStatusColor(
-  status: WorkflowItem["status"],
-): "primary" | "warning" | "success" | "neutral" {
-  switch (status) {
-    case "active":
-      return "primary";
-    case "review":
-      return "warning";
-    case "done":
-      return "success";
-    default:
-      return "neutral";
-  }
-}
-
 @Component({
   selector: "ui-demo-quick-tour-showcase",
   standalone: true,

@@ -16,9 +16,21 @@ import type {
   MediaPreload,
 } from "./media-player.types";
 
+interface MediaErrorCtor {
+  new (code: number, message?: string): { code: number; message: string };
+  readonly MEDIA_ERR_ABORTED: number;
+  readonly MEDIA_ERR_NETWORK: number;
+  readonly MEDIA_ERR_DECODE: number;
+  readonly MEDIA_ERR_SRC_NOT_SUPPORTED: number;
+}
+
 // Polyfill MediaError for JSDOM
-if (typeof globalThis.MediaError === "undefined") {
-  (globalThis as any).MediaError = class MediaError {
+const globalWithMediaError = globalThis as unknown as {
+  MediaError?: MediaErrorCtor;
+};
+
+if (typeof globalWithMediaError.MediaError === "undefined") {
+  globalWithMediaError.MediaError = class MediaError {
     static readonly MEDIA_ERR_ABORTED = 1;
     static readonly MEDIA_ERR_NETWORK = 2;
     static readonly MEDIA_ERR_DECODE = 3;
@@ -29,7 +41,7 @@ if (typeof globalThis.MediaError === "undefined") {
       this.code = code;
       this.message = message;
     }
-  };
+  } as MediaErrorCtor;
 }
 
 @Component({
@@ -1255,7 +1267,9 @@ describe("UIMediaPlayer — public methods", () => {
       vi.spyOn(document, "createElement").mockImplementation((tag: string) => {
         if (tag === "canvas") {
           const canvas = origCreateElement("canvas");
-          canvas.getContext = vi.fn().mockReturnValue(fakeCtx) as any;
+          canvas.getContext = vi
+            .fn()
+            .mockReturnValue(fakeCtx) as unknown as typeof canvas.getContext;
           canvas.toDataURL = vi
             .fn()
             .mockReturnValue("data:image/jpeg;base64,AAAA");
@@ -1314,7 +1328,9 @@ describe("UIMediaPlayer — public methods", () => {
       vi.spyOn(document, "createElement").mockImplementation((tag: string) => {
         if (tag === "canvas") {
           const canvas = origCreateElement("canvas");
-          canvas.getContext = vi.fn().mockReturnValue(fakeCtx) as any;
+          canvas.getContext = vi
+            .fn()
+            .mockReturnValue(fakeCtx) as unknown as typeof canvas.getContext;
           canvas.toDataURL = vi
             .fn()
             .mockReturnValue("data:image/jpeg;base64,BRIGHT");
@@ -1371,7 +1387,9 @@ describe("UIMediaPlayer — public methods", () => {
       vi.spyOn(document, "createElement").mockImplementation((tag: string) => {
         if (tag === "canvas") {
           const canvas = origCreateElement("canvas");
-          canvas.getContext = vi.fn().mockReturnValue(fakeCtx) as any;
+          canvas.getContext = vi
+            .fn()
+            .mockReturnValue(fakeCtx) as unknown as typeof canvas.getContext;
           return canvas;
         }
         return origCreateElement(tag);
@@ -1409,7 +1427,9 @@ describe("UIMediaPlayer — public methods", () => {
       vi.spyOn(document, "createElement").mockImplementation((tag: string) => {
         if (tag === "canvas") {
           const canvas = origCreateElement("canvas");
-          canvas.getContext = vi.fn().mockReturnValue(null) as any;
+          canvas.getContext = vi
+            .fn()
+            .mockReturnValue(null) as unknown as typeof canvas.getContext;
           return canvas;
         }
         return origCreateElement(tag);
@@ -1452,7 +1472,9 @@ describe("UIMediaPlayer — public methods", () => {
       vi.spyOn(document, "createElement").mockImplementation((tag: string) => {
         if (tag === "canvas") {
           const canvas = origCreateElement("canvas");
-          canvas.getContext = vi.fn().mockReturnValue(fakeCtx) as any;
+          canvas.getContext = vi
+            .fn()
+            .mockReturnValue(fakeCtx) as unknown as typeof canvas.getContext;
           canvas.toDataURL = vi
             .fn()
             .mockReturnValue("data:image/jpeg;base64,DARK");

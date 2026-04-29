@@ -6,7 +6,6 @@ import {
   inject,
   input,
   model,
-  output,
   signal,
   viewChild,
 } from "@angular/core";
@@ -17,7 +16,6 @@ import { UISurface } from "@theredhead/lucid-foundation";
 
 /** A single option for {@link UIDropdownList}. */
 export interface SelectOption {
-
   /** The value emitted when this option is chosen. */
   value: string;
 

@@ -31,7 +31,6 @@ import {
   UIIcon,
   UIIcons,
   UIInput,
-  UIPagination,
   UIProgress,
   UIDropdownList,
   type SelectOption,

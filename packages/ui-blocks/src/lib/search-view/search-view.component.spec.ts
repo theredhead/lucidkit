@@ -5,6 +5,16 @@ import { FilterableArrayDatasource, UITextColumn } from "@theredhead/lucid-kit";
 
 import { UISearchView } from "./search-view.component";
 
+interface SearchViewTestAccess {
+  savedSearches(): readonly { id: string; name: string }[];
+  selectedSearchId(): string;
+  filterCollapsed(): boolean;
+  saveNewSearch(name: string): void;
+  loadSavedSearch(id: string): void;
+  deleteSavedSearch(id: string): void;
+  storageKey(): string;
+}
+
 interface Product {
   name: string;
   category: string;
@@ -223,8 +233,6 @@ describe("UISearchView", () => {
 
   describe("saved searches", () => {
     let fixture: ComponentFixture<SavedSearchHost>;
-    let host: SavedSearchHost;
-    let el: HTMLElement;
 
     beforeEach(async () => {
       localStorage.clear();
@@ -233,9 +241,7 @@ describe("UISearchView", () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(SavedSearchHost);
-      host = fixture.componentInstance;
       detectAndFlush(fixture);
-      el = fixture.nativeElement;
     });
 
     afterEach(() => {
@@ -244,18 +250,18 @@ describe("UISearchView", () => {
 
     it("should show saved search controls when storageKey is set", () => {
       const searchView = fixture.debugElement.children[0]
-        .componentInstance as UISearchView<Product>;
+        .componentInstance as SearchViewTestAccess;
       expect(searchView.storageKey()).toBe("test-searches");
     });
 
     it("should save and load a search", () => {
       const searchView = fixture.debugElement.children[0]
-        .componentInstance as UISearchView<Product>;
+        .componentInstance as unknown as SearchViewTestAccess;
 
       searchView.saveNewSearch("My Filter");
       detectAndFlush(fixture);
 
-      const list = (searchView as any).savedSearches();
+      const list = searchView.savedSearches();
       expect(list.length).toBe(1);
       expect(list[0].name).toBe("My Filter");
 
@@ -263,47 +269,47 @@ describe("UISearchView", () => {
       searchView.loadSavedSearch(savedId);
       detectAndFlush(fixture);
 
-      expect((searchView as any).selectedSearchId()).toBe(savedId);
+      expect(searchView.selectedSearchId()).toBe(savedId);
     });
 
     it("should delete a saved search", () => {
       const searchView = fixture.debugElement.children[0]
-        .componentInstance as UISearchView<Product>;
+        .componentInstance as SearchViewTestAccess;
 
       searchView.saveNewSearch("Temp Filter");
       detectAndFlush(fixture);
 
-      const savedId = (searchView as any).savedSearches()[0].id;
+      const savedId = searchView.savedSearches()[0].id;
       searchView.deleteSavedSearch(savedId);
       detectAndFlush(fixture);
 
-      expect((searchView as any).savedSearches().length).toBe(0);
-      expect((searchView as any).selectedSearchId()).toBe("");
+      expect(searchView.savedSearches().length).toBe(0);
+      expect(searchView.selectedSearchId()).toBe("");
     });
 
     it("should not save with empty name", () => {
       const searchView = fixture.debugElement.children[0]
-        .componentInstance as UISearchView<Product>;
+        .componentInstance as SearchViewTestAccess;
 
       searchView.saveNewSearch("   ");
       detectAndFlush(fixture);
 
-      expect((searchView as any).savedSearches().length).toBe(0);
+      expect(searchView.savedSearches().length).toBe(0);
     });
 
     it("should load empty string to reset selection", () => {
       const searchView = fixture.debugElement.children[0]
-        .componentInstance as UISearchView<Product>;
+        .componentInstance as SearchViewTestAccess;
 
       searchView.saveNewSearch("Test");
       detectAndFlush(fixture);
 
-      const savedId = (searchView as any).savedSearches()[0].id;
+      const savedId = searchView.savedSearches()[0].id;
       searchView.loadSavedSearch(savedId);
       detectAndFlush(fixture);
 
       searchView.loadSavedSearch("");
-      expect((searchView as any).selectedSearchId()).toBe("");
+      expect(searchView.selectedSearchId()).toBe("");
     });
   });
 
@@ -322,9 +328,6 @@ describe("UISearchView", () => {
     });
 
     it("should update total items after filter application", () => {
-      const searchView = fixture.debugElement.children[0]
-        .componentInstance as UISearchView<Product>;
-
       // Apply a filter via the public method
       const ds = host.ds() as FilterableArrayDatasource<Product>;
       ds.filterBy({
@@ -346,14 +349,16 @@ describe("UISearchView", () => {
 
     it("should toggle filter panel via toggleFilter", () => {
       const searchView = fixture.debugElement.children[0]
-        .componentInstance as UISearchView<Product>;
-      const initial = (searchView as any).filterCollapsed();
+        .componentInstance as UISearchView<Product> & {
+        filterCollapsed(): boolean;
+      };
+      const initial = searchView.filterCollapsed();
 
       searchView.toggleFilter();
-      expect((searchView as any).filterCollapsed()).toBe(!initial);
+      expect(searchView.filterCollapsed()).toBe(!initial);
 
       searchView.toggleFilter();
-      expect((searchView as any).filterCollapsed()).toBe(initial);
+      expect(searchView.filterCollapsed()).toBe(initial);
     });
   });
 });

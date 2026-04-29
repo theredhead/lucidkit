@@ -6,7 +6,7 @@ import {
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UISignature } from "./signature.component";
-import type { SignatureValue } from "./signature.types";
+import type { SignatureImageValue, SignatureValue } from "./signature.types";
 
 // ── Demo wrappers ─────────────────────────────────────────────────────────────
 
@@ -103,10 +103,11 @@ Image captured &bull; {{
   styles: STORY_HOST_STYLES,
 })
 class ImageOnlyDemo {
-   
   protected readonly sig = signal<SignatureValue>(null);
   protected get imgValue() {
-    return this.sig()?.kind === "image" ? (this.sig() as any) : null;
+    return this.sig()?.kind === "image"
+      ? (this.sig() as SignatureImageValue)
+      : null;
   }
 }
 

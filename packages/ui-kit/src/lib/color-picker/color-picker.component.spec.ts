@@ -4,6 +4,8 @@ import { Subject } from "rxjs";
 import { PopoverService } from "../popover/popover.service";
 import { UIColorPicker } from "./color-picker.component";
 
+type PopoverRefMock = ReturnType<PopoverService["openPopover"]>;
+
 describe("UIColorPicker", () => {
   let component: UIColorPicker;
   let fixture: ComponentFixture<UIColorPicker>;
@@ -97,7 +99,9 @@ describe("UIColorPicker", () => {
       const closed$ = new Subject<unknown>();
       const spy = vi
         .spyOn(TestBed.inject(PopoverService), "openPopover")
-        .mockReturnValue({ closed: closed$.asObservable() } as any);
+        .mockReturnValue({
+          closed: closed$.asObservable(),
+        } as unknown as PopoverRefMock);
 
       component.open();
 
@@ -109,7 +113,7 @@ describe("UIColorPicker", () => {
       const closed$ = new Subject<unknown>();
       vi.spyOn(TestBed.inject(PopoverService), "openPopover").mockReturnValue({
         closed: closed$.asObservable(),
-      } as any);
+      } as unknown as PopoverRefMock);
 
       const emitSpy = vi.fn();
       component.colorChange.subscribe(emitSpy);
@@ -126,7 +130,7 @@ describe("UIColorPicker", () => {
       const closed$ = new Subject<unknown>();
       vi.spyOn(TestBed.inject(PopoverService), "openPopover").mockReturnValue({
         closed: closed$.asObservable(),
-      } as any);
+      } as unknown as PopoverRefMock);
 
       component.open();
       closed$.next(null);

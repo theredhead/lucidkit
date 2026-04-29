@@ -3,7 +3,10 @@ import { Component } from "@angular/core";
 
 import { UIInput } from "./input.component";
 import type { TextAdapter } from "./adapters/text-adapter";
-import { isPopupAdapter } from "./adapters/popup-text-adapter";
+import {
+  isPopupAdapter,
+  type PopupTextAdapter,
+} from "./adapters/popup-text-adapter";
 import {
   DecimalTextAdapter,
   EmailTextAdapter,
@@ -215,9 +218,7 @@ describe("UIInput", () => {
       fixture.componentRef.setInput("multiline", true);
       fixture.detectChanges();
 
-      expect(
-        fixture.nativeElement.classList.contains("multiline"),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("multiline")).toBe(true);
     });
 
     it("should forward placeholder to the textarea", () => {
@@ -385,18 +386,14 @@ describe("UIInput", () => {
       fixture.componentRef.setInput("adapter", new EmailTextAdapter());
       fixture.detectChanges();
 
-      expect(
-        fixture.nativeElement.classList.contains("has-prefix"),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("has-prefix")).toBe(true);
     });
 
     it("should add has-suffix host class", () => {
       fixture.componentRef.setInput("adapter", new UrlTextAdapter());
       fixture.detectChanges();
 
-      expect(
-        fixture.nativeElement.classList.contains("has-suffix"),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("has-suffix")).toBe(true);
     });
   });
 
@@ -743,9 +740,7 @@ describe("UIInput", () => {
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      expect(
-        fixture.nativeElement.classList.contains("invalid"),
-      ).toBe(true);
+      expect(fixture.nativeElement.classList.contains("invalid")).toBe(true);
     });
 
     it("should not add invalid host class when valid", () => {
@@ -758,9 +753,7 @@ describe("UIInput", () => {
       input.dispatchEvent(new Event("input"));
       fixture.detectChanges();
 
-      expect(
-        fixture.nativeElement.classList.contains("invalid"),
-      ).toBe(false);
+      expect(fixture.nativeElement.classList.contains("invalid")).toBe(false);
     });
 
     it("should remain valid when adapter has no validate method", () => {
@@ -1268,8 +1261,8 @@ describe("UIInput", () => {
     });
 
     it("should have popupPanel", () => {
-      expect((adapter as any).popupPanel).toBeTruthy();
-      expect(typeof (adapter as any).popupPanel).toBe("function");
+      expect((adapter as PopupTextAdapter).popupPanel).toBeTruthy();
+      expect(typeof (adapter as PopupTextAdapter).popupPanel).toBe("function");
     });
 
     it("should expose hasPopup when set on UIInput", () => {

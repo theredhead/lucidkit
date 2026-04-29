@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { FilterableArrayDatasource, UITextColumn } from "@theredhead/lucid-kit";

@@ -541,10 +541,7 @@ registerTextTemplateBlockProvider({
     const emailAttr = block.attributes["email"] ?? "";
     const textAttr = block.attributes["text"] ?? "";
     const href = context.data[emailAttr] ?? emailAttr;
-    const text =
-      context.data[textAttr] ??
-      textAttr ??
-      href;
+    const text = context.data[textAttr] ?? textAttr ?? href;
     return `<a href="mailto:${escapeAttribute(String(href))}">${escapeText(
       String(text),
     )}</a>`;

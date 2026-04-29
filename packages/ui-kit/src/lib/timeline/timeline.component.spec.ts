@@ -10,6 +10,14 @@ import type {
   TimelineOrientation,
 } from "./timeline.types";
 
+type TimelineTestAccess = UITimeline<TestEvent> & {
+  resolveComponent(event: TestEvent): unknown;
+  buildComponentInputs(
+    event: TestEvent,
+    index: number,
+  ): Record<string, unknown>;
+};
+
 interface TestEvent {
   id: number;
   title: string;
@@ -271,18 +279,15 @@ describe("UITimeline — component rendering", () => {
 
   it("should use resolveComponent to get the component class", () => {
     const timeline = fixture.debugElement.children[0]
-      .componentInstance as UITimeline<TestEvent>;
-    const comp = (timeline as any)["resolveComponent"](TEST_EVENTS[0]);
+      .componentInstance as TimelineTestAccess;
+    const comp = timeline.resolveComponent(TEST_EVENTS[0]);
     expect(comp).toBe(TestEventCard);
   });
 
   it("should build component inputs with index and first/last flags", () => {
     const timeline = fixture.debugElement.children[0]
-      .componentInstance as UITimeline<TestEvent>;
-    const inputs = (timeline as any)["buildComponentInputs"](
-      TEST_EVENTS[0],
-      0,
-    ) as Record<string, unknown>;
+      .componentInstance as TimelineTestAccess;
+    const inputs = timeline.buildComponentInputs(TEST_EVENTS[0], 0);
     expect(inputs["event"]).toBe(TEST_EVENTS[0]);
     expect(inputs["index"]).toBe(0);
     expect(inputs["first"]).toBe(true);

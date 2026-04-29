@@ -7,9 +7,20 @@ import { FilterableArrayDatasource } from "../table-view/datasources/filterable-
 import { SortableArrayDatasource } from "@theredhead/lucid-foundation";
 import type { IDatasource } from "../table-view/datasources/datasource";
 import type {
+  RepeaterItemContext,
   RepeaterReorderEvent,
   RepeaterTransferEvent,
 } from "./repeater.types";
+
+interface RepeaterTestAccess<T> {
+  handleReorder(previousIndex: number, currentIndex: number): void;
+  handleTransfer(
+    target: unknown,
+    previousIndex: number,
+    currentIndex: number,
+  ): void;
+  buildContext(item: T, index: number): RepeaterItemContext<T>;
+}
 
 interface TestItem {
   id: number;
@@ -307,7 +318,7 @@ describe("UIRepeater", () => {
       const repeater = reorderHost.repeater();
 
       // Invoke the reorder callback directly through the drag handler's callback
-      (repeater as any).handleReorder(0, 2);
+      (repeater as unknown as RepeaterTestAccess<TestItem>).handleReorder(0, 2);
       reorderFixture.detectChanges();
       await reorderFixture.whenStable();
       reorderFixture.detectChanges();
@@ -331,9 +342,12 @@ describe("UIRepeater", () => {
       reorderFixture.detectChanges();
 
       const repeater = reorderFixture.componentInstance.repeater();
-      expect(() => (repeater as any).handleReorder(0, 1)).toThrow(
-        /does not implement IReorderableDatasource/,
-      );
+      expect(() =>
+        (repeater as unknown as RepeaterTestAccess<TestItem>).handleReorder(
+          0,
+          1,
+        ),
+      ).toThrow(/does not implement IReorderableDatasource/);
     });
   });
 
@@ -353,14 +367,18 @@ describe("UIRepeater", () => {
       const repeater1 = transferFixture.componentInstance.repeater1();
       const repeater2 = transferFixture.componentInstance.repeater2();
       expect(() =>
-        (repeater1 as any).handleTransfer(repeater2.dragHandler, 0, 0),
+        (repeater1 as unknown as RepeaterTestAccess<TestItem>).handleTransfer(
+          repeater2.dragHandler,
+          0,
+          0,
+        ),
       ).toThrow(/does not implement IRemovableDatasource/);
     });
 
     it("should throw if target datasource is not insertable", async () => {
       const nonInsertable: IDatasource<TestItem> = {
         getNumberOfItems: () => 1,
-        getObjectAtRowIndex: (i: number) => ({ id: 99, name: "Z" }),
+        getObjectAtRowIndex: (_i: number) => ({ id: 99, name: "Z" }),
       };
 
       const transferFixture = TestBed.createComponent(TransferHost);
@@ -372,7 +390,11 @@ describe("UIRepeater", () => {
       const repeater1 = transferFixture.componentInstance.repeater1();
       const repeater2 = transferFixture.componentInstance.repeater2();
       expect(() =>
-        (repeater1 as any).handleTransfer(repeater2.dragHandler, 0, 0),
+        (repeater1 as unknown as RepeaterTestAccess<TestItem>).handleTransfer(
+          repeater2.dragHandler,
+          0,
+          0,
+        ),
       ).toThrow(/does not implement IInsertableDatasource/);
     });
 
@@ -387,7 +409,11 @@ describe("UIRepeater", () => {
       const repeater2 = transferHost.repeater2();
 
       // Transfer item from repeater1 index 0 to repeater2 index 0
-      (repeater1 as any).handleTransfer(repeater2.dragHandler, 0, 0);
+      (repeater1 as unknown as RepeaterTestAccess<TestItem>).handleTransfer(
+        repeater2.dragHandler,
+        0,
+        0,
+      );
       transferFixture.detectChanges();
       await transferFixture.whenStable();
       transferFixture.detectChanges();
@@ -404,7 +430,9 @@ describe("UIRepeater", () => {
     it("should produce correct context for first item", () => {
       const repeater = fixture.debugElement.children[0]
         .componentInstance as UIRepeater<TestItem>;
-      const ctx = (repeater as any).buildContext(TEST_DATA[0], 0);
+      const ctx = (
+        repeater as unknown as RepeaterTestAccess<TestItem>
+      ).buildContext(TEST_DATA[0], 0);
       expect(ctx.$implicit).toBe(TEST_DATA[0]);
       expect(ctx.index).toBe(0);
       expect(ctx.first).toBe(true);
@@ -416,7 +444,9 @@ describe("UIRepeater", () => {
     it("should produce correct context for last item", () => {
       const repeater = fixture.debugElement.children[0]
         .componentInstance as UIRepeater<TestItem>;
-      const ctx = (repeater as any).buildContext(TEST_DATA[4], 4);
+      const ctx = (
+        repeater as unknown as RepeaterTestAccess<TestItem>
+      ).buildContext(TEST_DATA[4], 4);
       expect(ctx.last).toBe(true);
       expect(ctx.first).toBe(false);
       expect(ctx.even).toBe(true);

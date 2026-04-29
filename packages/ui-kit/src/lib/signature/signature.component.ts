@@ -11,7 +11,6 @@ import {
   model,
   output,
   signal,
-  untracked,
   viewChild,
 } from "@angular/core";
 import { NG_VALUE_ACCESSOR, type ControlValueAccessor } from "@angular/forms";
@@ -421,7 +420,7 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
   }
 
   /** @internal */
-  protected onPointerUp(event: PointerEvent): void {
+  protected onPointerUp(_event: PointerEvent): void {
     if (!this._isDrawing) return;
     this._isDrawing = false;
 

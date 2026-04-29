@@ -1,9 +1,26 @@
 import { createMarkedParser, createMarkdownItParser } from "../markdown-parser";
+import type { RichTextEditorContext } from "../rich-text-editor.strategy";
+import type {
+  RichTextFormatAction,
+  RichTextPlaceholder,
+} from "../rich-text-editor.types";
 import {
   MarkdownEditingStrategy,
   markdownToHtml,
   htmlToMarkdown,
 } from "./markdown-editing.strategy";
+
+function createContext(
+  placeholders: readonly RichTextPlaceholder[] = [],
+): RichTextEditorContext {
+  return {
+    editorEl: document.createElement("div"),
+    hostEl: document.createElement("div"),
+    placeholders,
+    sanitise: false,
+    restoreFocus: () => {},
+  };
+}
 
 describe("markdownToHtml", () => {
   it("should convert headings", () => {
@@ -225,21 +242,21 @@ describe("MarkdownEditingStrategy", () => {
     it("should return textarea value", () => {
       textarea.value = "# Hello";
       const divEl = document.createElement("div");
-      const ctx = { placeholders: [] } as any;
+      const ctx = createContext();
       expect(strategy.serialiseContent(divEl, ctx)).toBe("# Hello");
     });
 
     it("should return empty string when no textarea", () => {
       strategy.textareaEl = null;
       const divEl = document.createElement("div");
-      const ctx = { placeholders: [] } as any;
+      const ctx = createContext();
       expect(strategy.serialiseContent(divEl, ctx)).toBe("");
     });
   });
 
   describe("deserialiseContent", () => {
     it("should convert markdown to HTML using built-in parser", () => {
-      const ctx = { placeholders: [] } as any;
+      const ctx = createContext();
       const result = strategy.deserialiseContent("**bold**", ctx);
       expect(result).toContain("<b>bold</b>");
     });
@@ -247,16 +264,14 @@ describe("MarkdownEditingStrategy", () => {
     it("should use custom parser when provided", () => {
       const parser = { toHtml: () => "<custom>output</custom>" };
       const s = new MarkdownEditingStrategy(parser);
-      const ctx = { placeholders: [] } as any;
+      const ctx = createContext();
       expect(s.deserialiseContent("any", ctx)).toContain(
         "<custom>output</custom>",
       );
     });
 
     it("should expand placeholder XML blocks", () => {
-      const ctx = {
-        placeholders: [{ key: "name", label: "Full Name" }],
-      } as any;
+      const ctx = createContext([{ key: "name", label: "Full Name" }]);
       const result = strategy.deserialiseContent(
         'Hello <placeholder key="name" />',
         ctx,
@@ -313,12 +328,12 @@ describe("MarkdownEditingStrategy", () => {
   describe("execAction", () => {
     it("should return true when no textarea", () => {
       strategy.textareaEl = null;
-      const ctx = { placeholders: [] } as any;
+      const ctx = createContext();
       expect(strategy.execAction("bold", ctx)).toBe(true);
     });
 
     it("should return false for link action (deferred to dialog)", () => {
-      const ctx = { placeholders: [] } as any;
+      const ctx = createContext();
       expect(strategy.execAction("link", ctx)).toBe(false);
     });
 
@@ -326,7 +341,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello world";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 5;
-      strategy.execAction("bold", { placeholders: [] } as any);
+      strategy.execAction("bold", createContext());
       expect(textarea.value).toBe("**hello** world");
     });
 
@@ -334,7 +349,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 5;
-      strategy.execAction("italic", { placeholders: [] } as any);
+      strategy.execAction("italic", createContext());
       expect(textarea.value).toBe("*hello*");
     });
 
@@ -342,7 +357,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 5;
-      strategy.execAction("strikethrough", { placeholders: [] } as any);
+      strategy.execAction("strikethrough", createContext());
       expect(textarea.value).toBe("~~hello~~");
     });
 
@@ -350,7 +365,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 5;
-      strategy.execAction("underline", { placeholders: [] } as any);
+      strategy.execAction("underline", createContext());
       expect(textarea.value).toBe("++hello++");
     });
 
@@ -360,7 +375,10 @@ describe("MarkdownEditingStrategy", () => {
       textarea.selectionEnd = 5;
       // inlineCode is not in INLINE_WRAPS; execAction returns true
       expect(
-        strategy.execAction("inlineCode" as any, { placeholders: [] } as any),
+        strategy.execAction(
+          "inlineCode" as unknown as RichTextFormatAction,
+          createContext(),
+        ),
       ).toBe(true);
     });
 
@@ -368,7 +386,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("heading1", { placeholders: [] } as any);
+      strategy.execAction("heading1", createContext());
       expect(textarea.value).toBe("# hello");
     });
 
@@ -376,7 +394,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("heading2", { placeholders: [] } as any);
+      strategy.execAction("heading2", createContext());
       expect(textarea.value).toBe("## hello");
     });
 
@@ -384,7 +402,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("heading3", { placeholders: [] } as any);
+      strategy.execAction("heading3", createContext());
       expect(textarea.value).toBe("### hello");
     });
 
@@ -392,7 +410,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "item";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("unorderedList", { placeholders: [] } as any);
+      strategy.execAction("unorderedList", createContext());
       expect(textarea.value).toBe("- item");
     });
 
@@ -400,7 +418,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "item";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("orderedList", { placeholders: [] } as any);
+      strategy.execAction("orderedList", createContext());
       expect(textarea.value).toBe("1. item");
     });
 
@@ -408,7 +426,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "text";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("blockquote", { placeholders: [] } as any);
+      strategy.execAction("blockquote", createContext());
       expect(textarea.value).toBe("> text");
     });
 
@@ -416,7 +434,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("horizontalRule", { placeholders: [] } as any);
+      strategy.execAction("horizontalRule", createContext());
       expect(textarea.value).toContain("---");
     });
 
@@ -424,7 +442,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "code";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 4;
-      strategy.execAction("codeBlock", { placeholders: [] } as any);
+      strategy.execAction("codeBlock", createContext());
       expect(textarea.value).toContain("```");
     });
 
@@ -432,7 +450,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "**bold**";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 8;
-      strategy.execAction("removeFormat", { placeholders: [] } as any);
+      strategy.execAction("removeFormat", createContext());
       expect(textarea.value).toBe("bold");
     });
 
@@ -440,7 +458,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("indent", { placeholders: [] } as any);
+      strategy.execAction("indent", createContext());
       expect(textarea.value).toBe("  hello");
     });
 
@@ -448,12 +466,12 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "  hello";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.execAction("outdent", { placeholders: [] } as any);
+      strategy.execAction("outdent", createContext());
       expect(textarea.value).toBe("hello");
     });
 
     it("should silently handle alignment actions", () => {
-      const ctx = { placeholders: [] } as any;
+      const ctx = createContext();
       expect(strategy.execAction("alignLeft", ctx)).toBe(true);
       expect(strategy.execAction("alignCenter", ctx)).toBe(true);
       expect(strategy.execAction("alignRight", ctx)).toBe(true);
@@ -466,9 +484,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "# Heading";
       textarea.selectionStart = 2;
       textarea.selectionEnd = 2;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.has("heading1")).toBe(true);
     });
 
@@ -476,9 +492,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "## Heading";
       textarea.selectionStart = 3;
       textarea.selectionEnd = 3;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.has("heading2")).toBe(true);
     });
 
@@ -486,9 +500,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "- item";
       textarea.selectionStart = 2;
       textarea.selectionEnd = 2;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.has("unorderedList")).toBe(true);
     });
 
@@ -496,9 +508,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "1. item";
       textarea.selectionStart = 3;
       textarea.selectionEnd = 3;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.has("orderedList")).toBe(true);
     });
 
@@ -506,9 +516,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "> quote";
       textarea.selectionStart = 2;
       textarea.selectionEnd = 2;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.has("blockquote")).toBe(true);
     });
 
@@ -516,9 +524,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "```\ncode\n```";
       textarea.selectionStart = 5;
       textarea.selectionEnd = 5;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.has("codeBlock")).toBe(true);
     });
 
@@ -526,17 +532,13 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "**bold**";
       textarea.selectionStart = 3;
       textarea.selectionEnd = 7;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.has("bold")).toBe(true);
     });
 
     it("should return empty set when no textarea", () => {
       strategy.textareaEl = null;
-      const formats = strategy.refreshActiveFormats({
-        placeholders: [],
-      } as any);
+      const formats = strategy.refreshActiveFormats(createContext());
       expect(formats.size).toBe(0);
     });
   });
@@ -546,9 +548,12 @@ describe("MarkdownEditingStrategy", () => {
       textarea.value = "";
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
-      strategy.applyLink({ url: "https://x.com", text: "X" }, null, null, {
-        placeholders: [],
-      } as any);
+      strategy.applyLink(
+        { url: "https://x.com", text: "X" },
+        null,
+        null,
+        createContext(),
+      );
       expect(textarea.value).toBe("[X](https://x.com)");
     });
   });
@@ -582,7 +587,7 @@ describe("MarkdownEditingStrategy", () => {
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
       const event = fakeClipboardEvent({ "text/plain": "pasted text" });
-      strategy.handlePaste(event, { placeholders: [] } as any);
+      strategy.handlePaste(event, createContext());
       expect(textarea.value).toBe("pasted text");
     });
 
@@ -594,7 +599,7 @@ describe("MarkdownEditingStrategy", () => {
         "text/html": "<b>bold</b>",
         "text/plain": "bold",
       });
-      strategy.handlePaste(event, { placeholders: [] } as any);
+      strategy.handlePaste(event, createContext());
       expect(textarea.value).toBe("**bold**");
     });
   });

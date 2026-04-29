@@ -1,11 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  inject,
   signal,
   viewChild,
-  viewChildren,
 } from "@angular/core";
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import { UIDashboard } from "./dashboard.component";
@@ -582,7 +579,8 @@ const meta: Meta<UIDashboard> = {
   argTypes: {
     columns: {
       control: "text",
-      description: "Number of fixed columns or `'auto'` for responsive auto-fill.",
+      description:
+        "Number of fixed columns or `'auto'` for responsive auto-fill.",
     },
     gap: {
       control: "number",

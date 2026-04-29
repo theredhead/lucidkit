@@ -1,6 +1,6 @@
 import { DatasourceAdapter } from "./datasource-adapter";
 import { ArrayDatasource } from "./array-datasource";
-import type { IDatasource, IActiveDatasource, RowResult } from "./datasource";
+import type { IDatasource, RowResult } from "./datasource";
 import { Emitter } from "./datasource";
 import type {
   RowChangedNotification,

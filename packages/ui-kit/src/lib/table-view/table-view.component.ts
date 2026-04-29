@@ -18,7 +18,6 @@ import {
 import {
   type IDatasource,
   SortDirection,
-  type SortExpression,
   isFilterableDatasource,
   isSortableDatasource,
   UISurface,

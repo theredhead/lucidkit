@@ -6,7 +6,6 @@ import {
   SortState,
   ColumnResizeEvent,
 } from "./table-view-header.component";
-import { UITableViewColumn } from "../columns/table-column.directive";
 
 // Minimal stub that provides what UITableHeader needs
 class StubColumn {
@@ -20,6 +19,8 @@ class StubColumnNonSortable {
   public readonly headerText = signal("Column 2");
   public readonly sortable = signal(false);
 }
+
+type StubColumnLike = StubColumn | StubColumnNonSortable;
 
 @Component({
   standalone: true,
@@ -41,7 +42,9 @@ class StubColumnNonSortable {
   `,
 })
 class TestHost {
-  public readonly columns = signal<readonly any[]>([new StubColumn()]);
+  public readonly columns = signal<readonly StubColumnLike[]>([
+    new StubColumn(),
+  ]);
   public readonly showRowIndex = signal(false);
   public readonly resizable = signal(false);
   public readonly columnWidths = signal<Record<string, number>>({});
@@ -215,9 +218,11 @@ describe("UITableHeader", () => {
     });
 
     it("should reset sort when clicking a different column", () => {
-      const col2 = new StubColumn();
-      (col2 as any).key = signal("col-other");
-      (col2 as any).headerText = signal("Other");
+      const col2: StubColumnLike = {
+        key: signal("col-other"),
+        headerText: signal("Other"),
+        sortable: signal(true),
+      };
       host.columns.set([new StubColumn(), col2]);
       fixture.detectChanges();
 

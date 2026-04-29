@@ -7,7 +7,6 @@ import {
   effect,
   inject,
   input,
-  signal,
   untracked,
   ViewContainerRef,
   viewChild,
@@ -47,7 +46,6 @@ import { isFlairComponent } from "../../types/form-schema.types";
   styleUrl: "./form-field.component.scss",
 })
 export class UIFormField {
-
   /** The field state managed by the {@link FormEngine}. */
   public readonly state = input.required<FieldState>();
 
