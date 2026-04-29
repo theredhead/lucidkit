@@ -1156,6 +1156,10 @@ function rewriteImportSpecifiers(importStatement, sourceFilePath, targetFilePath
 }
 
 function rewriteImportPath(specifier, sourceFilePath, targetFilePath) {
+  if (!specifier.startsWith(".")) {
+    return specifier;
+  }
+
   const resolvedImportPath = path.resolve(path.dirname(sourceFilePath), specifier);
   let relativeSpecifier = path.relative(
     path.dirname(targetFilePath),

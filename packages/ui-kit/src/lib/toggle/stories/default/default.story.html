@@ -1,0 +1,16 @@
+
+    <div
+      style="display: flex; flex-direction: column; gap: 16px; font-family: system-ui, sans-serif;"
+    >
+      <ui-toggle [(value)]="basic">Simple toggle</ui-toggle>
+      <ui-toggle [(value)]="dark" onLabel="ON" offLabel="OFF"
+        >Dark mode</ui-toggle
+      >
+      <ui-toggle [(value)]="notify" onLabel="Yes" offLabel="No"
+        >Notifications</ui-toggle
+      >
+      <p style="font-size: 13px; color: #888; margin: 0;">
+        basic={{ basic() }}, dark={{ dark() }}, notify={{ notify() }}
+      </p>
+    </div>
+  
