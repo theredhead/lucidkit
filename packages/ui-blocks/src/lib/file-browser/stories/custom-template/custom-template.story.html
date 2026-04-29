@@ -1,0 +1,7 @@
+<ui-file-browser [datasource]="ds">
+  <ng-template #entryTemplate let-entry>
+    <span>{{ entry.name }}</span>
+    <span class="meta">{{ entry.meta?.size }}</span>
+    <span class="meta">{{ entry.meta?.type }}</span>
+  </ng-template>
+</ui-file-browser>

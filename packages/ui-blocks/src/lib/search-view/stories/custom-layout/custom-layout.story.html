@@ -1,0 +1,12 @@
+<ui-search-view [datasource]="ds" layout="custom" title="Catalog" [showFilter]="true">
+  <ng-template #results let-items>
+    <div class="product-grid">
+      @for (item of items; track item.id) {
+        <div class="product-card">
+          <h4>{{ item.name }}</h4>
+          <p>{{ item.category }}</p>
+        </div>
+      }
+    </div>
+  </ng-template>
+</ui-search-view>

@@ -1,0 +1,65 @@
+:host {
+  display: block;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+}
+
+.pane {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  color: var(--ui-text-muted, #5a6470);
+  background: var(--ui-surface, #ffffff);
+}
+
+.filename {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.language {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ui-text-muted, #5a6470);
+  background: var(--ui-surface-2, #f3f5f7);
+}
+
+.code {
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 0.9rem;
+  font-family:
+    ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre;
+  tab-size: 2;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface-2, #f3f5f7);
+}
+
+.empty {
+  padding: 1rem;
+  border: 1px dashed var(--ui-border, #d7dce2);
+  border-radius: 0.9rem;
+  font-size: 0.9rem;
+  color: var(--ui-text-muted, #5a6470);
+  background: var(--ui-surface-2, #f3f5f7);
+}

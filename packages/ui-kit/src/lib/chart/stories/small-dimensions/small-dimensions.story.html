@@ -1,0 +1,39 @@
+
+    <h3>Small Charts (200 × 150)</h3>
+    <ui-chart
+      [source]="data"
+      labelProperty="quarter"
+      valueProperty="value"
+      [strategy]="barStrategy"
+      [showLegend]="false"
+      [width]="200"
+      [height]="150"
+    />
+    <ui-chart
+      [source]="data"
+      labelProperty="quarter"
+      valueProperty="value"
+      [strategy]="lineStrategy"
+      [showLegend]="false"
+      [width]="200"
+      [height]="150"
+    />
+    <ui-chart
+      [source]="data"
+      labelProperty="quarter"
+      valueProperty="value"
+      [strategy]="scatterStrategy"
+      [showLegend]="false"
+      [width]="200"
+      [height]="150"
+    />
+    <ui-chart
+      [source]="pieData"
+      labelProperty="quarter"
+      valueProperty="value"
+      [strategy]="pieStrategy"
+      [showLegend]="false"
+      [width]="150"
+      [height]="150"
+    />
+  

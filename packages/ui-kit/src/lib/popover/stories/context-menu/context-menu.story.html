@@ -1,0 +1,10 @@
+
+    <ui-button #anchor variant="filled" (click)="open()">
+      Right-click style menu
+    </ui-button>
+    @if (lastAction()) {
+      <div class="story-output">
+        <strong>Chosen action:</strong> {{ lastAction() }}
+      </div>
+    }
+  

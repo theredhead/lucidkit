@@ -1,0 +1,25 @@
+@if (visibleTabs().length > 0) {
+  <ui-tab-group panelStyle="flat" [ariaLabel]="ariaLabel()">
+    @for (tab of visibleTabs(); track trackTab($index, tab)) {
+      <ui-tab [label]="tab.label">
+        <div class="pane">
+          @if (tab.filename || tab.language) {
+            <div class="meta">
+              @if (tab.filename) {
+                <span class="filename">{{ tab.filename }}</span>
+              }
+
+              @if (tab.language) {
+                <span class="language">{{ tab.language }}</span>
+              }
+            </div>
+          }
+
+          <pre class="code"><code>{{ tab.code }}</code></pre>
+        </div>
+      </ui-tab>
+    }
+  </ui-tab-group>
+} @else {
+  <div class="empty">{{ emptyMessage() }}</div>
+}

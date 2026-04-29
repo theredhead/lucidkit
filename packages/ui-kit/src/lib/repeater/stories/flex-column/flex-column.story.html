@@ -1,0 +1,19 @@
+
+    <ui-repeater [datasource]="ds" [limit]="6">
+      <ng-template let-photo let-first="first" let-last="last">
+        <div class="row" [class.first]="first" [class.last]="last">
+          <img
+            [src]="photo.url"
+            [alt]="photo.name"
+            loading="lazy"
+            width="64"
+            height="64"
+          />
+          <div class="info">
+            <strong>{{ photo.name }}</strong>
+            <span class="meta">{{ photo.width }}×{{ photo.height }}</span>
+          </div>
+        </div>
+      </ng-template>
+    </ui-repeater>
+  

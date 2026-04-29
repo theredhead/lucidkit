@@ -1,0 +1,5 @@
+<ui-file-browser
+  [datasource]="ds"
+  (fileActivated)="onOpen($event)"
+  (directoryChange)="onNavigate($event)"
+/>

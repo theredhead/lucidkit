@@ -1,0 +1,18 @@
+
+    <h3>Year-over-Year — 2024 vs 2025</h3>
+    <ui-chart
+      labelProperty="month"
+      valueProperty="revenue"
+      [sources]="layers"
+      [strategy]="strategy"
+      [width]="560"
+      [height]="340"
+      ariaLabel="2024 vs 2025 revenue comparison"
+    />
+    <p>
+      Each layer provides its own <code>data</code> array. The component-level
+      <code>[source]</code> is not needed — each layer self-contains its data.
+      Both share the same <code>labelProperty</code> and
+      <code>valueProperty</code>.
+    </p>
+  

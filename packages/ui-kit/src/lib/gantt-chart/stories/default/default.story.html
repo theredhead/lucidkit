@@ -1,0 +1,18 @@
+
+    <p class="demo-info">
+      A software project timeline with tasks, sub-tasks, milestones, and
+      dependency chains.
+    </p>
+    <ui-gantt-chart
+      [datasource]="datasource"
+      viewMode="day"
+      [showToday]="true"
+      [rowHeight]="36"
+      (taskClicked)="onTask($event)"
+    />
+    @if (clickedTask()) {
+      <p class="demo-info" style="margin-top: 0.75rem">
+        Clicked: <strong>{{ clickedTask() }}</strong>
+      </p>
+    }
+  

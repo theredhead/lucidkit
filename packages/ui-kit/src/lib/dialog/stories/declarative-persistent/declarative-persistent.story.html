@@ -1,0 +1,22 @@
+
+    <ui-button (click)="showDialog.set(true)"
+      >Open (no backdrop close)</ui-button
+    >
+
+    <ui-dialog
+      [(open)]="showDialog"
+      [closeOnBackdropClick]="false"
+      ariaLabel="Persistent dialog"
+    >
+      <ui-dialog-header>Persistent Dialog</ui-dialog-header>
+      <ui-dialog-body>
+        <p>
+          Clicking the backdrop won't close this dialog. You must use the button
+          below.
+        </p>
+      </ui-dialog-body>
+      <ui-dialog-footer>
+        <ui-button (click)="showDialog.set(false)">Got it</ui-button>
+      </ui-dialog-footer>
+    </ui-dialog>
+  

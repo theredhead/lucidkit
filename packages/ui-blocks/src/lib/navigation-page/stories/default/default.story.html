@@ -1,0 +1,10 @@
+<ui-navigation-page
+  [items]="navItems"
+  [(activePage)]="activePage"
+  (navigated)="onNavigated($event)"
+>
+  <ng-template #content let-node>
+    <h2>{{ node.data.label }}</h2>
+    <p>Page content here.</p>
+  </ng-template>
+</ui-navigation-page>

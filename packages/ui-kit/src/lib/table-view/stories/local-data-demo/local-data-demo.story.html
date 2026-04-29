@@ -1,0 +1,29 @@
+<ui-filter
+  [fields]="filterFields"
+  [allowJunction]="true"
+  (expressionChange)="onExpressionChange($event)"
+/>
+
+<ui-table-view
+  [uiDensity]="density"
+  caption="Team Members"
+  tableId="local-data"
+  selectionMode="multiple"
+  [rowClickSelect]="true"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [selectionModel]="selectionModel"
+  [datasource]="datasource"
+  (selectionChange)="onSelectionChange($event)"
+>
+  <ui-number-column key="id" headerText="ID" [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="name" headerText="Name" [sortable]="true" [truncate]="true" />
+  <ui-text-column key="email" headerText="Email" [sortable]="true" [truncate]="true" />
+  <ui-number-column key="age" headerText="Age" [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-badge-column key="status" headerText="Status" [sortable]="true" />
+  <ui-template-column key="actions" headerText="Actions" [sortable]="false">
+    <ng-template #cell let-row>
+      <ui-button variant="outlined" size="small" (click)="onAction(row)">View</ui-button>
+    </ng-template>
+  </ui-template-column>
+</ui-table-view>

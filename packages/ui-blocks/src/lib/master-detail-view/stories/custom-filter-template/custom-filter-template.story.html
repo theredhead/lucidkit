@@ -1,0 +1,31 @@
+
+    <ui-master-detail-view
+      [datasource]="adapter"
+      title="Employees"
+      [showFilter]="true"
+    >
+      <ng-template #filter>
+        <ui-filter
+          [fields]="fields"
+          [data]="employees"
+          [allowJunction]="true"
+          [(value)]="filterDescriptor"
+          (expressionChange)="onExpression($event)"
+        />
+      </ng-template>
+
+      <ui-text-column key="name" headerText="Name" [sortable]="true" />
+      <ui-text-column key="department" headerText="Department" />
+      <ui-text-column key="role" headerText="Role" />
+
+      <ng-template #detail let-person>
+        <h3 style="margin: 0 0 0.5rem">{{ person.name }}</h3>
+        <p style="margin: 0; font-size: 0.88rem; opacity: 0.7">
+          {{ person.department }} · {{ person.role }}
+        </p>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem">
+          {{ person.email }}
+        </p>
+      </ng-template>
+    </ui-master-detail-view>
+  

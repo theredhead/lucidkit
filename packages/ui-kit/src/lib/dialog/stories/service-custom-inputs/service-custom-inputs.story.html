@@ -1,0 +1,8 @@
+
+    <ui-button (click)="open()">Delete Item</ui-button>
+    @if (lastResult() !== undefined) {
+      <div class="story-output">
+        <strong>Confirmed:</strong> {{ lastResult() }}
+      </div>
+    }
+  

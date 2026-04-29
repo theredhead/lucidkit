@@ -1,0 +1,12 @@
+<ui-kanban-board
+  [(columns)]="columns"
+  (cardMoved)="onMoved($event)"
+  (cardClicked)="onClicked($event)"
+>
+  <ng-template let-card let-column="column">
+    <div style="padding: 12px;">
+      <strong>{{ card.data.title }}</strong>
+      <p>{{ card.data.description }}</p>
+    </div>
+  </ng-template>
+</ui-kanban-board>

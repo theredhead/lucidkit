@@ -1,0 +1,10 @@
+<ui-navigation-page
+  [items]="navItems"
+  rootLabel="App"
+  breadcrumbVariant="link"
+  [(activePage)]="activePage"
+>
+  <ng-template #content let-node>
+    <h2>{{ node.data.label }}</h2>
+  </ng-template>
+</ui-navigation-page>

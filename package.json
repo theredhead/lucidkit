@@ -16,6 +16,7 @@
     "lint:fix": "eslint --fix .",
     "storybook": "ng run storybook-host:storybook",
     "build-storybook": "ng run storybook-host:build-storybook",
+    "storybook:extract-sources": "node scripts/extract-story-source-files.mjs",
     "storybook:screenshots": "node scripts/capture-storybook-screenshots.mjs",
     "storybook:screenshots:manifest": "node scripts/capture-storybook-screenshots.mjs --manifest-only",
     "storybook:screenshots:build": "npm run build-storybook && npm run storybook:screenshots",

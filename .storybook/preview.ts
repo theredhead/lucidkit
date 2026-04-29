@@ -9,7 +9,7 @@ import {
   type Preview,
 } from "@storybook/angular";
 
-import { StoryToolbar } from "./story-toolbar.component";
+import { StoryChrome } from "./story-chrome.component";
 
 const preview: Preview = {
   decorators: [
@@ -17,19 +17,26 @@ const preview: Preview = {
       providers: [provideAnimationsAsync(), provideZonelessChangeDetection()],
     }),
     moduleMetadata({
-      imports: [StoryToolbar],
+      imports: [StoryChrome],
     }),
     (story, context) => {
       const result = story();
       const tpl = result.template ?? "";
-      if (context?.parameters?.["hideThemeToggle"]) {
+
+      if (context.viewMode !== "story") {
         return result;
       }
+
       return {
         ...result,
+        props: {
+          ...(result.props ?? {}),
+          __storyId: context.id,
+        },
         template: `
-          <ui-story-toolbar />
-          ${tpl}
+          <ui-story-chrome [storyId]="__storyId">
+            ${tpl}
+          </ui-story-chrome>
         `,
       };
     },

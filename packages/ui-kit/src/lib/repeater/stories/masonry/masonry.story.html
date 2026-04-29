@@ -1,0 +1,10 @@
+
+    <ui-repeater [datasource]="ds">
+      <ng-template let-photo let-i="index" let-odd="odd">
+        <div class="brick" [style.height.px]="180 + (i % 3) * 60">
+          <img [src]="photo.url" [alt]="photo.name" loading="lazy" />
+          <span class="overlay">{{ photo.name }}</span>
+        </div>
+      </ng-template>
+    </ui-repeater>
+  

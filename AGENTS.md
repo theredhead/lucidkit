@@ -518,6 +518,45 @@ export {
 
 Export barrel from `public-api.ts`: `export * from "./lib/<feature>"`
 
+### Storybook component stories
+
+Component stories are no longer authored as many exports inside one
+`<component>.stories.ts` file. Each story gets its own dedicated folder so the
+implementation files are local, hidden during day-to-day component work, and
+trivial to find when you need to inspect or edit a specific demo.
+
+```
+<component>/
+  stories/
+    <story-name>/
+      <story-name>.stories.ts
+      <story-name>.story.ts
+      <story-name>.story.html
+      <story-name>.story.scss
+      <local-helper>.ts        ← optional, only when needed by this story
+```
+
+Rules:
+
+- The `.stories.ts` file is a **thin wrapper**. It should usually import one
+  standalone story component, register it via `moduleMetadata`, and export
+  exactly one story.
+- The `.story.ts/.html/.scss` trio is the **canonical implementation** of the
+  story. Storybook source tabs read these files directly.
+- Do **not** hand-author `parameters.docs.source.code` for migrated stories.
+  Use real files as the source of truth. Keep `docs.description` when it adds
+  useful prose, but not duplicate code strings.
+- Put story-only helpers, mock data, and small support components inside the
+  same `stories/<story-name>/` folder unless they are genuinely shared across
+  multiple stories.
+- If multiple stories in one feature share metadata or utilities, place that
+  shared code under the feature's `stories/` directory, not beside the runtime
+  component implementation.
+- Do not use inline `style` attributes inside `.story.html` files. Use the
+  colocated `.story.scss` file instead.
+- Keep story component selectors and class names explicit and searchable.
+  They are internal, but they still follow the repo's Angular conventions.
+
 ### Table-view column pattern
 
 Every column extends `UITableViewColumn` and registers via DI forwarding:
@@ -621,11 +660,12 @@ export const Default: Story = {
 };
 ```
 
-### Source Code Examples (mandatory)
+### Source Code Examples
 
-**Every story must include a `parameters.docs.source` block** so consumers can
-copy-paste real usage code directly from the docs page. Use the three-section
-format (`// ── HTML ──`, `// ── TypeScript ──`, `// ── SCSS ──`):
+For **legacy stories** and **MDX-only docs pages**, include a
+`parameters.docs.source` block so consumers can copy-paste real usage code
+directly from the docs page. Use the three-section format
+(`// ── HTML ──`, `// ── TypeScript ──`, `// ── SCSS ──`):
 
 ```ts
 export const Default: Story = {
@@ -669,6 +709,8 @@ Key rules:
 - Show realistic, minimal usage — enough for a consumer to copy-paste.
 - When the story wraps a demo component, the source block should show the
   **consumer-facing** API, not the internal wrapper.
+- For migrated `stories/<story-name>/` component stories, prefer the real
+  `.story.ts/.html/.scss` files over authored `docs.source.code` strings.
 
 ### Storybook Cache Issues
 

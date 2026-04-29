@@ -1,0 +1,17 @@
+<ui-table-view
+  [uiDensity]="density"
+  caption="Density Playground"
+  tableId="density-table"
+  [showRowIndexIndicator]="true"
+  [showBuiltInPaginator]="true"
+  [datasource]="adapter"
+>
+  <ui-number-column key="id" headerText="ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-number-column key="userId" headerText="User ID"
+    [sortable]="true" [format]="{ maximumFractionDigits: 0 }" />
+  <ui-text-column key="title" headerText="Title"
+    [truncate]="true" [sortable]="true" />
+  <ui-badge-column key="userId" headerText="Owner"
+    variant="neutral" />
+</ui-table-view>

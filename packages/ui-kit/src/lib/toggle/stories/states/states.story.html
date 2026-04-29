@@ -1,0 +1,23 @@
+
+    <div
+      style="display: flex; flex-direction: column; gap: 16px; font-family: system-ui, sans-serif;"
+    >
+      <ui-toggle [(value)]="enabled" onLabel="Active" offLabel="Inactive"
+        >Enabled</ui-toggle
+      >
+      <ui-toggle
+        [value]="true"
+        [disabled]="true"
+        onLabel="Active"
+        offLabel="Inactive"
+        >Disabled (on)</ui-toggle
+      >
+      <ui-toggle
+        [value]="false"
+        [disabled]="true"
+        onLabel="Active"
+        offLabel="Inactive"
+        >Disabled (off)</ui-toggle
+      >
+    </div>
+  

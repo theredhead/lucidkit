@@ -1,0 +1,6 @@
+<ui-chat-view
+  [messages]="messages()"
+  [currentUser]="me"
+  composerMode="rich-text"
+  (messageSend)="onSend($event)"
+/>

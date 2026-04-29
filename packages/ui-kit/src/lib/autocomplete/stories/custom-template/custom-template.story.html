@@ -1,0 +1,19 @@
+
+    <ui-autocomplete
+      [datasource]="ds"
+      [(value)]="selected"
+      [multiple]="true"
+      [displayWith]="displayContact"
+      [trackBy]="trackByEmail"
+      placeholder="Search contacts…"
+      ariaLabel="Contact search"
+    >
+      <ng-template let-item>
+        <div class="contact-item">
+          <strong>{{ item.name }}</strong>
+          <small>{{ item.email }} · {{ item.department }}</small>
+        </div>
+      </ng-template>
+    </ui-autocomplete>
+    <pre class="story-output">Selected: {{ selected() | json }}</pre>
+  

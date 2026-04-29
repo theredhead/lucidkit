@@ -1,0 +1,26 @@
+
+    <h3>Interactive Strategy Switcher</h3>
+    <div class="controls">
+      @for (name of strategyNames; track name) {
+        <ui-button
+          [variant]="activeName() === name ? 'filled' : 'outlined'"
+          (click)="setStrategy(name)"
+        >
+          {{ name }}
+        </ui-button>
+      }
+    </div>
+    <ui-chart
+      [source]="data"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="activeStrategy()"
+      [width]="520"
+      [height]="340"
+    />
+    <p>
+      Click a button to swap the rendering strategy at runtime. The same data
+      array is re-rendered with the selected strategy. Active:
+      <strong>{{ activeName() }}</strong>
+    </p>
+  

@@ -1,0 +1,10 @@
+
+    <ui-autocomplete
+      [datasource]="ds"
+      [(value)]="selected"
+      [multiple]="true"
+      placeholder="Pick fruits…"
+      ariaLabel="Multi-fruit search"
+    />
+    <pre class="story-output">Selected: {{ selected() | json }}</pre>
+  

@@ -1,0 +1,24 @@
+
+    @for (result of results(); track result.fileName) {
+      <div
+        style="color: var(--ui-text, #1d232b); background: var(--ui-surface-2, #f0f2f5); margin-bottom: 16px; padding: 16px; border: 1px solid var(--ui-border, #d7dce2); border-radius: 8px"
+      >
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
+        >
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700; color: var(--ui-text, #1d232b)">
+            {{ result.fileName }}
+          </h4>
+          <span
+            style="color: var(--ui-text-muted, #5a6470); font-size: 0.75rem; font-family: monospace"
+          >
+            {{ result.mimeType }}
+          </span>
+        </div>
+        <pre
+          style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #fff); border: 1px solid var(--ui-border, #d7dce2); font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow: auto"
+          >{{ result.content }}</pre
+        >
+      </div>
+    }
+  

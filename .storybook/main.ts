@@ -13,6 +13,7 @@ function getAbsolutePath(value: string): string {
 
 const config: StorybookConfig = {
   stories: [
+    "../packages/ui-kit/src/**/*.mdx",
     "../packages/ui-kit/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../packages/ui-blocks/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../packages/ui-forms/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
@@ -31,6 +32,10 @@ const config: StorybookConfig = {
   },
   staticDirs: [
     "../public",
+    {
+      from: "../packages",
+      to: "/workspace/packages",
+    },
     {
       from: "../artifacts/storybook-screenshots",
       to: "/storybook-screenshots",

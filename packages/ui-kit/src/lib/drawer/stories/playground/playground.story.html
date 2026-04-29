@@ -1,0 +1,11 @@
+<ui-button (click)="open = !open">Toggle drawer</ui-button>
+      <ui-drawer
+        [(open)]="open"
+        [position]="position"
+        [width]="width"
+        [closeOnBackdropClick]="closeOnBackdropClick"
+        [closeOnEscape]="closeOnEscape"
+        [ariaLabel]="ariaLabel"
+      >
+        <p style="padding: 16px">Drawer content goes here.</p>
+      </ui-drawer>

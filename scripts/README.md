@@ -19,6 +19,7 @@ Some scripts rewrite files in place. Review the diff after running them.
 | `add-surface-directive.mjs`          | Adds the `UISurface` host directive to `ui-*` components that do not already have it. |
 | `capture-storybook-screenshots.mjs`  | Captures Storybook story screenshots and writes a manifest for the generated assets.  |
 | `coverage-report.mjs`                | Reads Vitest coverage output and prints a prioritized under-coverage report.          |
+| `extract-story-source-files.mjs`     | Extracts `.story.ts/.html/.scss` source files from legacy monolithic Storybook files. |
 | `find-jsdoc-violations.mjs`          | Reports JSDoc spacing violations in TypeScript files.                                 |
 | `fix-jsdoc-spacing.mjs`              | Fixes the JSDoc spacing issues reported by `find-jsdoc-violations.mjs`.               |
 | `generate-icon-registry.mjs`         | Builds the generated Lucide icon registry TypeScript file from raw SVG assets.        |
@@ -121,6 +122,32 @@ Notes:
 
 - Excludes barrel files, stories, specs, HTML templates, and SCSS files from reporting.
 - Useful after `npm run test:coverage`.
+
+## `extract-story-source-files.mjs`
+
+Generates real `.story.ts`, `.story.html`, and `.story.scss` files for legacy monolithic `*.stories.ts` files without changing the runtime Storybook stories yet.
+
+What it does:
+
+- scans legacy `*.stories.ts` files under `packages/`
+- extracts story source from structured `parameters.docs.source.code` blocks when present
+- falls back to local demo-component extraction for stories that use `See <DemoComponent> component in stories file.`
+- falls back again to the story `render().template` when no richer source block is available
+- writes the extracted files under `stories/<story-name>/`
+
+Usage:
+
+```sh
+npm run storybook:extract-sources
+npm run storybook:extract-sources -- --write
+npm run storybook:extract-sources -- --write --match=theme-toggle
+```
+
+Notes:
+
+- Default mode is dry-run. Pass `--write` to actually create or update files.
+- This is a safe scaffolding pass for Storybook source tabs and later migration review.
+- Generated TypeScript files may still require manual cleanup before they are promoted to live wrapper components.
 
 ## `find-jsdoc-violations.mjs`
 

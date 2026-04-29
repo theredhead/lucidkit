@@ -1,0 +1,22 @@
+
+    <ui-button (click)="showDialog.set(true)"
+      >Open Declarative Dialog</ui-button
+    >
+
+    <ui-dialog [(open)]="showDialog" ariaLabel="Example dialog">
+      <ui-dialog-header>Hello Dialog</ui-dialog-header>
+      <ui-dialog-body>
+        <p>
+          This is a declarative dialog component built on the native
+          <code>&lt;dialog&gt;</code> element.
+        </p>
+        <p>It supports projected header, body, and footer slots.</p>
+      </ui-dialog-body>
+      <ui-dialog-footer>
+        <ui-button variant="outlined" (click)="showDialog.set(false)"
+          >Cancel</ui-button
+        >
+        <ui-button (click)="showDialog.set(false)">OK</ui-button>
+      </ui-dialog-footer>
+    </ui-dialog>
+  

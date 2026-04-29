@@ -1,0 +1,8 @@
+<ui-split-container [initialSizes]="[25, 75]" (resized)="onResized($event)">
+  <ui-split-panel>
+    <div class="sidebar"><h4>Sidebar</h4></div>
+  </ui-split-panel>
+  <ui-split-panel>
+    <div class="main"><h4>Main</h4><p>{{ lastResize() }}</p></div>
+  </ui-split-panel>
+</ui-split-container>

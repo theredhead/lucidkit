@@ -1,0 +1,50 @@
+<div class="chart-grid">
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="barStrategy"
+      [showLegend]="false"
+      [width]="280"
+      [height]="200"
+    />
+    <span>Bar</span>
+  </div>
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="lineStrategy"
+      [showLegend]="false"
+      [width]="280"
+      [height]="200"
+    />
+    <span>Line</span>
+  </div>
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="scatterStrategy"
+      [showLegend]="false"
+      [width]="280"
+      [height]="200"
+    />
+    <span>Scatter</span>
+  </div>
+  <div class="chart-cell">
+    <ui-chart
+      [source]="salesData"
+      labelProperty="month"
+      valueProperty="revenue"
+      [strategy]="pieStrategy"
+      [showLegend]="false"
+      [width]="200"
+      [height]="200"
+    />
+    <span>Pie</span>
+  </div>
+</div>

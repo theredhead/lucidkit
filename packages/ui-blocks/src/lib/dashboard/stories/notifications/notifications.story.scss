@@ -1,0 +1,22 @@
+
+      .controls {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .demo-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .demo-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid currentColor;
+        border-bottom-color: color-mix(in srgb, currentColor 15%, transparent);
+        font-size: 0.8rem;
+      }
+      .demo-list li:last-child {
+        border-bottom: none;
+      }
+    

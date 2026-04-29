@@ -13,7 +13,8 @@
 | `UINavigationPage`   | `src/lib/navigation-page/navigation-page.component.ts`         | `ui-navigation-page`    | Full-page navigation layout with sidebar, breadcrumbs, and content area. Inputs: `items`, `datasource`, `rootLabel`, `sidebarPinned`, `showSidebarToggle`, `storageKey` (persist sidebar open/closed to localStorage), `drawerPosition`, `drawerWidth`, `breadcrumbVariant`, `ariaLabel`. Models: `activePage`, `drawerOpen`, `sidebarVisible`. |
 | `UISearchView`       | `src/lib/search-view/search-view.component.ts`                 | `ui-search-view`        | Browse-and-filter layout composing UIFilter, UITableView, and UIPagination                                                                                                                                                                                                                                                                      |
 | `UIPropertySheet`    | `src/lib/property-sheet/property-sheet.component.ts`           | `ui-property-sheet`     | Key-value inspector panel rendering typed fields against a data object                                                                                                                                                                                                                                                                          |
-| `UIRichTextEditor`   | `src/lib/rich-text-editor/rich-text-editor.component.ts`       | `ui-rich-text-editor`   | Rich-text editor: HTML WYSIWYG + Markdown modes with split-pane preview, XML template blocks, and compact chat-style floating-toolbar presentation                                                                                                                                                                                               |
+| `UISourceTabs`       | `src/lib/source-tabs/source-tabs.component.ts`                 | `ui-source-tabs`        | Tabbed code/example viewer for showing separate markup, TypeScript, and style panes with theme-aware styling                                                                                                                                                                                                                                    |
+| `UIRichTextEditor`   | `src/lib/rich-text-editor/rich-text-editor.component.ts`       | `ui-rich-text-editor`   | Rich-text editor: HTML WYSIWYG + Markdown modes with split-pane preview, XML template blocks, and compact chat-style floating-toolbar presentation                                                                                                                                                                                              |
 | `UICommandPalette`   | `src/lib/command-palette/command-palette.component.ts`         | `ui-command-palette`    | Keyboard-triggered command palette for quick access to actions                                                                                                                                                                                                                                                                                  |
 | `UIFileBrowser`      | `src/lib/file-browser/file-browser.component.ts`               | `ui-file-browser`       | Two-panel file browser with tree sidebar, breadcrumb, and contents list                                                                                                                                                                                                                                                                         |
 | `UIChatView`         | `src/lib/chat-view/chat-view.component.ts`                     | `ui-chat-view`          | Chat/messaging view with scrollable message list, date grouping, and a text or rich-text composer whose editor presentation and compact toolbar actions can be configured                                                                                                                                                                       |
@@ -46,45 +47,45 @@
 
 ## Types & Interfaces
 
-| Kind      | Name                       | File                                                         | Description                                                            |
-| --------- | -------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| Type      | `MasterDetailContext`      | `src/lib/master-detail-view/master-detail-view.component.ts` | Context for the detail template                                        |
-| Interface | `DashboardPanelConfig`     | `src/lib/dashboard/dashboard.types.ts`                       | Static panel config (id, title, icon, placement)                       |
-| Interface | `DashboardGridPlacement`   | `src/lib/dashboard/dashboard.types.ts`                       | Grid placement with colSpan/rowSpan                                    |
-| Type      | `DashboardColumns`         | `src/lib/dashboard/dashboard.types.ts`                       | `'auto'` or a fixed column count                                       |
-| Type      | `DashboardDockPosition`    | `src/lib/dashboard/dashboard.types.ts`                       | `'top' \| 'bottom'`                                                    |
-| Interface | `NavigationNodeData`       | `src/lib/navigation-page/navigation-page.component.ts`       | Data payload for navigation tree nodes (label, badge, route)           |
-| Interface | `NavigationPageContext`    | `src/lib/navigation-page/navigation-page.component.ts`       | Template context with the active navigation node                       |
-| Type      | `NavigationNode`           | `src/lib/navigation-page/navigation-page.utils.ts`           | Alias for `TreeNode<NavigationNodeData>`                               |
-| Interface | `NavigationRouteConfig`    | `src/lib/navigation-page/navigation-page.utils.ts`           | Angular Route-compatible structure for router integration              |
-| Interface | `SavedSearch`              | `src/lib/search-view/saved-search.types.ts`                  | Named saved search with filter descriptor and timestamp                |
-| Type      | `SearchViewLayout`         | `src/lib/search-view/search-view.types.ts`                   | `'table' \| 'custom'`                                                  |
-| Interface | `SearchViewResultsContext` | `src/lib/search-view/search-view.types.ts`                   | Context for #results template                                          |
-| Interface | `SearchViewEmptyContext`   | `src/lib/search-view/search-view.types.ts`                   | Context for #empty template                                            |
-| Interface | `PropertyFieldDefinition`  | `src/lib/property-sheet/property-sheet.types.ts`             | Field definition (key, label, type, group)                             |
-| Type      | `PropertyFieldType`        | `src/lib/property-sheet/property-sheet.types.ts`             | `'string' \| 'number' \| 'boolean' \| 'select' \| 'color' \| 'slider'` |
-| Interface | `PropertyChangeEvent`      | `src/lib/property-sheet/property-sheet.types.ts`             | Event with key, value, and complete data                               |
-| Type      | `RichTextFormatAction`     | `src/lib/rich-text-editor/rich-text-editor.types.ts`         | Formatting action identifiers supported by `UIRichTextEditor`          |
-| Interface | `RichTextPlaceholder`      | `src/lib/rich-text-editor/rich-text-editor.types.ts`         | Merge-field placeholder definition                                     |
-| Interface | `RichTextTemplateBlockUiProvider` | `src/lib/rich-text-editor/rich-text-editor.types.ts`   | UI metadata for rendering/editing XML template blocks in the RTE       |
-| Type      | `RichTextEditorMode`       | `src/lib/rich-text-editor/rich-text-editor.strategy.ts`      | `'html' \| 'markdown'` editor mode                                     |
-| Interface | `MarkdownParser`           | `src/lib/rich-text-editor/markdown-parser.ts`                | Pluggable Markdown-to-HTML converter                                   |
-| Interface | `CommandPaletteItem`       | `src/lib/command-palette/command-palette.types.ts`           | Action (id, label, group, shortcut, icon, keywords)                    |
-| Interface | `CommandExecuteEvent`      | `src/lib/command-palette/command-palette.types.ts`           | Event when command is executed                                         |
-| Interface | `FileBrowserEntry`         | `src/lib/file-browser/file-browser.types.ts`                 | File/directory entry (id, name, isDirectory, icon)                     |
-| Interface | `FileBrowserDatasource`    | `src/lib/file-browser/file-browser.types.ts`                 | Datasource contract (getChildren, isDirectory)                         |
-| Type      | `FileBrowserViewMode`      | `src/lib/file-browser/file-browser.types.ts`                 | `'list' \| 'icons' \| 'detail' \| 'tree' \| 'column'`                  |
-| Interface | `ChatParticipant`          | `src/lib/chat-view/chat-view.types.ts`                       | Participant (id, name, avatar)                                         |
-| Interface | `ChatMessage`              | `src/lib/chat-view/chat-view.types.ts`                       | Message (id, content, timestamp, sender, type)                         |
-| Interface | `MessageSendEvent`         | `src/lib/chat-view/chat-view.types.ts`                       | Event when user sends a message                                        |
-| Interface | `StepChangeEvent`          | `src/lib/wizard/wizard.types.ts`                             | Event when step changes (previousIndex, currentIndex)                  |
-| Interface | `KanbanColumn`             | `src/lib/kanban-board/kanban-board.types.ts`                 | Column descriptor (id, title, cards, colour)                           |
-| Interface | `KanbanCard`               | `src/lib/kanban-board/kanban-board.types.ts`                 | Card (id, data payload)                                                |
-| Interface | `KanbanCardMoveEvent`      | `src/lib/kanban-board/kanban-board.types.ts`                 | Event when card is moved                                               |
-| Interface | `AlertOptions`             | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for alert dialog                                               |
-| Interface | `ConfirmOptions`           | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for confirm dialog                                             |
-| Interface | `PromptOptions`            | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for prompt dialog                                              |
-| Interface | `OpenFileOptions`          | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for open-file dialog                                           |
-| Interface | `SaveFileOptions`          | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for save-file dialog                                           |
-| Interface | `AboutOptions`             | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for about dialog                                               |
-| Token     | `FILE_ICON_REGISTRY`       | `src/lib/file-browser/file-browser.types.ts`                 | InjectionToken for customisable file-icon registry                     |
+| Kind      | Name                              | File                                                         | Description                                                            |
+| --------- | --------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| Type      | `MasterDetailContext`             | `src/lib/master-detail-view/master-detail-view.component.ts` | Context for the detail template                                        |
+| Interface | `DashboardPanelConfig`            | `src/lib/dashboard/dashboard.types.ts`                       | Static panel config (id, title, icon, placement)                       |
+| Interface | `DashboardGridPlacement`          | `src/lib/dashboard/dashboard.types.ts`                       | Grid placement with colSpan/rowSpan                                    |
+| Type      | `DashboardColumns`                | `src/lib/dashboard/dashboard.types.ts`                       | `'auto'` or a fixed column count                                       |
+| Type      | `DashboardDockPosition`           | `src/lib/dashboard/dashboard.types.ts`                       | `'top' \| 'bottom'`                                                    |
+| Interface | `NavigationNodeData`              | `src/lib/navigation-page/navigation-page.component.ts`       | Data payload for navigation tree nodes (label, badge, route)           |
+| Interface | `NavigationPageContext`           | `src/lib/navigation-page/navigation-page.component.ts`       | Template context with the active navigation node                       |
+| Type      | `NavigationNode`                  | `src/lib/navigation-page/navigation-page.utils.ts`           | Alias for `TreeNode<NavigationNodeData>`                               |
+| Interface | `NavigationRouteConfig`           | `src/lib/navigation-page/navigation-page.utils.ts`           | Angular Route-compatible structure for router integration              |
+| Interface | `SavedSearch`                     | `src/lib/search-view/saved-search.types.ts`                  | Named saved search with filter descriptor and timestamp                |
+| Type      | `SearchViewLayout`                | `src/lib/search-view/search-view.types.ts`                   | `'table' \| 'custom'`                                                  |
+| Interface | `SearchViewResultsContext`        | `src/lib/search-view/search-view.types.ts`                   | Context for #results template                                          |
+| Interface | `SearchViewEmptyContext`          | `src/lib/search-view/search-view.types.ts`                   | Context for #empty template                                            |
+| Interface | `PropertyFieldDefinition`         | `src/lib/property-sheet/property-sheet.types.ts`             | Field definition (key, label, type, group)                             |
+| Type      | `PropertyFieldType`               | `src/lib/property-sheet/property-sheet.types.ts`             | `'string' \| 'number' \| 'boolean' \| 'select' \| 'color' \| 'slider'` |
+| Interface | `PropertyChangeEvent`             | `src/lib/property-sheet/property-sheet.types.ts`             | Event with key, value, and complete data                               |
+| Type      | `RichTextFormatAction`            | `src/lib/rich-text-editor/rich-text-editor.types.ts`         | Formatting action identifiers supported by `UIRichTextEditor`          |
+| Interface | `RichTextPlaceholder`             | `src/lib/rich-text-editor/rich-text-editor.types.ts`         | Merge-field placeholder definition                                     |
+| Interface | `RichTextTemplateBlockUiProvider` | `src/lib/rich-text-editor/rich-text-editor.types.ts`         | UI metadata for rendering/editing XML template blocks in the RTE       |
+| Type      | `RichTextEditorMode`              | `src/lib/rich-text-editor/rich-text-editor.strategy.ts`      | `'html' \| 'markdown'` editor mode                                     |
+| Interface | `MarkdownParser`                  | `src/lib/rich-text-editor/markdown-parser.ts`                | Pluggable Markdown-to-HTML converter                                   |
+| Interface | `CommandPaletteItem`              | `src/lib/command-palette/command-palette.types.ts`           | Action (id, label, group, shortcut, icon, keywords)                    |
+| Interface | `CommandExecuteEvent`             | `src/lib/command-palette/command-palette.types.ts`           | Event when command is executed                                         |
+| Interface | `FileBrowserEntry`                | `src/lib/file-browser/file-browser.types.ts`                 | File/directory entry (id, name, isDirectory, icon)                     |
+| Interface | `FileBrowserDatasource`           | `src/lib/file-browser/file-browser.types.ts`                 | Datasource contract (getChildren, isDirectory)                         |
+| Type      | `FileBrowserViewMode`             | `src/lib/file-browser/file-browser.types.ts`                 | `'list' \| 'icons' \| 'detail' \| 'tree' \| 'column'`                  |
+| Interface | `ChatParticipant`                 | `src/lib/chat-view/chat-view.types.ts`                       | Participant (id, name, avatar)                                         |
+| Interface | `ChatMessage`                     | `src/lib/chat-view/chat-view.types.ts`                       | Message (id, content, timestamp, sender, type)                         |
+| Interface | `MessageSendEvent`                | `src/lib/chat-view/chat-view.types.ts`                       | Event when user sends a message                                        |
+| Interface | `StepChangeEvent`                 | `src/lib/wizard/wizard.types.ts`                             | Event when step changes (previousIndex, currentIndex)                  |
+| Interface | `KanbanColumn`                    | `src/lib/kanban-board/kanban-board.types.ts`                 | Column descriptor (id, title, cards, colour)                           |
+| Interface | `KanbanCard`                      | `src/lib/kanban-board/kanban-board.types.ts`                 | Card (id, data payload)                                                |
+| Interface | `KanbanCardMoveEvent`             | `src/lib/kanban-board/kanban-board.types.ts`                 | Event when card is moved                                               |
+| Interface | `AlertOptions`                    | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for alert dialog                                               |
+| Interface | `ConfirmOptions`                  | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for confirm dialog                                             |
+| Interface | `PromptOptions`                   | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for prompt dialog                                              |
+| Interface | `OpenFileOptions`                 | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for open-file dialog                                           |
+| Interface | `SaveFileOptions`                 | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for save-file dialog                                           |
+| Interface | `AboutOptions`                    | `src/lib/common-dialogs/common-dialog.types.ts`              | Options for about dialog                                               |
+| Token     | `FILE_ICON_REGISTRY`              | `src/lib/file-browser/file-browser.types.ts`                 | InjectionToken for customisable file-icon registry                     |

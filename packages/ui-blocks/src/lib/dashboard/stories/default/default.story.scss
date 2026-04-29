@@ -1,0 +1,65 @@
+
+      .demo-widget {
+        padding: 1rem;
+        font-size: 0.85rem;
+        opacity: 0.6;
+      }
+      .demo-kpi {
+        display: flex;
+        gap: 2rem;
+        padding: 1rem;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      .demo-kpi-item {
+        text-align: center;
+        min-width: 0;
+      }
+      .demo-kpi-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .demo-kpi-label {
+        font-size: 0.8rem;
+        opacity: 0.55;
+        margin-top: 0.25rem;
+      }
+      .demo-chart-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      .demo-chart-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 160px;
+        border: 2px dashed currentColor;
+        border-radius: 8px;
+        opacity: 0.35;
+        font-size: 0.8rem;
+      }
+      ui-dashboard-panel {
+        overflow: hidden;
+      }
+      .demo-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .demo-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid currentColor;
+        border-bottom-color: color-mix(in srgb, currentColor 15%, transparent);
+        font-size: 0.8rem;
+      }
+      .demo-list li:last-child {
+        border-bottom: none;
+      }
+    

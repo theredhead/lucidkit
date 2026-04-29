@@ -1,0 +1,11 @@
+<ui-navigation-page
+  [items]="navItems"
+  [sidebarPinned]="false"
+  [(activePage)]="activePage"
+  [(drawerOpen)]="drawerOpen"
+>
+  <ng-template #content let-node>
+    <button (click)="drawerOpen.set(true)">☰ Open Sidebar</button>
+    <h2>{{ node.data.label }}</h2>
+  </ng-template>
+</ui-navigation-page>
