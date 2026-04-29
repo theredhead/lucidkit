@@ -429,6 +429,7 @@ function getGeneratedStorySourceInfo(tsContent) {
     ts.ScriptKind.TS,
   );
   const classMap = getClassMap(sourceFile);
+  const componentInfos = [];
 
   for (const componentClass of classMap.values()) {
     const metadata = getComponentMetadata(componentClass);
@@ -437,9 +438,19 @@ function getGeneratedStorySourceInfo(tsContent) {
       continue;
     }
 
-    return {
+    componentInfos.push({
       className: componentClass.name.text,
       selector: metadata.selector,
+      isExported: hasExportModifier(componentClass),
+    });
+  }
+
+  const preferredComponent = componentInfos.find((info) => info.isExported) ?? componentInfos[0];
+
+  if (preferredComponent) {
+    return {
+      className: preferredComponent.className,
+      selector: preferredComponent.selector,
     };
   }
 
