@@ -1,0 +1,25 @@
+<div class="columns">
+  <ui-repeater
+    #listA
+    [datasource]="dsAvailable"
+    [reorderable]="true"
+    [connectedTo]="[listB]"
+    (transferred)="onTransfer($event)"
+  >
+    <ng-template let-item>
+      <div class="card">{{ item.name }}</div>
+    </ng-template>
+  </ui-repeater>
+
+  <ui-repeater
+    #listB
+    [datasource]="dsSelected"
+    [reorderable]="true"
+    [connectedTo]="[listA]"
+    (transferred)="onTransfer($event)"
+  >
+    <ng-template let-item>
+      <div class="card">{{ item.name }}</div>
+    </ng-template>
+  </ui-repeater>
+</div>
