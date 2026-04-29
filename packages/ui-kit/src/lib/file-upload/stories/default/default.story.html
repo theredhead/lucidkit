@@ -1,0 +1,10 @@
+
+    <ui-file-upload
+      [(files)]="files"
+      (fileAdded)="onAdded($event)"
+      (fileRemoved)="onRemoved($event)"
+    />
+    @if (log().length) {
+      <pre class="story-log">{{ log().join("\n") }}</pre>
+    }
+  

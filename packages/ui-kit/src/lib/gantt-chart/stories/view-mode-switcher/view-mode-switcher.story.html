@@ -1,0 +1,17 @@
+
+    <div class="controls">
+      @for (mode of modes; track mode) {
+        <ui-button
+          [variant]="viewMode() === mode ? 'filled' : 'outlined'"
+          (click)="viewMode.set(mode)"
+        >
+          {{ mode | titlecase }}
+        </ui-button>
+      }
+    </div>
+    <ui-gantt-chart
+      [datasource]="datasource"
+      [viewMode]="viewMode()"
+      [showToday]="true"
+    />
+  

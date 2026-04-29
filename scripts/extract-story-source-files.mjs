@@ -486,6 +486,7 @@ function buildWrapperContent({
     sourceFile,
     topLevelDeclarationMap,
     [...metaProperties.nodes, ...storyProperties.nodes],
+    new Set([storySourceInfo.className]),
   );
   const wrapperDependencySources = wrapperDependencyStatements.map((statement) =>
     sourceText.slice(statement.getFullStart(), statement.end).trim(),
@@ -687,12 +688,21 @@ function collectReferencedImportNames(nodes, importEntries) {
   }
 }
 
-function collectTopLevelDependencyStatements(sourceFile, topLevelDeclarationMap, nodes) {
+function collectTopLevelDependencyStatements(
+  sourceFile,
+  topLevelDeclarationMap,
+  nodes,
+  excludedNames = new Set(),
+) {
   const includedStatements = new Set();
   const pendingStatements = [];
 
   for (const node of nodes) {
     for (const referencedName of getReferencedTopLevelNames(node, topLevelDeclarationMap)) {
+      if (excludedNames.has(referencedName)) {
+        continue;
+      }
+
       const referencedStatement = topLevelDeclarationMap.get(referencedName);
 
       if (!referencedStatement || includedStatements.has(referencedStatement)) {
@@ -711,6 +721,10 @@ function collectTopLevelDependencyStatements(sourceFile, topLevelDeclarationMap,
       currentStatement,
       topLevelDeclarationMap,
     )) {
+      if (excludedNames.has(referencedName)) {
+        continue;
+      }
+
       const referencedStatement = topLevelDeclarationMap.get(referencedName);
 
       if (!referencedStatement || includedStatements.has(referencedStatement)) {
@@ -1224,22 +1238,100 @@ function collectComponentDependencies(
 
 function getReferencedTopLevelNames(statement, topLevelDeclarationMap) {
   const referencedNames = new Set();
+  const scopeStack = [new Set(getStatementDeclaredNames(statement))];
 
-  function visit(node) {
-    if (isReferenceIdentifier(node) && topLevelDeclarationMap.has(node.text)) {
+  visit(statement, scopeStack);
+
+  return referencedNames;
+
+  function visit(node, currentScopeStack) {
+    const nextScopeStack = createsLocalScope(node)
+      ? [...currentScopeStack, collectScopeDeclaredNames(node)]
+      : currentScopeStack;
+
+    if (
+      isReferenceIdentifier(node) &&
+      topLevelDeclarationMap.has(node.text) &&
+      !isNameDeclaredInScopes(node.text, nextScopeStack)
+    ) {
       referencedNames.add(node.text);
     }
 
-    ts.forEachChild(node, visit);
+    ts.forEachChild(node, (child) => visit(child, nextScopeStack));
+  }
+}
+
+function createsLocalScope(node) {
+  return (
+    ts.isBlock(node) ||
+    ts.isModuleBlock(node) ||
+    ts.isCaseClause(node) ||
+    ts.isDefaultClause(node) ||
+    ts.isCatchClause(node) ||
+    ts.isFunctionLike(node)
+  );
+}
+
+function collectScopeDeclaredNames(node) {
+  const declaredNames = new Set();
+
+  if (ts.isBlock(node) || ts.isModuleBlock(node)) {
+    for (const statement of node.statements) {
+      for (const declaredName of getStatementDeclaredNames(statement)) {
+        declaredNames.add(declaredName);
+      }
+    }
   }
 
-  visit(statement);
-
-  for (const declaredName of getStatementDeclaredNames(statement)) {
-    referencedNames.delete(declaredName);
+  if (ts.isCaseClause(node) || ts.isDefaultClause(node)) {
+    for (const statement of node.statements) {
+      for (const declaredName of getStatementDeclaredNames(statement)) {
+        declaredNames.add(declaredName);
+      }
+    }
   }
 
-  return referencedNames;
+  if (ts.isCatchClause(node) && node.variableDeclaration) {
+    for (const declaredName of getBindingNames(node.variableDeclaration.name)) {
+      declaredNames.add(declaredName);
+    }
+  }
+
+  if (ts.isFunctionLike(node)) {
+    if (node.name && ts.isIdentifier(node.name)) {
+      declaredNames.add(node.name.text);
+    }
+
+    for (const parameter of node.parameters) {
+      for (const declaredName of getBindingNames(parameter.name)) {
+        declaredNames.add(declaredName);
+      }
+    }
+  }
+
+  return declaredNames;
+}
+
+function isNameDeclaredInScopes(name, scopeStack) {
+  return scopeStack.some((scopeNames) => scopeNames.has(name));
+}
+
+function getBindingNames(nameNode) {
+  if (ts.isIdentifier(nameNode)) {
+    return [nameNode.text];
+  }
+
+  if (ts.isArrayBindingPattern(nameNode) || ts.isObjectBindingPattern(nameNode)) {
+    return nameNode.elements.flatMap((element) => {
+      if (ts.isOmittedExpression(element)) {
+        return [];
+      }
+
+      return getBindingNames(element.name);
+    });
+  }
+
+  return [];
 }
 
 function isReferenceIdentifier(node) {
