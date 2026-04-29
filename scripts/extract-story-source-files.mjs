@@ -189,6 +189,9 @@ function processStoryFile(storyFilePath) {
               storyName,
               fallbackImportStatements,
               fallbackComponentImports,
+              output.mode === "render"
+                ? getTemplateContextFields(output.html, storyObject, sourceText)
+                : [],
             );
       const scssContent = output.scss ?? "/* No custom styles extracted yet. */\n";
       const storySourceInfo = getGeneratedStorySourceInfo(tsContent);
@@ -211,6 +214,7 @@ function processStoryFile(storyFilePath) {
         storyName,
         storySourceInfo,
         importEntries,
+        outputMode: output.mode,
       });
 
       writeOutputFile(path.join(targetDir, `${baseName}.html`), ensureTrailingNewline(output.html));
@@ -450,6 +454,7 @@ function buildWrapperContent({
   storyName,
   storySourceInfo,
   importEntries,
+  outputMode,
 }) {
   const metaProperties = getMetaWrapperProperties(metaObject, sourceText);
   const storyProperties = getStoryWrapperProperties(storyObject, sourceText);
@@ -477,9 +482,10 @@ function buildWrapperContent({
     : "StoryObj";
   const importBlock = wrapperImports.length > 0 ? `${wrapperImports.join("\n")}\n\n` : "";
   const metaBody = [...metaProperties.texts, `decorators: [moduleMetadata({ imports: [${storySourceInfo.className}] })]`].join(",\n");
+  const originalRenderText = outputMode === "render" ? getRenderPropertyText(storyObject, sourceText) : undefined;
   const storyBody = [
     ...storyProperties.texts,
-    `render: () => ({\n    template: "<${storySourceInfo.selector} />",\n  })`,
+    originalRenderText ?? `render: () => ({\n    template: "<${storySourceInfo.selector} />",\n  })`,
   ].join(",\n");
 
   return `import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
@@ -555,6 +561,16 @@ function getStoryWrapperProperties(storyObject, sourceText) {
   }
 
   return { texts, nodes };
+}
+
+function getRenderPropertyText(storyObject, sourceText) {
+  const renderProperty = getProperty(storyObject, "render");
+
+  if (!renderProperty || !ts.isPropertyAssignment(renderProperty)) {
+    return undefined;
+  }
+
+  return getNormalizedNodeText(renderProperty, sourceText);
 }
 
 function getPropertyNameText(nameNode) {
@@ -1302,6 +1318,7 @@ function buildFallbackTs(
   storyName,
   importStatements = [],
   componentImports = [],
+  templateContextFields = [],
 ) {
   const relativePath = path.relative(repoRoot, storyFilePath);
   const importBlock = Array.isArray(importStatements)
@@ -1312,6 +1329,11 @@ function buildFallbackTs(
     componentImports.length > 0
       ? `,\n  imports: [${componentImports.join(", ")}]`
       : "";
+  const fieldBlock = templateContextFields.length > 0
+    ? `\n\n${templateContextFields
+        .map(({ name, initializerText }) => `  public ${name} = (${initializerText}) as const;`)
+        .join("\n")}`
+    : "";
 
   return `${prefix}import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -1323,8 +1345,69 @@ function buildFallbackTs(
   styleUrl: "./${storyName}.story.scss",
 })
 export class ${exportName}StorySource {
-  // Review required: this scaffold was generated from ${relativePath}.
+  // Review required: this scaffold was generated from ${relativePath}.${fieldBlock}
 }`;
+}
+
+function getTemplateContextNames(template) {
+  const names = new Set();
+  const patterns = [
+    /\[\(?[A-Za-z0-9_-]+\)?\]\s*=\s*"([A-Za-z_][A-Za-z0-9_]*)"/gu,
+    /\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/gu,
+  ];
+
+  for (const pattern of patterns) {
+    for (const match of template.matchAll(pattern)) {
+      names.add(match[1]);
+    }
+  }
+
+  return [...names].sort((left, right) => left.localeCompare(right));
+}
+
+function getTemplateContextFields(template, storyObject, sourceText) {
+  const argsObject = getStoryArgsObject(storyObject);
+
+  return getTemplateContextNames(template).map((name) => ({
+    name,
+    initializerText: getArgsInitializerText(argsObject, name, sourceText) ?? "undefined as unknown",
+  }));
+}
+
+function getStoryArgsObject(storyObject) {
+  const argsProperty = getProperty(storyObject, "args");
+
+  if (!argsProperty || !ts.isPropertyAssignment(argsProperty)) {
+    return undefined;
+  }
+
+  if (!ts.isObjectLiteralExpression(argsProperty.initializer)) {
+    return undefined;
+  }
+
+  return argsProperty.initializer;
+}
+
+function getArgsInitializerText(argsObject, propertyName, sourceText) {
+  if (!argsObject) {
+    return undefined;
+  }
+
+  const property = getProperty(argsObject, propertyName);
+
+  if (!property) {
+    return undefined;
+  }
+
+  if (ts.isPropertyAssignment(property)) {
+    return sourceText.slice(property.initializer.getStart(), property.initializer.end).trim();
+  }
+
+  if (ts.isShorthandPropertyAssignment(property)) {
+    return property.name.text;
+  }
+
+  return undefined;
 }
 
 function writeOutputFile(filePath, content) {
