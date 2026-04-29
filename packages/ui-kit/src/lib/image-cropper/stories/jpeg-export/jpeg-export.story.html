@@ -1,0 +1,36 @@
+
+    <div style="display: flex; flex-direction: column; gap: 0.75rem">
+      <div style="width: 100%; height: 400px; max-width: 640px">
+        <ui-image-cropper
+          #cropper
+          [src]="src()"
+          [aspectRatio]="aspectRatio()"
+          [outputFormat]="outputFormat()"
+          (regionChange)="onRegionChange($event)"
+        />
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <ui-button (click)="onCrop()">Export crop</ui-button>
+        <ui-button variant="outlined" (click)="onReset()">Reset</ui-button>
+        @if (regionInfo()) {
+          <span style="font-size: 0.8125rem; opacity: 0.65">
+            {{ regionInfo() }}
+          </span>
+        }
+      </div>
+
+      @if (previewUrl()) {
+        <div>
+          <p style="font-size: 0.8125rem; margin: 0 0 0.25rem">
+            Exported preview:
+          </p>
+          <img
+            [src]="previewUrl()"
+            alt="Cropped preview"
+            style="max-width: 300px; border: 1px solid #ccc; border-radius: 4px"
+          />
+        </div>
+      }
+    </div>
+  

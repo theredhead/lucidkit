@@ -472,6 +472,12 @@ function buildWrapperContent({
 }) {
   const metaProperties = getMetaWrapperProperties(sourceFile, metaObject, sourceText);
   const storyProperties = getStoryWrapperProperties(storyObject, sourceText);
+  const renderPropertyNode = outputMode === "render" ? getRenderPropertyNode(storyObject) : undefined;
+  const wrapperSourceNodes = [
+    ...metaProperties.nodes,
+    ...storyProperties.nodes,
+    ...(renderPropertyNode ? [renderPropertyNode] : []),
+  ];
   const targetWrapperPath = path.join(
     path.dirname(storyFilePath),
     "stories",
@@ -479,13 +485,13 @@ function buildWrapperContent({
     `${storyName}.stories.ts`,
   );
   const referencedNames = collectReferencedImportNames(
-    [...metaProperties.nodes, ...storyProperties.nodes],
+    wrapperSourceNodes,
     importEntries,
   );
   const wrapperDependencyStatements = collectTopLevelDependencyStatements(
     sourceFile,
     topLevelDeclarationMap,
-    [...metaProperties.nodes, ...storyProperties.nodes],
+    wrapperSourceNodes,
     new Set([storySourceInfo.className]),
   );
   const wrapperDependencySources = wrapperDependencyStatements.map((statement) =>
@@ -607,13 +613,17 @@ function getStoryWrapperProperties(storyObject, sourceText) {
 }
 
 function getRenderPropertyText(storyObject, sourceText) {
-  const renderProperty = getProperty(storyObject, "render");
+  const renderProperty = getRenderPropertyNode(storyObject);
 
   if (!renderProperty || !ts.isPropertyAssignment(renderProperty)) {
     return undefined;
   }
 
   return getNormalizedNodeText(renderProperty, sourceText);
+}
+
+function getRenderPropertyNode(storyObject) {
+  return getProperty(storyObject, "render");
 }
 
 function getPropertyNameText(nameNode) {
