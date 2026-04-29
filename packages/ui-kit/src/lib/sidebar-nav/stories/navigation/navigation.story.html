@@ -1,0 +1,28 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <ui-sidebar-nav ariaLabel="App navigation">
+      <ui-sidebar-item
+        label="Dashboard" [icon]="dashboardIcon"
+        [active]="active() === 'dashboard'"
+        (activated)="navigate('dashboard')" />
+      <ui-sidebar-item
+        label="Projects" [icon]="folderIcon" badge="5"
+        [active]="active() === 'projects'"
+        (activated)="navigate('projects')" />
+      <ui-sidebar-group label="Settings" [icon]="settingsIcon">
+        <ui-sidebar-item
+          label="General" [icon]="settingsIcon"
+          [active]="active() === 'general'"
+          (activated)="navigate('general')" />
+        <ui-sidebar-item
+          label="Security" [icon]="shieldIcon"
+          [active]="active() === 'security'"
+          (activated)="navigate('security')" />
+      </ui-sidebar-group>
+    </ui-sidebar-nav>
+  </aside>
+  <main class="content">
+    <h2>{{ activeLabel() }}</h2>
+    <p>Page content for {{ activeLabel() }}.</p>
+  </main>
+</div>
