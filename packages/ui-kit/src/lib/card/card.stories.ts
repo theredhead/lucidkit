@@ -6,8 +6,10 @@ import {
   UICardBody,
   UICardFooter,
   UICardHeader,
+  UICardImage,
 } from "./card.component";
 import { UIButton } from "../button/button.component";
+import { UIIcons } from "../icon";
 
 const meta: Meta<UICard> = {
   title: "@theredhead/UI Kit/Card",
@@ -18,7 +20,7 @@ const meta: Meta<UICard> = {
       description: {
         component:
           "A versatile content container with optional header, body, and footer " +
-          "projection slots.",
+          "projection slots. `ui-card-header` also supports an optional leading icon or avatar.",
       },
     },
   },
@@ -73,7 +75,7 @@ export const Elevated: Story = {
           "### Sub-components\n" +
           "- `<ui-card-header>` — Title area (bold, top padding)\n" +
           "- `<ui-card-body>` — Main content area\n" +
-          "- `<ui-card-footer>` — Action area (flex row)\n\n" +
+          "- `<ui-card-footer>` — Right-aligned action area (flex row)\n\n" +
           "All three are optional — you can also project content directly into `<ui-card>`.",
       },
       source: {
@@ -393,6 +395,251 @@ export class ExampleComponent {}
 
 // ── SCSS ──
 /* No custom styles needed — card tokens handle theming. */
+`,
+      },
+    },
+  },
+};
+
+export const HeaderMedia: Story = {
+  render: () => ({
+    props: {
+      badgeIcon: UIIcons.Lucide.Notifications.Bell,
+    },
+    template: `
+      <div style="display: grid; gap: 1rem; max-width: 28rem;">
+        <ui-card variant="elevated">
+          <ui-card-header [icon]="badgeIcon">
+            Activity Alerts
+          </ui-card-header>
+          <ui-card-body>
+            Use a leading icon when the header benefits from quick visual categorisation.
+          </ui-card-body>
+        </ui-card>
+
+        <ui-card variant="outlined">
+          <ui-card-header avatarName="Jane Doe" avatarAriaLabel="Jane Doe">
+            Assigned to Jane Doe
+          </ui-card-header>
+          <ui-card-body>
+            Use a leading avatar when the card represents a person, owner, or assignee.
+          </ui-card-body>
+        </ui-card>
+      </div>
+    `,
+    moduleMetadata: { imports: [UICardHeader, UICardBody] },
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-card variant="outlined">
+  <ui-card-header avatarName="Jane Doe" avatarAriaLabel="Jane Doe">
+    Assigned to Jane Doe
+  </ui-card-header>
+  <ui-card-body>
+    Use a leading avatar when the card represents a person.
+  </ui-card-body>
+</ui-card>
+
+<ui-card variant="elevated">
+  <ui-card-header [icon]="icons.Lucide.Notifications.Bell">
+    Activity Alerts
+  </ui-card-header>
+  <ui-card-body>
+    Use a leading icon when the header benefits from quick visual categorisation.
+  </ui-card-body>
+</ui-card>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UICard, UICardHeader, UICardBody, UIIcons } from '@theredhead/lucid-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UICard, UICardHeader, UICardBody],
+  template: \
+    '<ui-card variant="outlined">\
+      <ui-card-header avatarName="Jane Doe" avatarAriaLabel="Jane Doe">Assigned to Jane Doe</ui-card-header>\
+      <ui-card-body>Use a leading avatar when the card represents a person.</ui-card-body>\
+    </ui-card>\
+    <ui-card variant="elevated">\
+      <ui-card-header [icon]="icons.Lucide.Notifications.Bell">Activity Alerts</ui-card-header>\
+      <ui-card-body>Use a leading icon when the header benefits from quick visual categorisation.</ui-card-body>\
+    </ui-card>',
+})
+export class ExampleComponent {
+  protected readonly icons = UIIcons;
+}
+
+// ── SCSS ──
+/* No custom styles needed — card header media aligns automatically. */
+`,
+      },
+    },
+  },
+};
+
+export const HeaderSubtitle: Story = {
+  render: () => ({
+    props: {
+      personIcon: UIIcons.Lucide.Account.User,
+    },
+    template: `
+      <div style="display: grid; gap: 1rem; max-width: 28rem;">
+        <ui-card variant="outlined">
+          <ui-card-header [icon]="personIcon" subtitle="Design Systems Team">
+            Product Owner
+          </ui-card-header>
+          <ui-card-body>
+            A subtitle gives the header a clear second line for supporting context without pushing actions into the header.
+          </ui-card-body>
+        </ui-card>
+
+        <ui-card variant="elevated">
+          <ui-card-header avatarName="Jane Doe" subtitle="Last updated 2 minutes ago">
+            Assigned to Jane Doe
+          </ui-card-header>
+          <ui-card-body>
+            Subtitle and leading media can be combined for richer identity cards.
+          </ui-card-body>
+        </ui-card>
+      </div>
+    `,
+    moduleMetadata: { imports: [UICardHeader, UICardBody] },
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-card variant="outlined">
+  <ui-card-header [icon]="icons.Lucide.Account.User" subtitle="Design Systems Team">
+    Product Owner
+  </ui-card-header>
+  <ui-card-body>
+    Use a subtitle for supporting context such as role, status, or last update.
+  </ui-card-body>
+</ui-card>
+
+<ui-card variant="elevated">
+  <ui-card-header avatarName="Jane Doe" subtitle="Last updated 2 minutes ago">
+    Assigned to Jane Doe
+  </ui-card-header>
+  <ui-card-body>
+    Subtitle and leading media can be combined for richer identity cards.
+  </ui-card-body>
+</ui-card>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import { UICard, UICardHeader, UICardBody, UIIcons } from '@theredhead/lucid-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UICard, UICardHeader, UICardBody],
+  template: \
+    '<ui-card variant="outlined">\
+      <ui-card-header [icon]="icons.Lucide.Account.User" subtitle="Design Systems Team">Product Owner</ui-card-header>\
+      <ui-card-body>Use a subtitle for supporting context such as role, status, or last update.</ui-card-body>\
+    </ui-card>\
+    <ui-card variant="elevated">\
+      <ui-card-header avatarName="Jane Doe" subtitle="Last updated 2 minutes ago">Assigned to Jane Doe</ui-card-header>\
+      <ui-card-body>Subtitle and leading media can be combined for richer identity cards.</ui-card-body>\
+    </ui-card>',
+})
+export class ExampleComponent {
+  protected readonly icons = UIIcons;
+}
+
+// ── SCSS ──
+/* No custom styles needed — card header subtitle spacing is built in. */
+`,
+      },
+    },
+  },
+};
+
+export const BodyImage: Story = {
+  render: () => ({
+    template: `
+      <ui-card variant="outlined" style="max-width: 28rem;">
+        <ui-card-header subtitle="Cover image inside the body">Project Spotlight</ui-card-header>
+        <ui-card-body>
+          <ui-card-image
+            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
+            alt="People collaborating around a table"
+          />
+          <p style="margin: 1rem 0 0;">
+            ui-card-image fills the available body width and crops with object-fit cover.
+          </p>
+        </ui-card-body>
+        <ui-card-footer>
+          <ui-button variant="text">Dismiss</ui-button>
+          <ui-button>Open</ui-button>
+        </ui-card-footer>
+      </ui-card>
+    `,
+    moduleMetadata: { imports: [UICardHeader, UICardBody, UICardImage, UICardFooter, UIButton] },
+  }),
+  parameters: {
+    docs: {
+      source: {
+        language: "html",
+        code: `
+// ── HTML ──
+<ui-card variant="outlined">
+  <ui-card-header subtitle="Cover image inside the body">Project Spotlight</ui-card-header>
+  <ui-card-body>
+    <ui-card-image
+      src="/project-hero.jpg"
+      alt="People collaborating around a table"
+    />
+    <p>ui-card-image fills the available body width and crops with object-fit cover.</p>
+  </ui-card-body>
+  <ui-card-footer>
+    <ui-button variant="text">Dismiss</ui-button>
+    <ui-button>Open</ui-button>
+  </ui-card-footer>
+</ui-card>
+
+// ── TypeScript ──
+import { Component } from '@angular/core';
+import {
+  UIButton,
+  UICard,
+  UICardBody,
+  UICardFooter,
+  UICardHeader,
+  UICardImage,
+} from '@theredhead/lucid-kit';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [UIButton, UICard, UICardBody, UICardFooter, UICardHeader, UICardImage],
+  template: \
+    '<ui-card variant="outlined">\
+      <ui-card-header subtitle="Cover image inside the body">Project Spotlight</ui-card-header>\
+      <ui-card-body>\
+        <ui-card-image src="/project-hero.jpg" alt="People collaborating around a table" />\
+        <p>ui-card-image fills the available body width and crops with object-fit cover.</p>\
+      </ui-card-body>\
+      <ui-card-footer>\
+        <ui-button variant="text">Dismiss</ui-button>\
+        <ui-button>Open</ui-button>\
+      </ui-card-footer>\
+    </ui-card>',
+})
+export class ExampleComponent {}
+
+// ── SCSS ──
+/* No custom styles needed — card image scales to the body width automatically. */
 `,
       },
     },

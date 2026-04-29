@@ -62,6 +62,7 @@
 | `UICard`                | `src/lib/card/card.component.ts`                                              | `ui-card`                   | Content container with optional header, body, and footer                                                                           |
 | `UICardHeader`          | `src/lib/card/card.component.ts`                                              | `ui-card-header`            | Card header section                                                                                                                |
 | `UICardBody`            | `src/lib/card/card.component.ts`                                              | `ui-card-body`              | Card body section                                                                                                                  |
+| `UICardImage`           | `src/lib/card/card.component.ts`                                              | `ui-card-image`             | Full-width cover image block for use inside a card body                                                                            |
 | `UICardFooter`          | `src/lib/card/card.component.ts`                                              | `ui-card-footer`            | Card footer section                                                                                                                |
 | `UIToastContainer`      | `src/lib/toast/toast.component.ts`                                            | `ui-toast-container`        | Container rendering active toast notifications                                                                                     |
 | `UIDrawer`              | `src/lib/drawer/drawer.component.ts`                                          | `ui-drawer`                 | Off-canvas drawer panel                                                                                                            |
@@ -153,23 +154,23 @@ This pattern allows for extensibility - new column types can be added without mo
 
 ## Strategy Classes
 
-| Name                        | File                                                               | Description                                     |
-| --------------------------- | ------------------------------------------------------------------ | ----------------------------------------------- |
-| `GraphPresentationStrategy` | `src/lib/chart/strategies/graph-presentation-strategy.ts`          | Base strategy for chart rendering               |
-| `LineGraphStrategy`         | `src/lib/chart/strategies/line-graph.strategy.ts`                  | Line graphs                                     |
-| `BarGraphStrategy`          | `src/lib/chart/strategies/bar-graph.strategy.ts`                   | Vertical bar charts                             |
-| `StackedBarGraphStrategy`   | `src/lib/chart/strategies/stacked-bar-graph.strategy.ts`           | Stacked bar charts                              |
-| `PieChartStrategy`          | `src/lib/chart/strategies/pie-chart.strategy.ts`                   | Pie / doughnut charts                           |
-| `ScatterPlotStrategy`       | `src/lib/chart/strategies/scatter-plot.strategy.ts`                | Scatter plots                                   |
-| `GaugePresentationStrategy` | `src/lib/gauge/strategies/gauge-presentation-strategy.ts`          | Base strategy for gauge rendering               |
-| `AnalogGaugeStrategy`       | `src/lib/gauge/strategies/analog-gauge.strategy.ts`                | Analog speedometer style                        |
-| `VuMeterStrategy`           | `src/lib/gauge/strategies/vu-meter.strategy.ts`                    | VU meter style                                  |
-| `DigitalGaugeStrategy`      | `src/lib/gauge/strategies/digital-gauge.strategy.ts`               | Digital numeric display                         |
-| `LcdGaugeStrategy`          | `src/lib/gauge/strategies/lcd-gauge.strategy.ts`                   | LCD-style numeric display                       |
-| `BarGaugeStrategy`          | `src/lib/gauge/strategies/bar-gauge.strategy.ts`                   | Horizontal bar gauge                            |
-| `ScrollCarouselStrategy`    | `src/lib/carousel/scroll-strategy.ts`                              | Carousel via horizontal scroll                  |
-| `SingleCarouselStrategy`    | `src/lib/carousel/single-strategy.ts`                              | Carousel showing one full-frame slide at a time |
-| `CoverflowCarouselStrategy` | `src/lib/carousel/coverflow-strategy.ts`                           | Carousel with 3D coverflow effect               |
+| Name                        | File                                                      | Description                                     |
+| --------------------------- | --------------------------------------------------------- | ----------------------------------------------- |
+| `GraphPresentationStrategy` | `src/lib/chart/strategies/graph-presentation-strategy.ts` | Base strategy for chart rendering               |
+| `LineGraphStrategy`         | `src/lib/chart/strategies/line-graph.strategy.ts`         | Line graphs                                     |
+| `BarGraphStrategy`          | `src/lib/chart/strategies/bar-graph.strategy.ts`          | Vertical bar charts                             |
+| `StackedBarGraphStrategy`   | `src/lib/chart/strategies/stacked-bar-graph.strategy.ts`  | Stacked bar charts                              |
+| `PieChartStrategy`          | `src/lib/chart/strategies/pie-chart.strategy.ts`          | Pie / doughnut charts                           |
+| `ScatterPlotStrategy`       | `src/lib/chart/strategies/scatter-plot.strategy.ts`       | Scatter plots                                   |
+| `GaugePresentationStrategy` | `src/lib/gauge/strategies/gauge-presentation-strategy.ts` | Base strategy for gauge rendering               |
+| `AnalogGaugeStrategy`       | `src/lib/gauge/strategies/analog-gauge.strategy.ts`       | Analog speedometer style                        |
+| `VuMeterStrategy`           | `src/lib/gauge/strategies/vu-meter.strategy.ts`           | VU meter style                                  |
+| `DigitalGaugeStrategy`      | `src/lib/gauge/strategies/digital-gauge.strategy.ts`      | Digital numeric display                         |
+| `LcdGaugeStrategy`          | `src/lib/gauge/strategies/lcd-gauge.strategy.ts`          | LCD-style numeric display                       |
+| `BarGaugeStrategy`          | `src/lib/gauge/strategies/bar-gauge.strategy.ts`          | Horizontal bar gauge                            |
+| `ScrollCarouselStrategy`    | `src/lib/carousel/scroll-strategy.ts`                     | Carousel via horizontal scroll                  |
+| `SingleCarouselStrategy`    | `src/lib/carousel/single-strategy.ts`                     | Carousel showing one full-frame slide at a time |
+| `CoverflowCarouselStrategy` | `src/lib/carousel/coverflow-strategy.ts`                  | Carousel with 3D coverflow effect               |
 
 ## Types
 

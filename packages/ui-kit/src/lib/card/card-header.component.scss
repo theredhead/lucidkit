@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.leading-media {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--ui-text, #1d232b);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.title {
+  min-width: 0;
+}
+
+.subtitle {
+  color: var(--ui-muted, #5f6b7a);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.45;
+}

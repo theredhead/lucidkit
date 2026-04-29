@@ -1,1 +1,25 @@
-<ng-content />
+@if (hasAvatar()) {
+	<span class="leading-media">
+		<ui-avatar
+			[src]="avatarSrc()"
+			[email]="avatarEmail()"
+			[name]="avatarName()"
+			[size]="avatarSize()"
+			[ariaLabel]="avatarAriaLabel()"
+		/>
+	</span>
+} @else if (icon(); as svg) {
+	<span class="leading-media">
+		<ui-icon [svg]="svg" [size]="iconSize()" [ariaLabel]="iconAriaLabel()" />
+	</span>
+}
+
+<div class="content" [class.with-media]="hasLeadingMedia()">
+	<div class="title">
+		<ng-content />
+	</div>
+
+	@if (subtitle(); as subtitle) {
+		<div class="subtitle">{{ subtitle }}</div>
+	}
+</div>
