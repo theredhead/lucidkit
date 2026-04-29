@@ -1331,7 +1331,11 @@ function buildFallbackTs(
       : "";
   const fieldBlock = templateContextFields.length > 0
     ? `\n\n${templateContextFields
-        .map(({ name, initializerText }) => `  public ${name} = (${initializerText}) as const;`)
+        .map(({ name, initializerText }) =>
+          initializerText === "undefined as unknown"
+            ? `  public ${name} = undefined as never;`
+            : `  public ${name} = (${initializerText}) as const;`,
+        )
         .join("\n")}`
     : "";
 
