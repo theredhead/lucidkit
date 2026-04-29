@@ -180,6 +180,20 @@ function processStoryFile(storyFilePath) {
       }
 
       const baseName = `${storyName}.story`;
+      const templateContextFields =
+        output.mode === "render"
+          ? getTemplateContextFields(output.html, storyObject, sourceText)
+          : [];
+      const fallbackDependencySources =
+        output.mode === "render"
+          ? collectTopLevelDependencyStatements(
+              sourceFile,
+              topLevelDeclarationMap,
+              templateContextFields
+                .map((field) => field.initializerNode)
+                .filter((node) => node !== undefined),
+            ).map((statement) => sourceText.slice(statement.getFullStart(), statement.end).trim())
+          : [];
       const tsContent =
         output.mode === "component"
           ? output.ts
@@ -189,9 +203,8 @@ function processStoryFile(storyFilePath) {
               storyName,
               fallbackImportStatements,
               fallbackComponentImports,
-              output.mode === "render"
-                ? getTemplateContextFields(output.html, storyObject, sourceText)
-                : [],
+              templateContextFields,
+              fallbackDependencySources,
             );
       const scssContent = output.scss ?? "/* No custom styles extracted yet. */\n";
       const storySourceInfo = getGeneratedStorySourceInfo(tsContent);
@@ -1625,12 +1638,15 @@ function buildFallbackTs(
   importStatements = [],
   componentImports = [],
   templateContextFields = [],
+  dependencySources = [],
 ) {
   const relativePath = path.relative(repoRoot, storyFilePath);
   const importBlock = Array.isArray(importStatements)
     ? importStatements.join("\n").trim()
     : importStatements.trim();
-  const prefix = importBlock.length > 0 ? `${importBlock}\n\n` : "";
+  const dependencyBlock = dependencySources.join("\n\n").trim();
+  const prefixParts = [importBlock, dependencyBlock].filter((value) => value.length > 0);
+  const prefix = prefixParts.length > 0 ? `${prefixParts.join("\n\n")}\n\n` : "";
   const importsMetadata =
     componentImports.length > 0
       ? `,\n  imports: [${componentImports.join(", ")}]`
@@ -1640,7 +1656,7 @@ function buildFallbackTs(
         .map(({ name, initializerText }) =>
           initializerText === "undefined as unknown"
             ? `  public ${name} = undefined as never;`
-            : `  public ${name} = (${initializerText}) as const;`,
+            : `  public ${name} = ${formatFallbackInitializer(initializerText)};`,
         )
         .join("\n")}`
     : "";
@@ -1681,6 +1697,7 @@ function getTemplateContextFields(template, storyObject, sourceText) {
   return getTemplateContextNames(template).map((name) => ({
     name,
     initializerText: getArgsInitializerText(argsObject, name, sourceText) ?? "undefined as unknown",
+    initializerNode: getArgsInitializerNode(argsObject, name),
   }));
 }
 
@@ -1699,6 +1716,16 @@ function getStoryArgsObject(storyObject) {
 }
 
 function getArgsInitializerText(argsObject, propertyName, sourceText) {
+  const initializerNode = getArgsInitializerNode(argsObject, propertyName);
+
+  if (!initializerNode) {
+    return undefined;
+  }
+
+  return sourceText.slice(initializerNode.getStart(), initializerNode.end).trim();
+}
+
+function getArgsInitializerNode(argsObject, propertyName) {
   if (!argsObject) {
     return undefined;
   }
@@ -1710,14 +1737,35 @@ function getArgsInitializerText(argsObject, propertyName, sourceText) {
   }
 
   if (ts.isPropertyAssignment(property)) {
-    return sourceText.slice(property.initializer.getStart(), property.initializer.end).trim();
+    return property.initializer;
   }
 
   if (ts.isShorthandPropertyAssignment(property)) {
-    return property.name.text;
+    return property.name;
   }
 
   return undefined;
+}
+
+function formatFallbackInitializer(initializerText) {
+  return shouldUseConstAssertion(initializerText)
+    ? `(${initializerText}) as const`
+    : initializerText;
+}
+
+function shouldUseConstAssertion(initializerText) {
+  const trimmed = initializerText.trim();
+
+  return (
+    trimmed.startsWith("\"") ||
+    trimmed.startsWith("'") ||
+    trimmed.startsWith("`") ||
+    trimmed.startsWith("[") ||
+    trimmed.startsWith("{") ||
+    trimmed === "true" ||
+    trimmed === "false" ||
+    /^-?\d+(?:\.\d+)?$/u.test(trimmed)
+  );
 }
 
 function writeOutputFile(filePath, content) {

@@ -1,0 +1,28 @@
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div>
+        <p style="margin:0 0 0.5rem;font-size:0.85rem;color:#888;">Normal</p>
+        <ui-map-view
+          [center]="center"
+          [zoom]="6"
+          [polylines]="[route]"
+          [polygons]="[polygon]"
+          [markers]="markers"
+          height="360px"
+        />
+      </div>
+      <div>
+        <p style="margin:0 0 0.5rem;font-size:0.85rem;color:#888;">
+          Highlighted
+        </p>
+        <ui-map-view
+          [center]="center"
+          [zoom]="6"
+          [polylines]="[routeHighlighted]"
+          [polygons]="[polygonHighlighted]"
+          [markers]="markers"
+          height="360px"
+        />
+      </div>
+    </div>
+  
