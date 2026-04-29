@@ -1,0 +1,34 @@
+
+    <div class="grid">
+      <!-- Row 1 -->
+      <span></span>
+      <ui-button variant="outlined" (click)="open($event, 'top', 'center')">
+        ↑ Top
+      </ui-button>
+      <span></span>
+
+      <!-- Row 2 -->
+      <ui-button variant="outlined" (click)="open($event, 'center', 'start')">
+        ← Left
+      </ui-button>
+      <ui-button variant="filled" (click)="open($event, 'auto', 'auto')">
+        ✦ Auto
+      </ui-button>
+      <ui-button variant="outlined" (click)="open($event, 'center', 'end')">
+        Right →
+      </ui-button>
+
+      <!-- Row 3 -->
+      <span></span>
+      <ui-button variant="outlined" (click)="open($event, 'bottom', 'center')">
+        ↓ Bottom
+      </ui-button>
+      <span></span>
+    </div>
+
+    @if (lastPlacement()) {
+      <div class="story-output">
+        <strong>Alignment:</strong> {{ lastPlacement() }}
+      </div>
+    }
+  

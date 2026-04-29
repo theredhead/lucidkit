@@ -1,0 +1,8 @@
+
+    <ui-button #anchor variant="ghost" (click)="open()"> ⋮ Actions </ui-button>
+    @if (lastAction()) {
+      <div class="story-output">
+        <strong>Selected:</strong> {{ lastAction() }}
+      </div>
+    }
+  
