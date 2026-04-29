@@ -1,0 +1,60 @@
+
+    <div
+      style="display: flex; flex-direction: column; gap: 32px; padding: 16px; background: var(--ui-surface, #fff); color: var(--ui-text, #1d232b);"
+    >
+      <div>
+        <h4 style="margin: 0 0 12px; color: var(--ui-text, #1d232b);">
+          Text — 1 line
+        </h4>
+        <ui-skeleton variant="text" [lines]="1" width="300px" />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 12px; color: var(--ui-text, #1d232b);">
+          Text — 4 lines
+        </h4>
+        <ui-skeleton variant="text" [lines]="4" width="400px" />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 12px; color: var(--ui-text, #1d232b);">Rect</h4>
+        <ui-skeleton variant="rect" width="240px" height="140px" />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 12px; color: var(--ui-text, #1d232b);">
+          Circle (avatar)
+        </h4>
+        <ui-skeleton variant="circle" width="3rem" height="3rem" />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 12px; color: var(--ui-text, #1d232b);">
+          Card skeleton
+        </h4>
+        <div
+          style="display: flex; gap: 16px; align-items: flex-start; max-width: 380px;"
+        >
+          <ui-skeleton
+            variant="circle"
+            width="3rem"
+            height="3rem"
+            style="flex-shrink: 0;"
+          />
+          <div
+            style="flex: 1; display: flex; flex-direction: column; gap: 8px;"
+          >
+            <ui-skeleton variant="text" [lines]="1" width="60%" />
+            <ui-skeleton variant="text" [lines]="3" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 12px; color: var(--ui-text, #1d232b);">
+          Not animated
+        </h4>
+        <ui-skeleton
+          variant="text"
+          [lines]="2"
+          width="300px"
+          [animated]="false"
+        />
+      </div>
+    </div>
+  
