@@ -76,7 +76,13 @@
 ) {
   // Resolve brand: explicit $brand-color wins, else fall back to $primary-color.
   // When neither is given the token default (var(--ui-accent)) applies.
-  $_brand: if($brand-color, $brand-color, $primary-color);
+  $_brand: null;
+
+  @if $brand-color {
+    $_brand: $brand-color;
+  } @else if $primary-color {
+    $_brand: $primary-color;
+  }
 
   // ── 1. Light defaults ────────────────────────────────────────────
 

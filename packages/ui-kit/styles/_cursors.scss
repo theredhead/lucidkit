@@ -1,5 +1,7 @@
+@use "sass:string";
+
 @function ui-cursor-value($path, $fallback: auto) {
-  @return unquote('url("../cursors/#{$path}"), #{$fallback}');
+  @return string.unquote('url("../cursors/#{$path}"), #{$fallback}');
 }
 
 @mixin ui-cursor-theme() {

@@ -13,11 +13,8 @@ function getAbsolutePath(value: string): string {
 
 const config: StorybookConfig = {
   stories: [
-    "../packages/ui-kit/src/**/*.mdx",
     "../packages/ui-kit/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../packages/ui-blocks/src/**/*.mdx",
     "../packages/ui-blocks/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../packages/ui-forms/src/**/*.mdx",
     "../packages/ui-forms/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   addons: [
@@ -43,5 +40,29 @@ const config: StorybookConfig = {
     disableTelemetry: true,
   },
   docs: {},
+  webpackFinal: async (baseConfig) => ({
+    ...baseConfig,
+    performance: {
+      hints: false,
+    },
+    ignoreWarnings: [
+      ...(baseConfig.ignoreWarnings ?? []),
+      (warning) => {
+        const warningText =
+          typeof warning === "string"
+            ? warning
+            : warning instanceof Error
+              ? warning.message
+              : (warning as { message?: string }).message ?? "";
+
+        return (
+          warningText.includes("@eslint/plugin-kit") &&
+          warningText.includes(
+            "is part of the TypeScript compilation but it's unused",
+          )
+        );
+      },
+    ],
+  }),
 };
 export default config;
