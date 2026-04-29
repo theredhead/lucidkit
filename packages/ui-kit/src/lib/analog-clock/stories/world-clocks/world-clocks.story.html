@@ -1,8 +1,0 @@
-@for (city of zones; track city.label) {
-  <ui-analog-clock
-    [size]="160"
-    [time]="city.time()"
-    [showSeconds]="false"
-    [ariaLabel]="'Time in ' + city.label"
-  />
-}

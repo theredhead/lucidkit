@@ -1,1 +1,0 @@
-readonly selected = signal('cherry');

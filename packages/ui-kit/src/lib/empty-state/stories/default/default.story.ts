@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
-import { UIEmptyState } from '@theredhead/lucid-kit';
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+
+import { UIEmptyState } from "../../empty-state.component";
 
 @Component({
+  selector: "ui-empty-state-story-default",
   standalone: true,
   imports: [UIEmptyState],
-  template: `
-    <ui-empty-state heading="No results found" message="Try adjusting your search.">
-      <button action>Clear filters</button>
-    </ui-empty-state>
-  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: "./default.story.html",
+  styleUrl: "./default.story.scss",
 })
-export class ExampleComponent {}
+export class UIEmptyStateStoryDefault {
+
+  /** Primary heading text forwarded to the empty-state component. */
+  public readonly heading = input.required<string>();
+
+  /** Optional explanatory message forwarded to the empty-state component. */
+  public readonly message = input<string>("");
+}

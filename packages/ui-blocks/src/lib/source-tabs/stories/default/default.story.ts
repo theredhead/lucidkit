@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UISourceTabs, type UISourceTab } from '@theredhead/lucid-blocks';
 
 @Component({
-  selector: 'app-source-demo',
+  selector: 'ui-source-demo',
   standalone: true,
   imports: [UISourceTabs],
   template:     '<ui-source-tabs [tabs]="tabs" ariaLabel="Implementation example" />',

@@ -1,33 +1,25 @@
+<div class="stack">
+  <section class="example">
+    <h4>Heading only</h4>
+    <ui-empty-state heading="No notifications" />
+  </section>
 
-    <div
-      style="display: flex; flex-direction: column; gap: 40px; padding: 16px; background: var(--ui-surface, #fff); color: var(--ui-text, #1d232b);"
+  <section class="example">
+    <h4>With message</h4>
+    <ui-empty-state
+      heading="No results found"
+      message="Try adjusting your search or filters to find what you're looking for."
+    />
+  </section>
+
+  <section class="example">
+    <h4>With icon and action</h4>
+    <ui-empty-state
+      heading="Your inbox is empty"
+      message="When you receive messages they'll appear here."
+      [icon]="icon"
     >
-      <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
-          Heading only
-        </h4>
-        <ui-empty-state heading="No notifications" />
-      </div>
-      <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
-          With message
-        </h4>
-        <ui-empty-state
-          heading="No results found"
-          message="Try adjusting your search or filters to find what you're looking for."
-        />
-      </div>
-      <div>
-        <h4 style="margin: 0 0 8px; color: var(--ui-text, #1d232b);">
-          With icon + action
-        </h4>
-        <ui-empty-state
-          heading="Your inbox is empty"
-          message="When you receive messages they'll appear here."
-          [icon]="icon"
-        >
-          <ui-button action variant="outlined">Compose message</ui-button>
-        </ui-empty-state>
-      </div>
-    </div>
-  
+      <ui-button action variant="outlined">Compose message</ui-button>
+    </ui-empty-state>
+  </section>
+</div>

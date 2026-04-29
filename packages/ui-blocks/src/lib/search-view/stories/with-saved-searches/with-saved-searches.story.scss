@@ -1,4 +1,0 @@
-/* No custom styles needed. Override `StorageService` strategy for
-   server-side persistence:
-   providers: [{ provide: STORAGE_STRATEGY, useClass: MyApiStrategy }]
-*/

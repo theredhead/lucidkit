@@ -1,16 +1,17 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
-import { UIEmptyState } from "../../empty-state.component";
-import { UIIcons } from "../../../icon";
 import { UIButton } from "../../../button/button.component";
+import { UIIcons } from "../../../icon";
+import { UIEmptyState } from "../../empty-state.component";
 
 @Component({
-  selector: "ui-empty-state-demo",
+  selector: "ui-empty-state-story-showcase",
   standalone: true,
   imports: [UIEmptyState, UIButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./showcase.story.html",
+  styleUrl: "./showcase.story.scss",
 })
-export class EmptyStateDemo {
+export class UIEmptyStateStoryShowcase {
   protected readonly icon = UIIcons.Lucide.Mail.Inbox;
 }
