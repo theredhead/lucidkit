@@ -1422,12 +1422,17 @@ function writeOutputFile(filePath, content) {
 
   mkdirSync(path.dirname(filePath), { recursive: true });
 
-  if (content.trim().length === 0) {
+  const normalizedContent =
+    filePath.endsWith(".story.html") && content.trim().length === 0
+      ? "<!-- intentionally blank -->\n"
+      : content;
+
+  if (normalizedContent.trim().length === 0) {
     rmSync(filePath, { force: true });
     return;
   }
 
-  writeFileSync(filePath, content, "utf8");
+  writeFileSync(filePath, normalizedContent, "utf8");
 }
 
 function ensureTrailingNewline(content) {
