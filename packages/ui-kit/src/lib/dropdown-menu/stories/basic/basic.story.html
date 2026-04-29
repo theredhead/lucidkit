@@ -1,0 +1,8 @@
+<ui-dropdown-menu>
+  <ui-button trigger>Actions ▾</ui-button>
+  <ui-dropdown-item (action)="onEdit()">Edit</ui-dropdown-item>
+  <ui-dropdown-item (action)="onDuplicate()">Duplicate</ui-dropdown-item>
+  <ui-dropdown-divider />
+  <ui-dropdown-item (action)="onArchive()">Archive</ui-dropdown-item>
+  <ui-dropdown-item [disabled]="true">Delete</ui-dropdown-item>
+</ui-dropdown-menu>
