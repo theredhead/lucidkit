@@ -1,0 +1,557 @@
+    <ui-navigation-page
+      [items]="nav"
+      [(activePage)]="activePage"
+      rootLabel="Admin"
+      storageKey="storybook-nav-user-mgmt"
+    >
+      <ng-template #content let-node>
+        <!-- ─── Overview ─── -->
+        @if (node.id === "overview") {
+          <div class="page-fill">
+            <ui-user-management-page-header
+              [icon]="icons.layout"
+              title="Overview"
+            />
+
+            <div class="stats-grid">
+              <ui-user-management-stat-card
+                label="Total Users"
+                [value]="totalUsers"
+                [progress]="100"
+                ariaLabel="Users"
+              />
+              <ui-user-management-stat-card
+                label="Active"
+                [value]="activeUsers"
+                [progress]="(activeUsers / totalUsers) * 100"
+                ariaLabel="Active users"
+              />
+              <ui-user-management-stat-card
+                label="MFA Enabled"
+                [value]="mfaUsers"
+                [progress]="(mfaUsers / totalUsers) * 100"
+                ariaLabel="MFA coverage"
+              />
+              <ui-user-management-stat-card
+                label="Roles"
+                [value]="roles.length"
+                [progress]="100"
+                ariaLabel="Roles"
+              />
+            </div>
+
+            <h3 style="margin: 0 0 0.75rem; font-size: 1rem">
+              Recent Activity
+            </h3>
+            <div class="audit-wrap">
+              <ui-master-detail-view
+                [datasource]="auditDs"
+                title="Audit Events"
+                placeholder="Select an event to view details"
+              >
+                <ui-text-column key="timestamp" headerText="Time" />
+                <ui-text-column key="action" headerText="Action" />
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-entry>
+                  <dl class="detail-grid">
+                    <dt>Time</dt>
+                    <dd>{{ entry.timestamp }}</dd>
+                    <dt>User</dt>
+                    <dd>{{ entry.user }}</dd>
+                    <dt>Action</dt>
+                    <dd>{{ entry.action }}</dd>
+                    <dt>Target</dt>
+                    <dd>{{ entry.target }}</dd>
+                    <dt>Status</dt>
+                    <dd>
+                      <ui-chip [color]="statusColor(entry.status)">
+                        {{ entry.status }}
+                      </ui-chip>
+                    </dd>
+                  </dl>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── All Users (master-detail + tabs) ─── -->
+        @if (node.id === "users") {
+          <div class="page-fill">
+            <ui-user-management-page-header
+              [icon]="icons.users"
+              title="All Users"
+              [badgeCount]="totalUsers"
+            >
+              <ui-button
+                header-actions
+                variant="outlined"
+                size="small"
+                (click)="activePage.set('invite')"
+              >
+                Add User
+              </ui-button>
+            </ui-user-management-page-header>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="usersDs"
+                title="Users"
+                [showFilter]="true"
+                placeholder="Select a user to view their profile"
+                (selectedChange)="selectedUser.set($event)"
+              >
+                <ui-template-column key="name" headerText="User">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                      <ui-avatar
+                        [email]="row.email"
+                        [name]="row.name"
+                        size="small"
+                      />
+                      <span style="font-weight: 600">{{ row.name }}</span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="role" headerText="Role" />
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-person>
+                  <ui-user-management-profile-header
+                    [email]="person.email"
+                    [name]="person.name"
+                    [status]="person.status"
+                    [statusColor]="statusColor(person.status)"
+                  />
+
+                  <ui-tab-group panelStyle="flat">
+                    <ui-tab label="Profile" [icon]="icons.user">
+                      <dl class="detail-grid" style="padding-top: 0.75rem">
+                        <dt>Department</dt>
+                        <dd>{{ person.department }}</dd>
+                        <dt>Role</dt>
+                        <dd>{{ person.role }}</dd>
+                        <dt>Last Login</dt>
+                        <dd>{{ person.lastLogin }}</dd>
+                        <dt>MFA</dt>
+                        <dd>
+                          <ui-chip
+                            [color]="person.mfaEnabled ? 'success' : 'warning'"
+                          >
+                            {{ person.mfaEnabled ? "Enabled" : "Disabled" }}
+                          </ui-chip>
+                        </dd>
+                      </dl>
+                    </ui-tab>
+                    <ui-tab label="Permissions" [icon]="icons.shieldCheck">
+                      <div style="padding-top: 0.75rem">
+                        <p style="font-size: 0.88rem; margin: 0 0 0.5rem">
+                          Permissions inherited from role:
+                          <strong>{{ person.role }}</strong>
+                        </p>
+                        <div class="priv-list">
+                          @for (
+                            priv of privilegesForRole(person.role);
+                            track priv
+                          ) {
+                            <ui-chip color="neutral">{{ priv }}</ui-chip>
+                          }
+                        </div>
+                      </div>
+                    </ui-tab>
+                    <ui-tab-spacer />
+                    <ui-tab [icon]="icons.activity" ariaLabel="Activity">
+                      <div style="padding-top: 0.75rem; font-size: 0.88rem">
+                        <p style="margin: 0 0 0.25rem">
+                          Last sign-in: {{ person.lastLogin }}
+                        </p>
+                        <p style="margin: 0; opacity: 0.65">
+                          Account created on initial provisioning.
+                        </p>
+                      </div>
+                    </ui-tab>
+                  </ui-tab-group>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Invite User ─── -->
+        @if (node.id === "invite") {
+          <div class="page-header">
+            <div class="page-title">
+              <ui-icon [svg]="icons.userPlus" [size]="24" />
+              <h2>Invite User</h2>
+            </div>
+          </div>
+
+          <ui-card variant="outlined">
+            <ui-card-header>
+              <h3 style="margin: 0; font-size: 1rem">New User Details</h3>
+            </ui-card-header>
+            <ui-card-body>
+              <div class="form-grid">
+                <ui-user-management-form-field label="First Name">
+                  <ui-input placeholder="Jane" ariaLabel="First name" />
+                </ui-user-management-form-field>
+                <ui-user-management-form-field label="Last Name">
+                  <ui-input placeholder="Doe" ariaLabel="Last name" />
+                </ui-user-management-form-field>
+                <ui-user-management-form-field
+                  label="Email Address"
+                  [fullWidth]="true"
+                >
+                  <ui-input
+                    type="email"
+                    placeholder="jane.doe@acme.io"
+                    ariaLabel="Email address"
+                  />
+                </ui-user-management-form-field>
+                <ui-user-management-form-field label="Department">
+                  <ui-dropdown-list
+                    [options]="departmentOptions"
+                    placeholder="Select department"
+                    ariaLabel="Department"
+                  />
+                </ui-user-management-form-field>
+                <ui-user-management-form-field label="Role">
+                  <ui-dropdown-list
+                    [options]="roleOptions"
+                    placeholder="Select role"
+                    ariaLabel="Role"
+                  />
+                </ui-user-management-form-field>
+                <div class="form-field form-field-full">
+                  <ui-checkbox ariaLabel="Send welcome email">
+                    Send welcome email with temporary credentials
+                  </ui-checkbox>
+                </div>
+                <div class="form-field form-field-full">
+                  <ui-checkbox ariaLabel="Require MFA">
+                    Require MFA setup on first login
+                  </ui-checkbox>
+                </div>
+                <div class="form-actions">
+                  <ui-button variant="filled">Send Invitation</ui-button>
+                  <ui-button variant="ghost" (click)="activePage.set('users')">
+                    Cancel
+                  </ui-button>
+                </div>
+              </div>
+            </ui-card-body>
+          </ui-card>
+        }
+
+        <!-- ─── Roles & Privileges ─── -->
+        @if (node.id === "roles") {
+          <div class="page-header">
+            <div class="page-title">
+              <ui-icon [svg]="icons.shieldCheck" [size]="24" />
+              <h2>Roles &amp; Privileges</h2>
+            </div>
+            <div class="page-actions">
+              <ui-button variant="outlined" size="small">Create Role</ui-button>
+            </div>
+          </div>
+
+          <div class="role-grid">
+            @for (role of roles; track role.id) {
+              <ui-user-management-role-card
+                [name]="role.name"
+                [level]="role.level"
+                [levelColor]="levelColor(role.level)"
+                [description]="role.description"
+                [userCount]="role.userCount"
+                [usersIcon]="icons.users"
+                [privileges]="role.privileges"
+              />
+            }
+          </div>
+        }
+
+        <!-- ─── Security Policies ─── -->
+        @if (node.id === "policies") {
+          <div class="page-header">
+            <div class="page-title">
+              <ui-icon [svg]="icons.shield" [size]="24" />
+              <h2>Security Policies</h2>
+            </div>
+          </div>
+
+          <ui-accordion mode="single">
+            <ui-accordion-item label="Authentication" [expanded]="true">
+              <div class="policies-grid">
+                <ui-user-management-policy-row
+                  label="Enforce Multi-Factor Authentication"
+                  description="Require all users to set up MFA before accessing the application."
+                >
+                  <ui-toggle
+                    policy-control
+                    [value]="true"
+                    ariaLabel="Enforce MFA"
+                  />
+                </ui-user-management-policy-row>
+                <ui-user-management-policy-row
+                  label="Password Minimum Length"
+                  description="Set the minimum number of characters required for passwords."
+                >
+                  <ui-dropdown-list
+                    policy-control
+                    [options]="passwordLengthOptions"
+                    ariaLabel="Minimum password length"
+                  />
+                </ui-user-management-policy-row>
+                <ui-user-management-policy-row
+                  label="Session Timeout (minutes)"
+                  description="Automatically log out inactive users after this duration."
+                >
+                  <ui-dropdown-list
+                    policy-control
+                    [options]="sessionTimeoutOptions"
+                    ariaLabel="Session timeout"
+                  />
+                </ui-user-management-policy-row>
+              </div>
+            </ui-accordion-item>
+            <ui-accordion-item label="Account Lockout">
+              <div class="policies-grid">
+                <ui-user-management-policy-row
+                  label="Lock After Failed Attempts"
+                  description="Lock user accounts after consecutive failed login attempts."
+                >
+                  <ui-toggle
+                    policy-control
+                    [value]="true"
+                    ariaLabel="Enable account lockout"
+                  />
+                </ui-user-management-policy-row>
+                <ui-user-management-policy-row
+                  label="Max Failed Attempts"
+                  description="Number of consecutive failures before lockout."
+                >
+                  <ui-dropdown-list
+                    policy-control
+                    [options]="maxAttemptsOptions"
+                    ariaLabel="Max failed attempts"
+                  />
+                </ui-user-management-policy-row>
+              </div>
+            </ui-accordion-item>
+            <ui-accordion-item label="IP Restrictions">
+              <div class="policies-grid">
+                <ui-user-management-policy-row
+                  label="Enable IP Allow-List"
+                  description="Restrict access to approved IP addresses only."
+                >
+                  <ui-toggle
+                    policy-control
+                    [value]="false"
+                    ariaLabel="Enable IP allow-list"
+                  />
+                </ui-user-management-policy-row>
+              </div>
+            </ui-accordion-item>
+          </ui-accordion>
+        }
+
+        <!-- ─── Audit Log ─── -->
+        @if (node.id === "audit") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.history" [size]="24" />
+                <h2>Audit Log</h2>
+              </div>
+            </div>
+
+            <ui-tab-group panelStyle="outline">
+              <ui-tab label="All Events">
+                <div class="audit-wrap" style="margin-top: 0.75rem">
+                  <ui-master-detail-view
+                    [datasource]="auditDs"
+                    title="Events"
+                    placeholder="Select an event for details"
+                  >
+                    <ui-text-column key="timestamp" headerText="Timestamp" />
+                    <ui-text-column key="user" headerText="Actor" />
+                    <ui-text-column key="action" headerText="Action" />
+                    <ui-text-column key="target" headerText="Target" />
+                    <ui-badge-column key="status" headerText="Status" />
+
+                    <ng-template #detail let-entry>
+                      <dl class="detail-grid">
+                        <dt>Timestamp</dt>
+                        <dd>{{ entry.timestamp }}</dd>
+                        <dt>Actor</dt>
+                        <dd>{{ entry.user }}</dd>
+                        <dt>Action</dt>
+                        <dd>{{ entry.action }}</dd>
+                        <dt>Target</dt>
+                        <dd>{{ entry.target }}</dd>
+                        <dt>Result</dt>
+                        <dd>
+                          <ui-chip [color]="statusColor(entry.status)">
+                            {{ entry.status }}
+                          </ui-chip>
+                        </dd>
+                      </dl>
+                    </ng-template>
+                  </ui-master-detail-view>
+                </div>
+              </ui-tab>
+              <ui-tab-separator />
+              <ui-tab label="Failures Only">
+                <div class="audit-wrap" style="margin-top: 0.75rem">
+                  <ui-master-detail-view
+                    [datasource]="failedAuditDs"
+                    title="Failed Events"
+                    placeholder="Select a failed event"
+                  >
+                    <ui-text-column key="timestamp" headerText="Timestamp" />
+                    <ui-text-column key="user" headerText="Actor" />
+                    <ui-text-column key="action" headerText="Action" />
+                    <ui-badge-column key="status" headerText="Status" />
+
+                    <ng-template #detail let-entry>
+                      <dl class="detail-grid">
+                        <dt>Timestamp</dt>
+                        <dd>{{ entry.timestamp }}</dd>
+                        <dt>Actor</dt>
+                        <dd>{{ entry.user }}</dd>
+                        <dt>Action</dt>
+                        <dd>{{ entry.action }}</dd>
+                        <dt>Target</dt>
+                        <dd>{{ entry.target }}</dd>
+                      </dl>
+                    </ng-template>
+                  </ui-master-detail-view>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+
+        <!-- ─── Settings ─── -->
+        @if (node.id === "settings") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.settings" [size]="24" />
+                <h2>Settings</h2>
+              </div>
+            </div>
+
+            <ui-tab-group>
+              <ui-tab label="General" [icon]="icons.settings">
+                <div style="padding-top: 0.75rem">
+                  <div class="form-grid">
+                    <ui-user-management-form-field
+                      label="Organisation Name"
+                      [fullWidth]="true"
+                    >
+                      <ui-input
+                        placeholder="Acme Corp"
+                        ariaLabel="Organisation name"
+                      />
+                    </ui-user-management-form-field>
+                    <ui-user-management-form-field
+                      label="Default Role for New Users"
+                    >
+                      <ui-dropdown-list
+                        [options]="roleOptions"
+                        ariaLabel="Default role"
+                      />
+                    </ui-user-management-form-field>
+                    <ui-user-management-form-field label="Default Department">
+                      <ui-dropdown-list
+                        [options]="departmentOptions"
+                        ariaLabel="Default department"
+                      />
+                    </ui-user-management-form-field>
+                    <div class="form-field form-field-full">
+                      <ui-checkbox ariaLabel="Auto-provision">
+                        Auto-provision users from SSO
+                      </ui-checkbox>
+                    </div>
+                    <div class="form-actions">
+                      <ui-button variant="filled">Save Changes</ui-button>
+                    </div>
+                  </div>
+                </div>
+              </ui-tab>
+              <ui-tab label="Notifications" [icon]="icons.activity">
+                <div style="padding-top: 0.75rem">
+                  <div class="policies-grid">
+                    <ui-user-management-policy-row
+                      label="Email on New User Registration"
+                      description="Notify admins when a new user account is created."
+                    >
+                      <ui-toggle
+                        policy-control
+                        [value]="true"
+                        ariaLabel="New user notification"
+                      />
+                    </ui-user-management-policy-row>
+                    <ui-user-management-policy-row
+                      label="Alert on Suspicious Login"
+                      description="Send an alert when a login attempt from an unrecognised location is detected."
+                    >
+                      <ui-toggle
+                        policy-control
+                        [value]="true"
+                        ariaLabel="Suspicious login alert"
+                      />
+                    </ui-user-management-policy-row>
+                    <ui-user-management-policy-row
+                      label="Weekly Security Summary"
+                      description="Send a weekly digest of security events to all admins."
+                    >
+                      <ui-toggle
+                        policy-control
+                        [value]="false"
+                        ariaLabel="Weekly summary"
+                      />
+                    </ui-user-management-policy-row>
+                  </div>
+                </div>
+              </ui-tab>
+              <ui-tab-spacer />
+              <ui-tab [icon]="icons.shieldAlert" ariaLabel="Danger zone">
+                <div style="padding-top: 0.75rem">
+                  <ui-card variant="outlined">
+                    <ui-card-header>
+                      <span
+                        style="font-weight: 700; color: var(--ui-danger, #dc2626)"
+                      >
+                        Danger Zone
+                      </span>
+                    </ui-card-header>
+                    <ui-card-body>
+                      <p
+                        style="margin: 0 0 1rem; font-size: 0.88rem; line-height: 1.5"
+                      >
+                        These actions are irreversible and affect the entire
+                        organisation. Proceed with extreme caution.
+                      </p>
+                      <div style="display: flex; gap: 0.5rem">
+                        <ui-button variant="outlined" size="small">
+                          Export All Data
+                        </ui-button>
+                        <ui-button variant="outlined" size="small">
+                          Purge Inactive Users
+                        </ui-button>
+                      </div>
+                    </ui-card-body>
+                  </ui-card>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+      </ng-template>
+    </ui-navigation-page>
+  

@@ -1,0 +1,25 @@
+<ui-card variant="outlined">
+  <ui-card-body>
+    <div class="summary-header">
+      <strong>{{ title() }}</strong>
+      <ui-badge variant="label" [color]="badgeColor()">
+        {{ badgeText() }}
+      </ui-badge>
+    </div>
+
+    <div class="recipe-card-meta">
+      <span class="recipe-card-meta-item">
+        <ui-icon [svg]="metaOneIcon()" [size]="13" />
+        {{ metaOneText() }}
+      </span>
+      <span class="recipe-card-meta-item">
+        <ui-icon [svg]="metaTwoIcon()" [size]="13" />
+        {{ metaTwoText() }}
+      </span>
+      <span class="recipe-card-meta-item">
+        <ui-icon [svg]="metaThreeIcon()" [size]="13" />
+        {{ metaThreeText() }}
+      </span>
+    </div>
+  </ui-card-body>
+</ui-card>

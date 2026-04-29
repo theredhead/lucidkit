@@ -1,0 +1,469 @@
+    <ui-navigation-page
+      [items]="nav"
+      [(activePage)]="activePage"
+      rootLabel="LucidKit"
+      storageKey="storybook-nav-quick-tour"
+    >
+      <ng-template #content let-node>
+        @if (node.id === "overview") {
+          <div class="page-fill">
+            <div class="overview-stack">
+              <section class="hero">
+                <div class="hero-copy">
+                  <div class="eyebrow">
+                    <ui-icon [svg]="icons.sparkles" [size]="14" />
+                    Start here
+                  </div>
+                  <h2>
+                    See what LucidKit can build before you dive into the deep
+                    end.
+                  </h2>
+                  <p>
+                    This quick tour is intentionally shallow: one polished
+                    workspace, five pages, and enough real interaction to show
+                    how the library handles navigation, data-heavy screens,
+                    messaging, scheduling, charts, and forms.
+                  </p>
+                  <div class="hero-actions">
+                    <ui-button variant="filled">Browse the tour</ui-button>
+                    <ui-button variant="outlined"
+                      >Jump to full showcases</ui-button
+                    >
+                  </div>
+                  <div class="chip-row">
+                    <ui-chip color="primary">Primitives</ui-chip>
+                    <ui-chip color="success">Composite blocks</ui-chip>
+                    <ui-chip color="warning">Dashboards</ui-chip>
+                    <ui-chip color="neutral">Internal tools</ui-chip>
+                  </div>
+                </div>
+
+                <div class="hero-side">
+                  <ui-quick-tour-note-card
+                    title="Immediate value"
+                    body="Use this as the mental model: keep the surfaces and interaction patterns, then replace the demo data with your own domain."
+                  />
+                  <ui-quick-tour-note-card
+                    title="Best next click"
+                    body="Move left to right through the sidebar. Each page highlights one cluster of capabilities without forcing a full app narrative first."
+                  />
+                </div>
+              </section>
+
+              <div class="metrics-grid">
+                @for (metric of metrics; track metric.label) {
+                  <ui-quick-tour-metric-card
+                    [label]="metric.label"
+                    [value]="metric.value"
+                  />
+                }
+              </div>
+
+              <div class="mini-grid">
+                <ui-card variant="outlined">
+                  <ui-card-header>
+                    <div class="panel-title">
+                      <ui-icon [svg]="icons.barChart" [size]="18" />
+                      <h3>Where the library is strongest</h3>
+                    </div>
+                  </ui-card-header>
+                  <ui-card-body>
+                    <ui-chart
+                      [source]="chartData"
+                      labelProperty="label"
+                      valueProperty="value"
+                      [strategy]="chartStrategy"
+                      [showLegend]="false"
+                      [width]="520"
+                      [height]="260"
+                      ariaLabel="LucidKit capability overview"
+                    />
+                  </ui-card-body>
+                  <ui-card-footer>
+                    <div class="subtle">
+                      The point is not a single hero component. It is how well
+                      the pieces compose into a usable product surface.
+                    </div>
+                  </ui-card-footer>
+                </ui-card>
+
+                <ui-card variant="outlined">
+                  <ui-card-header>
+                    <div class="panel-title">
+                      <ui-icon [svg]="icons.checkCircle" [size]="18" />
+                      <h3>Three useful ways to approach it</h3>
+                    </div>
+                  </ui-card-header>
+                  <ui-card-body>
+                    <ol class="next-steps">
+                      @for (step of nextSteps; track step) {
+                        <li>{{ step }}</li>
+                      }
+                    </ol>
+                  </ui-card-body>
+                </ui-card>
+              </div>
+
+              <section class="catalog-shell">
+                <div class="catalog-header">
+                  <div>
+                    <div class="panel-title">
+                      <ui-icon [svg]="icons.compass" [size]="18" />
+                      <h3>Browse the library through live screenshots</h3>
+                    </div>
+                    <p class="subtle">
+                      These cards merge Storybook's runtime index with the
+                      generated screenshot manifest, so the links stay dynamic
+                      and captured components get visual previews automatically.
+                    </p>
+                  </div>
+                  <ui-badge color="primary">
+                    {{ storyCatalogCount() }} elements discovered
+                  </ui-badge>
+                </div>
+
+                @if (storyCatalogState() === "loading") {
+                  <div class="catalog-state">
+                    <strong>Loading story index…</strong>
+                    <div class="subtle">
+                      Reading Storybook metadata and screenshot previews.
+                    </div>
+                  </div>
+                }
+
+                @if (storyCatalogState() === "error") {
+                  <div class="catalog-state">
+                    <strong>Story catalog unavailable.</strong>
+                    <div class="subtle">
+                      The quick tour can still render, but the dynamic catalog
+                      could not fetch Storybook metadata in this environment.
+                    </div>
+                  </div>
+                }
+
+                @if (storyCatalogState() === "ready") {
+                  <div class="catalog-groups">
+                    @for (
+                      group of themedStoryCatalogGroups();
+                      track group.key
+                    ) {
+                      <section class="catalog-group">
+                        <div class="catalog-meta">
+                          <h4>{{ group.label }}</h4>
+                          <ui-badge color="neutral"
+                            >{{ group.stories.length }} elements</ui-badge
+                          >
+                        </div>
+
+                        <div class="catalog-grid compact">
+                          @for (story of group.stories; track story.id) {
+                            <article class="catalog-card">
+                              <div class="catalog-kicker">
+                                {{ story.category }}
+                              </div>
+                              <h4>{{ story.title }}</h4>
+                              <div class="muted">
+                                {{ story.storyCount }}
+                                {{
+                                  story.storyCount === 1 ? "entry" : "entries"
+                                }}
+                              </div>
+
+                              @if (story.hasScreenshots) {
+                                <ui-carousel
+                                  class="catalog-preview"
+                                  [items]="story.screenshots"
+                                  [strategy]="screenshotCarouselStrategy"
+                                  [showIndicators]="false"
+                                  [wrap]="story.screenshots.length > 1"
+                                  [ariaLabel]="
+                                    story.title + ' screenshot carousel'
+                                  "
+                                >
+                                  <ng-template let-screenshot>
+                                    <a
+                                      uiIndicatesTouch
+                                      class="catalog-preview-link"
+                                      [href]="story.href"
+                                      target="_top"
+                                      rel="noreferrer"
+                                    >
+                                      <div class="catalog-preview-frame">
+                                        <img
+                                          [src]="screenshot.src"
+                                          [alt]="
+                                            story.title +
+                                            ' ' +
+                                            screenshot.label +
+                                            ' preview'
+                                          "
+                                          loading="lazy"
+                                        />
+                                        <div class="catalog-preview-caption">
+                                          <div class="catalog-preview-label">
+                                            {{ screenshot.label }}
+                                          </div>
+                                          <ui-badge color="neutral">
+                                            {{ screenshot.theme }}
+                                          </ui-badge>
+                                        </div>
+                                      </div>
+                                    </a>
+                                  </ng-template>
+                                </ui-carousel>
+                              } @else {
+                                <div class="catalog-empty">
+                                  <div class="subtle">
+                                    No preview yet. Capture this component to
+                                    replace the placeholder with a live
+                                    carousel.
+                                  </div>
+                                </div>
+                              }
+
+                              <a
+                                uiIndicatesTouch
+                                class="catalog-link"
+                                [href]="story.href"
+                                target="_top"
+                                rel="noreferrer"
+                              >
+                                Open story
+                              </a>
+                            </article>
+                          }
+                        </div>
+                      </section>
+                    }
+                  </div>
+                }
+              </section>
+            </div>
+          </div>
+        }
+
+        @if (node.id === "workflows") {
+          <div class="page-fill">
+            <div class="panel-title">
+              <ui-icon [svg]="icons.layers" [size]="18" />
+              <h3>Data views that feel like product screens, not raw demos</h3>
+            </div>
+
+            <div class="master-detail-wrap">
+              <ui-master-detail-view
+                [datasource]="workflowDatasource"
+                title="Workflow patterns"
+                [showFilter]="true"
+                placeholder="Select a workflow"
+              >
+                <ui-text-column key="title" headerText="Workflow" />
+                <ui-text-column key="owner" headerText="Owner" />
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-item>
+                  <div class="detail-stack">
+                    <div class="panel-title">
+                      <ui-icon [svg]="icons.workflow" [size]="18" />
+                      <h3 class="card-title">{{ item.title }}</h3>
+                    </div>
+                    <dl class="detail-grid">
+                      <dt>Owner</dt>
+                      <dd>{{ item.owner }}</dd>
+                      <dt>Area</dt>
+                      <dd>{{ item.area }}</dd>
+                      <dt>Status</dt>
+                      <dd>
+                        <ui-chip [color]="workflowStatusColor(item.status)">
+                          {{ item.status }}
+                        </ui-chip>
+                      </dd>
+                    </dl>
+                    <p class="list-copy">{{ item.summary }}</p>
+                    <ui-tab-group panelStyle="flat">
+                      <ui-tab label="Why it matters">
+                        <p class="list-copy" style="padding-top: 0.75rem;">
+                          {{ item.impact }}
+                        </p>
+                      </ui-tab>
+                      <ui-tab label="Next step">
+                        <p class="list-copy" style="padding-top: 0.75rem;">
+                          {{ item.nextStep }}
+                        </p>
+                      </ui-tab>
+                    </ui-tab-group>
+                    <div class="panel-actions">
+                      <ui-button variant="filled" size="small"
+                        >Use this pattern</ui-button
+                      >
+                      <ui-button variant="outlined" size="small"
+                        >See a bigger app</ui-button
+                      >
+                    </div>
+                  </div>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        @if (node.id === "messages") {
+          <div class="page-fill">
+            <div class="panel-title">
+              <ui-icon [svg]="icons.messages" [size]="18" />
+              <h3>
+                Communication blocks stay useful even in small workflow surfaces
+              </h3>
+            </div>
+
+            <div class="chat-wrap">
+              <ui-chat-view
+                [messages]="chatMessages"
+                [currentUser]="currentUser"
+                composerMode="rich-text"
+                composerPresentation="compact"
+                placeholder="Leave a crisp handoff note..."
+                ariaLabel="Quick tour chat"
+              />
+            </div>
+          </div>
+        }
+
+        @if (node.id === "schedule") {
+          <div class="page-fill">
+            <div class="panel-title">
+              <ui-icon [svg]="icons.calendar" [size]="18" />
+              <h3>
+                Scheduling and planning components can sit beside operational
+                context
+              </h3>
+            </div>
+
+            <div class="schedule-grid">
+              <div class="calendar-wrap">
+                <ui-calendar-month-view
+                  [datasource]="calendarDatasource"
+                  [(selectedDate)]="selectedDate"
+                  ariaLabel="Quick tour calendar"
+                />
+              </div>
+
+              <ui-card variant="outlined">
+                <ui-card-header>
+                  <div class="panel-title">
+                    <ui-icon [svg]="icons.clock" [size]="18" />
+                    <h3>Upcoming this week</h3>
+                  </div>
+                </ui-card-header>
+                <ui-card-body>
+                  <div class="upcoming-list">
+                    @for (event of calendarEvents; track event.id) {
+                      <div class="upcoming-item">
+                        <div class="upcoming-row">
+                          <strong>{{ event.title }}</strong>
+                          <ui-badge color="primary">
+                            {{ event.data?.kind ?? "session" }}
+                          </ui-badge>
+                        </div>
+                        <div class="muted" style="margin-top: 0.35rem;">
+                          {{ event.start | date: "EEE d MMM, HH:mm" }}
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </ui-card-body>
+              </ui-card>
+            </div>
+          </div>
+        }
+
+        @if (node.id === "setup") {
+          <div class="page-fill">
+            <div class="panel-title">
+              <ui-icon [svg]="icons.sliders" [size]="18" />
+              <h3>
+                Primitives cover the small screens that make products feel
+                finished
+              </h3>
+            </div>
+
+            <div class="settings-grid">
+              <ui-card variant="outlined">
+                <ui-card-header>
+                  <div class="panel-title">
+                    <ui-icon [svg]="icons.wand" [size]="18" />
+                    <h3>Workspace setup</h3>
+                  </div>
+                </ui-card-header>
+                <ui-card-body>
+                  <div class="settings-stack">
+                    <div>
+                      <div class="muted">Project name</div>
+                      <ui-input
+                        placeholder="Launch workspace"
+                        ariaLabel="Project name"
+                      />
+                    </div>
+                    <div>
+                      <div class="muted">Review cadence</div>
+                      <ui-dropdown-list
+                        [options]="cadenceOptions"
+                        ariaLabel="Review cadence"
+                      />
+                    </div>
+                    <div>
+                      <div class="muted">Theme mode</div>
+                      <ui-dropdown-list
+                        [options]="themeOptions"
+                        ariaLabel="Theme mode"
+                      />
+                    </div>
+                    <ui-checkbox ariaLabel="Enable updates">
+                      Notify collaborators when the scope changes
+                    </ui-checkbox>
+                  </div>
+                </ui-card-body>
+                <ui-card-footer>
+                  <div class="settings-actions">
+                    <ui-button variant="filled">Save setup</ui-button>
+                    <ui-button variant="ghost">Reset</ui-button>
+                  </div>
+                </ui-card-footer>
+              </ui-card>
+
+              <div class="settings-stack">
+                <div class="setting-row">
+                  <div class="setting-copy">
+                    <strong>Compact composer</strong>
+                    <span class="muted"
+                      >Great for support, handoffs, and chat-adjacent
+                      work.</span
+                    >
+                  </div>
+                  <ui-toggle [value]="true" ariaLabel="Compact composer" />
+                </div>
+                <div class="setting-row">
+                  <div class="setting-copy">
+                    <strong>Saved preferences</strong>
+                    <span class="muted"
+                      >Many blocks can persist state with a storage key.</span
+                    >
+                  </div>
+                  <ui-toggle [value]="true" ariaLabel="Saved preferences" />
+                </div>
+                <div class="setting-row">
+                  <div class="setting-copy">
+                    <strong>Accessibility-first defaults</strong>
+                    <span class="muted"
+                      >Labels, keyboard flow, and contrast should be the
+                      baseline.</span
+                    >
+                  </div>
+                  <ui-badge color="success">Built in</ui-badge>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </ng-template>
+    </ui-navigation-page>
+  

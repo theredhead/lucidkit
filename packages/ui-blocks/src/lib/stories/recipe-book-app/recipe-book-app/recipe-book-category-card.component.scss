@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.category-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.category-card:hover {
+  border-color: var(--ui-accent, #3584e4);
+}
+
+.category-count {
+  font-size: 0.78rem;
+  opacity: 0.65;
+}
+
+.category-name {
+  font-weight: 600;
+}

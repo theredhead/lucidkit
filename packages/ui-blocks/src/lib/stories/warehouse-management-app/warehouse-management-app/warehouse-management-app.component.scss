@@ -1,0 +1,260 @@
+:host {
+  display: grid;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-fill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page-fill > ui-tab-group {
+  flex: 1;
+  min-height: 0;
+}
+
+.page-fill > ui-tab-group ::ng-deep .panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 1.25rem;
+}
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.page-title h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+.page-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0.25rem 0;
+}
+.stat-label {
+  font-size: 0.78rem;
+  opacity: 0.65;
+}
+.stat-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Master-detail wrapper */
+.mdv-wrap {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.35rem 1rem;
+  font-size: 0.88rem;
+}
+.detail-grid dt {
+  font-weight: 600;
+  margin: 0;
+}
+.detail-grid dd {
+  margin: 0;
+}
+
+/* Zone cards */
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.zone-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.zone-bar-pct {
+  font-size: 0.82rem;
+  font-weight: 700;
+  min-width: 2.5rem;
+  text-align: right;
+}
+.zone-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.zone-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+}
+.zone-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Order items list */
+.order-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--ui-border, #d7dce2);
+  font-size: 0.88rem;
+}
+.order-item-row:last-child {
+  border-bottom: none;
+}
+
+/* Form grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 36rem;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.field-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.form-field-full {
+  grid-column: 1 / -1;
+}
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Supplier cards */
+.supplier-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.supplier-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+.supplier-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Settings */
+.settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 36rem;
+}
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 0.5rem;
+  font-size: 0.88rem;
+}
+.setting-label {
+  font-weight: 600;
+}
+.setting-desc {
+  font-size: 0.78rem;
+  opacity: 0.65;
+  margin-top: 0.15rem;
+}
+
+/* Scroll area */
+.scroll-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Pick sequence */
+.pick-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--ui-border, #d7dce2);
+}
+.pick-step:last-child {
+  border-bottom: none;
+}
+.pick-step-num {
+  font-size: 1.25rem;
+  font-weight: 800;
+  opacity: 0.35;
+  min-width: 2rem;
+  text-align: center;
+}
+.pick-step-info {
+  flex: 1;
+  min-width: 0;
+}
+.pick-step-loc {
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--ui-surface-dim, #e8eaed);
+  color: var(--ui-text, #1d232b);
+}
+
+/* Category chip strip */
+.category-strip {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+/* KPI row */
+.kpi-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.25rem;
+}

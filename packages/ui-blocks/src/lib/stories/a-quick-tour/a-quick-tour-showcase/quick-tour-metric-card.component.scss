@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.muted {
+  font-size: 0.8rem;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
+  opacity: 0.68;
+}
+
+.stat-value {
+  margin: 0.25rem 0;
+  font-size: 1.7rem;
+  font-weight: 800;
+}

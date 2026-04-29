@@ -1,0 +1,13 @@
+<div class="page-header">
+  <div class="page-title">
+    <ui-icon [svg]="icon()" [size]="24" />
+    <h2>{{ title() }}</h2>
+    @if (badgeCount() !== null) {
+      <ui-badge variant="count" [count]="badgeCount()!" [color]="badgeColor()" />
+    }
+  </div>
+
+  <div class="page-actions">
+    <ng-content select="[header-actions]" />
+  </div>
+</div>

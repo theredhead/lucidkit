@@ -1,0 +1,5 @@
+<div class="stock-bar" [style.margin-top]="marginTop()">
+  <span class="stock-bar-label" [style.min-width]="labelMinWidth()">{{ label() }}</span>
+  <ui-progress [value]="progress()" [ariaLabel]="ariaLabel()" style="flex: 1" />
+  <span class="stock-value">{{ value() }}</span>
+</div>

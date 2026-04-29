@@ -1,0 +1,28 @@
+<ui-card variant="outlined">
+  <ui-card-header>
+    <div class="role-head">
+      <span class="role-name">{{ name() }}</span>
+      <ui-badge variant="label" [color]="levelColor()" [ariaLabel]="level()">
+        {{ level() }}
+      </ui-badge>
+    </div>
+  </ui-card-header>
+  <ui-card-body>
+    <p class="role-description">{{ description() }}</p>
+    <div class="role-meta">
+      <ui-icon [svg]="usersIcon()" [size]="14" />
+      <span>{{ userCount() }} users</span>
+    </div>
+    <div class="priv-list">
+      @for (privilege of privileges(); track privilege) {
+        <ui-chip color="neutral">{{ privilege }}</ui-chip>
+      }
+    </div>
+  </ui-card-body>
+  <ui-card-footer>
+    <div class="footer-actions">
+      <ui-button variant="ghost" size="small">Edit</ui-button>
+      <ui-button variant="ghost" size="small">Duplicate</ui-button>
+    </div>
+  </ui-card-footer>
+</ui-card>

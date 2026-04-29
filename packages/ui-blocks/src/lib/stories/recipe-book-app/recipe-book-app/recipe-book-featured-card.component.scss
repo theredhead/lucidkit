@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.recipe-card-img {
+  height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(
+    in srgb,
+    var(--ui-accent, #3584e4) 10%,
+    var(--ui-surface, #f7f8fa)
+  );
+  color: var(--ui-text, #1d232b);
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.recipe-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  opacity: 0.72;
+}
+
+.recipe-card-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.recipe-rating {
+  margin-top: 0.5rem;
+}
+
+.recipe-rating-stars {
+  color: #e5a50a;
+}
+
+.rating-copy {
+  opacity: 0.65;
+  font-size: 0.78rem;
+}
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.author-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.author-name {
+  font-size: 0.82rem;
+}

@@ -1,0 +1,10 @@
+<ui-card variant="outlined">
+  <ui-card-body>
+    <div class="stat-icon-row">
+      <ui-icon [svg]="icon()" [size]="18" />
+      <span class="stat-label">{{ label() }}</span>
+    </div>
+    <div class="stat-value">{{ value() }}</div>
+    <ui-progress [value]="progress()" [ariaLabel]="ariaLabel()" />
+  </ui-card-body>
+</ui-card>

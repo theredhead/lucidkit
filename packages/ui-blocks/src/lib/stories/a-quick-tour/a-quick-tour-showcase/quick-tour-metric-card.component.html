@@ -1,0 +1,7 @@
+<ui-card variant="outlined">
+  <ui-card-body>
+    <div class="muted">{{ label() }}</div>
+    <div class="stat-value">{{ value() }}</div>
+    <ui-progress [value]="value()" [ariaLabel]="label()" />
+  </ui-card-body>
+</ui-card>

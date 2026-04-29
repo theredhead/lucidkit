@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0.25rem 0;
+}
+
+.stat-value.compact {
+  font-size: 1.25rem;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  opacity: 0.65;
+}

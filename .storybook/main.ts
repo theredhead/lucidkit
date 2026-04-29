@@ -53,7 +53,7 @@ const config: StorybookConfig = {
             ? warning
             : warning instanceof Error
               ? warning.message
-              : (warning as { message?: string }).message ?? "";
+              : ((warning as { message?: string }).message ?? "");
 
         return (
           warningText.includes("@eslint/plugin-kit") &&

@@ -1,0 +1,786 @@
+    <ui-navigation-page
+      [items]="nav"
+      [(activePage)]="activePage"
+      rootLabel="CookBook"
+      storageKey="storybook-nav-recipe-book"
+    >
+      <ng-template #content let-node>
+        <!-- ─── Featured Recipes ─── -->
+        @if (node.id === "featured") {
+          <div class="recipe-top-bar">
+            <ui-recipe-book-page-header
+              [icon]="icons.flame"
+              title="Featured Recipes"
+            >
+              <ui-input
+                header-actions
+                placeholder="Search recipes..."
+                ariaLabel="Search"
+                style="width: 240px"
+              />
+            </ui-recipe-book-page-header>
+
+            <div class="featured-hero">
+              <h3>{{ featuredRecipes[0].title }}</h3>
+              <p>{{ featuredRecipes[0].description }}</p>
+              <div class="recipe-card-meta" style="margin-top: 1rem;">
+                <span class="recipe-card-meta-item">
+                  <ui-icon [svg]="icons.clock" [size]="14" />
+                  {{
+                    formatTime(
+                      featuredRecipes[0].prepTime + featuredRecipes[0].cookTime
+                    )
+                  }}
+                </span>
+                <span class="recipe-card-meta-item">
+                  <ui-icon [svg]="icons.users" [size]="14" />
+                  {{ featuredRecipes[0].servings }} servings
+                </span>
+                <span class="recipe-card-meta-item">
+                  <ui-icon [svg]="icons.star" [size]="14" />
+                  {{ featuredRecipes[0].rating }} ({{
+                    featuredRecipes[0].reviews
+                  }}
+                  reviews)
+                </span>
+                <span>
+                  <ui-badge
+                    variant="label"
+                    [color]="difficultyColor(featuredRecipes[0].difficulty)"
+                  >
+                    {{ featuredRecipes[0].difficulty }}
+                  </ui-badge>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="recipe-grid">
+            @for (recipe of visibleFeatured(); track recipe.id) {
+              <ui-recipe-book-featured-card
+                [icon]="categoryIcon(recipe.category)"
+                [title]="recipe.title"
+                [time]="formatTime(recipe.prepTime + recipe.cookTime)"
+                [timeIcon]="icons.clock"
+                [servings]="recipe.servings"
+                [servingsIcon]="icons.users"
+                [difficulty]="recipe.difficulty"
+                [difficultyColor]="difficultyColor(recipe.difficulty)"
+                [rating]="renderStars(recipe.rating)"
+                [reviews]="recipe.reviews"
+                [tags]="recipe.tags"
+                [author]="recipe.author"
+              />
+            }
+          </div>
+          @if (hasMoreFeatured()) {
+            <div class="load-more-sentinel" #loadMoreSentinel>
+              <ui-progress
+                variant="circular"
+                mode="indeterminate"
+                ariaLabel="Loading more recipes"
+              />
+            </div>
+          }
+        }
+
+        <!-- ─── All Recipes ─── -->
+        @if (node.id === "all-recipes") {
+          <div class="page-fill">
+            <ui-recipe-book-page-header
+              [icon]="icons.utensils"
+              title="All Recipes"
+            />
+
+            <div class="category-strip">
+              @for (cat of allCategories; track cat) {
+                <ui-chip
+                  [color]="selectedCategory() === cat ? 'primary' : 'neutral'"
+                  (click)="selectedCategory.set(cat)"
+                  >{{ cat }}</ui-chip
+                >
+              }
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="filteredRecipesDs()"
+                title="Recipes"
+                [showFilter]="true"
+                placeholder="Select a recipe..."
+              >
+                <ui-template-column key="title" headerText="Recipe">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem;"
+                    >
+                      <ui-icon [svg]="categoryIcon(row.category)" [size]="16" />
+                      {{ row.title }}
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="cuisine" headerText="Cuisine" />
+                <ui-badge-column key="difficulty" headerText="Difficulty" />
+
+                <ng-template #detail let-recipe>
+                  <ui-recipe-book-detail-header
+                    [avatarName]="recipe.author"
+                    [title]="recipe.title"
+                    [subtitle]="'by ' + recipe.author + ' · ' + recipe.cuisine + ' · ' + recipe.created"
+                  />
+
+                  <ui-tab-group panelStyle="flat">
+                    <ui-tab label="Overview" [icon]="icons.fileText">
+                      <p style="margin: 0.5rem 0 1rem; line-height: 1.5;">
+                        {{ recipe.description }}
+                      </p>
+
+                      <div class="detail-grid">
+                        <dt>Category</dt>
+                        <dd>
+                          <ui-badge variant="label" color="neutral">{{
+                            recipe.category
+                          }}</ui-badge>
+                        </dd>
+                        <dt>Cuisine</dt>
+                        <dd>{{ recipe.cuisine }}</dd>
+                        <dt>Difficulty</dt>
+                        <dd>
+                          <ui-badge
+                            variant="label"
+                            [color]="difficultyColor(recipe.difficulty)"
+                            >{{ recipe.difficulty }}</ui-badge
+                          >
+                        </dd>
+                        <dt>Prep Time</dt>
+                        <dd>{{ formatTime(recipe.prepTime) }}</dd>
+                        <dt>Cook Time</dt>
+                        <dd>
+                          {{
+                            recipe.cookTime > 0
+                              ? formatTime(recipe.cookTime)
+                              : "None"
+                          }}
+                        </dd>
+                        <dt>Total Time</dt>
+                        <dd>
+                          <strong>{{
+                            formatTime(recipe.prepTime + recipe.cookTime)
+                          }}</strong>
+                        </dd>
+                        <dt>Servings</dt>
+                        <dd>{{ recipe.servings }}</dd>
+                        <dt>Rating</dt>
+                        <dd>
+                          <span class="recipe-rating">
+                            <span class="recipe-rating-stars">{{
+                              renderStars(recipe.rating)
+                            }}</span>
+                            {{ recipe.rating }} ({{ recipe.reviews }} reviews)
+                          </span>
+                        </dd>
+                      </div>
+
+                      <div class="nutrition-grid">
+                        <div class="nutrition-item">
+                          <div class="nutrition-value">
+                            {{ recipe.calories }}
+                          </div>
+                          <div class="nutrition-label">kcal / serving</div>
+                        </div>
+                        <div class="nutrition-item">
+                          <div class="nutrition-value">
+                            {{ recipe.ingredients.length }}
+                          </div>
+                          <div class="nutrition-label">ingredients</div>
+                        </div>
+                        <div class="nutrition-item">
+                          <div class="nutrition-value">
+                            {{ recipe.steps.length }}
+                          </div>
+                          <div class="nutrition-label">steps</div>
+                        </div>
+                        <div class="nutrition-item">
+                          <div class="nutrition-value">
+                            {{ formatTime(recipe.prepTime + recipe.cookTime) }}
+                          </div>
+                          <div class="nutrition-label">total time</div>
+                        </div>
+                      </div>
+
+                      <div class="tags-row" style="margin-top: 1rem;">
+                        @for (tag of recipe.tags; track tag) {
+                          <ui-chip color="primary" size="small">{{
+                            tag
+                          }}</ui-chip>
+                        }
+                      </div>
+                    </ui-tab>
+
+                    <ui-tab label="Ingredients" [icon]="icons.leafyGreen">
+                      <div class="servings-adjuster">
+                        <span class="servings-label">Servings:</span>
+                        <ui-button
+                          variant="ghost"
+                          size="small"
+                          (click)="decrementServings()"
+                          ariaLabel="Decrease servings"
+                        >
+                          <ui-icon [svg]="icons.minus" [size]="14" />
+                        </ui-button>
+                        <span class="servings-value">{{
+                          adjustedServings()
+                        }}</span>
+                        <ui-button
+                          variant="ghost"
+                          size="small"
+                          (click)="incrementServings()"
+                          ariaLabel="Increase servings"
+                        >
+                          <ui-icon [svg]="icons.plus" [size]="14" />
+                        </ui-button>
+                        <ui-button
+                          variant="outlined"
+                          size="small"
+                          (click)="resetServings(recipe)"
+                          ariaLabel="Reset servings"
+                        >
+                          Reset
+                        </ui-button>
+                      </div>
+
+                      <ul class="ingredient-list">
+                        @for (ing of recipe.ingredients; track ing.name) {
+                          <li class="ingredient-row">
+                            <span class="ingredient-name">{{ ing.name }}</span>
+                            <span class="ingredient-amount">
+                              {{
+                                scaleAmount(
+                                  ing.amount,
+                                  recipe.servings,
+                                  adjustedServings()
+                                )
+                              }}
+                              {{ ing.unit }}
+                            </span>
+                          </li>
+                        }
+                      </ul>
+                    </ui-tab>
+
+                    <ui-tab label="Instructions" [icon]="icons.listOrdered">
+                      <ol class="step-list">
+                        @for (step of recipe.steps; track $index) {
+                          <li class="step-item">
+                            <span class="step-num">{{ $index + 1 }}</span>
+                            <span class="step-text">{{ step }}</span>
+                          </li>
+                        }
+                      </ol>
+                    </ui-tab>
+
+                    <ui-tab-spacer />
+                    <ui-tab [icon]="icons.share" ariaLabel="Share">
+                      <div style="padding: 1rem 0;">
+                        <h4 style="margin: 0 0 1rem;">Share this recipe</h4>
+                        <div style="display: flex; gap: 0.5rem;">
+                          <ui-button variant="outlined">Copy Link</ui-button>
+                          <ui-button variant="outlined">Print</ui-button>
+                        </div>
+                      </div>
+                    </ui-tab>
+                  </ui-tab-group>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── By Category ─── -->
+        @if (node.id === "by-category") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.layers" [size]="24" />
+                <h2>Browse by Category</h2>
+              </div>
+            </div>
+
+            <div class="scroll-area">
+              <div class="category-grid">
+                @for (cat of categories; track cat) {
+                  <ui-recipe-book-category-card
+                    [icon]="categoryIcon(cat)"
+                    [name]="cat"
+                    [count]="recipesInCategory(cat)"
+                  />
+                }
+              </div>
+
+              @for (cat of categories; track cat) {
+                <h3 style="margin: 1.5rem 0 0.75rem;">{{ cat }}</h3>
+                <div class="recipe-grid">
+                  @for (recipe of recipesByCategory(cat); track recipe.id) {
+                    <ui-recipe-book-summary-card
+                      [title]="recipe.title"
+                      [badgeText]="recipe.difficulty"
+                      [badgeColor]="difficultyColor(recipe.difficulty)"
+                      [metaOneIcon]="icons.globe"
+                      [metaOneText]="recipe.cuisine"
+                      [metaTwoIcon]="icons.clock"
+                      [metaTwoText]="formatTime(recipe.prepTime + recipe.cookTime)"
+                      [metaThreeIcon]="icons.star"
+                      [metaThreeText]="String(recipe.rating)"
+                    />
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ─── By Cuisine ─── -->
+        @if (node.id === "by-cuisine") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.globe" [size]="24" />
+                <h2>Browse by Cuisine</h2>
+              </div>
+            </div>
+
+            <div class="scroll-area">
+              <div class="stats-grid">
+                @for (cuisine of allCuisines; track cuisine) {
+                  <ui-recipe-book-cuisine-stat-card
+                    [icon]="icons.globe"
+                    [label]="cuisine"
+                    [value]="recipesInCuisine(cuisine)"
+                    [progress]="(recipesInCuisine(cuisine) / allRecipes.length) * 100"
+                  />
+                }
+              </div>
+
+              @for (cuisine of allCuisines; track cuisine) {
+                <h3 style="margin: 1.5rem 0 0.75rem;">
+                  <ui-icon [svg]="icons.globe" [size]="20" /> {{ cuisine }}
+                </h3>
+                <div class="recipe-grid">
+                  @for (recipe of recipesByCuisine(cuisine); track recipe.id) {
+                    <ui-recipe-book-summary-card
+                      [title]="recipe.title"
+                      [badgeText]="recipe.category"
+                      badgeColor="neutral"
+                      [metaOneIcon]="icons.clock"
+                      [metaOneText]="formatTime(recipe.prepTime + recipe.cookTime)"
+                      [metaTwoIcon]="icons.star"
+                      [metaTwoText]="String(recipe.rating)"
+                      [metaThreeIcon]="icons.users"
+                      [metaThreeText]="recipe.servings + ' servings'"
+                    />
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ─── Find by Ingredients ─── -->
+        @if (node.id === "find-by-ingredients") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.search" [size]="24" />
+                <h2>Find a Recipe by Ingredients</h2>
+              </div>
+            </div>
+
+            <div class="ingredient-search-wrap">
+              <div>
+                <span
+                  class="field-label"
+                  style="display: block; margin-bottom: 0.5rem;"
+                >
+                  Select ingredients you have on hand:
+                </span>
+                <div class="ingredient-picker">
+                  @for (ing of allIngredients; track ing) {
+                    <ui-chip
+                      [color]="
+                        selectedIngredients().includes(ing)
+                          ? 'primary'
+                          : 'neutral'
+                      "
+                      (click)="toggleIngredient(ing)"
+                      >{{ ing }}</ui-chip
+                    >
+                  }
+                </div>
+              </div>
+
+              @if (selectedIngredients().length > 0) {
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span class="field-label"
+                    >Selected ({{ selectedIngredients().length }}):</span
+                  >
+                  <ui-button
+                    variant="ghost"
+                    size="small"
+                    (click)="selectedIngredients.set([])"
+                    ariaLabel="Clear all"
+                  >
+                    Clear all
+                  </ui-button>
+                </div>
+
+                <div class="match-results">
+                  <div class="recipe-grid">
+                    @for (match of matchedRecipes(); track match.recipe.id) {
+                      <ui-recipe-book-ingredient-match-card
+                        [title]="match.recipe.title"
+                        [matchPercent]="match.pct"
+                        [matchColor]="
+                          match.pct >= 75
+                            ? 'success'
+                            : match.pct >= 50
+                              ? 'warning'
+                              : 'neutral'
+                        "
+                        [progress]="match.pct"
+                        [timeIcon]="icons.clock"
+                        [time]="formatTime(match.recipe.prepTime + match.recipe.cookTime)"
+                        [ratingIcon]="icons.star"
+                        [rating]="match.recipe.rating"
+                        [matchedCount]="match.matched"
+                        [totalIngredients]="match.recipe.ingredients.length"
+                        [ingredients]="ingredientNames(match.recipe.ingredients)"
+                        [selectedIngredients]="selectedIngredients()"
+                      />
+                    } @empty {
+                      <p style="opacity: 0.65;">
+                        No matching recipes found. Try selecting more
+                        ingredients.
+                      </p>
+                    }
+                  </div>
+                </div>
+              } @else {
+                <div
+                  style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; opacity: 0.5;"
+                >
+                  <ui-icon [svg]="icons.search" [size]="48" />
+                  <p style="margin-top: 1rem;">
+                    Select ingredients above to find matching recipes
+                  </p>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ─── Favorites ─── -->
+        @if (node.id === "favorites") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.heart" [size]="24" />
+                <h2>My Favorites</h2>
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="favoritesDs"
+                title="Favorites"
+                placeholder="Select a favorite recipe..."
+              >
+                <ui-template-column key="title" headerText="Recipe">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem;"
+                    >
+                      <ui-icon [svg]="icons.heart" [size]="14" />
+                      {{ row.title }}
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="cuisine" headerText="Cuisine" />
+                <ui-badge-column key="difficulty" headerText="Difficulty" />
+
+                <ng-template #detail let-recipe>
+                  <ui-recipe-book-detail-header
+                    [avatarName]="recipe.author"
+                    [title]="recipe.title"
+                    [subtitle]="'by ' + recipe.author + ' · ' + recipe.cuisine"
+                  />
+                  <p style="line-height: 1.5;">{{ recipe.description }}</p>
+                  <div class="detail-grid" style="margin-top: 1rem;">
+                    <dt>Total Time</dt>
+                    <dd>{{ formatTime(recipe.prepTime + recipe.cookTime) }}</dd>
+                    <dt>Servings</dt>
+                    <dd>{{ recipe.servings }}</dd>
+                    <dt>Calories</dt>
+                    <dd>{{ recipe.calories }} kcal</dd>
+                    <dt>Rating</dt>
+                    <dd>
+                      {{ renderStars(recipe.rating) }} {{ recipe.rating }}
+                    </dd>
+                  </div>
+                  <div class="tags-row" style="margin-top: 1rem;">
+                    @for (tag of recipe.tags; track tag) {
+                      <ui-chip color="primary" size="small">{{ tag }}</ui-chip>
+                    }
+                  </div>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Submit Recipe ─── -->
+        @if (node.id === "submit") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.plus" [size]="24" />
+                <h2>Submit a Recipe</h2>
+              </div>
+            </div>
+
+            <div class="scroll-area">
+              <div class="form-grid">
+                <div class="form-field form-field-full">
+                  <span class="field-label">Recipe Title</span>
+                  <ui-input
+                    placeholder="e.g. Grandma's Apple Pie"
+                    ariaLabel="Recipe title"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <span class="field-label">Category</span>
+                  <ui-dropdown-list
+                    ariaLabel="Category"
+                    [options]="toOptions(categories)"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <span class="field-label">Cuisine</span>
+                  <ui-dropdown-list
+                    ariaLabel="Cuisine"
+                    [options]="toOptions(allCuisines)"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <span class="field-label">Difficulty</span>
+                  <ui-dropdown-list
+                    ariaLabel="Difficulty"
+                    [options]="toOptions(allDifficulties)"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <span class="field-label">Servings</span>
+                  <ui-input placeholder="e.g. 4" ariaLabel="Servings" />
+                </div>
+
+                <div class="form-field">
+                  <span class="field-label">Prep Time (minutes)</span>
+                  <ui-input placeholder="e.g. 30" ariaLabel="Prep time" />
+                </div>
+
+                <div class="form-field">
+                  <span class="field-label">Cook Time (minutes)</span>
+                  <ui-input placeholder="e.g. 45" ariaLabel="Cook time" />
+                </div>
+
+                <div class="form-field form-field-full">
+                  <span class="field-label">Description</span>
+                  <ui-input
+                    placeholder="A brief description of your recipe..."
+                    ariaLabel="Description"
+                  />
+                </div>
+
+                <div class="form-field form-field-full">
+                  <span class="field-label"
+                    >Ingredients (one per line: amount unit name)</span
+                  >
+                  <ui-input
+                    placeholder="e.g. 500g bread flour"
+                    ariaLabel="Ingredients"
+                  />
+                  <ui-input
+                    placeholder="e.g. 200ml water"
+                    ariaLabel="Ingredients continued"
+                  />
+                  <ui-input
+                    placeholder="e.g. 10g salt"
+                    ariaLabel="Ingredients continued"
+                  />
+                </div>
+
+                <div class="form-field form-field-full">
+                  <span class="field-label"
+                    >Instructions (one step per line)</span
+                  >
+                  <ui-input
+                    placeholder="Step 1: Preheat oven to 200°C..."
+                    ariaLabel="Step 1"
+                  />
+                  <ui-input
+                    placeholder="Step 2: Mix dry ingredients..."
+                    ariaLabel="Step 2"
+                  />
+                  <ui-input placeholder="Step 3: ..." ariaLabel="Step 3" />
+                </div>
+
+                <div class="form-field form-field-full">
+                  <span class="field-label">Tags (comma-separated)</span>
+                  <ui-input
+                    placeholder="e.g. vegetarian, easy, italian"
+                    ariaLabel="Tags"
+                  />
+                </div>
+
+                <div class="form-field form-field-full">
+                  <ui-checkbox ariaLabel="Submit for featured consideration"
+                    >Submit for featured consideration</ui-checkbox
+                  >
+                </div>
+
+                <div class="form-actions">
+                  <ui-button variant="filled">Submit Recipe</ui-button>
+                  <ui-button variant="ghost">Save Draft</ui-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Settings ─── -->
+        @if (node.id === "settings") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.settings" [size]="24" />
+                <h2>Settings</h2>
+              </div>
+            </div>
+
+            <ui-tab-group panelStyle="flat">
+              <ui-tab label="Preferences" [icon]="icons.settings">
+                <div class="settings-grid">
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Measurement System</div>
+                      <div class="setting-desc">
+                        Switch between metric and imperial measurements
+                      </div>
+                    </div>
+                    <ui-dropdown-list
+                      [options]="measurementOptions"
+                      ariaLabel="Measurement system"
+                    />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Default Servings</div>
+                      <div class="setting-desc">
+                        Default number of servings when viewing recipes
+                      </div>
+                    </div>
+                    <ui-dropdown-list
+                      [options]="servingOptions"
+                      ariaLabel="Default servings"
+                    />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Show Nutritional Info</div>
+                      <div class="setting-desc">
+                        Display calories and nutrition on recipe cards
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Show nutrition" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Auto-scale Ingredients</div>
+                      <div class="setting-desc">
+                        Automatically scale ingredients when changing servings
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Auto scale" />
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab label="Notifications" [icon]="icons.bell">
+                <div class="settings-grid">
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">
+                        New recipes from followed chefs
+                      </div>
+                      <div class="setting-desc">
+                        Get notified when chefs you follow post new recipes
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Chef notifications" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Weekly recipe digest</div>
+                      <div class="setting-desc">
+                        Receive a weekly email with trending recipes
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Weekly digest" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Comment replies</div>
+                      <div class="setting-desc">
+                        Notify when someone replies to your recipe comments
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Comment notifications" />
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab-spacer />
+              <ui-tab [icon]="icons.triangleAlert" ariaLabel="Danger Zone">
+                <div class="settings-grid">
+                  <ui-card variant="outlined">
+                    <ui-card-body>
+                      <h4
+                        style="margin: 0 0 0.5rem; color: var(--ui-text, #1d232b);"
+                      >
+                        Delete All My Recipes
+                      </h4>
+                      <p
+                        style="font-size: 0.82rem; opacity: 0.65; margin: 0 0 1rem;"
+                      >
+                        This will permanently remove all recipes you have
+                        submitted. This action cannot be undone.
+                      </p>
+                      <ui-button
+                        variant="filled"
+                        color="danger"
+                        ariaLabel="Delete all recipes"
+                        >Delete All Recipes</ui-button
+                      >
+                    </ui-card-body>
+                  </ui-card>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+      </ng-template>
+    </ui-navigation-page>
+  

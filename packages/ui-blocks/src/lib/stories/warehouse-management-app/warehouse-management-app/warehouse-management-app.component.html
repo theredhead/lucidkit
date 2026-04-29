@@ -1,0 +1,1093 @@
+    <ui-navigation-page
+      [items]="nav"
+      [(activePage)]="activePage"
+      rootLabel="PartVault WMS"
+      storageKey="storybook-nav-warehouse"
+    >
+      <ng-template #content let-node>
+        <!-- ─── Dashboard ─── -->
+        @if (node.id === "dashboard") {
+          <div class="page-fill">
+            <ui-warehouse-page-header
+              [icon]="icons.warehouse"
+              title="Dashboard"
+            >
+              <ui-input
+                header-actions
+                placeholder="Search parts, orders..."
+                ariaLabel="Search"
+                style="width: 240px"
+              />
+            </ui-warehouse-page-header>
+
+            <div class="stats-grid">
+              <ui-warehouse-stat-card
+                [icon]="icons.boxes"
+                label="Total Parts"
+                [value]="totalSKUs"
+                [progress]="100"
+                ariaLabel="Total parts"
+              />
+              <ui-warehouse-stat-card
+                [icon]="icons.clipboardList"
+                label="Pending Orders"
+                [value]="pendingOrders"
+                [progress]="(pendingOrders / allOrders.length) * 100"
+                ariaLabel="Pending orders"
+              />
+              <ui-warehouse-stat-card
+                [icon]="icons.triangleAlert"
+                label="Low Stock Alerts"
+                [value]="lowStockCount"
+                [progress]="(lowStockCount / allParts.length) * 100"
+                ariaLabel="Low stock"
+              />
+              <ui-warehouse-stat-card
+                [icon]="icons.truck"
+                label="In Transit"
+                [value]="inTransitCount"
+                [progress]="(inTransitCount / allShipments.length) * 100"
+                ariaLabel="In transit"
+              />
+            </div>
+
+            <ui-tab-group panelStyle="outline">
+              <ui-tab label="Recent Orders" [icon]="icons.clipboardList">
+                <div class="mdv-wrap" style="border: none; margin-top: 0.5rem">
+                  <ui-master-detail-view
+                    [datasource]="recentOrdersDs"
+                    title="Recent"
+                    placeholder="Select an order"
+                  >
+                    <ui-text-column key="orderNumber" headerText="Order #" />
+                    <ui-text-column key="customer" headerText="Customer" />
+                    <ui-badge-column key="status" headerText="Status" />
+
+                    <ng-template #detail let-order>
+                      <dl class="detail-grid">
+                        <dt>Order</dt>
+                        <dd>{{ order.orderNumber }}</dd>
+                        <dt>Customer</dt>
+                        <dd>{{ order.customer }}</dd>
+                        <dt>Items</dt>
+                        <dd>{{ order.items }}</dd>
+                        <dt>Priority</dt>
+                        <dd>
+                          <ui-chip [color]="getPriorityColor(order.priority)">
+                            {{ order.priority }}
+                          </ui-chip>
+                        </dd>
+                        <dt>Assignee</dt>
+                        <dd>{{ order.assignee }}</dd>
+                        <dt>Value</dt>
+                        <dd>{{ fmtCurrency(order.totalValue) }}</dd>
+                      </dl>
+                    </ng-template>
+                  </ui-master-detail-view>
+                </div>
+              </ui-tab>
+              <ui-tab-separator />
+              <ui-tab label="Zone Utilization" [icon]="icons.layers">
+                <div style="padding-top: 0.75rem">
+                  @for (zone of allZones; track zone.id) {
+                    <div class="zone-bar">
+                      <span class="zone-label" style="min-width: 14rem">
+                        {{ zone.name }}
+                      </span>
+                      <ui-progress
+                        [value]="zone.utilization"
+                        [ariaLabel]="zone.name + ' utilization'"
+                        style="flex: 1"
+                      />
+                      <span class="zone-bar-pct">{{ zone.utilization }}%</span>
+                    </div>
+                  }
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+
+        <!-- ─── Parts Catalog ─── -->
+        @if (node.id === "parts") {
+          <div class="page-fill">
+            <ui-warehouse-page-header
+              [icon]="icons.cpu"
+              title="Parts Catalog"
+              [badgeCount]="allParts.length"
+            >
+              <ui-button header-actions variant="outlined" size="small">
+                Export CSV
+              </ui-button>
+            </ui-warehouse-page-header>
+
+            <div class="category-strip">
+              @for (cat of partCategories; track cat) {
+                <ui-chip
+                  [color]="selectedCategory() === cat ? 'primary' : 'neutral'"
+                  (click)="selectedCategory.set(cat)"
+                >
+                  {{ cat }}
+                </ui-chip>
+              }
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="partsDs"
+                title="Parts"
+                [showFilter]="true"
+                placeholder="Select a part to view details"
+              >
+                <ui-template-column key="sku" headerText="SKU">
+                  <ng-template let-row>
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                      "
+                    >
+                      <ui-icon [svg]="icons.barcode" [size]="14" />
+                      <span style="font-family: monospace; font-weight: 600">
+                        {{ row.sku }}
+                      </span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="name" headerText="Part Name" />
+                <ui-text-column key="location" headerText="Location" />
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-part>
+                  <ui-warehouse-detail-header
+                    [icon]="icons.circuitBoard"
+                    [title]="part.name"
+                    [subtitle]="part.sku + ' · ' + part.category"
+                    [status]="part.status"
+                    [statusColor]="getPartStatusColor(part.status)"
+                  />
+
+                  <ui-tab-group panelStyle="flat">
+                    <ui-tab label="Details" [icon]="icons.cpu">
+                      <dl class="detail-grid" style="padding-top: 0.75rem">
+                        <dt>SKU</dt>
+                        <dd style="font-family: monospace">{{ part.sku }}</dd>
+                        <dt>Category</dt>
+                        <dd>{{ part.category }}</dd>
+                        <dt>Location</dt>
+                        <dd>
+                          <span class="pick-step-loc">
+                            {{ part.location }}
+                          </span>
+                        </dd>
+                        <dt>Quantity</dt>
+                        <dd>{{ part.quantity | number }}</dd>
+                        <dt>Min Stock</dt>
+                        <dd>{{ part.minStock | number }}</dd>
+                        <dt>Unit Price</dt>
+                        <dd>{{ fmtCurrency(part.unitPrice) }}</dd>
+                        <dt>Supplier</dt>
+                        <dd>{{ part.supplier }}</dd>
+                        <dt>Last Received</dt>
+                        <dd>{{ part.lastReceived }}</dd>
+                      </dl>
+                    </ui-tab>
+                    <ui-tab label="Stock Level" [icon]="icons.trendingUp">
+                      <div style="padding-top: 0.75rem">
+                        <ui-warehouse-progress-row
+                          label="Current"
+                          [progress]="part.minStock > 0 ? (part.quantity / (part.minStock * 5)) * 100 : 0"
+                          ariaLabel="Stock level"
+                          [value]="fmtQty(part.quantity)"
+                        />
+                        <ui-warehouse-progress-row
+                          label="Min"
+                          [progress]="part.minStock > 0 ? (part.minStock / (part.minStock * 5)) * 100 : 0"
+                          ariaLabel="Minimum stock"
+                          [value]="fmtQty(part.minStock)"
+                        />
+                        @if (part.quantity < part.minStock) {
+                          <div
+                            style="
+                              margin-top: 0.75rem;
+                              display: flex;
+                              gap: 0.5rem;
+                              align-items: center;
+                            "
+                          >
+                            <ui-icon [svg]="icons.triangleAlert" [size]="16" />
+                            <span style="font-size: 0.88rem; font-weight: 600">
+                              Reorder recommended — below minimum threshold
+                            </span>
+                          </div>
+                        }
+                        <div style="margin-top: 1rem">
+                          <ui-button variant="outlined" size="small">
+                            Create Reorder
+                          </ui-button>
+                        </div>
+                      </div>
+                    </ui-tab>
+                    <ui-tab-spacer />
+                    <ui-tab [icon]="icons.scanBarcode" ariaLabel="Scan">
+                      <div style="padding-top: 0.75rem; font-size: 0.88rem">
+                        <p style="margin: 0 0 0.5rem">
+                          Scan this part's barcode to update inventory:
+                        </p>
+                        <div style="display: flex; gap: 0.5rem">
+                          <ui-button variant="outlined" size="small">
+                            Print Label
+                          </ui-button>
+                          <ui-button variant="ghost" size="small">
+                            Show QR Code
+                          </ui-button>
+                        </div>
+                      </div>
+                    </ui-tab>
+                  </ui-tab-group>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Receive Stock ─── -->
+        @if (node.id === "receive") {
+          <div class="page-header">
+            <div class="page-title">
+              <ui-icon [svg]="icons.packageOpen" [size]="24" />
+              <h2>Receive Stock</h2>
+            </div>
+          </div>
+
+          <ui-card variant="outlined">
+            <ui-card-header>
+              <h3 style="margin: 0; font-size: 1rem">
+                Inbound Shipment Details
+              </h3>
+            </ui-card-header>
+            <ui-card-body>
+              <div class="form-grid">
+                <div class="form-field">
+                  <span class="field-label">Supplier</span>
+                  <ui-dropdown-list
+                    [options]="supplierOptions"
+                    placeholder="Select supplier"
+                    ariaLabel="Supplier"
+                  />
+                </div>
+                <div class="form-field">
+                  <span class="field-label">Purchase Order #</span>
+                  <ui-input
+                    placeholder="PO-2026-XXX"
+                    ariaLabel="Purchase order number"
+                  />
+                </div>
+                <div class="form-field">
+                  <span class="field-label">Part SKU</span>
+                  <ui-input
+                    placeholder="Scan or enter SKU"
+                    ariaLabel="Part SKU"
+                  />
+                </div>
+                <div class="form-field">
+                  <span class="field-label">Quantity</span>
+                  <ui-input placeholder="0" ariaLabel="Quantity received" />
+                </div>
+                <div class="form-field">
+                  <span class="field-label">Storage Location</span>
+                  <ui-dropdown-list
+                    [options]="locationOptions"
+                    placeholder="Select zone & rack"
+                    ariaLabel="Storage location"
+                  />
+                </div>
+                <div class="form-field">
+                  <span class="field-label">Condition</span>
+                  <ui-dropdown-list
+                    [options]="conditionOptions"
+                    placeholder="Select condition"
+                    ariaLabel="Part condition"
+                  />
+                </div>
+                <div class="form-field form-field-full">
+                  <ui-checkbox ariaLabel="Quality inspection">
+                    Quality inspection passed
+                  </ui-checkbox>
+                </div>
+                <div class="form-field form-field-full">
+                  <span class="field-label">Notes</span>
+                  <ui-input
+                    placeholder="Batch notes, damage report..."
+                    ariaLabel="Notes"
+                  />
+                </div>
+                <div class="form-actions">
+                  <ui-button variant="filled">Confirm Receipt</ui-button>
+                  <ui-button variant="outlined"> Scan Next Item </ui-button>
+                  <ui-button variant="ghost">Cancel</ui-button>
+                </div>
+              </div>
+            </ui-card-body>
+          </ui-card>
+        }
+
+        <!-- ─── Low Stock Alerts ─── -->
+        @if (node.id === "low-stock") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.triangleAlert" [size]="24" />
+                <h2>Low Stock Alerts</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="lowStockParts.length"
+                  color="danger"
+                />
+              </div>
+              <div class="page-actions">
+                <ui-button variant="filled" size="small">
+                  Reorder All
+                </ui-button>
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="lowStockDs"
+                title="Alerts"
+                placeholder="Select an alert to view details"
+              >
+                <ui-template-column key="sku" headerText="SKU">
+                  <ng-template let-row>
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                      "
+                    >
+                      <ui-icon [svg]="icons.triangleAlert" [size]="14" />
+                      <span style="font-family: monospace; font-weight: 600">
+                        {{ row.sku }}
+                      </span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="name" headerText="Part" />
+                <ui-template-column key="quantity" headerText="Qty">
+                  <ng-template let-row>
+                    <span
+                      style="font-weight: 700"
+                      [style.color]="
+                        row.quantity === 0
+                          ? 'var(--ui-danger, #dc2626)'
+                          : 'var(--ui-warning, #d97706)'
+                      "
+                    >
+                      {{ row.quantity | number }}
+                    </span>
+                    /
+                    <span style="opacity: 0.55">
+                      {{ row.minStock | number }}
+                    </span>
+                  </ng-template>
+                </ui-template-column>
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-part>
+                  <ui-warehouse-detail-header
+                    [icon]="icons.triangleAlert"
+                    [title]="part.name"
+                    [subtitle]="part.sku + ' · ' + part.supplier"
+                  />
+                  <dl class="detail-grid">
+                    <dt>Current Qty</dt>
+                    <dd>{{ part.quantity | number }}</dd>
+                    <dt>Min Stock</dt>
+                    <dd>{{ part.minStock | number }}</dd>
+                    <dt>Deficit</dt>
+                    <dd
+                      style="font-weight: 700; color: var(--ui-danger, #dc2626)"
+                    >
+                      {{ part.minStock - part.quantity | number }} units
+                    </dd>
+                    <dt>Supplier</dt>
+                    <dd>{{ part.supplier }}</dd>
+                    <dt>Location</dt>
+                    <dd>
+                      <span class="pick-step-loc">{{ part.location }}</span>
+                    </dd>
+                  </dl>
+                  <div style="margin-top: 1rem; display: flex; gap: 0.5rem">
+                    <ui-button variant="filled" size="small">
+                      Create Purchase Order
+                    </ui-button>
+                    <ui-button variant="ghost" size="small">
+                      Dismiss Alert
+                    </ui-button>
+                  </div>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Pick Queue ─── -->
+        @if (node.id === "pick-queue") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.clipboardList" [size]="24" />
+                <h2>Pick Queue</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="pendingOrders"
+                  color="warning"
+                />
+              </div>
+              <div class="page-actions">
+                <ui-button variant="filled" size="small">
+                  Auto-Assign
+                </ui-button>
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="pickQueueDs"
+                title="Queue"
+                [showFilter]="true"
+                placeholder="Select an order to begin picking"
+              >
+                <ui-template-column key="orderNumber" headerText="Order">
+                  <ng-template let-row>
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                      "
+                    >
+                      <ui-icon [svg]="icons.clipboardList" [size]="14" />
+                      <span style="font-weight: 600">
+                        {{ row.orderNumber }}
+                      </span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="customer" headerText="Customer" />
+                <ui-template-column key="priority" headerText="Priority">
+                  <ng-template let-row>
+                    <ui-chip [color]="getPriorityColor(row.priority)">
+                      {{ row.priority }}
+                    </ui-chip>
+                  </ng-template>
+                </ui-template-column>
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-order>
+                  <ui-warehouse-detail-header
+                    [icon]="icons.package"
+                    [title]="order.orderNumber"
+                    [subtitle]="order.customer + ' · ' + order.created"
+                  >
+                    <ui-chip [color]="getPriorityColor(order.priority)">
+                      {{ order.priority }}
+                    </ui-chip>
+                    <ui-chip [color]="getOrderStatusColor(order.status)">
+                      {{ order.status }}
+                    </ui-chip>
+                  </ui-warehouse-detail-header>
+
+                  <ui-tab-group panelStyle="flat">
+                    <ui-tab label="Order Details" [icon]="icons.clipboardList">
+                      <dl class="detail-grid" style="padding-top: 0.75rem">
+                        <dt>Customer</dt>
+                        <dd>{{ order.customer }}</dd>
+                        <dt>Items</dt>
+                        <dd>{{ order.items }}</dd>
+                        <dt>Total Value</dt>
+                        <dd>{{ fmtCurrency(order.totalValue) }}</dd>
+                        <dt>Assignee</dt>
+                        <dd>{{ order.assignee }}</dd>
+                        <dt>Created</dt>
+                        <dd>{{ order.created }}</dd>
+                      </dl>
+                    </ui-tab>
+                    <ui-tab label="Pick Sequence" [icon]="icons.listOrdered">
+                      <div style="padding-top: 0.5rem">
+                        @for (
+                          step of pickSteps;
+                          track step.seq;
+                          let i = $index
+                        ) {
+                          <div class="pick-step">
+                            <span class="pick-step-num">{{ step.seq }}</span>
+                            <span class="pick-step-loc">
+                              {{ step.location }}
+                            </span>
+                            <div class="pick-step-info">
+                              <span style="font-weight: 600">
+                                {{ step.part }}
+                              </span>
+                              <span style="opacity: 0.55; margin-left: 0.5rem">
+                                × {{ step.qty }}
+                              </span>
+                            </div>
+                            <ui-chip color="neutral">{{ step.status }}</ui-chip>
+                          </div>
+                        }
+                      </div>
+                    </ui-tab>
+                    <ui-tab-spacer />
+                    <ui-tab [icon]="icons.scan" ariaLabel="Scan">
+                      <div style="padding-top: 0.75rem; font-size: 0.88rem">
+                        <p style="margin: 0 0 0.5rem">
+                          Scan items as you pick them:
+                        </p>
+                        <div style="display: flex; gap: 0.5rem">
+                          <ui-button variant="filled" size="small">
+                            Start Picking
+                          </ui-button>
+                          <ui-button variant="outlined" size="small">
+                            Print Pick List
+                          </ui-button>
+                        </div>
+                      </div>
+                    </ui-tab>
+                  </ui-tab-group>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Active Picks ─── -->
+        @if (node.id === "active-picks") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.listChecks" [size]="24" />
+                <h2>Active Picks</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="activePickOrders.length"
+                  color="primary"
+                />
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="activePicksDs"
+                title="In Progress"
+                placeholder="Select a pick to view progress"
+              >
+                <ui-text-column key="orderNumber" headerText="Order" />
+                <ui-text-column key="assignee" headerText="Picker" />
+                <ui-text-column key="items" headerText="Items" />
+                <ui-template-column key="priority" headerText="Priority">
+                  <ng-template let-row>
+                    <ui-chip [color]="getPriorityColor(row.priority)">
+                      {{ row.priority }}
+                    </ui-chip>
+                  </ng-template>
+                </ui-template-column>
+
+                <ng-template #detail let-order>
+                  <ui-warehouse-detail-header
+                    [avatarName]="order.assignee"
+                    avatarSize="medium"
+                    [title]="order.orderNumber"
+                    [subtitle]="'Assigned to ' + order.assignee"
+                  />
+                  <ui-warehouse-progress-row
+                    label="Progress"
+                    [progress]="65"
+                    ariaLabel="Pick progress"
+                    value="65%"
+                    marginTop="0"
+                  />
+                  <dl class="detail-grid">
+                    <dt>Customer</dt>
+                    <dd>{{ order.customer }}</dd>
+                    <dt>Items</dt>
+                    <dd>{{ order.items }}</dd>
+                    <dt>Priority</dt>
+                    <dd>
+                      <ui-chip [color]="getPriorityColor(order.priority)">
+                        {{ order.priority }}
+                      </ui-chip>
+                    </dd>
+                    <dt>Started</dt>
+                    <dd>{{ order.created }}</dd>
+                  </dl>
+                  <div style="margin-top: 1rem; display: flex; gap: 0.5rem">
+                    <ui-button variant="filled" size="small">
+                      Mark Complete
+                    </ui-button>
+                    <ui-button variant="outlined" size="small">
+                      Reassign
+                    </ui-button>
+                  </div>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Shipments ─── -->
+        @if (node.id === "shipments") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.truck" [size]="24" />
+                <h2>Shipments</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="allShipments.length"
+                  color="primary"
+                />
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="shipmentsDs"
+                title="Shipments"
+                [showFilter]="true"
+                placeholder="Select a shipment to track"
+              >
+                <ui-template-column
+                  key="trackingNumber"
+                  headerText="Tracking #"
+                >
+                  <ng-template let-row>
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                      "
+                    >
+                      <ui-icon [svg]="icons.truck" [size]="14" />
+                      <span style="font-family: monospace; font-weight: 600">
+                        {{ row.trackingNumber }}
+                      </span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="carrier" headerText="Carrier" />
+                <ui-text-column key="destination" headerText="Destination" />
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-ship>
+                  <ui-warehouse-detail-header
+                    [icon]="icons.truck"
+                    [title]="ship.trackingNumber"
+                    [subtitle]="ship.carrier + ' · ' + ship.destination"
+                    [status]="ship.status"
+                    [statusColor]="getShipmentStatusColor(ship.status)"
+                  />
+                  <dl class="detail-grid">
+                    <dt>Tracking</dt>
+                    <dd style="font-family: monospace">
+                      {{ ship.trackingNumber }}
+                    </dd>
+                    <dt>Carrier</dt>
+                    <dd>{{ ship.carrier }}</dd>
+                    <dt>Destination</dt>
+                    <dd>{{ ship.destination }}</dd>
+                    <dt>Parcels</dt>
+                    <dd>{{ ship.parcels }}</dd>
+                    <dt>Weight</dt>
+                    <dd>{{ ship.weight }}</dd>
+                    <dt>ETA</dt>
+                    <dd>{{ ship.estimatedDelivery }}</dd>
+                  </dl>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Warehouse Zones ─── -->
+        @if (node.id === "zones") {
+          <div class="page-header">
+            <div class="page-title">
+              <ui-icon [svg]="icons.layers" [size]="24" />
+              <h2>Warehouse Zones</h2>
+              <ui-badge
+                variant="count"
+                [count]="allZones.length"
+                color="primary"
+              />
+            </div>
+          </div>
+
+          <div class="zone-grid">
+            @for (zone of allZones; track zone.id) {
+              <ui-card variant="outlined">
+                <ui-card-body>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                    "
+                  >
+                    <span style="font-weight: 700">{{ zone.name }}</span>
+                    <ui-chip [color]="getZoneTypeColor(zone.type)">
+                      {{ zone.type }}
+                    </ui-chip>
+                  </div>
+                  <div class="zone-bar">
+                    <ui-progress
+                      [value]="zone.utilization"
+                      [ariaLabel]="zone.name + ' utilization'"
+                      style="flex: 1"
+                    />
+                    <span class="zone-bar-pct">{{ zone.utilization }}%</span>
+                  </div>
+                  <div class="zone-meta">
+                    <span class="zone-meta-item">
+                      <ui-icon [svg]="icons.shelvingUnit" [size]="14" />
+                      {{ zone.racks }} racks
+                    </span>
+                    <span class="zone-meta-item">
+                      <ui-icon [svg]="icons.boxes" [size]="14" />
+                      {{ zone.capacity | number }} capacity
+                    </span>
+                  </div>
+                  <div
+                    class="zone-meta"
+                    style="opacity: 0.55; font-size: 0.78rem"
+                  >
+                    {{ zone.temperature }}
+                  </div>
+                </ui-card-body>
+                <ui-card-footer>
+                  <div style="display: flex; gap: 0.5rem">
+                    <ui-button variant="ghost" size="small">
+                      View Racks
+                    </ui-button>
+                    <ui-button variant="ghost" size="small">
+                      Zone Map
+                    </ui-button>
+                  </div>
+                </ui-card-footer>
+              </ui-card>
+            }
+          </div>
+        }
+
+        <!-- ─── Suppliers ─── -->
+        @if (node.id === "suppliers") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.factory" [size]="24" />
+                <h2>Suppliers</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="allSuppliers.length"
+                  color="primary"
+                />
+              </div>
+              <div class="page-actions">
+                <ui-button variant="outlined" size="small">
+                  Add Supplier
+                </ui-button>
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="suppliersDs"
+                title="Suppliers"
+                [showFilter]="true"
+                placeholder="Select a supplier to view details"
+              >
+                <ui-template-column key="name" headerText="Supplier">
+                  <ng-template let-row>
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                      "
+                    >
+                      <ui-avatar [name]="row.name" size="small" />
+                      <span style="font-weight: 600">{{ row.name }}</span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="leadTime" headerText="Lead Time" />
+                <ui-text-column key="activeOrders" headerText="Active Orders" />
+
+                <ng-template #detail let-sup>
+                  <ui-warehouse-detail-header
+                    [avatarName]="sup.name"
+                    avatarSize="large"
+                    [title]="sup.name"
+                    [subtitle]="sup.contact + ' · ' + sup.email"
+                  />
+
+                  <ui-tab-group panelStyle="flat">
+                    <ui-tab label="Overview" [icon]="icons.factory">
+                      <dl class="detail-grid" style="padding-top: 0.75rem">
+                        <dt>Contact</dt>
+                        <dd>{{ sup.contact }}</dd>
+                        <dt>Email</dt>
+                        <dd>{{ sup.email }}</dd>
+                        <dt>Lead Time</dt>
+                        <dd>{{ sup.leadTime }}</dd>
+                        <dt>Rating</dt>
+                        <dd>{{ sup.rating }} / 5.0</dd>
+                        <dt>Active Orders</dt>
+                        <dd>{{ sup.activeOrders }}</dd>
+                        <dt>Total Parts</dt>
+                        <dd>{{ sup.totalParts }}</dd>
+                      </dl>
+                      <ui-warehouse-progress-row
+                        label="Rating"
+                        [progress]="(sup.rating / 5) * 100"
+                        ariaLabel="Supplier rating"
+                        [value]="String(sup.rating)"
+                        marginTop="0.75rem"
+                      />
+                    </ui-tab>
+                    <ui-tab label="Parts" [icon]="icons.cpu">
+                      <div style="padding-top: 0.75rem; font-size: 0.88rem">
+                        <p style="margin: 0 0 0.5rem">
+                          {{ sup.totalParts }} parts sourced from this supplier.
+                        </p>
+                        <div class="category-strip">
+                          @for (
+                            prt of getSupplierParts(sup.name);
+                            track prt.id
+                          ) {
+                            <ui-chip color="neutral">
+                              {{ prt.sku }}
+                            </ui-chip>
+                          }
+                        </div>
+                      </div>
+                    </ui-tab>
+                    <ui-tab-spacer />
+                    <ui-tab [icon]="icons.dollarSign" ariaLabel="Pricing">
+                      <div style="padding-top: 0.75rem; font-size: 0.88rem">
+                        <p style="margin: 0 0 0.5rem">
+                          Pricing information and purchase history.
+                        </p>
+                        <ui-button variant="outlined" size="small">
+                          View Price Sheet
+                        </ui-button>
+                      </div>
+                    </ui-tab>
+                  </ui-tab-group>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Settings ─── -->
+        @if (node.id === "settings") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.settings" [size]="24" />
+                <h2>Settings</h2>
+              </div>
+            </div>
+
+            <ui-tab-group>
+              <ui-tab label="Warehouse" [icon]="icons.warehouse">
+                <div style="padding-top: 0.75rem">
+                  <ui-accordion mode="single">
+                    <ui-accordion-item label="General" [expanded]="true">
+                      <div class="settings-grid">
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">Warehouse Name</div>
+                            <div class="setting-desc">
+                              Displayed in reports and shipment labels.
+                            </div>
+                          </div>
+                          <ui-input
+                            ariaLabel="Warehouse name"
+                            placeholder="PartVault Central"
+                          />
+                        </div>
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">Default Currency</div>
+                            <div class="setting-desc">
+                              Currency for pricing and reports.
+                            </div>
+                          </div>
+                          <ui-dropdown-list
+                            [options]="currencyOptions"
+                            ariaLabel="Currency"
+                          />
+                        </div>
+                      </div>
+                    </ui-accordion-item>
+                    <ui-accordion-item label="Stock Thresholds">
+                      <div class="settings-grid">
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">
+                              Auto-Reorder on Low Stock
+                            </div>
+                            <div class="setting-desc">
+                              Automatically create POs when stock drops below
+                              minimum.
+                            </div>
+                          </div>
+                          <ui-toggle [value]="false" ariaLabel="Auto reorder" />
+                        </div>
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">
+                              Low Stock Email Alerts
+                            </div>
+                            <div class="setting-desc">
+                              Send daily digest of low-stock items.
+                            </div>
+                          </div>
+                          <ui-toggle
+                            [value]="true"
+                            ariaLabel="Low stock email alerts"
+                          />
+                        </div>
+                      </div>
+                    </ui-accordion-item>
+                  </ui-accordion>
+                </div>
+              </ui-tab>
+              <ui-tab label="Scanning" [icon]="icons.scanBarcode">
+                <div style="padding-top: 0.75rem">
+                  <div class="settings-grid">
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Barcode Format</div>
+                        <div class="setting-desc">
+                          Default format for label printing.
+                        </div>
+                      </div>
+                      <ui-dropdown-list
+                        [options]="barcodeFormatOptions"
+                        ariaLabel="Barcode format"
+                      />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Auto-Confirm on Scan</div>
+                        <div class="setting-desc">
+                          Automatically mark items as picked after scanning.
+                        </div>
+                      </div>
+                      <ui-toggle
+                        [value]="true"
+                        ariaLabel="Auto confirm on scan"
+                      />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Scanner Sound</div>
+                        <div class="setting-desc">
+                          Play an audible tone on successful scan.
+                        </div>
+                      </div>
+                      <ui-toggle [value]="true" ariaLabel="Scanner sound" />
+                    </div>
+                  </div>
+                </div>
+              </ui-tab>
+              <ui-tab label="Notifications" [icon]="icons.bell">
+                <div style="padding-top: 0.75rem">
+                  <div class="settings-grid">
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">New Order Alerts</div>
+                        <div class="setting-desc">
+                          Notify when new pick orders arrive.
+                        </div>
+                      </div>
+                      <ui-toggle [value]="true" ariaLabel="New order alerts" />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Shipment Updates</div>
+                        <div class="setting-desc">
+                          Track carrier status changes in real time.
+                        </div>
+                      </div>
+                      <ui-toggle [value]="true" ariaLabel="Shipment updates" />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">
+                          Supplier Lead Time Warnings
+                        </div>
+                        <div class="setting-desc">
+                          Alert when estimated delivery exceeds threshold.
+                        </div>
+                      </div>
+                      <ui-toggle
+                        [value]="false"
+                        ariaLabel="Lead time warnings"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </ui-tab>
+              <ui-tab-spacer />
+              <ui-tab [icon]="icons.wrench" ariaLabel="Maintenance">
+                <div style="padding-top: 0.75rem">
+                  <ui-card variant="outlined">
+                    <ui-card-header>
+                      <span
+                        style="
+                          font-weight: 700;
+                          color: var(--ui-danger, #dc2626);
+                        "
+                      >
+                        Danger Zone
+                      </span>
+                    </ui-card-header>
+                    <ui-card-body>
+                      <p
+                        style="
+                          margin: 0 0 1rem;
+                          font-size: 0.88rem;
+                          line-height: 1.5;
+                        "
+                      >
+                        These actions are destructive and cannot be undone.
+                      </p>
+                      <div style="display: flex; gap: 0.5rem">
+                        <ui-button variant="outlined" size="small">
+                          Export Full Inventory
+                        </ui-button>
+                        <ui-button variant="outlined" size="small">
+                          Reset All Zones
+                        </ui-button>
+                        <ui-button variant="outlined" size="small">
+                          Purge Cancelled Orders
+                        </ui-button>
+                      </div>
+                    </ui-card-body>
+                  </ui-card>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+      </ng-template>
+    </ui-navigation-page>
+  

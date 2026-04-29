@@ -1,0 +1,1116 @@
+    <ui-navigation-page
+      [items]="nav"
+      [(activePage)]="activePage"
+      rootLabel="ConnectHub"
+      storageKey="storybook-nav-comms-suite"
+    >
+      <ng-template #content let-node>
+        <!-- ─── Inbox ─── -->
+        @if (node.id === "inbox") {
+          <div class="page-fill">
+            <ui-communication-suite-page-header
+              [icon]="icons.inbox"
+              title="Inbox"
+              [badgeCount]="unreadCount"
+            >
+              <ui-button
+                header-actions
+                variant="filled"
+                (click)="activePage.set('compose')"
+              >
+                <ui-icon [svg]="icons.plus" [size]="16" /> Compose
+              </ui-button>
+            </ui-communication-suite-page-header>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="inboxDs"
+                title="Inbox"
+                [showFilter]="true"
+                [rowHeight]="56"
+                placeholder="Select a message to read..."
+              >
+                <ui-template-column key="subject" headerText="Subject">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; flex-direction: column; padding-top: 6px; padding-bottom: 6px; width: 100%;"
+                    >
+                      <div
+                        style="display: flex; align-items: center; gap: 0.5rem;"
+                      >
+                        @if (!row.read) {
+                          <strong>{{ row.subject }}</strong>
+                        } @else {
+                          <span>{{ row.subject }}</span>
+                        }
+                        <div style="flex: 1 1 auto;"></div>
+                        @if (row.hasAttachment) {
+                          <ui-icon [svg]="icons.attachment" [size]="13" />
+                        }
+                        @if (row.starred) {
+                          <ui-icon [svg]="icons.star" [size]="13" />
+                        }
+                      </div>
+                      <div style="display: flex; flex-direction: row;">
+                        <div>{{ row.from }}</div>
+                        <div style="flex: 1 1 auto;"></div>
+                        <div>{{ row.date }}</div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+
+                <ng-template #detail let-mail>
+                  <ui-communication-suite-mail-detail
+                    [avatarName]="mail.from"
+                    [title]="mail.subject"
+                    [primaryMeta]="mail.from + ' <' + mail.fromEmail + '>'"
+                    [primaryMetaAside]="mail.date"
+                    [secondaryMeta]="'To: ' + mail.to + ' <' + mail.toEmail + '>'"
+                    [priority]="mail.priority !== 'normal' ? mail.priority : null"
+                    [priorityColor]="priorityColor(mail.priority)"
+                    [labels]="mail.labels"
+                    labelColor="primary"
+                    [body]="mail.body"
+                  >
+                    <ui-button variant="outline" size="small">
+                      <ui-icon [svg]="icons.reply" [size]="14" /> Reply
+                    </ui-button>
+                    <ui-button variant="outline" size="small">
+                      <ui-icon [svg]="icons.replyAll" [size]="14" /> Reply All
+                    </ui-button>
+                    <ui-button variant="outline" size="small">
+                      <ui-icon [svg]="icons.forward" [size]="14" /> Forward
+                    </ui-button>
+                    <ui-button variant="ghost" size="small">
+                      <ui-icon [svg]="icons.archive" [size]="14" /> Archive
+                    </ui-button>
+                    <ui-button variant="ghost" size="small" color="danger">
+                      <ui-icon [svg]="icons.trash" [size]="14" /> Delete
+                    </ui-button>
+                  </ui-communication-suite-mail-detail>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Sent ─── -->
+        @if (node.id === "sent") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.send" [size]="24" />
+                <h2>Sent</h2>
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="sentDs"
+                title="Sent Messages"
+                [showFilter]="true"
+                placeholder="Select a sent message..."
+              >
+                <ui-template-column key="subject" headerText="Subject">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem;"
+                    >
+                      {{ row.subject }}
+                      @if (row.hasAttachment) {
+                        <ui-icon [svg]="icons.attachment" [size]="13" />
+                      }
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="to" headerText="To" />
+                <ui-text-column key="date" headerText="Date" />
+
+                <ng-template #detail let-mail>
+                  <ui-communication-suite-mail-detail
+                    [avatarName]="mail.to"
+                    [title]="mail.subject"
+                    [primaryMeta]="'To: ' + mail.to + ' <' + mail.toEmail + '>'"
+                    [primaryMetaAside]="mail.date"
+                    [body]="mail.body"
+                  />
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Drafts ─── -->
+        @if (node.id === "drafts") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.fileText" [size]="24" />
+                <h2>Drafts</h2>
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="draftsDs"
+                title="Drafts"
+                placeholder="Select a draft to continue editing..."
+              >
+                <ui-text-column key="subject" headerText="Subject" />
+                <ui-text-column key="to" headerText="To" />
+                <ui-text-column key="date" headerText="Date" />
+
+                <ng-template #detail let-mail>
+                  <ui-communication-suite-mail-detail
+                    [title]="mail.subject"
+                    [primaryMeta]="'To: ' + mail.to"
+                    [body]="mail.body"
+                  >
+                    <ui-button variant="filled">Edit Draft</ui-button>
+                    <ui-button variant="ghost" color="danger"
+                      >Discard</ui-button
+                    >
+                  </ui-communication-suite-mail-detail>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Archive ─── -->
+        @if (node.id === "archive") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.archive" [size]="24" />
+                <h2>Archive</h2>
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="archiveDs"
+                title="Archived Messages"
+                [showFilter]="true"
+                placeholder="Select an archived message..."
+              >
+                <ui-text-column key="subject" headerText="Subject" />
+                <ui-text-column key="from" headerText="From" />
+                <ui-text-column key="date" headerText="Date" />
+
+                <ng-template #detail let-mail>
+                  <ui-communication-suite-mail-detail
+                    [avatarName]="mail.from"
+                    [title]="mail.subject"
+                    [primaryMeta]="mail.from"
+                    [primaryMetaAside]="mail.date"
+                    [labels]="mail.labels"
+                    labelColor="neutral"
+                    [body]="mail.body"
+                  />
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Chat — Channels ─── -->
+        @if (node.id === "channels") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.hash" [size]="24" />
+                <h2>Channels</h2>
+              </div>
+              <div class="page-actions">
+                <ui-input
+                  placeholder="Search channels..."
+                  ariaLabel="Search channels"
+                  style="width: 200px"
+                />
+              </div>
+            </div>
+
+            <div class="chat-layout">
+              <div class="chat-channel-list">
+                @for (ch of chatChannels; track ch.id) {
+                  <div
+                    class="chat-channel-item"
+                    [class.chat-channel-item-active]="
+                      selectedChannel() === ch.id
+                    "
+                    (click)="selectedChannel.set(ch.id)"
+                    (keydown.enter)="selectedChannel.set(ch.id)"
+                    tabindex="0"
+                    role="button"
+                  >
+                    <ui-icon [svg]="channelIcon(ch.type)" [size]="18" />
+                    <div class="chat-channel-info">
+                      <div class="chat-channel-name">
+                        {{ ch.name }}
+                        @if (ch.pinned) {
+                          <ui-icon [svg]="icons.pin" [size]="12" />
+                        }
+                      </div>
+                      <div class="chat-channel-preview">
+                        {{ ch.lastSender }}: {{ ch.lastMessage }}
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-direction: column; align-items: end; gap: 0.25rem;"
+                    >
+                      <span class="chat-channel-time">{{ ch.lastTime }}</span>
+                      @if (ch.unread > 0) {
+                        <ui-badge
+                          variant="count"
+                          [count]="ch.unread"
+                          color="primary"
+                        />
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="chat-main">
+                @if (activeChannel(); as ch) {
+                  <div class="chat-header">
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem;"
+                    >
+                      <ui-icon [svg]="channelIcon(ch.type)" [size]="18" />
+                      <span>{{ ch.name }}</span>
+                      <ui-badge color="neutral"
+                        >{{ ch.members }} members</ui-badge
+                      >
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <ui-button
+                        variant="ghost"
+                        size="small"
+                        ariaLabel="Search"
+                      >
+                        <ui-icon [svg]="icons.search" [size]="16" />
+                      </ui-button>
+                      <ui-button
+                        variant="ghost"
+                        size="small"
+                        ariaLabel="Members"
+                      >
+                        <ui-icon [svg]="icons.users" [size]="16" />
+                      </ui-button>
+                    </div>
+                  </div>
+                  <ui-chat-view
+                    [messages]="channelMessages()"
+                    [currentUser]="currentUser"
+                    [placeholder]="'Message #' + ch.name + '...'"
+                    [ariaLabel]="'Chat in ' + ch.name"
+                  />
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Chat — Direct Messages ─── -->
+        @if (node.id === "direct-messages") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.messageSquare" [size]="24" />
+                <h2>Direct Messages</h2>
+              </div>
+            </div>
+
+            <div class="chat-layout">
+              <div class="chat-channel-list">
+                @for (ch of directMessages; track ch.id) {
+                  <div
+                    class="chat-channel-item"
+                    [class.chat-channel-item-active]="selectedDm() === ch.id"
+                    (click)="selectedDm.set(ch.id)"
+                    (keydown.enter)="selectedDm.set(ch.id)"
+                    tabindex="0"
+                    role="button"
+                  >
+                    <ui-avatar [name]="ch.name" [size]="28" />
+                    <div class="chat-channel-info">
+                      <div class="chat-channel-name">{{ ch.name }}</div>
+                      <div class="chat-channel-preview">
+                        {{ ch.lastMessage }}
+                      </div>
+                    </div>
+                    <div
+                      style="display: flex; flex-direction: column; align-items: end; gap: 0.25rem;"
+                    >
+                      <span class="chat-channel-time">{{ ch.lastTime }}</span>
+                      @if (ch.unread > 0) {
+                        <ui-badge
+                          variant="count"
+                          [count]="ch.unread"
+                          color="primary"
+                        />
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="chat-main">
+                @if (activeDm(); as dm) {
+                  <div class="chat-header">
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem;"
+                    >
+                      <ui-avatar [name]="dm.name" [size]="24" />
+                      <span>{{ dm.name }}</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <ui-button variant="ghost" size="small" ariaLabel="Call">
+                        <ui-icon [svg]="icons.phone" [size]="16" />
+                      </ui-button>
+                      <ui-button
+                        variant="ghost"
+                        size="small"
+                        ariaLabel="Video call"
+                      >
+                        <ui-icon [svg]="icons.video" [size]="16" />
+                      </ui-button>
+                    </div>
+                  </div>
+                  <ui-chat-view
+                    [messages]="dmMessages()"
+                    [currentUser]="currentUser"
+                    [placeholder]="'Message ' + dm.name + '...'"
+                    [ariaLabel]="'Chat with ' + dm.name"
+                  />
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Schedule (Calendar) ─── -->
+        @if (node.id === "schedule") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.calendarDays" [size]="24" />
+                <h2>Schedule</h2>
+              </div>
+              <div class="page-actions">
+                <ui-button variant="filled">
+                  <ui-icon [svg]="icons.calendarPlus" [size]="16" /> New Event
+                </ui-button>
+              </div>
+            </div>
+
+            <div class="category-strip">
+              <ui-chip color="primary" size="small">
+                <span
+                  style="display: inline-block; width:8px; height:8px; border-radius:50%; background:#3584e4; margin-right:0.35rem;"
+                ></span>
+                Virtual
+              </ui-chip>
+              <ui-chip color="success" size="small">
+                <span
+                  style="display: inline-block; width:8px; height:8px; border-radius:50%; background:#2ec27e; margin-right:0.35rem;"
+                ></span>
+                In-Person
+              </ui-chip>
+              <ui-chip color="warning" size="small">
+                <span
+                  style="display: inline-block; width:8px; height:8px; border-radius:50%; background:#e5a50a; margin-right:0.35rem;"
+                ></span>
+                Hybrid
+              </ui-chip>
+            </div>
+
+            <div class="calendar-wrap">
+              <ui-calendar-month-view
+                [datasource]="calendarDs()"
+                [(selectedDate)]="selectedDate"
+                ariaLabel="Meeting schedule"
+              />
+            </div>
+
+            @if (selectedMonthCalendarEvents().length > calendarPageSize) {
+              <ui-pagination
+                [totalItems]="selectedMonthCalendarEvents().length"
+                [pageSize]="calendarPageSize"
+                [pageSizeOptions]="[]"
+                [(pageIndex)]="calendarPageIndex"
+                ariaLabel="Calendar event pagination"
+              />
+            }
+          </div>
+        }
+
+        <!-- ─── Meetings ─── -->
+        @if (node.id === "meetings") {
+          <div class="page-fill">
+            <ui-communication-suite-page-header
+              [icon]="icons.video"
+              title="Meetings"
+              [badgeCount]="confirmedMeetings.length"
+            >
+              <ui-button header-actions variant="filled">
+                <ui-icon [svg]="icons.plus" [size]="16" /> Schedule Meeting
+              </ui-button>
+            </ui-communication-suite-page-header>
+
+            <ui-tab-group panelStyle="flat" class="meeting-tabs">
+              <ui-tab label="Today" [icon]="icons.clock">
+                <div class="tab-scroll-pane">
+                  <div class="today-meetings">
+                    @for (m of todayMeetings; track m.id) {
+                      <div class="today-meeting-card">
+                        <div class="today-meeting-time">
+                          {{ m.startTime }} - {{ m.endTime }}
+                        </div>
+                        <div class="today-meeting-info">
+                          <div class="today-meeting-title">{{ m.title }}</div>
+                          <div class="today-meeting-sub">
+                            <ui-badge
+                              [color]="meetingTypeColor(m.type)"
+                              size="small"
+                            >
+                              {{ m.type }}
+                            </ui-badge>
+                            @if (m.room) {
+                              <span> {{ m.room }}</span>
+                            }
+                            @if (m.link) {
+                              <span> · {{ m.attendees.length }} attendees</span>
+                            }
+                          </div>
+                        </div>
+                        <div style="display: flex; gap: 0.35rem;">
+                          @if (m.type !== "in-person") {
+                            <ui-button variant="filled" size="small">
+                              <ui-icon [svg]="icons.video" [size]="14" /> Join
+                            </ui-button>
+                          }
+                          <ui-badge [color]="meetingStatusColor(m.status)">
+                            {{ m.status }}
+                          </ui-badge>
+                        </div>
+                      </div>
+                    } @empty {
+                      <div
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 0; opacity: 0.5;"
+                      >
+                        <ui-icon [svg]="icons.calendarCheck" [size]="48" />
+                        <p style="margin-top: 1rem;">
+                          No meetings scheduled for today
+                        </p>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab label="Upcoming" [icon]="icons.calendarDays">
+                <div class="tab-scroll-pane">
+                  <div class="meeting-grid">
+                    @for (m of visibleMeetings(); track m.id) {
+                      <ui-communication-suite-meeting-card
+                        [meeting]="m"
+                        [icons]="icons"
+                        [typeColor]="meetingTypeColor(m.type)"
+                        [statusColor]="meetingStatusColor(m.status)"
+                      />
+                    }
+                  </div>
+
+                  @if (hasMoreMeetings()) {
+                    <div
+                      #meetingsLoadMoreSentinel
+                      style="display: flex; justify-content: center; padding: 1rem 0 0.5rem; color: var(--ui-text, #1d232b); opacity: 0.6;"
+                    >
+                      Loading more meetings...
+                    </div>
+                  }
+                </div>
+              </ui-tab>
+
+              <ui-tab-spacer />
+              <ui-tab label="Create" [icon]="icons.plus">
+                <div class="tab-scroll-pane">
+                  <div class="compose-form">
+                    <div class="compose-field">
+                      <span class="field-label">Meeting Title</span>
+                      <ui-input
+                        placeholder="e.g. Sprint Planning"
+                        ariaLabel="Meeting title"
+                      />
+                    </div>
+                    <div
+                      style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"
+                    >
+                      <div class="compose-field">
+                        <span class="field-label">Date</span>
+                        <ui-input placeholder="2026-03-28" ariaLabel="Date" />
+                      </div>
+                      <div class="compose-field">
+                        <span class="field-label">Time</span>
+                        <ui-input
+                          placeholder="10:00 - 11:00"
+                          ariaLabel="Time"
+                        />
+                      </div>
+                    </div>
+                    <div class="compose-field">
+                      <span class="field-label">Type</span>
+                      <ui-dropdown-list
+                        [options]="meetingTypeOptions"
+                        ariaLabel="Meeting type"
+                      />
+                    </div>
+                    <div class="compose-field">
+                      <span class="field-label"
+                        >Room (for in-person / hybrid)</span
+                      >
+                      <ui-dropdown-list
+                        [options]="roomOptions"
+                        ariaLabel="Room selection"
+                      />
+                    </div>
+                    <div class="compose-field">
+                      <span class="field-label">Description</span>
+                      <ui-input
+                        placeholder="Meeting agenda and notes..."
+                        ariaLabel="Description"
+                      />
+                    </div>
+                    <div class="compose-field">
+                      <span class="field-label">Attendees</span>
+                      <ui-input
+                        placeholder="Search contacts to add..."
+                        ariaLabel="Attendees"
+                      />
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <ui-checkbox ariaLabel="Recurring"
+                        >Recurring meeting</ui-checkbox
+                      >
+                      <ui-checkbox ariaLabel="Send invites"
+                        >Send calendar invites</ui-checkbox
+                      >
+                    </div>
+                    <div class="compose-actions">
+                      <ui-button variant="filled">Schedule Meeting</ui-button>
+                      <ui-button variant="ghost">Cancel</ui-button>
+                    </div>
+                  </div>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+
+        <!-- ─── Room Reservation ─── -->
+        @if (node.id === "rooms") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.building" [size]="24" />
+                <h2>Room Reservation</h2>
+              </div>
+              <div class="page-actions">
+                <ui-input
+                  placeholder="Search rooms..."
+                  ariaLabel="Search"
+                  style="width: 200px"
+                />
+              </div>
+            </div>
+
+            <div class="category-strip">
+              @for (building of buildings; track building) {
+                <ui-chip
+                  [color]="
+                    selectedBuilding() === building ? 'primary' : 'neutral'
+                  "
+                  (click)="selectedBuilding.set(building)"
+                >
+                  {{ building }}
+                </ui-chip>
+              }
+            </div>
+
+            <div class="scroll-area">
+              <div class="room-grid">
+                @for (room of filteredRooms(); track room.id) {
+                  <ui-card variant="outlined">
+                    <div class="room-card-header">
+                      <ui-icon [svg]="icons.building" [size]="36" />
+                    </div>
+                    <ui-card-body>
+                      <div
+                        style="display: flex; justify-content: space-between; align-items: start;"
+                      >
+                        <strong>{{ room.name }}</strong>
+                        <ui-badge
+                          [color]="room.available ? 'success' : 'warning'"
+                        >
+                          {{ room.available ? "Available" : "Occupied" }}
+                        </ui-badge>
+                      </div>
+                      <div class="meeting-meta-row">
+                        <ui-icon [svg]="icons.building" [size]="13" />
+                        {{ room.building }}, Floor {{ room.floor }}
+                      </div>
+                      <div class="meeting-meta-row">
+                        <ui-icon [svg]="icons.users" [size]="13" />
+                        Capacity: {{ room.capacity }}
+                      </div>
+                      <div class="room-availability">
+                        <ui-icon [svg]="icons.clock" [size]="13" />
+                        Next available: {{ room.nextAvailable }}
+                      </div>
+                      <div class="room-amenities">
+                        @for (amenity of room.amenities; track amenity) {
+                          <ui-chip color="neutral" size="small">{{
+                            amenity
+                          }}</ui-chip>
+                        }
+                      </div>
+                    </ui-card-body>
+                    <ui-card-footer>
+                      <ui-button
+                        [variant]="room.available ? 'filled' : 'outline'"
+                        size="small"
+                        [ariaLabel]="
+                          room.available ? 'Book now' : 'Reserve next slot'
+                        "
+                      >
+                        {{ room.available ? "Book Now" : "Reserve Next Slot" }}
+                      </ui-button>
+                    </ui-card-footer>
+                  </ui-card>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Contacts ─── -->
+        @if (node.id === "contacts") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.users" [size]="24" />
+                <h2>Contacts</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="allContacts.length"
+                  color="primary"
+                />
+              </div>
+              <div class="page-actions">
+                <ui-input
+                  placeholder="Search contacts..."
+                  ariaLabel="Search"
+                  style="width: 200px"
+                />
+              </div>
+            </div>
+
+            <ui-tab-group panelStyle="flat">
+              <ui-tab label="All" [icon]="icons.users">
+                <div class="scroll-area" style="padding-top: 0.5rem;">
+                  <div class="contact-grid">
+                    @for (c of allContacts; track c.id) {
+                      <ui-card variant="outlined">
+                        <ui-card-body>
+                          <div class="contact-card-top">
+                            <ui-avatar [name]="c.name" [size]="40" />
+                            <div>
+                              <div class="contact-name">
+                                <span
+                                  class="contact-status-dot"
+                                  [class.contact-status-dot-online]="
+                                    c.status === 'online'
+                                  "
+                                  [class.contact-status-dot-busy]="
+                                    c.status === 'busy'
+                                  "
+                                  [class.contact-status-dot-away]="
+                                    c.status === 'away'
+                                  "
+                                  [class.contact-status-dot-offline]="
+                                    c.status === 'offline'
+                                  "
+                                ></span>
+                                {{ c.name }}
+                                @if (c.external) {
+                                  <ui-badge color="warning" size="small"
+                                    >external</ui-badge
+                                  >
+                                }
+                              </div>
+                              <div class="contact-title-dept">
+                                {{ c.title }} · {{ c.department }}
+                              </div>
+                              <div class="contact-title-dept">
+                                {{ c.company }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="contact-actions-row">
+                            <ui-button
+                              variant="outline"
+                              size="small"
+                              ariaLabel="Email"
+                            >
+                              <ui-icon [svg]="icons.mail" [size]="14" />
+                            </ui-button>
+                            <ui-button
+                              variant="outline"
+                              size="small"
+                              ariaLabel="Chat"
+                            >
+                              <ui-icon
+                                [svg]="icons.messageCircle"
+                                [size]="14"
+                              />
+                            </ui-button>
+                            <ui-button
+                              variant="outline"
+                              size="small"
+                              ariaLabel="Call"
+                            >
+                              <ui-icon [svg]="icons.phone" [size]="14" />
+                            </ui-button>
+                            <ui-button
+                              variant="outline"
+                              size="small"
+                              ariaLabel="Video call"
+                            >
+                              <ui-icon [svg]="icons.video" [size]="14" />
+                            </ui-button>
+                          </div>
+                        </ui-card-body>
+                      </ui-card>
+                    }
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab label="Internal" [icon]="icons.building">
+                <div class="scroll-area" style="padding-top: 0.5rem;">
+                  <div class="contact-grid">
+                    @for (c of internalContacts; track c.id) {
+                      <ui-card variant="outlined">
+                        <ui-card-body>
+                          <div class="contact-card-top">
+                            <ui-avatar [name]="c.name" [size]="40" />
+                            <div>
+                              <div class="contact-name">
+                                <span
+                                  class="contact-status-dot"
+                                  [class.contact-status-dot-online]="
+                                    c.status === 'online'
+                                  "
+                                  [class.contact-status-dot-busy]="
+                                    c.status === 'busy'
+                                  "
+                                  [class.contact-status-dot-away]="
+                                    c.status === 'away'
+                                  "
+                                  [class.contact-status-dot-offline]="
+                                    c.status === 'offline'
+                                  "
+                                ></span>
+                                {{ c.name }}
+                              </div>
+                              <div class="contact-title-dept">
+                                {{ c.title }} · {{ c.department }}
+                              </div>
+                            </div>
+                          </div>
+                        </ui-card-body>
+                      </ui-card>
+                    }
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab label="External" [icon]="icons.globe">
+                <div class="scroll-area" style="padding-top: 0.5rem;">
+                  <div class="contact-grid">
+                    @for (c of externalContacts; track c.id) {
+                      <ui-card variant="outlined">
+                        <ui-card-body>
+                          <div class="contact-card-top">
+                            <ui-avatar [name]="c.name" [size]="40" />
+                            <div>
+                              <div class="contact-name">
+                                <span
+                                  class="contact-status-dot"
+                                  [class.contact-status-dot-online]="
+                                    c.status === 'online'
+                                  "
+                                  [class.contact-status-dot-busy]="
+                                    c.status === 'busy'
+                                  "
+                                  [class.contact-status-dot-away]="
+                                    c.status === 'away'
+                                  "
+                                  [class.contact-status-dot-offline]="
+                                    c.status === 'offline'
+                                  "
+                                ></span>
+                                {{ c.name }}
+                                <ui-badge color="warning" size="small"
+                                  >external</ui-badge
+                                >
+                              </div>
+                              <div class="contact-title-dept">
+                                {{ c.title }} · {{ c.company }}
+                              </div>
+                            </div>
+                          </div>
+                        </ui-card-body>
+                      </ui-card>
+                    }
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab-spacer />
+              <ui-tab [icon]="icons.userPlus" ariaLabel="Add contact">
+                <div class="compose-form" style="padding-top: 0.5rem;">
+                  <div class="compose-field">
+                    <span class="field-label">Full Name</span>
+                    <ui-input
+                      placeholder="e.g. Jane Doe"
+                      ariaLabel="Full name"
+                    />
+                  </div>
+                  <div class="compose-field">
+                    <span class="field-label">Email</span>
+                    <ui-input
+                      placeholder="jane.doe@example.com"
+                      ariaLabel="Email"
+                    />
+                  </div>
+                  <div
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"
+                  >
+                    <div class="compose-field">
+                      <span class="field-label">Company</span>
+                      <ui-input
+                        placeholder="Company name"
+                        ariaLabel="Company"
+                      />
+                    </div>
+                    <div class="compose-field">
+                      <span class="field-label">Department</span>
+                      <ui-input
+                        placeholder="Department"
+                        ariaLabel="Department"
+                      />
+                    </div>
+                  </div>
+                  <div class="compose-field">
+                    <span class="field-label">Phone</span>
+                    <ui-input placeholder="+1 555-0100" ariaLabel="Phone" />
+                  </div>
+                  <div>
+                    <ui-checkbox ariaLabel="External contact"
+                      >External contact (partner / vendor)</ui-checkbox
+                    >
+                  </div>
+                  <div class="compose-actions">
+                    <ui-button variant="filled">Add Contact</ui-button>
+                    <ui-button variant="ghost">Cancel</ui-button>
+                  </div>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+
+        <!-- ─── Settings ─── -->
+        @if (node.id === "settings") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.settings" [size]="24" />
+                <h2>Settings</h2>
+              </div>
+            </div>
+
+            <ui-tab-group panelStyle="flat">
+              <ui-tab label="General" [icon]="icons.settings">
+                <div class="settings-grid">
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Email Signature</div>
+                      <div class="setting-desc">
+                        Default signature appended to outgoing emails
+                      </div>
+                    </div>
+                    <ui-button variant="outline" size="small">Edit</ui-button>
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Out of Office</div>
+                      <div class="setting-desc">
+                        Automatic reply when you're unavailable
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Out of office" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Default Calendar View</div>
+                      <div class="setting-desc">
+                        Choose between month, week, or day view
+                      </div>
+                    </div>
+                    <ui-dropdown-list
+                      [options]="calendarViewOptions"
+                      ariaLabel="Calendar view"
+                    />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Working Hours</div>
+                      <div class="setting-desc">
+                        Set your available hours for meeting scheduling
+                      </div>
+                    </div>
+                    <span style="font-size: 0.88rem;">9:00 AM - 5:00 PM</span>
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Time Zone</div>
+                      <div class="setting-desc">
+                        Affects calendar and meeting times
+                      </div>
+                    </div>
+                    <ui-dropdown-list
+                      [options]="timezoneOptions"
+                      ariaLabel="Time zone"
+                    />
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab label="Notifications" [icon]="icons.bell">
+                <div class="settings-grid">
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Email Notifications</div>
+                      <div class="setting-desc">
+                        Desktop and push notifications for new emails
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Email notifications" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Chat Mentions</div>
+                      <div class="setting-desc">
+                        Notify when someone mentions you in a channel
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Chat mention notifications" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Meeting Reminders</div>
+                      <div class="setting-desc">
+                        Reminder before meetings start
+                      </div>
+                    </div>
+                    <ui-dropdown-list
+                      [options]="reminderTimeOptions"
+                      ariaLabel="Reminder time"
+                    />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Do Not Disturb</div>
+                      <div class="setting-desc">
+                        Silence all notifications during focus time
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Do not disturb" />
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab label="Privacy" [icon]="icons.shield">
+                <div class="settings-grid">
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Show Online Status</div>
+                      <div class="setting-desc">
+                        Let others see when you're online
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Show online status" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Read Receipts</div>
+                      <div class="setting-desc">
+                        Show when you've read messages in chat
+                      </div>
+                    </div>
+                    <ui-toggle ariaLabel="Read receipts" />
+                  </div>
+                  <div class="setting-row">
+                    <div>
+                      <div class="setting-label">Calendar Visibility</div>
+                      <div class="setting-desc">
+                        Who can see your calendar events
+                      </div>
+                    </div>
+                    <ui-dropdown-list
+                      [options]="calendarVisibilityOptions"
+                      ariaLabel="Calendar visibility"
+                    />
+                  </div>
+                </div>
+              </ui-tab>
+
+              <ui-tab-spacer />
+              <ui-tab [icon]="icons.triangleAlert" ariaLabel="Danger Zone">
+                <div class="settings-grid">
+                  <ui-card variant="outlined">
+                    <ui-card-body>
+                      <h4
+                        style="margin: 0 0 0.5rem; color: var(--ui-text, #1d232b);"
+                      >
+                        Delete Account
+                      </h4>
+                      <p
+                        style="font-size: 0.82rem; opacity: 0.65; margin: 0 0 1rem;"
+                      >
+                        This will permanently delete your account and all
+                        associated data. This action cannot be undone.
+                      </p>
+                      <ui-button
+                        variant="filled"
+                        color="danger"
+                        ariaLabel="Delete account"
+                      >
+                        Delete Account
+                      </ui-button>
+                    </ui-card-body>
+                  </ui-card>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+      </ng-template>
+    </ui-navigation-page>
+  

@@ -1,0 +1,40 @@
+<ui-card variant="outlined">
+  <div class="recipe-card-img">
+    <ui-icon [svg]="icon()" [size]="48" />
+  </div>
+  <ui-card-body>
+    <div class="card-head">
+      <div>
+        <strong>{{ title() }}</strong>
+        <div class="recipe-card-meta">
+          <span class="recipe-card-meta-item">
+            <ui-icon [svg]="timeIcon()" [size]="13" />
+            {{ time() }}
+          </span>
+          <span class="recipe-card-meta-item">
+            <ui-icon [svg]="servingsIcon()" [size]="13" />
+            {{ servings() }}
+          </span>
+        </div>
+      </div>
+      <ui-badge variant="label" [color]="difficultyColor()">
+        {{ difficulty() }}
+      </ui-badge>
+    </div>
+    <div class="recipe-rating">
+      <span class="recipe-rating-stars">{{ rating() }}</span>
+      <span class="rating-copy">({{ reviews() }})</span>
+    </div>
+    <div class="tags-row">
+      @for (tag of tags().slice(0, 3); track tag) {
+        <ui-chip color="neutral" size="small">{{ tag }}</ui-chip>
+      }
+    </div>
+  </ui-card-body>
+  <ui-card-footer>
+    <div class="author-row">
+      <ui-avatar [name]="author()" [size]="24" />
+      <span class="author-name">{{ author() }}</span>
+    </div>
+  </ui-card-footer>
+</ui-card>

@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.note-card {
+  border-radius: 14px;
+  padding: 0.95rem 1rem;
+  color: var(--ui-text, #1d232b);
+  background: color-mix(
+    in srgb,
+    var(--tour-accent, var(--ui-accent, #1f6feb)) 8%,
+    var(--ui-surface, #f7f8fa)
+  );
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--tour-accent, var(--ui-accent, #1f6feb)) 14%,
+      var(--ui-border, #d7dce2)
+    );
+}
+
+.note-card strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.subtle {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
+  opacity: 0.82;
+}

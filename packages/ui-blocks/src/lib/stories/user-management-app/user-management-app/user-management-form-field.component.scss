@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+:host(.form-field-full) {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+}

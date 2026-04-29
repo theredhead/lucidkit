@@ -1,0 +1,52 @@
+<ui-card variant="outlined">
+  <ui-card-body>
+    <div class="meeting-header">
+      <strong>{{ meeting().title }}</strong>
+      <ui-badge [color]="typeColor()">{{ meeting().type }}</ui-badge>
+    </div>
+    <div class="meeting-time">
+      <ui-icon [svg]="icons().clock" [size]="14" />
+      {{ meeting().date }} · {{ meeting().startTime }} - {{ meeting().endTime }}
+    </div>
+    <div class="meeting-meta-row">
+      <ui-icon [svg]="icons().user" [size]="14" />
+      Organizer: {{ meeting().organizer }}
+    </div>
+    @if (meeting().room) {
+      <div class="meeting-meta-row">
+        <ui-icon [svg]="icons().mapPin" [size]="14" />
+        {{ meeting().room }}
+      </div>
+    }
+    @if (meeting().link) {
+      <div class="meeting-meta-row">
+        <ui-icon [svg]="icons().link" [size]="14" />
+        Virtual meeting link
+      </div>
+    }
+    @if (meeting().recurring) {
+      <div class="meeting-meta-row">
+        <ui-icon [svg]="icons().calendarDays" [size]="14" />
+        {{ meeting().recurrence }}
+      </div>
+    }
+    <div class="meeting-attendees">
+      @for (attendee of meeting().attendees.slice(0, 5); track attendee) {
+        <ui-avatar [name]="attendee" [size]="22" />
+      }
+      @if (meeting().attendees.length > 5) {
+        <ui-badge color="neutral">+{{ meeting().attendees.length - 5 }}</ui-badge>
+      }
+    </div>
+  </ui-card-body>
+  <ui-card-footer>
+    <div class="footer-actions">
+      <ui-badge [color]="statusColor()">{{ meeting().status }}</ui-badge>
+      @if (meeting().type !== "in-person") {
+        <ui-button variant="outline" size="small">
+          <ui-icon [svg]="icons().video" [size]="14" /> Join
+        </ui-button>
+      }
+    </div>
+  </ui-card-footer>
+</ui-card>

@@ -1,0 +1,905 @@
+    <ui-navigation-page
+      [items]="nav"
+      [(activePage)]="activePage"
+      rootLabel="StreamHub"
+      storageKey="storybook-nav-video-sharing"
+    >
+      <ng-template #content let-node>
+        <!-- ─── Home ─── -->
+        @if (node.id === "home") {
+          <div class="home-top-bar">
+            <ui-video-sharing-page-header [icon]="icons.home" title="Home">
+              <ui-input
+                header-actions
+                placeholder="Search videos..."
+                ariaLabel="Search"
+                style="width: 240px"
+              />
+            </ui-video-sharing-page-header>
+
+            <div class="category-strip">
+              @for (cat of categories; track cat) {
+                <ui-chip
+                  [color]="selectedCategory() === cat ? 'primary' : 'neutral'"
+                  (click)="selectedCategory.set(cat)"
+                >
+                  {{ cat }}
+                </ui-chip>
+              }
+            </div>
+          </div>
+
+          <div class="video-grid">
+            @for (video of visibleVideos(); track video.id) {
+              <div>
+                <div class="video-thumb">
+                  <ui-icon [svg]="icons.play" [size]="32" />
+                  <span class="video-duration">{{ video.duration }}</span>
+                </div>
+                <div class="video-meta">
+                  <ui-avatar [name]="video.channel" size="small" />
+                  <div class="video-info">
+                    <p class="video-title">{{ video.title }}</p>
+                    <p class="video-channel-name">{{ video.channel }}</p>
+                    <p class="video-stats">
+                      {{ video.views }} · {{ video.uploaded }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          @if (hasMoreVideos()) {
+            <div class="load-more-sentinel" #loadMoreSentinel>
+              <ui-progress
+                variant="circular"
+                mode="indeterminate"
+                ariaLabel="Loading more videos"
+              />
+            </div>
+          }
+        }
+
+        <!-- ─── Trending ─── -->
+        @if (node.id === "trending") {
+          <div class="page-fill">
+            <ui-video-sharing-page-header
+              [icon]="icons.flame"
+              title="Trending"
+            />
+
+            <ui-tab-group panelStyle="outline">
+              <ui-tab label="Now" [icon]="icons.flame">
+                <div class="scroll-area" style="padding-top: 0.5rem">
+                  @for (
+                    video of trendingVideos;
+                    track video.id;
+                    let i = $index
+                  ) {
+                    <div class="trending-item">
+                      <span class="trending-rank">{{ i + 1 }}</span>
+                      <div class="trending-thumb">
+                        <ui-icon [svg]="icons.play" [size]="20" />
+                        <span class="video-duration">{{ video.duration }}</span>
+                      </div>
+                      <div class="trending-info">
+                        <p class="video-title">{{ video.title }}</p>
+                        <p class="video-channel-name">{{ video.channel }}</p>
+                        <p class="video-stats">
+                          {{ video.views }} · {{ video.uploaded }}
+                        </p>
+                        <div
+                          style="display: flex; gap: 0.5rem; margin-top: 0.35rem"
+                        >
+                          <ui-chip color="neutral">{{
+                            video.category
+                          }}</ui-chip>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </ui-tab>
+              <ui-tab-separator />
+              <ui-tab label="Music" [icon]="icons.volume2">
+                <div style="padding: 1rem 0; font-size: 0.88rem; opacity: 0.65">
+                  Trending music videos — curated by genre and popularity.
+                </div>
+              </ui-tab>
+              <ui-tab label="Gaming" [icon]="icons.film">
+                <div style="padding: 1rem 0; font-size: 0.88rem; opacity: 0.65">
+                  Top gaming content — streams, walkthroughs, and esports
+                  highlights.
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+
+        <!-- ─── Explore ─── -->
+        @if (node.id === "explore") {
+          <div class="page-fill">
+            <ui-video-sharing-page-header
+              [icon]="icons.compass"
+              title="Explore"
+            />
+
+            <div class="stats-grid">
+              <ui-video-sharing-stat-card
+                label="Total Videos"
+                [value]="publishedVideos.length"
+                [progress]="100"
+                ariaLabel="Videos"
+              />
+              <ui-video-sharing-stat-card
+                label="Channels"
+                [value]="channelList.length"
+                [progress]="100"
+                ariaLabel="Channels"
+              />
+              <ui-video-sharing-stat-card
+                label="Categories"
+                [value]="uniqueCategories.length"
+                [progress]="(uniqueCategories.length / 10) * 100"
+                ariaLabel="Categories"
+              />
+              <ui-video-sharing-stat-card
+                label="Top Channel"
+                value="ScienceNova"
+                [progress]="82"
+                ariaLabel="Engagement"
+                [compactValue]="true"
+              />
+            </div>
+
+            <h3 style="margin: 0 0 0.75rem; font-size: 1rem">
+              Browse by Category
+            </h3>
+            <div class="category-strip">
+              @for (cat of uniqueCategories; track cat) {
+                <ui-chip color="neutral">{{ cat }}</ui-chip>
+              }
+            </div>
+
+            <h3 style="margin: 1rem 0 0.75rem; font-size: 1rem">
+              Popular Channels
+            </h3>
+            <div class="channel-grid">
+              @for (ch of channelList.slice(0, 4); track ch.id) {
+                <ui-card variant="outlined">
+                  <ui-card-body>
+                    <div class="detail-header">
+                      <ui-avatar [name]="ch.name" size="medium" />
+                      <div>
+                        <h4 class="detail-name">
+                          {{ ch.name }}
+                          @if (ch.verified) {
+                            <ui-chip color="primary">verified</ui-chip>
+                          }
+                        </h4>
+                        <p class="detail-sub">{{ ch.handle }}</p>
+                      </div>
+                    </div>
+                    <div class="channel-stats">
+                      <span class="channel-stat-item">
+                        <ui-icon [svg]="icons.users" [size]="14" />
+                        {{ ch.subscribers }}
+                      </span>
+                      <span class="channel-stat-item">
+                        <ui-icon [svg]="icons.eye" [size]="14" />
+                        {{ ch.totalViews }}
+                      </span>
+                      <span class="channel-stat-item">
+                        <ui-icon [svg]="icons.video" [size]="14" />
+                        {{ ch.videoCount }}
+                      </span>
+                    </div>
+                  </ui-card-body>
+                </ui-card>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ─── Your Videos (master-detail) ─── -->
+        @if (node.id === "videos") {
+          <div class="page-fill">
+            <ui-video-sharing-page-header
+              [icon]="icons.video"
+              title="Your Videos"
+              [badgeCount]="allVideos.length"
+            >
+              <ui-button
+                header-actions
+                variant="outlined"
+                size="small"
+                (click)="activePage.set('upload')"
+              >
+                Upload New
+              </ui-button>
+            </ui-video-sharing-page-header>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="videosDs"
+                title="Videos"
+                [showFilter]="true"
+                placeholder="Select a video to view details"
+              >
+                <ui-template-column key="title" headerText="Video">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                      <ui-icon [svg]="icons.film" [size]="16" />
+                      <span style="font-weight: 600">{{ row.title }}</span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="views" headerText="Views" />
+                <ui-badge-column key="status" headerText="Status" />
+
+                <ng-template #detail let-video>
+                  <div class="detail-header">
+                    <ui-icon [svg]="icons.play" [size]="28" />
+                    <div>
+                      <h3 class="detail-name">{{ video.title }}</h3>
+                      <p class="detail-sub">
+                        {{ video.channel }} · {{ video.uploaded }}
+                      </p>
+                    </div>
+                    <div style="margin-left: auto">
+                      <ui-chip [color]="videoStatusColor(video.status)">
+                        {{ video.status }}
+                      </ui-chip>
+                    </div>
+                  </div>
+
+                  <ui-tab-group panelStyle="flat">
+                    <ui-tab label="Details" [icon]="icons.film">
+                      <dl class="detail-grid" style="padding-top: 0.75rem">
+                        <dt>Duration</dt>
+                        <dd>{{ video.duration }}</dd>
+                        <dt>Category</dt>
+                        <dd>{{ video.category }}</dd>
+                        <dt>Views</dt>
+                        <dd>{{ video.views }}</dd>
+                        <dt>Likes</dt>
+                        <dd>{{ formatNum(video.likes) }}</dd>
+                        <dt>Dislikes</dt>
+                        <dd>{{ formatNum(video.dislikes) }}</dd>
+                        <dt>Comments</dt>
+                        <dd>{{ formatNum(video.comments) }}</dd>
+                        <dt>Status</dt>
+                        <dd>
+                          <ui-chip [color]="videoStatusColor(video.status)">
+                            {{ video.status }}
+                          </ui-chip>
+                        </dd>
+                      </dl>
+                    </ui-tab>
+                    <ui-tab label="Engagement" [icon]="icons.thumbsUp">
+                      <div style="padding-top: 0.75rem">
+                        <div class="action-bar">
+                          <ui-icon [svg]="icons.thumbsUp" [size]="16" />
+                          <span class="action-count">
+                            {{ formatNum(video.likes) }}
+                          </span>
+                          <ui-icon
+                            [svg]="icons.thumbsDown"
+                            [size]="16"
+                            style="margin-left: 0.75rem"
+                          />
+                          <span class="action-count">
+                            {{ formatNum(video.dislikes) }}
+                          </span>
+                          <ui-icon
+                            [svg]="icons.messageCircle"
+                            [size]="16"
+                            style="margin-left: 0.75rem"
+                          />
+                          <span class="action-count">
+                            {{ formatNum(video.comments) }}
+                          </span>
+                        </div>
+                        @if (video.likes + video.dislikes > 0) {
+                          <div style="margin-top: 0.5rem">
+                            <span class="field-label">Like ratio</span>
+                            <ui-progress
+                              [value]="
+                                (video.likes / (video.likes + video.dislikes)) *
+                                100
+                              "
+                              ariaLabel="Like ratio"
+                            />
+                          </div>
+                        }
+                      </div>
+                    </ui-tab>
+                    <ui-tab-spacer />
+                    <ui-tab [icon]="icons.share" ariaLabel="Share">
+                      <div style="padding-top: 0.75rem; font-size: 0.88rem">
+                        <p style="margin: 0 0 0.5rem">Share this video:</p>
+                        <div style="display: flex; gap: 0.5rem">
+                          <ui-button variant="outlined" size="small">
+                            Copy Link
+                          </ui-button>
+                          <ui-button variant="ghost" size="small">
+                            Embed
+                          </ui-button>
+                        </div>
+                      </div>
+                    </ui-tab>
+                  </ui-tab-group>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Upload ─── -->
+        @if (node.id === "upload") {
+          <div class="page-header">
+            <div class="page-title">
+              <ui-icon [svg]="icons.upload" [size]="24" />
+              <h2>Upload Video</h2>
+            </div>
+          </div>
+
+          <ui-card variant="outlined">
+            <ui-card-header>
+              <h3 style="margin: 0; font-size: 1rem">Video Details</h3>
+            </ui-card-header>
+            <ui-card-body>
+              <div class="form-grid">
+                <div class="form-field form-field-full">
+                  <span class="field-label">Title</span>
+                  <ui-input
+                    placeholder="Enter video title"
+                    ariaLabel="Video title"
+                  />
+                </div>
+                <div class="form-field form-field-full">
+                  <span class="field-label">Description</span>
+                  <ui-input
+                    placeholder="Describe your video..."
+                    ariaLabel="Video description"
+                  />
+                </div>
+                <div class="form-field">
+                  <span class="field-label">Category</span>
+                  <ui-dropdown-list
+                    [options]="categoryOptions"
+                    placeholder="Select category"
+                    ariaLabel="Category"
+                  />
+                </div>
+                <div class="form-field">
+                  <span class="field-label">Visibility</span>
+                  <ui-dropdown-list
+                    [options]="visibilityOptions"
+                    placeholder="Select visibility"
+                    ariaLabel="Visibility"
+                  />
+                </div>
+                <div class="form-field form-field-full">
+                  <span class="field-label">Tags</span>
+                  <ui-input
+                    placeholder="tutorial, coding, typescript"
+                    ariaLabel="Tags"
+                  />
+                </div>
+                <div class="form-field form-field-full">
+                  <ui-checkbox ariaLabel="Allow comments">
+                    Allow comments on this video
+                  </ui-checkbox>
+                </div>
+                <div class="form-field form-field-full">
+                  <ui-checkbox ariaLabel="Age restriction">
+                    This video is made for kids
+                  </ui-checkbox>
+                </div>
+                <div class="form-actions">
+                  <ui-button variant="filled">Publish</ui-button>
+                  <ui-button variant="outlined">Save as Draft</ui-button>
+                  <ui-button variant="ghost" (click)="activePage.set('videos')">
+                    Cancel
+                  </ui-button>
+                </div>
+              </div>
+            </ui-card-body>
+          </ui-card>
+        }
+
+        <!-- ─── Playlists ─── -->
+        @if (node.id === "playlists") {
+          <div class="page-header">
+            <div class="page-title">
+              <ui-icon [svg]="icons.listVideo" [size]="24" />
+              <h2>Playlists</h2>
+              <ui-badge
+                variant="count"
+                [count]="playlists.length"
+                color="primary"
+              />
+            </div>
+            <div class="page-actions">
+              <ui-button variant="outlined" size="small"
+                >New Playlist</ui-button
+              >
+            </div>
+          </div>
+
+          <div class="playlist-grid">
+            @for (pl of playlists; track pl.id) {
+              <ui-card variant="outlined">
+                <ui-card-body>
+                  <div
+                    style="display: flex; align-items: center; justify-content: space-between"
+                  >
+                    <span style="font-weight: 700">{{ pl.name }}</span>
+                    <ui-chip [color]="playlistVisColor(pl.visibility)">
+                      {{ pl.visibility }}
+                    </ui-chip>
+                  </div>
+                  <div
+                    style="margin-top: 0.5rem; font-size: 0.82rem; opacity: 0.65"
+                  >
+                    {{ pl.videoCount }} videos · Updated {{ pl.lastUpdated }}
+                  </div>
+                </ui-card-body>
+                <ui-card-footer>
+                  <div style="display: flex; gap: 0.5rem">
+                    <ui-button variant="ghost" size="small">Play All</ui-button>
+                    <ui-button variant="ghost" size="small">Edit</ui-button>
+                  </div>
+                </ui-card-footer>
+              </ui-card>
+            }
+          </div>
+        }
+
+        <!-- ─── Watch History ─── -->
+        @if (node.id === "watch-history") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.history" [size]="24" />
+                <h2>Watch History</h2>
+              </div>
+              <div class="page-actions">
+                <ui-button variant="ghost" size="small"
+                  >Clear History</ui-button
+                >
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="historyDs"
+                title="Recently Watched"
+                placeholder="Select a video to see details"
+              >
+                <ui-template-column key="title" headerText="Video">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                      <ui-icon [svg]="icons.clock" [size]="14" />
+                      <span style="font-weight: 600">{{ row.title }}</span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="channel" headerText="Channel" />
+                <ui-text-column key="duration" headerText="Duration" />
+
+                <ng-template #detail let-video>
+                  <dl class="detail-grid">
+                    <dt>Title</dt>
+                    <dd>{{ video.title }}</dd>
+                    <dt>Channel</dt>
+                    <dd>{{ video.channel }}</dd>
+                    <dt>Duration</dt>
+                    <dd>{{ video.duration }}</dd>
+                    <dt>Views</dt>
+                    <dd>{{ video.views }}</dd>
+                    <dt>Category</dt>
+                    <dd>{{ video.category }}</dd>
+                  </dl>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Liked Videos ─── -->
+        @if (node.id === "liked") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.heart" [size]="24" />
+                <h2>Liked Videos</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="likedVideos.length"
+                  color="primary"
+                />
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="likedDs"
+                title="Liked"
+                placeholder="Select a liked video"
+              >
+                <ui-template-column key="title" headerText="Video">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                      <ui-icon [svg]="icons.heart" [size]="14" />
+                      <span style="font-weight: 600">{{ row.title }}</span>
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="channel" headerText="Channel" />
+                <ui-text-column key="views" headerText="Views" />
+
+                <ng-template #detail let-video>
+                  <div class="detail-header">
+                    <ui-icon [svg]="icons.heart" [size]="28" />
+                    <div>
+                      <h3 class="detail-name">{{ video.title }}</h3>
+                      <p class="detail-sub">{{ video.channel }}</p>
+                    </div>
+                  </div>
+                  <div class="action-bar">
+                    <ui-icon [svg]="icons.thumbsUp" [size]="16" />
+                    <span class="action-count">
+                      {{ formatNum(video.likes) }}
+                    </span>
+                    <ui-icon
+                      [svg]="icons.eye"
+                      [size]="16"
+                      style="margin-left: 0.75rem"
+                    />
+                    <span class="action-count">{{ video.views }}</span>
+                  </div>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Channels ─── -->
+        @if (node.id === "channels") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.users" [size]="24" />
+                <h2>Channels</h2>
+                <ui-badge
+                  variant="count"
+                  [count]="channelList.length"
+                  color="primary"
+                />
+              </div>
+            </div>
+
+            <div class="mdv-wrap">
+              <ui-master-detail-view
+                [datasource]="channelsDs"
+                title="Channels"
+                [showFilter]="true"
+                placeholder="Select a channel to view its profile"
+              >
+                <ui-template-column key="name" headerText="Channel">
+                  <ng-template let-row>
+                    <div
+                      style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                      <ui-avatar [name]="row.name" size="small" />
+                      <span style="font-weight: 600">{{ row.name }}</span>
+                      @if (row.verified) {
+                        <ui-chip color="primary">verified</ui-chip>
+                      }
+                    </div>
+                  </ng-template>
+                </ui-template-column>
+                <ui-text-column key="subscribers" headerText="Subscribers" />
+                <ui-text-column key="videoCount" headerText="Videos" />
+
+                <ng-template #detail let-ch>
+                  <div class="detail-header">
+                    <ui-avatar [name]="ch.name" size="large" />
+                    <div>
+                      <h3 class="detail-name">
+                        {{ ch.name }}
+                        @if (ch.verified) {
+                          <ui-chip color="primary">verified</ui-chip>
+                        }
+                      </h3>
+                      <p class="detail-sub">{{ ch.handle }}</p>
+                    </div>
+                    <div style="margin-left: auto">
+                      <ui-button variant="filled" size="small">
+                        Subscribe
+                      </ui-button>
+                    </div>
+                  </div>
+
+                  <ui-tab-group panelStyle="flat">
+                    <ui-tab label="About" [icon]="icons.user">
+                      <dl class="detail-grid" style="padding-top: 0.75rem">
+                        <dt>Subscribers</dt>
+                        <dd>{{ ch.subscribers }}</dd>
+                        <dt>Total Views</dt>
+                        <dd>{{ ch.totalViews }}</dd>
+                        <dt>Videos</dt>
+                        <dd>{{ ch.videoCount }}</dd>
+                        <dt>Joined</dt>
+                        <dd>{{ ch.joinedDate }}</dd>
+                        <dt>Description</dt>
+                        <dd>{{ ch.description }}</dd>
+                      </dl>
+                    </ui-tab>
+                    <ui-tab label="Community" [icon]="icons.messageCircle">
+                      <div style="padding-top: 0.75rem">
+                        <h4 style="margin: 0 0 0.5rem; font-size: 0.95rem">
+                          Recent Comments
+                        </h4>
+                        @for (comment of recentComments; track comment.id) {
+                          <div class="comment-item">
+                            <ui-avatar [name]="comment.author" size="small" />
+                            <div class="comment-body">
+                              <span class="comment-author">
+                                {{ comment.author }}
+                              </span>
+                              <span class="comment-time">
+                                {{ comment.timestamp }}
+                              </span>
+                              <p class="comment-text">{{ comment.text }}</p>
+                              <div class="comment-actions">
+                                <span class="comment-action">
+                                  <ui-icon [svg]="icons.thumbsUp" [size]="12" />
+                                  {{ comment.likes }}
+                                </span>
+                                <span class="comment-action">
+                                  <ui-icon
+                                    [svg]="icons.messageCircle"
+                                    [size]="12"
+                                  />
+                                  {{ comment.replies }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    </ui-tab>
+                    <ui-tab-spacer />
+                    <ui-tab [icon]="icons.bell" ariaLabel="Notifications">
+                      <div style="padding-top: 0.75rem; font-size: 0.88rem">
+                        <p style="margin: 0 0 0.5rem">
+                          Notification preferences for this channel.
+                        </p>
+                        <div style="display: flex; gap: 0.5rem">
+                          <ui-chip color="primary">All</ui-chip>
+                          <ui-chip color="neutral">Personalized</ui-chip>
+                          <ui-chip color="neutral">None</ui-chip>
+                        </div>
+                      </div>
+                    </ui-tab>
+                  </ui-tab-group>
+                </ng-template>
+              </ui-master-detail-view>
+            </div>
+          </div>
+        }
+
+        <!-- ─── Settings ─── -->
+        @if (node.id === "settings") {
+          <div class="page-fill">
+            <div class="page-header">
+              <div class="page-title">
+                <ui-icon [svg]="icons.settings" [size]="24" />
+                <h2>Settings</h2>
+              </div>
+            </div>
+
+            <ui-tab-group>
+              <ui-tab label="Playback" [icon]="icons.play">
+                <div style="padding-top: 0.75rem">
+                  <ui-accordion mode="single">
+                    <ui-accordion-item label="Video Quality" [expanded]="true">
+                      <div class="settings-grid">
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">Default Quality</div>
+                            <div class="setting-desc">
+                              Set the default video playback quality.
+                            </div>
+                          </div>
+                          <ui-dropdown-list
+                            [options]="qualityOptions"
+                            ariaLabel="Default quality"
+                          />
+                        </div>
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">Auto-HD on Wi-Fi</div>
+                            <div class="setting-desc">
+                              Automatically switch to HD when on Wi-Fi.
+                            </div>
+                          </div>
+                          <ui-toggle
+                            [value]="true"
+                            ariaLabel="Auto HD on WiFi"
+                          />
+                        </div>
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">Autoplay</div>
+                            <div class="setting-desc">
+                              Automatically play the next video.
+                            </div>
+                          </div>
+                          <ui-toggle
+                            [value]="true"
+                            ariaLabel="Autoplay next video"
+                          />
+                        </div>
+                      </div>
+                    </ui-accordion-item>
+                    <ui-accordion-item label="Subtitles">
+                      <div class="settings-grid">
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">
+                              Always Show Subtitles
+                            </div>
+                            <div class="setting-desc">
+                              Enable subtitles by default on all videos.
+                            </div>
+                          </div>
+                          <ui-toggle
+                            [value]="false"
+                            ariaLabel="Always show subtitles"
+                          />
+                        </div>
+                        <div class="setting-row">
+                          <div>
+                            <div class="setting-label">Preferred Language</div>
+                            <div class="setting-desc">
+                              Subtitle language when available.
+                            </div>
+                          </div>
+                          <ui-dropdown-list
+                            [options]="languageOptions"
+                            ariaLabel="Subtitle language"
+                          />
+                        </div>
+                      </div>
+                    </ui-accordion-item>
+                  </ui-accordion>
+                </div>
+              </ui-tab>
+              <ui-tab label="Notifications" [icon]="icons.bell">
+                <div style="padding-top: 0.75rem">
+                  <div class="settings-grid">
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Subscriptions</div>
+                        <div class="setting-desc">
+                          Notify when subscribed channels upload new content.
+                        </div>
+                      </div>
+                      <ui-toggle
+                        [value]="true"
+                        ariaLabel="Subscription notifications"
+                      />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Recommended Videos</div>
+                        <div class="setting-desc">
+                          Get notified about trending and recommended content.
+                        </div>
+                      </div>
+                      <ui-toggle
+                        [value]="false"
+                        ariaLabel="Recommended notifications"
+                      />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Comment Replies</div>
+                        <div class="setting-desc">
+                          Notify when someone replies to your comments.
+                        </div>
+                      </div>
+                      <ui-toggle
+                        [value]="true"
+                        ariaLabel="Comment reply notifications"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </ui-tab>
+              <ui-tab label="Privacy" [icon]="icons.eye">
+                <div style="padding-top: 0.75rem">
+                  <div class="settings-grid">
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">
+                          Keep Watch History Private
+                        </div>
+                        <div class="setting-desc">
+                          Your watch history will not be visible to others.
+                        </div>
+                      </div>
+                      <ui-toggle
+                        [value]="true"
+                        ariaLabel="Private watch history"
+                      />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Hide Liked Videos</div>
+                        <div class="setting-desc">
+                          Your liked videos list will be private.
+                        </div>
+                      </div>
+                      <ui-toggle
+                        [value]="false"
+                        ariaLabel="Hide liked videos"
+                      />
+                    </div>
+                    <div class="setting-row">
+                      <div>
+                        <div class="setting-label">Restricted Mode</div>
+                        <div class="setting-desc">
+                          Filter out potentially mature content.
+                        </div>
+                      </div>
+                      <ui-toggle [value]="false" ariaLabel="Restricted mode" />
+                    </div>
+                  </div>
+                </div>
+              </ui-tab>
+              <ui-tab-spacer />
+              <ui-tab [icon]="icons.flag" ariaLabel="Account">
+                <div style="padding-top: 0.75rem">
+                  <ui-card variant="outlined">
+                    <ui-card-header>
+                      <span
+                        style="font-weight: 700; color: var(--ui-danger, #dc2626)"
+                      >
+                        Danger Zone
+                      </span>
+                    </ui-card-header>
+                    <ui-card-body>
+                      <p
+                        style="margin: 0 0 1rem; font-size: 0.88rem; line-height: 1.5"
+                      >
+                        These actions are irreversible. Proceed with caution.
+                      </p>
+                      <div style="display: flex; gap: 0.5rem">
+                        <ui-button variant="outlined" size="small">
+                          Download All Data
+                        </ui-button>
+                        <ui-button variant="outlined" size="small">
+                          Delete Channel
+                        </ui-button>
+                      </div>
+                    </ui-card-body>
+                  </ui-card>
+                </div>
+              </ui-tab>
+            </ui-tab-group>
+          </div>
+        }
+      </ng-template>
+    </ui-navigation-page>
+  

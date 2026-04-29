@@ -1,0 +1,17 @@
+<div class="detail-header">
+  @if (avatarName()) {
+    <ui-avatar [name]="avatarName()!" [size]="avatarSize()" />
+  } @else if (icon()) {
+    <ui-icon [svg]="icon()!" [size]="28" />
+  }
+  <div>
+    <h3 class="detail-name">{{ title() }}</h3>
+    <p class="detail-sub">{{ subtitle() }}</p>
+  </div>
+  <div class="status-slot">
+    @if (status()) {
+      <ui-chip [color]="statusColor()">{{ status() }}</ui-chip>
+    }
+    <ng-content />
+  </div>
+</div>

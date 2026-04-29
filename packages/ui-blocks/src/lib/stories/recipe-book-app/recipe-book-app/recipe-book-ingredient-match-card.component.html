@@ -1,0 +1,39 @@
+<ui-card variant="outlined">
+  <ui-card-header>
+    <div class="match-card-header">
+      <strong>{{ title() }}</strong>
+      <ui-badge variant="label" [color]="matchColor()">
+        {{ matchPercent() }}% match
+      </ui-badge>
+    </div>
+  </ui-card-header>
+
+  <ui-card-body>
+    <ui-progress [value]="progress()" ariaLabel="Ingredient match" />
+
+    <div class="recipe-card-meta">
+      <span class="recipe-card-meta-item">
+        <ui-icon [svg]="timeIcon()" [size]="13" />
+        {{ time() }}
+      </span>
+      <span class="recipe-card-meta-item">
+        <ui-icon [svg]="ratingIcon()" [size]="13" />
+        {{ rating() }}
+      </span>
+      <span class="recipe-card-meta-item">
+        {{ matchedCount() }} / {{ totalIngredients() }} ingredients
+      </span>
+    </div>
+
+    <div class="match-ingredients">
+      @for (ingredient of ingredients(); track ingredient) {
+        <ui-chip
+          [color]="isSelectedIngredient(ingredient) ? 'success' : 'danger'"
+          size="small"
+        >
+          {{ ingredient }}
+        </ui-chip>
+      }
+    </div>
+  </ui-card-body>
+</ui-card>

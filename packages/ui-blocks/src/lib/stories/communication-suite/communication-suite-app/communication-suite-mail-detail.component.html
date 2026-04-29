@@ -1,0 +1,40 @@
+<div class="mail-detail">
+  <div class="detail-header">
+    @if (avatarName()) {
+      <ui-avatar [name]="avatarName()!" [size]="40" />
+    }
+    <div>
+      <h3 class="detail-name">{{ title() }}</h3>
+      <div class="mail-meta-row">
+        <span>{{ primaryMeta() }}</span>
+        @if (primaryMetaAside()) {
+          <span>{{ primaryMetaAside() }}</span>
+        }
+      </div>
+      @if (secondaryMeta() || priority()) {
+        <div class="mail-meta-row">
+          @if (secondaryMeta()) {
+            <span>{{ secondaryMeta() }}</span>
+          }
+          @if (priority()) {
+            <ui-badge [color]="priorityColor()">{{ priority() }}</ui-badge>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (labels().length) {
+    <div class="tags-row">
+      @for (label of labels(); track label) {
+        <ui-chip [color]="labelColor()" size="small">{{ label }}</ui-chip>
+      }
+    </div>
+  }
+
+  <div class="mail-body">{{ body() }}</div>
+
+  <div class="mail-actions">
+    <ng-content />
+  </div>
+</div>
