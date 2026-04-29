@@ -1,0 +1,64 @@
+
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <div>
+        <h4 style="margin: 0 0 8px">Sizes</h4>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <ui-avatar name="Jane Doe" size="extra-small" />
+          <ui-avatar name="Jane Doe" size="small" />
+          <ui-avatar name="Jane Doe" size="medium" />
+          <ui-avatar name="Jane Doe" size="large" />
+          <ui-avatar name="Jane Doe" size="extra-large" />
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">With images</h4>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <ui-avatar
+            src="https://picsum.photos/seed/av1/100/100"
+            name="Alice"
+            size="medium"
+          />
+          <ui-avatar
+            src="https://picsum.photos/seed/av2/100/100"
+            name="Bob"
+            size="medium"
+          />
+          <ui-avatar
+            src="https://picsum.photos/seed/av3/100/100"
+            name="Charlie"
+            size="large"
+          />
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Initials (no image)</h4>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <ui-avatar name="Kris van Rens" size="medium" />
+          <ui-avatar name="Emily" size="medium" />
+          <ui-avatar name="Maximilian Von Habsburg" size="large" />
+        </div>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Fallback (no name, no image)</h4>
+        <ui-avatar size="large" />
+      </div>
+      <div>
+        <h4 style="margin: 0 0 8px">Gravatar (email-based)</h4>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <ui-avatar email="copilot@github.com" name="Copilot" size="medium" />
+          <ui-avatar email="copilot@github.com" name="Copilot" size="large" />
+          <ui-avatar
+            email="noexist@theredhead.nl"
+            name="Fallback Test"
+            size="large"
+          />
+        </div>
+        <p
+          style="margin: 8px 0 0; font-size: 0.75rem; opacity: 0.55; line-height: 1.4;"
+        >
+          The last avatar uses a non-existent Gravatar — it falls back to
+          initials.
+        </p>
+      </div>
+    </div>
+  
