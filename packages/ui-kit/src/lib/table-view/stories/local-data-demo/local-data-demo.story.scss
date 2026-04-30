@@ -1,0 +1,23 @@
+
+      .local-demo-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #f6f7f8);
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 4px;
+      }
+
+      .local-demo-output {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--ui-text, #1d232b);
+        background: var(--ui-surface, #f6f7f8);
+        border: 1px solid var(--ui-border, #d7dce2);
+        border-radius: 4px;
+      }
+    

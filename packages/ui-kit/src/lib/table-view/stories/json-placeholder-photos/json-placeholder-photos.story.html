@@ -1,0 +1,34 @@
+
+    <ui-table-view
+      uiDensity="generous"
+      caption="JSONPlaceholder Photos"
+      tableId="story-photos"
+      [showRowIndexIndicator]="true"
+      [showBuiltInPaginator]="true"
+      [datasource]="adapter"
+    >
+      <ui-number-column
+        key="id"
+        headerText="ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-number-column
+        key="albumId"
+        headerText="Album ID"
+        [sortable]="true"
+        [format]="{ maximumFractionDigits: 0 }"
+      />
+      <ui-text-column
+        key="title"
+        headerText="Title"
+        [truncate]="true"
+        [sortable]="true"
+      />
+      <ui-text-column
+        key="thumbnailUrl"
+        headerText="Thumbnail URL"
+        [truncate]="true"
+      />
+    </ui-table-view>
+  
