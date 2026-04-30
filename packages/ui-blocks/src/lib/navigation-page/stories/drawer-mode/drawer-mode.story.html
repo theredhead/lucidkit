@@ -1,0 +1,22 @@
+
+    <ui-navigation-page
+      [items]="items"
+      [sidebarPinned]="false"
+      storageKey="storybook-nav-drawer"
+      [(activePage)]="activePage"
+      [(drawerOpen)]="drawerOpen"
+    >
+      <ng-template #content let-node>
+        <ui-button variant="outlined" (click)="drawerOpen.set(true)"
+          >Open Sidebar</ui-button
+        >
+        <div class="page-header">
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
+          }
+          <h2>{{ node.data.label }}</h2>
+        </div>
+        <p class="page-description">{{ contentFor(node.id) }}</p>
+      </ng-template>
+    </ui-navigation-page>
+  

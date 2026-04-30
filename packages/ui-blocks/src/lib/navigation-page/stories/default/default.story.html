@@ -1,0 +1,22 @@
+
+    <ui-navigation-page
+      [items]="items"
+      storageKey="storybook-nav-default"
+      [(activePage)]="activePage"
+      (navigated)="onNavigated($event)"
+    >
+      <ng-template #content let-node>
+        <div class="page-header">
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
+          }
+          <h2>{{ node.data.label }}</h2>
+        </div>
+        <p class="page-description">{{ contentFor(node.id) }}</p>
+        <div class="page-card">
+          ✅ You navigated to <strong>"{{ node.data.label }}"</strong>. Try
+          clicking a different item in the sidebar.
+        </div>
+      </ng-template>
+    </ui-navigation-page>
+  

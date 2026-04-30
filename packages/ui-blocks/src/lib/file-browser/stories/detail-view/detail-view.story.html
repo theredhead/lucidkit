@@ -1,0 +1,14 @@
+
+    <div class="story-wrapper">
+      <ui-file-browser
+        [datasource]="ds"
+        viewMode="detail"
+        [showDetails]="true"
+        [metadataProvider]="metadataProvider"
+        (fileActivated)="onFileActivated($event)"
+      />
+    </div>
+    @if (lastEvent()) {
+      <div class="story-output">{{ lastEvent() }}</div>
+    }
+  

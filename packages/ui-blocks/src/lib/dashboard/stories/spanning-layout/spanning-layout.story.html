@@ -1,0 +1,47 @@
+
+    <ui-dashboard [columns]="4" [gap]="12">
+      <ui-dashboard-panel
+        [config]="{
+          id: 'hero',
+          title: 'Hero Banner',
+          placement: { colSpan: 4 },
+        }"
+      >
+        <div class="placeholder">Full-width hero panel (4 columns)</div>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel
+        [config]="{
+          id: 'sidebar',
+          title: 'Sidebar',
+          placement: { rowSpan: 2 },
+        }"
+      >
+        <div class="placeholder tall">Tall sidebar (2 rows)</div>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel
+        [config]="{
+          id: 'main',
+          title: 'Main Content',
+          placement: { colSpan: 2 },
+        }"
+      >
+        <div class="placeholder">Wide main area (2 columns)</div>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel [config]="{ id: 'aside', title: 'Aside' }">
+        <div class="placeholder">Standard cell</div>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel
+        [config]="{
+          id: 'bottom',
+          title: 'Bottom Bar',
+          placement: { colSpan: 3 },
+        }"
+      >
+        <div class="placeholder">Bottom bar spanning 3 columns</div>
+      </ui-dashboard-panel>
+    </ui-dashboard>
+  

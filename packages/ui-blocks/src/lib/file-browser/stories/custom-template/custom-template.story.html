@@ -1,0 +1,23 @@
+
+    <div class="story-wrapper">
+      <ui-file-browser
+        [datasource]="ds"
+        (fileActivated)="onFileActivated($event)"
+      >
+        <ng-template #entryTemplate let-entry>
+          <div class="custom-entry">
+            <span class="custom-name">{{ entry.name }}</span>
+            @if (entry.meta?.size) {
+              <span class="custom-meta">{{ entry.meta.size }}</span>
+            }
+            @if (entry.meta?.type) {
+              <span class="custom-meta">{{ entry.meta.type }}</span>
+            }
+          </div>
+        </ng-template>
+      </ui-file-browser>
+    </div>
+    @if (lastEvent()) {
+      <div class="story-output">{{ lastEvent() }}</div>
+    }
+  

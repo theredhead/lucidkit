@@ -1,0 +1,35 @@
+
+    <ui-kanban-board
+      [(columns)]="columns"
+      (cardMoved)="onMoved($event)"
+      (cardClicked)="onClicked($event)"
+    >
+      <ng-template let-card let-column="column">
+        <div
+          style="padding: 12px; display: flex; flex-direction: column; gap: 6px;"
+        >
+          <strong style="font-size: 0.875rem;">{{ card.data.title }}</strong>
+          <span
+            style="font-size: 0.75rem; color: var(--ui-text-muted, #6b7280);"
+            >{{ card.data.description }}</span
+          >
+          <div
+            style="display: flex; align-items: center; gap: 6px; margin-top: 4px;"
+          >
+            <span
+              [style.background]="priorityColor(card.data.priority)"
+              style="color: #fff; font-size: 0.625rem; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: 600;"
+              >{{ card.data.priority }}</span
+            >
+            @if (card.data.assignee) {
+              <span
+                style="font-size: 0.75rem; color: var(--ui-text-muted, #9ca3af); margin-left: auto;"
+              >
+                {{ card.data.assignee }}
+              </span>
+            }
+          </div>
+        </div>
+      </ng-template>
+    </ui-kanban-board>
+  

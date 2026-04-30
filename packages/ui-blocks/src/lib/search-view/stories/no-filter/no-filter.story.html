@@ -1,0 +1,14 @@
+
+    <div style="height: 400px; display: flex; flex-direction: column;">
+      <ui-search-view
+        [datasource]="ds"
+        title="Inventory"
+        [showFilter]="false"
+        [pageSize]="5"
+      >
+        <ui-text-column key="name" headerText="Name" />
+        <ui-text-column key="stock" headerText="Stock" />
+        <ui-text-column key="sku" headerText="SKU" />
+      </ui-search-view>
+    </div>
+  

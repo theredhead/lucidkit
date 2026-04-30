@@ -1,0 +1,30 @@
+
+    <div
+      style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
+    >
+      <ui-wizard [linear]="true" (complete)="onComplete()">
+        <ui-wizard-step label="Terms" [canAdvance]="accepted()">
+          <h3>Accept the Terms</h3>
+          <p>You must accept the terms to continue.</p>
+          <label
+            style="display: flex; align-items: center; gap: 8px; margin-top: 16px;"
+          >
+            <input
+              type="checkbox"
+              [checked]="accepted()"
+              (change)="accepted.set(!accepted())"
+            />
+            I accept the terms and conditions
+          </label>
+        </ui-wizard-step>
+        <ui-wizard-step label="Details">
+          <h3>Enter your details</h3>
+          <p>This step has no validation gate — you can proceed freely.</p>
+        </ui-wizard-step>
+        <ui-wizard-step label="Complete">
+          <h3>All done!</h3>
+          <p>Click Finish to complete the wizard.</p>
+        </ui-wizard-step>
+      </ui-wizard>
+    </div>
+  

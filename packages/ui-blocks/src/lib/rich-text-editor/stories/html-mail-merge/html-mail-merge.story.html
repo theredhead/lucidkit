@@ -1,0 +1,69 @@
+
+    <ui-split-container
+      name="html-mail-merge-demo"
+      orientation="horizontal"
+      style="flex: 1; min-height: 0; display: flex;"
+    >
+      <ui-split-panel>
+        <div style="display: flex; flex-direction: column; height: 100%;">
+          <div
+            style="padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ui-text-muted, #5a6470); background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);"
+          >
+            HTML Template
+          </div>
+          <ui-rich-text-editor
+            mode="html"
+            [(value)]="content"
+            [placeholders]="placeholders"
+            [placeholderContext]="placeholderContext"
+            placeholder="Edit your HTML invoice template…"
+            ariaLabel="HTML mail-merge invoice template"
+            style="flex: 1; min-height: 0; display: flex; flex-direction: column;"
+          />
+        </div>
+      </ui-split-panel>
+
+      <ui-split-panel>
+        <div style="display: flex; flex-direction: column; height: 100%;">
+          <div
+            style="display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: var(--ui-surface-2, #f0f2f5); border-bottom: 1px solid var(--ui-border, #d0d5dd);"
+          >
+            <ui-button
+              variant="ghost"
+              size="small"
+              [disabled]="currentIndex() === 0"
+              ariaLabel="Previous member"
+              (click)="prev()"
+              >Previous</ui-button
+            >
+            <span
+              style="flex: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--ui-text, #1d232b);"
+            >
+              {{ members[currentIndex()].fullName }}
+              <span
+                style="font-weight: 400; color: var(--ui-text-muted, #5a6470);"
+                >({{ currentIndex() + 1 }} / {{ members.length }})</span
+              >
+            </span>
+            <ui-button
+              variant="ghost"
+              size="small"
+              [disabled]="currentIndex() === members.length - 1"
+              ariaLabel="Next member"
+              (click)="next()"
+              >Next</ui-button
+            >
+          </div>
+          <div
+            style="flex: 1; overflow: auto; padding: 16px; background: var(--ui-surface, #f7f8fa); color: var(--ui-text, #1d232b);"
+          >
+            <ui-rich-text-view
+              [content]="renderedContent()"
+              strategy="html"
+              ariaLabel="HTML invoice preview"
+            />
+          </div>
+        </div>
+      </ui-split-panel>
+    </ui-split-container>
+  

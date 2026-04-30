@@ -1,0 +1,21 @@
+
+    <div class="controls">
+      <ui-button variant="outlined" (click)="dashboard().restoreAll()"
+        >Restore all panels</ui-button
+      >
+    </div>
+
+    <ui-dashboard [columns]="3" [gap]="16" (panelRemoved)="onRemoved($event)">
+      @for (cfg of configs; track cfg.id) {
+        <ui-dashboard-panel [config]="cfg">
+          <div class="placeholder">{{ cfg.title }} content</div>
+        </ui-dashboard-panel>
+      }
+    </ui-dashboard>
+
+    @if (lastRemoved()) {
+      <div class="removed-info">
+        Last removed: <strong>{{ lastRemoved() }}</strong>
+      </div>
+    }
+  

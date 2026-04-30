@@ -1,0 +1,20 @@
+
+    <div
+      style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
+    >
+      <ui-wizard (complete)="onComplete()">
+        <ui-wizard-step label="Account">
+          <h3>Create your account</h3>
+          <p>Enter your email address and choose a password.</p>
+        </ui-wizard-step>
+        <ui-wizard-step label="Profile" [optional]="true">
+          <h3>Set up your profile</h3>
+          <p>Choose a display name and upload an avatar.</p>
+        </ui-wizard-step>
+        <ui-wizard-step label="Confirm">
+          <h3>Confirm your details</h3>
+          <p>Review your information and click Finish.</p>
+        </ui-wizard-step>
+      </ui-wizard>
+    </div>
+  

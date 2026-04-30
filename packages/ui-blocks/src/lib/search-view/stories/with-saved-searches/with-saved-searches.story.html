@@ -1,0 +1,18 @@
+
+    <div style="height: 600px; display: flex; flex-direction: column;">
+      <ui-search-view
+        [datasource]="ds"
+        title="Products"
+        [showFilter]="true"
+        storageKey="storybook-search-demo"
+        [pageSize]="10"
+        (savedSearchChange)="onSavedSearchChange($event)"
+      >
+        <ui-text-column key="name" headerText="Name" />
+        <ui-text-column key="category" headerText="Category" />
+        <ui-text-column key="price" headerText="Price" />
+        <ui-text-column key="stock" headerText="Stock" />
+        <ui-text-column key="sku" headerText="SKU" />
+      </ui-search-view>
+    </div>
+  

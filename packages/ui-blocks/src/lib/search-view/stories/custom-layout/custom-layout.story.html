@@ -1,0 +1,23 @@
+
+    <div style="height: 500px; display: flex; flex-direction: column;">
+      <ui-search-view
+        [datasource]="ds"
+        layout="custom"
+        title="Product Catalog"
+        [showFilter]="true"
+        [showPagination]="false"
+      >
+        <ng-template #results let-items>
+          <div class="product-grid">
+            @for (item of items; track item.sku) {
+              <div class="product-card">
+                <h4>{{ item.name }}</h4>
+                <p>{{ item.category }}</p>
+                <p class="price">${{ item.price }}</p>
+              </div>
+            }
+          </div>
+        </ng-template>
+      </ui-search-view>
+    </div>
+  

@@ -1,0 +1,16 @@
+
+    <ui-dashboard columns="auto" [gap]="20" [minColumnWidth]="240">
+      @for (i of items; track i) {
+        <ui-dashboard-panel
+          [config]="{
+            id: 'panel-' + i,
+            title: 'Panel ' + i,
+            collapsible: true,
+            removable: true,
+          }"
+        >
+          <div class="placeholder">Widget {{ i }}</div>
+        </ui-dashboard-panel>
+      }
+    </ui-dashboard>
+  

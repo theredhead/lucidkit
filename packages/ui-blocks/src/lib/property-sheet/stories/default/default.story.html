@@ -1,0 +1,14 @@
+
+    <ui-property-sheet
+      [fields]="fields"
+      [(data)]="data"
+      (propertyChange)="onChanged($event)"
+      ariaLabel="Widget settings"
+    />
+    @if (lastEvent()) {
+      <div class="story-output">
+        <strong>Last change:</strong> {{ lastEvent()!.key }} =
+        {{ lastEvent()!.value }}
+      </div>
+    }
+  

@@ -1,0 +1,19 @@
+
+    <ui-navigation-page
+      [items]="items"
+      rootLabel="App"
+      breadcrumbVariant="link"
+      storageKey="storybook-nav-custom-root"
+      [(activePage)]="activePage"
+    >
+      <ng-template #content let-node>
+        <div class="page-header">
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
+          }
+          <h2>{{ node.data.label }}</h2>
+        </div>
+        <p class="page-description">{{ contentFor(node.id) }}</p>
+      </ng-template>
+    </ui-navigation-page>
+  

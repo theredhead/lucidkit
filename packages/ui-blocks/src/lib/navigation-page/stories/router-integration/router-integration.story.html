@@ -1,0 +1,25 @@
+
+    <ui-navigation-page
+      [items]="items"
+      rootLabel="Router Demo"
+      storageKey="storybook-nav-router"
+      [(activePage)]="activePage"
+      (navigated)="onNavigated($event)"
+    >
+      <ng-template #content let-node>
+        <div class="page-header">
+          @if (node.icon) {
+            <ui-icon [svg]="node.icon" [size]="28" />
+          }
+          <h2>{{ node.data.label }}</h2>
+        </div>
+        @if (node.data.route) {
+          <div class="route-badge">Route: /{{ node.data.route }}</div>
+        }
+        <p class="page-description">
+          Items generated from a route config via
+          <code>routesToNavigation()</code>.
+        </p>
+      </ng-template>
+    </ui-navigation-page>
+  

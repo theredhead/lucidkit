@@ -1,0 +1,123 @@
+
+    <ui-dashboard [columns]="8" [gap]="16" [dockMenuIcon]="menuIcon">
+      <ng-container dockMenuItem>
+        <hr />
+        <button
+          class="dock-menu-item dock-menu-item--disabled"
+          disabled
+          aria-disabled="true"
+        >
+          <ui-icon
+            [svg]="icons.Account.Settings"
+            [size]="14"
+            class="dock-menu-item-icon"
+          />
+          <span class="dock-menu-item-label">Configure…</span>
+        </button>
+      </ng-container>
+
+      <ui-dashboard-panel [config]="panels[0]">
+        <div class="demo-kpi">
+          <div class="demo-kpi-item">
+            <div class="demo-kpi-value">$42.5k</div>
+            <div class="demo-kpi-label">Revenue</div>
+          </div>
+          <div class="demo-kpi-item">
+            <div class="demo-kpi-value">1,284</div>
+            <div class="demo-kpi-label">Orders</div>
+          </div>
+          <div class="demo-kpi-item">
+            <div class="demo-kpi-value">94.2%</div>
+            <div class="demo-kpi-label">Satisfaction</div>
+          </div>
+          <div class="demo-kpi-item">
+            <div class="demo-kpi-value">387</div>
+            <div class="demo-kpi-label">New Users</div>
+          </div>
+        </div>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel [config]="panels[1]">
+        <div class="demo-chart-wrapper">
+          <ui-chart
+            [source]="revenueData"
+            labelProperty="month"
+            valueProperty="revenue"
+            [strategy]="barStrategy"
+            [width]="280"
+            [height]="180"
+            [showLegend]="false"
+            ariaLabel="Monthly revenue"
+          />
+        </div>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel [config]="panels[2]">
+        <ul class="demo-list">
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.CircleDot"
+              [size]="14"
+              style="color: #22c55e"
+            />
+            142 active now
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.CircleDot"
+              [size]="14"
+              style="color: #3b82f6"
+            />
+            1,847 today
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.Circle"
+              [size]="14"
+              style="color: var(--ui-text-muted, #9ca3af)"
+            />
+            12,409 this week
+          </li>
+        </ul>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel [config]="panels[3]">
+        <ul class="demo-list">
+          <li>Alice deployed v2.4.1</li>
+          <li>Bob merged PR #312</li>
+          <li>Charlie added 3 tests</li>
+          <li>Diana updated docs</li>
+          <li>Eve resolved issue #87</li>
+        </ul>
+      </ui-dashboard-panel>
+
+      <ui-dashboard-panel [config]="panels[4]">
+        <ul class="demo-list">
+          <li>
+            <ui-icon
+              [svg]="icons.Notifications.CircleCheck"
+              [size]="14"
+              style="color: #22c55e"
+            />
+            Review calendar component
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.Square"
+              [size]="14"
+              style="color: var(--ui-text-muted, #9ca3af)"
+            />
+            Update CI pipeline
+          </li>
+          <li>
+            <ui-icon
+              [svg]="icons.Shapes.Square"
+              [size]="14"
+              style="color: var(--ui-text-muted, #9ca3af)"
+            />
+            Write dashboard docs
+          </li>
+        </ul>
+      </ui-dashboard-panel>
+    </ui-dashboard>
+  
