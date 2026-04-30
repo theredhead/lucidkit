@@ -1,0 +1,16 @@
+<ui-toolbar (toolAction)="onAction($event)">
+  <ui-dropdown-tool
+    id="insert"
+    label="Insert"
+    [items]="[
+      { id: 'table', label: 'Table' },
+      { id: 'image', label: 'Image' },
+    ]"
+  />
+  <ui-select-tool
+    id="font-size"
+    label="Size"
+    [options]="fontSizeOptions"
+    [(value)]="fontSize"
+  />
+</ui-toolbar>
