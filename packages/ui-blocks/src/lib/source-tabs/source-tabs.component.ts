@@ -5,7 +5,12 @@ import {
   input,
 } from "@angular/core";
 
-import { UITab, UITabGroup } from "@theredhead/lucid-kit";
+import {
+  UIAccordion,
+  UIAccordionItem,
+  UITab,
+  UITabGroup,
+} from "@theredhead/lucid-kit";
 
 /**
  * A single source pane rendered within {@link UISourceTabs}.
@@ -35,7 +40,7 @@ export interface UISourceTab {
 @Component({
   selector: "ui-source-tabs",
   standalone: true,
-  imports: [UITabGroup, UITab],
+  imports: [UIAccordion, UIAccordionItem, UITabGroup, UITab],
   templateUrl: "./source-tabs.component.html",
   styleUrl: "./source-tabs.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,

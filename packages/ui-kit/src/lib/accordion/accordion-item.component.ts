@@ -56,6 +56,9 @@ export class UIAccordionItem {
   /** Whether this panel is disabled (cannot toggle). */
   public readonly disabled = input(false);
 
+  /** Whether the panel content keeps the default inset padding. */
+  public readonly contentPadding = input<"default" | "none">("default");
+
   /** Accessible label override. */
   public readonly ariaLabel = input<string | undefined>(undefined);
 

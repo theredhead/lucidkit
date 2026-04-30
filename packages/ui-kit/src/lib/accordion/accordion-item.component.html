@@ -16,7 +16,7 @@
 
 @if (expanded()) {
   <div class="panel" role="region">
-    <div class="content">
+    <div class="content" [class.flush]="contentPadding() === 'none'">
       <ng-content />
     </div>
   </div>

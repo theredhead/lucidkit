@@ -1,25 +1,29 @@
 @if (visibleTabs().length > 0) {
-  <ui-tab-group panelStyle="flat" [ariaLabel]="ariaLabel()">
-    @for (tab of visibleTabs(); track trackTab($index, tab)) {
-      <ui-tab [label]="tab.label">
-        <div class="pane">
-          @if (tab.filename || tab.language) {
-            <div class="meta">
-              @if (tab.filename) {
-                <span class="filename">{{ tab.filename }}</span>
+  <ui-accordion [ariaLabel]="ariaLabel()" [requireOpen]="false">
+    <ui-accordion-item label="Source code" contentPadding="none">
+      <ui-tab-group panelStyle="flat" [ariaLabel]="ariaLabel()">
+        @for (tab of visibleTabs(); track trackTab($index, tab)) {
+          <ui-tab [label]="tab.label">
+            <div class="pane">
+              @if (tab.filename || tab.language) {
+                <div class="meta">
+                  @if (tab.filename) {
+                    <span class="filename">{{ tab.filename }}</span>
+                  }
+
+                  @if (tab.language) {
+                    <span class="language">{{ tab.language }}</span>
+                  }
+                </div>
               }
 
-              @if (tab.language) {
-                <span class="language">{{ tab.language }}</span>
-              }
+              <pre class="code"><code>{{ tab.code }}</code></pre>
             </div>
-          }
-
-          <pre class="code"><code>{{ tab.code }}</code></pre>
-        </div>
-      </ui-tab>
-    }
-  </ui-tab-group>
+          </ui-tab>
+        }
+      </ui-tab-group>
+    </ui-accordion-item>
+  </ui-accordion>
 } @else {
   <div class="empty">{{ emptyMessage() }}</div>
 }

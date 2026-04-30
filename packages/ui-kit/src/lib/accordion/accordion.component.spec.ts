@@ -9,7 +9,9 @@ import { UIAccordionItem } from "./accordion-item.component";
   imports: [UIAccordion, UIAccordionItem],
   template: `
     <ui-accordion [mode]="mode()" [requireOpen]="requireOpen()">
-      <ui-accordion-item label="Section 1">Content A</ui-accordion-item>
+      <ui-accordion-item label="Section 1" contentPadding="none"
+        >Content A</ui-accordion-item
+      >
       <ui-accordion-item label="Section 2">Content B</ui-accordion-item>
       <ui-accordion-item label="Section 3" [disabled]="true"
         >Content C</ui-accordion-item
@@ -203,6 +205,15 @@ describe("UIAccordion", () => {
     it("should apply disabled class to disabled item", () => {
       const items = fixture.nativeElement.querySelectorAll("ui-accordion-item");
       expect(items[2].classList).toContain("disabled");
+    });
+
+    it("should support flush panel content", () => {
+      const headers = fixture.nativeElement.querySelectorAll(".header");
+      headers[0].click();
+      fixture.detectChanges();
+
+      const content = fixture.nativeElement.querySelector(".content");
+      expect(content.classList).toContain("flush");
     });
   });
 

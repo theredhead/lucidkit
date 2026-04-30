@@ -44,14 +44,30 @@ describe("UISourceTabs", () => {
     ]);
     fixture.detectChanges();
 
+    fixture.nativeElement.querySelector(".header")?.click();
+    fixture.detectChanges();
+
     const tabButtons = fixture.nativeElement.querySelectorAll("[role='tab']");
     expect(tabButtons.length).toBe(2);
     expect(tabButtons[0].textContent).toContain("Markup");
     expect(tabButtons[1].textContent).toContain("TypeScript");
   });
 
+  it("should start with the source panes collapsed", () => {
+    fixture.componentRef.setInput("tabs", TABS);
+    fixture.detectChanges();
+
+    const tabButtons = fixture.nativeElement.querySelectorAll("[role='tab']");
+    const accordionHeader = fixture.nativeElement.querySelector(".header");
+    expect(accordionHeader?.textContent).toContain("Source code");
+    expect(tabButtons.length).toBe(0);
+  });
+
   it("should render the active tab code and metadata", () => {
     fixture.componentRef.setInput("tabs", TABS);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector(".header")?.click();
     fixture.detectChanges();
 
     const filename = fixture.nativeElement.querySelector(".filename");
