@@ -35,7 +35,7 @@ const meta = {
         'Defaults to `"Toggle theme"`.',
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
 } satisfies Meta<UIThemeToggle>;
 
 export default meta;
@@ -54,5 +54,5 @@ export const Playground: Story = {
       [disabled]="disabled"
       [ariaLabel]="ariaLabel"
     />`,
-  })
+  }),
 };

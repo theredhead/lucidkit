@@ -39,6 +39,6 @@ export const Default: Story = {
   render: (args) => ({
     props: args,
     template:
-      "<ui-empty-state-story-default [heading]=\"heading\" [message]=\"message\" />",
+      '<ui-empty-state-story-default [heading]="heading" [message]="message" />',
   }),
 };

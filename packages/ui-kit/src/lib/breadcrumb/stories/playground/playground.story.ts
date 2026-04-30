@@ -13,9 +13,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 export class PlaygroundStorySource {
   // Review required: this scaffold was generated from packages/ui-kit/src/lib/breadcrumb/breadcrumb.stories.ts.
 
-  public ariaLabel = ("Breadcrumb") as const;
-  public disabled = (false) as const;
+  public ariaLabel = "Breadcrumb" as const;
+  public disabled = false as const;
   public items = undefined as never;
-  public separator = ("/") as const;
-  public variant = ("link") as const;
+  public separator = "/" as const;
+  public variant = "link" as const;
 }

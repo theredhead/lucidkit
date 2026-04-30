@@ -11,7 +11,6 @@ import { UIEmptyState } from "../../empty-state.component";
   styleUrl: "./default.story.scss",
 })
 export class UIEmptyStateStoryDefault {
-
   /** Primary heading text forwarded to the empty-state component. */
   public readonly heading = input.required<string>();
 
