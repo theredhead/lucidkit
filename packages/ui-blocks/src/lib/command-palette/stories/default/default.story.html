@@ -1,0 +1,7 @@
+<button (click)="paletteOpen = true">Open Palette</button>
+
+<ui-command-palette
+  [commands]="commands"
+  [(open)]="paletteOpen"
+  (execute)="onExecute($event)"
+/>
