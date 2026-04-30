@@ -1,6 +1,6 @@
 import { UIAnalogClock } from "../../analog-clock.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 @Component({
   selector: "ui-no-seconds-story-demo",
@@ -11,5 +11,17 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./no-seconds.story.scss",
 })
 export class NoSecondsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/analog-clock/analog-clock.stories.ts.
+  public readonly ariaLabel = input("Analog clock without second hand");
+
+  public readonly dayIconColor = input("#f59e0b");
+
+  public readonly nightIconColor = input("#e8e0c0");
+
+  public readonly showNumbers = input(true);
+
+  public readonly showSeconds = input(false);
+
+  public readonly showTickMarks = input(true);
+
+  public readonly size = input(200);
 }

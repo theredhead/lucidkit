@@ -1,12 +1,16 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type BadgeColor, type BadgeVariant, UIBadge } from "../../badge.component";
+import { type BadgeColor, UIBadge } from "../../badge.component";
 
 import { DotStorySource } from "./dot.story";
 
+interface DotStoryArgs {
+  color: BadgeColor;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Badge",
-  component: UIBadge,
+  component: DotStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -18,13 +22,6 @@ const meta = {
     },
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["count", "dot", "label"] satisfies BadgeVariant[],
-      description:
-        "Controls the visual shape: `count` shows a number, `dot` shows a " +
-        "small circle, `label` renders projected text content.",
-    },
     color: {
       control: "select",
       options: [
@@ -38,31 +35,23 @@ const meta = {
         "Semantic colour preset. Maps to `--ui-badge-bg` and " +
         "`--ui-badge-text` CSS custom properties.",
     },
-    count: {
-      control: "number",
-      description:
-        "Numeric value displayed when `variant` is `count`. " +
-        "Clamped to `maxCount` with a `+` suffix when exceeded.",
-    },
-    maxCount: {
-      control: "number",
-      description:
-        "Upper display limit for the `count` variant. Counts above this " +
-        'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
-    },
   },
-  decorators: [moduleMetadata({ imports: [DotStorySource] })]
-} satisfies Meta<UIBadge>;
+  decorators: [moduleMetadata({ imports: [DotStorySource] })],
+} satisfies Meta<DotStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIBadge>;
+type Story = StoryObj<DotStoryArgs>;
 
 export const Dot: Story = {
   args: { color: "success" },
   parameters: {
-    docs: {}
+    controls: {
+      include: ["color"],
+    },
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-dot-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: '<ui-dot-story-demo [color]="color" />',
+  }),
 };

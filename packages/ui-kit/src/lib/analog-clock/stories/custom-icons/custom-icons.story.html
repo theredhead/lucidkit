@@ -1,6 +1,11 @@
 <ui-analog-clock
+  [size]="size()"
+  [showSeconds]="showSeconds()"
+  [showNumbers]="showNumbers()"
+  [showTickMarks]="showTickMarks()"
   [dayIcon]="sparkles"
-  dayIconColor="#ec4899"
+  [dayIconColor]="dayIconColor()"
   [nightIcon]="star"
-  nightIconColor="#fbbf24"
+  [nightIconColor]="nightIconColor()"
+  [ariaLabel]="ariaLabel()"
 />

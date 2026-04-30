@@ -1,6 +1,6 @@
 import { UIAnalogClock } from "../../analog-clock.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
 @Component({
   selector: "ui-world-clocks-story-demo",
@@ -11,5 +11,18 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./world-clocks.story.scss",
 })
 export class WorldClocksStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/analog-clock/analog-clock.stories.ts.
+  protected readonly zones = [
+    {
+      label: "New York",
+      time: signal(new Date(2026, 0, 1, 8, 30, 0)),
+    },
+    {
+      label: "London",
+      time: signal(new Date(2026, 0, 1, 13, 30, 0)),
+    },
+    {
+      label: "Tokyo",
+      time: signal(new Date(2026, 0, 1, 21, 30, 0)),
+    },
+  ] as const;
 }

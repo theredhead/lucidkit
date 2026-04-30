@@ -1,12 +1,25 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type ButtonColor, type ButtonSize, type ButtonVariant, UIButton } from "../../button.component";
+import {
+  type ButtonColor,
+  type ButtonSize,
+  type ButtonVariant,
+  UIButton,
+} from "../../button.component";
 
 import { GhostStorySource } from "./ghost.story";
 
+interface ButtonStoryArgs {
+  color: ButtonColor;
+  disabled: boolean;
+  pill: boolean;
+  size: ButtonSize;
+  variant: ButtonVariant;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Button",
-  component: UIButton,
+  component: GhostStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -57,18 +70,26 @@ const meta = {
         "Combines with any variant and colour.",
     },
   },
-  decorators: [moduleMetadata({ imports: [GhostStorySource] })]
-} satisfies Meta<UIButton>;
+  decorators: [moduleMetadata({ imports: [GhostStorySource] })],
+} satisfies Meta<ButtonStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIButton>;
+type Story = StoryObj<ButtonStoryArgs>;
 
 export const Ghost: Story = {
-  args: { size: "medium" },
-  parameters: {
-    docs: {}
+  args: {
+    color: "neutral",
+    disabled: false,
+    pill: false,
+    size: "medium",
+    variant: "ghost",
   },
-  render: () => ({
-      template: "<ui-ghost-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-ghost-story-demo [variant]="variant" [color]="color" [size]="size" [pill]="pill" [disabled]="disabled" />',
+  }),
 };

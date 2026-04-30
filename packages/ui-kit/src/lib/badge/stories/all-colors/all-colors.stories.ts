@@ -1,12 +1,23 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type BadgeColor, type BadgeVariant, UIBadge } from "../../badge.component";
+import {
+  type BadgeColor,
+  type BadgeVariant,
+  UIBadge,
+} from "../../badge.component";
 
 import { AllColorsStorySource } from "./all-colors.story";
 
+interface BadgeDocsArgs {
+  color: BadgeColor;
+  count: number;
+  maxCount: number;
+  variant: BadgeVariant;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Badge",
-  component: UIBadge,
+  component: AllColorsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -51,17 +62,20 @@ const meta = {
         'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
     },
   },
-  decorators: [moduleMetadata({ imports: [AllColorsStorySource] })]
-} satisfies Meta<UIBadge>;
+  decorators: [moduleMetadata({ imports: [AllColorsStorySource] })],
+} satisfies Meta<BadgeDocsArgs>;
 
 export default meta;
-type Story = StoryObj<UIBadge>;
+type Story = StoryObj<BadgeDocsArgs>;
 
 export const AllColors: Story = {
   parameters: {
-    docs: {}
+    controls: {
+      disable: true,
+    },
+    docs: {},
   },
   render: () => ({
-      template: "<ui-all-colors-story-demo />",
-    })
+    template: "<ui-all-colors-story-demo />",
+  }),
 };

@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIAnalogClock } from "../../analog-clock.component";
-
 import { SizeGalleryStorySource } from "./size-gallery.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Analog Clock",
-  component: UIAnalogClock,
+  component: SizeGalleryStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -42,17 +40,20 @@ const meta = {
       description: "Stroke colour for the nighttime indicator icon",
     },
   },
-  decorators: [moduleMetadata({ imports: [SizeGalleryStorySource] })]
-} satisfies Meta<UIAnalogClock>;
+  decorators: [moduleMetadata({ imports: [SizeGalleryStorySource] })],
+} satisfies Meta<SizeGalleryStorySource>;
 
 export default meta;
-type Story = StoryObj<UIAnalogClock>;
+type Story = StoryObj<SizeGalleryStorySource>;
 
 export const SizeGallery: Story = {
   parameters: {
-    docs: {}
+    docs: {},
+    controls: {
+      disable: true,
+    },
   },
   render: () => ({
-      template: "<ui-size-gallery-story-demo />",
-    })
+    template: "<ui-size-gallery-story-demo />",
+  }),
 };

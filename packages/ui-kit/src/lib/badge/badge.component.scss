@@ -1,12 +1,40 @@
 @use "mixins" as mix;
 
 :host {
+  --ui-badge-current-fg: var(--ui-badge-text, #ffffff);
+  --ui-badge-current-bg: var(--ui-badge-bg, #3584e4);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 /* ── Color variants ── */
+
+:host(.primary) {
+  --ui-badge-current-fg: var(--ui-badge-text, #ffffff);
+  --ui-badge-current-bg: var(--ui-badge-bg, #3584e4);
+}
+
+:host(.neutral) {
+  --ui-badge-current-fg: var(--ui-badge-neutral-fg, #344054);
+  --ui-badge-current-bg: var(--ui-badge-neutral-bg, #eef2f6);
+}
+
+:host(.success) {
+  --ui-badge-current-fg: var(--ui-badge-success-fg, #135c38);
+  --ui-badge-current-bg: var(--ui-badge-success-bg, #e9f7ee);
+}
+
+:host(.warning) {
+  --ui-badge-current-fg: var(--ui-badge-warning-fg, #7a4200);
+  --ui-badge-current-bg: var(--ui-badge-warning-bg, #fff4e6);
+}
+
+:host(.danger) {
+  --ui-badge-current-fg: var(--ui-badge-danger-fg, #8a1f29);
+  --ui-badge-current-bg: var(--ui-badge-danger-bg, #fdecef);
+}
 
 /* ── Dark mode ── */
 
@@ -20,9 +48,12 @@
   height: 1.25rem;
   padding: 0 0.375rem;
   border-radius: 0.625rem;
-  font-size: 0.75rem;
+  color: var(--ui-badge-current-fg);
+  background-color: var(--ui-badge-current-bg);
+  font-size: var(--ui-font-badge, 0.75rem);
   font-weight: 600;
-  line-height: 1;
+  line-height: var(--ui-badge-line-height, 1);
+  letter-spacing: var(--ui-badge-letter-spacing, 0.01em);
   white-space: nowrap;
 }
 
@@ -38,4 +69,6 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
+  color: var(--ui-badge-current-fg);
+  background-color: var(--ui-badge-current-bg);
 }

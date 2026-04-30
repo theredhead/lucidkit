@@ -1,12 +1,23 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type BadgeColor, type BadgeVariant, UIBadge } from "../../badge.component";
+import {
+  type BadgeColor,
+  type BadgeVariant,
+  UIBadge,
+} from "../../badge.component";
 
 import { DefaultStorySource } from "./default.story";
 
+interface BadgeDocsArgs {
+  color: BadgeColor;
+  count: number;
+  maxCount: number;
+  variant: BadgeVariant;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Badge",
-  component: UIBadge,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -51,32 +62,35 @@ const meta = {
         'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
     },
   },
-  decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UIBadge>;
+  decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
+} satisfies Meta<BadgeDocsArgs>;
 
 export default meta;
-type Story = StoryObj<UIBadge>;
+type Story = StoryObj<BadgeDocsArgs>;
 
 export const Default: Story = {
   parameters: {
+    controls: {
+      disable: true,
+    },
     docs: {
       description: {
         story:
-        "### Variants\n" +
-        "| Variant | Purpose | Example |\n" +
-        "|---------|---------|---------|\n" +
-        "| `count` | Numeric notification badge | Unread messages (5) |\n" +
-        "| `dot` | Presence / status indicator | Online status |\n" +
-        '| `label` | Short text tag | "New", "Beta" |\n\n' +
-        "### Colors\n" +
-        "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
-        "### Overflow\n" +
-        "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
-        '(e.g. "99+").'
-      }
-    }
+          "### Variants\n" +
+          "| Variant | Purpose | Example |\n" +
+          "|---------|---------|---------|\n" +
+          "| `count` | Numeric notification badge | Unread messages (5) |\n" +
+          "| `dot` | Presence / status indicator | Online status |\n" +
+          '| `label` | Short text tag | "New", "Beta" |\n\n' +
+          "### Colors\n" +
+          "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
+          "### Overflow\n" +
+          "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
+          '(e.g. "99+").',
+      },
+    },
   },
   render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+    template: "<ui-default-story-demo />",
+  }),
 };

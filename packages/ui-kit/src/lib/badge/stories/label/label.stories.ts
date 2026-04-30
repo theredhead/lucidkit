@@ -1,12 +1,17 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type BadgeColor, type BadgeVariant, UIBadge } from "../../badge.component";
+import { type BadgeColor, UIBadge } from "../../badge.component";
 
 import { LabelStorySource } from "./label.story";
 
+interface LabelStoryArgs {
+  color: BadgeColor;
+  label: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Badge",
-  component: UIBadge,
+  component: LabelStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -18,13 +23,6 @@ const meta = {
     },
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["count", "dot", "label"] satisfies BadgeVariant[],
-      description:
-        "Controls the visual shape: `count` shows a number, `dot` shows a " +
-        "small circle, `label` renders projected text content.",
-    },
     color: {
       control: "select",
       options: [
@@ -38,30 +36,30 @@ const meta = {
         "Semantic colour preset. Maps to `--ui-badge-bg` and " +
         "`--ui-badge-text` CSS custom properties.",
     },
-    count: {
-      control: "number",
-      description:
-        "Numeric value displayed when `variant` is `count`. " +
-        "Clamped to `maxCount` with a `+` suffix when exceeded.",
-    },
-    maxCount: {
-      control: "number",
-      description:
-        "Upper display limit for the `count` variant. Counts above this " +
-        'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
+    label: {
+      control: "text",
+      description: "Short text shown inside the label badge.",
     },
   },
-  decorators: [moduleMetadata({ imports: [LabelStorySource] })]
-} satisfies Meta<UIBadge>;
+  decorators: [moduleMetadata({ imports: [LabelStorySource] })],
+} satisfies Meta<LabelStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIBadge>;
+type Story = StoryObj<LabelStoryArgs>;
 
 export const Label: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    color: "primary",
+    label: "New",
   },
-  render: () => ({
-      template: "<ui-label-story-demo />",
-    })
+  parameters: {
+    controls: {
+      include: ["color", "label"],
+    },
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: '<ui-label-story-demo [color]="color" [label]="label" />',
+  }),
 };

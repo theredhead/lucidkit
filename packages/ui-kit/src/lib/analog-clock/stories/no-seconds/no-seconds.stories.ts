@@ -1,12 +1,14 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIAnalogClock } from "../../analog-clock.component";
-
+import {
+  ANALOG_CLOCK_STORY_ARG_TYPES,
+  type AnalogClockStoryArgs,
+} from "../analog-clock-story-helpers";
 import { NoSecondsStorySource } from "./no-seconds.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Analog Clock",
-  component: UIAnalogClock,
+  component: NoSecondsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -16,43 +18,29 @@ const meta = {
       },
     },
   },
-  argTypes: {
-    size: {
-      control: { type: "range", min: 40, max: 500, step: 10 },
-      description: "Clock diameter in CSS pixels",
-    },
-    showSeconds: {
-      control: "boolean",
-      description: "Whether to show the second hand",
-    },
-    showNumbers: {
-      control: "boolean",
-      description: "Whether to show hour numbers (1–12)",
-    },
-    showTickMarks: {
-      control: "boolean",
-      description: "Whether to show tick marks around the rim",
-    },
-    dayIconColor: {
-      control: "color",
-      description: "Stroke colour for the daytime indicator icon",
-    },
-    nightIconColor: {
-      control: "color",
-      description: "Stroke colour for the nighttime indicator icon",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [NoSecondsStorySource] })]
-} satisfies Meta<UIAnalogClock>;
+  argTypes: ANALOG_CLOCK_STORY_ARG_TYPES,
+  decorators: [moduleMetadata({ imports: [NoSecondsStorySource] })],
+} satisfies Meta<AnalogClockStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIAnalogClock>;
+type Story = StoryObj<AnalogClockStoryArgs>;
 
 export const NoSeconds: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    size: 200,
+    showSeconds: false,
+    showNumbers: true,
+    showTickMarks: true,
+    dayIconColor: "#f59e0b",
+    nightIconColor: "#e8e0c0",
+    ariaLabel: "Analog clock without second hand",
   },
-  render: () => ({
-      template: "<ui-no-seconds-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-no-seconds-story-demo [size]="size" [showSeconds]="showSeconds" [showNumbers]="showNumbers" [showTickMarks]="showTickMarks" [dayIconColor]="dayIconColor" [nightIconColor]="nightIconColor" [ariaLabel]="ariaLabel" />',
+  }),
 };

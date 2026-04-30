@@ -1,6 +1,7 @@
 import { UIBadge } from "../../badge.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import { type BadgeColor } from "../../badge.component";
 
 @Component({
   selector: "ui-label-story-demo",
@@ -11,5 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./label.story.scss",
 })
 export class LabelStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/badge/badge.stories.ts.
+  public readonly color = input<BadgeColor>("primary");
+
+  public readonly label = input("New");
 }

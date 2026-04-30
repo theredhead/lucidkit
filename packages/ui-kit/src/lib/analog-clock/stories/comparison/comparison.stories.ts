@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIAnalogClock } from "../../analog-clock.component";
-
 import { ComparisonStorySource } from "./comparison.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Analog Clock",
-  component: UIAnalogClock,
+  component: ComparisonStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -42,17 +40,20 @@ const meta = {
       description: "Stroke colour for the nighttime indicator icon",
     },
   },
-  decorators: [moduleMetadata({ imports: [ComparisonStorySource] })]
-} satisfies Meta<UIAnalogClock>;
+  decorators: [moduleMetadata({ imports: [ComparisonStorySource] })],
+} satisfies Meta<ComparisonStorySource>;
 
 export default meta;
-type Story = StoryObj<UIAnalogClock>;
+type Story = StoryObj<ComparisonStorySource>;
 
 export const Comparison: Story = {
   parameters: {
-    docs: {}
+    docs: {},
+    controls: {
+      disable: true,
+    },
   },
   render: () => ({
-      template: "<ui-comparison-story-demo />",
-    })
+    template: "<ui-comparison-story-demo />",
+  }),
 };

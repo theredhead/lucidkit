@@ -1,12 +1,25 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type BadgeColor, type BadgeVariant, UIBadge } from "../../badge.component";
+import {
+  type BadgeColor,
+  type BadgeVariant,
+  UIBadge,
+} from "../../badge.component";
 
 import { PlaygroundStorySource } from "./playground.story";
 
+interface PlaygroundStoryArgs {
+  ariaLabel?: string;
+  color: BadgeColor;
+  count: number;
+  label: string;
+  maxCount: number;
+  variant: BadgeVariant;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Badge",
-  component: UIBadge,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -51,11 +64,11 @@ const meta = {
         'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UIBadge>;
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
+} satisfies Meta<PlaygroundStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIBadge>;
+type Story = StoryObj<PlaygroundStoryArgs>;
 
 export const Playground: Story = {
   args: {
@@ -64,8 +77,17 @@ export const Playground: Story = {
     count: 5,
     maxCount: 99,
     ariaLabel: "Notification badge",
+    label: "Label",
   },
-  render: () => ({
-      template: "<ui-playground-story-demo />",
-    })
+  argTypes: {
+    label: {
+      control: "text",
+      description: "Projected text used by the label variant.",
+    },
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-playground-story-demo [variant]="variant" [color]="color" [count]="count" [maxCount]="maxCount" [ariaLabel]="ariaLabel" [label]="label" />',
+  }),
 };

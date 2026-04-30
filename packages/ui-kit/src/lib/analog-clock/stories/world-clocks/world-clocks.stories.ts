@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIAnalogClock } from "../../analog-clock.component";
-
 import { WorldClocksStorySource } from "./world-clocks.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Analog Clock",
-  component: UIAnalogClock,
+  component: WorldClocksStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -42,17 +40,20 @@ const meta = {
       description: "Stroke colour for the nighttime indicator icon",
     },
   },
-  decorators: [moduleMetadata({ imports: [WorldClocksStorySource] })]
-} satisfies Meta<UIAnalogClock>;
+  decorators: [moduleMetadata({ imports: [WorldClocksStorySource] })],
+} satisfies Meta<WorldClocksStorySource>;
 
 export default meta;
-type Story = StoryObj<UIAnalogClock>;
+type Story = StoryObj<WorldClocksStorySource>;
 
 export const WorldClocks: Story = {
   parameters: {
-    docs: {}
+    docs: {},
+    controls: {
+      disable: true,
+    },
   },
   render: () => ({
-      template: "<ui-world-clocks-story-demo />",
-    })
+    template: "<ui-world-clocks-story-demo />",
+  }),
 };

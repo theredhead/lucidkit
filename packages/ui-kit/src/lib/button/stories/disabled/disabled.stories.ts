@@ -1,12 +1,25 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type ButtonColor, type ButtonSize, type ButtonVariant, UIButton } from "../../button.component";
+import {
+  type ButtonColor,
+  type ButtonSize,
+  type ButtonVariant,
+  UIButton,
+} from "../../button.component";
 
 import { DisabledStorySource } from "./disabled.story";
 
+interface ButtonStoryArgs {
+  color: ButtonColor;
+  disabled: boolean;
+  pill: boolean;
+  size: ButtonSize;
+  variant: ButtonVariant;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Button",
-  component: UIButton,
+  component: DisabledStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -57,17 +70,26 @@ const meta = {
         "Combines with any variant and colour.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<UIButton>;
+  decorators: [moduleMetadata({ imports: [DisabledStorySource] })],
+} satisfies Meta<ButtonStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIButton>;
+type Story = StoryObj<ButtonStoryArgs>;
 
 export const Disabled: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    color: "primary",
+    disabled: true,
+    pill: false,
+    size: "medium",
+    variant: "filled",
   },
-  render: () => ({
-      template: "<ui-disabled-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-disabled-story-demo [variant]="variant" [color]="color" [size]="size" [pill]="pill" [disabled]="disabled" />',
+  }),
 };

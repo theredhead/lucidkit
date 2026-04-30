@@ -1,6 +1,7 @@
 import { UIBadge } from "../../badge.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import { type BadgeColor } from "../../badge.component";
 
 @Component({
   selector: "ui-overflow-story-demo",
@@ -11,5 +12,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./overflow.story.scss",
 })
 export class OverflowStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/badge/badge.stories.ts.
+  public readonly color = input<BadgeColor>("danger");
+
+  public readonly count = input(128);
+
+  public readonly maxCount = input(99);
 }

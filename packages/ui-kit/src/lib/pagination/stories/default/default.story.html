@@ -1,8 +1,11 @@
 
     <ui-pagination
-      [totalItems]="250"
-      [pageSize]="10"
+      [totalItems]="totalItems()"
+      [pageSize]="pageSize()"
+      [disabled]="disabled()"
+      [ariaLabel]="ariaLabel()"
       [(pageIndex)]="currentPage"
+      (pageChange)="pageChange.emit($event)"
     />
     <p style="margin-top: 12px; font-size: 0.875rem; color: #666;">
       Current page index: {{ currentPage() }}

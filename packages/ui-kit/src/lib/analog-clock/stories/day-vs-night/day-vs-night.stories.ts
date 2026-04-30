@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIAnalogClock } from "../../analog-clock.component";
-
 import { DayVsNightStorySource } from "./day-vs-night.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Analog Clock",
-  component: UIAnalogClock,
+  component: DayVsNightStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -42,17 +40,20 @@ const meta = {
       description: "Stroke colour for the nighttime indicator icon",
     },
   },
-  decorators: [moduleMetadata({ imports: [DayVsNightStorySource] })]
-} satisfies Meta<UIAnalogClock>;
+  decorators: [moduleMetadata({ imports: [DayVsNightStorySource] })],
+} satisfies Meta<DayVsNightStorySource>;
 
 export default meta;
-type Story = StoryObj<UIAnalogClock>;
+type Story = StoryObj<DayVsNightStorySource>;
 
 export const DayVsNight: Story = {
   parameters: {
-    docs: {}
+    docs: {},
+    controls: {
+      disable: true,
+    },
   },
   render: () => ({
-      template: "<ui-day-vs-night-story-demo />",
-    })
+    template: "<ui-day-vs-night-story-demo />",
+  }),
 };

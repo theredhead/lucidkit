@@ -1,12 +1,18 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type BadgeColor, type BadgeVariant, UIBadge } from "../../badge.component";
+import { type BadgeColor, UIBadge } from "../../badge.component";
 
 import { CountStorySource } from "./count.story";
 
+interface CountStoryArgs {
+  color: BadgeColor;
+  count: number;
+  maxCount: number;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Badge",
-  component: UIBadge,
+  component: CountStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -18,13 +24,6 @@ const meta = {
     },
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["count", "dot", "label"] satisfies BadgeVariant[],
-      description:
-        "Controls the visual shape: `count` shows a number, `dot` shows a " +
-        "small circle, `label` renders projected text content.",
-    },
     color: {
       control: "select",
       options: [
@@ -51,33 +50,38 @@ const meta = {
         'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
     },
   },
-  decorators: [moduleMetadata({ imports: [CountStorySource] })]
-} satisfies Meta<UIBadge>;
+  decorators: [moduleMetadata({ imports: [CountStorySource] })],
+} satisfies Meta<CountStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIBadge>;
+type Story = StoryObj<CountStoryArgs>;
 
 export const Count: Story = {
   args: { count: 5, color: "danger", maxCount: 99 },
   parameters: {
+    controls: {
+      include: ["color", "count", "maxCount"],
+    },
     docs: {
       description: {
         story:
-        "### Variants\n" +
-        "| Variant | Purpose | Example |\n" +
-        "|---------|---------|---------|\n" +
-        "| `count` | Numeric notification badge | Unread messages (5) |\n" +
-        "| `dot` | Presence / status indicator | Online status |\n" +
-        '| `label` | Short text tag | "New", "Beta" |\n\n' +
-        "### Colors\n" +
-        "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
-        "### Overflow\n" +
-        "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
-        '(e.g. "99+").'
-      }
-    }
+          "### Variants\n" +
+          "| Variant | Purpose | Example |\n" +
+          "|---------|---------|---------|\n" +
+          "| `count` | Numeric notification badge | Unread messages (5) |\n" +
+          "| `dot` | Presence / status indicator | Online status |\n" +
+          '| `label` | Short text tag | "New", "Beta" |\n\n' +
+          "### Colors\n" +
+          "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
+          "### Overflow\n" +
+          "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
+          '(e.g. "99+").',
+      },
+    },
   },
-  render: () => ({
-      template: "<ui-count-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-count-story-demo [count]="count" [color]="color" [maxCount]="maxCount" />',
+  }),
 };

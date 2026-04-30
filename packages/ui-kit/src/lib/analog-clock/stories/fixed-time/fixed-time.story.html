@@ -1,1 +1,10 @@
-<ui-analog-clock [time]="fixedTime" />
+<ui-analog-clock
+	[time]="fixedTime"
+	[size]="size()"
+	[showSeconds]="showSeconds()"
+	[showNumbers]="showNumbers()"
+	[showTickMarks]="showTickMarks()"
+	[dayIconColor]="dayIconColor()"
+	[nightIconColor]="nightIconColor()"
+	[ariaLabel]="ariaLabel()"
+/>

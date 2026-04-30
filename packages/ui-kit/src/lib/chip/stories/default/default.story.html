@@ -1,6 +1,18 @@
 
     <div style="display: flex; flex-direction: column; gap: 24px">
       <div>
+        <h4 style="margin: 0 0 8px">Configurable sample</h4>
+        <ui-chip
+          [color]="color()"
+          [removable]="removable()"
+          [disabled]="disabled()"
+          [ariaLabel]="ariaLabel()"
+          (removed)="emitRemoved()"
+        >
+          Sample chip
+        </ui-chip>
+      </div>
+      <div>
         <h4 style="margin: 0 0 8px">Color variants</h4>
         <div style="display: flex; flex-wrap: wrap; gap: 8px">
           <ui-chip color="neutral">Neutral</ui-chip>

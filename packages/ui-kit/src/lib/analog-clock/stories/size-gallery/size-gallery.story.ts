@@ -11,5 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./size-gallery.story.scss",
 })
 export class SizeGalleryStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/analog-clock/analog-clock.stories.ts.
+  protected readonly sizes = [80, 120, 160, 220, 300] as const;
 }

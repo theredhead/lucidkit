@@ -1,12 +1,14 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIAnalogClock } from "../../analog-clock.component";
-
+import {
+  ANALOG_CLOCK_STORY_ARG_TYPES,
+  type AnalogClockStoryArgs,
+} from "../analog-clock-story-helpers";
 import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Analog Clock",
-  component: UIAnalogClock,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -16,37 +18,12 @@ const meta = {
       },
     },
   },
-  argTypes: {
-    size: {
-      control: { type: "range", min: 40, max: 500, step: 10 },
-      description: "Clock diameter in CSS pixels",
-    },
-    showSeconds: {
-      control: "boolean",
-      description: "Whether to show the second hand",
-    },
-    showNumbers: {
-      control: "boolean",
-      description: "Whether to show hour numbers (1–12)",
-    },
-    showTickMarks: {
-      control: "boolean",
-      description: "Whether to show tick marks around the rim",
-    },
-    dayIconColor: {
-      control: "color",
-      description: "Stroke colour for the daytime indicator icon",
-    },
-    nightIconColor: {
-      control: "color",
-      description: "Stroke colour for the nighttime indicator icon",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UIAnalogClock>;
+  argTypes: ANALOG_CLOCK_STORY_ARG_TYPES,
+  decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
+} satisfies Meta<AnalogClockStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIAnalogClock>;
+type Story = StoryObj<AnalogClockStoryArgs>;
 
 export const Default: Story = {
   args: {
@@ -54,11 +31,16 @@ export const Default: Story = {
     showSeconds: true,
     showNumbers: true,
     showTickMarks: true,
+    dayIconColor: "#f59e0b",
+    nightIconColor: "#e8e0c0",
+    ariaLabel: "Analog clock",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-default-story-demo [size]="size" [showSeconds]="showSeconds" [showNumbers]="showNumbers" [showTickMarks]="showTickMarks" [dayIconColor]="dayIconColor" [nightIconColor]="nightIconColor" [ariaLabel]="ariaLabel" />',
+  }),
 };

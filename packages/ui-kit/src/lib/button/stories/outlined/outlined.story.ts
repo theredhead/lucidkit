@@ -1,6 +1,11 @@
 import { UIButton } from "../../button.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import {
+  type ButtonColor,
+  type ButtonSize,
+  type ButtonVariant,
+} from "../../button.component";
 
 @Component({
   selector: "ui-outlined-story-demo",
@@ -11,5 +16,13 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./outlined.story.scss",
 })
 export class OutlinedStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/button/button.stories.ts.
+  public readonly color = input<ButtonColor>("primary");
+
+  public readonly disabled = input(false);
+
+  public readonly pill = input(false);
+
+  public readonly size = input<ButtonSize>("medium");
+
+  public readonly variant = input<ButtonVariant>("outlined");
 }

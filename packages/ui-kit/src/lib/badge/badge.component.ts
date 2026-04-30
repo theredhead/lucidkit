@@ -4,7 +4,10 @@ import {
   computed,
   input,
 } from "@angular/core";
-import { UISurface } from "@theredhead/lucid-foundation";
+import {
+  UI_DEFAULT_SURFACE_TYPE,
+  UISurface,
+} from "@theredhead/lucid-foundation";
 
 /** Visual variant of the badge. */
 export type BadgeVariant = "count" | "dot" | "label";
@@ -34,6 +37,7 @@ export type BadgeColor =
   styleUrl: "./badge.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "" }],
   host: {
     class: "ui-badge",
     "[class.count]": "variant() === 'count'",
@@ -47,7 +51,6 @@ export type BadgeColor =
   },
 })
 export class UIBadge {
-
   /** Visual variant. */
   public readonly variant = input<BadgeVariant>("count");
 

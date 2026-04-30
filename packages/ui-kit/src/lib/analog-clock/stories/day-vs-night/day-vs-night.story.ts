@@ -11,5 +11,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./day-vs-night.story.scss",
 })
 export class DayVsNightStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/analog-clock/analog-clock.stories.ts.
+  protected readonly morningTime = new Date(2026, 0, 1, 9, 15, 0);
+
+  protected readonly nightTime = new Date(2026, 0, 1, 21, 45, 0);
 }

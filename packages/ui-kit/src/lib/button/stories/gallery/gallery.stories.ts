@@ -1,12 +1,25 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type ButtonColor, type ButtonSize, type ButtonVariant, UIButton } from "../../button.component";
+import {
+  type ButtonColor,
+  type ButtonSize,
+  type ButtonVariant,
+  UIButton,
+} from "../../button.component";
 
 import { GalleryStorySource } from "./gallery.story";
 
+interface ButtonStoryArgs {
+  color: ButtonColor;
+  disabled: boolean;
+  pill: boolean;
+  size: ButtonSize;
+  variant: ButtonVariant;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Button",
-  component: UIButton,
+  component: GalleryStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -57,28 +70,31 @@ const meta = {
         "Combines with any variant and colour.",
     },
   },
-  decorators: [moduleMetadata({ imports: [GalleryStorySource] })]
-} satisfies Meta<UIButton>;
+  decorators: [moduleMetadata({ imports: [GalleryStorySource] })],
+} satisfies Meta<ButtonStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIButton>;
+type Story = StoryObj<ButtonStoryArgs>;
 
 export const Gallery: Story = {
   parameters: {
+    controls: {
+      disable: true,
+    },
     docs: {
       description: {
         story:
-        "### Features\n" +
-        "- **Variants** — `filled` (primary CTA), `outlined` (secondary), `ghost` (tertiary / inline)\n" +
-        "- **Colors** — `primary` (accent), `secondary`, `safe` (success), `danger`, `neutral`\n" +
-        "- **Sizes** — `small`, `medium` (default), `large`\n" +
-        "- **Pill** — fully rounded capsule shape, combinable with any variant and colour\n" +
-        "- **Accessible** — forwards `ariaLabel`, renders a native `<button>` element\n" +
-        "- **Button type** — defaults to `button`, can be set to `submit` or `reset` for forms"
-      }
-    }
+          "### Features\n" +
+          "- **Variants** — `filled` (primary CTA), `outlined` (secondary), `ghost` (tertiary / inline)\n" +
+          "- **Colors** — `primary` (accent), `secondary`, `safe` (success), `danger`, `neutral`\n" +
+          "- **Sizes** — `small`, `medium` (default), `large`\n" +
+          "- **Pill** — fully rounded capsule shape, combinable with any variant and colour\n" +
+          "- **Accessible** — forwards `ariaLabel`, renders a native `<button>` element\n" +
+          "- **Button type** — defaults to `button`, can be set to `submit` or `reset` for forms",
+      },
+    },
   },
   render: () => ({
-      template: "<ui-gallery-story-demo />",
-    })
+    template: "<ui-gallery-story-demo />",
+  }),
 };

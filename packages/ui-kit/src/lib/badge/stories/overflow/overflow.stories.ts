@@ -1,12 +1,18 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type BadgeColor, type BadgeVariant, UIBadge } from "../../badge.component";
+import { type BadgeColor, UIBadge } from "../../badge.component";
 
 import { OverflowStorySource } from "./overflow.story";
 
+interface OverflowStoryArgs {
+  color: BadgeColor;
+  count: number;
+  maxCount: number;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Badge",
-  component: UIBadge,
+  component: OverflowStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -18,13 +24,6 @@ const meta = {
     },
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["count", "dot", "label"] satisfies BadgeVariant[],
-      description:
-        "Controls the visual shape: `count` shows a number, `dot` shows a " +
-        "small circle, `label` renders projected text content.",
-    },
     color: {
       control: "select",
       options: [
@@ -51,17 +50,27 @@ const meta = {
         'threshold render as `maxCount+` (e.g. "99+"). Defaults to `99`.',
     },
   },
-  decorators: [moduleMetadata({ imports: [OverflowStorySource] })]
-} satisfies Meta<UIBadge>;
+  decorators: [moduleMetadata({ imports: [OverflowStorySource] })],
+} satisfies Meta<OverflowStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIBadge>;
+type Story = StoryObj<OverflowStoryArgs>;
 
 export const Overflow: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    color: "danger",
+    count: 128,
+    maxCount: 99,
   },
-  render: () => ({
-      template: "<ui-overflow-story-demo />",
-    })
+  parameters: {
+    controls: {
+      include: ["color", "count", "maxCount"],
+    },
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-overflow-story-demo [count]="count" [color]="color" [maxCount]="maxCount" />',
+  }),
 };

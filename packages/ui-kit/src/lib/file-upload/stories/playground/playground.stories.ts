@@ -2,6 +2,17 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { PlaygroundStorySource } from "./playground.story";
 
+interface FileUploadPlaygroundArgs {
+  accept: string;
+  ariaLabel: string;
+  disabled: boolean;
+  fileAdded: (event: unknown) => void;
+  fileRejected: (event: unknown) => void;
+  fileRemoved: (event: unknown) => void;
+  label: string;
+  multiple: boolean;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/File Upload",
   tags: ["autodocs"],
@@ -35,12 +46,24 @@ const meta = {
       control: "text",
       description: "Accessible label for screen readers.",
     },
+    fileAdded: {
+      action: "fileAdded",
+      description: "Emitted when a file is accepted and added.",
+    },
+    fileRemoved: {
+      action: "fileRemoved",
+      description: "Emitted when a selected file is removed.",
+    },
+    fileRejected: {
+      action: "fileRejected",
+      description: "Emitted when a file fails validation.",
+    },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta;
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
+} satisfies Meta<FileUploadPlaygroundArgs>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<FileUploadPlaygroundArgs>;
 
 export const Playground: Story = {
   args: {
@@ -58,6 +81,9 @@ export const Playground: Story = {
       [disabled]="disabled"
       [label]="label"
       [ariaLabel]="ariaLabel"
+      (fileAdded)="fileAdded($event)"
+      (fileRemoved)="fileRemoved($event)"
+      (fileRejected)="fileRejected($event)"
     />`,
-  })
+  }),
 };

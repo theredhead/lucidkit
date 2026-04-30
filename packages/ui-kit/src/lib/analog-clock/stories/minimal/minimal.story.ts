@@ -1,6 +1,6 @@
 import { UIAnalogClock } from "../../analog-clock.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 @Component({
   selector: "ui-minimal-story-demo",
@@ -11,5 +11,17 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./minimal.story.scss",
 })
 export class MinimalStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/analog-clock/analog-clock.stories.ts.
+  public readonly ariaLabel = input("Minimal analog clock");
+
+  public readonly dayIconColor = input("#f59e0b");
+
+  public readonly nightIconColor = input("#e8e0c0");
+
+  public readonly showNumbers = input(false);
+
+  public readonly showSeconds = input(true);
+
+  public readonly showTickMarks = input(false);
+
+  public readonly size = input(200);
 }
