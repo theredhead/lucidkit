@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDropdownList } from "../../dropdown-list.component";
-
 import { DefaultStorySource } from "./default.story";
 
 const meta = {
@@ -46,17 +44,27 @@ const meta = {
       description: "Accessible label for the dropdown.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
+  decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
 } satisfies Meta<DefaultStorySource>;
 
 export default meta;
 type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    placeholder: "\u2014 Select \u2014",
+    disabled: false,
+    ariaLabel: "Choose a fruit",
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-default-story-demo
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

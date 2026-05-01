@@ -1,8 +1,14 @@
-<ui-split-container>
+<ui-split-container
+  [orientation]="orientation()"
+  [dividerWidth]="dividerWidth()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
+  (resized)="onResized($event)"
+>
   <ui-split-panel>
-    <div class="sidebar"><h4>Left Panel</h4></div>
+    <div class="panel sidebar"><h4>Left Panel</h4></div>
   </ui-split-panel>
   <ui-split-panel>
-    <div class="main"><h4>Right Panel</h4></div>
+    <div class="panel main"><h4>Right Panel</h4></div>
   </ui-split-panel>
 </ui-split-container>

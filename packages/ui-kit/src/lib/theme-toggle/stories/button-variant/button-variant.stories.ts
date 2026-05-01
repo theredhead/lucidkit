@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIThemeToggle } from "../../theme-toggle.component";
-
 import { ButtonVariantStorySource } from "./button-variant.story";
 
 const meta = {
@@ -35,7 +33,7 @@ const meta = {
         'Defaults to `"Toggle theme"`.',
     },
   },
-  decorators: [moduleMetadata({ imports: [ButtonVariantStorySource] })]
+  decorators: [moduleMetadata({ imports: [ButtonVariantStorySource] })],
 } satisfies Meta<ButtonVariantStorySource>;
 
 export default meta;
@@ -44,11 +42,18 @@ type Story = StoryObj<ButtonVariantStorySource>;
 export const ButtonVariant: Story = {
   args: {
     variant: "button",
+    disabled: false,
+    ariaLabel: "Switch theme",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-button-variant-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-button-variant-story-demo
+      [variant]="variant"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

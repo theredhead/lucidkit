@@ -1,11 +1,18 @@
-<ui-split-container [initialSizes]="[20, 60, 20]">
+<ui-split-container
+  [orientation]="orientation()"
+  [initialSizes]="[20, 60, 20]"
+  [dividerWidth]="dividerWidth()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
+  (resized)="onResized($event)"
+>
   <ui-split-panel [min]="80">
-    <nav class="nav"><h4>Navigation</h4></nav>
+    <nav class="panel nav"><h4>Navigation</h4></nav>
   </ui-split-panel>
   <ui-split-panel [min]="200">
-    <main class="editor"><h4>Editor</h4></main>
+    <main class="panel editor"><h4>Editor</h4></main>
   </ui-split-panel>
   <ui-split-panel [min]="80">
-    <aside class="inspector"><h4>Inspector</h4></aside>
+    <aside class="panel inspector"><h4>Inspector</h4></aside>
   </ui-split-panel>
 </ui-split-container>

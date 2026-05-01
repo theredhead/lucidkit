@@ -6,9 +6,9 @@ const meta = {
   title: "@theredhead/UI Forms/Form",
   tags: ["autodocs"],
   parameters: {
-      docs: {
-        description: {
-          component: `A **JSON-driven form engine** that renders fully functional forms
+    docs: {
+      description: {
+        component: `A **JSON-driven form engine** that renders fully functional forms
   from a declarative schema. Forms support grouped fields, built-in and custom
   validation, conditional visibility, multi-column layouts, and a wizard (step-by-step) mode.
 
@@ -25,9 +25,9 @@ const meta = {
   Call \`provideBuiltInFormFields()\` in your app config to register the default
   \`@theredhead/lucid-kit\` field set, or supply your own mappings with
   \`provideFormFields()\`.`,
-        },
       },
     },
+  },
   argTypes: {
     // ── UIForm inputs ──
     schema: {
@@ -84,7 +84,7 @@ const meta = {
       },
     },
   },
-  decorators: [moduleMetadata({ imports: [StoryPlayground] })]
+  decorators: [moduleMetadata({ imports: [StoryPlayground] })],
 } satisfies Meta;
 
 export default meta;
@@ -97,9 +97,14 @@ export const Playground: Story = {
     showSubmit: true,
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-story-playground />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-story-playground
+      [schema]="schema"
+      [submitLabel]="submitLabel"
+      [showSubmit]="showSubmit"
+    />`,
+  }),
 };

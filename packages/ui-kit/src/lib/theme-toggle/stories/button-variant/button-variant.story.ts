@@ -1,6 +1,6 @@
-import { UIThemeToggle } from "../../theme-toggle.component";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UIThemeToggle } from "../../theme-toggle.component";
 
 @Component({
   selector: "ui-button-variant-story-demo",
@@ -11,4 +11,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./button-variant.story.scss",
 })
 export class ButtonVariantStorySource {
+  public readonly variant = input<"icon" | "button">("button");
+  public readonly disabled = input<boolean>(false);
+  public readonly ariaLabel = input<string>("Switch theme");
 }

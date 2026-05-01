@@ -30,9 +30,15 @@ Why it is no longer listed below:
 
 - The earlier table-view issue class was Storybook wiring inconsistency. That is no longer the limiting problem for this family, so it should not remain mixed into the active findings backlog.
 
-## Confirmed Remaining Issues
+## All Issues Resolved — 2026-05-01
 
-### 1. `Split Container` default story still exposes dead controls
+All seven confirmed issues listed below have been fixed. The Storybook build passes cleanly (`Storybook build completed successfully`). See the session history for implementation details.
+
+---
+
+## Previously Confirmed Issues (now resolved)
+
+### 1. ✅ `Split Container` default story still exposes dead controls
 
 Files:
 
@@ -49,7 +55,7 @@ Impact:
 
 - The default story presents itself as the canonical interactive example, but the controls panel is inert.
 
-### 2. `Dropdown Menu` basic story still has dead controls and no useful action surface
+### 2. ✅ `Dropdown Menu` basic story still has dead controls and no useful action surface
 
 Files:
 
@@ -66,7 +72,7 @@ Impact:
 
 - The main dropdown story is visually interactive but Storybook does not actually let users verify its configured inputs or emitted actions.
 
-### 3. `Theme Toggle` keeps a redundant dead `Default` story beside a live `Playground`
+### 3. ✅ `Theme Toggle` keeps a redundant dead `Default` story beside a live `Playground`
 
 Files:
 
@@ -82,7 +88,7 @@ Impact:
 
 - The story family currently violates the new rule in the most confusing way: the canonical `Default` story is the broken one, while the secondary `Playground` is the real interactive example.
 
-### 4. `Dropdown List` has the same redundant `Default` / `Playground` split
+### 4. ✅ `Dropdown List` has the same redundant `Default` / `Playground` split
 
 Files:
 
@@ -98,7 +104,7 @@ Impact:
 
 - Consumers land on a misleading default story first, then discover a second story that is effectively the real default.
 
-### 5. `Progress` has the inverse problem: the live story is `Default`, but `Playground` is broken
+### 5. ✅ `Progress` has the inverse problem: the live story is `Default`, but `Playground` is broken
 
 Files:
 
@@ -114,7 +120,7 @@ Impact:
 
 - The `Playground` story is redundant and misleading. It looks like the exploratory surface but is less functional than `Default`.
 
-### 6. `Search View` default story still presents a dead control surface
+### 6. ✅ `Search View` default story still presents a dead control surface
 
 Files:
 
@@ -131,7 +137,7 @@ Impact:
 
 - This is a high-cost misleading story because the visible controls imply the whole composed layout is explorable, when none of those controls currently mutate the demo.
 
-### 7. `UI Forms / Form` playground is still a dead wrapper despite being the named exploratory story
+### 7. ✅ `UI Forms / Form` playground is still a dead wrapper despite being the named exploratory story
 
 Files:
 
@@ -178,21 +184,14 @@ The component looks interactive, but Storybook still does not expose the meaning
 - `Table View` docs interactivity regressions
 - `Table View` family-wide fixed-wrapper render inconsistencies
 - obsolete `Table View` `density-playground` story
+- `Split Container` dead controls (all 7 story folders fixed)
+- `Dropdown Menu` dead controls and missing actions (fixed)
+- `Theme Toggle` broken `Default` / live `Playground` role inversion (fixed)
+- `Dropdown List` broken `Default` / live `Playground` role inversion (fixed)
+- `Progress` broken `Playground` (fixed)
+- `Search View` dead control surface (fixed)
+- `UI Forms / Form` playground still inert (fixed)
 
-## Suggested Next Sweep
+## Status
 
-If continuing immediately, the highest-value follow-up order is:
-
-1. `packages/ui-kit/src/lib/theme-toggle/stories/**`
-2. `packages/ui-kit/src/lib/dropdown-list/stories/**`
-3. `packages/ui-kit/src/lib/progress/stories/**`
-4. `packages/ui-kit/src/lib/split-container/stories/**`
-5. `packages/ui-kit/src/lib/dropdown-menu/stories/**`
-6. `packages/ui-blocks/src/lib/search-view/stories/**`
-7. `packages/ui-forms/src/lib/components/stories/**`
-
-That order prioritizes:
-
-- families where a dead `Default` conflicts directly with a live `Playground`
-- canonical default stories that currently misrepresent the component API surface
-- named playground stories that are still inert
+All known issues resolved. No remaining findings. Build verified clean.

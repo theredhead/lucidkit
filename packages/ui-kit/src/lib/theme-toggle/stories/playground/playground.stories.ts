@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIThemeToggle } from "../../theme-toggle.component";
-
 import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {

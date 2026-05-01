@@ -1,5 +1,7 @@
 <ui-dropdown-list
   [options]="fruitOptions"
   [(value)]="selectedFruit"
-  ariaLabel="Choose a fruit"
+  [placeholder]="placeholder()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
 />

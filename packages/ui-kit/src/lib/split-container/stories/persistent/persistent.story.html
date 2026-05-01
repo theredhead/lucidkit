@@ -1,10 +1,18 @@
-<ui-split-container name="my-app-sidebar" [initialSizes]="[35, 65]">
+<ui-split-container
+  name="my-app-sidebar"
+  [orientation]="orientation()"
+  [initialSizes]="[35, 65]"
+  [dividerWidth]="dividerWidth()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
+  (resized)="onResized($event)"
+>
   <ui-split-panel>
-    <div class="sidebar"><h4>Persistent Sidebar</h4></div>
+    <div class="panel sidebar"><h4>Persistent Sidebar</h4></div>
   </ui-split-panel>
   <ui-split-panel>
-    <div class="main">
-      <p>Stored under `ui-split-container:my-app-sidebar`.</p>
+    <div class="panel main">
+      <p>Sizes are saved to <code>localStorage</code> under <code>ui-split-container:my-app-sidebar</code>.</p>
     </div>
   </ui-split-panel>
 </ui-split-container>

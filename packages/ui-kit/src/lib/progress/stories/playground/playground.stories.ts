@@ -1,7 +1,6 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { type ProgressMode, type ProgressVariant } from "../../progress.types";
-import { UIProgress } from "../../progress.component";
 
 import { PlaygroundStorySource } from "./playground.story";
 
@@ -31,14 +30,15 @@ const meta = {
     },
     value: {
       control: { type: "range", min: 0, max: 100, step: 1 },
-      description: "Progress value (0–100). Only used in determinate mode.",
+      description:
+        "Progress value (0\u2013100). Only used in determinate mode.",
     },
     ariaLabel: {
       control: "text",
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
 } satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
@@ -51,7 +51,13 @@ export const Playground: Story = {
     value: 65,
     ariaLabel: "Progress",
   },
-  render: () => ({
-      template: "<ui-playground-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-playground-story-demo
+      [variant]="variant"
+      [mode]="mode"
+      [value]="value"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

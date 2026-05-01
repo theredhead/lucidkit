@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDropdownList } from "../../dropdown-list.component";
-
 import { PreselectedStorySource } from "./preselected.story";
 
 const meta = {
@@ -46,17 +44,17 @@ const meta = {
       description: "Accessible label for the dropdown.",
     },
   },
-  decorators: [moduleMetadata({ imports: [PreselectedStorySource] })]
-} satisfies Meta<PreselectedStorySource>;
+  decorators: [moduleMetadata({ imports: [PreselectedStorySource] })],
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<PreselectedStorySource>;
+type Story = StoryObj;
 
 export const Preselected: Story = {
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: () => ({
-      template: "<ui-preselected-story-demo />",
-    })
+    template: "<ui-preselected-story-demo />",
+  }),
 };

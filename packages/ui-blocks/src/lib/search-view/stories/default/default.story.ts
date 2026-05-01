@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { FilterableArrayDatasource, UITextColumn } from "@theredhead/lucid-kit";
 import { UISearchView } from "../../search-view.component";
+import type { SearchViewLayout } from "../../search-view.types";
 
 // ── Sample data ──────────────────────────────────────────────────────
 
@@ -128,7 +129,18 @@ const PRODUCTS: Product[] = [
   imports: [UISearchView, UITextColumn],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./default.story.html",
+  styleUrl: "./default.story.scss",
 })
 export class DefaultDemo {
+  public readonly title = input<string>("Products");
+  public readonly layout = input<SearchViewLayout>("table");
+  public readonly showFilter = input<boolean | undefined>(undefined);
+  public readonly filterExpanded = input<boolean>(true);
+  public readonly filterModeLocked = input<boolean>(false);
+  public readonly showPagination = input<boolean>(true);
+  public readonly pageSize = input<number>(10);
+  public readonly placeholder = input<string>("No results found");
+  public readonly ariaLabel = input<string>("Search view");
+
   protected readonly ds = new FilterableArrayDatasource(PRODUCTS);
 }

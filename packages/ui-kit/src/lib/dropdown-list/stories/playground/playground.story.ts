@@ -1,19 +1,13 @@
-import { UIDropdownList, UIDropdownListPanel } from "../../dropdown-list.component";
-
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+
+import { UIDropdownList } from "../../dropdown-list.component";
 
 @Component({
   selector: "ui-playground-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIDropdownList, UIDropdownListPanel],
+  imports: [UIDropdownList],
   templateUrl: "./playground.story.html",
   styleUrl: "./playground.story.scss",
 })
-export class PlaygroundStorySource {
-
-  public ariaLabel = ("Choose a fruit") as const;
-  public disabled = (false) as const;
-  public options = undefined as never;
-  public placeholder = ("— Select —") as const;
-}
+export class PlaygroundStorySource {}

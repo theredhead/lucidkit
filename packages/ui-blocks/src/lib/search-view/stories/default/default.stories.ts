@@ -66,17 +66,39 @@ const meta = {
       description: "Accessible label for the search view.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DefaultDemo] })]
-} satisfies Meta;
+  decorators: [moduleMetadata({ imports: [DefaultDemo] })],
+} satisfies Meta<DefaultDemo>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<DefaultDemo>;
 
 export const Default: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    title: "Products",
+    layout: "table",
+    showFilter: undefined,
+    filterExpanded: true,
+    filterModeLocked: false,
+    showPagination: true,
+    pageSize: 10,
+    placeholder: "No results found",
+    ariaLabel: "Search view",
   },
-  render: () => ({
-      template: "<ui-search-view-default-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-search-view-default-demo
+      [title]="title"
+      [layout]="layout"
+      [showFilter]="showFilter"
+      [filterExpanded]="filterExpanded"
+      [filterModeLocked]="filterModeLocked"
+      [showPagination]="showPagination"
+      [pageSize]="pageSize"
+      [placeholder]="placeholder"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

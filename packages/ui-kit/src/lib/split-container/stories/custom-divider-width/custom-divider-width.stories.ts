@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UISplitContainer } from "../../split-container.component";
-
 import { CustomDividerWidthStorySource } from "./custom-divider-width.story";
 
 const meta = {
@@ -23,7 +21,7 @@ const meta = {
       description: "Layout direction of the panels.",
     },
     dividerWidth: {
-      control: "number",
+      control: { type: "range", min: 2, max: 24, step: 1 },
       description: "Width of the draggable divider in pixels.",
     },
     disabled: {
@@ -34,18 +32,36 @@ const meta = {
       control: "text",
       description: "Accessible label for each resize handle.",
     },
+    resized: {
+      action: "resized",
+      description:
+        "Emitted after each resize with the new panel sizes as percentages.",
+    },
   },
-  decorators: [moduleMetadata({ imports: [CustomDividerWidthStorySource] })]
+  decorators: [moduleMetadata({ imports: [CustomDividerWidthStorySource] })],
 } satisfies Meta<CustomDividerWidthStorySource>;
 
 export default meta;
 type Story = StoryObj<CustomDividerWidthStorySource>;
 
 export const CustomDividerWidth: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    orientation: "horizontal",
+    dividerWidth: 12,
+    disabled: false,
+    ariaLabel: "Resize panels",
   },
-  render: () => ({
-      template: "<ui-custom-divider-width-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-custom-divider-width-story-demo
+      [orientation]="orientation"
+      [dividerWidth]="dividerWidth"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+      (resized)="resized($event)"
+    />`,
+  }),
 };

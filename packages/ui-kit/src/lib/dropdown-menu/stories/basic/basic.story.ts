@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from "@angular/core";
 
 import { UIButton } from "../../../button/button.component";
 import {
@@ -20,9 +25,19 @@ export class BasicStorySource {
   public readonly align = input<DropdownAlign>("start");
   public readonly ariaLabel = input("Menu");
 
-  public onEdit(): void {}
+  public readonly edit = output<void>();
+  public readonly duplicate = output<void>();
+  public readonly archive = output<void>();
 
-  public onDuplicate(): void {}
+  public onEdit(): void {
+    this.edit.emit();
+  }
 
-  public onArchive(): void {}
+  public onDuplicate(): void {
+    this.duplicate.emit();
+  }
+
+  public onArchive(): void {
+    this.archive.emit();
+  }
 }

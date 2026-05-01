@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDropdownList } from "../../dropdown-list.component";
-
 import { DisabledStorySource } from "./disabled.story";
 
 const meta = {
@@ -46,17 +44,17 @@ const meta = {
       description: "Accessible label for the dropdown.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<DisabledStorySource>;
+  decorators: [moduleMetadata({ imports: [DisabledStorySource] })],
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<DisabledStorySource>;
+type Story = StoryObj;
 
 export const Disabled: Story = {
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: () => ({
-      template: "<ui-disabled-story-demo />",
-    })
+    template: "<ui-disabled-story-demo />",
+  }),
 };

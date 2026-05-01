@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDropdownList } from "../../dropdown-list.component";
-
 import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
@@ -46,7 +44,7 @@ const meta = {
       description: "Accessible label for the dropdown.",
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
 } satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
@@ -74,5 +72,5 @@ export const Playground: Story = {
       [disabled]="disabled"
       [ariaLabel]="ariaLabel"
     />`,
-  })
+  }),
 };
