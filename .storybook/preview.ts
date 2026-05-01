@@ -64,11 +64,12 @@ const preview: Preview = {
       theme: themes.dark,
     },
     backgrounds: {
-      default: "dark",
-      values: [
-        { name: "dark", value: "#1c1c1e" },
-        { name: "light", value: "#ffffff" },
-      ],
+      disable: true,
+    },
+    toolbar: {
+      background: { hidden: true },
+      "storybook/background": { hidden: true },
+      theme: { hidden: true },
     },
     controls: {
       matchers: {

@@ -14,4 +14,5 @@ const theme = create({
 // Use dark theme for Storybook UI
 addons.setConfig({
   theme,
+  showToolbar: false,
 });
