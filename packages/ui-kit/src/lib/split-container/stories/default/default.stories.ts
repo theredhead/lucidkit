@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
-  component: UISplitContainer,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UISplitContainer>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UISplitContainer>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   parameters: {

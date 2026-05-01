@@ -6,7 +6,7 @@ import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Theme Toggle",
-  component: UIThemeToggle,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
-} satisfies Meta<UIThemeToggle>;
+} satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
-type Story = StoryObj<UIThemeToggle>;
+type Story = StoryObj<PlaygroundStorySource>;
 
 export const Playground: Story = {
   args: {

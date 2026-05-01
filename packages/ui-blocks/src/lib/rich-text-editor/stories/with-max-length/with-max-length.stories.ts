@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { WithMaxLengthStorySource } from "./with-max-length.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: WithMaxLengthStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,28 +52,37 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [WithMaxLengthStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [WithMaxLengthStorySource] })],
+} satisfies Meta<WithMaxLengthStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<WithMaxLengthStorySource>;
 
 export const WithMaxLength: Story = {
   args: {
+    disabled: false,
+    readonly: false,
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
     maxLength: 200,
     placeholder: "Limited to 200 characters…",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: args,
     template: `
-      <ui-rich-text-editor
+      <ui-with-max-length-story-demo
         [mode]="mode"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [presentation]="presentation"
         [maxLength]="maxLength"
         [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
       />
     `,
-  })
+  }),
 };

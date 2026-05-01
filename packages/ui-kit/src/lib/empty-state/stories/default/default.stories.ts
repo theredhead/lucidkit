@@ -1,11 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIEmptyState } from "../../empty-state.component";
 import { UIEmptyStateStoryDefault } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Empty State",
-  component: UIEmptyState,
+  component: UIEmptyStateStoryDefault,
   tags: ["autodocs"],
   decorators: [moduleMetadata({ imports: [UIEmptyStateStoryDefault] })],
   argTypes: {
@@ -26,19 +25,25 @@ const meta = {
       description: "Icon size in px.",
     },
   },
-} satisfies Meta<UIEmptyState>;
+} satisfies Meta<UIEmptyStateStoryDefault>;
 
 export default meta;
-type Story = StoryObj<UIEmptyState>;
+type Story = StoryObj<UIEmptyStateStoryDefault>;
 
 export const Default: Story = {
   args: {
     heading: "No results found",
     message: "Try adjusting your filters or search query.",
+    icon: "",
+    iconSize: 48,
   },
   render: (args) => ({
     props: args,
-    template:
-      '<ui-empty-state-story-default [heading]="heading" [message]="message" />',
+    template: `<ui-empty-state-story-default
+      [heading]="heading"
+      [message]="message"
+      [icon]="icon"
+      [iconSize]="iconSize"
+    />`,
   }),
 };

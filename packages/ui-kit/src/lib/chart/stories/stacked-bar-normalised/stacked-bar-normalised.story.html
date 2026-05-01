@@ -1,4 +1,8 @@
 <ui-chart
+  [width]="width()"
+  [height]="height()"
+  [showLegend]="showLegend()"
+  [ariaLabel]="ariaLabel()"
   [source]="financialData"
   labelProperty="month"
   valueProperty="revenue"

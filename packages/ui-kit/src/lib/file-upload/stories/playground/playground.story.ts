@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/file-upload/file-upload.stories.ts.
 
   public accept = ("") as const;
   public ariaLabel = ("Upload file") as const;

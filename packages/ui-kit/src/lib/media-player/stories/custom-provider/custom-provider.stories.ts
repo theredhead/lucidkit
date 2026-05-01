@@ -6,7 +6,7 @@ import { CustomProviderStorySource } from "./custom-provider.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: CustomProviderStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CustomProviderStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<CustomProviderStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<CustomProviderStorySource>;
 
 export const CustomProvider: Story = {
   parameters: {

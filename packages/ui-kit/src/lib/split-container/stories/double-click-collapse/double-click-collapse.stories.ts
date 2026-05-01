@@ -6,7 +6,7 @@ import { DoubleClickCollapseStorySource } from "./double-click-collapse.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
-  component: UISplitContainer,
+  component: DoubleClickCollapseStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DoubleClickCollapseStorySource] })]
-} satisfies Meta<UISplitContainer>;
+} satisfies Meta<DoubleClickCollapseStorySource>;
 
 export default meta;
-type Story = StoryObj<UISplitContainer>;
+type Story = StoryObj<DoubleClickCollapseStorySource>;
 
 export const DoubleClickCollapse: Story = {
   parameters: {

@@ -1,6 +1,6 @@
-import { UIAvatar } from "../../avatar.component";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UIAvatar, type AvatarSize } from "../../avatar.component";
 
 @Component({
   selector: "ui-playground-story-demo",
@@ -11,11 +11,13 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/avatar/avatar.stories.ts.
+  public readonly ariaLabel = input<string>("User avatar");
 
-  public ariaLabel = ("User avatar") as const;
-  public email = ("") as const;
-  public name = ("Jane Doe") as const;
-  public size = ("medium") as const;
-  public src = ("") as const;
+  public readonly email = input<string>("");
+
+  public readonly name = input<string>("Jane Doe");
+
+  public readonly size = input<AvatarSize>("medium");
+
+  public readonly src = input<string>("");
 }

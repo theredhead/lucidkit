@@ -6,7 +6,7 @@ import { TransferBetweenListsStorySource } from "./transfer-between-lists.story"
 
 const meta = {
   title: "@theredhead/UI Kit/Repeater",
-  component: UIRepeater,
+  component: TransferBetweenListsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -26,17 +26,25 @@ const meta = {
       description: "Accessible label for the repeater list.",
     },
   },
-  decorators: [moduleMetadata({ imports: [TransferBetweenListsStorySource] })]
-} satisfies Meta<UIRepeater>;
+  decorators: [moduleMetadata({ imports: [TransferBetweenListsStorySource] })],
+} satisfies Meta<TransferBetweenListsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRepeater>;
+type Story = StoryObj<TransferBetweenListsStorySource>;
 
 export const TransferBetweenLists: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    reorderable: true,
+    ariaLabel: "Transfer between lists",
   },
-  render: () => ({
-      template: "<ui-transfer-between-lists-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-transfer-between-lists-story-demo
+        [reorderable]="reorderable"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

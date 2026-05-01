@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRepeater } from "../../repeater.component";
-
 import { RepeaterGridDemo } from "./grid.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Repeater",
-  component: UIRepeater,
+  component: RepeaterGridDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -26,17 +24,25 @@ const meta = {
       description: "Accessible label for the repeater list.",
     },
   },
-  decorators: [moduleMetadata({ imports: [RepeaterGridDemo] })]
-} satisfies Meta<UIRepeater>;
+  decorators: [moduleMetadata({ imports: [RepeaterGridDemo] })],
+} satisfies Meta<RepeaterGridDemo>;
 
 export default meta;
-type Story = StoryObj<UIRepeater>;
+type Story = StoryObj<RepeaterGridDemo>;
 
 export const Grid: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    reorderable: false,
+    ariaLabel: "Photo grid",
   },
-  render: () => ({
-      template: "<ui-repeater-grid-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-repeater-grid-demo
+      [reorderable]="reorderable"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

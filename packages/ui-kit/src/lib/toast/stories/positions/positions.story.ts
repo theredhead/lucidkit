@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./positions.story.scss",
 })
 export class PositionsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/toast/toast.stories.ts.
 }

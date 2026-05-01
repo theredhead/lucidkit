@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIDensityDirective } from "../../../ui-density";
 import { UIMapView } from "../../map-view.component";
-import type { MapLatLng, MapMarker, MapPolygon, MapPolyline } from "../../map-view.model";
+import type {
+  MapLatLng,
+  MapMarker,
+  MapPolygon,
+  MapPolyline,
+} from "../../map-view.model";
 
 // ── Demo data ─────────────────────────────────────────────────────────
 
@@ -55,6 +60,10 @@ const BENELUX_POLYGON: MapPolygon = {
   templateUrl: "./combined-overview.story.html",
 })
 export class MapViewCombinedDemo {
+  readonly zoom = input(5);
+  readonly width = input<string | undefined>(undefined);
+  readonly height = input("560px");
+  readonly ariaLabel = input("European overview");
   readonly center = EUROPE_CENTER;
   readonly markers = CITY_MARKERS;
   readonly polylines: MapPolyline[] = [

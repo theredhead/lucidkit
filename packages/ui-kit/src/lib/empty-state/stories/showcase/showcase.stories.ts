@@ -6,7 +6,7 @@ import { UIEmptyStateStoryShowcase } from "./showcase.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Empty State",
-  component: UIEmptyState,
+  component: UIEmptyStateStoryShowcase,
   tags: ["autodocs"],
   decorators: [
     moduleMetadata({ imports: [UIEmptyStateStoryShowcase, UIButton] }),
@@ -29,10 +29,10 @@ const meta = {
       description: "Icon size in px.",
     },
   },
-} satisfies Meta<UIEmptyState>;
+} satisfies Meta<UIEmptyStateStoryShowcase>;
 
 export default meta;
-type Story = StoryObj<UIEmptyState>;
+type Story = StoryObj<UIEmptyStateStoryShowcase>;
 
 export const Showcase: Story = {
   render: () => ({

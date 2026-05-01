@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./decimal-adapter.story.scss",
 })
 export class DecimalAdapterStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/input/input.stories.ts.
 }

@@ -6,7 +6,7 @@ import { ColorAdapterStorySource } from "./color-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: ColorAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ColorAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<ColorAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<ColorAdapterStorySource>;
 
 export const ColorAdapter: Story = {
   parameters: {

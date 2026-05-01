@@ -62,6 +62,7 @@ import {
   type RichTextFormatAction,
   type RichTextImageHandler,
   type RichTextPlaceholder,
+  type RichTextTemplateBlockEvent,
   type RichTextTemplateBlockAttributeDefinition,
   type RichTextTemplateBlockUiProvider,
   type ToolbarButtonMeta,
@@ -432,8 +433,14 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
 
   // ── Outputs ────────────────────────────────────────────────
 
-  /** Fired when a placeholder chip is inserted. */
-  public readonly placeholderInserted = output<RichTextPlaceholder>();
+  /** Fired when a template block is inserted. */
+  public readonly blockInserted = output<RichTextTemplateBlockEvent>();
+
+  /** Fired when an existing template block is edited. */
+  public readonly blockEdited = output<RichTextTemplateBlockEvent>();
+
+  /** Fired when a template block is removed. */
+  public readonly blockRemoved = output<RichTextTemplateBlockEvent>();
 
   // ── Strategy ───────────────────────────────────────────────
 
@@ -1277,7 +1284,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     }
 
     this.isPlaceholderPickerOpen.set(false);
-    this.placeholderInserted.emit(insertedPlaceholder);
+    this.blockInserted.emit({
+      name: "placeholder",
+      attributes: { key: insertedPlaceholder.key },
+    });
   }
 
   /**
@@ -1566,6 +1576,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
         this.insertTextIntoTextarea(strat.textareaEl, xml);
       }
       this.syncValueFromEditor();
+      this.blockInserted.emit(this.createTemplateBlockEvent(result));
       return;
     }
     if (this.isSourceMode()) {
@@ -1574,6 +1585,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       if (source) {
         this.insertTextIntoTextarea(source, xml);
       }
+      this.blockInserted.emit(this.createTemplateBlockEvent(result));
       return;
     }
     this.restoreFocus();
@@ -1581,6 +1593,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const nodes = this.renderTemplateBlockNodes(xml);
     this.insertNodesAtSelection(nodes);
     this.syncValueFromEditor();
+    this.blockInserted.emit(this.createTemplateBlockEvent(result));
   }
 
   /**
@@ -3032,6 +3045,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     }
 
     this.syncValueFromEditor();
+    this.blockInserted.emit(this.createTemplateBlockEvent(result));
   }
 
   /** @internal */
@@ -3151,6 +3165,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const nodes = this.renderTemplateBlockNodes(xml);
     block.replaceWith(...nodes);
     this.syncValueFromEditor();
+    this.blockEdited.emit(this.createTemplateBlockEvent(result));
   }
 
   /**
@@ -3192,6 +3207,26 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       attrs["key"] = block.dataset["placeholderKey"];
     }
     return attrs;
+  }
+
+  /** @internal */
+  private createTemplateBlockEvent(
+    result: TemplateBlockDialogResult,
+  ): RichTextTemplateBlockEvent {
+    return {
+      name: result.name,
+      attributes: { ...result.attributes },
+    };
+  }
+
+  /** @internal */
+  private createTemplateBlockEventFromElement(
+    block: HTMLElement,
+  ): RichTextTemplateBlockEvent {
+    return {
+      name: block.dataset["templateBlock"] ?? "block",
+      attributes: this.readTemplateDatasetAttributes(block),
+    };
   }
 
   /**
@@ -3522,6 +3557,9 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     readonly token: HTMLElement;
     readonly trailingEdge: HTMLElement;
   }): void {
+    const removedBlock = this.createTemplateBlockEventFromElement(
+      cluster.token,
+    );
     const parent = cluster.leadingEdge.parentNode;
     if (!parent) return;
     const nextSibling = cluster.trailingEdge.nextSibling;
@@ -3538,6 +3576,7 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     }
     range.collapse(true);
     this.applyEditorSelection(range);
+    this.blockRemoved.emit(removedBlock);
   }
 
   /** @internal */

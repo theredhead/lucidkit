@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIGanttChart } from "../../gantt-chart.component";
-
 import { GanttDefaultDemo } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gantt Chart",
-  component: UIGanttChart,
+  component: GanttDefaultDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -51,17 +49,37 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [GanttDefaultDemo] })]
-} satisfies Meta<UIGanttChart>;
+  decorators: [moduleMetadata({ imports: [GanttDefaultDemo] })],
+} satisfies Meta<GanttDefaultDemo>;
 
 export default meta;
-type Story = StoryObj<UIGanttChart>;
+type Story = StoryObj<GanttDefaultDemo>;
 
 export const Default: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    viewMode: "day",
+    rowHeight: 36,
+    showToday: true,
+    showTaskList: true,
+    taskListWidth: 200,
+    paddingDays: 2,
+    ariaLabel: "Gantt chart",
   },
-  render: () => ({
-      template: "<ui-gantt-default-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `
+      <ui-gantt-default-demo
+        [viewMode]="viewMode"
+        [rowHeight]="rowHeight"
+        [showToday]="showToday"
+        [showTaskList]="showTaskList"
+        [taskListWidth]="taskListWidth"
+        [paddingDays]="paddingDays"
+        [ariaLabel]="ariaLabel"
+      />
+    `,
+  }),
 };

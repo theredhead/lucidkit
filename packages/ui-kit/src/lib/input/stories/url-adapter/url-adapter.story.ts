@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./url-adapter.story.scss",
 })
 export class UrlAdapterStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/input/input.stories.ts.
 }

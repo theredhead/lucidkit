@@ -1,10 +1,15 @@
 
     <ui-table-view
       uiDensity="comfortable"
-      caption="Template Column Demo"
+      [caption]="caption()"
       tableId="story-template-col"
-      [showRowIndexIndicator]="true"
-      [showBuiltInPaginator]="true"
+      [selectionMode]="selectionMode()"
+      [rowClickSelect]="rowClickSelect()"
+      [showRowIndexIndicator]="showRowIndexIndicator()"
+      [showBuiltInPaginator]="showBuiltInPaginator()"
+      [showSelectionColumn]="showSelectionColumn()"
+      [pageSize]="pageSize()"
+      [disabled]="disabled()"
       [datasource]="adapter"
     >
       <ui-number-column
@@ -21,11 +26,8 @@
       />
       <ui-template-column key="userId" headerText="Author">
         <ng-template let-row>
-          <span style="display:inline-flex;align-items:center;gap:6px;">
-            <span
-              style="display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--ui-accent,#3b82f6);color:#fff;font-size:0.75rem;line-height:24px;text-align:center;font-weight:600;"
-              >{{ row.userId }}</span
-            >
+          <span class="author-chip">
+            <span class="author-avatar">{{ row.userId }}</span>
             <span>User {{ row.userId }}</span>
           </span>
         </ng-template>
@@ -39,11 +41,7 @@
           >
             View
           </ui-button>
-          <ui-button
-            size="small"
-            style="margin-left: 4px"
-            (click)="onAction('edit', row)"
-          >
+          <ui-button size="small" class="edit-button" (click)="onAction('edit', row)">
             Edit
           </ui-button>
         </ng-template>

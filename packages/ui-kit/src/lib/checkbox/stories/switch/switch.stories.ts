@@ -6,7 +6,7 @@ import { SwitchStorySource } from "./switch.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Checkbox",
-  component: UICheckbox,
+  component: SwitchStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -46,10 +46,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SwitchStorySource] })]
-} satisfies Meta<UICheckbox>;
+} satisfies Meta<SwitchStorySource>;
 
 export default meta;
-type Story = StoryObj<UICheckbox>;
+type Story = StoryObj<SwitchStorySource>;
 
 export const Switch: Story = {
   args: { checked: false },

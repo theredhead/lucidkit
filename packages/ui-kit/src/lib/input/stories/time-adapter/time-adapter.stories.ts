@@ -6,7 +6,7 @@ import { TimeAdapterStorySource } from "./time-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: TimeAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TimeAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<TimeAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<TimeAdapterStorySource>;
 
 export const TimeAdapter: Story = {
   parameters: {

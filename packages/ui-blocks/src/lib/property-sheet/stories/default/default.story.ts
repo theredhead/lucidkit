@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { UIPropertySheet } from "../../property-sheet.component";
-import type { PropertyChangeEvent, PropertyFieldDefinition } from "../../property-sheet.types";
+import type {
+  PropertyChangeEvent,
+  PropertyFieldDefinition,
+} from "../../property-sheet.types";
 
 // ── Sample data ──────────────────────────────────────────────────────
 

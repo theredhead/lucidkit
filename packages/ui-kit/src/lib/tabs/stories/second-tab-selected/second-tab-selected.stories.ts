@@ -6,7 +6,7 @@ import { SecondTabSelectedStorySource } from "./second-tab-selected.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: SecondTabSelectedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SecondTabSelectedStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<SecondTabSelectedStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<SecondTabSelectedStorySource>;
 
 export const SecondTabSelected: Story = {
   parameters: {

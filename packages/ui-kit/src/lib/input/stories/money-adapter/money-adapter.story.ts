@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./money-adapter.story.scss",
 })
 export class MoneyAdapterStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/input/input.stories.ts.
 }

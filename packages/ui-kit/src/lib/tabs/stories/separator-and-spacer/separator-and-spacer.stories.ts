@@ -6,7 +6,7 @@ import { SeparatorAndSpacerStorySource } from "./separator-and-spacer.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: SeparatorAndSpacerStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SeparatorAndSpacerStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<SeparatorAndSpacerStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<SeparatorAndSpacerStorySource>;
 
 export const SeparatorAndSpacer: Story = {
   parameters: {

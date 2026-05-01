@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextPlaceholder } from "../../rich-text-editor.types";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
@@ -19,7 +18,7 @@ import { FullFeaturedStorySource } from "./full-featured.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: FullFeaturedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -63,35 +62,44 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [FullFeaturedStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [FullFeaturedStorySource] })],
+} satisfies Meta<FullFeaturedStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<FullFeaturedStorySource>;
 
 export const FullFeatured: Story = {
   args: {
     maxLength: 500,
     placeholder: "Compose your email template…",
+    disabled: false,
+    readonly: false,
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: {
       ...args,
       placeholders: samplePlaceholders,
       value:
-        "<p>Dear <placeholder key=\"firstName\" />,</p><p>Thank you for reaching out to <b><placeholder key=\"company\" /></b>.</p><p>We look forward to hearing from you.</p>",
+        '<p>Dear <placeholder key="firstName" />,</p><p>Thank you for reaching out to <b><placeholder key="company" /></b>.</p><p>We look forward to hearing from you.</p>',
     },
     template: `
-      <ui-rich-text-editor
+      <ui-full-featured-story-demo
         [mode]="mode"
-        [(value)]="value"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [presentation]="presentation"
+        [value]="value"
         [placeholders]="placeholders"
         [maxLength]="maxLength"
         [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
       />
     `,
-  })
+  }),
 };

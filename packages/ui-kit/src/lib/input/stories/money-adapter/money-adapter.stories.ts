@@ -6,7 +6,7 @@ import { MoneyAdapterStorySource } from "./money-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: MoneyAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [MoneyAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<MoneyAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<MoneyAdapterStorySource>;
 
 export const MoneyAdapter: Story = {
   parameters: {

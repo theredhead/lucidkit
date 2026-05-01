@@ -1,10 +1,15 @@
 
     <ui-table-view
-      uiDensity="generous"
-      caption="JSONPlaceholder Photos"
+      [uiDensity]="density()"
+      [caption]="caption()"
       tableId="story-photos"
-      [showRowIndexIndicator]="true"
-      [showBuiltInPaginator]="true"
+      [selectionMode]="selectionMode()"
+      [rowClickSelect]="rowClickSelect()"
+      [showRowIndexIndicator]="showRowIndexIndicator()"
+      [showBuiltInPaginator]="showBuiltInPaginator()"
+      [showSelectionColumn]="showSelectionColumn()"
+      [pageSize]="pageSize()"
+      [disabled]="disabled()"
       [datasource]="adapter"
     >
       <ui-number-column

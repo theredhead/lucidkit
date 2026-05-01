@@ -16,6 +16,4 @@ export class PlaygroundStorySource {
   public disabled = false as const;
 
   public variant = "icon" as const;
-
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts.
 }

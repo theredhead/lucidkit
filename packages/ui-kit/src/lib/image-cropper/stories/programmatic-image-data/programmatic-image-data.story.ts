@@ -1,7 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, input, signal, viewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { UIImageCropper } from "../../image-cropper.component";
 import { UIButton } from "../../../button/button.component";
-import type { CropRegion } from "../../image-cropper.types";
+import type { CropRegion, ImageExportFormat } from "../../image-cropper.types";
 
 // ── Sample ImageData generator ──────────────────────────────────
 
@@ -37,6 +44,14 @@ function createSampleImageData(width = 800, height = 600): ImageData {
   return ctx.getImageData(0, 0, width, height);
 }
 
+export const DEFAULT_IMAGE_DATA_DEMO_ARGS = {
+  aspectRatio: null,
+  outputFormat: "image/png" as ImageExportFormat,
+  outputQuality: 0.92,
+  disabled: false,
+  ariaLabel: "Image cropper",
+};
+
 // ── Programmatic ImageData demo wrapper ─────────────────────────
 
 @Component({
@@ -47,7 +62,21 @@ function createSampleImageData(width = 800, height = 600): ImageData {
   templateUrl: "./programmatic-image-data.story.html",
 })
 export class CropperImageDataDemo implements AfterViewInit {
-  public readonly aspectRatio = input<number | null>(null);
+  public readonly aspectRatio = input<number | null>(
+    DEFAULT_IMAGE_DATA_DEMO_ARGS.aspectRatio,
+  );
+  public readonly outputFormat = input<ImageExportFormat>(
+    DEFAULT_IMAGE_DATA_DEMO_ARGS.outputFormat,
+  );
+  public readonly outputQuality = input<number>(
+    DEFAULT_IMAGE_DATA_DEMO_ARGS.outputQuality,
+  );
+  public readonly disabled = input<boolean>(
+    DEFAULT_IMAGE_DATA_DEMO_ARGS.disabled,
+  );
+  public readonly ariaLabel = input<string>(
+    DEFAULT_IMAGE_DATA_DEMO_ARGS.ariaLabel,
+  );
 
   protected readonly regionInfo = signal("");
   protected readonly croppedInfo = signal("");

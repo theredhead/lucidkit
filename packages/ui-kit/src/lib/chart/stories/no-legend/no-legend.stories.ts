@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartNoLegendDemo } from "./no-legend.story";
 
+interface ChartNoLegendStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartNoLegendDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartNoLegendDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartNoLegendDemo] })],
+} satisfies Meta<ChartNoLegendStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartNoLegendStoryArgs>;
 
 export const NoLegend: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 300,
+    height: 300,
+    showLegend: false,
+    ariaLabel: "Data chart",
   },
-  render: () => ({
-      template: "<ui-chart-no-legend-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-no-legend-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

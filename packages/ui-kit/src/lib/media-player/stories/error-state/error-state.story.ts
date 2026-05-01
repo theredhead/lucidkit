@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./error-state.story.scss",
 })
 export class ErrorStateStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/media-player/media-player.stories.ts.
 }

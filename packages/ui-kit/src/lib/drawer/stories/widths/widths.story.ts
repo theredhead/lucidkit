@@ -12,5 +12,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./widths.story.scss",
 })
 export class WidthsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/drawer/drawer.stories.ts.
 }

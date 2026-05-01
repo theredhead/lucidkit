@@ -1,12 +1,12 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIImageCropper } from "../../image-cropper.component";
+import type { ImageExportFormat } from "../../image-cropper.types";
 
-import { CropperDemo } from "./jpeg-export.story";
+import { CropperDemo, DEFAULT_CROPPER_DEMO_ARGS } from "./jpeg-export.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Image Cropper",
-  component: UIImageCropper,
+  component: CropperDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -19,14 +19,22 @@ const meta = {
     },
   },
   argTypes: {
+    src: {
+      control: "text",
+      description: "Image URL, data URL, or object URL.",
+    },
+    aspectRatio: {
+      control: "number",
+      description: "Locked width-to-height ratio. Use no value for free crop.",
+    },
     outputFormat: {
       control: "select",
-      options: ["image/png", "image/jpeg", "image/webp"],
+      options: ["image/png", "image/jpeg"] satisfies ImageExportFormat[],
       description: "Export image MIME type.",
     },
     outputQuality: {
       control: { type: "range", min: 0, max: 1, step: 0.01 },
-      description: "JPEG/WebP quality (0–1).",
+      description: "JPEG quality (0–1).",
     },
     disabled: {
       control: "boolean",
@@ -37,17 +45,26 @@ const meta = {
       description: "Accessible label for the cropper.",
     },
   },
-  decorators: [moduleMetadata({ imports: [CropperDemo] })]
-} satisfies Meta<UIImageCropper>;
+  decorators: [moduleMetadata({ imports: [CropperDemo] })],
+} satisfies Meta<CropperDemo>;
 
 export default meta;
-type Story = StoryObj<UIImageCropper>;
+type Story = StoryObj<CropperDemo>;
 
 export const JpegExport: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    ...DEFAULT_CROPPER_DEMO_ARGS,
+    outputFormat: "image/jpeg",
   },
-  render: () => ({
-      template: "<ui-cropper-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: {
+      ...DEFAULT_CROPPER_DEMO_ARGS,
+      ...args,
+    },
+    template:
+      '<ui-cropper-demo [src]="src" [aspectRatio]="aspectRatio" [outputFormat]="outputFormat" [outputQuality]="outputQuality" [disabled]="disabled" [ariaLabel]="ariaLabel" />',
+  }),
 };

@@ -1,15 +1,22 @@
-import { UISidebarNav } from "../../sidebar-nav.component";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UIIcons } from "../../../icon/lucide-icons.generated";
+import {
+  UISidebarGroup,
+  UISidebarItem,
+  UISidebarNav,
+} from "../../sidebar-nav.component";
 
 @Component({
   selector: "ui-collapsed-groups-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UISidebarNav],
+  imports: [UISidebarNav, UISidebarItem, UISidebarGroup],
   templateUrl: "./collapsed-groups.story.html",
   styleUrl: "./collapsed-groups.story.scss",
 })
 export class CollapsedGroupsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/sidebar-nav/sidebar-nav.stories.ts.
+  public readonly collapsed = input(false);
+  public readonly ariaLabel = input("Sidebar navigation");
+  public readonly houseIcon = UIIcons.Lucide.Layout.LayoutDashboard;
 }

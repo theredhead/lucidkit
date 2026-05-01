@@ -6,13 +6,13 @@ import { ButtonGroupsStorySource } from "./button-groups.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toolbar",
-  component: UIToolbar,
+  component: ButtonGroupsStorySource,
   tags: ["autodocs"],
   decorators: [moduleMetadata({ imports: [ButtonGroupsStorySource] })]
-} satisfies Meta<UIToolbar>;
+} satisfies Meta<ButtonGroupsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToolbar>;
+type Story = StoryObj<ButtonGroupsStorySource>;
 
 export const ButtonGroups: Story = {
   parameters: {

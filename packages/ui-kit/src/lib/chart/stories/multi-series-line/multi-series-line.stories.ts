@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartMultiLineDemo } from "./multi-series-line.story";
 
+interface ChartMultiLineStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartMultiLineDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartMultiLineDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartMultiLineDemo] })],
+} satisfies Meta<ChartMultiLineStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartMultiLineStoryArgs>;
 
 export const MultiSeriesLine: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 560,
+    height: 340,
+    showLegend: true,
+    ariaLabel: "Revenue, cost and profit line chart",
   },
-  render: () => ({
-      template: "<ui-chart-multi-line-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-multi-line-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

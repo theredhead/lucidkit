@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { UIRichTextEditor } from "../../rich-text-editor.component";
 import { MARKDOWN_PARSER, createMarkedParser } from "../../markdown-parser";
+import type { RichTextTemplateBlockEvent } from "../../rich-text-editor.types";
 
 // ═══════════════════════════════════════════════════════════════
 //  Pluggable Markdown Parser stories
@@ -69,6 +76,22 @@ function mockMarkedParse(md: string): string {
   templateUrl: "./custom-parser-marked.story.html",
 })
 export class DemoMarkedParser {
+  public readonly ariaLabel = input("Markdown editor with marked parser");
+
+  public readonly disabled = input(false);
+
+  public readonly placeholder = input("Markdown parsed by marked…");
+
+  public readonly presentation = input<"default" | "compact">("default");
+
+  public readonly readonly = input(false);
+
+  public readonly blockInserted = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockEdited = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockRemoved = output<RichTextTemplateBlockEvent>();
+
   protected readonly value = signal(
     "# Hello from marked\n\n" +
       "This editor uses a **custom `MarkdownParser`** provided via the " +

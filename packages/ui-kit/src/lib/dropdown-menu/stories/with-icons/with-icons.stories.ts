@@ -6,7 +6,7 @@ import { WithIconsStorySource } from "./with-icons.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Dropdown Menu",
-  component: UIDropdownMenu,
+  component: WithIconsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -28,10 +28,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [WithIconsStorySource] })]
-} satisfies Meta<UIDropdownMenu>;
+} satisfies Meta<WithIconsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIDropdownMenu>;
+type Story = StoryObj<WithIconsStorySource>;
 
 export const WithIcons: Story = {
   parameters: {

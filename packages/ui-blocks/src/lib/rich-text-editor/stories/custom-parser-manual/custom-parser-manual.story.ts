@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { UIRichTextEditor } from "../../rich-text-editor.component";
 import { MARKDOWN_PARSER, type MarkdownParser } from "../../markdown-parser";
+import type { RichTextTemplateBlockEvent } from "../../rich-text-editor.types";
 
 // ── Demo wrapper: fully custom parser ───────────────────────────
 
@@ -42,6 +49,24 @@ const customParser: MarkdownParser = {
   templateUrl: "./custom-parser-manual.story.html",
 })
 export class DemoCustomParser {
+  public readonly ariaLabel = input("Markdown editor with custom parser");
+
+  public readonly disabled = input(false);
+
+  public readonly placeholder = input(
+    "Custom parser — headings are uppercased…",
+  );
+
+  public readonly presentation = input<"default" | "compact">("default");
+
+  public readonly readonly = input(false);
+
+  public readonly blockInserted = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockEdited = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockRemoved = output<RichTextTemplateBlockEvent>();
+
   protected readonly value = signal(
     "# Custom parser demo\n\n" +
       "This editor uses a fully custom `MarkdownParser` that\n" +

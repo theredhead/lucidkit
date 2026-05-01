@@ -1,9 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { WarehouseManagementAppDemo } from "./warehouse-management-app";
+import { WarehouseManagementAppStorySource } from "./warehouse-management-app.story";
 
 const meta: Meta = {
   title: "@theredhead/Showcases/Warehouse Management App",
+  component: WarehouseManagementAppStorySource,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -22,7 +23,7 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [WarehouseManagementAppDemo],
+      imports: [WarehouseManagementAppStorySource],
     }),
   ],
 };
@@ -47,7 +48,7 @@ type Story = StoryObj;
  */
 export const Default: Story = {
   render: () => ({
-    template: `<ui-demo-warehouse-app />`,
+    template: `<ui-warehouse-management-app-story-source />`,
   }),
   parameters: {
     docs: {

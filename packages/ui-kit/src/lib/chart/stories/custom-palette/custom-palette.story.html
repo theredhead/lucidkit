@@ -6,8 +6,10 @@
       valueProperty="revenue"
       [strategy]="strategy"
       [palette]="palette"
-      [width]="520"
-      [height]="320"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Pass any <code>string[]</code> of CSS colours via the

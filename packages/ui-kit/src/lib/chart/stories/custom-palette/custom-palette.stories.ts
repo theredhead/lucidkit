@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartPaletteDemo } from "./custom-palette.story";
 
+interface ChartPaletteStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartPaletteDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartPaletteDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartPaletteDemo] })],
+} satisfies Meta<ChartPaletteStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartPaletteStoryArgs>;
 
 export const CustomPalette: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 520,
+    height: 320,
+    showLegend: true,
+    ariaLabel: "Data chart",
   },
-  render: () => ({
-      template: "<ui-chart-palette-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-palette-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

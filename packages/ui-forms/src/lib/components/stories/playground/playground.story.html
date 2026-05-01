@@ -1,6 +1,23 @@
-<ui-form
-  [engine]="engine"
-  submitLabel="Send message"
-  [showSubmit]="true"
-  (formSubmit)="onSubmit($event)"
-/>
+
+    <ui-form
+      [engine]="engine()"
+      [submitLabel]="submitLabel()"
+      [showSubmit]="showSubmit()"
+      (formSubmit)="onSubmit($event)"
+    />
+
+    <div class="live-panel">
+      <h4 class="live-heading">
+        Live output
+        <span class="live-badge" [class.live-badge--valid]="engine().valid()">
+          {{ engine().valid() ? "✓ valid" : "✗ invalid" }}
+        </span>
+      </h4>
+      <pre class="live-json">{{ liveOutput() | json }}</pre>
+    </div>
+
+    @if (submitted()) {
+      <h4 class="output-heading">Submitted values</h4>
+      <pre class="output">{{ submitted() | json }}</pre>
+    }
+  

@@ -1,5 +1,7 @@
 // ── Validation engine ────────────────────────────────────────────────
 
+import { KeyedRegistry } from "@theredhead/lucid-foundation";
+
 import type {
   ValidationError,
   ValidationResult,
@@ -17,7 +19,7 @@ export type ValidatorFn = (
 ) => ValidationError | null;
 
 /** Registry of custom validators keyed by `validatorId`. */
-const customValidators = new Map<string, ValidatorFn>();
+const customValidators = new KeyedRegistry<ValidatorFn>();
 
 /**
  * Register a custom validator that can be referenced by
@@ -25,7 +27,7 @@ const customValidators = new Map<string, ValidatorFn>();
  * form schema.
  */
 export function registerCustomValidator(id: string, fn: ValidatorFn): void {
-  customValidators.set(id, fn);
+  customValidators.register(id, fn);
 }
 
 // ── Built-in validator implementations ────────────────────────────────

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIMapView } from "../../map-view.component";
 import type { MapLatLng, MapMarker, MapPolyline } from "../../map-view.model";
 
@@ -25,6 +25,10 @@ const ROUTE_AMS_PAR: MapPolyline = {
   templateUrl: "./route-polyline.story.html",
 })
 export class MapViewRouteDemo {
+  readonly zoom = input(6);
+  readonly width = input<string | undefined>(undefined);
+  readonly height = input("500px");
+  readonly ariaLabel = input("Amsterdam to Paris route");
   readonly center: MapLatLng = { lat: 50.5, lng: 3.7 };
   readonly markers: MapMarker[] = [
     { position: AMSTERDAM, label: "Amsterdam" },

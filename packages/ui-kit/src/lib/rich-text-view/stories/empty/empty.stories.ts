@@ -9,7 +9,7 @@ import { EmptyStorySource } from "./empty.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rich Text View",
-  component: UIRichTextView,
+  component: EmptyStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [EmptyStorySource] })]
-} satisfies Meta<UIRichTextView>;
+} satisfies Meta<EmptyStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextView>;
+type Story = StoryObj<EmptyStorySource>;
 
 export const Empty: Story = {
   args: {

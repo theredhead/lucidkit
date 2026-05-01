@@ -6,7 +6,7 @@ import { DemoAutogenerateFilteredComponent } from "./filtered-employees200.story
 
 const meta = {
   title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
-  component: UITableView,
+  component: DemoAutogenerateFilteredComponent,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -18,10 +18,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DemoAutogenerateFilteredComponent] })]
-} satisfies Meta<UITableView>;
+} satisfies Meta<DemoAutogenerateFilteredComponent>;
 
 export default meta;
-type Story = StoryObj<UITableView>;
+type Story = StoryObj<DemoAutogenerateFilteredComponent>;
 
 export const FilteredEmployees200: Story = {
   parameters: {

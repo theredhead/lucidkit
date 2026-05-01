@@ -6,7 +6,7 @@ import { SegmentedControlDemo } from "./showcase.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Segmented Control",
-  component: UISegmentedControl,
+  component: SegmentedControlDemo,
   tags: ["autodocs"],
   argTypes: {
     value: { control: "text", description: "Active segment id." },
@@ -16,10 +16,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SegmentedControlDemo] })]
-} satisfies Meta<UISegmentedControl>;
+} satisfies Meta<SegmentedControlDemo>;
 
 export default meta;
-type Story = StoryObj<UISegmentedControl>;
+type Story = StoryObj<SegmentedControlDemo>;
 
 export const Showcase: Story = {
   parameters: {

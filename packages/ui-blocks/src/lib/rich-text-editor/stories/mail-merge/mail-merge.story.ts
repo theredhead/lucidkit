@@ -1,7 +1,22 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { UIRichTextEditor } from "../../rich-text-editor.component";
-import { UIButton, UIRichTextView, UISplitContainer, UISplitPanel } from "@theredhead/lucid-kit";
-import type { RichTextPlaceholder } from "../../rich-text-editor.types";
+import {
+  UIButton,
+  UIRichTextView,
+  UISplitContainer,
+  UISplitPanel,
+} from "@theredhead/lucid-kit";
+import type {
+  RichTextPlaceholder,
+  RichTextTemplateBlockEvent,
+} from "../../rich-text-editor.types";
 import { TextTemplateProcessor } from "@theredhead/lucid-foundation";
 
 // ── Mail-merge story ───────────────────────────────────────────────────────
@@ -184,39 +199,39 @@ const mailMergePlaceholders: RichTextPlaceholder[] = [
 ];
 
 const mailMergeTemplate = [
-  "**<placeholder key=\"fullName\" />**  ",
-  "<placeholder key=\"addressLine1\" />  ",
-  "<placeholder key=\"addressLine2\" />  ",
-  "DOB: <placeholder key=\"birthdate\" />  ",
-  "<placeholder key=\"email\" />",
+  '**<placeholder key="fullName" />**  ',
+  '<placeholder key="addressLine1" />  ',
+  '<placeholder key="addressLine2" />  ',
+  'DOB: <placeholder key="birthdate" />  ',
+  '<placeholder key="email" />',
   "",
   "---",
   "",
-  "# Invoice <placeholder key=\"invoiceNumber\" />",
+  '# Invoice <placeholder key="invoiceNumber" />',
   "",
-  "**Invoice date:** <placeholder key=\"invoiceDate\" />  ",
-  "**Due date:** <placeholder key=\"dueDate\" />  ",
-  "**Account ref:** <placeholder key=\"accountRef\" />  ",
-  "**Order:** <placeholder key=\"orderId\" />",
+  '**Invoice date:** <placeholder key="invoiceDate" />  ',
+  '**Due date:** <placeholder key="dueDate" />  ',
+  '**Account ref:** <placeholder key="accountRef" />  ',
+  '**Order:** <placeholder key="orderId" />',
   "",
   "---",
   "",
   "| Description | Qty | Unit Price | Total (ex. VAT) |",
   "| :--- | :---: | ---: | ---: |",
-  "<loop items=\"lines\">| <placeholder key=\"description\" /> | <placeholder key=\"quantity\" /> | <placeholder key=\"unitPrice\" /> | <placeholder key=\"lineTotal\" /> |</loop>",
+  '<loop items="lines">| <placeholder key="description" /> | <placeholder key="quantity" /> | <placeholder key="unitPrice" /> | <placeholder key="lineTotal" /> |</loop>',
   "---",
   "",
   "| | |",
   "| ---: | ---: |",
-  "| Subtotal | <placeholder key=\"totalExVat\" /> |",
-  "| VAT (20%) | <placeholder key=\"vatAmount\" /> |",
-  "| **Total due** | **<placeholder key=\"totalIncVat\" />** |",
+  '| Subtotal | <placeholder key="totalExVat" /> |',
+  '| VAT (20%) | <placeholder key="vatAmount" /> |',
+  '| **Total due** | **<placeholder key="totalIncVat" />** |',
   "",
   "---",
   "",
-  "Please arrange payment by **<placeholder key=\"dueDate\" />**.",
+  'Please arrange payment by **<placeholder key="dueDate" />**.',
   "",
-  "Thank you for your business, <placeholder key=\"firstName\" />.",
+  'Thank you for your business, <placeholder key="firstName" />.',
 ].join("\n");
 
 const mailMergeProcessor = new TextTemplateProcessor({ missingKey: "keep" });
@@ -239,6 +254,22 @@ const mailMergeProcessor = new TextTemplateProcessor({ missingKey: "keep" });
   templateUrl: "./mail-merge.story.html",
 })
 export class DemoMailMerge {
+  public readonly ariaLabel = input("Mail-merge invoice template");
+
+  public readonly disabled = input(false);
+
+  public readonly placeholder = input("Edit your invoice template…");
+
+  public readonly presentation = input<"default" | "compact">("default");
+
+  public readonly readonly = input(false);
+
+  public readonly blockInserted = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockEdited = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockRemoved = output<RichTextTemplateBlockEvent>();
+
   protected readonly currentIndex = signal(0);
 
   protected readonly content = signal(mailMergeTemplate);

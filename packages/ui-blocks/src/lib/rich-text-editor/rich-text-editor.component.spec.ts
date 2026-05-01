@@ -843,9 +843,9 @@ describe("UIRichTextEditor", () => {
       ).toBeNull();
     });
 
-    it("should emit placeholderInserted when a placeholder is inserted", () => {
+    it("should emit blockInserted when a placeholder block is inserted", () => {
       const spy = vi.fn();
-      component.placeholderInserted.subscribe(spy);
+      component.blockInserted.subscribe(spy);
 
       const btn: HTMLButtonElement = fixture.nativeElement.querySelector(
         ".placeholder-trigger",
@@ -857,7 +857,10 @@ describe("UIRichTextEditor", () => {
       option.click();
       fixture.detectChanges();
 
-      expect(spy).toHaveBeenCalledWith(testPlaceholders[0]);
+      expect(spy).toHaveBeenCalledWith({
+        name: "placeholder",
+        attributes: { key: testPlaceholders[0].key },
+      });
     });
 
     it("should not open picker when disabled", () => {
@@ -2668,7 +2671,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const spy = vi.fn();
-      component.placeholderInserted.subscribe(spy);
+      component.blockInserted.subscribe(spy);
       component["insertPlaceholder"]({ key: "k", label: "K" });
 
       expect(spy).not.toHaveBeenCalled();

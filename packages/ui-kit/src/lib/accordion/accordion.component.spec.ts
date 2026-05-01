@@ -70,23 +70,17 @@ describe("UIAccordion", () => {
       const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        1,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(1);
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        0,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(0);
     });
 
     it("should not toggle a disabled item", () => {
       const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[2].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        0,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(0);
     });
   });
 
@@ -95,14 +89,10 @@ describe("UIAccordion", () => {
       const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        1,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(1);
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        1,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(1);
     });
 
     it("should allow collapsing the open panel when requireOpen is false", () => {
@@ -111,14 +101,10 @@ describe("UIAccordion", () => {
       const headers = fixture.nativeElement.querySelectorAll(".header");
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        1,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(1);
       headers[0].click();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        0,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(0);
     });
 
     it("should collapse other panels when one is expanded", async () => {
@@ -127,9 +113,7 @@ describe("UIAccordion", () => {
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        1,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(1);
 
       headers[1].click();
       fixture.detectChanges();
@@ -170,9 +154,7 @@ describe("UIAccordion", () => {
         new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
       );
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        1,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(1);
     });
 
     it("should toggle on Space key", () => {
@@ -181,9 +163,7 @@ describe("UIAccordion", () => {
         new KeyboardEvent("keydown", { key: " ", bubbles: true }),
       );
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(
-        1,
-      );
+      expect(fixture.nativeElement.querySelectorAll(".panel").length).toBe(1);
     });
   });
 

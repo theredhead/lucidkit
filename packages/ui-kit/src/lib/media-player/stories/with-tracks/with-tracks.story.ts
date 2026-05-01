@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./with-tracks.story.scss",
 })
 export class WithTracksStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/media-player/media-player.stories.ts.
 }

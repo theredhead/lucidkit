@@ -1,10 +1,15 @@
 
     <ui-table-view
-      uiDensity="compact"
-      caption="JSONPlaceholder Comments"
+      [uiDensity]="density()"
+      [caption]="caption()"
       tableId="story-comments"
-      [showRowIndexIndicator]="true"
-      [showBuiltInPaginator]="true"
+      [selectionMode]="selectionMode()"
+      [rowClickSelect]="rowClickSelect()"
+      [showRowIndexIndicator]="showRowIndexIndicator()"
+      [showBuiltInPaginator]="showBuiltInPaginator()"
+      [showSelectionColumn]="showSelectionColumn()"
+      [pageSize]="pageSize()"
+      [disabled]="disabled()"
       [datasource]="adapter"
     >
       <ui-number-column

@@ -7,7 +7,7 @@ import { InteractiveStorySource } from "./interactive.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Color Picker",
-  component: UIColorPicker,
+  component: InteractiveStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -44,10 +44,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [InteractiveStorySource] })]
-} satisfies Meta<UIColorPicker>;
+} satisfies Meta<InteractiveStorySource>;
 
 export default meta;
-type Story = StoryObj<UIColorPicker>;
+type Story = StoryObj<InteractiveStorySource>;
 
 export const Interactive: Story = {
   parameters: {

@@ -6,7 +6,7 @@ import { HorizontalStorySource } from "./horizontal.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Timeline",
-  component: UITimeline,
+  component: HorizontalStorySource,
   tags: ["autodocs"],
   argTypes: {
     orientation: {
@@ -25,10 +25,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [HorizontalStorySource] })]
-} satisfies Meta<UITimeline>;
+} satisfies Meta<HorizontalStorySource>;
 
 export default meta;
-type Story = StoryObj<UITimeline>;
+type Story = StoryObj<HorizontalStorySource>;
 
 export const Horizontal: Story = {
   args: {

@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, input, signal } from "@angular/core";
 import { UIKanbanBoard } from "../../kanban-board.component";
 import type { KanbanColumn, KanbanCard } from "../../kanban-board.types";
 
@@ -223,6 +223,9 @@ const priorityColors: Record<string, string> = {
   templateUrl: "./default.story.html",
 })
 export class StoryKanbanDemo {
+  /** Accessible label forwarded to the kanban board region. */
+  public readonly ariaLabel = input<string>("Kanban board");
+
   public readonly columns = signal<KanbanColumn<Task>[]>(sampleColumns());
 
   public priorityColor(priority: string): string {

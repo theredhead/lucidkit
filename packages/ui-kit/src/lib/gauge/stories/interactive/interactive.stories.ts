@@ -23,7 +23,7 @@ import { InteractiveStorySource } from "./interactive.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: InteractiveStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [InteractiveStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<InteractiveStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<InteractiveStorySource>;
 
 export const Interactive: Story = {
   parameters: {

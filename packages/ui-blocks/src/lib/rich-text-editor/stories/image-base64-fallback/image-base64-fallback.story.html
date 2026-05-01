@@ -1,6 +1,10 @@
 <ui-rich-text-editor
-        [mode]="mode"
-        [placeholder]="placeholder"
+  [mode]="mode()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [presentation]="presentation()"
+  [placeholder]="placeholder()"
+  [ariaLabel]="ariaLabel()"
       />
       <p style="margin-top: 8px; font-size: 13px; color: #666;">
         No <code>imageHandler</code> set — pasted images will be embedded

@@ -6,7 +6,7 @@ import { DisabledStorySource } from "./disabled.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: DisabledStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<DisabledStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<DisabledStorySource>;
 
 export const Disabled: Story = {
   parameters: {

@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartSwitcherDemo } from "./strategy-switcher.story";
 
+interface ChartSwitcherStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartSwitcherDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartSwitcherDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartSwitcherDemo] })],
+} satisfies Meta<ChartSwitcherStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartSwitcherStoryArgs>;
 
 export const StrategySwitcher: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 520,
+    height: 340,
+    showLegend: true,
+    ariaLabel: "Data chart",
   },
-  render: () => ({
-      template: "<ui-chart-switcher-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-switcher-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

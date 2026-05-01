@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./sizes.story.scss",
 })
 export class SizesStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/icon/icon.stories.ts.
 
   public s = undefined as never;
   public svg = undefined as never;

@@ -6,7 +6,7 @@ import { MultilineStorySource } from "./multiline.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: MultilineStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [MultilineStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<MultilineStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<MultilineStorySource>;
 
 export const Multiline: Story = {
   args: {

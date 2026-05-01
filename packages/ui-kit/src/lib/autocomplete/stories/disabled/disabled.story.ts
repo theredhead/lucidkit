@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { UIAutocomplete, type AutocompleteDatasource } from "../../autocomplete.component";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import {
+  UIAutocomplete,
+  type AutocompleteDatasource,
+} from "../../autocomplete.component";
 
 // ── Helpers ────────────────────────────────────────────────────────
 
@@ -38,7 +41,7 @@ class FruitDatasource implements AutocompleteDatasource<string> {
     "Watermelon",
   ];
 
-  completeFor(query: string, selection: readonly string[]): string[] {
+  public completeFor(query: string, selection: readonly string[]): string[] {
     const lq = query.toLowerCase();
     return this.fruits.filter(
       (f) => f.toLowerCase().includes(lq) && !selection.includes(f),
@@ -58,5 +61,9 @@ class FruitDatasource implements AutocompleteDatasource<string> {
   styleUrl: "./disabled.story.scss",
 })
 export class DisabledDemo {
-  readonly ds = new FruitDatasource();
+  public readonly placeholder = input<string>("Disabled autocomplete");
+
+  public readonly ariaLabel = input<string>("Disabled autocomplete");
+
+  public readonly ds = new FruitDatasource();
 }

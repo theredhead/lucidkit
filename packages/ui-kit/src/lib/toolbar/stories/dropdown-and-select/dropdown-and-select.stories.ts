@@ -6,13 +6,13 @@ import { DropdownAndSelectStorySource } from "./dropdown-and-select.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toolbar",
-  component: UIToolbar,
+  component: DropdownAndSelectStorySource,
   tags: ["autodocs"],
   decorators: [moduleMetadata({ imports: [DropdownAndSelectStorySource] })]
-} satisfies Meta<UIToolbar>;
+} satisfies Meta<DropdownAndSelectStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToolbar>;
+type Story = StoryObj<DropdownAndSelectStorySource>;
 
 export const DropdownAndSelect: Story = {
   parameters: {

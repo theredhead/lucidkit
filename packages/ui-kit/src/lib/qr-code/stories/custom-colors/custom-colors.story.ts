@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./custom-colors.story.scss",
 })
 export class CustomColorsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/qr-code/qr-code.stories.ts.
 }

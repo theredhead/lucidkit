@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIGanttChart } from "../../gantt-chart.component";
-
 import { GanttSwitcherDemo } from "./view-mode-switcher.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gantt Chart",
-  component: UIGanttChart,
+  component: GanttSwitcherDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -51,17 +49,37 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [GanttSwitcherDemo] })]
-} satisfies Meta<UIGanttChart>;
+  decorators: [moduleMetadata({ imports: [GanttSwitcherDemo] })],
+} satisfies Meta<GanttSwitcherDemo>;
 
 export default meta;
-type Story = StoryObj<UIGanttChart>;
+type Story = StoryObj<GanttSwitcherDemo>;
 
 export const ViewModeSwitcher: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    viewMode: "day",
+    rowHeight: 36,
+    showToday: true,
+    showTaskList: true,
+    taskListWidth: 200,
+    paddingDays: 2,
+    ariaLabel: "Gantt chart",
   },
-  render: () => ({
-      template: "<ui-gantt-switcher-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `
+      <ui-gantt-switcher-demo
+        [viewMode]="viewMode"
+        [rowHeight]="rowHeight"
+        [showToday]="showToday"
+        [showTaskList]="showTaskList"
+        [taskListWidth]="taskListWidth"
+        [paddingDays]="paddingDays"
+        [ariaLabel]="ariaLabel"
+      />
+    `,
+  }),
 };

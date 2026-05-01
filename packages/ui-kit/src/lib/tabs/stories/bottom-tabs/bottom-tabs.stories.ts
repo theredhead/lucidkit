@@ -6,7 +6,7 @@ import { BottomTabsStorySource } from "./bottom-tabs.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: BottomTabsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [BottomTabsStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<BottomTabsStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<BottomTabsStorySource>;
 
 export const BottomTabs: Story = {
   parameters: {

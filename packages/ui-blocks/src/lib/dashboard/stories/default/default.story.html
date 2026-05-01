@@ -1,5 +1,10 @@
 
-    <ui-dashboard [columns]="8" [gap]="16" [dockMenuIcon]="menuIcon">
+    <ui-dashboard
+      [columns]="columns()"
+      [gap]="gap()"
+      [dockPosition]="dockPosition()"
+      [dockMenuIcon]="menuIcon"
+    >
       <ng-container dockMenuItem>
         <hr />
         <button

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { BarGraphStrategy } from "../../strategies/bar-graph.strategy";
 
@@ -38,6 +38,11 @@ const WARM_PALETTE = [
   templateUrl: "./custom-palette.story.html",
 })
 export class ChartPaletteDemo {
+  public readonly width = input<number>(520);
+  public readonly height = input<number>(320);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("Data chart");
+
   public readonly data = salesData;
   public readonly strategy = new BarGraphStrategy();
   public readonly palette = WARM_PALETTE;

@@ -7,7 +7,7 @@ import { RgbaModeStorySource } from "./rgba-mode.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Color Picker",
-  component: UIColorPicker,
+  component: RgbaModeStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -44,10 +44,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [RgbaModeStorySource] })]
-} satisfies Meta<UIColorPicker>;
+} satisfies Meta<RgbaModeStorySource>;
 
 export default meta;
-type Story = StoryObj<UIColorPicker>;
+type Story = StoryObj<RgbaModeStorySource>;
 
 export const RgbaMode: Story = {
   args: { value: "#e53935" },

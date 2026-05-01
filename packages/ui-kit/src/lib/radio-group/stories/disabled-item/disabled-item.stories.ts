@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRadioGroup } from "../../radio-group.component";
-
 import { DisabledItemStorySource } from "./disabled-item.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Radio Group",
-  component: UIRadioGroup,
+  component: DisabledItemStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,23 +25,25 @@ const meta = {
       description: "Accessible label for the radio group.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DisabledItemStorySource] })]
-} satisfies Meta<UIRadioGroup>;
+  decorators: [moduleMetadata({ imports: [DisabledItemStorySource] })],
+} satisfies Meta<DisabledItemStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRadioGroup>;
+type Story = StoryObj<DisabledItemStorySource>;
 
 export const DisabledItem: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    disabled: false,
+    ariaLabel: "Choose a plan",
   },
-  render: () => ({
-    template: `
-      <ui-radio-group [name]="'plan'">
-        <ui-radio-button [value]="'free'">Free</ui-radio-button>
-        <ui-radio-button [value]="'pro'">Pro</ui-radio-button>
-        <ui-radio-button [value]="'enterprise'" [disabled]="true">Enterprise (contact us)</ui-radio-button>
-      </ui-radio-group>
-    `,
-  })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-disabled-item-story-demo
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

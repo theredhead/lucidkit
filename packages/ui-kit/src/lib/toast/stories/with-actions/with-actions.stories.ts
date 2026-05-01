@@ -6,7 +6,7 @@ import { WithActionsStorySource } from "./with-actions.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toast",
-  component: UIToastContainer,
+  component: WithActionsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -30,10 +30,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [WithActionsStorySource] })]
-} satisfies Meta<UIToastContainer>;
+} satisfies Meta<WithActionsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToastContainer>;
+type Story = StoryObj<WithActionsStorySource>;
 
 export const WithActions: Story = {
   parameters: {

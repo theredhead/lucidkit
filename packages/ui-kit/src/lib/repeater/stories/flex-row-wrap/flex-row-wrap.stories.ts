@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRepeater } from "../../repeater.component";
-
 import { RepeaterFlexRowDemo } from "./flex-row-wrap.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Repeater",
-  component: UIRepeater,
+  component: RepeaterFlexRowDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -26,17 +24,25 @@ const meta = {
       description: "Accessible label for the repeater list.",
     },
   },
-  decorators: [moduleMetadata({ imports: [RepeaterFlexRowDemo] })]
-} satisfies Meta<UIRepeater>;
+  decorators: [moduleMetadata({ imports: [RepeaterFlexRowDemo] })],
+} satisfies Meta<RepeaterFlexRowDemo>;
 
 export default meta;
-type Story = StoryObj<UIRepeater>;
+type Story = StoryObj<RepeaterFlexRowDemo>;
 
 export const FlexRowWrap: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    reorderable: false,
+    ariaLabel: "Photo tiles",
   },
-  render: () => ({
-      template: "<ui-repeater-flex-row-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-repeater-flex-row-demo
+      [reorderable]="reorderable"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

@@ -1,5 +1,9 @@
 <ui-rich-text-editor
-        [mode]="mode"
-        [toolbarActions]="toolbarActions"
-        placeholder="Basic formatting only…"
+  [mode]="mode()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [presentation]="presentation()"
+  [toolbarActions]="toolbarActions()"
+  [placeholder]="placeholder()"
+  [ariaLabel]="ariaLabel()"
       />

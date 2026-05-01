@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./all-variants.story.scss",
 })
 export class AllVariantsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/badge/badge.stories.ts.
 }

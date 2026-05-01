@@ -6,7 +6,7 @@ import { AvatarDemo } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Avatar",
-  component: UIAvatar,
+  component: AvatarDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,36 +47,39 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [AvatarDemo] })]
-} satisfies Meta<UIAvatar>;
+  decorators: [moduleMetadata({ imports: [AvatarDemo] })],
+} satisfies Meta<AvatarDemo>;
 
 export default meta;
-type Story = StoryObj<UIAvatar>;
+type Story = StoryObj<AvatarDemo>;
 
 export const Default: Story = {
   parameters: {
+    controls: {
+      disable: true,
+    },
     docs: {
       description: {
         story:
-        "### Features\n" +
-        "- **Named sizes** \u2014 `extra-small` (24 px), `small` (32 px), `medium` (40 px), `large` (56 px), `extra-large` (80 px)\n" +
-        '- **Pixel sizes** \u2014 pass a number (e.g. `[size]="48"`) for custom dimensions\n' +
-        "- **Gravatar integration** — pass an `email` and the component fetches " +
-        "the Gravatar image via SHA-256 hash\n" +
-        "- **Initials fallback** — extracts up to two initials from `name` when no image is available\n" +
-        "- **Colour generation** — initials background colour is deterministically " +
-        "derived from the name string\n\n" +
-        "### Inputs\n" +
-        "| Input | Type | Default | Description |\n" +
-        "|-------|------|---------|-------------|\n" +
-        "| `src` | `string?` | — | Explicit image URL |\n" +
-        "| `email` | `string?` | — | Email for Gravatar lookup |\n" +
-        "| `name` | `string` | `''` | User name (used for initials & alt text) |\n" +
-        "| `size` | `AvatarSize` | `'medium'` | Named size preset or pixel number |"
-      }
-    }
+          "### Features\n" +
+          "- **Named sizes** \u2014 `extra-small` (24 px), `small` (32 px), `medium` (40 px), `large` (56 px), `extra-large` (80 px)\n" +
+          '- **Pixel sizes** \u2014 pass a number (e.g. `[size]="48"`) for custom dimensions\n' +
+          "- **Gravatar integration** — pass an `email` and the component fetches " +
+          "the Gravatar image via SHA-256 hash\n" +
+          "- **Initials fallback** — extracts up to two initials from `name` when no image is available\n" +
+          "- **Colour generation** — initials background colour is deterministically " +
+          "derived from the name string\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `src` | `string?` | — | Explicit image URL |\n" +
+          "| `email` | `string?` | — | Email for Gravatar lookup |\n" +
+          "| `name` | `string` | `''` | User name (used for initials & alt text) |\n" +
+          "| `size` | `AvatarSize` | `'medium'` | Named size preset or pixel number |",
+      },
+    },
   },
   render: () => ({
-      template: "<ui-avatar-demo />",
-    })
+    template: "<ui-avatar-demo />",
+  }),
 };

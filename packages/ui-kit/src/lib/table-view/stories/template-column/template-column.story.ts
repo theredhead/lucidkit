@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from "@angular/core";
 import { UIDensityDirective } from "../../../ui-density";
 import { UINumberColumn } from "../../columns/number-column/number-column.component";
 import { UITemplateColumn } from "../../columns/template-column/template-column.component";
@@ -30,6 +35,15 @@ import { UIButton } from "../../../button/button.component";
   styleUrl: "./template-column.story.scss",
 })
 export class UITableViewTemplateColDemo {
+  readonly caption = input("Template Column Demo");
+  readonly selectionMode = input<"none" | "single" | "multiple">("none");
+  readonly showBuiltInPaginator = input(true);
+  readonly showRowIndexIndicator = input(true);
+  readonly showSelectionColumn = input(true);
+  readonly rowClickSelect = input(false);
+  readonly pageSize = input<number | undefined>(undefined);
+  readonly disabled = input(false);
+
   readonly adapter = new JsonPlaceholderPostsDatasource(25);
   readonly lastAction = signal("Click a button to see the action here…");
 

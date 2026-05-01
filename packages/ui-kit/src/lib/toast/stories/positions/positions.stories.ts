@@ -6,7 +6,7 @@ import { PositionsStorySource } from "./positions.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toast",
-  component: UIToastContainer,
+  component: PositionsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -30,10 +30,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PositionsStorySource] })]
-} satisfies Meta<UIToastContainer>;
+} satisfies Meta<PositionsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToastContainer>;
+type Story = StoryObj<PositionsStorySource>;
 
 export const Positions: Story = {
   parameters: {

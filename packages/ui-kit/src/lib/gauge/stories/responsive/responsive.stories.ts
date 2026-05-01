@@ -23,7 +23,7 @@ import { ResponsiveStorySource } from "./responsive.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: ResponsiveStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ResponsiveStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<ResponsiveStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<ResponsiveStorySource>;
 
 export const Responsive: Story = {
   args: {

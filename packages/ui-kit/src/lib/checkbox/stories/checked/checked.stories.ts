@@ -6,7 +6,7 @@ import { CheckedStorySource } from "./checked.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Checkbox",
-  component: UICheckbox,
+  component: CheckedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -46,10 +46,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CheckedStorySource] })]
-} satisfies Meta<UICheckbox>;
+} satisfies Meta<CheckedStorySource>;
 
 export default meta;
-type Story = StoryObj<UICheckbox>;
+type Story = StoryObj<CheckedStorySource>;
 
 export const Checked: Story = {
   parameters: {

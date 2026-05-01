@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Sidebar Nav",
-  component: UISidebarNav,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UISidebarNav>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UISidebarNav>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   parameters: {

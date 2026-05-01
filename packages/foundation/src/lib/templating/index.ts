@@ -1,8 +1,12 @@
 export {
+  applyDataDetectors,
+  getRegisteredDataDetectors,
   TextTemplateProcessor,
   XmlTemplateParser,
   XmlTemplateProcessor,
   XmlTemplateSerializer,
+  type IDataDetector,
+  registerDataDetector,
   type ITextTemplateProcessor,
   type MissingKeyBehavior,
   type TemplateBlockContentModel,
@@ -14,7 +18,14 @@ export {
   type TemplateTextNode,
   type TextTemplateOptions,
   registerTextTemplateBlockProvider,
+  unregisterDataDetector,
   unregisterTextTemplateBlockProvider,
   haveRegisteredTextTemplateBlockProvider,
   getRegisteredTextTemplateBlockProviders,
 } from "./template-processor";
+export {
+  EmailDetector,
+  EmojiDetector,
+  PhoneNumberDetector,
+  UrlDetector,
+} from "./data-detectors";

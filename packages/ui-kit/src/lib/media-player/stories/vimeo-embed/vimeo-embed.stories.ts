@@ -6,7 +6,7 @@ import { VimeoEmbedStorySource } from "./vimeo-embed.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: VimeoEmbedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [VimeoEmbedStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<VimeoEmbedStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<VimeoEmbedStorySource>;
 
 export const VimeoEmbed: Story = {
   parameters: {

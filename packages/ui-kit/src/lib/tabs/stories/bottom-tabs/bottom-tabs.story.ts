@@ -14,5 +14,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./bottom-tabs.story.scss",
 })
 export class BottomTabsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/tabs/tab-group.stories.ts.
 }

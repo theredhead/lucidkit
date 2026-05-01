@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./credit-card-adapter.story.scss",
 })
 export class CreditCardAdapterStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/input/input.stories.ts.
 }

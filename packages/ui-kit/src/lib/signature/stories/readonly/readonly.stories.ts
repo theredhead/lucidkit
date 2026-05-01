@@ -6,7 +6,7 @@ import { ReadonlyDemo } from "./readonly.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Signature",
-  component: UISignature,
+  component: ReadonlyDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -17,10 +17,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ReadonlyDemo] })]
-} satisfies Meta<UISignature>;
+} satisfies Meta<ReadonlyDemo>;
 
 export default meta;
-type Story = StoryObj<UISignature>;
+type Story = StoryObj<ReadonlyDemo>;
 
 export const Readonly: Story = {
   parameters: {

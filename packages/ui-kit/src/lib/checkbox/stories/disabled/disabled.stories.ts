@@ -6,7 +6,7 @@ import { DisabledStorySource } from "./disabled.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Checkbox",
-  component: UICheckbox,
+  component: DisabledStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -46,10 +46,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<UICheckbox>;
+} satisfies Meta<DisabledStorySource>;
 
 export default meta;
-type Story = StoryObj<UICheckbox>;
+type Story = StoryObj<DisabledStorySource>;
 
 export const Disabled: Story = {
   parameters: {

@@ -1,10 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDemoRecipeBookApp } from "./recipe-book-app";
+import { RecipeBookAppStorySource } from "./recipe-book-app.story";
 
-const meta: Meta<UIDemoRecipeBookApp> = {
+const meta: Meta = {
   title: "@theredhead/Showcases/Recipe Book App",
-  component: UIDemoRecipeBookApp,
+  component: RecipeBookAppStorySource,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -12,13 +12,13 @@ const meta: Meta<UIDemoRecipeBookApp> = {
   },
   decorators: [
     moduleMetadata({
-      imports: [UIDemoRecipeBookApp],
+      imports: [RecipeBookAppStorySource],
     }),
   ],
 };
 
 export default meta;
-type Story = StoryObj<UIDemoRecipeBookApp>;
+type Story = StoryObj;
 
 /**
  * ## Recipe Book — Full-featured showcase
@@ -40,7 +40,7 @@ type Story = StoryObj<UIDemoRecipeBookApp>;
  */
 export const Default: Story = {
   render: () => ({
-    template: `<ui-demo-recipe-book-app />`,
+    template: `<ui-recipe-book-app-story-source />`,
   }),
   parameters: {
     docs: {

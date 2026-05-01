@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { JsonPipe } from "@angular/common";
-import { UIAutocomplete, type AutocompleteDatasource } from "../../autocomplete.component";
+import {
+  UIAutocomplete,
+  type AutocompleteDatasource,
+} from "../../autocomplete.component";
+import { UIAvatar } from "@theredhead/lucid-kit";
 
 /** A rich-object datasource for the custom-template story. */
 interface Contact {
@@ -29,7 +39,7 @@ const CONTACTS: Contact[] = [
 ];
 
 class ContactDatasource implements AutocompleteDatasource<Contact> {
-  completeFor(query: string, selection: readonly Contact[]): Contact[] {
+  public completeFor(query: string, selection: readonly Contact[]): Contact[] {
     const lq = query.toLowerCase();
     const selectedEmails = new Set(selection.map((c) => c.email));
     return CONTACTS.filter(
@@ -49,13 +59,28 @@ class ContactDatasource implements AutocompleteDatasource<Contact> {
   selector: "ui-ac-template-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIAutocomplete, JsonPipe],
+  imports: [UIAutocomplete, JsonPipe, UIAvatar],
   templateUrl: "./custom-template.story.html",
   styleUrl: "./custom-template.story.scss",
 })
 export class TemplateDemo {
-  readonly ds = new ContactDatasource();
-  readonly selected = signal<readonly Contact[]>([]);
-  readonly displayContact = (c: Contact) => c.name;
-  readonly trackByEmail = (c: Contact) => c.email;
+  public readonly placeholder = input<string>("Search contacts...");
+
+  public readonly minChars = input<number>(1);
+
+  public readonly disabled = input<boolean>(false);
+
+  public readonly ariaLabel = input<string>("Contact search");
+
+  public readonly itemSelected = output<Contact>();
+
+  public readonly itemRemoved = output<Contact>();
+
+  public readonly ds = new ContactDatasource();
+
+  public readonly selected = signal<readonly Contact[]>([]);
+
+  public readonly displayContact = (contact: Contact) => contact.name;
+
+  public readonly trackByEmail = (contact: Contact) => contact.email;
 }

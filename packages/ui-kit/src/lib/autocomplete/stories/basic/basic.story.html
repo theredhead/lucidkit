@@ -2,8 +2,12 @@
     <ui-autocomplete
       [datasource]="ds"
       [(value)]="selected"
-      placeholder="Search fruits…"
-      ariaLabel="Fruit search"
+      [placeholder]="placeholder()"
+      [minChars]="minChars()"
+      [disabled]="disabled()"
+      [ariaLabel]="ariaLabel()"
+      (itemSelected)="itemSelected.emit($event)"
+      (itemRemoved)="itemRemoved.emit($event)"
     />
     <pre class="story-output">Selected: {{ selected() | json }}</pre>
   

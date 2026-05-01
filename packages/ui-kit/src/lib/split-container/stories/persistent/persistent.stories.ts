@@ -6,7 +6,7 @@ import { PersistentStorySource } from "./persistent.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
-  component: UISplitContainer,
+  component: PersistentStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PersistentStorySource] })]
-} satisfies Meta<UISplitContainer>;
+} satisfies Meta<PersistentStorySource>;
 
 export default meta;
-type Story = StoryObj<UISplitContainer>;
+type Story = StoryObj<PersistentStorySource>;
 
 export const Persistent: Story = {
   parameters: {

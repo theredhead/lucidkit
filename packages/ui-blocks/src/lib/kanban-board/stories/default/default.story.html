@@ -1,5 +1,6 @@
 
     <ui-kanban-board
+      [ariaLabel]="ariaLabel()"
       [(columns)]="columns"
       (cardMoved)="onMoved($event)"
       (cardClicked)="onClicked($event)"

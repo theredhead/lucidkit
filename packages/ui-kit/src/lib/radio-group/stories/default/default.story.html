@@ -1,5 +1,10 @@
 
-    <ui-radio-group [name]="'fruit'" [(value)]="selected">
+    <ui-radio-group
+      [name]="'fruit'"
+      [(value)]="selected"
+      [disabled]="disabled()"
+      [ariaLabel]="ariaLabel()"
+    >
       <ui-radio-button [value]="'apple'">Apple</ui-radio-button>
       <ui-radio-button [value]="'banana'">Banana</ui-radio-button>
       <ui-radio-button [value]="'cherry'">Cherry</ui-radio-button>

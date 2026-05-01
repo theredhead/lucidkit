@@ -6,7 +6,7 @@ import { DisabledStorySource } from "./disabled.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Dropdown List",
-  component: UIDropdownList,
+  component: DisabledStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<UIDropdownList>;
+} satisfies Meta<DisabledStorySource>;
 
 export default meta;
-type Story = StoryObj<UIDropdownList>;
+type Story = StoryObj<DisabledStorySource>;
 
 export const Disabled: Story = {
   parameters: {

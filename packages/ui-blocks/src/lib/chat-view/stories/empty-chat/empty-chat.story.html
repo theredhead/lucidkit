@@ -1,1 +1,10 @@
-<ui-chat-view [messages]="[]" [currentUser]="me" />
+<ui-chat-view
+	[ariaLabel]="ariaLabel()"
+	[composerMode]="composerMode()"
+	[composerPresentation]="composerPresentation()"
+	[composerToolbarActions]="composerToolbarActions()"
+	[currentUser]="currentUser"
+	[messages]="[]"
+	[placeholder]="placeholder()"
+	(messageSend)="messageSend.emit($event)"
+/>

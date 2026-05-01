@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { MarkdownStorySource } from "./markdown.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: MarkdownStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,29 +52,35 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [MarkdownStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [MarkdownStorySource] })],
+} satisfies Meta<MarkdownStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<MarkdownStorySource>;
 
 export const Markdown: Story = {
   args: {
+    disabled: false,
+    readonly: false,
     mode: "markdown",
     placeholder: "Write Markdown here…",
     ariaLabel: "Markdown editor",
+    presentation: "default",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: args,
     template: `
-      <ui-rich-text-editor
+      <ui-markdown-story-demo
         [mode]="mode"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [presentation]="presentation"
         [placeholder]="placeholder"
         [ariaLabel]="ariaLabel"
       />
     `,
-  })
+  }),
 };

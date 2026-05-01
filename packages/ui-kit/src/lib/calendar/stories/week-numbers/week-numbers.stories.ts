@@ -6,7 +6,7 @@ import { CalendarWeekNumbersDemo } from "./week-numbers.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Calendar Month View",
-  component: UICalendarMonthView,
+  component: CalendarWeekNumbersDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,17 +35,29 @@ const meta = {
       description: "Accessible label for the calendar.",
     },
   },
-  decorators: [moduleMetadata({ imports: [CalendarWeekNumbersDemo] })]
-} satisfies Meta<UICalendarMonthView>;
+  decorators: [moduleMetadata({ imports: [CalendarWeekNumbersDemo] })],
+} satisfies Meta<CalendarWeekNumbersDemo>;
 
 export default meta;
-type Story = StoryObj<UICalendarMonthView>;
+type Story = StoryObj<CalendarWeekNumbersDemo>;
 
 export const WeekNumbers: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    showWeekNumbers: true,
+    maxEventsPerDay: 3,
+    disabled: false,
+    ariaLabel: "Calendar month view",
   },
-  render: () => ({
-      template: "<ui-cal-weeknumbers-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-cal-weeknumbers-demo
+        [showWeekNumbers]="showWeekNumbers"
+        [maxEventsPerDay]="maxEventsPerDay"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

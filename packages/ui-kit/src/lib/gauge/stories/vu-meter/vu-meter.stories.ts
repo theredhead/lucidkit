@@ -23,7 +23,7 @@ import { VuMeterStorySource } from "./vu-meter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: VuMeterStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [VuMeterStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<VuMeterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<VuMeterStorySource>;
 
 export const VuMeter: Story = {
   args: {

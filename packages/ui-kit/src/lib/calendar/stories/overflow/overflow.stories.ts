@@ -6,7 +6,7 @@ import { CalendarOverflowDemo } from "./overflow.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Calendar Month View",
-  component: UICalendarMonthView,
+  component: CalendarOverflowDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,17 +35,29 @@ const meta = {
       description: "Accessible label for the calendar.",
     },
   },
-  decorators: [moduleMetadata({ imports: [CalendarOverflowDemo] })]
-} satisfies Meta<UICalendarMonthView>;
+  decorators: [moduleMetadata({ imports: [CalendarOverflowDemo] })],
+} satisfies Meta<CalendarOverflowDemo>;
 
 export default meta;
-type Story = StoryObj<UICalendarMonthView>;
+type Story = StoryObj<CalendarOverflowDemo>;
 
 export const Overflow: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    showWeekNumbers: false,
+    maxEventsPerDay: 2,
+    disabled: false,
+    ariaLabel: "Calendar month view",
   },
-  render: () => ({
-      template: "<ui-cal-overflow-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-cal-overflow-demo
+        [showWeekNumbers]="showWeekNumbers"
+        [maxEventsPerDay]="maxEventsPerDay"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

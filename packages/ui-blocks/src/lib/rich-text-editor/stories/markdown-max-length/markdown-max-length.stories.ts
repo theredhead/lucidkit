@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { MarkdownMaxLengthStorySource } from "./markdown-max-length.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: MarkdownMaxLengthStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,19 +52,24 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [MarkdownMaxLengthStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [MarkdownMaxLengthStorySource] })],
+} satisfies Meta<MarkdownMaxLengthStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<MarkdownMaxLengthStorySource>;
 
 export const MarkdownMaxLength: Story = {
   args: {
+    disabled: false,
+    readonly: false,
     mode: "markdown",
+    placeholder: "Type here…",
+    ariaLabel: "Rich text editor",
+    presentation: "default",
     maxLength: 150,
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: {
@@ -74,11 +78,16 @@ export const MarkdownMaxLength: Story = {
         "# Hello\n\nSome **bold** text with a [link](https://example.com).",
     },
     template: `
-      <ui-rich-text-editor
+      <ui-markdown-max-length-story-demo
         [mode]="mode"
-        [(value)]="value"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [presentation]="presentation"
+        [value]="value"
         [maxLength]="maxLength"
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
       />
     `,
-  })
+  }),
 };

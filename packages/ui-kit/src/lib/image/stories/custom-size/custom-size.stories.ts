@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIImage } from "../../image.component";
-
 const SAMPLE_SRC =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop";
 
@@ -9,7 +7,7 @@ import { CustomSizeStorySource } from "./custom-size.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Image",
-  component: UIImage,
+  component: CustomSizeStorySource,
   tags: ["autodocs"],
   argTypes: {
     src: {
@@ -33,20 +31,28 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [CustomSizeStorySource] })]
-} satisfies Meta<UIImage>;
+  decorators: [moduleMetadata({ imports: [CustomSizeStorySource] })],
+} satisfies Meta<CustomSizeStorySource>;
 
 export default meta;
-type Story = StoryObj<UIImage>;
+type Story = StoryObj<CustomSizeStorySource>;
 
 export const CustomSize: Story = {
   args: {
     src: SAMPLE_SRC,
+    alt: "Wide banner",
     width: 800,
     height: 200,
+    ariaLabel: "Wide banner",
   },
   render: (args) => ({
     props: args,
-    template: `<ui-image [src]="src" alt="Wide banner" [width]="width" [height]="height" />`,
-  })
+    template: `<ui-custom-size-story-demo
+      [src]="src"
+      [alt]="alt"
+      [width]="width"
+      [height]="height"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

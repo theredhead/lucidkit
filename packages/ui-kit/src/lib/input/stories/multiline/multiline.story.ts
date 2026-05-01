@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./multiline.story.scss",
 })
 export class MultilineStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/input/input.stories.ts.
 }

@@ -1,8 +1,10 @@
-import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
+import { type Meta } from "@storybook/angular";
 
 import { UIAnalogClock } from "../../analog-clock.component";
-
-import { DocumentationStorySource } from "./documentation.story";
+import {
+  ANALOG_CLOCK_STORY_ARG_TYPES,
+  type AnalogClockStoryArgs,
+} from "../analog-clock-story-helpers";
 
 const meta = {
   title: "@theredhead/UI Kit/Analog Clock",
@@ -11,49 +13,9 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
+        component: [
           "`UIAnalogClock` renders a classic analog clock face as inline SVG.",
-      },
-    },
-  },
-  argTypes: {
-    size: {
-      control: { type: "range", min: 40, max: 500, step: 10 },
-      description: "Clock diameter in CSS pixels",
-    },
-    showSeconds: {
-      control: "boolean",
-      description: "Whether to show the second hand",
-    },
-    showNumbers: {
-      control: "boolean",
-      description: "Whether to show hour numbers (1–12)",
-    },
-    showTickMarks: {
-      control: "boolean",
-      description: "Whether to show tick marks around the rim",
-    },
-    dayIconColor: {
-      control: "color",
-      description: "Stroke colour for the daytime indicator icon",
-    },
-    nightIconColor: {
-      control: "color",
-      description: "Stroke colour for the nighttime indicator icon",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DocumentationStorySource] })]
-} satisfies Meta<UIAnalogClock>;
-
-export default meta;
-type Story = StoryObj<UIAnalogClock>;
-
-export const Documentation: Story = {
-  tags: ["!dev"],
-  parameters: {
-    docs: {
-      description: {
-        story: [
+          "",
           "## Key Features",
           "",
           "- **Live ticking** — when no `time` is provided the clock updates every second",
@@ -78,9 +40,11 @@ export const Documentation: Story = {
           "| `nightIcon` | `string` | MoonStar (Lucide) | SVG inner content for the night indicator |",
           '| `dayIconColor` | `string` | `"#f59e0b"` | Stroke colour for the day icon |',
           '| `nightIconColor` | `string` | `"#e8e0c0"` | Stroke colour for the night icon |',
-        ].join("\n")
-      }
-    }
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({ template: " " })
-};
+  argTypes: ANALOG_CLOCK_STORY_ARG_TYPES,
+} satisfies Meta<AnalogClockStoryArgs>;
+
+export default meta;

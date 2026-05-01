@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Countdown",
-  component: UICountdown,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   argTypes: {
     mode: {
@@ -21,10 +21,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UICountdown>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UICountdown>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: { mode: "countdown", format: "hms" },

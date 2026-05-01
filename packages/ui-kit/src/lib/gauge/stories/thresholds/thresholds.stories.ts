@@ -23,7 +23,7 @@ import { ThresholdsStorySource } from "./thresholds.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: ThresholdsStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ThresholdsStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<ThresholdsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<ThresholdsStorySource>;
 
 export const Thresholds: Story = {
   args: {

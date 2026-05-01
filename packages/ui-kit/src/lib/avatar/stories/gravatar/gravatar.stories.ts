@@ -6,7 +6,7 @@ import { GravatarDemo } from "./gravatar.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Avatar",
-  component: UIAvatar,
+  component: GravatarDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -48,10 +48,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [GravatarDemo] })]
-} satisfies Meta<UIAvatar>;
+} satisfies Meta<GravatarDemo>;
 
 export default meta;
-type Story = StoryObj<UIAvatar>;
+type Story = StoryObj<GravatarDemo>;
 
 export const Gravatar: Story = {
   parameters: {

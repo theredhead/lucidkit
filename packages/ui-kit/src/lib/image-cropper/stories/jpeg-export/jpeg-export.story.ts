@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, signal, viewChild } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { UIImageCropper } from "../../image-cropper.component";
 import { UIButton } from "../../../button/button.component";
 import type { CropRegion, ImageExportFormat } from "../../image-cropper.types";
@@ -41,6 +47,15 @@ function createSampleImage(width = 800, height = 600): string {
   return canvas.toDataURL("image/png");
 }
 
+export const DEFAULT_CROPPER_DEMO_ARGS = {
+  src: createSampleImage(),
+  aspectRatio: null,
+  outputFormat: "image/png" as ImageExportFormat,
+  outputQuality: 0.92,
+  disabled: false,
+  ariaLabel: "Image cropper",
+};
+
 // ── Demo wrapper component ──────────────────────────────────────
 
 @Component({
@@ -51,9 +66,20 @@ function createSampleImage(width = 800, height = 600): string {
   templateUrl: "./jpeg-export.story.html",
 })
 export class CropperDemo {
-  public readonly src = input(createSampleImage());
-  public readonly aspectRatio = input<number | null>(null);
-  public readonly outputFormat = input<ImageExportFormat>("image/png");
+  public readonly src = input(DEFAULT_CROPPER_DEMO_ARGS.src);
+  public readonly aspectRatio = input<number | null>(
+    DEFAULT_CROPPER_DEMO_ARGS.aspectRatio,
+  );
+  public readonly outputFormat = input<ImageExportFormat>(
+    DEFAULT_CROPPER_DEMO_ARGS.outputFormat,
+  );
+  public readonly outputQuality = input<number>(
+    DEFAULT_CROPPER_DEMO_ARGS.outputQuality,
+  );
+  public readonly disabled = input<boolean>(DEFAULT_CROPPER_DEMO_ARGS.disabled);
+  public readonly ariaLabel = input<string>(
+    DEFAULT_CROPPER_DEMO_ARGS.ariaLabel,
+  );
 
   protected readonly regionInfo = signal("");
   protected readonly previewUrl = signal("");

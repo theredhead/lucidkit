@@ -3,11 +3,18 @@ import {
   Component,
   computed,
   inject,
+  InjectionToken,
   input,
   model,
+  type Provider,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { UISurface } from "@theredhead/lucid-foundation";
+import {
+  applyDataDetectors,
+  getRegisteredDataDetectors,
+  type IDataDetector,
+  UISurface,
+} from "@theredhead/lucid-foundation";
 
 /**
  * The rendering strategy for {@link UIRichTextView}.
@@ -18,6 +25,37 @@ import { UISurface } from "@theredhead/lucid-foundation";
  *                  HTML tag it is treated as HTML, otherwise as Markdown.
  */
 export type RichTextViewStrategy = "html" | "markdown" | "auto";
+
+/**
+ * Optional Angular DI token for rich-text-view data detectors.
+ */
+export const RICH_TEXT_VIEW_DATA_DETECTORS = new InjectionToken<
+  IDataDetector[]
+>("RICH_TEXT_VIEW_DATA_DETECTORS");
+
+/**
+ * Registers one or more data detectors for {@link UIRichTextView} via Angular
+ * DI.
+ */
+export function provideRichTextViewDataDetectors(
+  ...detectors: IDataDetector[]
+): Provider[] {
+  return detectors.map((detector) => ({
+    provide: RICH_TEXT_VIEW_DATA_DETECTORS,
+    useValue: detector,
+    multi: true,
+  }));
+}
+
+/** @internal */
+const DATA_DETECTOR_SKIPPED_TAGS = new Set([
+  "a",
+  "code",
+  "pre",
+  "script",
+  "style",
+  "textarea",
+]);
 
 /** @internal Heuristic: does the string look like HTML? */
 function looksLikeHtml(content: string): boolean {
@@ -31,9 +69,12 @@ function markdownToHtml(markdown: string): string {
     .map((block) => {
       const text = block.trim();
       if (!text) return "";
-      if (text.startsWith("# ")) return `<h1>${formatInline(text.slice(2))}</h1>`;
-      if (text.startsWith("## ")) return `<h2>${formatInline(text.slice(3))}</h2>`;
-      if (text.startsWith("### ")) return `<h3>${formatInline(text.slice(4))}</h3>`;
+      if (text.startsWith("# "))
+        return `<h1>${formatInline(text.slice(2))}</h1>`;
+      if (text.startsWith("## "))
+        return `<h2>${formatInline(text.slice(3))}</h2>`;
+      if (text.startsWith("### "))
+        return `<h3>${formatInline(text.slice(4))}</h3>`;
       return `<p>${formatInline(text).replace(/\n/g, "<br />")}</p>`;
     })
     .join("");
@@ -57,6 +98,48 @@ function escapeHtml(value: string): string {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+/** @internal */
+function applyDataDetectorsToHtml(
+  html: string,
+  detectors: readonly IDataDetector[],
+): string {
+  if (!html || detectors.length === 0) {
+    return html;
+  }
+  const document = new DOMParser().parseFromString(
+    `<body>${html}</body>`,
+    "text/html",
+  );
+  const body = document.body;
+  const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
+  const textNodes: Text[] = [];
+  let currentNode = walker.nextNode();
+  while (currentNode) {
+    textNodes.push(currentNode as Text);
+    currentNode = walker.nextNode();
+  }
+  for (const textNode of textNodes) {
+    const text = textNode.textContent ?? "";
+    if (!text || shouldSkipDataDetectorTextNode(textNode)) {
+      continue;
+    }
+    const transformed = applyDataDetectors(text, detectors);
+    if (transformed === text) {
+      continue;
+    }
+    const template = document.createElement("template");
+    template.innerHTML = transformed;
+    textNode.replaceWith(...Array.from(template.content.childNodes));
+  }
+  return body.innerHTML;
+}
+
+/** @internal */
+function shouldSkipDataDetectorTextNode(node: Text): boolean {
+  const parentTag = node.parentElement?.tagName.toLowerCase();
+  return parentTag != null && DATA_DETECTOR_SKIPPED_TAGS.has(parentTag);
 }
 
 /**
@@ -91,6 +174,9 @@ function escapeHtml(value: string): string {
 export class UIRichTextView {
   private readonly sanitizer = inject(DomSanitizer);
 
+  private readonly injectedDataDetectors =
+    inject(RICH_TEXT_VIEW_DATA_DETECTORS, { optional: true }) ?? null;
+
   /** The raw content to render (HTML or Markdown depending on `strategy`). */
   public readonly content = model<string>("");
 
@@ -105,16 +191,29 @@ export class UIRichTextView {
   /** Accessible label for the container. */
   public readonly ariaLabel = input<string>("Rich text content");
 
+  /**
+   * Optional detector list to apply to rendered text nodes.
+   *
+   * When omitted, the component falls back to injected detectors and finally to
+   * the foundation-level global detector registry.
+   */
+  public readonly dataDetectors = input<readonly IDataDetector[] | null>(null);
+
   /** The HTML to render, resolved from content + strategy. */
   public readonly trustedContent = computed(() => {
     const raw = this.content();
     const strat = this.strategy();
+    const detectors =
+      this.dataDetectors() ??
+      this.injectedDataDetectors ??
+      getRegisteredDataDetectors();
     let html: string;
     if (strat === "markdown" || (strat === "auto" && !looksLikeHtml(raw))) {
       html = markdownToHtml(raw);
     } else {
       html = raw;
     }
+    html = applyDataDetectorsToHtml(html, detectors);
     return this.sanitizer.bypassSecurityTrustHtml(html);
   });
 }

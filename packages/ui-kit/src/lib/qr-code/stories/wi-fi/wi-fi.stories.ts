@@ -6,7 +6,7 @@ import { WiFiStorySource } from "./wi-fi.story";
 
 const meta = {
   title: "@theredhead/UI Kit/QR Code",
-  component: UIQRCode,
+  component: WiFiStorySource,
   tags: ["autodocs"],
   argTypes: {
     value: {
@@ -31,10 +31,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [WiFiStorySource] })]
-} satisfies Meta<UIQRCode>;
+} satisfies Meta<WiFiStorySource>;
 
 export default meta;
-type Story = StoryObj<UIQRCode>;
+type Story = StoryObj<WiFiStorySource>;
 
 export const WiFi: Story = {
   args: {

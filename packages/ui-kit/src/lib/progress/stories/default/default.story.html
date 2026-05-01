@@ -4,7 +4,12 @@
     >
       <div>
         <h4 style="margin: 0 0 8px">Linear determinate</h4>
-        <ui-progress [value]="val()" />
+        <ui-progress
+          [variant]="variant()"
+          [mode]="mode()"
+          [value]="val()"
+          [ariaLabel]="ariaLabel()"
+        />
         <ui-slider
           [(value)]="val"
           [showValue]="true"

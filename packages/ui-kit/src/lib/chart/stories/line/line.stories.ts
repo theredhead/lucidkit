@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartLineDemo } from "./line.story";
 
+interface ChartLineStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartLineDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartLineDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartLineDemo] })],
+} satisfies Meta<ChartLineStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartLineStoryArgs>;
 
 export const Line: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 520,
+    height: 320,
+    showLegend: true,
+    ariaLabel: "Monthly revenue line chart",
   },
-  render: () => ({
-      template: "<ui-chart-line-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-line-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

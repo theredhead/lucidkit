@@ -1,10 +1,11 @@
 
     <ui-map-view
       [center]="center"
-      [zoom]="6"
+      [zoom]="zoom()"
+      [width]="width()"
       [markers]="markers"
       [polylines]="polylines"
-      height="500px"
-      ariaLabel="Amsterdam to Paris route"
+      [height]="height()"
+      [ariaLabel]="ariaLabel()"
     />
   

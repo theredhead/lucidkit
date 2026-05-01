@@ -1,8 +1,6 @@
-import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
+import { type Meta } from "@storybook/angular";
 
 import { UICalendarMonthView } from "../../calendar-month-view.component";
-
-import { DocumentationStorySource } from "./documentation.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Calendar Month View",
@@ -11,42 +9,9 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "`UICalendarMonthView` renders a classic month-grid calendar " +
-          "populated with events from a `CalendarDatasource`.",
-      },
-    },
-  },
-  argTypes: {
-    showWeekNumbers: {
-      control: "boolean",
-      description: "Show ISO week numbers in the first column.",
-    },
-    maxEventsPerDay: {
-      control: "number",
-      description: "Maximum events shown per day before an overflow indicator.",
-    },
-    disabled: {
-      control: "boolean",
-      description: "Disables date selection.",
-    },
-    ariaLabel: {
-      control: "text",
-      description: "Accessible label for the calendar.",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DocumentationStorySource] })]
-} satisfies Meta<UICalendarMonthView>;
-
-export default meta;
-type Story = StoryObj<UICalendarMonthView>;
-
-export const Documentation: Story = {
-  tags: ["!dev"],
-  parameters: {
-    docs: {
-      description: {
-        story: [
+        component: [
+          "`UICalendarMonthView` renders a classic month-grid calendar populated with events from a `CalendarDatasource`.",
+          "",
           "## Key Features",
           "",
           "- **Datasource-driven** — plug in any `CalendarDatasource` implementation",
@@ -77,9 +42,28 @@ export const Documentation: Story = {
           "| `dateSelected` | `Date` | Emitted when a day cell is clicked |",
           "| `eventSelected` | `CalendarEvent` | Emitted when an event badge is clicked |",
           "| `monthChanged` | `Date` | Emitted when the displayed month changes |",
-        ].join("\n")
-      }
-    }
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({ template: " " })
-};
+  argTypes: {
+    showWeekNumbers: {
+      control: "boolean",
+      description: "Show ISO week numbers in the first column.",
+    },
+    maxEventsPerDay: {
+      control: "number",
+      description: "Maximum events shown per day before an overflow indicator.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables date selection.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the calendar.",
+    },
+  },
+} satisfies Meta;
+
+export default meta;

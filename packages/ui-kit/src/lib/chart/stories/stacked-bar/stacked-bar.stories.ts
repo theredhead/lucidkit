@@ -6,7 +6,7 @@ import { StackedBarStorySource } from "./stacked-bar.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: StackedBarStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +34,29 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [StackedBarStorySource] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [StackedBarStorySource] })],
+} satisfies Meta<StackedBarStorySource>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<StackedBarStorySource>;
 
 export const StackedBar: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 560,
+    height: 340,
+    showLegend: true,
+    ariaLabel: "Revenue, cost and profit stacked bar chart",
   },
-  render: () => ({
-      template: "<ui-stacked-bar-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-stacked-bar-story-demo
+        [width]="width"
+        [height]="height"
+        [showLegend]="showLegend"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

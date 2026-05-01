@@ -1,6 +1,20 @@
 import { UIRepeater } from "../../repeater.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+
+import { ArrayDatasource } from "../../../table-view/datasources/array-datasource";
+import type { RepeaterReorderEvent } from "../../repeater.types";
+
+interface ReorderableItem {
+  readonly name: string;
+}
+
+const ITEMS: readonly ReorderableItem[] = [
+  { name: "Backlog" },
+  { name: "Design" },
+  { name: "Build" },
+  { name: "QA" },
+];
 
 @Component({
   selector: "ui-reorderable-story-demo",
@@ -11,5 +25,11 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./reorderable.story.scss",
 })
 export class ReorderableStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/repeater/repeater.stories.ts.
+  public readonly ariaLabel = input<string | undefined>(undefined);
+
+  public readonly ds = new ArrayDatasource([...ITEMS]);
+
+  public readonly reorderable = input(true);
+
+  public onReorder(_event: RepeaterReorderEvent): void {}
 }

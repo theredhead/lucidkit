@@ -6,7 +6,7 @@ import { AccordionMultiDemo } from "./multi-mode.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Accordion",
-  component: UIAccordion,
+  component: AccordionMultiDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -38,10 +38,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AccordionMultiDemo] })]
-} satisfies Meta<UIAccordion>;
+} satisfies Meta<AccordionMultiDemo>;
 
 export default meta;
-type Story = StoryObj<UIAccordion>;
+type Story = StoryObj<AccordionMultiDemo>;
 
 export const MultiMode: Story = {
   parameters: {

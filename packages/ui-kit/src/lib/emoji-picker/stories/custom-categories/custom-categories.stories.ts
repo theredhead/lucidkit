@@ -6,7 +6,7 @@ import { CustomCategoriesStorySource } from "./custom-categories.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Emoji Picker",
-  component: UIEmojiPicker,
+  component: CustomCategoriesStorySource,
   tags: ["autodocs"],
   argTypes: {
     searchPlaceholder: {
@@ -23,10 +23,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CustomCategoriesStorySource] })]
-} satisfies Meta<UIEmojiPicker>;
+} satisfies Meta<CustomCategoriesStorySource>;
 
 export default meta;
-type Story = StoryObj<UIEmojiPicker>;
+type Story = StoryObj<CustomCategoriesStorySource>;
 
 export const CustomCategories: Story = {
   args: {},

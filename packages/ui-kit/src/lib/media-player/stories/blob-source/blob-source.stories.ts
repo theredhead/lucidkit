@@ -6,7 +6,7 @@ import { BlobSourceStorySource } from "./blob-source.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: BlobSourceStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [BlobSourceStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<BlobSourceStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<BlobSourceStorySource>;
 
 export const BlobSource: Story = {
   parameters: {

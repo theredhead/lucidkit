@@ -2,6 +2,11 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { DisabledDemo } from "./disabled.story";
 
+interface DisabledStoryArgs {
+  placeholder: string;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Autocomplete",
   tags: ["autodocs"],
@@ -18,34 +23,29 @@ const meta = {
       control: "text",
       description: "Placeholder text for the search input.",
     },
-    minChars: {
-      control: "number",
-      description: "Minimum characters before querying the datasource.",
-    },
-    multiple: {
-      control: "boolean",
-      description: "Enable multi-select with chip tokens.",
-    },
-    disabled: {
-      control: "boolean",
-      description: "Disables the autocomplete.",
-    },
     ariaLabel: {
       control: "text",
       description: "Accessible label for the input.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DisabledDemo] })]
-} satisfies Meta;
+  decorators: [moduleMetadata({ imports: [DisabledDemo] })],
+} satisfies Meta<DisabledStoryArgs>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<DisabledStoryArgs>;
 
 export const Disabled: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    placeholder: "Disabled autocomplete",
+    ariaLabel: "Disabled autocomplete",
   },
-  render: () => ({
-      template: "<ui-ac-disabled-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `
+      <ui-ac-disabled-demo
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+      />
+    `,
+  }),
 };

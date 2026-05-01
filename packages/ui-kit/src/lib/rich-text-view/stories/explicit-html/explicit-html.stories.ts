@@ -9,7 +9,7 @@ import { ExplicitHtmlStorySource } from "./explicit-html.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rich Text View",
-  component: UIRichTextView,
+  component: ExplicitHtmlStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ExplicitHtmlStorySource] })]
-} satisfies Meta<UIRichTextView>;
+} satisfies Meta<ExplicitHtmlStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextView>;
+type Story = StoryObj<ExplicitHtmlStorySource>;
 
 export const ExplicitHtml: Story = {
   name: "Explicit HTML strategy",

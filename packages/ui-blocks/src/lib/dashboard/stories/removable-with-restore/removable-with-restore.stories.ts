@@ -1,12 +1,21 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDashboard } from "../../dashboard.component";
+import type {
+  DashboardColumns,
+  DashboardDockPosition,
+} from "../../dashboard.types";
 
 import { DashboardRestoreDemo } from "./removable-with-restore.story";
 
+interface DashboardRestoreStoryArgs {
+  readonly columns: DashboardColumns;
+  readonly gap: number;
+  readonly dockPosition: DashboardDockPosition;
+}
+
 const meta = {
   title: "@theredhead/UI Blocks/Dashboard",
-  component: UIDashboard,
+  component: DashboardRestoreDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -30,21 +39,28 @@ const meta = {
     },
     dockPosition: {
       control: "select",
-      options: ["bottom", "left", "right"],
+      options: ["top", "bottom"],
       description: "Position of the panel dock.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DashboardRestoreDemo] })]
-} satisfies Meta<UIDashboard>;
+  decorators: [moduleMetadata({ imports: [DashboardRestoreDemo] })],
+} satisfies Meta<DashboardRestoreStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIDashboard>;
+type Story = StoryObj<DashboardRestoreStoryArgs>;
 
 export const RemovableWithRestore: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    columns: 3,
+    gap: 16,
+    dockPosition: "bottom",
   },
-  render: () => ({
-      template: "<ui-dashboard-restore-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-dashboard-restore-demo [columns]="columns" [gap]="gap" [dockPosition]="dockPosition"></ui-dashboard-restore-demo>',
+  }),
 };

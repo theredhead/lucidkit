@@ -6,7 +6,7 @@ import { AllModesStorySource } from "./all-modes.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Signature",
-  component: UISignature,
+  component: AllModesStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -17,10 +17,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AllModesStorySource] })]
-} satisfies Meta<UISignature>;
+} satisfies Meta<AllModesStorySource>;
 
 export default meta;
-type Story = StoryObj<UISignature>;
+type Story = StoryObj<AllModesStorySource>;
 
 export const AllModes: Story = {
   parameters: {

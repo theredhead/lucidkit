@@ -1,15 +1,14 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
-import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
-
-const modes: RichTextEditorMode[] = ["html", "markdown"];
-
 import { DemoCustomParser } from "./custom-parser-manual.story";
+import {
+  FIXED_MODE_RICH_TEXT_EDITOR_STORY_ARG_TYPES,
+  type FixedModeRichTextEditorStoryArgs,
+} from "../rich-text-editor-story-helpers";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: DemoCustomParser,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -19,51 +18,27 @@ const meta = {
       },
     },
   },
-  argTypes: {
-    disabled: {
-      control: "boolean",
-      description:
-        "Disables the editor — the toolbar is hidden and the content area cannot be focused or edited.",
-    },
-    readonly: {
-      control: "boolean",
-      description:
-        "Makes the editor read-only — content is visible and selectable but the toolbar is hidden and editing is prevented.",
-    },
-    placeholder: {
-      control: "text",
-      description:
-        "Placeholder text displayed inside the empty editing area. Disappears once the user starts typing.",
-    },
-    ariaLabel: {
-      control: "text",
-      description:
-        "Accessible label forwarded to the contenteditable region or textarea for screen readers.",
-    },
-    mode: {
-      control: "select",
-      options: modes satisfies RichTextEditorMode[],
-      description:
-        'Editing strategy: `"html"` uses contenteditable with rich WYSIWYG formatting; `"markdown"` uses a plain textarea with toolbar-driven Markdown syntax insertion.',
-    },
-    presentation: {
-      control: "select",
-      options: ["default", "compact"],
-      description:
-        'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DemoCustomParser] })]
-} satisfies Meta<UIRichTextEditor>;
+  argTypes: FIXED_MODE_RICH_TEXT_EDITOR_STORY_ARG_TYPES,
+  decorators: [moduleMetadata({ imports: [DemoCustomParser] })],
+} satisfies Meta<FixedModeRichTextEditorStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<FixedModeRichTextEditorStoryArgs>;
 
 export const CustomParserManual: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    disabled: false,
+    readonly: false,
+    placeholder: "Custom parser — headings are uppercased…",
+    ariaLabel: "Markdown editor with custom parser",
+    presentation: "default",
   },
-  render: () => ({
-      template: "<ui-demo-custom-parser />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-demo-custom-parser [disabled]="disabled" [readonly]="readonly" [placeholder]="placeholder" [ariaLabel]="ariaLabel" [presentation]="presentation" (blockInserted)="blockInserted($event)" (blockEdited)="blockEdited($event)" (blockRemoved)="blockRemoved($event)" />',
+  }),
 };

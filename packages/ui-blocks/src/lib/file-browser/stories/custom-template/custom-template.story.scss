@@ -1,21 +1,21 @@
 @use "../shared";
 
 .custom-entry {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	width: 100%;
-	font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  font-size: 13px;
 }
 
 .custom-name {
-	flex: 1;
-	font-weight: 500;
+  flex: 1;
+  font-weight: 500;
 }
 
 .custom-meta {
-	color: var(--ui-text-muted, #8b919a);
-	background: transparent;
-	font-size: 12px;
-	font-weight: 400;
+  color: var(--ui-text-muted, #8b919a);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 400;
 }

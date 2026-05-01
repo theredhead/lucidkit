@@ -1,13 +1,12 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UISlider } from "../../slider.component";
 import type { SliderMode } from "../../slider.types";
 
 import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Slider",
-  component: UISlider,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -57,11 +56,11 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UISlider>;
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
+} satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
-type Story = StoryObj<UISlider>;
+type Story = StoryObj<PlaygroundStorySource>;
 
 export const Playground: Story = {
   args: {
@@ -77,7 +76,7 @@ export const Playground: Story = {
   },
   render: (args) => ({
     props: args,
-    template: `<ui-slider
+    template: `<ui-playground-story-demo
       [mode]="mode"
       [min]="min"
       [max]="max"
@@ -88,5 +87,5 @@ export const Playground: Story = {
       [disabled]="disabled"
       [ariaLabel]="ariaLabel"
     />`,
-  })
+  }),
 };

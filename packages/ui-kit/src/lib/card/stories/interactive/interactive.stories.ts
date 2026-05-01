@@ -5,7 +5,7 @@ import { UICardStoryInteractive } from "./interactive.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Card",
-  component: UICard,
+  component: UICardStoryInteractive,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UICardStoryInteractive] })],
-} satisfies Meta<UICard>;
+} satisfies Meta<UICardStoryInteractive>;
 
 export default meta;
 type Story = StoryObj;

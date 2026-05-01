@@ -1,12 +1,15 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIBreadcrumb, type BreadcrumbVariant } from "../../breadcrumb.component";
+import {
+  UIBreadcrumb,
+  type BreadcrumbVariant,
+} from "../../breadcrumb.component";
 
 import { BreadcrumbDemo } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Breadcrumb",
-  component: UIBreadcrumb,
+  component: BreadcrumbDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,36 +39,39 @@ const meta = {
       description: "Accessible label for the navigation landmark.",
     },
   },
-  decorators: [moduleMetadata({ imports: [BreadcrumbDemo] })]
-} satisfies Meta<UIBreadcrumb>;
+  decorators: [moduleMetadata({ imports: [BreadcrumbDemo] })],
+} satisfies Meta<BreadcrumbDemo>;
 
 export default meta;
-type Story = StoryObj<UIBreadcrumb>;
+type Story = StoryObj<BreadcrumbDemo>;
 
 export const Default: Story = {
   parameters: {
+    controls: {
+      disable: true,
+    },
     docs: {
       description: {
         story:
-        "### Features\n" +
-        "- **Custom separator** — default `/`, or pass any string (`›`, `|`, etc.)\n" +
-        "- **Link variant** (default) — crumbs render as `<a>` anchors\n" +
-        "- **Button variant** — crumbs render as styled buttons with chevron separators\n" +
-        "- **Active item** — the last item (no `url`) renders as plain text\n\n" +
-        "### Inputs\n" +
-        "| Input | Type | Default | Description |\n" +
-        "|-------|------|---------|-------------|\n" +
-        "| `items` | `BreadcrumbItem[]` | *(required)* | Array of `{ label, url? }` |\n" +
-        "| `variant` | `'link' \\| 'button'` | `'link'` | Visual style |\n" +
-        "| `separator` | `string` | `'/'` | Separator between crumbs (link variant) |\n\n" +
-        "### Output\n" +
-        "| Output | Payload | Description |\n" +
-        "|--------|---------|-------------|\n" +
-        "| `itemClicked` | `BreadcrumbItem` | Emitted when a crumb is clicked |"
-      }
-    }
+          "### Features\n" +
+          "- **Custom separator** — default `/`, or pass any string (`›`, `|`, etc.)\n" +
+          "- **Link variant** (default) — crumbs render as `<a>` anchors\n" +
+          "- **Button variant** — crumbs render as styled buttons with chevron separators\n" +
+          "- **Active item** — the last item (no `url`) renders as plain text\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `items` | `BreadcrumbItem[]` | *(required)* | Array of `{ label, url? }` |\n" +
+          "| `variant` | `'link' \\| 'button'` | `'link'` | Visual style |\n" +
+          "| `separator` | `string` | `'/'` | Separator between crumbs (link variant) |\n\n" +
+          "### Output\n" +
+          "| Output | Payload | Description |\n" +
+          "|--------|---------|-------------|\n" +
+          "| `itemClicked` | `BreadcrumbItem` | Emitted when a crumb is clicked |",
+      },
+    },
   },
   render: () => ({
-      template: "<ui-breadcrumb-demo />",
-    })
+    template: `<ui-breadcrumb-demo />`,
+  }),
 };

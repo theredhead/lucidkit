@@ -6,7 +6,7 @@ import { WithComponentResolverStorySource } from "./with-component-resolver.stor
 
 const meta = {
   title: "@theredhead/UI Kit/Timeline",
-  component: UITimeline,
+  component: WithComponentResolverStorySource,
   tags: ["autodocs"],
   argTypes: {
     orientation: {
@@ -25,10 +25,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [WithComponentResolverStorySource] })]
-} satisfies Meta<UITimeline>;
+} satisfies Meta<WithComponentResolverStorySource>;
 
 export default meta;
-type Story = StoryObj<UITimeline>;
+type Story = StoryObj<WithComponentResolverStorySource>;
 
 export const WithComponentResolver: Story = {
   args: {

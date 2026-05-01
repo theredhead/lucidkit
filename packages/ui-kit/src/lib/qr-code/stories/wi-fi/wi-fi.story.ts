@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./wi-fi.story.scss",
 })
 export class WiFiStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/qr-code/qr-code.stories.ts.
 }

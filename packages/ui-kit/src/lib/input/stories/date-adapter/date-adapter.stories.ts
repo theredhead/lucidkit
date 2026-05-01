@@ -6,7 +6,7 @@ import { DateAdapterStorySource } from "./date-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: DateAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DateAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<DateAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<DateAdapterStorySource>;
 
 export const DateAdapter: Story = {
   parameters: {

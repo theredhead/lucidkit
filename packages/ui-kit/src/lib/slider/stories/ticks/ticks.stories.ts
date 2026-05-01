@@ -1,13 +1,12 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UISlider } from "../../slider.component";
 import type { SliderMode } from "../../slider.types";
 
 import { TicksStorySource } from "./ticks.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Slider",
-  component: UISlider,
+  component: TicksStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -57,17 +56,39 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [TicksStorySource] })]
-} satisfies Meta<UISlider>;
+  decorators: [moduleMetadata({ imports: [TicksStorySource] })],
+} satisfies Meta<TicksStorySource>;
 
 export default meta;
-type Story = StoryObj<UISlider>;
+type Story = StoryObj<TicksStorySource>;
 
 export const Ticks: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    mode: "single",
+    min: 0,
+    max: 100,
+    step: 20,
+    showValue: true,
+    showMinMax: false,
+    showTicks: true,
+    disabled: false,
+    ariaLabel: "Auto",
   },
-  render: () => ({
-      template: "<ui-ticks-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-ticks-story-demo
+      [mode]="mode"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      [showValue]="showValue"
+      [showMinMax]="showMinMax"
+      [showTicks]="showTicks"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

@@ -6,9 +6,10 @@
       valueProperty="revenue"
       [sources]="layers"
       [strategy]="strategy"
-      [width]="560"
-      [height]="340"
-      ariaLabel="Revenue and cost scatter plot"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Each series is rendered as a different-coloured group of circles, all

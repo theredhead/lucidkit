@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./disabled.story.scss",
 })
 export class DisabledStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/dropdown-list/dropdown-list.stories.ts.
 }

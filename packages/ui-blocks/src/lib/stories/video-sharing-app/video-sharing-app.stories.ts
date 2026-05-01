@@ -1,9 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { VideoSharingAppDemo } from "./video-sharing-app";
+import { VideoSharingAppStorySource } from "./video-sharing-app.story";
 
 const meta: Meta = {
   title: "@theredhead/Showcases/Video Sharing App",
+  component: VideoSharingAppStorySource,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -21,7 +22,7 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [VideoSharingAppDemo],
+      imports: [VideoSharingAppStorySource],
     }),
   ],
 };
@@ -46,7 +47,7 @@ type Story = StoryObj;
  */
 export const Default: Story = {
   render: () => ({
-    template: `<ui-demo-video-sharing-app />`,
+    template: `<ui-video-sharing-app-story-source />`,
   }),
   parameters: {
     docs: {

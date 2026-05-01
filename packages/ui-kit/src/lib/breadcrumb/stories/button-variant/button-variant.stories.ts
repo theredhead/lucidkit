@@ -1,12 +1,12 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIBreadcrumb, type BreadcrumbVariant } from "../../breadcrumb.component";
+import { type BreadcrumbVariant } from "../../breadcrumb.component";
 
 import { BreadcrumbButtonDemo } from "./button-variant.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Breadcrumb",
-  component: UIBreadcrumb,
+  component: BreadcrumbButtonDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,17 +36,29 @@ const meta = {
       description: "Accessible label for the navigation landmark.",
     },
   },
-  decorators: [moduleMetadata({ imports: [BreadcrumbButtonDemo] })]
-} satisfies Meta<UIBreadcrumb>;
+  decorators: [moduleMetadata({ imports: [BreadcrumbButtonDemo] })],
+} satisfies Meta<BreadcrumbButtonDemo>;
 
 export default meta;
-type Story = StoryObj<UIBreadcrumb>;
+type Story = StoryObj<BreadcrumbButtonDemo>;
 
 export const ButtonVariant: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    variant: "button",
+    separator: "/",
+    disabled: false,
+    ariaLabel: "Breadcrumb",
   },
-  render: () => ({
-      template: "<ui-breadcrumb-button-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-breadcrumb-button-demo
+      [variant]="variant"
+      [separator]="separator"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

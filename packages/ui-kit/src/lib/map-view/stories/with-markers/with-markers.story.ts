@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIMapView } from "../../map-view.component";
 import type { MapLatLng, MapMarker } from "../../map-view.model";
 
@@ -41,6 +41,10 @@ const CITY_MARKERS: MapMarker[] = [
   templateUrl: "./with-markers.story.html",
 })
 export class MapViewMarkersDemo {
+  readonly zoom = input(5);
+  readonly width = input<string | undefined>(undefined);
+  readonly height = input("500px");
+  readonly ariaLabel = input("European cities");
   readonly center = EUROPE_CENTER;
   readonly markers = CITY_MARKERS;
 }

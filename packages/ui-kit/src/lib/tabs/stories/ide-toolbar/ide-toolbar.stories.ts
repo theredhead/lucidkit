@@ -6,7 +6,7 @@ import { IdeToolbarStorySource } from "./ide-toolbar.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: IdeToolbarStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [IdeToolbarStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<IdeToolbarStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<IdeToolbarStorySource>;
 
 export const IdeToolbar: Story = {
   parameters: {

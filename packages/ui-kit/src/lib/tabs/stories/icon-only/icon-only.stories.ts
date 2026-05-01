@@ -6,7 +6,7 @@ import { IconOnlyStorySource } from "./icon-only.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: IconOnlyStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [IconOnlyStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<IconOnlyStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<IconOnlyStorySource>;
 
 export const IconOnly: Story = {
   parameters: {

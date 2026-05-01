@@ -1,8 +1,6 @@
-import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
+import { type Meta } from "@storybook/angular";
 
 import { UISplitContainer } from "../../split-container.component";
-
-import { DocumentationStorySource } from "./documentation.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
@@ -11,42 +9,9 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
+        component: [
           "`UISplitContainer` is a resizable N-panel layout. Place any number of `<ui-split-panel>` children inside — dividers are automatically inserted between adjacent panels. Each divider only ever adjusts its two immediately adjacent panels.",
-      },
-    },
-  },
-  argTypes: {
-    orientation: {
-      control: "select",
-      options: ["horizontal", "vertical"],
-      description: "Layout direction of the panels.",
-    },
-    dividerWidth: {
-      control: "number",
-      description: "Width of the draggable divider in pixels.",
-    },
-    disabled: {
-      control: "boolean",
-      description: "Disables resizing.",
-    },
-    ariaLabel: {
-      control: "text",
-      description: "Accessible label for each resize handle.",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DocumentationStorySource] })]
-} satisfies Meta<UISplitContainer>;
-
-export default meta;
-type Story = StoryObj<UISplitContainer>;
-
-export const Documentation: Story = {
-  tags: ["!dev"],
-  parameters: {
-    docs: {
-      description: {
-        story: [
+          "",
           "## Key Features",
           "",
           "- **N-panel layout** — place any number of `<ui-split-panel>` children; dividers are inserted automatically",
@@ -80,9 +45,29 @@ export const Documentation: Story = {
           "|--------|---------|-------------|",
           "| `resized` | `SplitResizeEvent` | Emitted after drag ends |",
           "| `resizing` | `SplitResizeEvent` | Emitted while dragging |",
-        ].join("\n")
-      }
-    }
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({ template: " " })
-};
+  argTypes: {
+    orientation: {
+      control: "select",
+      options: ["horizontal", "vertical"],
+      description: "Layout direction of the panels.",
+    },
+    dividerWidth: {
+      control: "number",
+      description: "Width of the draggable divider in pixels.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables resizing.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for each resize handle.",
+    },
+  },
+} satisfies Meta;
+
+export default meta;

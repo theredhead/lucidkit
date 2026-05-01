@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { BarGraphStrategy } from "../../strategies/bar-graph.strategy";
 import { LineGraphStrategy } from "../../strategies/line-graph.strategy";
@@ -28,10 +33,18 @@ const quarterlyData: QuarterlyMetric[] = [
   templateUrl: "./small-dimensions.story.html",
 })
 export class ChartSmallDemo {
+  public readonly width = input<number>(200);
+  public readonly height = input<number>(150);
+  public readonly showLegend = input<boolean>(false);
+  public readonly ariaLabel = input<string>("Data chart");
+
   public readonly data = quarterlyData;
   public readonly pieData = quarterlyData;
   public readonly barStrategy = new BarGraphStrategy();
   public readonly lineStrategy = new LineGraphStrategy();
   public readonly scatterStrategy = new ScatterPlotStrategy();
   public readonly pieStrategy = new PieChartStrategy();
+  protected readonly pieSize = computed(() =>
+    Math.min(this.width(), this.height()),
+  );
 }

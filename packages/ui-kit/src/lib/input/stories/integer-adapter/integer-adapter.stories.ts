@@ -6,7 +6,7 @@ import { IntegerAdapterStorySource } from "./integer-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: IntegerAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [IntegerAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<IntegerAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<IntegerAdapterStorySource>;
 
 export const IntegerAdapter: Story = {
   parameters: {

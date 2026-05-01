@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./horizontal.story.scss",
 })
 export class HorizontalStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/timeline/timeline.stories.ts.
 }

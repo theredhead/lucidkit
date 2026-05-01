@@ -20,7 +20,6 @@ import type { SelectOption } from "@theredhead/lucid-kit";
  * ```
  */
 export interface RichTextPlaceholder {
-
   /** Unique token key, e.g. `'firstName'`. */
   readonly key: string;
 
@@ -53,7 +52,6 @@ export type RichTextTemplateBlockAttributeDefinition = Omit<
   PropertyFieldDefinition<Record<string, unknown>>,
   "type"
 > & {
-
   /**
    * Property editor control type.
    */
@@ -65,7 +63,6 @@ export type RichTextTemplateBlockAttributeDefinition = Omit<
  * editor.
  */
 export interface RichTextTemplateBlockUiProvider {
-
   /**
    * XML block name handled by this UI provider.
    */
@@ -96,6 +93,21 @@ export interface RichTextTemplateBlockUiProvider {
    * Optional label formatter for a specific block instance.
    */
   formatLabel?(attributes: Readonly<Record<string, string>>): string;
+}
+
+/**
+ * Event payload describing a template block instance in the editor.
+ */
+export interface RichTextTemplateBlockEvent {
+  /**
+   * XML block name.
+   */
+  readonly name: string;
+
+  /**
+   * Current XML attribute map for the block instance.
+   */
+  readonly attributes: Readonly<Record<string, string>>;
 }
 
 /** @internal */
@@ -150,7 +162,8 @@ registerRichTextTemplateBlockUiProvider({
       placeholder: "firstName",
     },
   ],
-  formatLabel: (attributes) => attributes["label"] ?? attributes["key"] ?? "Placeholder",
+  formatLabel: (attributes) =>
+    attributes["label"] ?? attributes["key"] ?? "Placeholder",
 });
 
 registerRichTextTemplateBlockUiProvider({
@@ -208,8 +221,7 @@ registerRichTextTemplateBlockUiProvider({
       placeholder: "fullName",
     },
   ],
-  formatLabel: (attributes) =>
-    `Email ${attributes["email"] ?? ""}`.trim(),
+  formatLabel: (attributes) => `Email ${attributes["email"] ?? ""}`.trim(),
 });
 
 /**
@@ -318,7 +330,6 @@ export const DEFAULT_TOOLBAR_ACTIONS: readonly RichTextFormatAction[] = [
  * @internal
  */
 export interface ToolbarButtonMeta {
-
   /** The action this button triggers. */
   readonly action: RichTextFormatAction;
 
@@ -541,7 +552,6 @@ export const TOOLBAR_BUTTON_REGISTRY: Record<
  * @internal
  */
 export interface ToolbarGroupMeta {
-
   /** Accessible label for the dropdown trigger. */
   readonly label: string;
 

@@ -6,7 +6,7 @@ import { VerticalStorySource } from "./vertical.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
-  component: UISplitContainer,
+  component: VerticalStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [VerticalStorySource] })]
-} satisfies Meta<UISplitContainer>;
+} satisfies Meta<VerticalStorySource>;
 
 export default meta;
-type Story = StoryObj<UISplitContainer>;
+type Story = StoryObj<VerticalStorySource>;
 
 export const Vertical: Story = {
   parameters: {

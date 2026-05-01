@@ -6,7 +6,7 @@ import { AudioStorySource } from "./audio.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: AudioStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AudioStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<AudioStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<AudioStorySource>;
 
 export const Audio: Story = {
   parameters: {

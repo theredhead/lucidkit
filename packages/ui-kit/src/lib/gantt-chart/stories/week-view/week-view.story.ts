@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIGanttChart } from "../../gantt-chart.component";
 import { GanttArrayDatasource } from "../../gantt-array-datasource";
-import type { GanttTask } from "../../gantt-chart.types";
+import type { GanttTask, GanttViewMode } from "../../gantt-chart.types";
 
 // ── Shared fixtures ──────────────────────────────────────────────────
 
@@ -113,5 +113,26 @@ const PROJECT_TASKS: GanttTask[] = [
   templateUrl: "./week-view.story.html",
 })
 export class GanttWeekDemo {
+  /** Timeline granularity for the demo chart. */
+  public readonly viewMode = input<GanttViewMode>("week");
+
+  /** Height of each task row in pixels. */
+  public readonly rowHeight = input<number>(36);
+
+  /** Whether to show the current-date marker. */
+  public readonly showToday = input<boolean>(true);
+
+  /** Whether to render the task-list sidebar. */
+  public readonly showTaskList = input<boolean>(true);
+
+  /** Width of the task-list sidebar in pixels. */
+  public readonly taskListWidth = input<number>(200);
+
+  /** Extra days of padding added before and after the task range. */
+  public readonly paddingDays = input<number>(2);
+
+  /** Accessible label forwarded to the chart region. */
+  public readonly ariaLabel = input<string>("Gantt chart");
+
   public readonly datasource = new GanttArrayDatasource(PROJECT_TASKS);
 }

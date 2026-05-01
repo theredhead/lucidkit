@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartSmallDemo } from "./small-dimensions.story";
 
+interface ChartSmallStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartSmallDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartSmallDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartSmallDemo] })],
+} satisfies Meta<ChartSmallStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartSmallStoryArgs>;
 
 export const SmallDimensions: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 200,
+    height: 150,
+    showLegend: false,
+    ariaLabel: "Data chart",
   },
-  render: () => ({
-      template: "<ui-chart-small-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-small-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

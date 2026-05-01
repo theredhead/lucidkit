@@ -6,7 +6,7 @@ import { UrlAdapterStorySource } from "./url-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: UrlAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UrlAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<UrlAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<UrlAdapterStorySource>;
 
 export const UrlAdapter: Story = {
   parameters: {

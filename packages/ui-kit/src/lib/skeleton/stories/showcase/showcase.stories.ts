@@ -6,7 +6,7 @@ import { SkeletonDemo } from "./showcase.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Skeleton",
-  component: UISkeleton,
+  component: SkeletonDemo,
   tags: ["autodocs"],
   argTypes: {
     variant: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SkeletonDemo] })]
-} satisfies Meta<UISkeleton>;
+} satisfies Meta<SkeletonDemo>;
 
 export default meta;
-type Story = StoryObj<UISkeleton>;
+type Story = StoryObj<SkeletonDemo>;
 
 export const Showcase: Story = {
   parameters: {

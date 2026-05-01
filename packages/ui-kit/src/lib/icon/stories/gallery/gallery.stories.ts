@@ -6,7 +6,7 @@ import { StoryIconGallery } from "./gallery.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Icon",
-  component: UIIcon,
+  component: StoryIconGallery,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -20,10 +20,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [StoryIconGallery] })]
-} satisfies Meta<UIIcon>;
+} satisfies Meta<StoryIconGallery>;
 
 export default meta;
-type Story = StoryObj<UIIcon>;
+type Story = StoryObj<StoryIconGallery>;
 
 export const Gallery: Story = {
   parameters: {

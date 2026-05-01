@@ -6,7 +6,7 @@ import { CustomIconsStorySource } from "./custom-icons.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Icon",
-  component: UIIcon,
+  component: CustomIconsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -20,10 +20,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CustomIconsStorySource] })]
-} satisfies Meta<UIIcon>;
+} satisfies Meta<CustomIconsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIIcon>;
+type Story = StoryObj<CustomIconsStorySource>;
 
 export const CustomIcons: Story = {
   parameters: {

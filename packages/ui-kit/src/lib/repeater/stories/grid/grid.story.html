@@ -1,5 +1,9 @@
 
-    <ui-repeater [datasource]="ds">
+    <ui-repeater
+      [datasource]="ds"
+      [reorderable]="reorderable()"
+      [ariaLabel]="ariaLabel()"
+    >
       <ng-template let-photo let-i="index">
         <figure class="card">
           <img

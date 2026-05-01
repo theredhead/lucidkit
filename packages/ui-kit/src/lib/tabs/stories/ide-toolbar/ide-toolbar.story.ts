@@ -14,5 +14,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./ide-toolbar.story.scss",
 })
 export class IdeToolbarStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/tabs/tab-group.stories.ts.
 }

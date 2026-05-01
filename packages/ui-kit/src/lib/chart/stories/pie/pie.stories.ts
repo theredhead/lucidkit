@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartPieDemo } from "./pie.story";
 
+interface ChartPieStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartPieDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartPieDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartPieDemo] })],
+} satisfies Meta<ChartPieStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartPieStoryArgs>;
 
 export const Pie: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 360,
+    height: 360,
+    showLegend: true,
+    ariaLabel: "Browser market share pie chart",
   },
-  render: () => ({
-      template: "<ui-chart-pie-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-pie-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

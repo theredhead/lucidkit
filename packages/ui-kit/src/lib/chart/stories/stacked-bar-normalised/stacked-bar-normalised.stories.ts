@@ -6,7 +6,7 @@ import { StackedBarNormalisedStorySource } from "./stacked-bar-normalised.story"
 
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: StackedBarNormalisedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +34,29 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [StackedBarNormalisedStorySource] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [StackedBarNormalisedStorySource] })],
+} satisfies Meta<StackedBarNormalisedStorySource>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<StackedBarNormalisedStorySource>;
 
 export const StackedBarNormalised: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 560,
+    height: 340,
+    showLegend: true,
+    ariaLabel: "Normalised stacked revenue, cost and profit chart",
   },
-  render: () => ({
-      template: "<ui-stacked-bar-normalised-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-stacked-bar-normalised-story-demo
+        [width]="width"
+        [height]="height"
+        [showLegend]="showLegend"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

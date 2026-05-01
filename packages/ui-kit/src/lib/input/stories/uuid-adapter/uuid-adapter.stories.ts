@@ -6,7 +6,7 @@ import { UuidAdapterStorySource } from "./uuid-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: UuidAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UuidAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<UuidAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<UuidAdapterStorySource>;
 
 export const UuidAdapter: Story = {
   parameters: {

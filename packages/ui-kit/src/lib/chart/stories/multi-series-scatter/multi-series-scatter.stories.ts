@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartMultiScatterDemo } from "./multi-series-scatter.story";
 
+interface ChartMultiScatterStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartMultiScatterDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartMultiScatterDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartMultiScatterDemo] })],
+} satisfies Meta<ChartMultiScatterStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartMultiScatterStoryArgs>;
 
 export const MultiSeriesScatter: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 560,
+    height: 340,
+    showLegend: true,
+    ariaLabel: "Revenue and cost scatter plot",
   },
-  render: () => ({
-      template: "<ui-chart-multi-scatter-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-multi-scatter-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

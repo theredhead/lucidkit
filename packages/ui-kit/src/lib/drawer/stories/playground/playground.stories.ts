@@ -6,7 +6,7 @@ import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Drawer",
-  component: UIDrawer,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -41,10 +41,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UIDrawer>;
+} satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
-type Story = StoryObj<UIDrawer>;
+type Story = StoryObj<PlaygroundStorySource>;
 
 export const Playground: Story = {
   args: {

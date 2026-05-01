@@ -1,5 +1,8 @@
 
     <ui-navigation-page
+      [drawerPosition]="drawerPosition()"
+      [drawerWidth]="drawerWidth()"
+      [ariaLabel]="ariaLabel()"
       [items]="items"
       [sidebarPinned]="false"
       storageKey="storybook-nav-drawer"

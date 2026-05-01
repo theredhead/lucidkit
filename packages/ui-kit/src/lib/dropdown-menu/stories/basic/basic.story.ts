@@ -1,15 +1,28 @@
-import { UIDropdownMenu } from "../../dropdown-menu.component";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UIButton } from "../../../button/button.component";
+import {
+  type DropdownAlign,
+  UIDropdownDivider,
+  UIDropdownItem,
+  UIDropdownMenu,
+} from "../../dropdown-menu.component";
 
 @Component({
   selector: "ui-basic-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIDropdownMenu],
+  imports: [UIDropdownMenu, UIButton, UIDropdownItem, UIDropdownDivider],
   templateUrl: "./basic.story.html",
   styleUrl: "./basic.story.scss",
 })
 export class BasicStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/dropdown-menu/dropdown-menu.stories.ts.
+  public readonly align = input<DropdownAlign>("start");
+  public readonly ariaLabel = input("Menu");
+
+  public onEdit(): void {}
+
+  public onDuplicate(): void {}
+
+  public onArchive(): void {}
 }

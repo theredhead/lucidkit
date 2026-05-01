@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from "@angular/core";
 import { UIDensityDirective } from "../../../ui-density";
 import { UIBadgeColumn } from "../../columns/badge-column/badge-column.component";
 import { UINumberColumn } from "../../columns/number-column/number-column.component";
@@ -22,8 +27,18 @@ import { SelectionModel } from "../../../core/selection-model";
     UIDensityDirective,
   ],
   templateUrl: "./multiple-selection.story.html",
+  styleUrl: "./multiple-selection.story.scss",
 })
 export class UITableViewMultiSelectDemo {
+  readonly caption = input("Multiple Selection");
+  readonly selectionMode = input<"none" | "single" | "multiple">("multiple");
+  readonly showBuiltInPaginator = input(true);
+  readonly showRowIndexIndicator = input(true);
+  readonly showSelectionColumn = input(true);
+  readonly rowClickSelect = input(true);
+  readonly pageSize = input<number | undefined>(undefined);
+  readonly disabled = input(false);
+
   readonly adapter = new JsonPlaceholderPostsDatasource(25);
   readonly selectionModel = new SelectionModel<JsonPlaceholderPost>(
     "multiple",

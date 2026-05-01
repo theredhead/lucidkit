@@ -1,4 +1,5 @@
 import { UISplitContainer } from "../../split-container.component";
+import { UISplitPanel } from "../../split-panel.component";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -6,10 +7,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   selector: "ui-vertical-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UISplitContainer],
+  imports: [UISplitContainer, UISplitPanel],
   templateUrl: "./vertical.story.html",
   styleUrl: "./vertical.story.scss",
 })
-export class VerticalStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/split-container/split-container.stories.ts.
-}
+export class VerticalStorySource {}

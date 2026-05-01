@@ -6,13 +6,13 @@ import { FloatingToggleStorySource } from "./floating-toggle.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toolbar",
-  component: UIToolbar,
+  component: FloatingToggleStorySource,
   tags: ["autodocs"],
   decorators: [moduleMetadata({ imports: [FloatingToggleStorySource] })]
-} satisfies Meta<UIToolbar>;
+} satisfies Meta<FloatingToggleStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToolbar>;
+type Story = StoryObj<FloatingToggleStorySource>;
 
 export const FloatingToggle: Story = {
   parameters: {

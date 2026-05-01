@@ -6,7 +6,7 @@ import { TreeViewSortingDemo } from "./sorting.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tree View",
-  component: UITreeView,
+  component: TreeViewSortingDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TreeViewSortingDemo] })]
-} satisfies Meta<UITreeView>;
+} satisfies Meta<TreeViewSortingDemo>;
 
 export default meta;
-type Story = StoryObj<UITreeView>;
+type Story = StoryObj<TreeViewSortingDemo>;
 
 export const Sorting: Story = {
   parameters: {

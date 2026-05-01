@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { PieChartStrategy } from "../../strategies/pie-chart.strategy";
 
@@ -26,6 +26,11 @@ const browserData: BrowserShare[] = [
   templateUrl: "./donut.story.html",
 })
 export class ChartDonutDemo {
+  public readonly width = input<number>(360);
+  public readonly height = input<number>(360);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("Browser market share donut chart");
+
   public readonly data = browserData;
   public readonly strategy = new PieChartStrategy({ innerRadiusRatio: 0.55 });
 }

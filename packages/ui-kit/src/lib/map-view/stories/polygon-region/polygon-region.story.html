@@ -1,10 +1,11 @@
 
     <ui-map-view
       [center]="center"
-      [zoom]="6"
+      [zoom]="zoom()"
+      [width]="width()"
       [markers]="markers"
       [polygons]="polygons"
-      height="500px"
-      ariaLabel="Benelux region"
+      [height]="height()"
+      [ariaLabel]="ariaLabel()"
     />
   

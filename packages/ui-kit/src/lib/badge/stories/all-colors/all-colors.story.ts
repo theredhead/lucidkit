@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./all-colors.story.scss",
 })
 export class AllColorsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/badge/badge.stories.ts.
 }

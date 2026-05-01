@@ -5,7 +5,7 @@ import { UICardStoryBodyOnly } from "./body-only.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Card",
-  component: UICard,
+  component: UICardStoryBodyOnly,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UICardStoryBodyOnly] })],
-} satisfies Meta<UICard>;
+} satisfies Meta<UICardStoryBodyOnly>;
 
 export default meta;
 type Story = StoryObj;

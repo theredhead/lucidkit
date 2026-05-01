@@ -6,7 +6,7 @@ import { DemoAutogenerateNoHumanizeComponent } from "./autogenerate-no-humanize.
 
 const meta = {
   title: "@theredhead/UI Kit/Table View/Autogenerate Columns",
-  component: UITableView,
+  component: DemoAutogenerateNoHumanizeComponent,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -18,10 +18,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DemoAutogenerateNoHumanizeComponent] })]
-} satisfies Meta<UITableView>;
+} satisfies Meta<DemoAutogenerateNoHumanizeComponent>;
 
 export default meta;
-type Story = StoryObj<UITableView>;
+type Story = StoryObj<DemoAutogenerateNoHumanizeComponent>;
 
 export const AutogenerateNoHumanize: Story = {
   parameters: {

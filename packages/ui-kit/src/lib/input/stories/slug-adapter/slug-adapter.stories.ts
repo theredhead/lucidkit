@@ -6,7 +6,7 @@ import { SlugAdapterStorySource } from "./slug-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: SlugAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SlugAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<SlugAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<SlugAdapterStorySource>;
 
 export const SlugAdapter: Story = {
   parameters: {

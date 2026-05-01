@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { MaxLengthExceededStorySource } from "./max-length-exceeded.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: MaxLengthExceededStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,18 +52,24 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [MaxLengthExceededStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [MaxLengthExceededStorySource] })],
+} satisfies Meta<MaxLengthExceededStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<MaxLengthExceededStorySource>;
 
 export const MaxLengthExceeded: Story = {
   args: {
+    disabled: false,
+    readonly: false,
+    placeholder: "Type here…",
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
     maxLength: 40,
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: {
@@ -73,11 +78,16 @@ export const MaxLengthExceeded: Story = {
         "<p>This content deliberately exceeds the maximum character limit to demonstrate the over-limit indicator in the footer.</p>",
     },
     template: `
-      <ui-rich-text-editor
+      <ui-max-length-exceeded-story-demo
         [mode]="mode"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [presentation]="presentation"
         [maxLength]="maxLength"
-        [(value)]="value"
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        [value]="value"
       />
     `,
-  })
+  }),
 };

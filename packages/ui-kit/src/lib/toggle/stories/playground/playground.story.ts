@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/toggle/toggle.stories.ts.
 }

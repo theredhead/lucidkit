@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./vimeo-embed.story.scss",
 })
 export class VimeoEmbedStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/media-player/media-player.stories.ts.
 }

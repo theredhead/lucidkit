@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Skeleton",
-  component: UISkeleton,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   argTypes: {
     variant: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UISkeleton>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UISkeleton>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: {

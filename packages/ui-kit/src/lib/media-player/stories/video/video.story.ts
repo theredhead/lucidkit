@@ -1,6 +1,20 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from "@angular/core";
+
 import { UIMediaPlayer } from "../../media-player.component";
-import type { MediaSource } from "../../media-player.types";
+import type {
+  MediaCrossOrigin,
+  MediaFit,
+  MediaPlayerEvent,
+  MediaPreload,
+  MediaSource,
+  MediaTrack,
+  MediaType,
+} from "../../media-player.types";
 
 // Local sample media served from public/media/ via Storybook's staticDirs.
 // Avoids external dependencies and 429 rate-limiting on repeated reloads.
@@ -19,6 +33,47 @@ const SAMPLE_POSTER = "/media/sample-poster.jpg";
   templateUrl: "./video.story.html",
 })
 export class MediaPlayerVideoDemo {
-  public readonly source: MediaSource = SAMPLE_VIDEO;
-  public readonly poster = SAMPLE_POSTER;
+  public readonly ariaLabel = input("Sample video");
+
+  public readonly autoplay = input(false);
+
+  public readonly controls = input(true);
+
+  public readonly crossOrigin = input<MediaCrossOrigin | null>("anonymous");
+
+  public readonly fit = input<MediaFit>("contain");
+
+  public readonly loop = input(false);
+
+  public readonly mediaEnded = output<MediaPlayerEvent>();
+
+  public readonly mediaError = output<MediaPlayerEvent>();
+
+  public readonly mediaLoadedMetadata = output<MediaPlayerEvent>();
+
+  public readonly mediaPause = output<MediaPlayerEvent>();
+
+  public readonly mediaPlay = output<MediaPlayerEvent>();
+
+  public readonly mediaTimeUpdate = output<MediaPlayerEvent>();
+
+  public readonly muted = input(false);
+
+  public readonly playbackRates = input<readonly number[]>([
+    0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2,
+  ]);
+
+  public readonly poster = input(SAMPLE_POSTER);
+
+  public readonly preload = input<MediaPreload>("metadata");
+
+  public readonly source = input<MediaSource | null>(SAMPLE_VIDEO);
+
+  public readonly sources = input<readonly MediaSource[]>([]);
+
+  public readonly tracks = input<readonly MediaTrack[]>([]);
+
+  public readonly type = input<MediaType>("video");
+
+  public readonly volume = input(1);
 }

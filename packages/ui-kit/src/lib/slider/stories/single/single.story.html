@@ -4,7 +4,18 @@
     >
       <div>
         <h4 style="margin: 0 0 8px">Single slider</h4>
-        <ui-slider [(value)]="volume" [showValue]="true" ariaLabel="Volume" />
+        <ui-slider
+          [(value)]="volume"
+          [mode]="mode()"
+          [min]="min()"
+          [max]="max()"
+          [step]="step()"
+          [showValue]="showValue()"
+          [showMinMax]="showMinMax()"
+          [showTicks]="showTicks()"
+          [disabled]="disabled()"
+          [ariaLabel]="ariaLabel()"
+        />
       </div>
       <div>
         <h4 style="margin: 0 0 8px">With step (10)</h4>

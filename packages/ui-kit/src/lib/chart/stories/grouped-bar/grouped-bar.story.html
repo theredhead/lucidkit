@@ -6,9 +6,10 @@
       valueProperty="revenue"
       [sources]="layers"
       [strategy]="strategy"
-      [width]="560"
-      [height]="340"
-      ariaLabel="Revenue and cost grouped bar chart"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Multiple series render as grouped bars at each X position. The column

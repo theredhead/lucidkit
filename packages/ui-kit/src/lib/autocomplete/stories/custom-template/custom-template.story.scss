@@ -1,30 +1,32 @@
-
-      :host {
-        display: block;
-        max-width: 480px;
-      }
-      .contact-item {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        padding: 2px 0;
-      }
-      .contact-item strong {
-        font-weight: 600;
-      }
-      .contact-item small {
-        font-size: 0.75rem;
-        opacity: 0.7;
-      }
-      .story-output {
-        margin-top: 1rem;
-        font-size: 0.8125rem;
-        padding: 0.75rem;
-        background: var(--ui-surface-2, #fbfbfc);
-        color: var(--ui-text, #1d232b);
-        border: 1px solid var(--ui-border, #d7dce2);
-        border-radius: 4px;
-        font-family: var(--ui-font, monospace);
-        overflow-x: auto;
-      }
-    
+:host {
+  display: block;
+  max-width: 480px;
+}
+.contact-item-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 0;
+}
+.contact-item strong {
+  font-weight: 600;
+}
+.contact-item small {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.story-output {
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  padding: 0.75rem;
+  background: var(--ui-surface-2, #fbfbfc);
+  color: var(--ui-text, #1d232b);
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 4px;
+  font-family: var(--ui-font, monospace);
+  overflow-x: auto;
+}

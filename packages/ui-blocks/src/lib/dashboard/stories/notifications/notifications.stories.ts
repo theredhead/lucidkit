@@ -6,7 +6,7 @@ import { DashboardNotificationDemo } from "./notifications.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Dashboard",
-  component: UIDashboard,
+  component: DashboardNotificationDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,10 +35,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DashboardNotificationDemo] })]
-} satisfies Meta<UIDashboard>;
+} satisfies Meta<DashboardNotificationDemo>;
 
 export default meta;
-type Story = StoryObj<UIDashboard>;
+type Story = StoryObj<DashboardNotificationDemo>;
 
 export const Notifications: Story = {
   parameters: {

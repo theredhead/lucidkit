@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { BarGraphStrategy } from "../../strategies/bar-graph.strategy";
 
@@ -25,6 +25,11 @@ const quarterlyData: QuarterlyMetric[] = [
   templateUrl: "./bar-custom-options.story.html",
 })
 export class ChartBarCustomDemo {
+  public readonly width = input<number>(420);
+  public readonly height = input<number>(280);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("Data chart");
+
   public readonly data = quarterlyData;
   public readonly strategy = new BarGraphStrategy({
     barWidthRatio: 0.85,

@@ -4,13 +4,19 @@
       [allowJunction]="true"
       (expressionChange)="onExpressionChange($event)"
     />
-    <div style="margin-top:0.75rem;">
+    <div class="table-wrapper">
       <ui-table-view
-        uiDensity="comfortable"
-        caption="Employees"
+        [uiDensity]="density()"
+        [caption]="caption()"
         tableId="story-filtered"
-        [showRowIndexIndicator]="true"
-        [showBuiltInPaginator]="true"
+        [selectionMode]="selectionMode()"
+        [rowClickSelect]="rowClickSelect()"
+        [showRowIndexIndicator]="showRowIndexIndicator()"
+        [showBuiltInPaginator]="showBuiltInPaginator()"
+        [showSelectionColumn]="showSelectionColumn()"
+        [pageSize]="pageSize()"
+        [disabled]="disabled()"
+        [selectionModel]="selectionModel()"
         [datasource]="datasource"
       >
         <ui-number-column
@@ -21,9 +27,16 @@
         />
         <ui-text-column key="name" headerText="Name" [sortable]="true" />
         <ui-badge-column key="department" headerText="Dept" variant="neutral" />
+        <ui-text-column key="region" headerText="Region" [sortable]="true" />
         <ui-number-column
           key="age"
           headerText="Age"
+          [sortable]="true"
+          [format]="{ maximumFractionDigits: 0 }"
+        />
+        <ui-number-column
+          key="tenureYears"
+          headerText="Tenure"
           [sortable]="true"
           [format]="{ maximumFractionDigits: 0 }"
         />

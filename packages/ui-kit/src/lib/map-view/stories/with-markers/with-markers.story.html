@@ -1,9 +1,10 @@
 
     <ui-map-view
       [center]="center"
-      [zoom]="5"
+      [zoom]="zoom()"
+      [width]="width()"
       [markers]="markers"
-      height="500px"
-      ariaLabel="European cities"
+      [height]="height()"
+      [ariaLabel]="ariaLabel()"
     />
   

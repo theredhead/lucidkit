@@ -1,9 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UserManagementAppDemo } from "./user-management-app";
+import { UserManagementAppStorySource } from "./user-management-app.story";
 
 const meta: Meta = {
   title: "@theredhead/Showcases/User Management App",
+  component: UserManagementAppStorySource,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -20,7 +21,7 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [UserManagementAppDemo],
+      imports: [UserManagementAppStorySource],
     }),
   ],
 };
@@ -42,7 +43,7 @@ type Story = StoryObj;
  */
 export const Default: Story = {
   render: () => ({
-    template: `<ui-demo-user-management-app />`,
+    template: `<ui-user-management-app-story-source />`,
   }),
   parameters: {
     docs: {

@@ -1,6 +1,4 @@
-import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
-
-import { DocumentationStorySource } from "./documentation.story";
+import { type Meta } from "@storybook/angular";
 
 const meta = {
   title: "@theredhead/UI Kit/Popover",
@@ -8,23 +6,9 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
+        component: [
           '`PopoverService` provides an imperative API for opening floating popover panels anchored to any DOM element. It uses the native Popover API (`popover="auto"` or `popover="manual"`) for stacking and light-dismiss behaviour.',
-      },
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DocumentationStorySource] })]
-} satisfies Meta;
-
-export default meta;
-type Story = StoryObj;
-
-export const Documentation: Story = {
-  tags: ["!dev"],
-  parameters: {
-    docs: {
-      description: {
-        story: [
+          "",
           "## Key Features",
           "",
           "- **Anchored positioning** — popovers attach to a trigger element with configurable vertical and horizontal alignment",
@@ -39,7 +23,7 @@ export const Documentation: Story = {
           "private readonly popover = inject(PopoverService);",
           "",
           "this.popover.openPopover({",
-          "  component: MyContent,",
+          "  component: DocumentationStorySource,",
           "  anchor: buttonElement,",
           '  ariaLabel: "My popover",',
           '  inputs: { title: "Hello" },',
@@ -60,9 +44,10 @@ export const Documentation: Story = {
           "| `inputs` | `Record<string, any>` | — | Input bindings forwarded to the component |",
           "| `outputs` | `Record<string, Function>` | — | Output handlers wired to the component |",
           "| `ariaLabel` | `string` | — | Accessible label for the popover container |",
-        ].join("\n")
-      }
-    }
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({ template: " " })
-};
+} satisfies Meta;
+
+export default meta;

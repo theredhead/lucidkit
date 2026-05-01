@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { ReadOnlyStorySource } from "./read-only.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: ReadOnlyStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,15 +52,23 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [ReadOnlyStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [ReadOnlyStorySource] })],
+} satisfies Meta<ReadOnlyStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<ReadOnlyStorySource>;
 
 export const ReadOnly: Story = {
+  args: {
+    disabled: false,
+    readonly: true,
+    placeholder: "Type here…",
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
+  },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: {
@@ -70,11 +77,15 @@ export const ReadOnly: Story = {
         "<p>This editor is <i>read-only</i>. You can see the content but cannot edit it.</p>",
     },
     template: `
-      <ui-rich-text-editor
+      <ui-read-only-story-demo
         [mode]="mode"
-        [(value)]="value"
-        [readonly]="true"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        [presentation]="presentation"
+        [value]="value"
       />
     `,
-  })
+  }),
 };

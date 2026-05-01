@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import type { ChartLayer } from "../../chart.types";
 import { LineGraphStrategy } from "../../strategies/line-graph.strategy";
@@ -32,6 +32,13 @@ const financialData: FinancialMonth[] = [
   templateUrl: "./multi-series-line.story.html",
 })
 export class ChartMultiLineDemo {
+  public readonly width = input<number>(560);
+  public readonly height = input<number>(340);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>(
+    "Revenue, cost and profit line chart",
+  );
+
   public readonly data = financialData;
   public readonly strategy = new LineGraphStrategy({ strokeWidth: 2.5 });
   public readonly layers: ChartLayer<FinancialMonth>[] = [

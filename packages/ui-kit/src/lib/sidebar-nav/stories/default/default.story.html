@@ -1,4 +1,4 @@
-<ui-sidebar-nav>
+<ui-sidebar-nav [collapsed]="collapsed()" [ariaLabel]="ariaLabel()">
   <ui-sidebar-item
     label="Dashboard" [icon]="dashboardIcon"
     [active]="active() === 'dashboard'"

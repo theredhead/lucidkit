@@ -1,6 +1,21 @@
-import { UIBreadcrumb } from "../../breadcrumb.component";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from "@angular/core";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+  UIBreadcrumb,
+  type BreadcrumbItem,
+  type BreadcrumbVariant,
+} from "../../breadcrumb.component";
+
+const DEFAULT_ITEMS: readonly BreadcrumbItem[] = [
+  { label: "Home", url: "/" },
+  { label: "Products", url: "/products" },
+  { label: "Detail" },
+];
 
 @Component({
   selector: "ui-playground-story-demo",
@@ -11,11 +26,15 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/breadcrumb/breadcrumb.stories.ts.
+  public readonly ariaLabel = input("Breadcrumb");
 
-  public ariaLabel = "Breadcrumb" as const;
-  public disabled = false as const;
-  public items = undefined as never;
-  public separator = "/" as const;
-  public variant = "link" as const;
+  public readonly disabled = input(false);
+
+  public readonly items = input<readonly BreadcrumbItem[]>(DEFAULT_ITEMS);
+
+  public readonly separator = input("/");
+
+  public readonly variant = input<BreadcrumbVariant>("link");
+
+  public readonly itemClicked = output<BreadcrumbItem>();
 }

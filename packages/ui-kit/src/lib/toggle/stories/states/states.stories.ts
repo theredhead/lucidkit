@@ -6,7 +6,7 @@ import { DemoToggleStates } from "./states.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toggle",
-  component: UIToggle,
+  component: DemoToggleStates,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -43,10 +43,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DemoToggleStates] })]
-} satisfies Meta<UIToggle>;
+} satisfies Meta<DemoToggleStates>;
 
 export default meta;
-type Story = StoryObj<UIToggle>;
+type Story = StoryObj<DemoToggleStates>;
 
 export const States: Story = {
   parameters: {

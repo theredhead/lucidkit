@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./animated.story.scss",
 })
 export class AnimatedStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/gauge/gauge.stories.ts.
 }

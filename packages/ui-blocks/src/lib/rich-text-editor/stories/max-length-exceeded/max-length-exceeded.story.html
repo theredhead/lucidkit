@@ -1,5 +1,10 @@
 <ui-rich-text-editor
-        [mode]="mode"
-        [maxLength]="maxLength"
+  [mode]="mode()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [presentation]="presentation()"
+  [maxLength]="maxLength()"
         [(value)]="value"
+  [placeholder]="placeholder()"
+  [ariaLabel]="ariaLabel()"
       />

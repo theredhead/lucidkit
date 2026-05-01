@@ -1,9 +1,11 @@
 <div style="position: relative; max-width: 34rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 1rem; border-radius: 1.25rem; border: 1px solid var(--ui-border, #d4d8dd);">
         <ui-rich-text-editor
-          [mode]="mode"
-          [presentation]="presentation"
+          [mode]="mode()"
+          [disabled]="disabled()"
+          [readonly]="readonly()"
+          [presentation]="presentation()"
           [(value)]="value"
-          [placeholder]="placeholder"
-          [ariaLabel]="ariaLabel"
+          [placeholder]="placeholder()"
+          [ariaLabel]="ariaLabel()"
         />
       </div>

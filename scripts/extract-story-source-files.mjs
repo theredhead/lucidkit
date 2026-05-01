@@ -226,6 +226,7 @@ function processStoryFile(storyFilePath) {
         exportName,
         storyName,
         storySourceInfo,
+        classMap,
         importEntries,
         topLevelDeclarationMap,
         outputMode: output.mode,
@@ -479,11 +480,18 @@ function buildWrapperContent({
   exportName,
   storyName,
   storySourceInfo,
+  classMap,
   importEntries,
   topLevelDeclarationMap,
   outputMode,
 }) {
-  const metaProperties = getMetaWrapperProperties(sourceFile, metaObject, sourceText);
+  const metaProperties = getMetaWrapperProperties(
+    sourceFile,
+    metaObject,
+    sourceText,
+    classMap,
+    storySourceInfo,
+  );
   const storyProperties = getStoryWrapperProperties(storyObject, sourceText);
   const renderPropertyNode = outputMode === "render" ? getRenderPropertyNode(storyObject) : undefined;
   const wrapperSourceNodes = [
@@ -559,7 +567,13 @@ ${indentLines(storyBody, 2)}
 };`;
 }
 
-function getMetaWrapperProperties(sourceFile, metaObject, sourceText) {
+function getMetaWrapperProperties(
+  sourceFile,
+  metaObject,
+  sourceText,
+  classMap,
+  storySourceInfo,
+) {
   if (!metaObject) {
     return {
       texts: [],
@@ -574,10 +588,11 @@ function getMetaWrapperProperties(sourceFile, metaObject, sourceText) {
   const texts = [];
   const nodes = [];
   let componentTypeName;
-  const metaTypeText = getMetaTypeText(sourceFile, sourceText);
-  const storyTypeText = getStoryTypeText(sourceFile, sourceText, metaTypeText);
+  let metaTypeText = getMetaTypeText(sourceFile, sourceText);
+  let storyTypeText = getStoryTypeText(sourceFile, sourceText, metaTypeText);
   const metaTypeNode = getMetaTypeNode(sourceFile);
   const storyTypeNode = getStoryTypeNode(sourceFile);
+  let preserveTypeNodes = true;
 
   for (const propertyName of ["title", "component", "tags", "parameters", "argTypes"]) {
     const property = getProperty(metaObject, propertyName);
@@ -587,6 +602,27 @@ function getMetaWrapperProperties(sourceFile, metaObject, sourceText) {
     }
 
     if (propertyName === "component" && ts.isIdentifier(property.initializer)) {
+      const localComponentClass = classMap.get(property.initializer.text);
+
+      if (localComponentClass && getComponentMetadata(localComponentClass).selector) {
+        const originalTypeName = property.initializer.text;
+
+        componentTypeName = storySourceInfo.className;
+        texts.push(`component: ${storySourceInfo.className}`);
+        preserveTypeNodes = false;
+        metaTypeText = replaceTypeIdentifierText(
+          metaTypeText,
+          originalTypeName,
+          storySourceInfo.className,
+        );
+        storyTypeText = replaceTypeIdentifierText(
+          storyTypeText,
+          originalTypeName,
+          storySourceInfo.className,
+        );
+        continue;
+      }
+
       componentTypeName = property.initializer.text;
     }
 
@@ -600,8 +636,18 @@ function getMetaWrapperProperties(sourceFile, metaObject, sourceText) {
     componentTypeName,
     metaTypeText,
     storyTypeText,
-    typeNodes: [metaTypeNode, storyTypeNode].filter((node) => node !== undefined),
+    typeNodes: preserveTypeNodes
+      ? [metaTypeNode, storyTypeNode].filter((node) => node !== undefined)
+      : [],
   };
+}
+
+function replaceTypeIdentifierText(typeText, fromName, toName) {
+  if (!typeText || fromName === toName) {
+    return typeText;
+  }
+
+  return typeText.replace(new RegExp(`\\b${fromName}\\b`, "g"), toName);
 }
 
 function getStoryWrapperProperties(storyObject, sourceText) {

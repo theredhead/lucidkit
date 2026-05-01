@@ -1,7 +1,22 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { UIRichTextEditor } from "../../rich-text-editor.component";
-import { UIButton, UIRichTextView, UISplitContainer, UISplitPanel } from "@theredhead/lucid-kit";
-import type { RichTextPlaceholder } from "../../rich-text-editor.types";
+import {
+  UIButton,
+  UIRichTextView,
+  UISplitContainer,
+  UISplitPanel,
+} from "@theredhead/lucid-kit";
+import type {
+  RichTextPlaceholder,
+  RichTextTemplateBlockEvent,
+} from "../../rich-text-editor.types";
 import { TextTemplateProcessor } from "@theredhead/lucid-foundation";
 
 // ── Mail-merge story ───────────────────────────────────────────────────────
@@ -188,21 +203,21 @@ const mailMergeProcessor = new TextTemplateProcessor({ missingKey: "keep" });
 const htmlMailMergeTemplate = [
   "<section>",
   "  <p>",
-  "    <strong><placeholder key=\"fullName\" /></strong><br />",
-  "    <placeholder key=\"addressLine1\" /><br />",
-  "    <placeholder key=\"addressLine2\" />",
+  '    <strong><placeholder key="fullName" /></strong><br />',
+  '    <placeholder key="addressLine1" /><br />',
+  '    <placeholder key="addressLine2" />',
   "  </p>",
   "  <p>",
-  "    DOB: <placeholder key=\"birthdate\" /><br />",
-  "    <placeholder key=\"email\" />",
+  '    DOB: <placeholder key="birthdate" /><br />',
+  '    <placeholder key="email" />',
   "  </p>",
   "  <hr />",
-  "  <h2>Invoice <placeholder key=\"invoiceNumber\" /></h2>",
+  '  <h2>Invoice <placeholder key="invoiceNumber" /></h2>',
   "  <p>",
-  "    <strong>Invoice date:</strong> <placeholder key=\"invoiceDate\" /><br />",
-  "    <strong>Due date:</strong> <placeholder key=\"dueDate\" /><br />",
-  "    <strong>Account ref:</strong> <placeholder key=\"accountRef\" /><br />",
-  "    <strong>Order:</strong> <placeholder key=\"orderId\" />",
+  '    <strong>Invoice date:</strong> <placeholder key="invoiceDate" /><br />',
+  '    <strong>Due date:</strong> <placeholder key="dueDate" /><br />',
+  '    <strong>Account ref:</strong> <placeholder key="accountRef" /><br />',
+  '    <strong>Order:</strong> <placeholder key="orderId" />',
   "  </p>",
   "  <h3>Line items</h3>",
   "  <table>",
@@ -215,32 +230,32 @@ const htmlMailMergeTemplate = [
   "      </tr>",
   "    </thead>",
   "    <tbody>",
-  "      <loop items=\"lines\">",
+  '      <loop items="lines">',
   "        <tr>",
-  "          <td><placeholder key=\"description\" /></td>",
-  "          <td><placeholder key=\"quantity\" /></td>",
-  "          <td><placeholder key=\"unitPrice\" /></td>",
-  "          <td><placeholder key=\"lineTotal\" /></td>",
+  '          <td><placeholder key="description" /></td>',
+  '          <td><placeholder key="quantity" /></td>',
+  '          <td><placeholder key="unitPrice" /></td>',
+  '          <td><placeholder key="lineTotal" /></td>',
   "        </tr>",
   "      </loop>",
   "    </tbody>",
   "    <tfoot>",
   "      <tr>",
-  "        <td colspan=\"3\">Subtotal</td>",
-  "        <td><placeholder key=\"totalExVat\" /></td>",
+  '        <td colspan="3">Subtotal</td>',
+  '        <td><placeholder key="totalExVat" /></td>',
   "      </tr>",
   "      <tr>",
-  "        <td colspan=\"3\">VAT (20%)</td>",
-  "        <td><placeholder key=\"vatAmount\" /></td>",
+  '        <td colspan="3">VAT (20%)</td>',
+  '        <td><placeholder key="vatAmount" /></td>',
   "      </tr>",
   "      <tr>",
-  "        <td colspan=\"3\"><strong>Total due</strong></td>",
-  "        <td><strong><placeholder key=\"totalIncVat\" /></strong></td>",
+  '        <td colspan="3"><strong>Total due</strong></td>',
+  '        <td><strong><placeholder key="totalIncVat" /></strong></td>',
   "      </tr>",
   "    </tfoot>",
   "  </table>",
-  "  <p>Please arrange payment by <strong><placeholder key=\"dueDate\" /></strong>.</p>",
-  "  <p>Thank you for your business, <placeholder key=\"firstName\" />.</p>",
+  '  <p>Please arrange payment by <strong><placeholder key="dueDate" /></strong>.</p>',
+  '  <p>Thank you for your business, <placeholder key="firstName" />.</p>',
   "</section>",
 ].join("\n");
 
@@ -262,6 +277,22 @@ const htmlMailMergeTemplate = [
   templateUrl: "./html-mail-merge.story.html",
 })
 export class DemoHtmlMailMerge {
+  public readonly ariaLabel = input("HTML mail-merge invoice template");
+
+  public readonly disabled = input(false);
+
+  public readonly placeholder = input("Edit your HTML invoice template…");
+
+  public readonly presentation = input<"default" | "compact">("default");
+
+  public readonly readonly = input(false);
+
+  public readonly blockInserted = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockEdited = output<RichTextTemplateBlockEvent>();
+
+  public readonly blockRemoved = output<RichTextTemplateBlockEvent>();
+
   protected readonly currentIndex = signal(0);
 
   protected readonly content = signal(htmlMailMergeTemplate);

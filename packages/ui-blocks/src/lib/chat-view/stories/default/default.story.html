@@ -1,5 +1,10 @@
 <ui-chat-view
-  [messages]="messages()"
-  [currentUser]="me"
-  (messageSend)="onSend($event)"
+  [ariaLabel]="ariaLabel()"
+  [composerMode]="composerMode()"
+  [composerPresentation]="composerPresentation()"
+  [composerToolbarActions]="composerToolbarActions()"
+  [currentUser]="currentUser"
+  [messages]="messages"
+  [placeholder]="placeholder()"
+  (messageSend)="messageSend.emit($event)"
 />

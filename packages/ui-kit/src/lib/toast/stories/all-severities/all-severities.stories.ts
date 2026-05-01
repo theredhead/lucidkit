@@ -6,7 +6,7 @@ import { AllSeveritiesStorySource } from "./all-severities.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toast",
-  component: UIToastContainer,
+  component: AllSeveritiesStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -30,10 +30,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AllSeveritiesStorySource] })]
-} satisfies Meta<UIToastContainer>;
+} satisfies Meta<AllSeveritiesStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToastContainer>;
+type Story = StoryObj<AllSeveritiesStorySource>;
 
 export const AllSeverities: Story = {
   parameters: {

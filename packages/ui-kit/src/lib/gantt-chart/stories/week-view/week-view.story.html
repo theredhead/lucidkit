@@ -4,7 +4,12 @@
     </p>
     <ui-gantt-chart
       [datasource]="datasource"
-      viewMode="week"
-      [showToday]="true"
+      [viewMode]="viewMode()"
+      [rowHeight]="rowHeight()"
+      [showToday]="showToday()"
+      [showTaskList]="showTaskList()"
+      [taskListWidth]="taskListWidth()"
+      [paddingDays]="paddingDays()"
+      [ariaLabel]="ariaLabel()"
     />
   

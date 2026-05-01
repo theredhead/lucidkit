@@ -5,9 +5,13 @@
     </p>
     <ui-gantt-chart
       [datasource]="datasource"
-      viewMode="day"
-      [showToday]="true"
-      [rowHeight]="36"
+      [viewMode]="viewMode()"
+      [showToday]="showToday()"
+      [rowHeight]="rowHeight()"
+      [showTaskList]="showTaskList()"
+      [taskListWidth]="taskListWidth()"
+      [paddingDays]="paddingDays()"
+      [ariaLabel]="ariaLabel()"
       (taskClicked)="onTask($event)"
     />
     @if (clickedTask()) {

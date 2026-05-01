@@ -5,8 +5,13 @@
     </p>
     <ui-gantt-chart
       [datasource]="datasource"
-      viewMode="day"
-      [showToday]="true"
+      [viewMode]="viewMode()"
+      [rowHeight]="rowHeight()"
+      [showToday]="showToday()"
+      [showTaskList]="showTaskList()"
+      [taskListWidth]="taskListWidth()"
+      [paddingDays]="paddingDays()"
+      [ariaLabel]="ariaLabel()"
       (taskClicked)="openPopover($event)"
     />
   

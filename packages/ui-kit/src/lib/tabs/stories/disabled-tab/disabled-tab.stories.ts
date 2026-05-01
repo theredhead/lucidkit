@@ -6,7 +6,7 @@ import { DisabledTabStorySource } from "./disabled-tab.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: DisabledTabStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DisabledTabStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<DisabledTabStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<DisabledTabStorySource>;
 
 export const DisabledTab: Story = {
   parameters: {

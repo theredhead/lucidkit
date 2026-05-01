@@ -7,7 +7,7 @@ import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Progress",
-  component: UIProgress,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -39,10 +39,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UIProgress>;
+} satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
-type Story = StoryObj<UIProgress>;
+type Story = StoryObj<PlaygroundStorySource>;
 
 export const Playground: Story = {
   args: {

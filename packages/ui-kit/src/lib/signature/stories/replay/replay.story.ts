@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./replay.story.scss",
 })
 export class ReplayStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/signature/signature.stories.ts.
 }

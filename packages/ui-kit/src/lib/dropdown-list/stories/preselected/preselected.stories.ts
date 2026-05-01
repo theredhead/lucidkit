@@ -6,7 +6,7 @@ import { PreselectedStorySource } from "./preselected.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Dropdown List",
-  component: UIDropdownList,
+  component: PreselectedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PreselectedStorySource] })]
-} satisfies Meta<UIDropdownList>;
+} satisfies Meta<PreselectedStorySource>;
 
 export default meta;
-type Story = StoryObj<UIDropdownList>;
+type Story = StoryObj<PreselectedStorySource>;
 
 export const Preselected: Story = {
   parameters: {

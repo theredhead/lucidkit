@@ -7,7 +7,7 @@ import { TextEditingStorySource } from "./text-editing.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Icon",
-  component: UIIcon,
+  component: TextEditingStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -21,10 +21,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TextEditingStorySource] })]
-} satisfies Meta<UIIcon>;
+} satisfies Meta<TextEditingStorySource>;
 
 export default meta;
-type Story = StoryObj<UIIcon>;
+type Story = StoryObj<TextEditingStorySource>;
 
 export const TextEditing: Story = {
   parameters: {

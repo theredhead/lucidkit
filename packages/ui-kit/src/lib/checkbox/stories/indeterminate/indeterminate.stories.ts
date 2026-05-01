@@ -6,7 +6,7 @@ import { IndeterminateStorySource } from "./indeterminate.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Checkbox",
-  component: UICheckbox,
+  component: IndeterminateStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -46,10 +46,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [IndeterminateStorySource] })]
-} satisfies Meta<UICheckbox>;
+} satisfies Meta<IndeterminateStorySource>;
 
 export default meta;
-type Story = StoryObj<UICheckbox>;
+type Story = StoryObj<IndeterminateStorySource>;
 
 export const Indeterminate: Story = {
   parameters: {

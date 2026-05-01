@@ -11,13 +11,16 @@
     </div>
     <ui-table-view
       [uiDensity]="density()"
-      caption="Team Members"
+      [caption]="caption()"
       tableId="story-local-data"
-      selectionMode="multiple"
-      [rowClickSelect]="true"
-      [showRowIndexIndicator]="true"
-      [showBuiltInPaginator]="true"
-      [selectionModel]="selectionModel"
+      [selectionMode]="selectionMode()"
+      [rowClickSelect]="rowClickSelect()"
+      [showRowIndexIndicator]="showRowIndexIndicator()"
+      [showBuiltInPaginator]="showBuiltInPaginator()"
+      [showSelectionColumn]="showSelectionColumn()"
+      [pageSize]="pageSize()"
+      [disabled]="disabled()"
+      [selectionModel]="selectionModel()"
       [datasource]="datasource"
       (selectionChange)="onSelectionChange($event)"
     >

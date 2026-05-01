@@ -1,0 +1,45 @@
+<ui-split-container [dividerWidth]="dividerWidth()" orientation="horizontal">
+  <ui-split-panel>
+    <section class="panel">
+      <header class="header">
+        <h3>Editor</h3>
+        <p>Edit the content and watch the rendered preview update live.</p>
+      </header>
+
+      <div class="panel-body editor-panel">
+        <ui-rich-text-editor
+          [ariaLabel]="'Detector playground editor'"
+          [placeholder]="editorPlaceholder()"
+          [value]="content()"
+          mode="html"
+          (valueChange)="updateContent($event)"
+        />
+      </div>
+    </section>
+  </ui-split-panel>
+
+  <ui-split-panel>
+    <section class="panel">
+      <header class="header">
+        <h3>Preview</h3>
+        <p>
+          Active detectors:
+          @if (activeDetectorLabels().length > 0) {
+            {{ activeDetectorLabels().join(', ') }}
+          } @else {
+            None
+          }
+        </p>
+      </header>
+
+      <div class="panel-body preview-panel">
+        <ui-rich-text-view
+          [ariaLabel]="ariaLabel()"
+          [content]="content()"
+          [dataDetectors]="activeDetectors()"
+          [strategy]="strategy()"
+        />
+      </div>
+    </section>
+  </ui-split-panel>
+</ui-split-container>

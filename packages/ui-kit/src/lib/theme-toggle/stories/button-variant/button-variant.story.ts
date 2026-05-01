@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./button-variant.story.scss",
 })
 export class ButtonVariantStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts.
 }

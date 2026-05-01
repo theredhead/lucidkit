@@ -1,12 +1,15 @@
 
     <ui-table-view
       uiDensity="comfortable"
-      caption="Single Selection"
+      [caption]="caption()"
       tableId="story-single-select"
-      selectionMode="single"
-      [rowClickSelect]="true"
-      [showRowIndexIndicator]="true"
-      [showBuiltInPaginator]="true"
+      [selectionMode]="selectionMode()"
+      [rowClickSelect]="rowClickSelect()"
+      [showRowIndexIndicator]="showRowIndexIndicator()"
+      [showBuiltInPaginator]="showBuiltInPaginator()"
+      [showSelectionColumn]="showSelectionColumn()"
+      [pageSize]="pageSize()"
+      [disabled]="disabled()"
       [datasource]="adapter"
       [selectionModel]="selectionModel"
       (selectionChange)="onSelectionChange($event)"
@@ -31,9 +34,6 @@
       />
       <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
     </ui-table-view>
-    <pre
-      style="margin-top: 1rem; padding: 0.75rem; font-size: 0.8rem; background: var(--ui-surface-2, #f6f7f8); border: 1px solid var(--ui-border, #d7dce2); border-radius: 4px;"
-    >
-Selected: {{ selectedJson() }}</pre
-    >
+    <pre class="selection-output">
+Selected: {{ selectedJson() }}</pre>
   

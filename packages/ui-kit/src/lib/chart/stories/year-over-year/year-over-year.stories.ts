@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartYoyDemo } from "./year-over-year.story";
 
+interface ChartYoyStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartYoyDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartYoyDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartYoyDemo] })],
+} satisfies Meta<ChartYoyStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartYoyStoryArgs>;
 
 export const YearOverYear: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 560,
+    height: 340,
+    showLegend: true,
+    ariaLabel: "2024 vs 2025 revenue comparison",
   },
-  render: () => ({
-      template: "<ui-chart-yoy-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-yoy-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

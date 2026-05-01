@@ -2,7 +2,8 @@
   <ui-repeater
     #listA
     [datasource]="dsAvailable"
-    [reorderable]="true"
+    [reorderable]="reorderable()"
+    [ariaLabel]="ariaLabel()"
     [connectedTo]="[listB]"
     (transferred)="onTransfer($event)"
   >
@@ -14,7 +15,8 @@
   <ui-repeater
     #listB
     [datasource]="dsSelected"
-    [reorderable]="true"
+    [reorderable]="reorderable()"
+    [ariaLabel]="ariaLabel()"
     [connectedTo]="[listA]"
     (transferred)="onTransfer($event)"
   >

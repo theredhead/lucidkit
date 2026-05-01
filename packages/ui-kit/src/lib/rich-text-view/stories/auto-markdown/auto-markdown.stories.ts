@@ -9,7 +9,7 @@ import { AutoMarkdownStorySource } from "./auto-markdown.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rich Text View",
-  component: UIRichTextView,
+  component: AutoMarkdownStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AutoMarkdownStorySource] })]
-} satisfies Meta<UIRichTextView>;
+} satisfies Meta<AutoMarkdownStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextView>;
+type Story = StoryObj<AutoMarkdownStorySource>;
 
 export const AutoMarkdown: Story = {
   name: "Auto — Markdown content",

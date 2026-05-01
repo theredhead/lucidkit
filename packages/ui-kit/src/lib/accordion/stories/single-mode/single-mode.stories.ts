@@ -6,7 +6,7 @@ import { AccordionSingleDemo } from "./single-mode.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Accordion",
-  component: UIAccordion,
+  component: AccordionSingleDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -38,10 +38,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AccordionSingleDemo] })]
-} satisfies Meta<UIAccordion>;
+} satisfies Meta<AccordionSingleDemo>;
 
 export default meta;
-type Story = StoryObj<UIAccordion>;
+type Story = StoryObj<AccordionSingleDemo>;
 
 export const SingleMode: Story = {
   parameters: {

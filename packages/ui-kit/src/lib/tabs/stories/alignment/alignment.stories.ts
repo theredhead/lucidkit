@@ -6,7 +6,7 @@ import { AlignmentStorySource } from "./alignment.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: AlignmentStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AlignmentStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<AlignmentStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<AlignmentStorySource>;
 
 export const Alignment: Story = {
   parameters: {

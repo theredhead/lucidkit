@@ -6,7 +6,7 @@ import { ButtonVariantStorySource } from "./button-variant.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Theme Toggle",
-  component: UIThemeToggle,
+  component: ButtonVariantStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ButtonVariantStorySource] })]
-} satisfies Meta<UIThemeToggle>;
+} satisfies Meta<ButtonVariantStorySource>;
 
 export default meta;
-type Story = StoryObj<UIThemeToggle>;
+type Story = StoryObj<ButtonVariantStorySource>;
 
 export const ButtonVariant: Story = {
   args: {

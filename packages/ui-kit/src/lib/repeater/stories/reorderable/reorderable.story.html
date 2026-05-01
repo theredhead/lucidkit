@@ -1,6 +1,7 @@
 <ui-repeater
   [datasource]="ds"
-  [reorderable]="true"
+  [reorderable]="reorderable()"
+  [ariaLabel]="ariaLabel()"
   (reordered)="onReorder($event)"
 >
   <ng-template let-item let-i="index">

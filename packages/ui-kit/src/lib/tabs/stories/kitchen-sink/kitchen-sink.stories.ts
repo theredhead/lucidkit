@@ -6,7 +6,7 @@ import { KitchenSinkStorySource } from "./kitchen-sink.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: KitchenSinkStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [KitchenSinkStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<KitchenSinkStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<KitchenSinkStorySource>;
 
 export const KitchenSink: Story = {
   parameters: {

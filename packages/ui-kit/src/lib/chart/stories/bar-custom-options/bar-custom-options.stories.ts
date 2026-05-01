@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartBarCustomDemo } from "./bar-custom-options.story";
 
+interface ChartBarCustomStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartBarCustomDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartBarCustomDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartBarCustomDemo] })],
+} satisfies Meta<ChartBarCustomStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartBarCustomStoryArgs>;
 
 export const BarCustomOptions: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 420,
+    height: 280,
+    showLegend: true,
+    ariaLabel: "Data chart",
   },
-  render: () => ({
-      template: "<ui-chart-bar-custom-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-bar-custom-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

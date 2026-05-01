@@ -6,7 +6,7 @@ import { ErrorStateStorySource } from "./error-state.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: ErrorStateStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ErrorStateStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<ErrorStateStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<ErrorStateStorySource>;
 
 export const ErrorState: Story = {
   parameters: {

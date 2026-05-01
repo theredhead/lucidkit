@@ -1,8 +1,6 @@
-import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
+import { type Meta } from "@storybook/angular";
 
 import { UIRepeater } from "../../repeater.component";
-
-import { DocumentationStorySource } from "./documentation.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Repeater",
@@ -11,33 +9,9 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
+        component: [
           "`UIRepeater` iterates over a datasource and stamps out an `<ng-template>` for each item — similar to `*ngFor` but driven by a pluggable `ArrayDatasource`. It adds **zero layout opinions**: the host component fully controls the CSS layout (grid, flex, columns, etc.).",
-      },
-    },
-  },
-  argTypes: {
-    reorderable: {
-      control: "boolean",
-      description: "Enables drag-and-drop reordering of items.",
-    },
-    ariaLabel: {
-      control: "text",
-      description: "Accessible label for the repeater list.",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DocumentationStorySource] })]
-} satisfies Meta<UIRepeater>;
-
-export default meta;
-type Story = StoryObj<UIRepeater>;
-
-export const Documentation: Story = {
-  tags: ["!dev"],
-  parameters: {
-    docs: {
-      description: {
-        story: [
+          "",
           "## Key Features",
           "",
           "- **Datasource-driven** — accepts any `ArrayDatasource<T>` (same interface used by `<ui-table-view>`)",
@@ -73,9 +47,20 @@ export const Documentation: Story = {
           "| `last` | `boolean` | `true` for the last item |",
           "| `even` | `boolean` | `true` for even-indexed items |",
           "| `odd` | `boolean` | `true` for odd-indexed items |",
-        ].join("\n")
-      }
-    }
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({ template: " " })
-};
+  argTypes: {
+    reorderable: {
+      control: "boolean",
+      description: "Enables drag-and-drop reordering of items.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for the repeater list.",
+    },
+  },
+} satisfies Meta;
+
+export default meta;

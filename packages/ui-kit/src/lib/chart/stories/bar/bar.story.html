@@ -5,9 +5,10 @@
       labelProperty="month"
       valueProperty="revenue"
       [strategy]="strategy"
-      [width]="520"
-      [height]="320"
-      ariaLabel="Monthly revenue bar chart"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Vertical bar chart with rounded corners. Each bar is colour-coded from the

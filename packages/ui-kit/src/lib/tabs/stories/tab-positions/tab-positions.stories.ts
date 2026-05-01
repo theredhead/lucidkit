@@ -6,7 +6,7 @@ import { TabPositionsStorySource } from "./tab-positions.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: TabPositionsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TabPositionsStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<TabPositionsStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<TabPositionsStorySource>;
 
 export const TabPositions: Story = {
   parameters: {

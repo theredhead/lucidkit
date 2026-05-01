@@ -1,6 +1,8 @@
 import { UISlider } from "../../slider.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+
+import type { SliderMode } from "../../slider.types";
 
 @Component({
   selector: "ui-playground-story-demo",
@@ -11,15 +13,57 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/slider/slider.stories.ts.
+  public readonly ariaLabel = input("Slider");
 
-  public ariaLabel = ("Slider") as const;
-  public disabled = (false) as const;
-  public max = (100) as const;
-  public min = (0) as const;
-  public mode = ("single") as const;
-  public showMinMax = (false) as const;
-  public showTicks = (false) as const;
-  public showValue = (true) as const;
-  public step = (1) as const;
+  public readonly disabled = input(false);
+
+  public readonly max = input(100);
+
+  public readonly min = input(0);
+
+  public readonly mode = input<SliderMode>("single");
+
+  public readonly showMinMax = input(false);
+
+  public readonly showTicks = input(false);
+
+  public readonly showValue = input(true);
+
+  public readonly step = input(1);
+
+  public getAriaLabel(): string {
+    return this.ariaLabel();
+  }
+
+  public getDisabled(): boolean {
+    return this.disabled();
+  }
+
+  public getMax(): number {
+    return this.max();
+  }
+
+  public getMin(): number {
+    return this.min();
+  }
+
+  public getMode(): SliderMode {
+    return this.mode();
+  }
+
+  public getShowMinMax(): boolean {
+    return this.showMinMax();
+  }
+
+  public getShowTicks(): boolean {
+    return this.showTicks();
+  }
+
+  public getShowValue(): boolean {
+    return this.showValue();
+  }
+
+  public getStep(): number {
+    return this.step();
+  }
 }

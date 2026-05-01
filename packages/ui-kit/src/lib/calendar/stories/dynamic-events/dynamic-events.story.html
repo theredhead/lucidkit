@@ -1,5 +1,11 @@
 
-    <ui-calendar-month-view [datasource]="ds" />
+    <ui-calendar-month-view
+      [datasource]="ds"
+      [showWeekNumbers]="showWeekNumbers()"
+      [maxEventsPerDay]="maxEventsPerDay()"
+      [disabled]="disabled()"
+      [ariaLabel]="ariaLabel()"
+    />
 
     <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
       <ui-button variant="outlined" (click)="addEvent()"

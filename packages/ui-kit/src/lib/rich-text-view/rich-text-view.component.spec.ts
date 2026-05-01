@@ -1,6 +1,21 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { UIRichTextView } from "./rich-text-view.component";
+import {
+  registerDataDetector,
+  unregisterDataDetector,
+  type IDataDetector,
+} from "@theredhead/lucid-foundation";
+
+import {
+  provideRichTextViewDataDetectors,
+  UIRichTextView,
+} from "./rich-text-view.component";
+
+const linkDetector: IDataDetector = {
+  detect: (text) => text.includes("555-1212"),
+  process: (text) =>
+    text.replace("555-1212", '<a href="tel:5551212">555-1212</a>'),
+};
 
 describe("UIRichTextView", () => {
   let component: UIRichTextView;
@@ -13,6 +28,10 @@ describe("UIRichTextView", () => {
     fixture = TestBed.createComponent(UIRichTextView);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    unregisterDataDetector(linkDetector);
   });
 
   it("should create", () => {
@@ -58,6 +77,41 @@ describe("UIRichTextView", () => {
       expect(
         fixture.nativeElement.classList.contains("ui-rich-text-view"),
       ).toBe(true);
+    });
+
+    it("should apply explicit data detectors to rendered text nodes", () => {
+      fixture.componentRef.setInput("dataDetectors", [linkDetector]);
+      fixture.componentRef.setInput("content", "<p>Call 555-1212</p>");
+      fixture.detectChanges();
+
+      const link = fixture.nativeElement.querySelector('a[href="tel:5551212"]');
+      expect(link?.textContent).toBe("555-1212");
+    });
+
+    it("should fall back to globally registered data detectors", () => {
+      registerDataDetector(linkDetector);
+      fixture.componentRef.setInput("content", "<p>Call 555-1212</p>");
+      fixture.detectChanges();
+
+      const link = fixture.nativeElement.querySelector('a[href="tel:5551212"]');
+      expect(link?.textContent).toBe("555-1212");
+    });
+
+    it("should use injected data detectors when no input detectors are supplied", async () => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [UIRichTextView],
+        providers: [...provideRichTextViewDataDetectors(linkDetector)],
+      }).compileComponents();
+
+      const injectedFixture = TestBed.createComponent(UIRichTextView);
+      injectedFixture.componentRef.setInput("content", "<p>Call 555-1212</p>");
+      injectedFixture.detectChanges();
+
+      const link = injectedFixture.nativeElement.querySelector(
+        'a[href="tel:5551212"]',
+      );
+      expect(link?.textContent).toBe("555-1212");
     });
   });
 });

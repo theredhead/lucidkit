@@ -23,7 +23,7 @@ import { SingleStorySource } from "./single.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Carousel",
-  component: UICarousel,
+  component: SingleStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,7 +36,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SingleStorySource] })]
-} satisfies Meta<UICarousel>;
+} satisfies Meta<SingleStorySource>;
 
 export default meta;
 type Story = StoryObj;

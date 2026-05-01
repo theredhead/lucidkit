@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { DisabledStorySource } from "./disabled.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: DisabledStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,27 +52,40 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [DisabledStorySource] })],
+} satisfies Meta<DisabledStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<DisabledStorySource>;
 
 export const Disabled: Story = {
+  args: {
+    disabled: true,
+    readonly: false,
+    placeholder: "Type here…",
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
+  },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: {
       ...args,
-      value: "<p>This editor is <b>disabled</b>.</p>",
+      value:
+        "<p>This editor is disabled. Content remains visible, but the toolbar and editing interactions are unavailable.</p>",
     },
     template: `
-      <ui-rich-text-editor
+      <ui-disabled-story-demo
         [mode]="mode"
-        [(value)]="value"
-        [disabled]="true"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        [presentation]="presentation"
+        [value]="value"
       />
     `,
-  })
+  }),
 };

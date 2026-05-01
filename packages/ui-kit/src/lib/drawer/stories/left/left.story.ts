@@ -12,5 +12,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./left.story.scss",
 })
 export class LeftStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/drawer/drawer.stories.ts.
 }

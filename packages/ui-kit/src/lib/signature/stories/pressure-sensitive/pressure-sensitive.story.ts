@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./pressure-sensitive.story.scss",
 })
 export class PressureSensitiveStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/signature/signature.stories.ts.
 }

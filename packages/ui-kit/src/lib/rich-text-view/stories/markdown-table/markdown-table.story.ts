@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./markdown-table.story.scss",
 })
 export class MarkdownTableStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/rich-text-view/rich-text-view.stories.ts.
 }

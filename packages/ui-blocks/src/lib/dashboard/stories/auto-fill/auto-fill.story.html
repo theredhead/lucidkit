@@ -1,5 +1,10 @@
 
-    <ui-dashboard columns="auto" [gap]="20" [minColumnWidth]="240">
+    <ui-dashboard
+      [columns]="columns()"
+      [gap]="gap()"
+      [dockPosition]="dockPosition()"
+      [minColumnWidth]="240"
+    >
       @for (i of items; track i) {
         <ui-dashboard-panel
           [config]="{

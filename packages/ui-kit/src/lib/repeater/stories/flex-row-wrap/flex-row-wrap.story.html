@@ -1,5 +1,9 @@
 
-    <ui-repeater [datasource]="ds">
+    <ui-repeater
+      [datasource]="ds"
+      [reorderable]="reorderable()"
+      [ariaLabel]="ariaLabel()"
+    >
       <ng-template let-photo let-even="even">
         <div class="tile" [class.even]="even">
           <img

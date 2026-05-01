@@ -6,7 +6,7 @@ import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Checkbox",
-  component: UICheckbox,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -46,10 +46,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UICheckbox>;
+} satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
-type Story = StoryObj<UICheckbox>;
+type Story = StoryObj<PlaygroundStorySource>;
 
 export const Playground: Story = {
   args: {

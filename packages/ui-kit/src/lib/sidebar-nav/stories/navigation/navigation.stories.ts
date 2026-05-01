@@ -6,7 +6,7 @@ import { NavigationStorySource } from "./navigation.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Sidebar Nav",
-  component: UISidebarNav,
+  component: NavigationStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [NavigationStorySource] })]
-} satisfies Meta<UISidebarNav>;
+} satisfies Meta<NavigationStorySource>;
 
 export default meta;
-type Story = StoryObj<UISidebarNav>;
+type Story = StoryObj<NavigationStorySource>;
 
 export const Navigation: Story = {
   parameters: {

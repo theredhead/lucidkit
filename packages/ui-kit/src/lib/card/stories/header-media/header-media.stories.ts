@@ -5,7 +5,7 @@ import { UICardStoryHeaderMedia } from "./header-media.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Card",
-  component: UICard,
+  component: UICardStoryHeaderMedia,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UICardStoryHeaderMedia] })],
-} satisfies Meta<UICard>;
+} satisfies Meta<UICardStoryHeaderMedia>;
 
 export default meta;
 type Story = StoryObj;

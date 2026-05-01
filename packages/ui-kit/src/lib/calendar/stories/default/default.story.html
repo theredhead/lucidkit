@@ -1,5 +1,9 @@
 <ui-calendar-month-view
   [datasource]="ds"
+  [showWeekNumbers]="showWeekNumbers()"
+  [maxEventsPerDay]="maxEventsPerDay()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
   [(selectedDate)]="selected"
   (dateSelected)="onDate($event)"
   (eventSelected)="onEvent($event)"

@@ -6,7 +6,7 @@ import { IPAddressAdapterStorySource } from "./ipaddress-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: IPAddressAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [IPAddressAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<IPAddressAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<IPAddressAdapterStorySource>;
 
 export const IPAddressAdapter: Story = {
   parameters: {

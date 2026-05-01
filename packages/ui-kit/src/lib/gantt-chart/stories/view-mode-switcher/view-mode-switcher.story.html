@@ -12,6 +12,11 @@
     <ui-gantt-chart
       [datasource]="datasource"
       [viewMode]="viewMode()"
-      [showToday]="true"
+      [rowHeight]="rowHeight()"
+      [showToday]="showToday()"
+      [showTaskList]="showTaskList()"
+      [taskListWidth]="taskListWidth()"
+      [paddingDays]="paddingDays()"
+      [ariaLabel]="ariaLabel()"
     />
   

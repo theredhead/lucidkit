@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Emoji Picker",
-  component: UIEmojiPicker,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   argTypes: {
     searchPlaceholder: {
@@ -23,10 +23,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UIEmojiPicker>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UIEmojiPicker>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: {

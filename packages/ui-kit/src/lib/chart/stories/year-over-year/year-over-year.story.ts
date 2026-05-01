@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import type { ChartLayer } from "../../chart.types";
 import { LineGraphStrategy } from "../../strategies/line-graph.strategy";
@@ -37,6 +37,11 @@ const sales2025: YearlySales[] = [
   templateUrl: "./year-over-year.story.html",
 })
 export class ChartYoyDemo {
+  public readonly width = input<number>(560);
+  public readonly height = input<number>(340);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("2024 vs 2025 revenue comparison");
+
   public readonly strategy = new LineGraphStrategy({
     strokeWidth: 2.5,
     markerRadius: 5,

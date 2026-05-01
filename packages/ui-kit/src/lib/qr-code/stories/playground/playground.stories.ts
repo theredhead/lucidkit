@@ -6,7 +6,7 @@ import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
   title: "@theredhead/UI Kit/QR Code",
-  component: UIQRCode,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   argTypes: {
     value: {
@@ -31,10 +31,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UIQRCode>;
+} satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
-type Story = StoryObj<UIQRCode>;
+type Story = StoryObj<PlaygroundStorySource>;
 
 export const Playground: Story = {
   args: {

@@ -3,8 +3,12 @@
       [datasource]="ds"
       [(value)]="selected"
       [multiple]="true"
-      placeholder="Pick fruits…"
-      ariaLabel="Multi-fruit search"
+      [placeholder]="placeholder()"
+      [minChars]="minChars()"
+      [disabled]="disabled()"
+      [ariaLabel]="ariaLabel()"
+      (itemSelected)="itemSelected.emit($event)"
+      (itemRemoved)="itemRemoved.emit($event)"
     />
     <pre class="story-output">Selected: {{ selected() | json }}</pre>
   

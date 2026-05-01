@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -28,7 +27,7 @@ import { MarkdownTableStorySource } from "./markdown-table.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: MarkdownTableStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -72,29 +71,37 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [MarkdownTableStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [MarkdownTableStorySource] })],
+} satisfies Meta<MarkdownTableStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<MarkdownTableStorySource>;
 
 export const MarkdownTable: Story = {
   name: "Markdown — table support",
-  args: {},
+  args: {
+    disabled: false,
+    readonly: false,
+    placeholder: "Write Markdown…",
+    ariaLabel: "Markdown table demo",
+    mode: "markdown",
+    presentation: "default",
+  },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
-    props: { ...args, initialValue: sampleTableMarkdown },
+    props: { ...args, value: sampleTableMarkdown },
     template: `
-      <ui-rich-text-editor
-        mode="markdown"
-        [value]="initialValue"
-        splitDirection="horizontal"
-        placeholder="Write Markdown…"
-        ariaLabel="Markdown table demo"
-        style="height: 420px; display: block;"
+      <ui-markdown-table-story-demo
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        [mode]="mode"
+        [presentation]="presentation"
+        [value]="value"
       />
     `,
-  })
+  }),
 };

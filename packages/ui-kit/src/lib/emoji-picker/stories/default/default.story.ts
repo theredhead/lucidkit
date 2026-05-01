@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/emoji-picker/emoji-picker.stories.ts.
 }

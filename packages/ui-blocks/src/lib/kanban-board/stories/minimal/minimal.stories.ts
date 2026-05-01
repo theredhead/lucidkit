@@ -1,19 +1,14 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIKanbanBoard } from "../../kanban-board.component";
-
-interface Task {
-  title: string;
-  description: string;
-  priority: "low" | "medium" | "high";
-  assignee?: string;
-}
-
 import { StoryKanbanMinimal } from "./minimal.story";
+
+interface KanbanMinimalStoryArgs {
+  readonly ariaLabel: string;
+}
 
 const meta = {
   title: "@theredhead/UI Blocks/Kanban Board",
-  component: UIKanbanBoard,
+  component: StoryKanbanMinimal,
   tags: ["autodocs"],
   argTypes: {
     ariaLabel: {
@@ -21,17 +16,22 @@ const meta = {
       description: "Accessible label for the kanban board.",
     },
   },
-  decorators: [moduleMetadata({ imports: [StoryKanbanMinimal] })]
-} satisfies Meta<UIKanbanBoard<Task>>;
+  decorators: [moduleMetadata({ imports: [StoryKanbanMinimal] })],
+} satisfies Meta<KanbanMinimalStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIKanbanBoard<Task>>;
+type Story = StoryObj<KanbanMinimalStoryArgs>;
 
 export const Minimal: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    ariaLabel: "Kanban board",
   },
-  render: () => ({
-      template: "<ui-story-kanban-minimal />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-story-kanban-minimal [ariaLabel]="ariaLabel"></ui-story-kanban-minimal>',
+  }),
 };

@@ -6,7 +6,7 @@ import { RatingDemo } from "./showcase.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rating",
-  component: UIRating,
+  component: RatingDemo,
   tags: ["autodocs"],
   argTypes: {
     value: {
@@ -26,10 +26,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [RatingDemo] })]
-} satisfies Meta<UIRating>;
+} satisfies Meta<RatingDemo>;
 
 export default meta;
-type Story = StoryObj<UIRating>;
+type Story = StoryObj<RatingDemo>;
 
 export const Showcase: Story = {
   parameters: {

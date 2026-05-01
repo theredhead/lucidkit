@@ -1,8 +1,6 @@
-import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
+import { type Meta } from "@storybook/angular";
 
 import { UIDashboard } from "../../dashboard.component";
-
-import { DocumentationStorySource } from "./documentation.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Dashboard",
@@ -11,41 +9,9 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "`UIDashboard` is a CSS-grid\u2013based layout host for building " +
-          "data dashboards. It renders projected `<ui-dashboard-panel>` " +
-          "children in a responsive (or fixed-column) grid.",
-      },
-    },
-  },
-  argTypes: {
-    columns: {
-      control: "text",
-      description:
-        "Number of fixed columns or `'auto'` for responsive auto-fill.",
-    },
-    gap: {
-      control: "number",
-      description: "Gap between panels in pixels.",
-    },
-    dockPosition: {
-      control: "select",
-      options: ["bottom", "left", "right"],
-      description: "Position of the panel dock.",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DocumentationStorySource] })]
-} satisfies Meta<UIDashboard>;
-
-export default meta;
-type Story = StoryObj<UIDashboard>;
-
-export const Documentation: Story = {
-  tags: ["!dev"],
-  parameters: {
-    docs: {
-      description: {
-        story: [
+        component: [
+          "`UIDashboard` is a CSS-grid–based layout host for building data dashboards. It renders projected `<ui-dashboard-panel>` children in a responsive (or fixed-column) grid.",
+          "",
           "## Key Features",
           "",
           "- **Grid layout** — fixed column count or responsive `auto-fill`",
@@ -78,9 +44,26 @@ export const Documentation: Story = {
           "|--------|-------------|",
           "| `notify(timeoutMs?: number)` | Activates notification accent. Clears on expand or after `timeoutMs` (0 = persist). |",
           "| `clearNotification()` | Manually clears the notification accent. |",
-        ].join("\n")
-      }
-    }
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({ template: " " })
-};
+  argTypes: {
+    columns: {
+      control: "text",
+      description:
+        "Number of fixed columns or `'auto'` for responsive auto-fill.",
+    },
+    gap: {
+      control: "number",
+      description: "Gap between panels in pixels.",
+    },
+    dockPosition: {
+      control: "select",
+      options: ["bottom", "left", "right"],
+      description: "Position of the panel dock.",
+    },
+  },
+} satisfies Meta;
+
+export default meta;

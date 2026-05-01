@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./all-modes.story.scss",
 })
 export class AllModesStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/signature/signature.stories.ts.
 }

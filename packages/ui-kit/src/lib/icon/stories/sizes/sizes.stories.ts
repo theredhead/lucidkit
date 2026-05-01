@@ -7,7 +7,7 @@ import { SizesStorySource } from "./sizes.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Icon",
-  component: UIIcon,
+  component: SizesStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -21,10 +21,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SizesStorySource] })]
-} satisfies Meta<UIIcon>;
+} satisfies Meta<SizesStorySource>;
 
 export default meta;
-type Story = StoryObj<UIIcon>;
+type Story = StoryObj<SizesStorySource>;
 
 export const Sizes: Story = {
   parameters: {

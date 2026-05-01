@@ -1,11 +1,16 @@
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  applyDataDetectors,
+  getRegisteredDataDetectors,
+  registerDataDetector,
   TextTemplateProcessor,
   XmlTemplateParser,
   XmlTemplateSerializer,
   haveRegisteredTextTemplateBlockProvider,
   registerTextTemplateBlockProvider,
+  unregisterDataDetector,
   unregisterTextTemplateBlockProvider,
+  type IDataDetector,
   type TemplateBlockProvider,
 } from "./template-processor";
 
@@ -16,6 +21,56 @@ function proc(
 }
 
 describe("TextTemplateProcessor XML blocks", () => {
+  describe("data detectors", () => {
+    const trackingDetector: IDataDetector = {
+      detect: (text) => text.includes("https://track.example/"),
+      process: (text) => text.replaceAll("https://track.example/", "tracked:"),
+    };
+
+    const prefixDetector: IDataDetector = {
+      detect: (text) => text.startsWith("tracked:"),
+      process: (text) => `[${text}]`,
+    };
+
+    afterEach(() => {
+      unregisterDataDetector(trackingDetector);
+      unregisterDataDetector(prefixDetector);
+    });
+
+    it("registers and lists data detectors", () => {
+      registerDataDetector(trackingDetector);
+
+      expect(getRegisteredDataDetectors()).toContain(trackingDetector);
+    });
+
+    it("applies detectors in registration order", () => {
+      registerDataDetector(trackingDetector);
+      registerDataDetector(prefixDetector);
+
+      expect(applyDataDetectors("https://track.example/123")).toBe(
+        "[tracked:123]",
+      );
+    });
+
+    it("applies later detectors to text nodes rather than inserted HTML markup", () => {
+      registerDataDetector(trackingDetector);
+      registerDataDetector({
+        detect: (text) => text.includes("123"),
+        process: (text) => `<strong>${text}</strong>`,
+      });
+
+      expect(applyDataDetectors("https://track.example/123")).toBe(
+        "<strong>tracked:123</strong>",
+      );
+    });
+
+    it("skips detectors whose predicate does not match", () => {
+      expect(applyDataDetectors("plain text", [trackingDetector])).toBe(
+        "plain text",
+      );
+    });
+  });
+
   describe("parser and serializer", () => {
     it("parses self-closing and container blocks", () => {
       const document = new XmlTemplateParser().parse(
@@ -85,7 +140,7 @@ describe("TextTemplateProcessor XML blocks", () => {
 
     it("rejects placeholder blocks with children", () => {
       expect(() =>
-        proc().expand("<placeholder key=\"name\">bad</placeholder>", {
+        proc().expand('<placeholder key="name">bad</placeholder>', {
           name: "World",
         }),
       ).toThrow(SyntaxError);
@@ -119,17 +174,23 @@ describe("TextTemplateProcessor XML blocks", () => {
   describe("loop block", () => {
     it("iterates over object arrays", () => {
       expect(
-        proc().expand('<loop items="items">- <placeholder key="name" /> </loop>', {
-          items: [{ name: "Alice" }, { name: "Bob" }],
-        }),
+        proc().expand(
+          '<loop items="items">- <placeholder key="name" /> </loop>',
+          {
+            items: [{ name: "Alice" }, { name: "Bob" }],
+          },
+        ),
       ).toBe("- Alice - Bob ");
     });
 
     it("wraps scalar items as value", () => {
       expect(
-        proc().expand('<loop items="nums"><placeholder key="value" /> </loop>', {
-          nums: [1, 2, 3],
-        }),
+        proc().expand(
+          '<loop items="nums"><placeholder key="value" /> </loop>',
+          {
+            nums: [1, 2, 3],
+          },
+        ),
       ).toBe("1 2 3 ");
     });
 

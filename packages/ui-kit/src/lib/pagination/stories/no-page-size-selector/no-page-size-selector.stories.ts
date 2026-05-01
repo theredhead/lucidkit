@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIPagination } from "../../pagination.component";
-
 import { NoPageSizeSelectorStorySource } from "./no-page-size-selector.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Pagination",
-  component: UIPagination,
+  component: NoPageSizeSelectorStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -39,17 +37,29 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [NoPageSizeSelectorStorySource] })]
-} satisfies Meta<UIPagination>;
+  decorators: [moduleMetadata({ imports: [NoPageSizeSelectorStorySource] })],
+} satisfies Meta<NoPageSizeSelectorStorySource>;
 
 export default meta;
-type Story = StoryObj<UIPagination>;
+type Story = StoryObj<NoPageSizeSelectorStorySource>;
 
 export const NoPageSizeSelector: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    totalItems: 100,
+    pageSize: 10,
+    disabled: false,
+    ariaLabel: "Pagination",
   },
-  render: () => ({
-    template: `<ui-pagination [totalItems]="100" [pageSize]="10" [pageSizeOptions]="[]" />`,
-  })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-no-page-size-selector-story-demo
+      [totalItems]="totalItems"
+      [pageSize]="pageSize"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

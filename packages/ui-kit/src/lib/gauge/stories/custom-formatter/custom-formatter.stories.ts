@@ -23,7 +23,7 @@ import { CustomFormatterStorySource } from "./custom-formatter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: CustomFormatterStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CustomFormatterStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<CustomFormatterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<CustomFormatterStorySource>;
 
 export const CustomFormatter: Story = {
   args: {

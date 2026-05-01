@@ -5,9 +5,10 @@
       labelProperty="month"
       valueProperty="revenue"
       [strategy]="strategy"
-      [width]="520"
-      [height]="320"
-      ariaLabel="Monthly revenue line chart"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Connected polyline with circular markers at each data point. Stroke width

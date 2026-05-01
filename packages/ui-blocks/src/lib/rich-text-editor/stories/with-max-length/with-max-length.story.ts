@@ -1,6 +1,8 @@
 import { UIRichTextEditor } from "../../rich-text-editor.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+
+import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 @Component({
   selector: "ui-with-max-length-story-demo",
@@ -11,9 +13,11 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./with-max-length.story.scss",
 })
 export class WithMaxLengthStorySource {
-  // Review required: this scaffold was generated from packages/ui-blocks/src/lib/rich-text-editor/rich-text-editor.stories.ts.
-
-  public maxLength = (200) as const;
-  public mode = undefined as never;
-  public placeholder = ("Limited to 200 characters…") as const;
+  public readonly disabled = input(false);
+  public readonly readonly = input(false);
+  public readonly placeholder = input("Limited to 200 characters…");
+  public readonly ariaLabel = input("Rich text editor");
+  public readonly mode = input<RichTextEditorMode>("html");
+  public readonly presentation = input<"default" | "compact">("default");
+  public readonly maxLength = input<number | undefined>(200);
 }

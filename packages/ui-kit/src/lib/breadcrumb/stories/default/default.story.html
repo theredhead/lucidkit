@@ -2,15 +2,33 @@
     <div style="display: flex; flex-direction: column; gap: 24px">
       <div>
         <h4 style="margin: 0 0 8px">Default separator (/)</h4>
-        <ui-breadcrumb [items]="items" />
+        <ui-breadcrumb
+          [items]="items"
+          [variant]="variant()"
+          [separator]="separator()"
+          [disabled]="disabled()"
+          [ariaLabel]="ariaLabel()"
+        />
       </div>
       <div>
         <h4 style="margin: 0 0 8px">Arrow separator (›)</h4>
-        <ui-breadcrumb [items]="items" separator="›" />
+        <ui-breadcrumb
+          [items]="items"
+          [variant]="variant()"
+          separator="›"
+          [disabled]="disabled()"
+          [ariaLabel]="ariaLabel()"
+        />
       </div>
       <div>
         <h4 style="margin: 0 0 8px">Pipe separator (|)</h4>
-        <ui-breadcrumb [items]="items" separator="|" />
+        <ui-breadcrumb
+          [items]="items"
+          [variant]="variant()"
+          separator="|"
+          [disabled]="disabled()"
+          [ariaLabel]="ariaLabel()"
+        />
       </div>
     </div>
   

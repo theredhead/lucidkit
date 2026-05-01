@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./custom-provider.story.scss",
 })
 export class CustomProviderStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/media-player/media-player.stories.ts.
 }

@@ -23,7 +23,7 @@ import { AnimatedStorySource } from "./animated.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: AnimatedStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AnimatedStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<AnimatedStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<AnimatedStorySource>;
 
 export const Animated: Story = {
   args: {

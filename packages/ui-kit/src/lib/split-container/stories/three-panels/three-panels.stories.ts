@@ -6,7 +6,7 @@ import { ThreePanelsStorySource } from "./three-panels.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
-  component: UISplitContainer,
+  component: ThreePanelsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ThreePanelsStorySource] })]
-} satisfies Meta<UISplitContainer>;
+} satisfies Meta<ThreePanelsStorySource>;
 
 export default meta;
-type Story = StoryObj<UISplitContainer>;
+type Story = StoryObj<ThreePanelsStorySource>;
 
 export const ThreePanels: Story = {
   parameters: {

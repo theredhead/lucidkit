@@ -6,13 +6,13 @@ import { ToggleToolsStorySource } from "./toggle-tools.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toolbar",
-  component: UIToolbar,
+  component: ToggleToolsStorySource,
   tags: ["autodocs"],
   decorators: [moduleMetadata({ imports: [ToggleToolsStorySource] })]
-} satisfies Meta<UIToolbar>;
+} satisfies Meta<ToggleToolsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToolbar>;
+type Story = StoryObj<ToggleToolsStorySource>;
 
 export const ToggleTools: Story = {
   parameters: {

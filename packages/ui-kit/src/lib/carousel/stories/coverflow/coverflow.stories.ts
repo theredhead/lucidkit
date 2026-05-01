@@ -55,7 +55,7 @@ import { CoverflowStorySource } from "./coverflow.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Carousel",
-  component: UICarousel,
+  component: CoverflowStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -68,7 +68,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CoverflowStorySource] })]
-} satisfies Meta<UICarousel>;
+} satisfies Meta<CoverflowStorySource>;
 
 export default meta;
 type Story = StoryObj;

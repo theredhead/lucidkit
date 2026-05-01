@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextPlaceholder } from "../../rich-text-editor.types";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
@@ -19,7 +18,7 @@ import { WithInitialContentStorySource } from "./with-initial-content.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: WithInitialContentStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -63,29 +62,42 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [WithInitialContentStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [WithInitialContentStorySource] })],
+} satisfies Meta<WithInitialContentStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<WithInitialContentStorySource>;
 
 export const WithInitialContent: Story = {
+  args: {
+    disabled: false,
+    readonly: false,
+    placeholder: "Type here…",
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
+  },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: {
       ...args,
       placeholders: samplePlaceholders,
       value:
-        "<p>Dear <placeholder key=\"firstName\" />,</p><p>Thank you for contacting <b><placeholder key=\"company\" /></b>. We will get back to you shortly.</p><p>Best regards</p>",
+        '<p>Dear <placeholder key="firstName" />,</p><p>Thank you for contacting <b><placeholder key="company" /></b>. We will get back to you shortly.</p><p>Best regards</p>',
     },
     template: `
-      <ui-rich-text-editor
+      <ui-with-initial-content-story-demo
         [mode]="mode"
-        [(value)]="value"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        [presentation]="presentation"
+        [value]="value"
         [placeholders]="placeholders"
       />
     `,
-  })
+  }),
 };

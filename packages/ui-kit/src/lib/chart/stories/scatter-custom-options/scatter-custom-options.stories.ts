@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartScatterCustomDemo } from "./scatter-custom-options.story";
 
+interface ChartScatterCustomStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartScatterCustomDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartScatterCustomDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartScatterCustomDemo] })],
+} satisfies Meta<ChartScatterCustomStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartScatterCustomStoryArgs>;
 
 export const ScatterCustomOptions: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 520,
+    height: 320,
+    showLegend: true,
+    ariaLabel: "Data chart",
   },
-  render: () => ({
-      template: "<ui-chart-scatter-custom-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-scatter-custom-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

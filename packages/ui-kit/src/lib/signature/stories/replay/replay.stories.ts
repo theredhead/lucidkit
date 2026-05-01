@@ -6,7 +6,7 @@ import { ReplayStorySource } from "./replay.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Signature",
-  component: UISignature,
+  component: ReplayStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -17,10 +17,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ReplayStorySource] })]
-} satisfies Meta<UISignature>;
+} satisfies Meta<ReplayStorySource>;
 
 export default meta;
-type Story = StoryObj<UISignature>;
+type Story = StoryObj<ReplayStorySource>;
 
 export const Replay: Story = {
   parameters: {

@@ -7,7 +7,7 @@ import { DisabledStorySource } from "./disabled.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Color Picker",
-  component: UIColorPicker,
+  component: DisabledStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -44,10 +44,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<UIColorPicker>;
+} satisfies Meta<DisabledStorySource>;
 
 export default meta;
-type Story = StoryObj<UIColorPicker>;
+type Story = StoryObj<DisabledStorySource>;
 
 export const Disabled: Story = {
   parameters: {

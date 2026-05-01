@@ -23,7 +23,7 @@ import { SemicircleStorySource } from "./semicircle.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: SemicircleStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SemicircleStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<SemicircleStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<SemicircleStorySource>;
 
 export const Semicircle: Story = {
   args: {

@@ -3,7 +3,7 @@ import { UIImage } from "../../image.component";
 const SAMPLE_SRC =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 @Component({
   selector: "ui-cover-story-demo",
@@ -14,10 +14,13 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./cover.story.scss",
 })
 export class CoverStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/image/image.stories.ts.
+  public readonly alt = input("Cover image");
 
-  public alt = ("Cover image") as const;
-  public height = (300) as const;
-  public src = SAMPLE_SRC;
-  public width = (400) as const;
+  public readonly ariaLabel = input<string | undefined>(undefined);
+
+  public readonly height = input<number | undefined>(300);
+
+  public readonly src = input(SAMPLE_SRC);
+
+  public readonly width = input<number | undefined>(400);
 }

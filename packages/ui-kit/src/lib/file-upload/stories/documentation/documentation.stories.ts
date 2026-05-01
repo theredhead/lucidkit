@@ -1,53 +1,17 @@
-import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
+import { type Meta } from "@storybook/angular";
 
-import { DocumentationStorySource } from "./documentation.story";
+import { UIFileUpload } from "../../file-upload.component";
 
 const meta = {
   title: "@theredhead/UI Kit/File Upload",
+  component: UIFileUpload,
   tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
-        component:
+        component: [
           "`UIFileUpload` provides a drag-and-drop zone with a click-to-browse fallback for selecting files. It supports file-type filtering, size limits, single or multi-file selection, and a two-way `files` model.",
-      },
-    },
-  },
-  argTypes: {
-    accept: {
-      control: "text",
-      description:
-        "Accepted file types (MIME or extension, e.g. `image/*`, `.pdf,.docx`).",
-    },
-    multiple: {
-      control: "boolean",
-      description: "Allow selecting multiple files.",
-    },
-    disabled: {
-      control: "boolean",
-      description: "Disables the upload zone.",
-    },
-    label: {
-      control: "text",
-      description: "Label text displayed inside the drop zone.",
-    },
-    ariaLabel: {
-      control: "text",
-      description: "Accessible label for screen readers.",
-    },
-  },
-  decorators: [moduleMetadata({ imports: [DocumentationStorySource] })]
-} satisfies Meta;
-
-export default meta;
-type Story = StoryObj;
-
-export const Documentation: Story = {
-  tags: ["!dev"],
-  parameters: {
-    docs: {
-      description: {
-        story: [
+          "",
           "## Key Features",
           "",
           "- **Drag & drop** — visually highlights when files are dragged over the zone",
@@ -81,11 +45,34 @@ export const Documentation: Story = {
           "| `fileRemoved` | `UIFileEntry` | Emitted when a file is removed from the list |",
           "| `fileRejected` | `{ file: File; reason: string }` | Emitted when a file is rejected (wrong type or too large) |",
           "",
-          "**CSS custom properties** — inherited from `--ui-*` theme tokens:",
-          "`--ui-border`, `--ui-accent`, `--ui-bg`, `--ui-surface`, `--ui-text`, `--ui-text-muted`",
-        ].join("\n")
-      }
-    }
+          "**CSS custom properties** — inherited from `--ui-*` theme tokens: `--ui-border`, `--ui-accent`, `--ui-bg`, `--ui-surface`, `--ui-text`, `--ui-text-muted`",
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({ template: " " })
-};
+  argTypes: {
+    accept: {
+      control: "text",
+      description:
+        "Accepted file types (MIME or extension, e.g. `image/*`, `.pdf,.docx`).",
+    },
+    multiple: {
+      control: "boolean",
+      description: "Allow selecting multiple files.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables the upload zone.",
+    },
+    label: {
+      control: "text",
+      description: "Label text displayed inside the drop zone.",
+    },
+    ariaLabel: {
+      control: "text",
+      description: "Accessible label for screen readers.",
+    },
+  },
+} satisfies Meta;
+
+export default meta;

@@ -2,7 +2,15 @@
     <div
       style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
     >
-      <ui-wizard (complete)="onComplete()">
+      <ui-wizard
+        [linear]="linear()"
+        [showStepIndicator]="showStepIndicator()"
+        [backLabel]="backLabel()"
+        [nextLabel]="nextLabel()"
+        [finishLabel]="finishLabel()"
+        [ariaLabel]="ariaLabel()"
+        (complete)="onComplete()"
+      >
         <ui-wizard-step label="Account">
           <h3>Create your account</h3>
           <p>Enter your email address and choose a password.</p>

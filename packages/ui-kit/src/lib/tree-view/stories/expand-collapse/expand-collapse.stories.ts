@@ -6,7 +6,7 @@ import { TreeViewExpandDemo } from "./expand-collapse.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tree View",
-  component: UITreeView,
+  component: TreeViewExpandDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TreeViewExpandDemo] })]
-} satisfies Meta<UITreeView>;
+} satisfies Meta<TreeViewExpandDemo>;
 
 export default meta;
-type Story = StoryObj<UITreeView>;
+type Story = StoryObj<TreeViewExpandDemo>;
 
 export const ExpandCollapse: Story = {
   parameters: {

@@ -5,13 +5,16 @@
       <div>
         <h4 style="margin: 0 0 8px">Price range</h4>
         <ui-slider
-          mode="range"
+          [mode]="mode()"
           [(value)]="priceRange"
-          [min]="0"
-          [max]="1000"
-          [step]="10"
-          [showValue]="true"
-          ariaLabel="Price"
+          [min]="min()"
+          [max]="max()"
+          [step]="step()"
+          [showValue]="showValue()"
+          [showMinMax]="showMinMax()"
+          [showTicks]="showTicks()"
+          [disabled]="disabled()"
+          [ariaLabel]="ariaLabel()"
         />
       </div>
       <div>

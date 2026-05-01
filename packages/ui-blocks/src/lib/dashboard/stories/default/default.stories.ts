@@ -1,12 +1,21 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDashboard } from "../../dashboard.component";
+import type {
+  DashboardColumns,
+  DashboardDockPosition,
+} from "../../dashboard.types";
 
 import { DashboardDefaultDemo } from "./default.story";
 
+interface DashboardDefaultStoryArgs {
+  readonly columns: DashboardColumns;
+  readonly gap: number;
+  readonly dockPosition: DashboardDockPosition;
+}
+
 const meta = {
   title: "@theredhead/UI Blocks/Dashboard",
-  component: UIDashboard,
+  component: DashboardDefaultDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -30,21 +39,28 @@ const meta = {
     },
     dockPosition: {
       control: "select",
-      options: ["bottom", "left", "right"],
+      options: ["top", "bottom"],
       description: "Position of the panel dock.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DashboardDefaultDemo] })]
-} satisfies Meta<UIDashboard>;
+  decorators: [moduleMetadata({ imports: [DashboardDefaultDemo] })],
+} satisfies Meta<DashboardDefaultStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIDashboard>;
+type Story = StoryObj<DashboardDefaultStoryArgs>;
 
 export const Default: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    columns: 8,
+    gap: 16,
+    dockPosition: "bottom",
   },
-  render: () => ({
-      template: "<ui-dashboard-default-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-dashboard-default-demo [columns]="columns" [gap]="gap" [dockPosition]="dockPosition"></ui-dashboard-default-demo>',
+  }),
 };

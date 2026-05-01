@@ -1,8 +1,11 @@
 <ui-rich-text-editor
-        mode="markdown"
-        [value]="initialValue"
+  [mode]="mode()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [presentation]="presentation()"
+  [(value)]="value"
         splitDirection="horizontal"
-        placeholder="Write Markdown…"
-        ariaLabel="Markdown table demo"
+  [placeholder]="placeholder()"
+  [ariaLabel]="ariaLabel()"
         style="height: 420px; display: block;"
       />

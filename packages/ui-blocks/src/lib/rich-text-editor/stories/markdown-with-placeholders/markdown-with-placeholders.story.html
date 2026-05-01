@@ -1,5 +1,13 @@
 <ui-rich-text-editor
-        [mode]="mode"
-        [(value)]="value"
-        [placeholders]="placeholders"
-      />
+  [mode]="mode()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [presentation]="presentation()"
+      [(value)]="value"
+  [placeholders]="placeholders()"
+  [placeholder]="placeholder()"
+  [ariaLabel]="ariaLabel()"
+      (blockInserted)="blockInserted.emit($event)"
+      (blockEdited)="blockEdited.emit($event)"
+      (blockRemoved)="blockRemoved.emit($event)"
+/>

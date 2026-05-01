@@ -1,3 +1,10 @@
 
-    <ui-calendar-month-view [datasource]="ds" [palette]="palette" />
+        <ui-calendar-month-view
+            [datasource]="ds"
+            [palette]="palette"
+            [showWeekNumbers]="showWeekNumbers()"
+            [maxEventsPerDay]="maxEventsPerDay()"
+            [disabled]="disabled()"
+            [ariaLabel]="ariaLabel()"
+        />
   

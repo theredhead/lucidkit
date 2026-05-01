@@ -6,7 +6,7 @@ import { CalendarMultiDayDemo } from "./multi-day-events.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Calendar Month View",
-  component: UICalendarMonthView,
+  component: CalendarMultiDayDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,17 +35,29 @@ const meta = {
       description: "Accessible label for the calendar.",
     },
   },
-  decorators: [moduleMetadata({ imports: [CalendarMultiDayDemo] })]
-} satisfies Meta<UICalendarMonthView>;
+  decorators: [moduleMetadata({ imports: [CalendarMultiDayDemo] })],
+} satisfies Meta<CalendarMultiDayDemo>;
 
 export default meta;
-type Story = StoryObj<UICalendarMonthView>;
+type Story = StoryObj<CalendarMultiDayDemo>;
 
 export const MultiDayEvents: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    showWeekNumbers: false,
+    maxEventsPerDay: 3,
+    disabled: false,
+    ariaLabel: "Calendar month view",
   },
-  render: () => ({
-      template: "<ui-cal-multiday-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-cal-multiday-demo
+        [showWeekNumbers]="showWeekNumbers"
+        [maxEventsPerDay]="maxEventsPerDay"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UICalendarMonthView } from "../../calendar-month-view.component";
 import { ArrayCalendarDatasource } from "../../array-calendar-datasource";
 import type { CalendarEvent } from "../../calendar.types";
@@ -75,5 +75,10 @@ function sampleEvents(): CalendarEvent[] {
   templateUrl: "./week-numbers.story.html",
 })
 export class CalendarWeekNumbersDemo {
+  public readonly showWeekNumbers = input(true);
+  public readonly maxEventsPerDay = input(3);
+  public readonly disabled = input(false);
+  public readonly ariaLabel = input("Calendar month view");
+
   public readonly ds = new ArrayCalendarDatasource(sampleEvents());
 }

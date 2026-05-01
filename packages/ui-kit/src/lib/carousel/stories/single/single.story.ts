@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./single.story.scss",
 })
 export class SingleStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/carousel/carousel.stories.ts.
 }

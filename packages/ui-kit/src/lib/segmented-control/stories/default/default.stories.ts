@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Segmented Control",
-  component: UISegmentedControl,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   argTypes: {
     value: { control: "text", description: "Active segment id." },
@@ -16,10 +16,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UISegmentedControl>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UISegmentedControl>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: { disabled: false },

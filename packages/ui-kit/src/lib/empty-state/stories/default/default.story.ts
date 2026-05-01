@@ -14,6 +14,12 @@ export class UIEmptyStateStoryDefault {
   /** Primary heading text forwarded to the empty-state component. */
   public readonly heading = input.required<string>();
 
+  /** Optional illustration icon forwarded to the empty-state component. */
+  public readonly icon = input<string>("");
+
+  /** Optional icon size forwarded to the empty-state component. */
+  public readonly iconSize = input(48);
+
   /** Optional explanatory message forwarded to the empty-state component. */
   public readonly message = input<string>("");
 }

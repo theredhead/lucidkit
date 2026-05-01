@@ -1,4 +1,11 @@
-<ui-split-container [initialSizes]="[25, 75]" (resized)="onResized($event)">
+<ui-split-container
+  [initialSizes]="[25, 75]"
+  [orientation]="orientation()"
+  [dividerWidth]="dividerWidth()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
+  (resized)="onResized($event)"
+>
   <ui-split-panel>
     <div class="sidebar"><h4>Sidebar</h4></div>
   </ui-split-panel>

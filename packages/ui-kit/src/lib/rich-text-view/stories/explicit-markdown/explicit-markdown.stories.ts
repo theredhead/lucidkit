@@ -9,7 +9,7 @@ import { ExplicitMarkdownStorySource } from "./explicit-markdown.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rich Text View",
-  component: UIRichTextView,
+  component: ExplicitMarkdownStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ExplicitMarkdownStorySource] })]
-} satisfies Meta<UIRichTextView>;
+} satisfies Meta<ExplicitMarkdownStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextView>;
+type Story = StoryObj<ExplicitMarkdownStorySource>;
 
 export const ExplicitMarkdown: Story = {
   name: "Explicit Markdown strategy",

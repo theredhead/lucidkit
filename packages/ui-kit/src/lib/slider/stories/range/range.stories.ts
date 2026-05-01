@@ -1,13 +1,12 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UISlider } from "../../slider.component";
 import type { SliderMode } from "../../slider.types";
 
 import { SliderRangeDemo } from "./range.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Slider",
-  component: UISlider,
+  component: SliderRangeDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -57,17 +56,39 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [SliderRangeDemo] })]
-} satisfies Meta<UISlider>;
+  decorators: [moduleMetadata({ imports: [SliderRangeDemo] })],
+} satisfies Meta<SliderRangeDemo>;
 
 export default meta;
-type Story = StoryObj<UISlider>;
+type Story = StoryObj<SliderRangeDemo>;
 
 export const Range: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    mode: "range",
+    min: 0,
+    max: 1000,
+    step: 10,
+    showValue: true,
+    showMinMax: false,
+    showTicks: false,
+    disabled: false,
+    ariaLabel: "Price",
   },
-  render: () => ({
-      template: "<ui-slider-range-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-slider-range-demo
+      [mode]="mode"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      [showValue]="showValue"
+      [showMinMax]="showMinMax"
+      [showTicks]="showTicks"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

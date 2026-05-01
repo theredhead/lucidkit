@@ -6,7 +6,7 @@ import { ExportStorySource } from "./export.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Signature",
-  component: UISignature,
+  component: ExportStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -17,10 +17,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ExportStorySource] })]
-} satisfies Meta<UISignature>;
+} satisfies Meta<ExportStorySource>;
 
 export default meta;
-type Story = StoryObj<UISignature>;
+type Story = StoryObj<ExportStorySource>;
 
 export const Export: Story = {
   parameters: {

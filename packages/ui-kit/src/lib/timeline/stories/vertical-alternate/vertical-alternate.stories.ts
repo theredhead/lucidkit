@@ -6,7 +6,7 @@ import { VerticalAlternateStorySource } from "./vertical-alternate.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Timeline",
-  component: UITimeline,
+  component: VerticalAlternateStorySource,
   tags: ["autodocs"],
   argTypes: {
     orientation: {
@@ -25,10 +25,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [VerticalAlternateStorySource] })]
-} satisfies Meta<UITimeline>;
+} satisfies Meta<VerticalAlternateStorySource>;
 
 export default meta;
-type Story = StoryObj<UITimeline>;
+type Story = StoryObj<VerticalAlternateStorySource>;
 
 export const VerticalAlternate: Story = {
   args: {

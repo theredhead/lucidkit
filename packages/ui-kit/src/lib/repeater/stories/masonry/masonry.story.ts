@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIRepeater } from "../../repeater.component";
 import { ArrayDatasource } from "../../../table-view/datasources/array-datasource";
 
@@ -86,5 +86,9 @@ const PHOTOS = buildPhotos();
   `,
 })
 export class RepeaterMasonryDemo {
+  public readonly ariaLabel = input<string | undefined>(undefined);
+
   public readonly ds = new ArrayDatasource(PHOTOS);
+
+  public readonly reorderable = input(false);
 }

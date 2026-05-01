@@ -1,19 +1,22 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIChatView } from "../../chat-view.component";
+import type { MessageSendEvent } from "../../chat-view.types";
 
 import { RichTextComposerStorySource } from "./rich-text-composer.story";
 
+interface RichTextComposerStoryArgs {
+  ariaLabel: string;
+  composerPresentation: "compact" | "default";
+  composerToolbarActions?: readonly string[];
+  placeholder: string;
+  messageSend: (event: MessageSendEvent) => void;
+}
+
 const meta = {
   title: "@theredhead/UI Blocks/Chat View",
-  component: UIChatView,
+  component: RichTextComposerStorySource,
   tags: ["autodocs"],
   argTypes: {
-    composerMode: {
-      control: "select",
-      options: ["text", "rich-text"],
-      description: "Composer input mode.",
-    },
     composerPresentation: {
       control: "select",
       options: ["compact", "default"],
@@ -33,18 +36,30 @@ const meta = {
       control: "text",
       description: "Accessible label for the chat view.",
     },
+    messageSend: {
+      action: "messageSend",
+      description: "Emitted when the user sends a message.",
+    },
   },
-  decorators: [moduleMetadata({ imports: [RichTextComposerStorySource] })]
-} satisfies Meta<UIChatView>;
+  decorators: [moduleMetadata({ imports: [RichTextComposerStorySource] })],
+} satisfies Meta<RichTextComposerStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChatView>;
+type Story = StoryObj<RichTextComposerStoryArgs>;
 
 export const RichTextComposer: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    ariaLabel: "Chat",
+    composerPresentation: "compact",
+    composerToolbarActions: undefined,
+    placeholder: "Type a rich-text message…",
   },
-  render: () => ({
-      template: "<ui-rich-text-composer-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-rich-text-composer-story-demo [ariaLabel]="ariaLabel" [composerPresentation]="composerPresentation" [composerToolbarActions]="composerToolbarActions" [placeholder]="placeholder" (messageSend)="messageSend($event)" />',
+  }),
 };

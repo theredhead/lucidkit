@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./all-sizes.story.scss",
 })
 export class AllSizesStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/button/button.stories.ts.
 }

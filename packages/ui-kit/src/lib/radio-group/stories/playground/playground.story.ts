@@ -1,20 +1,21 @@
 import { UIRadioGroup } from "../../radio-group.component";
-import { UIRadioButton } from "../../radio-button.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+
+import type { RadioOption } from "../../radio-group.component";
 
 @Component({
   selector: "ui-playground-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIRadioGroup, UIRadioButton],
+  imports: [UIRadioGroup],
   templateUrl: "./playground.story.html",
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/radio-group/radio-group.stories.ts.
+  public readonly ariaLabel = input<string | undefined>(undefined);
 
-  public ariaLabel = ("Choose a fruit") as const;
-  public disabled = (false) as const;
-  public options = undefined as never;
+  public readonly disabled = input(false);
+
+  public readonly options = input<readonly RadioOption[]>([]);
 }

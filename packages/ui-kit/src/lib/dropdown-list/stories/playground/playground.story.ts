@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/dropdown-list/dropdown-list.stories.ts.
 
   public ariaLabel = ("Choose a fruit") as const;
   public disabled = (false) as const;

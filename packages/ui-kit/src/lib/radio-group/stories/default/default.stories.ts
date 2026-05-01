@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRadioGroup } from "../../radio-group.component";
-
 import { RadioDemo } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Radio Group",
-  component: UIRadioGroup,
+  component: RadioDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,36 +25,44 @@ const meta = {
       description: "Accessible label for the radio group.",
     },
   },
-  decorators: [moduleMetadata({ imports: [RadioDemo] })]
-} satisfies Meta<UIRadioGroup>;
+  decorators: [moduleMetadata({ imports: [RadioDemo] })],
+} satisfies Meta<RadioDemo>;
 
 export default meta;
-type Story = StoryObj<UIRadioGroup>;
+type Story = StoryObj<RadioDemo>;
 
 export const Default: Story = {
+  args: {
+    disabled: false,
+    ariaLabel: "Choose a fruit",
+  },
   parameters: {
     docs: {
       description: {
         story:
-        "### Composition\n" +
-        "`UIRadioGroup` wraps one or more `UIRadioButton` children. The " +
-        "group manages selection state and keyboard navigation (arrow keys).\n\n" +
-        "### Features\n" +
-        "- **Two-way binding** — `[(value)]` model signal on the group\n" +
-        "- **Individual disable** — disable specific options with `[disabled]` on `UIRadioButton`\n" +
-        "- **Group disable** — disable the entire group with `[disabled]` on `UIRadioGroup`\n" +
-        '- **Accessible** — proper `role="radiogroup"` with arrow-key navigation\n\n' +
-        "### Usage\n" +
-        "```html\n" +
-        '<ui-radio-group name="plan" [(value)]="selectedPlan">\n' +
-        '  <ui-radio-button value="free">Free</ui-radio-button>\n' +
-        '  <ui-radio-button value="pro">Pro</ui-radio-button>\n' +
-        "</ui-radio-group>\n" +
-        "```"
-      }
-    }
+          "### Composition\n" +
+          "`UIRadioGroup` wraps one or more `UIRadioButton` children. The " +
+          "group manages selection state and keyboard navigation (arrow keys).\n\n" +
+          "### Features\n" +
+          "- **Two-way binding** — `[(value)]` model signal on the group\n" +
+          "- **Individual disable** — disable specific options with `[disabled]` on `UIRadioButton`\n" +
+          "- **Group disable** — disable the entire group with `[disabled]` on `UIRadioGroup`\n" +
+          '- **Accessible** — proper `role="radiogroup"` with arrow-key navigation\n\n' +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-radio-group name="plan" [(value)]="selectedPlan">\n' +
+          '  <ui-radio-button value="free">Free</ui-radio-button>\n' +
+          '  <ui-radio-button value="pro">Pro</ui-radio-button>\n' +
+          "</ui-radio-group>\n" +
+          "```",
+      },
+    },
   },
-  render: () => ({
-      template: "<ui-radio-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-radio-demo
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

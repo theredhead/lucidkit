@@ -1,12 +1,19 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIWizard } from "../../wizard.component";
-
 import { ValidationWizardStory } from "./with-validation.story";
+
+interface ValidationWizardStoryArgs {
+  readonly linear: boolean;
+  readonly showStepIndicator: boolean;
+  readonly backLabel: string;
+  readonly nextLabel: string;
+  readonly finishLabel: string;
+  readonly ariaLabel: string;
+}
 
 const meta = {
   title: "@theredhead/UI Blocks/Wizard",
-  component: UIWizard,
+  component: ValidationWizardStory,
   tags: ["autodocs"],
   argTypes: {
     linear: {
@@ -34,17 +41,27 @@ const meta = {
       description: "Accessible label for the wizard.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ValidationWizardStory] })]
-} satisfies Meta<UIWizard>;
+  decorators: [moduleMetadata({ imports: [ValidationWizardStory] })],
+} satisfies Meta<ValidationWizardStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIWizard>;
+type Story = StoryObj<ValidationWizardStoryArgs>;
 
 export const WithValidation: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    linear: true,
+    showStepIndicator: true,
+    backLabel: "Back",
+    nextLabel: "Next",
+    finishLabel: "Finish",
+    ariaLabel: "Wizard",
   },
-  render: () => ({
-      template: "<ui-story-wizard-validation />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-story-wizard-validation [linear]="linear" [showStepIndicator]="showStepIndicator" [backLabel]="backLabel" [nextLabel]="nextLabel" [finishLabel]="finishLabel" [ariaLabel]="ariaLabel"></ui-story-wizard-validation>',
+  }),
 };

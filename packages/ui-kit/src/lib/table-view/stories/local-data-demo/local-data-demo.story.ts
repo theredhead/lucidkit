@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, signal, viewChild } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { UIFilter } from "../../../filter/filter.component";
-import type { FilterExpression, FilterFieldDefinition } from "../../../filter/filter.types";
+import type {
+  FilterExpression,
+  FilterFieldDefinition,
+} from "../../../filter/filter.types";
 import { UIDensity, UIDensityDirective } from "../../../ui-density";
 import { UIBadgeColumn } from "../../columns/badge-column/badge-column.component";
 import { UINumberColumn } from "../../columns/number-column/number-column.component";
@@ -107,14 +117,22 @@ const DEMO_FILTER_FIELDS: FilterFieldDefinition<DemoRow>[] = [
   styleUrl: "./local-data-demo.story.scss",
 })
 export class UITableViewLocalDataDemo {
+  readonly caption = input("Team Members");
+  readonly selectionMode = input<"none" | "single" | "multiple">("none");
+  readonly showBuiltInPaginator = input(true);
+  readonly showRowIndexIndicator = input(true);
+  readonly showSelectionColumn = input(true);
+  readonly rowClickSelect = input(true);
+  readonly pageSize = input<number | undefined>(undefined);
+  readonly disabled = input(false);
+
   readonly filterFields = DEMO_FILTER_FIELDS;
   readonly datasource = new FilterableArrayDatasource(DEMO_ROWS);
-  readonly selectionModel = new SelectionModel<DemoRow>(
-    "multiple",
-    (row) => row.id,
-  );
   readonly density = signal<UIDensity>("comfortable");
   readonly statusLine = signal("Select rows or click View to see output here…");
+  readonly selectionModel = computed(
+    () => new SelectionModel<DemoRow>(this.selectionMode(), (row) => row.id),
+  );
 
   private readonly table = viewChild.required(UITableView);
 

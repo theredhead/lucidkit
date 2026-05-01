@@ -6,9 +6,10 @@
       valueProperty="revenue"
       [sources]="layers"
       [strategy]="strategy"
-      [width]="560"
-      [height]="340"
-      ariaLabel="Revenue, cost and profit line chart"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Three data series overlaid on the same chart. Each layer references a

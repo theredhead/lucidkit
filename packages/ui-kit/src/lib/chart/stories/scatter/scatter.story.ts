@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { ScatterPlotStrategy } from "../../strategies/scatter-plot.strategy";
 
@@ -29,6 +29,11 @@ const temperatureData: CityTemperature[] = [
   templateUrl: "./scatter.story.html",
 })
 export class ChartScatterDemo {
+  public readonly width = input<number>(560);
+  public readonly height = input<number>(340);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("City temperature scatter plot");
+
   public readonly data = temperatureData;
   public readonly strategy = new ScatterPlotStrategy({ markerRadius: 7 });
 }

@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/chip/chip.stories.ts.
 
   public ariaLabel = ("Sample chip") as const;
   public color = ("primary") as const;

@@ -5,7 +5,7 @@ import { UICardStoryOutlined } from "./outlined.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Card",
-  component: UICard,
+  component: UICardStoryOutlined,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UICardStoryOutlined] })],
-} satisfies Meta<UICard>;
+} satisfies Meta<UICardStoryOutlined>;
 
 export default meta;
 type Story = StoryObj;

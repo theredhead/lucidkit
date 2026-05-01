@@ -6,7 +6,7 @@ import { TreeViewSelectionDemo } from "./selection.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tree View",
-  component: UITreeView,
+  component: TreeViewSelectionDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TreeViewSelectionDemo] })]
-} satisfies Meta<UITreeView>;
+} satisfies Meta<TreeViewSelectionDemo>;
 
 export default meta;
-type Story = StoryObj<UITreeView>;
+type Story = StoryObj<TreeViewSelectionDemo>;
 
 export const Selection: Story = {
   parameters: {

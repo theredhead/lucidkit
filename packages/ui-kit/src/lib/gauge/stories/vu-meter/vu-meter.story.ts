@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./vu-meter.story.scss",
 })
 export class VuMeterStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/gauge/gauge.stories.ts.
 }

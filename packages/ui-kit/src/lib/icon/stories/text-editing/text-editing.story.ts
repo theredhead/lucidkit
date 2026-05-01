@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./text-editing.story.scss",
 })
 export class TextEditingStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/icon/icon.stories.ts.
 }

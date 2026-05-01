@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRepeater } from "../../repeater.component";
-
 import { RepeaterMasonryDemo } from "./masonry.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Repeater",
-  component: UIRepeater,
+  component: RepeaterMasonryDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -26,17 +24,25 @@ const meta = {
       description: "Accessible label for the repeater list.",
     },
   },
-  decorators: [moduleMetadata({ imports: [RepeaterMasonryDemo] })]
-} satisfies Meta<UIRepeater>;
+  decorators: [moduleMetadata({ imports: [RepeaterMasonryDemo] })],
+} satisfies Meta<RepeaterMasonryDemo>;
 
 export default meta;
-type Story = StoryObj<UIRepeater>;
+type Story = StoryObj<RepeaterMasonryDemo>;
 
 export const Masonry: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    reorderable: false,
+    ariaLabel: "Masonry gallery",
   },
-  render: () => ({
-      template: "<ui-repeater-masonry-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-repeater-masonry-demo
+      [reorderable]="reorderable"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

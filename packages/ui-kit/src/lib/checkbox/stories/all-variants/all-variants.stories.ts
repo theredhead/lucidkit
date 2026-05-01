@@ -6,7 +6,7 @@ import { AllVariantsStorySource } from "./all-variants.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Checkbox",
-  component: UICheckbox,
+  component: AllVariantsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -46,10 +46,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AllVariantsStorySource] })]
-} satisfies Meta<UICheckbox>;
+} satisfies Meta<AllVariantsStorySource>;
 
 export default meta;
-type Story = StoryObj<UICheckbox>;
+type Story = StoryObj<AllVariantsStorySource>;
 
 export const AllVariants: Story = {
   parameters: {

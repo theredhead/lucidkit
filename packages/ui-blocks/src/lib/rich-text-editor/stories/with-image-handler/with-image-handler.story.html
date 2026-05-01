@@ -1,7 +1,11 @@
 <ui-rich-text-editor
-        [mode]="mode"
-        [imageHandler]="imageHandler"
-        [placeholder]="placeholder"
+        [mode]="mode()"
+        [disabled]="disabled()"
+        [readonly]="readonly()"
+        [presentation]="presentation()"
+        [ariaLabel]="ariaLabel()"
+        [imageHandler]="imageHandler()"
+        [placeholder]="placeholder()"
       />
       <p style="margin-top: 8px; font-size: 13px; color: #666;">
         Paste or drop an image — it will be "uploaded" and inserted as an

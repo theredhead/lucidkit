@@ -6,7 +6,7 @@ import { WithTracksStorySource } from "./with-tracks.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: WithTracksStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [WithTracksStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<WithTracksStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<WithTracksStorySource>;
 
 export const WithTracks: Story = {
   parameters: {

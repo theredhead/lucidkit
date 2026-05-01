@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIPagination } from "../../pagination.component";
-
 import { SmallDatasetStorySource } from "./small-dataset.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Pagination",
-  component: UIPagination,
+  component: SmallDatasetStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -39,17 +37,29 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [SmallDatasetStorySource] })]
-} satisfies Meta<UIPagination>;
+  decorators: [moduleMetadata({ imports: [SmallDatasetStorySource] })],
+} satisfies Meta<SmallDatasetStorySource>;
 
 export default meta;
-type Story = StoryObj<UIPagination>;
+type Story = StoryObj<SmallDatasetStorySource>;
 
 export const SmallDataset: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    totalItems: 30,
+    pageSize: 10,
+    disabled: false,
+    ariaLabel: "Pagination",
   },
-  render: () => ({
-    template: `<ui-pagination [totalItems]="30" [pageSize]="10" />`,
-  })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-small-dataset-story-demo
+      [totalItems]="totalItems"
+      [pageSize]="pageSize"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

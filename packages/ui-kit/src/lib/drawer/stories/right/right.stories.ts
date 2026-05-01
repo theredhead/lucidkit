@@ -6,7 +6,7 @@ import { RightStorySource } from "./right.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Drawer",
-  component: UIDrawer,
+  component: RightStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -41,10 +41,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [RightStorySource] })]
-} satisfies Meta<UIDrawer>;
+} satisfies Meta<RightStorySource>;
 
 export default meta;
-type Story = StoryObj<UIDrawer>;
+type Story = StoryObj<RightStorySource>;
 
 export const Right: Story = {
   parameters: {

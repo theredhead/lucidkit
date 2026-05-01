@@ -6,7 +6,7 @@ import { FloatAdapterStorySource } from "./float-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: FloatAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [FloatAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<FloatAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<FloatAdapterStorySource>;
 
 export const FloatAdapter: Story = {
   parameters: {

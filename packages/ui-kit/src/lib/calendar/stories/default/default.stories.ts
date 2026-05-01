@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Calendar Month View",
-  component: UICalendarMonthView,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,25 +35,33 @@ const meta = {
       description: "Accessible label for the calendar.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UICalendarMonthView>;
+  decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UICalendarMonthView>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: {
     showWeekNumbers: false,
     maxEventsPerDay: 3,
+    disabled: false,
+    ariaLabel: "Calendar month view",
   },
   argTypes: {
     showWeekNumbers: { control: "boolean" },
     maxEventsPerDay: { control: { type: "number", min: 1, max: 10, step: 1 } },
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-default-story-demo
+        [showWeekNumbers]="showWeekNumbers"
+        [maxEventsPerDay]="maxEventsPerDay"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

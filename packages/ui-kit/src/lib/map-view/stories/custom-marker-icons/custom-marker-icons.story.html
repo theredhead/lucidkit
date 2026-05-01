@@ -1,9 +1,10 @@
 
     <ui-map-view
       [center]="center"
-      [zoom]="5"
+      [zoom]="zoom()"
+      [width]="width()"
       [markers]="markers"
-      height="500px"
-      ariaLabel="Cities with custom icons"
+      [height]="height()"
+      [ariaLabel]="ariaLabel()"
     />
   

@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./side-by-side-comparison.story.scss",
 })
 export class SideBySideComparisonStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/chart/chart.stories.ts.
 }

@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from "@angular/core";
 import { UIButton } from "../../../button/button.component";
 import { UIMapView } from "../../map-view.component";
-import type { MapLatLng, MapMarker, MapPolygon, MapPolyline } from "../../map-view.model";
+import type {
+  MapLatLng,
+  MapMarker,
+  MapPolygon,
+  MapPolyline,
+} from "../../map-view.model";
 
 // ── Demo data ─────────────────────────────────────────────────────────
 
@@ -55,6 +65,10 @@ const BENELUX_HIGHLIGHTED: MapPolygon = {
   templateUrl: "./toggle-highlight.story.html",
 })
 export class MapViewToggleHighlightDemo {
+  readonly zoom = input(6);
+  readonly width = input<string | undefined>(undefined);
+  readonly height = input("500px");
+  readonly ariaLabel = input("Toggle highlight demo");
   readonly center: MapLatLng = { lat: 51.0, lng: 4.5 };
   readonly markers: MapMarker[] = [
     { position: AMSTERDAM, label: "Amsterdam" },

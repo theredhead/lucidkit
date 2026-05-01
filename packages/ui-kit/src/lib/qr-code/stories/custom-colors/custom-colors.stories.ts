@@ -6,7 +6,7 @@ import { CustomColorsStorySource } from "./custom-colors.story";
 
 const meta = {
   title: "@theredhead/UI Kit/QR Code",
-  component: UIQRCode,
+  component: CustomColorsStorySource,
   tags: ["autodocs"],
   argTypes: {
     value: {
@@ -31,10 +31,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CustomColorsStorySource] })]
-} satisfies Meta<UIQRCode>;
+} satisfies Meta<CustomColorsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIQRCode>;
+type Story = StoryObj<CustomColorsStorySource>;
 
 export const CustomColors: Story = {
   args: {

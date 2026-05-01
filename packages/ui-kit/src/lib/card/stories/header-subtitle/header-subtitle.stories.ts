@@ -5,7 +5,7 @@ import { UICardStoryHeaderSubtitle } from "./header-subtitle.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Card",
-  component: UICard,
+  component: UICardStoryHeaderSubtitle,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UICardStoryHeaderSubtitle] })],
-} satisfies Meta<UICard>;
+} satisfies Meta<UICardStoryHeaderSubtitle>;
 
 export default meta;
 type Story = StoryObj;

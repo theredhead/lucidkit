@@ -6,7 +6,7 @@ import { WithBadgesStorySource } from "./with-badges.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Sidebar Nav",
-  component: UISidebarNav,
+  component: WithBadgesStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [WithBadgesStorySource] })]
-} satisfies Meta<UISidebarNav>;
+} satisfies Meta<WithBadgesStorySource>;
 
 export default meta;
-type Story = StoryObj<UISidebarNav>;
+type Story = StoryObj<WithBadgesStorySource>;
 
 export const WithBadges: Story = {
   parameters: {

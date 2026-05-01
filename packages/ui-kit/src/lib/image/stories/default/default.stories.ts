@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIImage } from "../../image.component";
-
 const SAMPLE_SRC =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop";
 
@@ -9,7 +7,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Image",
-  component: UIImage,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   argTypes: {
     src: {
@@ -33,11 +31,11 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UIImage>;
+  decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UIImage>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: {
@@ -45,11 +43,19 @@ export const Default: Story = {
     alt: "Mountain landscape",
     width: 400,
     height: 300,
+    ariaLabel: "Mountain landscape",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-default-story-demo
+      [src]="src"
+      [alt]="alt"
+      [width]="width"
+      [height]="height"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

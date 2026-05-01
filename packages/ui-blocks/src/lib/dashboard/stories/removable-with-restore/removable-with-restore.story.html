@@ -5,7 +5,12 @@
       >
     </div>
 
-    <ui-dashboard [columns]="3" [gap]="16" (panelRemoved)="onRemoved($event)">
+    <ui-dashboard
+      [columns]="columns()"
+      [gap]="gap()"
+      [dockPosition]="dockPosition()"
+      (panelRemoved)="onRemoved($event)"
+    >
       @for (cfg of configs; track cfg.id) {
         <ui-dashboard-panel [config]="cfg">
           <div class="placeholder">{{ cfg.title }} content</div>

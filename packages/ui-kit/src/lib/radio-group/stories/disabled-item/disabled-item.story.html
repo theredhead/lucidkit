@@ -1,4 +1,8 @@
-<ui-radio-group [name]="'plan'">
+<ui-radio-group
+  [name]="'plan'"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
+>
         <ui-radio-button [value]="'free'">Free</ui-radio-button>
         <ui-radio-button [value]="'pro'">Pro</ui-radio-button>
         <ui-radio-button [value]="'enterprise'" [disabled]="true">Enterprise (contact us)</ui-radio-button>

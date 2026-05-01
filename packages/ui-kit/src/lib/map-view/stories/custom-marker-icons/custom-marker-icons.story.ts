@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIMapView } from "../../map-view.component";
 import type { MapLatLng, MapMarker } from "../../map-view.model";
 
@@ -33,6 +33,10 @@ const FLAG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28
   templateUrl: "./custom-marker-icons.story.html",
 })
 export class MapViewCustomIconsDemo {
+  readonly zoom = input(5);
+  readonly width = input<string | undefined>(undefined);
+  readonly height = input("500px");
+  readonly ariaLabel = input("Cities with custom icons");
   readonly center = EUROPE_CENTER;
   readonly markers: MapMarker[] = [
     {

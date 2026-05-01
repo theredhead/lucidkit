@@ -6,7 +6,7 @@ import { DemoToggleSizes } from "./sizes.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toggle",
-  component: UIToggle,
+  component: DemoToggleSizes,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -43,10 +43,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DemoToggleSizes] })]
-} satisfies Meta<UIToggle>;
+} satisfies Meta<DemoToggleSizes>;
 
 export default meta;
-type Story = StoryObj<UIToggle>;
+type Story = StoryObj<DemoToggleSizes>;
 
 export const Sizes: Story = {
   parameters: {

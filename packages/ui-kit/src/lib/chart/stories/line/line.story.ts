@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { LineGraphStrategy } from "../../strategies/line-graph.strategy";
 
@@ -29,6 +29,11 @@ const salesData: MonthlySales[] = [
   templateUrl: "./line.story.html",
 })
 export class ChartLineDemo {
+  public readonly width = input<number>(520);
+  public readonly height = input<number>(320);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("Monthly revenue line chart");
+
   public readonly data = salesData;
   public readonly strategy = new LineGraphStrategy();
 }

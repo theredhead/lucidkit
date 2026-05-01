@@ -7,7 +7,7 @@ import { HslaModeStorySource } from "./hsla-mode.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Color Picker",
-  component: UIColorPicker,
+  component: HslaModeStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -44,10 +44,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [HslaModeStorySource] })]
-} satisfies Meta<UIColorPicker>;
+} satisfies Meta<HslaModeStorySource>;
 
 export default meta;
-type Story = StoryObj<UIColorPicker>;
+type Story = StoryObj<HslaModeStorySource>;
 
 export const HslaMode: Story = {
   args: { value: "#43a047" },

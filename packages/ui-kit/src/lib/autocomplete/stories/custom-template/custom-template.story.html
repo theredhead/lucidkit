@@ -5,13 +5,20 @@
       [multiple]="true"
       [displayWith]="displayContact"
       [trackBy]="trackByEmail"
-      placeholder="Search contacts…"
-      ariaLabel="Contact search"
+      [placeholder]="placeholder()"
+      [minChars]="minChars()"
+      [disabled]="disabled()"
+      [ariaLabel]="ariaLabel()"
+      (itemSelected)="itemSelected.emit($event)"
+      (itemRemoved)="itemRemoved.emit($event)"
     >
       <ng-template let-item>
-        <div class="contact-item">
-          <strong>{{ item.name }}</strong>
-          <small>{{ item.email }} · {{ item.department }}</small>
+        <div class="contact-item-wrapper">
+          <ui-avatar [email]="item.email" />
+          <div class="contact-item">
+            <strong>{{ item.name }}</strong>
+            <small>{{ item.email }} · {{ item.department }}</small>
+          </div>
         </div>
       </ng-template>
     </ui-autocomplete>

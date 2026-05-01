@@ -6,7 +6,7 @@ import { CustomDividerWidthStorySource } from "./custom-divider-width.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
-  component: UISplitContainer,
+  component: CustomDividerWidthStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CustomDividerWidthStorySource] })]
-} satisfies Meta<UISplitContainer>;
+} satisfies Meta<CustomDividerWidthStorySource>;
 
 export default meta;
-type Story = StoryObj<UISplitContainer>;
+type Story = StoryObj<CustomDividerWidthStorySource>;
 
 export const CustomDividerWidth: Story = {
   parameters: {

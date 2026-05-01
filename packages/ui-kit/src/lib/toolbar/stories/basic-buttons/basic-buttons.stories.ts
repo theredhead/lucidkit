@@ -6,13 +6,13 @@ import { BasicButtonsStorySource } from "./basic-buttons.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toolbar",
-  component: UIToolbar,
+  component: BasicButtonsStorySource,
   tags: ["autodocs"],
   decorators: [moduleMetadata({ imports: [BasicButtonsStorySource] })]
-} satisfies Meta<UIToolbar>;
+} satisfies Meta<BasicButtonsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToolbar>;
+type Story = StoryObj<BasicButtonsStorySource>;
 
 export const BasicButtons: Story = {
   parameters: {

@@ -6,7 +6,7 @@ import { DisabledDemo } from "./disabled.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Signature",
-  component: UISignature,
+  component: DisabledDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -17,10 +17,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DisabledDemo] })]
-} satisfies Meta<UISignature>;
+} satisfies Meta<DisabledDemo>;
 
 export default meta;
-type Story = StoryObj<UISignature>;
+type Story = StoryObj<DisabledDemo>;
 
 export const Disabled: Story = {
   parameters: {

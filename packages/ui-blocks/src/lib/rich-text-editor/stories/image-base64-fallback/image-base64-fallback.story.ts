@@ -1,6 +1,8 @@
 import { UIRichTextEditor } from "../../rich-text-editor.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+
+import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 @Component({
   selector: "ui-image-base64-fallback-story-demo",
@@ -11,8 +13,12 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./image-base64-fallback.story.scss",
 })
 export class ImageBase64FallbackStorySource {
-  // Review required: this scaffold was generated from packages/ui-blocks/src/lib/rich-text-editor/rich-text-editor.stories.ts.
-
-  public mode = undefined as never;
-  public placeholder = ("Paste an image — it will embed as base64…") as const;
+  public readonly disabled = input(false);
+  public readonly readonly = input(false);
+  public readonly placeholder = input(
+    "Paste an image — it will embed as base64…",
+  );
+  public readonly ariaLabel = input("Rich text editor");
+  public readonly mode = input<RichTextEditorMode>("html");
+  public readonly presentation = input<"default" | "compact">("default");
 }

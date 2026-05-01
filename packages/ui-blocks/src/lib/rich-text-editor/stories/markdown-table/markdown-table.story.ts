@@ -1,6 +1,13 @@
 import { UIRichTextEditor } from "../../rich-text-editor.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  model,
+} from "@angular/core";
+
+import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 @Component({
   selector: "ui-markdown-table-story-demo",
@@ -11,7 +18,12 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./markdown-table.story.scss",
 })
 export class MarkdownTableStorySource {
-  // Review required: this scaffold was generated from packages/ui-blocks/src/lib/rich-text-editor/rich-text-editor.stories.ts.
+  public readonly disabled = input(false);
+  public readonly readonly = input(false);
+  public readonly placeholder = input("Write Markdown…");
+  public readonly ariaLabel = input("Markdown table demo");
+  public readonly mode = input<RichTextEditorMode>("markdown");
+  public readonly presentation = input<"default" | "compact">("default");
 
-  public initialValue = undefined as never;
+  public readonly value = model("");
 }

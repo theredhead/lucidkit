@@ -111,13 +111,21 @@ function getLanguage(path: string): string {
 }
 
 function getStructuredStoryBase(path: string): string | undefined {
-  const match = /^(.*\/stories\/([^/]+))\/\2\.stories\.ts$/u.exec(path);
+  const match = /^(.*\/stories\/[^/]+\/)([^/]+)\.stories\.ts$/u.exec(path);
 
   if (!match) {
     return undefined;
   }
 
-  return `${match[1]}/${match[2]}.story`;
+  return `${match[1]}${match[2]}.story`;
+}
+
+function getComponentStoryBase(path: string | undefined): string | undefined {
+  if (!path?.endsWith(".story.ts")) {
+    return undefined;
+  }
+
+  return path.slice(0, -3);
 }
 
 function toKebabCase(value: string): string {
@@ -173,6 +181,16 @@ function extractStoryExport(
 function getCandidatePaths(
   entry: StoryIndexEntry | undefined,
 ): readonly string[] {
+  const componentStoryBase = getComponentStoryBase(entry?.componentPath);
+
+  if (componentStoryBase) {
+    return [
+      `${componentStoryBase}.ts`,
+      `${componentStoryBase}.html`,
+      `${componentStoryBase}.scss`,
+    ];
+  }
+
   if (!entry?.importPath) {
     return [];
   }

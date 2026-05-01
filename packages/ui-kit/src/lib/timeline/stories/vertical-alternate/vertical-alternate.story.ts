@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./vertical-alternate.story.scss",
 })
 export class VerticalAlternateStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/timeline/timeline.stories.ts.
 }

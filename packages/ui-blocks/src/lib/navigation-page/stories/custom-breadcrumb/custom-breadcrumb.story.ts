@@ -1,7 +1,21 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
-import { UIIcons, UIIcon } from "@theredhead/lucid-kit";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from "@angular/core";
+import {
+  type DrawerPosition,
+  type DrawerWidth,
+  UIIcons,
+  UIIcon,
+} from "@theredhead/lucid-kit";
 import { UINavigationPage } from "../../navigation-page.component";
-import { navItem, navGroup, type NavigationNode } from "../../navigation-page.utils";
+import {
+  navItem,
+  navGroup,
+  type NavigationNode,
+} from "../../navigation-page.utils";
 
 // ── Demo data ────────────────────────────────────────────────────────
 
@@ -71,6 +85,15 @@ const PAGE_CONTENT: Record<string, string> = {
   templateUrl: "./custom-breadcrumb.story.html",
 })
 export class DemoNavPageCustomRootComponent {
+  /** Side from which the drawer enters the viewport. */
+  public readonly drawerPosition = input<DrawerPosition>("left");
+
+  /** Width preset applied to the drawer. */
+  public readonly drawerWidth = input<DrawerWidth>("medium");
+
+  /** Accessible label forwarded to the navigation layout. */
+  public readonly ariaLabel = input<string>("Page navigation");
+
   public readonly items = NAV_ITEMS;
   public readonly activePage = signal("dashboard");
 

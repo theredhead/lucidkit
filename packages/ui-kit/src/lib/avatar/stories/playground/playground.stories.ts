@@ -1,12 +1,20 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { type AvatarSizeName, UIAvatar } from "../../avatar.component";
+import { type AvatarSizeName } from "../../avatar.component";
 
 import { PlaygroundStorySource } from "./playground.story";
 
+interface AvatarPlaygroundStoryArgs {
+  src: string;
+  email: string;
+  name: string;
+  size: AvatarSizeName;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Avatar",
-  component: UIAvatar,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,11 +55,11 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UIAvatar>;
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
+} satisfies Meta<AvatarPlaygroundStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIAvatar>;
+type Story = StoryObj<AvatarPlaygroundStoryArgs>;
 
 export const Playground: Story = {
   args: {
@@ -63,12 +71,12 @@ export const Playground: Story = {
   },
   render: (args) => ({
     props: args,
-    template: `<ui-avatar
+    template: `<ui-playground-story-demo
       [src]="src"
       [email]="email"
       [name]="name"
       [size]="size"
       [ariaLabel]="ariaLabel"
     />`,
-  })
+  }),
 };

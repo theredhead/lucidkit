@@ -1,5 +1,10 @@
 
-    <ui-repeater [datasource]="ds" [limit]="6">
+    <ui-repeater
+      [datasource]="ds"
+      [limit]="6"
+      [reorderable]="reorderable()"
+      [ariaLabel]="ariaLabel()"
+    >
       <ng-template let-photo let-first="first" let-last="last">
         <div class="row" [class.first]="first" [class.last]="last">
           <img

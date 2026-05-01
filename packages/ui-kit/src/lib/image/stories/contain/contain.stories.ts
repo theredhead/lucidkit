@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIImage } from "../../image.component";
-
 const SAMPLE_SRC =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop";
 
@@ -9,7 +7,7 @@ import { ContainStorySource } from "./contain.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Image",
-  component: UIImage,
+  component: ContainStorySource,
   tags: ["autodocs"],
   argTypes: {
     src: {
@@ -33,11 +31,11 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ContainStorySource] })]
-} satisfies Meta<UIImage>;
+  decorators: [moduleMetadata({ imports: [ContainStorySource] })],
+} satisfies Meta<ContainStorySource>;
 
 export default meta;
-type Story = StoryObj<UIImage>;
+type Story = StoryObj<ContainStorySource>;
 
 export const Contain: Story = {
   args: {
@@ -45,9 +43,16 @@ export const Contain: Story = {
     alt: "Contained image",
     width: 400,
     height: 300,
+    ariaLabel: "Contained image",
   },
   render: (args) => ({
     props: args,
-    template: `<ui-image [src]="src" [alt]="alt" [width]="width" [height]="height" style="object-fit: contain" />`,
-  })
+    template: `<ui-contain-story-demo
+      [src]="src"
+      [alt]="alt"
+      [width]="width"
+      [height]="height"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

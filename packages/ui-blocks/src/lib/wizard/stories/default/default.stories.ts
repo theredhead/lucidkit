@@ -6,7 +6,7 @@ import { BasicWizardStory } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Wizard",
-  component: UIWizard,
+  component: BasicWizardStory,
   tags: ["autodocs"],
   argTypes: {
     linear: {
@@ -34,17 +34,33 @@ const meta = {
       description: "Accessible label for the wizard.",
     },
   },
-  decorators: [moduleMetadata({ imports: [BasicWizardStory] })]
-} satisfies Meta<UIWizard>;
+  decorators: [moduleMetadata({ imports: [BasicWizardStory] })],
+} satisfies Meta<BasicWizardStory>;
 
 export default meta;
-type Story = StoryObj<UIWizard>;
+type Story = StoryObj<BasicWizardStory>;
 
 export const Default: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    linear: false,
+    showStepIndicator: true,
+    backLabel: "Back",
+    nextLabel: "Next",
+    finishLabel: "Finish",
+    ariaLabel: "Wizard",
   },
-  render: () => ({
-      template: "<ui-story-wizard-basic />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-story-wizard-basic
+        [linear]="linear"
+        [showStepIndicator]="showStepIndicator"
+        [backLabel]="backLabel"
+        [nextLabel]="nextLabel"
+        [finishLabel]="finishLabel"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

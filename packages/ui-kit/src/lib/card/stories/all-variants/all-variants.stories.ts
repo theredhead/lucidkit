@@ -5,7 +5,7 @@ import { UICardStoryAllVariants } from "./all-variants.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Card",
-  component: UICard,
+  component: UICardStoryAllVariants,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UICardStoryAllVariants] })],
-} satisfies Meta<UICard>;
+} satisfies Meta<UICardStoryAllVariants>;
 
 export default meta;
 type Story = StoryObj;

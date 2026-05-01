@@ -23,7 +23,7 @@ import { AnalogStorySource } from "./analog.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: AnalogStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AnalogStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<AnalogStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<AnalogStorySource>;
 
 export const Analog: Story = {
   args: {

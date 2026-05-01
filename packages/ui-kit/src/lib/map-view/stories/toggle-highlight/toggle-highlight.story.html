@@ -8,11 +8,12 @@
     </div>
     <ui-map-view
       [center]="center"
-      [zoom]="6"
+      [zoom]="zoom()"
+      [width]="width()"
       [markers]="markers"
       [polylines]="polylines()"
       [polygons]="polygons()"
-      height="500px"
-      ariaLabel="Toggle highlight demo"
+      [height]="height()"
+      [ariaLabel]="ariaLabel()"
     />
   

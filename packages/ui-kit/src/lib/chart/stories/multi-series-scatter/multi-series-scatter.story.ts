@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import type { ChartLayer } from "../../chart.types";
 import { ScatterPlotStrategy } from "../../strategies/scatter-plot.strategy";
@@ -32,6 +32,11 @@ const financialData: FinancialMonth[] = [
   templateUrl: "./multi-series-scatter.story.html",
 })
 export class ChartMultiScatterDemo {
+  public readonly width = input<number>(560);
+  public readonly height = input<number>(340);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("Revenue and cost scatter plot");
+
   public readonly data = financialData;
   public readonly strategy = new ScatterPlotStrategy({ markerRadius: 7 });
   public readonly layers: ChartLayer<FinancialMonth>[] = [

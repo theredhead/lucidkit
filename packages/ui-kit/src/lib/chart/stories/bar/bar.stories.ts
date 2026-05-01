@@ -1,8 +1,14 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIChart } from "../../chart.component";
-
 import { ChartBarDemo } from "./bar.story";
+
+interface ChartBarStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
 
 const meta = {
   title: "@theredhead/UI Kit/Chart",
@@ -34,13 +40,19 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartBarDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartBarDemo] })],
+} satisfies Meta<ChartBarStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartBarStoryArgs>;
 
 export const Bar: Story = {
+  args: {
+    width: 520,
+    height: 320,
+    showLegend: true,
+    ariaLabel: "Monthly revenue bar chart",
+  },
   parameters: {
     docs: {
       description: {
@@ -102,11 +114,13 @@ export const Bar: Story = {
           "```",
           "",
           "Each layer falls back to the component-level `source` and `valueProperty` when not overridden. The legend automatically switches to one entry per series in multi-layer mode.",
-        ].join("\n")
-      }
-    }
+        ].join("\n"),
+      },
+    },
   },
-  render: () => ({
-      template: "<ui-chart-bar-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-bar-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

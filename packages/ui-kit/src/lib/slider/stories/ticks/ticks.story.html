@@ -1,5 +1,16 @@
 <!-- Auto ticks at step intervals -->
-<ui-slider [(value)]="auto" [step]="20" [showTicks]="true" [showValue]="true" ariaLabel="Auto" />
+<ui-slider
+	[(value)]="auto"
+	[mode]="mode()"
+	[min]="min()"
+	[max]="max()"
+	[step]="step()"
+	[showTicks]="showTicks()"
+	[showValue]="showValue()"
+	[showMinMax]="showMinMax()"
+	[disabled]="disabled()"
+	[ariaLabel]="ariaLabel()"
+ />
 
 <!-- Explicit labelled ticks -->
 <ui-slider [(value)]="labelled" [ticks]="ticks" [showValue]="true" ariaLabel="Labelled" />

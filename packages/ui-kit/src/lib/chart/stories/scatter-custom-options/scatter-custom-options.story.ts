@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { ScatterPlotStrategy } from "../../strategies/scatter-plot.strategy";
 
@@ -29,6 +29,11 @@ const salesData: MonthlySales[] = [
   templateUrl: "./scatter-custom-options.story.html",
 })
 export class ChartScatterCustomDemo {
+  public readonly width = input<number>(520);
+  public readonly height = input<number>(320);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("Data chart");
+
   public readonly data = salesData;
   public readonly strategy = new ScatterPlotStrategy({
     markerRadius: 12,

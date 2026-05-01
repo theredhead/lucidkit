@@ -5,9 +5,10 @@
       labelProperty="browser"
       valueProperty="share"
       [strategy]="strategy"
-      [showLegend]="false"
-      [width]="300"
-      [height]="300"
+      [showLegend]="showLegend()"
+      [width]="width()"
+      [height]="height()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Set <code>[showLegend]="false"</code> to hide the legend entirely — useful

@@ -1,6 +1,15 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { JsonPipe } from "@angular/common";
-import { UIAutocomplete, type AutocompleteDatasource } from "../../autocomplete.component";
+import {
+  UIAutocomplete,
+  type AutocompleteDatasource,
+} from "../../autocomplete.component";
 
 // ── Helpers ────────────────────────────────────────────────────────
 
@@ -61,6 +70,19 @@ class FruitDatasource implements AutocompleteDatasource<string> {
   styleUrl: "./basic.story.scss",
 })
 export class BasicDemo {
-  readonly ds = new FruitDatasource();
-  readonly selected = signal<readonly string[]>([]);
+  public readonly placeholder = input<string>("Search fruits...");
+
+  public readonly minChars = input<number>(1);
+
+  public readonly disabled = input<boolean>(false);
+
+  public readonly ariaLabel = input<string>("Fruit search");
+
+  public readonly itemSelected = output<string>();
+
+  public readonly itemRemoved = output<string>();
+
+  public readonly ds = new FruitDatasource();
+
+  public readonly selected = signal<readonly string[]>([]);
 }

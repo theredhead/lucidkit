@@ -1,13 +1,12 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UISlider } from "../../slider.component";
 import type { SliderMode } from "../../slider.types";
 
 import { SliderSingleDemo } from "./single.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Slider",
-  component: UISlider,
+  component: SliderSingleDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -57,38 +56,60 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [SliderSingleDemo] })]
-} satisfies Meta<UISlider>;
+  decorators: [moduleMetadata({ imports: [SliderSingleDemo] })],
+} satisfies Meta<SliderSingleDemo>;
 
 export default meta;
-type Story = StoryObj<UISlider>;
+type Story = StoryObj<SliderSingleDemo>;
 
 export const Single: Story = {
+  args: {
+    mode: "single",
+    min: 0,
+    max: 100,
+    step: 1,
+    showValue: true,
+    showMinMax: false,
+    showTicks: false,
+    disabled: false,
+    ariaLabel: "Volume",
+  },
   parameters: {
     docs: {
       description: {
         story:
-        "### Features\n" +
-        "- **Single mode** — one draggable thumb for scalar values (e.g. volume)\n" +
-        "- **Range mode** — two thumbs for selecting a min/max interval (e.g. price range)\n" +
-        "- **Step snapping** — constrain values to discrete increments\n" +
-        "- **Value display** — optional current-value label above the thumb\n" +
-        "- **Two-way binding** — `[(value)]` model signal\n\n" +
-        "### Inputs\n" +
-        "| Input | Type | Default | Description |\n" +
-        "|-------|------|---------|-------------|\n" +
-        "| `mode` | `'single' \\| 'range'` | `'single'` | Selection mode |\n" +
-        "| `value` | `number \\| [number, number]` | `0` | Current value (model) |\n" +
-        "| `min` / `max` | `number` | `0` / `100` | Value bounds |\n" +
-        "| `step` | `number` | `1` | Step increment |\n" +
-        "| `showValue` | `boolean` | `false` | Show numeric label |\n" +
-        "| `showTicks` | `boolean` | `false` | Show tick marks at each step |\n" +
-        "| `ticks` | `SliderTick[]` | `[]` | Explicit tick definitions (overrides showTicks) |\n" +
-        "| `disabled` | `boolean` | `false` | Disable interaction |"
-      }
-    }
+          "### Features\n" +
+          "- **Single mode** — one draggable thumb for scalar values (e.g. volume)\n" +
+          "- **Range mode** — two thumbs for selecting a min/max interval (e.g. price range)\n" +
+          "- **Step snapping** — constrain values to discrete increments\n" +
+          "- **Value display** — optional current-value label above the thumb\n" +
+          "- **Two-way binding** — `[(value)]` model signal\n\n" +
+          "### Inputs\n" +
+          "| Input | Type | Default | Description |\n" +
+          "|-------|------|---------|-------------|\n" +
+          "| `mode` | `'single' \\| 'range'` | `'single'` | Selection mode |\n" +
+          "| `value` | `number \\| [number, number]` | `0` | Current value (model) |\n" +
+          "| `min` / `max` | `number` | `0` / `100` | Value bounds |\n" +
+          "| `step` | `number` | `1` | Step increment |\n" +
+          "| `showValue` | `boolean` | `false` | Show numeric label |\n" +
+          "| `showTicks` | `boolean` | `false` | Show tick marks at each step |\n" +
+          "| `ticks` | `SliderTick[]` | `[]` | Explicit tick definitions (overrides showTicks) |\n" +
+          "| `disabled` | `boolean` | `false` | Disable interaction |",
+      },
+    },
   },
-  render: () => ({
-      template: "<ui-slider-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-slider-demo
+      [mode]="mode"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      [showValue]="showValue"
+      [showMinMax]="showMinMax"
+      [showTicks]="showTicks"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

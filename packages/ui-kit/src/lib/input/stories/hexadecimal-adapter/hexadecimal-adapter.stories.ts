@@ -6,7 +6,7 @@ import { HexadecimalAdapterStorySource } from "./hexadecimal-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: HexadecimalAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [HexadecimalAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<HexadecimalAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<HexadecimalAdapterStorySource>;
 
 export const HexadecimalAdapter: Story = {
   parameters: {

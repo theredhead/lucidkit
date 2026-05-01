@@ -6,7 +6,7 @@ import { AllAdaptersStorySource } from "./all-adapters.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: AllAdaptersStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AllAdaptersStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<AllAdaptersStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<AllAdaptersStorySource>;
 
 export const AllAdapters: Story = {
   parameters: {

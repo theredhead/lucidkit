@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UICalendarMonthView } from "../../calendar-month-view.component";
 import { ArrayCalendarDatasource } from "../../array-calendar-datasource";
 import type { CalendarEvent } from "../../calendar.types";
@@ -75,6 +75,11 @@ function sampleEvents(): CalendarEvent[] {
   templateUrl: "./custom-palette.story.html",
 })
 export class CalendarPaletteDemo {
+  public readonly showWeekNumbers = input(false);
+  public readonly maxEventsPerDay = input(3);
+  public readonly disabled = input(false);
+  public readonly ariaLabel = input("Calendar month view");
+
   public readonly palette = [
     "#1e3a5f",
     "#3d5a80",

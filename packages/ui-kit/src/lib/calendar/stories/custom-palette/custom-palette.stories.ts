@@ -6,7 +6,7 @@ import { CalendarPaletteDemo } from "./custom-palette.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Calendar Month View",
-  component: UICalendarMonthView,
+  component: CalendarPaletteDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,17 +35,29 @@ const meta = {
       description: "Accessible label for the calendar.",
     },
   },
-  decorators: [moduleMetadata({ imports: [CalendarPaletteDemo] })]
-} satisfies Meta<UICalendarMonthView>;
+  decorators: [moduleMetadata({ imports: [CalendarPaletteDemo] })],
+} satisfies Meta<CalendarPaletteDemo>;
 
 export default meta;
-type Story = StoryObj<UICalendarMonthView>;
+type Story = StoryObj<CalendarPaletteDemo>;
 
 export const CustomPalette: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    showWeekNumbers: false,
+    maxEventsPerDay: 3,
+    disabled: false,
+    ariaLabel: "Calendar month view",
   },
-  render: () => ({
-      template: "<ui-cal-palette-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-cal-palette-demo
+        [showWeekNumbers]="showWeekNumbers"
+        [maxEventsPerDay]="maxEventsPerDay"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

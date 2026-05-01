@@ -1,6 +1,12 @@
 export type { Predicate } from "@angular/core";
 export { Emitter } from "./emitter";
 export {
+  KeyedRegistry,
+  Registry,
+  type IKeyedRegistry,
+  type IRegistry,
+} from "./registry";
+export {
   SortDirection,
   type SortExpression,
   compileSortExpression,

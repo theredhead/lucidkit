@@ -23,7 +23,7 @@ import { LCDStorySource } from "./lcd.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: LCDStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [LCDStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<LCDStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<LCDStorySource>;
 
 export const LCD: Story = {
   args: {

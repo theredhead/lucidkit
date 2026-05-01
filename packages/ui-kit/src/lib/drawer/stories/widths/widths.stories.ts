@@ -6,7 +6,7 @@ import { WidthsStorySource } from "./widths.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Drawer",
-  component: UIDrawer,
+  component: WidthsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -41,10 +41,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [WidthsStorySource] })]
-} satisfies Meta<UIDrawer>;
+} satisfies Meta<WidthsStorySource>;
 
 export default meta;
-type Story = StoryObj<UIDrawer>;
+type Story = StoryObj<WidthsStorySource>;
 
 export const Widths: Story = {
   parameters: {

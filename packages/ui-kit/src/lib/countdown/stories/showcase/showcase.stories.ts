@@ -6,7 +6,7 @@ import { CountdownDemo } from "./showcase.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Countdown",
-  component: UICountdown,
+  component: CountdownDemo,
   tags: ["autodocs"],
   argTypes: {
     mode: {
@@ -21,10 +21,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CountdownDemo] })]
-} satisfies Meta<UICountdown>;
+} satisfies Meta<CountdownDemo>;
 
 export default meta;
-type Story = StoryObj<UICountdown>;
+type Story = StoryObj<CountdownDemo>;
 
 export const Showcase: Story = {
   parameters: {

@@ -9,7 +9,7 @@ import { MarkdownTableStorySource } from "./markdown-table.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rich Text View",
-  component: UIRichTextView,
+  component: MarkdownTableStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [MarkdownTableStorySource] })]
-} satisfies Meta<UIRichTextView>;
+} satisfies Meta<MarkdownTableStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextView>;
+type Story = StoryObj<MarkdownTableStorySource>;
 
 export const MarkdownTable: Story = {
   name: "Markdown — table support",

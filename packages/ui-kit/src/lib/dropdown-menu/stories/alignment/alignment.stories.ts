@@ -6,7 +6,7 @@ import { AlignmentStorySource } from "./alignment.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Dropdown Menu",
-  component: UIDropdownMenu,
+  component: AlignmentStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -28,10 +28,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AlignmentStorySource] })]
-} satisfies Meta<UIDropdownMenu>;
+} satisfies Meta<AlignmentStorySource>;
 
 export default meta;
-type Story = StoryObj<UIDropdownMenu>;
+type Story = StoryObj<AlignmentStorySource>;
 
 export const Alignment: Story = {
   parameters: {

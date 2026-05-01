@@ -6,7 +6,7 @@ import { PanelStylesStorySource } from "./panel-styles.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: PanelStylesStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PanelStylesStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<PanelStylesStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<PanelStylesStorySource>;
 
 export const PanelStyles: Story = {
   parameters: {

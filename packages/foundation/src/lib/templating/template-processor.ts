@@ -1,3 +1,5 @@
+import { KeyedRegistry, Registry } from "../types";
+
 /**
  * Controls how a template processor reacts when a block references a key that
  * does not exist in the expansion context.
@@ -22,6 +24,25 @@ export interface TextTemplateOptions {
    * Defaults to `"keep"`.
    */
   readonly missingKey?: MissingKeyBehavior;
+}
+
+/**
+ * Contract for optional text detectors that transform raw text at a pipeline
+ * boundary.
+ *
+ * Data detectors are intended to run either before or after XML template
+ * processing, never during block expansion itself.
+ */
+export interface IDataDetector {
+  /**
+   * Returns `true` when the detector should process the provided text.
+   */
+  detect(text: string): boolean;
+
+  /**
+   * Transforms detected text into the desired output string.
+   */
+  process(text: string): string;
 }
 
 /**
@@ -186,7 +207,10 @@ const TEMPLATE_ROOT = "template-root";
 const parserErrorSelector = "parsererror";
 
 /** @internal */
-const blockProviders = new Map<string, TemplateBlockProvider>();
+const blockProviders = new KeyedRegistry<TemplateBlockProvider>();
+
+/** @internal */
+const dataDetectors = new Registry<IDataDetector>();
 
 /**
  * Registers an XML template block provider.
@@ -196,14 +220,14 @@ const blockProviders = new Map<string, TemplateBlockProvider>();
 export function registerTextTemplateBlockProvider(
   provider: TemplateBlockProvider,
 ): void {
-  blockProviders.set(provider.name, provider);
+  blockProviders.register(provider.name, provider);
 }
 
 /**
  * Removes a previously registered XML template block provider.
  */
 export function unregisterTextTemplateBlockProvider(name: string): void {
-  blockProviders.delete(name);
+  blockProviders.unregister(name);
 }
 
 /**
@@ -218,6 +242,75 @@ export function haveRegisteredTextTemplateBlockProvider(name: string): boolean {
  */
 export function getRegisteredTextTemplateBlockProviders(): TemplateBlockProvider[] {
   return Array.from(blockProviders.values());
+}
+
+/**
+ * Registers a data detector.
+ *
+ * Detectors are intended to run either before or after XML template
+ * processing, never during block expansion itself.
+ */
+export function registerDataDetector(detector: IDataDetector): void {
+  dataDetectors.register(detector);
+}
+
+/**
+ * Removes a previously registered data detector.
+ */
+export function unregisterDataDetector(detector: IDataDetector): void {
+  dataDetectors.unregister(detector);
+}
+
+/**
+ * Returns all currently registered data detectors.
+ */
+export function getRegisteredDataDetectors(): IDataDetector[] {
+  return Array.from(dataDetectors.values());
+}
+
+/**
+ * Applies a detector list to a text fragment at a pipeline boundary.
+ *
+ * Each detector runs only when its {@link IDataDetector.detect} method returns
+ * `true`. Detector output is fed into subsequent detectors in registration
+ * order.
+ */
+export function applyDataDetectors(
+  text: string,
+  detectors: readonly IDataDetector[] = getRegisteredDataDetectors(),
+): string {
+  if (!text || detectors.length === 0) {
+    return text;
+  }
+  const document = new DOMParser().parseFromString(
+    "<body></body>",
+    "text/html",
+  );
+  const container = document.body;
+  container.textContent = text;
+  for (const detector of detectors) {
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    const textNodes: Text[] = [];
+    let currentNode = walker.nextNode();
+    while (currentNode) {
+      textNodes.push(currentNode as Text);
+      currentNode = walker.nextNode();
+    }
+    for (const textNode of textNodes) {
+      const currentText = textNode.textContent ?? "";
+      if (!currentText || !detector.detect(currentText)) {
+        continue;
+      }
+      const transformed = detector.process(currentText);
+      if (transformed === currentText) {
+        continue;
+      }
+      const template = document.createElement("template");
+      template.innerHTML = transformed;
+      textNode.replaceWith(...Array.from(template.content.childNodes));
+    }
+  }
+  return container.innerHTML;
 }
 
 /**

@@ -6,7 +6,7 @@ import { EmailAdapterStorySource } from "./email-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: EmailAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [EmailAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<EmailAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<EmailAdapterStorySource>;
 
 export const EmailAdapter: Story = {
   parameters: {

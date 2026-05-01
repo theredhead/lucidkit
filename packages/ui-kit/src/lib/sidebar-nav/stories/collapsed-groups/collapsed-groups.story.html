@@ -1,5 +1,5 @@
 <!-- Groups start collapsed with [expanded]="false" -->
-<ui-sidebar-nav>
+<ui-sidebar-nav [collapsed]="collapsed()" [ariaLabel]="ariaLabel()">
   <ui-sidebar-item label="Home" [icon]="houseIcon" [active]="true" />
   <ui-sidebar-group label="Section A" [expanded]="false">
     <ui-sidebar-item label="Item A1" />

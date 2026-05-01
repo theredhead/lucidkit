@@ -6,7 +6,7 @@ import { PercentageAdapterStorySource } from "./percentage-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: PercentageAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PercentageAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<PercentageAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<PercentageAdapterStorySource>;
 
 export const PercentageAdapter: Story = {
   parameters: {

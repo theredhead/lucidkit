@@ -1,12 +1,19 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIMediaPlayer } from "../../media-player.component";
+import type {
+  MediaCrossOrigin,
+  MediaFit,
+  MediaPreload,
+  MediaSource,
+  MediaTrack,
+  MediaType,
+} from "../../media-player.types";
 
 import { MediaPlayerVideoDemo } from "./video.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: MediaPlayerVideoDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -154,14 +161,48 @@ const meta = {
       table: { category: "Outputs" },
     },
   },
-  decorators: [moduleMetadata({ imports: [MediaPlayerVideoDemo] })]
-} satisfies Meta<UIMediaPlayer>;
+  decorators: [moduleMetadata({ imports: [MediaPlayerVideoDemo] })],
+} satisfies Meta<MediaPlayerVideoDemo>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<MediaPlayerVideoDemo>;
 
 export const Video: Story = {
-  render: () => ({
-      template: "<ui-media-player-video-demo />",
-    })
+  args: {
+    type: "video" as MediaType,
+    source: { url: "/media/sample.mp4", type: "video/mp4" } as MediaSource,
+    sources: [] as readonly MediaSource[],
+    tracks: [] as readonly MediaTrack[],
+    controls: true,
+    loop: false,
+    autoplay: false,
+    preload: "metadata" as MediaPreload,
+    fit: "contain" as MediaFit,
+    poster: "/media/sample-poster.jpg",
+    crossOrigin: "anonymous" as MediaCrossOrigin,
+    ariaLabel: "Sample video",
+    playbackRates: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+    muted: false,
+    volume: 1,
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-media-player-video-demo
+      [type]="type"
+      [source]="source"
+      [sources]="sources"
+      [tracks]="tracks"
+      [controls]="controls"
+      [loop]="loop"
+      [autoplay]="autoplay"
+      [preload]="preload"
+      [fit]="fit"
+      [poster]="poster"
+      [crossOrigin]="crossOrigin"
+      [ariaLabel]="ariaLabel"
+      [playbackRates]="playbackRates"
+      [muted]="muted"
+      [volume]="volume"
+    />`,
+  }),
 };

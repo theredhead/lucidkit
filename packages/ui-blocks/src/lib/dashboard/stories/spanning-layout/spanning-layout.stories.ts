@@ -6,7 +6,7 @@ import { DashboardSpanningDemo } from "./spanning-layout.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Dashboard",
-  component: UIDashboard,
+  component: DashboardSpanningDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,10 +35,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DashboardSpanningDemo] })]
-} satisfies Meta<UIDashboard>;
+} satisfies Meta<DashboardSpanningDemo>;
 
 export default meta;
-type Story = StoryObj<UIDashboard>;
+type Story = StoryObj<DashboardSpanningDemo>;
 
 export const SpanningLayout: Story = {
   parameters: {

@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { ImageBase64FallbackStorySource } from "./image-base64-fallback.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: ImageBase64FallbackStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,30 +52,39 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [ImageBase64FallbackStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [ImageBase64FallbackStorySource] })],
+} satisfies Meta<ImageBase64FallbackStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<ImageBase64FallbackStorySource>;
 
 export const ImageBase64Fallback: Story = {
   args: {
+    disabled: false,
+    readonly: false,
     placeholder: "Paste an image — it will embed as base64…",
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: args,
     template: `
-      <ui-rich-text-editor
+      <ui-image-base64-fallback-story-demo
         [mode]="mode"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [presentation]="presentation"
         [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
       />
       <p style="margin-top: 8px; font-size: 13px; color: #666;">
         No <code>imageHandler</code> set — pasted images will be embedded
         inline as base64 data URIs.
       </p>
     `,
-  })
+  }),
 };

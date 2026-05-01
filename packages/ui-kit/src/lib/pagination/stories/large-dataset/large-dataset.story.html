@@ -1,1 +1,6 @@
-<ui-pagination [totalItems]="1000" [pageSize]="25" />
+<ui-pagination
+	[totalItems]="totalItems()"
+	[pageSize]="pageSize()"
+	[disabled]="disabled()"
+	[ariaLabel]="ariaLabel()"
+ />

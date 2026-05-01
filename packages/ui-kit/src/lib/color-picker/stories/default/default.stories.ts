@@ -7,7 +7,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Color Picker",
-  component: UIColorPicker,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -44,10 +44,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UIColorPicker>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UIColorPicker>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: {

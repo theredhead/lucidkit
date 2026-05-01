@@ -23,7 +23,7 @@ import { DigitalStorySource } from "./digital.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: DigitalStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DigitalStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<DigitalStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<DigitalStorySource>;
 
 export const Digital: Story = {
   args: {

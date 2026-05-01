@@ -6,13 +6,13 @@ import { TemplateToolStorySource } from "./template-tool.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Toolbar",
-  component: UIToolbar,
+  component: TemplateToolStorySource,
   tags: ["autodocs"],
   decorators: [moduleMetadata({ imports: [TemplateToolStorySource] })]
-} satisfies Meta<UIToolbar>;
+} satisfies Meta<TemplateToolStorySource>;
 
 export default meta;
-type Story = StoryObj<UIToolbar>;
+type Story = StoryObj<TemplateToolStorySource>;
 
 export const TemplateTool: Story = {
   parameters: {

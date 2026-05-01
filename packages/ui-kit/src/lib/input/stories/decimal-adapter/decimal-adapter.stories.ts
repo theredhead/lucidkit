@@ -6,7 +6,7 @@ import { DecimalAdapterStorySource } from "./decimal-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: DecimalAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DecimalAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<DecimalAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<DecimalAdapterStorySource>;
 
 export const DecimalAdapter: Story = {
   parameters: {

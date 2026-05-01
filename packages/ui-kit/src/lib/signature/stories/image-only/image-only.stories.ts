@@ -6,7 +6,7 @@ import { ImageOnlyStorySource } from "./image-only.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Signature",
-  component: UISignature,
+  component: ImageOnlyStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -17,10 +17,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ImageOnlyStorySource] })]
-} satisfies Meta<UISignature>;
+} satisfies Meta<ImageOnlyStorySource>;
 
 export default meta;
-type Story = StoryObj<UISignature>;
+type Story = StoryObj<ImageOnlyStorySource>;
 
 export const ImageOnly: Story = {
   parameters: {

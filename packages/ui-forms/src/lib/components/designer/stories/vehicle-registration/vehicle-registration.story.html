@@ -1,4 +1,56 @@
-<ui-form-designer
-  [schema]="vehicleSchema"
-  (schemaChange)="onSave($event)"
-/>
+
+    <div style="height: 700px">
+      <ui-form-designer
+        [schema]="initialSchema()"
+        (schemaChange)="onSchemaChange($event)"
+      />
+    </div>
+
+    @if (latestSchema()) {
+      <div
+        style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #f7f8fa); margin-top: 16px; padding: 16px; border: 1px solid var(--ui-border, #d7dce2); border-radius: 8px"
+      >
+        <div
+          style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px"
+        >
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700">
+            Export
+          </h4>
+          <select
+            style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); border: 1px solid var(--ui-border, #d7dce2); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem"
+            (change)="onStrategyChange($event)"
+          >
+            @for (s of allStrategies; track s.label; let i = $index) {
+              <option [value]="i">{{ s.label }}</option>
+            }
+          </select>
+          <ui-button variant="outlined" size="small" (click)="onExport()">
+            Export
+          </ui-button>
+        </div>
+      </div>
+    }
+
+    @if (lastExport()) {
+      <div
+        style="color: var(--ui-text, #1d232b); background: var(--ui-surface-2, #f0f2f5); margin-top: 16px; padding: 16px; border: 1px solid var(--ui-border, #d7dce2); border-radius: 8px"
+      >
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px"
+        >
+          <h4 style="margin: 0; font-size: 0.875rem; font-weight: 700; color: var(--ui-text, #1d232b)">
+            Export Result
+          </h4>
+          <span
+            style="color: var(--ui-text-muted, #5a6470); font-size: 0.75rem; font-family: monospace"
+          >
+            {{ lastExport()!.fileName }} ({{ lastExport()!.mimeType }})
+          </span>
+        </div>
+        <pre
+          style="color: var(--ui-text, #1d232b); background: var(--ui-surface, #fff); border: 1px solid var(--ui-border, #d7dce2); font-size: 0.75rem; margin: 0; padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; max-height: 400px; overflow: auto"
+          >{{ lastExport()!.content }}</pre
+        >
+      </div>
+    }
+  

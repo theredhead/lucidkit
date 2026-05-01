@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, signal, viewChild } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { UIDashboard } from "../../dashboard.component";
 import { UIDashboardPanel } from "../../dashboard-panel.component";
-import type { DashboardPanelConfig } from "../../dashboard.types";
+import type {
+  DashboardColumns,
+  DashboardDockPosition,
+  DashboardPanelConfig,
+} from "../../dashboard.types";
 import { UIButton } from "@theredhead/lucid-kit";
 
 // ── Demo: With restore ───────────────────────────────────────────
@@ -15,6 +25,15 @@ import { UIButton } from "@theredhead/lucid-kit";
   templateUrl: "./removable-with-restore.story.html",
 })
 export class DashboardRestoreDemo {
+  /** Number of dashboard columns to render. */
+  public readonly columns = input<DashboardColumns>(3);
+
+  /** Gap between dashboard panels in pixels. */
+  public readonly gap = input<number>(16);
+
+  /** Position of the overflow dock. */
+  public readonly dockPosition = input<DashboardDockPosition>("bottom");
+
   public readonly dashboard = viewChild.required(UIDashboard);
   public readonly lastRemoved = signal<string | null>(null);
 

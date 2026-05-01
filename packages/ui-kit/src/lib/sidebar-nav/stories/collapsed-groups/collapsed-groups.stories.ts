@@ -6,7 +6,7 @@ import { CollapsedGroupsStorySource } from "./collapsed-groups.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Sidebar Nav",
-  component: UISidebarNav,
+  component: CollapsedGroupsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CollapsedGroupsStorySource] })]
-} satisfies Meta<UISidebarNav>;
+} satisfies Meta<CollapsedGroupsStorySource>;
 
 export default meta;
-type Story = StoryObj<UISidebarNav>;
+type Story = StoryObj<CollapsedGroupsStorySource>;
 
 export const CollapsedGroups: Story = {
   parameters: {

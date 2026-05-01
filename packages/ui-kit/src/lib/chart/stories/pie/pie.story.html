@@ -5,9 +5,10 @@
       labelProperty="browser"
       valueProperty="share"
       [strategy]="strategy"
-      [width]="360"
-      [height]="360"
-      ariaLabel="Browser market share pie chart"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Classic pie chart. Slices are separated by a thin stroke matching the

@@ -5,9 +5,10 @@
       labelProperty="browser"
       valueProperty="share"
       [strategy]="strategy"
-      [width]="360"
-      [height]="360"
-      ariaLabel="Browser market share donut chart"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Donut variant — set <code>innerRadiusRatio</code> on the

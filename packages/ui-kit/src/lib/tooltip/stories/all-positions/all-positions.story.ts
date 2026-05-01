@@ -12,5 +12,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./all-positions.story.scss",
 })
 export class AllPositionsStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/tooltip/tooltip.stories.ts.
 }

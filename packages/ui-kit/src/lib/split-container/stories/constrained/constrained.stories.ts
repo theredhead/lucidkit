@@ -6,7 +6,7 @@ import { ConstrainedStorySource } from "./constrained.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Split Container",
-  component: UISplitContainer,
+  component: ConstrainedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -36,10 +36,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ConstrainedStorySource] })]
-} satisfies Meta<UISplitContainer>;
+} satisfies Meta<ConstrainedStorySource>;
 
 export default meta;
-type Story = StoryObj<UISplitContainer>;
+type Story = StoryObj<ConstrainedStorySource>;
 
 export const Constrained: Story = {
   parameters: {

@@ -15,7 +15,7 @@
 | `UIFilter`              | `src/lib/filter/filter.component.ts`                                          | `ui-filter`                 | Predicate builder for composing filter rules against typed fields                                                                  |
 | `UIAutocomplete`        | `src/lib/autocomplete/autocomplete.component.ts`                              | `ui-autocomplete`           | Type-ahead component with optional custom item template                                                                            |
 | `UICalendarPanel`       | `src/lib/calendar-panel/calendar-panel.component.ts`                          | `ui-calendar-panel`         | Standalone calendar grid panel for date selection                                                                                  |
-| `UIRichTextView`        | `src/lib/rich-text-view/rich-text-view.component.ts`                          | `ui-rich-text-view`         | Read-only renderer for HTML or Markdown content; auto-detects format via `strategy` input (`'html'\|'markdown'\|'auto'`)           |
+| `UIRichTextView`        | `src/lib/rich-text-view/rich-text-view.component.ts`                          | `ui-rich-text-view`         | Read-only renderer for HTML or Markdown content with optional data-detector transformation on rendered text nodes                  |
 | `UIThemeToggle`         | `src/lib/theme-toggle/theme-toggle.component.ts`                              | `ui-theme-toggle`           | Toggle button for switching between light and dark mode                                                                            |
 | `UITableView`           | `src/lib/table-view/table-view.component.ts`                                  | `ui-table-view`             | Table with sorting, filtering, selection, column resizing, and pluggable rendering strategy (`'plain'` or `'virtual'`)             |
 | `UITableHeader`         | `src/lib/table-view/table-view-header/table-view-header.component.ts`         | `ui-table-header`           | Table header row (internal)                                                                                                        |
@@ -174,9 +174,11 @@ This pattern allows for extensibility - new column types can be added without mo
 
 ## Types
 
-| Name                   | File                                                 | Description                                                                |
-| ---------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------- |
-| `RichTextViewStrategy` | `src/lib/rich-text-view/rich-text-view.component.ts` | `'html' \| 'markdown' \| 'auto'` — rendering strategy for `UIRichTextView` |
+| Name                               | File                                                 | Description                                                                |
+| ---------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------- |
+| `RichTextViewStrategy`             | `src/lib/rich-text-view/rich-text-view.component.ts` | `'html' \| 'markdown' \| 'auto'` — rendering strategy for `UIRichTextView` |
+| `RICH_TEXT_VIEW_DATA_DETECTORS`    | `src/lib/rich-text-view/rich-text-view.component.ts` | DI token for optional rich-text-view data detectors                        |
+| `provideRichTextViewDataDetectors` | `src/lib/rich-text-view/rich-text-view.component.ts` | Provider helper for rich-text-view data detectors                          |
 
 ## Text Input Adapters
 

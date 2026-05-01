@@ -1,12 +1,24 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIBreadcrumb, type BreadcrumbVariant } from "../../breadcrumb.component";
+import {
+  type BreadcrumbItem,
+  type BreadcrumbVariant,
+} from "../../breadcrumb.component";
 
 import { PlaygroundStorySource } from "./playground.story";
 
+interface BreadcrumbPlaygroundStoryArgs {
+  ariaLabel: string;
+  disabled: boolean;
+  items: readonly BreadcrumbItem[];
+  separator: string;
+  variant: BreadcrumbVariant;
+  itemClicked: (item: BreadcrumbItem) => void;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Breadcrumb",
-  component: UIBreadcrumb,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,12 +47,20 @@ const meta = {
       control: "text",
       description: "Accessible label for the navigation landmark.",
     },
+    items: {
+      control: "object",
+      description: "Breadcrumb items rendered by the playground instance.",
+    },
+    itemClicked: {
+      action: "itemClicked",
+      description: "Emitted when a breadcrumb item is clicked.",
+    },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UIBreadcrumb>;
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
+} satisfies Meta<BreadcrumbPlaygroundStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIBreadcrumb>;
+type Story = StoryObj<BreadcrumbPlaygroundStoryArgs>;
 
 export const Playground: Story = {
   args: {
@@ -48,22 +68,21 @@ export const Playground: Story = {
     separator: "/",
     disabled: false,
     ariaLabel: "Breadcrumb",
+    items: [
+      { label: "Home", url: "/" },
+      { label: "Products", url: "/products" },
+      { label: "Detail" },
+    ],
   },
   render: (args) => ({
-    props: {
-      ...args,
-      items: [
-        { label: "Home", url: "/" },
-        { label: "Products", url: "/products" },
-        { label: "Detail" },
-      ],
-    },
-    template: `<ui-breadcrumb
+    props: args,
+    template: `<ui-playground-story-demo
       [items]="items"
       [variant]="variant"
       [separator]="separator"
       [disabled]="disabled"
       [ariaLabel]="ariaLabel"
+      (itemClicked)="itemClicked($event)"
     />`,
-  })
+  }),
 };

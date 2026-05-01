@@ -6,7 +6,7 @@ import { CalendarEmptyDemo } from "./empty.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Calendar Month View",
-  component: UICalendarMonthView,
+  component: CalendarEmptyDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,17 +35,29 @@ const meta = {
       description: "Accessible label for the calendar.",
     },
   },
-  decorators: [moduleMetadata({ imports: [CalendarEmptyDemo] })]
-} satisfies Meta<UICalendarMonthView>;
+  decorators: [moduleMetadata({ imports: [CalendarEmptyDemo] })],
+} satisfies Meta<CalendarEmptyDemo>;
 
 export default meta;
-type Story = StoryObj<UICalendarMonthView>;
+type Story = StoryObj<CalendarEmptyDemo>;
 
 export const Empty: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    showWeekNumbers: false,
+    maxEventsPerDay: 3,
+    disabled: false,
+    ariaLabel: "Calendar month view",
   },
-  render: () => ({
-      template: "<ui-cal-empty-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-cal-empty-demo
+        [showWeekNumbers]="showWeekNumbers"
+        [maxEventsPerDay]="maxEventsPerDay"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+      />`,
+  }),
 };

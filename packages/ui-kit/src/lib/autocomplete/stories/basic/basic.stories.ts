@@ -2,6 +2,15 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { BasicDemo } from "./basic.story";
 
+interface BasicStoryArgs {
+  placeholder: string;
+  minChars: number;
+  disabled: boolean;
+  ariaLabel: string;
+  itemSelected: (item: string) => void;
+  itemRemoved: (item: string) => void;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Autocomplete",
   tags: ["autodocs"],
@@ -22,10 +31,6 @@ const meta = {
       control: "number",
       description: "Minimum characters before querying the datasource.",
     },
-    multiple: {
-      control: "boolean",
-      description: "Enable multi-select with chip tokens.",
-    },
     disabled: {
       control: "boolean",
       description: "Disables the autocomplete.",
@@ -34,18 +39,39 @@ const meta = {
       control: "text",
       description: "Accessible label for the input.",
     },
+    itemSelected: {
+      action: "itemSelected",
+      description: "Emitted when a suggestion is picked.",
+    },
+    itemRemoved: {
+      action: "itemRemoved",
+      description: "Emitted when a selected item is removed.",
+    },
   },
-  decorators: [moduleMetadata({ imports: [BasicDemo] })]
-} satisfies Meta;
+  decorators: [moduleMetadata({ imports: [BasicDemo] })],
+} satisfies Meta<BasicStoryArgs>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<BasicStoryArgs>;
 
-export const Basic: Story = {
-  parameters: {
-    docs: {}
+export const Default: Story = {
+  args: {
+    placeholder: "Search fruits...",
+    minChars: 1,
+    disabled: false,
+    ariaLabel: "Fruit search",
   },
-  render: () => ({
-      template: "<ui-ac-basic-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `
+      <ui-ac-basic-demo
+        [placeholder]="placeholder"
+        [minChars]="minChars"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+        (itemSelected)="itemSelected($event)"
+        (itemRemoved)="itemRemoved($event)"
+      />
+    `,
+  }),
 };

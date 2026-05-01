@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIMapView } from "../../map-view.component";
 import type { MapLatLng, MapMarker, MapPolygon } from "../../map-view.model";
 
@@ -29,6 +29,10 @@ const BENELUX_POLYGON: MapPolygon = {
   templateUrl: "./polygon-region.story.html",
 })
 export class MapViewPolygonDemo {
+  readonly zoom = input(6);
+  readonly width = input<string | undefined>(undefined);
+  readonly height = input("500px");
+  readonly ariaLabel = input("Benelux region");
   readonly center: MapLatLng = { lat: 51.5, lng: 5.0 };
   readonly markers: MapMarker[] = [
     { position: AMSTERDAM, label: "Amsterdam" },

@@ -5,9 +5,10 @@
       labelProperty="city"
       valueProperty="temp"
       [strategy]="strategy"
-      [width]="560"
-      [height]="340"
-      ariaLabel="City temperature scatter plot"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Each data point is rendered as an individual circle. Marker radius and

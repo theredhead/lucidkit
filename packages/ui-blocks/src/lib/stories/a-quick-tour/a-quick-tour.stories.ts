@@ -1,9 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDemoQuickTourShowcase } from "./a-quick-tour-showcase";
+import { QuickTourStorySource } from "./a-quick-tour.story";
 
 const meta: Meta = {
   title: "@theredhead/Showcases/A Quick Tour",
+  component: QuickTourStorySource,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -18,7 +19,7 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [UIDemoQuickTourShowcase],
+      imports: [QuickTourStorySource],
     }),
   ],
 };
@@ -39,7 +40,7 @@ type Story = StoryObj;
  */
 export const Default: Story = {
   render: () => ({
-    template: `<ui-demo-quick-tour-showcase />`,
+    template: `<ui-a-quick-tour-story-source />`,
   }),
   parameters: {
     docs: {

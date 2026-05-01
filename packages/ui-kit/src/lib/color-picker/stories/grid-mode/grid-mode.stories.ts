@@ -7,7 +7,7 @@ import { GridModeStorySource } from "./grid-mode.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Color Picker",
-  component: UIColorPicker,
+  component: GridModeStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -44,10 +44,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [GridModeStorySource] })]
-} satisfies Meta<UIColorPicker>;
+} satisfies Meta<GridModeStorySource>;
 
 export default meta;
-type Story = StoryObj<UIColorPicker>;
+type Story = StoryObj<GridModeStorySource>;
 
 export const GridMode: Story = {
   args: { value: "#1565c0" },

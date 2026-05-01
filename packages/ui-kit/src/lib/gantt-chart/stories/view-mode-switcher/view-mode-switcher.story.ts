@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  model,
+} from "@angular/core";
 import { TitleCasePipe } from "@angular/common";
 import { UIGanttChart } from "../../gantt-chart.component";
 import { GanttArrayDatasource } from "../../gantt-array-datasource";
@@ -115,7 +120,27 @@ const PROJECT_TASKS: GanttTask[] = [
   templateUrl: "./view-mode-switcher.story.html",
 })
 export class GanttSwitcherDemo {
+  /** Active timeline granularity for the demo chart. */
+  public readonly viewMode = model<GanttViewMode>("day");
+
+  /** Height of each task row in pixels. */
+  public readonly rowHeight = input<number>(36);
+
+  /** Whether to show the current-date marker. */
+  public readonly showToday = input<boolean>(true);
+
+  /** Whether to render the task-list sidebar. */
+  public readonly showTaskList = input<boolean>(true);
+
+  /** Width of the task-list sidebar in pixels. */
+  public readonly taskListWidth = input<number>(200);
+
+  /** Extra days of padding added before and after the task range. */
+  public readonly paddingDays = input<number>(2);
+
+  /** Accessible label forwarded to the chart region. */
+  public readonly ariaLabel = input<string>("Gantt chart");
+
   public readonly modes: GanttViewMode[] = ["day", "week", "month"];
-  public readonly viewMode = signal<GanttViewMode>("day");
   public readonly datasource = new GanttArrayDatasource(PROJECT_TASKS);
 }

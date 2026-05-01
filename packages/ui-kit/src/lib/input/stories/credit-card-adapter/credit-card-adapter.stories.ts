@@ -6,7 +6,7 @@ import { CreditCardAdapterStorySource } from "./credit-card-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: CreditCardAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CreditCardAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<CreditCardAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<CreditCardAdapterStorySource>;
 
 export const CreditCardAdapter: Story = {
   parameters: {

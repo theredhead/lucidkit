@@ -23,7 +23,7 @@ import { WithImageHandlerStorySource } from "./with-image-handler.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: WithImageHandlerStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -67,31 +67,36 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [WithImageHandlerStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [WithImageHandlerStorySource] })],
+} satisfies Meta<WithImageHandlerStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<WithImageHandlerStorySource>;
 
 export const WithImageHandler: Story = {
   args: {
+    disabled: false,
+    readonly: false,
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
     placeholder: "Paste an image here…",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: { ...args, imageHandler: mockImageHandler },
     template: `
-      <ui-rich-text-editor
-        [mode]="mode"
-        [imageHandler]="imageHandler"
+      <ui-with-image-handler-story-demo
+        [disabled]="disabled"
+        [readonly]="readonly"
         [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        [mode]="mode"
+        [presentation]="presentation"
+        [imageHandler]="imageHandler"
       />
-      <p style="margin-top: 8px; font-size: 13px; color: #666;">
-        Paste or drop an image — it will be "uploaded" and inserted as an
-        <code>&lt;img&gt;</code> with a mock CDN URL.
-      </p>
     `,
-  })
+  }),
 };

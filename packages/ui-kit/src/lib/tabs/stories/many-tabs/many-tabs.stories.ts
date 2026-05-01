@@ -6,7 +6,7 @@ import { ManyTabsStorySource } from "./many-tabs.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: ManyTabsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ManyTabsStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<ManyTabsStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<ManyTabsStorySource>;
 
 export const ManyTabs: Story = {
   parameters: {

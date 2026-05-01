@@ -6,7 +6,7 @@ import { LeftTabsStorySource } from "./left-tabs.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: LeftTabsStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [LeftTabsStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<LeftTabsStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<LeftTabsStorySource>;
 
 export const LeftTabs: Story = {
   parameters: {

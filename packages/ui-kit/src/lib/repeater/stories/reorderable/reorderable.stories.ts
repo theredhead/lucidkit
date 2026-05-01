@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRepeater } from "../../repeater.component";
-
 import { ReorderableStorySource } from "./reorderable.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Repeater",
-  component: UIRepeater,
+  component: ReorderableStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -26,17 +24,25 @@ const meta = {
       description: "Accessible label for the repeater list.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ReorderableStorySource] })]
-} satisfies Meta<UIRepeater>;
+  decorators: [moduleMetadata({ imports: [ReorderableStorySource] })],
+} satisfies Meta<ReorderableStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRepeater>;
+type Story = StoryObj<ReorderableStorySource>;
 
 export const Reorderable: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    reorderable: true,
+    ariaLabel: "Reorderable list",
   },
-  render: () => ({
-      template: "<ui-reorderable-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-reorderable-story-demo
+      [reorderable]="reorderable"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

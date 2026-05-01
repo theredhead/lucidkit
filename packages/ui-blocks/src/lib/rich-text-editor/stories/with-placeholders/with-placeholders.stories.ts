@@ -1,9 +1,6 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextPlaceholder } from "../../rich-text-editor.types";
-import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
-
 const samplePlaceholders: RichTextPlaceholder[] = [
   { key: "firstName", label: "First Name", category: "Contact" },
   { key: "lastName", label: "Last Name", category: "Contact" },
@@ -13,13 +10,15 @@ const samplePlaceholders: RichTextPlaceholder[] = [
   { key: "todayDate", label: "Today's Date", category: "System" },
 ];
 
-const modes: RichTextEditorMode[] = ["html", "markdown"];
-
 import { WithPlaceholdersStorySource } from "./with-placeholders.story";
+import {
+  RICH_TEXT_EDITOR_STORY_ARG_TYPES,
+  type RichTextEditorStoryArgs,
+} from "../rich-text-editor-story-helpers";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: WithPlaceholdersStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,61 +28,40 @@ const meta = {
       },
     },
   },
-  argTypes: {
-    disabled: {
-      control: "boolean",
-      description:
-        "Disables the editor — the toolbar is hidden and the content area cannot be focused or edited.",
-    },
-    readonly: {
-      control: "boolean",
-      description:
-        "Makes the editor read-only — content is visible and selectable but the toolbar is hidden and editing is prevented.",
-    },
-    placeholder: {
-      control: "text",
-      description:
-        "Placeholder text displayed inside the empty editing area. Disappears once the user starts typing.",
-    },
-    ariaLabel: {
-      control: "text",
-      description:
-        "Accessible label forwarded to the contenteditable region or textarea for screen readers.",
-    },
-    mode: {
-      control: "select",
-      options: modes satisfies RichTextEditorMode[],
-      description:
-        'Editing strategy: `"html"` uses contenteditable with rich WYSIWYG formatting; `"markdown"` uses a plain textarea with toolbar-driven Markdown syntax insertion.',
-    },
-    presentation: {
-      control: "select",
-      options: ["default", "compact"],
-      description:
-        'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
-    },
-  },
-  decorators: [moduleMetadata({ imports: [WithPlaceholdersStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  argTypes: RICH_TEXT_EDITOR_STORY_ARG_TYPES,
+  decorators: [moduleMetadata({ imports: [WithPlaceholdersStorySource] })],
+} satisfies Meta<RichTextEditorStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<RichTextEditorStoryArgs>;
 
 export const WithPlaceholders: Story = {
   args: {
+    disabled: false,
+    readonly: false,
     placeholder: "Compose your email template…",
+    ariaLabel: "Rich text editor",
+    mode: "html",
+    presentation: "default",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: { ...args, placeholders: samplePlaceholders },
     template: `
-      <ui-rich-text-editor
+      <ui-with-placeholders-story-demo
         [mode]="mode"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [presentation]="presentation"
         [placeholders]="placeholders"
         [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        (blockInserted)="blockInserted($event)"
+        (blockEdited)="blockEdited($event)"
+        (blockRemoved)="blockRemoved($event)"
       />
     `,
-  })
+  }),
 };

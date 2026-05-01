@@ -2,7 +2,15 @@
     <div
       style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
     >
-      <ui-wizard [linear]="true" (complete)="onComplete()">
+      <ui-wizard
+        [linear]="linear()"
+        [showStepIndicator]="showStepIndicator()"
+        [backLabel]="backLabel()"
+        [nextLabel]="nextLabel()"
+        [finishLabel]="finishLabel()"
+        [ariaLabel]="ariaLabel()"
+        (complete)="onComplete()"
+      >
         <ui-wizard-step label="Terms" [canAdvance]="accepted()">
           <h3>Accept the Terms</h3>
           <p>You must accept the terms to continue.</p>

@@ -39,7 +39,7 @@ import { ScrollStorySource } from "./scroll.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Carousel",
-  component: UICarousel,
+  component: ScrollStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -52,7 +52,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ScrollStorySource] })]
-} satisfies Meta<UICarousel>;
+} satisfies Meta<ScrollStorySource>;
 
 export default meta;
 type Story = StoryObj;

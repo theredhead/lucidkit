@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./semicircle.story.scss",
 })
 export class SemicircleStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/gauge/gauge.stories.ts.
 }

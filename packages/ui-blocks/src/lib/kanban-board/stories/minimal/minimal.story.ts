@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, input, signal } from "@angular/core";
 import { UIKanbanBoard } from "../../kanban-board.component";
 import type { KanbanColumn } from "../../kanban-board.types";
 
@@ -9,6 +9,9 @@ import type { KanbanColumn } from "../../kanban-board.types";
   templateUrl: "./minimal.story.html",
 })
 export class StoryKanbanMinimal {
+  /** Accessible label forwarded to the kanban board region. */
+  public readonly ariaLabel = input<string>("Kanban board");
+
   public readonly columns = signal<KanbanColumn<{ label: string }>[]>([
     {
       id: "a",

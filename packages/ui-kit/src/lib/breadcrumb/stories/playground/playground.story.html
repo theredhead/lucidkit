@@ -1,7 +1,8 @@
 <ui-breadcrumb
-      [items]="items"
-      [variant]="variant"
-      [separator]="separator"
-      [disabled]="disabled"
-      [ariaLabel]="ariaLabel"
-    />
+  [items]="items()"
+  [variant]="variant()"
+  [separator]="separator()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
+  (itemClicked)="itemClicked.emit($event)"
+/>

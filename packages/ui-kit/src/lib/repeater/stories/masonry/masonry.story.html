@@ -1,5 +1,9 @@
 
-    <ui-repeater [datasource]="ds">
+    <ui-repeater
+      [datasource]="ds"
+      [reorderable]="reorderable()"
+      [ariaLabel]="ariaLabel()"
+    >
       <ng-template let-photo let-i="index" let-odd="odd">
         <div class="brick" [style.height.px]="180 + (i % 3) * 60">
           <img [src]="photo.url" [alt]="photo.name" loading="lazy" />

@@ -1,15 +1,19 @@
-import { UIToolbar } from "../../toolbar.component";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { UIIcons } from "../../../icon/lucide-icons.generated";
+import { UIToolbar } from "../../toolbar.component";
+import { UIButtonTool } from "../../tools/button-tool/button-tool.component";
+import { UISeparatorTool } from "../../tools/separator-tool/separator-tool.component";
 
 @Component({
   selector: "ui-floating-toggle-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIToolbar],
+  imports: [UIToolbar, UIButtonTool, UISeparatorTool],
   templateUrl: "./floating-toggle.story.html",
   styleUrl: "./floating-toggle.story.scss",
 })
 export class FloatingToggleStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/toolbar/toolbar.stories.ts.
+  protected readonly UIIcons = UIIcons;
+  public readonly toolbarCollapsed = signal(false);
 }

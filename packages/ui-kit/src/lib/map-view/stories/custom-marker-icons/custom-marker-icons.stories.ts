@@ -1,31 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { UIMapView } from "../../map-view.component";
-import type { MapLatLng } from "../../map-view.model";
-
-// ── Demo data ─────────────────────────────────────────────────────────
-
-const AMSTERDAM: MapLatLng = { lat: 52.3676, lng: 4.9041 };
-
-// ── Story components ──────────────────────────────────────────────────
-
-@Component({
-  selector: "ui-map-view-basic-demo",
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIMapView],
-  template: ` <ui-map-view [center]="center" [zoom]="13" height="500px" /> `,
-})
-class MapViewBasicDemo {
-  readonly center = AMSTERDAM;
-}
-
 import { MapViewCustomIconsDemo } from "./custom-marker-icons.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Map View",
-  component: MapViewBasicDemo,
+  component: MapViewCustomIconsDemo,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -54,17 +33,17 @@ const meta = {
       description: "Accessible label for the map.",
     },
   },
-  decorators: [moduleMetadata({ imports: [MapViewCustomIconsDemo] })]
-} satisfies Meta<object>;
+  decorators: [moduleMetadata({ imports: [MapViewCustomIconsDemo] })],
+} satisfies Meta<MapViewCustomIconsDemo>;
 
 export default meta;
-type Story = StoryObj<object>;
+type Story = StoryObj<MapViewCustomIconsDemo>;
 
 export const CustomMarkerIcons: Story = {
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: () => ({
-      template: "<ui-map-view-custom-icons-demo />",
-    })
+    template: "<ui-map-view-custom-icons-demo />",
+  }),
 };

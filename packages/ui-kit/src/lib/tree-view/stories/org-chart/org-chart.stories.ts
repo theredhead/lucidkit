@@ -6,7 +6,7 @@ import { TreeViewOrgDemo } from "./org-chart.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tree View",
-  component: UITreeView,
+  component: TreeViewOrgDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TreeViewOrgDemo] })]
-} satisfies Meta<UITreeView>;
+} satisfies Meta<TreeViewOrgDemo>;
 
 export default meta;
-type Story = StoryObj<UITreeView>;
+type Story = StoryObj<TreeViewOrgDemo>;
 
 export const OrgChart: Story = {
   parameters: {

@@ -12,7 +12,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/drawer/drawer.stories.ts.
 
   public ariaLabel = ("Side panel") as const;
   public closeOnBackdropClick = (true) as const;

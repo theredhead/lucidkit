@@ -2,6 +2,15 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { MultiDemo } from "./multiple-selection.story";
 
+interface MultipleSelectionStoryArgs {
+  placeholder: string;
+  minChars: number;
+  disabled: boolean;
+  ariaLabel: string;
+  itemSelected: (item: string) => void;
+  itemRemoved: (item: string) => void;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Autocomplete",
   tags: ["autodocs"],
@@ -22,10 +31,6 @@ const meta = {
       control: "number",
       description: "Minimum characters before querying the datasource.",
     },
-    multiple: {
-      control: "boolean",
-      description: "Enable multi-select with chip tokens.",
-    },
     disabled: {
       control: "boolean",
       description: "Disables the autocomplete.",
@@ -34,18 +39,39 @@ const meta = {
       control: "text",
       description: "Accessible label for the input.",
     },
+    itemSelected: {
+      action: "itemSelected",
+      description: "Emitted when a suggestion is picked.",
+    },
+    itemRemoved: {
+      action: "itemRemoved",
+      description: "Emitted when a selected item is removed.",
+    },
   },
-  decorators: [moduleMetadata({ imports: [MultiDemo] })]
-} satisfies Meta;
+  decorators: [moduleMetadata({ imports: [MultiDemo] })],
+} satisfies Meta<MultipleSelectionStoryArgs>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<MultipleSelectionStoryArgs>;
 
 export const MultipleSelection: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    placeholder: "Pick fruits...",
+    minChars: 1,
+    disabled: false,
+    ariaLabel: "Multi-fruit search",
   },
-  render: () => ({
-      template: "<ui-ac-multi-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `
+      <ui-ac-multi-demo
+        [placeholder]="placeholder"
+        [minChars]="minChars"
+        [disabled]="disabled"
+        [ariaLabel]="ariaLabel"
+        (itemSelected)="itemSelected($event)"
+        (itemRemoved)="itemRemoved($event)"
+      />
+    `,
+  }),
 };

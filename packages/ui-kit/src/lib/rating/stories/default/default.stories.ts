@@ -6,7 +6,7 @@ import { DefaultStorySource } from "./default.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rating",
-  component: UIRating,
+  component: DefaultStorySource,
   tags: ["autodocs"],
   argTypes: {
     value: {
@@ -26,10 +26,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<UIRating>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRating>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
   args: { value: 3, max: 5, readonly: false, disabled: false, size: "medium" },

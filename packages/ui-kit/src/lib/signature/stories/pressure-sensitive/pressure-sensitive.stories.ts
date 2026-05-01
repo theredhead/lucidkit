@@ -6,7 +6,7 @@ import { PressureSensitiveStorySource } from "./pressure-sensitive.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Signature",
-  component: UISignature,
+  component: PressureSensitiveStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -17,10 +17,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PressureSensitiveStorySource] })]
-} satisfies Meta<UISignature>;
+} satisfies Meta<PressureSensitiveStorySource>;
 
 export default meta;
-type Story = StoryObj<UISignature>;
+type Story = StoryObj<PressureSensitiveStorySource>;
 
 export const PressureSensitive: Story = {
   parameters: {

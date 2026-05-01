@@ -1,9 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIDemoCommunicationSuiteApp } from "./communication-suite-app";
+import { CommunicationSuiteAppStorySource } from "./communication-suite-app.story";
 
 const meta: Meta = {
   title: "@theredhead/Showcases/Communication Suite",
+  component: CommunicationSuiteAppStorySource,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -23,7 +24,7 @@ const meta: Meta = {
   },
   decorators: [
     moduleMetadata({
-      imports: [UIDemoCommunicationSuiteApp],
+      imports: [CommunicationSuiteAppStorySource],
     }),
   ],
 };
@@ -51,7 +52,7 @@ type Story = StoryObj;
  */
 export const Default: Story = {
   render: () => ({
-    template: `<ui-demo-communication-suite-app />`,
+    template: `<ui-communication-suite-app-story-source />`,
   }),
   parameters: {
     docs: {

@@ -6,7 +6,7 @@ import { PlainStorySource } from "./plain.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: PlainStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [PlainStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<PlainStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<PlainStorySource>;
 
 export const Plain: Story = {
   args: {

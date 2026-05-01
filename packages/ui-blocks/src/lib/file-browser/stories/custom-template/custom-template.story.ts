@@ -17,6 +17,8 @@ import {
 })
 export class CustomTemplateDemo extends UIFileBrowserStoryBase {
   protected override onFileActivated(event: FileActivateEvent<FileMeta>): void {
-    this.lastEvent.set(`Opened: ${event.entry.name} (${event.entry.meta?.type ?? "unknown"})`);
+    this.lastEvent.set(
+      `Opened: ${event.entry.name} (${event.entry.meta?.type ?? "unknown"})`,
+    );
   }
 }

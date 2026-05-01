@@ -1,12 +1,18 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UINavigationPage } from "../../navigation-page.component";
+import type { DrawerPosition, DrawerWidth } from "@theredhead/lucid-kit";
 
 import { DemoNavPageDrawerComponent } from "./drawer-mode.story";
 
+interface NavigationPageDrawerStoryArgs {
+  readonly drawerPosition: DrawerPosition;
+  readonly drawerWidth: DrawerWidth;
+  readonly ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Blocks/Navigation Page",
-  component: UINavigationPage,
+  component: DemoNavPageDrawerComponent,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -25,7 +31,7 @@ const meta = {
     },
     drawerWidth: {
       control: "select",
-      options: ["narrow", "wide", "full"],
+      options: ["narrow", "medium", "wide"],
       description: "Width preset for the navigation drawer.",
     },
     ariaLabel: {
@@ -33,17 +39,24 @@ const meta = {
       description: "Accessible label for the navigation page.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DemoNavPageDrawerComponent] })]
-} satisfies Meta<UINavigationPage>;
+  decorators: [moduleMetadata({ imports: [DemoNavPageDrawerComponent] })],
+} satisfies Meta<NavigationPageDrawerStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UINavigationPage>;
+type Story = StoryObj<NavigationPageDrawerStoryArgs>;
 
 export const DrawerMode: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    drawerPosition: "left",
+    drawerWidth: "medium",
+    ariaLabel: "Page navigation",
   },
-  render: () => ({
-      template: "<ui-demo-nav-page-drawer />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-demo-nav-page-drawer [drawerPosition]="drawerPosition" [drawerWidth]="drawerWidth" [ariaLabel]="ariaLabel"></ui-demo-nav-page-drawer>',
+  }),
 };

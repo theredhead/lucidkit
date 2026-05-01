@@ -1,8 +1,17 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIDashboard } from "../../dashboard.component";
 import { UIDashboardPanel } from "../../dashboard-panel.component";
-import type { DashboardPanelConfig } from "../../dashboard.types";
-import { UIIcon, UIIcons, UIChart, BarGraphStrategy } from "@theredhead/lucid-kit";
+import type {
+  DashboardColumns,
+  DashboardDockPosition,
+  DashboardPanelConfig,
+} from "../../dashboard.types";
+import {
+  UIIcon,
+  UIIcons,
+  UIChart,
+  BarGraphStrategy,
+} from "@theredhead/lucid-kit";
 
 // ── Shared fixtures ──────────────────────────────────────────────
 
@@ -56,9 +65,20 @@ const SAMPLE_PANELS: DashboardPanelConfig[] = [
   templateUrl: "./default.story.html",
 })
 export class DashboardDefaultDemo {
+  /** Number of dashboard columns to render. */
+  public readonly columns = input<DashboardColumns>(8);
+
+  /** Gap between dashboard panels in pixels. */
+  public readonly gap = input<number>(16);
+
+  /** Position of the overflow dock. */
+  public readonly dockPosition = input<DashboardDockPosition>("bottom");
+
   protected readonly icons = UIIcons.Lucide;
   protected readonly menuIcon = UIIcons.Lucide.Layout.Menu;
+
   public readonly panels = SAMPLE_PANELS;
+
   protected readonly barStrategy = new BarGraphStrategy();
   protected readonly revenueData = [
     { month: "Jul", revenue: 24500 },

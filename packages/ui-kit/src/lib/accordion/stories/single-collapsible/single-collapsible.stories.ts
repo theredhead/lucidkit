@@ -6,7 +6,7 @@ import { AccordionCollapsibleDemo } from "./single-collapsible.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Accordion",
-  component: UIAccordion,
+  component: AccordionCollapsibleDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -38,10 +38,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AccordionCollapsibleDemo] })]
-} satisfies Meta<UIAccordion>;
+} satisfies Meta<AccordionCollapsibleDemo>;
 
 export default meta;
-type Story = StoryObj<UIAccordion>;
+type Story = StoryObj<AccordionCollapsibleDemo>;
 
 export const SingleCollapsible: Story = {
   parameters: {

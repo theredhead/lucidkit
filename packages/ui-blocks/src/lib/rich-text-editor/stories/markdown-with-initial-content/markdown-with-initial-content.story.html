@@ -1,4 +1,9 @@
 <ui-rich-text-editor
-        [mode]="mode"
+  [mode]="mode()"
+  [disabled]="disabled()"
+  [readonly]="readonly()"
+  [presentation]="presentation()"
         [(value)]="value"
+  [placeholder]="placeholder()"
+  [ariaLabel]="ariaLabel()"
       />

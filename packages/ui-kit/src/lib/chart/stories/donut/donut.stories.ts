@@ -4,9 +4,16 @@ import { UIChart } from "../../chart.component";
 
 import { ChartDonutDemo } from "./donut.story";
 
+interface ChartDonutStoryArgs {
+  width: number;
+  height: number;
+  showLegend: boolean;
+  ariaLabel: string;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: ChartDonutDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -34,17 +41,25 @@ const meta = {
       description: "Accessible label for the chart.",
     },
   },
-  decorators: [moduleMetadata({ imports: [ChartDonutDemo] })]
-} satisfies Meta<UIChart<unknown>>;
+  decorators: [moduleMetadata({ imports: [ChartDonutDemo] })],
+} satisfies Meta<ChartDonutStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<ChartDonutStoryArgs>;
 
 export const Donut: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    width: 360,
+    height: 360,
+    showLegend: true,
+    ariaLabel: "Browser market share donut chart",
   },
-  render: () => ({
-      template: "<ui-chart-donut-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-chart-donut-demo [width]="width" [height]="height" [showLegend]="showLegend" [ariaLabel]="ariaLabel" />',
+  }),
 };

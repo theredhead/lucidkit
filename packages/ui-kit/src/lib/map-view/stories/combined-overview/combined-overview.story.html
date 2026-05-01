@@ -2,11 +2,12 @@
     <ui-map-view
       uiDensity="comfortable"
       [center]="center"
-      [zoom]="5"
+      [zoom]="zoom()"
+      [width]="width()"
       [markers]="markers"
       [polylines]="polylines"
       [polygons]="polygons"
-      height="560px"
-      ariaLabel="European overview"
+      [height]="height()"
+      [ariaLabel]="ariaLabel()"
     />
   

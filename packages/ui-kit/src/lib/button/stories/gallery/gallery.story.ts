@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./gallery.story.scss",
 })
 export class GalleryStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/button/button.stories.ts.
 }

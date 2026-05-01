@@ -1,6 +1,7 @@
 export { UIRichTextEditor } from "./rich-text-editor.component";
 export {
   type RichTextPlaceholder,
+  type RichTextTemplateBlockEvent,
   type RichTextTemplateBlockAttributeDefinition,
   type RichTextTemplateBlockAttributeOption,
   type RichTextTemplateBlockAttributeType,

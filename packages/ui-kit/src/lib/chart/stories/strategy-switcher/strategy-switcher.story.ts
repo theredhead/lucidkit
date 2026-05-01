@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { UIButton } from "../../../button/button.component";
 import { BarGraphStrategy } from "../../strategies/bar-graph.strategy";
@@ -34,6 +39,11 @@ const salesData: MonthlySales[] = [
   templateUrl: "./strategy-switcher.story.html",
 })
 export class ChartSwitcherDemo {
+  public readonly width = input<number>(520);
+  public readonly height = input<number>(340);
+  public readonly showLegend = input<boolean>(true);
+  public readonly ariaLabel = input<string>("Data chart");
+
   public readonly data = salesData;
 
   protected readonly strategies: Record<string, GraphPresentationStrategy> = {

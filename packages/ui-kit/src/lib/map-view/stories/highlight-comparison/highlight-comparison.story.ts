@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIMapView } from "../../map-view.component";
-import type { MapLatLng, MapMarker, MapPolygon, MapPolyline } from "../../map-view.model";
+import type {
+  MapLatLng,
+  MapMarker,
+  MapPolygon,
+  MapPolyline,
+} from "../../map-view.model";
 
 // ── Demo data ─────────────────────────────────────────────────────────
 
@@ -54,6 +59,10 @@ const BENELUX_HIGHLIGHTED: MapPolygon = {
   templateUrl: "./highlight-comparison.story.html",
 })
 export class MapViewHighlightDemo {
+  readonly zoom = input(6);
+  readonly width = input<string | undefined>(undefined);
+  readonly height = input("360px");
+  readonly ariaLabel = input("Highlight comparison");
   readonly center: MapLatLng = { lat: 51.0, lng: 4.5 };
   readonly markers: MapMarker[] = [
     { position: AMSTERDAM, label: "Amsterdam" },

@@ -5,7 +5,7 @@ import { UICardStoryBodyImage } from "./body-image.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Card",
-  component: UICard,
+  component: UICardStoryBodyImage,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [UICardStoryBodyImage] })],
-} satisfies Meta<UICard>;
+} satisfies Meta<UICardStoryBodyImage>;
 
 export default meta;
 type Story = StoryObj;

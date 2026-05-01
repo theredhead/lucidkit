@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIPagination } from "../../pagination.component";
-
 import { PlaygroundStorySource } from "./playground.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Pagination",
-  component: UIPagination,
+  component: PlaygroundStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -39,11 +37,11 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
-} satisfies Meta<UIPagination>;
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
+} satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
-type Story = StoryObj<UIPagination>;
+type Story = StoryObj<PlaygroundStorySource>;
 
 export const Playground: Story = {
   args: {
@@ -54,11 +52,11 @@ export const Playground: Story = {
   },
   render: (args) => ({
     props: args,
-    template: `<ui-pagination
+    template: `<ui-playground-story-demo
       [totalItems]="totalItems"
       [pageSize]="pageSize"
       [disabled]="disabled"
       [ariaLabel]="ariaLabel"
     />`,
-  })
+  }),
 };

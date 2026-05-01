@@ -11,5 +11,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./with-component-resolver.story.scss",
 })
 export class WithComponentResolverStorySource {
-  // Review required: this scaffold was generated from packages/ui-kit/src/lib/timeline/timeline.stories.ts.
 }

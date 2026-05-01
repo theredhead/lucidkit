@@ -5,9 +5,10 @@
       valueProperty="revenue"
       [sources]="layers"
       [strategy]="strategy"
-      [width]="560"
-      [height]="340"
-      ariaLabel="2024 vs 2025 revenue comparison"
+      [width]="width()"
+      [height]="height()"
+      [showLegend]="showLegend()"
+      [ariaLabel]="ariaLabel()"
     />
     <p>
       Each layer provides its own <code>data</code> array. The component-level

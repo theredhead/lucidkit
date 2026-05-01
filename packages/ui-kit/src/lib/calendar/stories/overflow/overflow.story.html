@@ -1,3 +1,9 @@
 
-    <ui-calendar-month-view [datasource]="ds" [maxEventsPerDay]="2" />
+        <ui-calendar-month-view
+            [datasource]="ds"
+            [showWeekNumbers]="showWeekNumbers()"
+            [maxEventsPerDay]="maxEventsPerDay()"
+            [disabled]="disabled()"
+            [ariaLabel]="ariaLabel()"
+        />
   

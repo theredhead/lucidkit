@@ -1,12 +1,10 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIPagination } from "../../pagination.component";
-
 import { DisabledStorySource } from "./disabled.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Pagination",
-  component: UIPagination,
+  component: DisabledStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -39,17 +37,29 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DisabledStorySource] })]
-} satisfies Meta<UIPagination>;
+  decorators: [moduleMetadata({ imports: [DisabledStorySource] })],
+} satisfies Meta<DisabledStorySource>;
 
 export default meta;
-type Story = StoryObj<UIPagination>;
+type Story = StoryObj<DisabledStorySource>;
 
 export const Disabled: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    totalItems: 100,
+    pageSize: 10,
+    disabled: true,
+    ariaLabel: "Pagination",
   },
-  render: () => ({
-    template: `<ui-pagination [totalItems]="100" [pageSize]="10" [disabled]="true" />`,
-  })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template: `<ui-disabled-story-demo
+      [totalItems]="totalItems"
+      [pageSize]="pageSize"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

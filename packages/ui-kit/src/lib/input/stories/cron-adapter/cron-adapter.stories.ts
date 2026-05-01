@@ -6,7 +6,7 @@ import { CronAdapterStorySource } from "./cron-adapter.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Input",
-  component: UIInput,
+  component: CronAdapterStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,10 +53,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CronAdapterStorySource] })]
-} satisfies Meta<UIInput>;
+} satisfies Meta<CronAdapterStorySource>;
 
 export default meta;
-type Story = StoryObj<UIInput>;
+type Story = StoryObj<CronAdapterStorySource>;
 
 export const CronAdapter: Story = {
   parameters: {

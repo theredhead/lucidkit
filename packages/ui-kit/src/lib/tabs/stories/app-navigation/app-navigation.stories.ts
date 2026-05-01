@@ -6,7 +6,7 @@ import { AppNavigationStorySource } from "./app-navigation.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tabs",
-  component: UITabGroup,
+  component: AppNavigationStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -47,10 +47,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AppNavigationStorySource] })]
-} satisfies Meta<UITabGroup>;
+} satisfies Meta<AppNavigationStorySource>;
 
 export default meta;
-type Story = StoryObj<UITabGroup>;
+type Story = StoryObj<AppNavigationStorySource>;
 
 export const AppNavigation: Story = {
   parameters: {

@@ -6,7 +6,7 @@ import { YouTubeEmbedStorySource } from "./you-tube-embed.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: YouTubeEmbedStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [YouTubeEmbedStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<YouTubeEmbedStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<YouTubeEmbedStorySource>;
 
 export const YouTubeEmbed: Story = {
   parameters: {

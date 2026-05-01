@@ -6,7 +6,7 @@ import { SideBySideComparisonStorySource } from "./side-by-side-comparison.story
 
 const meta = {
   title: "@theredhead/UI Kit/Chart",
-  component: UIChart,
+  component: SideBySideComparisonStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -35,10 +35,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SideBySideComparisonStorySource] })]
-} satisfies Meta<UIChart<unknown>>;
+} satisfies Meta<SideBySideComparisonStorySource>;
 
 export default meta;
-type Story = StoryObj<UIChart<unknown>>;
+type Story = StoryObj<SideBySideComparisonStorySource>;
 
 export const SideBySideComparison: Story = {
   parameters: {

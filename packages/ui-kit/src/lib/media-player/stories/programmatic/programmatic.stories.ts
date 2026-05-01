@@ -6,7 +6,7 @@ import { ProgrammaticStorySource } from "./programmatic.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Media Player",
-  component: UIMediaPlayer,
+  component: ProgrammaticStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -155,10 +155,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [ProgrammaticStorySource] })]
-} satisfies Meta<UIMediaPlayer>;
+} satisfies Meta<ProgrammaticStorySource>;
 
 export default meta;
-type Story = StoryObj<UIMediaPlayer>;
+type Story = StoryObj<ProgrammaticStorySource>;
 
 export const Programmatic: Story = {
   parameters: {

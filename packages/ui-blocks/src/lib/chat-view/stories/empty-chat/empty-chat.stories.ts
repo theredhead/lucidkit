@@ -1,12 +1,21 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIChatView } from "../../chat-view.component";
+import type { ChatComposerMode, MessageSendEvent } from "../../chat-view.types";
 
 import { EmptyChatStorySource } from "./empty-chat.story";
 
+interface EmptyChatStoryArgs {
+  ariaLabel: string;
+  composerMode: ChatComposerMode;
+  composerPresentation: "compact" | "default";
+  composerToolbarActions?: readonly string[];
+  placeholder: string;
+  messageSend: (event: MessageSendEvent) => void;
+}
+
 const meta = {
   title: "@theredhead/UI Blocks/Chat View",
-  component: UIChatView,
+  component: EmptyChatStorySource,
   tags: ["autodocs"],
   argTypes: {
     composerMode: {
@@ -33,18 +42,31 @@ const meta = {
       control: "text",
       description: "Accessible label for the chat view.",
     },
+    messageSend: {
+      action: "messageSend",
+      description: "Emitted when the user sends a message.",
+    },
   },
-  decorators: [moduleMetadata({ imports: [EmptyChatStorySource] })]
-} satisfies Meta<UIChatView>;
+  decorators: [moduleMetadata({ imports: [EmptyChatStorySource] })],
+} satisfies Meta<EmptyChatStoryArgs>;
 
 export default meta;
-type Story = StoryObj<UIChatView>;
+type Story = StoryObj<EmptyChatStoryArgs>;
 
 export const EmptyChat: Story = {
-  parameters: {
-    docs: {}
+  args: {
+    ariaLabel: "Chat",
+    composerMode: "text",
+    composerPresentation: "compact",
+    composerToolbarActions: undefined,
+    placeholder: "Type the first message…",
   },
-  render: () => ({
-      template: "<ui-empty-chat-story-demo />",
-    })
+  parameters: {
+    docs: {},
+  },
+  render: (args) => ({
+    props: args,
+    template:
+      '<ui-empty-chat-story-demo [ariaLabel]="ariaLabel" [composerMode]="composerMode" [composerPresentation]="composerPresentation" [composerToolbarActions]="composerToolbarActions" [placeholder]="placeholder" (messageSend)="messageSend($event)" />',
+  }),
 };

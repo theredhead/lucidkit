@@ -9,7 +9,7 @@ import { AutoHtmlStorySource } from "./auto-html.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Rich Text View",
-  component: UIRichTextView,
+  component: AutoHtmlStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -32,10 +32,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [AutoHtmlStorySource] })]
-} satisfies Meta<UIRichTextView>;
+} satisfies Meta<AutoHtmlStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextView>;
+type Story = StoryObj<AutoHtmlStorySource>;
 
 export const AutoHtml: Story = {
   name: "Auto — HTML content",

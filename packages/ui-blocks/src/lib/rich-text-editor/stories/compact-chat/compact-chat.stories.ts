@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextEditor } from "../../rich-text-editor.component";
 import type { RichTextEditorMode } from "../../rich-text-editor.strategy";
 
 const modes: RichTextEditorMode[] = ["html", "markdown"];
@@ -9,7 +8,7 @@ import { CompactChatStorySource } from "./compact-chat.story";
 
 const meta = {
   title: "@theredhead/UI Blocks/Rich Text Editor",
-  component: UIRichTextEditor,
+  component: CompactChatStorySource,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -53,11 +52,11 @@ const meta = {
         'Editor chrome presentation: `"default"` shows the full toolbar; `"compact"` uses a small floating toolbar for chat-style composition.',
     },
   },
-  decorators: [moduleMetadata({ imports: [CompactChatStorySource] })]
-} satisfies Meta<UIRichTextEditor>;
+  decorators: [moduleMetadata({ imports: [CompactChatStorySource] })],
+} satisfies Meta<CompactChatStorySource>;
 
 export default meta;
-type Story = StoryObj<UIRichTextEditor & { mode: RichTextEditorMode }>;
+type Story = StoryObj<CompactChatStorySource>;
 
 export const CompactChat: Story = {
   args: {
@@ -65,9 +64,11 @@ export const CompactChat: Story = {
     presentation: "compact",
     placeholder: "Message…",
     ariaLabel: "Chat composer",
+    disabled: false,
+    readonly: false,
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: (args) => ({
     props: {
@@ -75,15 +76,15 @@ export const CompactChat: Story = {
       value: "Hey **team** - this supports _quick_ formatting.",
     },
     template: `
-      <div style="position: relative; max-width: 34rem; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 1rem; border-radius: 1.25rem; border: 1px solid var(--ui-border, #d4d8dd);">
-        <ui-rich-text-editor
-          [mode]="mode"
-          [presentation]="presentation"
-          [(value)]="value"
-          [placeholder]="placeholder"
-          [ariaLabel]="ariaLabel"
-        />
-      </div>
+      <ui-compact-chat-story-demo
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [placeholder]="placeholder"
+        [ariaLabel]="ariaLabel"
+        [mode]="mode"
+        [presentation]="presentation"
+        [value]="value"
+      />
     `,
-  })
+  }),
 };

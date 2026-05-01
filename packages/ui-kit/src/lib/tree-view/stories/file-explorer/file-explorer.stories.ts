@@ -6,7 +6,7 @@ import { TreeViewFileDemo } from "./file-explorer.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Tree View",
-  component: UITreeView,
+  component: TreeViewFileDemo,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -27,10 +27,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [TreeViewFileDemo] })]
-} satisfies Meta<UITreeView>;
+} satisfies Meta<TreeViewFileDemo>;
 
 export default meta;
-type Story = StoryObj<UITreeView>;
+type Story = StoryObj<TreeViewFileDemo>;
 
 export const FileExplorer: Story = {
   parameters: {

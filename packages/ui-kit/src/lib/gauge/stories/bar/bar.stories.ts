@@ -23,7 +23,7 @@ import { BarStorySource } from "./bar.story";
 
 const meta = {
   title: "@theredhead/UI Kit/Gauge",
-  component: UIGauge,
+  component: BarStorySource,
   tags: ["autodocs"],
   argTypes: {
     strategy: {
@@ -37,10 +37,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [BarStorySource] })]
-} satisfies Meta<UIGauge>;
+} satisfies Meta<BarStorySource>;
 
 export default meta;
-type Story = StoryObj<UIGauge>;
+type Story = StoryObj<BarStorySource>;
 
 export const Bar: Story = {
   args: {
