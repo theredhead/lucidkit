@@ -4,16 +4,17 @@ import {
   type ButtonColor,
   type ButtonSize,
   type ButtonVariant,
-  UIButton,
 } from "../../button.component";
 
 import { DefaultStorySource } from "./default.story";
 
 interface ButtonStoryArgs {
+  ariaLabel: string | undefined;
   color: ButtonColor;
   disabled: boolean;
   pill: boolean;
   size: ButtonSize;
+  type: "button" | "submit" | "reset";
   variant: ButtonVariant;
 }
 
@@ -57,6 +58,17 @@ const meta = {
         "Size preset that controls padding, font-size, and min-height. " +
         "Defaults to `medium`.",
     },
+    type: {
+      control: "select",
+      options: ["button", "submit", "reset"] satisfies (
+        | "button"
+        | "submit"
+        | "reset"
+      )[],
+      description:
+        "Native button `type` attribute. Use `submit` or `reset` inside a `<form>`. " +
+        "Defaults to `button`.",
+    },
     disabled: {
       control: "boolean",
       description:
@@ -69,6 +81,12 @@ const meta = {
         "Render with fully rounded (pill / capsule) shape. " +
         "Combines with any variant and colour.",
     },
+    ariaLabel: {
+      control: "text",
+      description:
+        "Accessible label forwarded to the native `<button>` as `aria-label`. " +
+        "Use for icon-only buttons that have no visible text.",
+    },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
 } satisfies Meta<ButtonStoryArgs>;
@@ -78,11 +96,13 @@ type Story = StoryObj<ButtonStoryArgs>;
 
 export const Default: Story = {
   args: {
-    variant: "filled",
+    ariaLabel: undefined,
     color: "primary",
-    size: "medium",
-    pill: false,
     disabled: false,
+    pill: false,
+    size: "medium",
+    type: "button",
+    variant: "filled",
   },
   parameters: {
     docs: {},
@@ -90,6 +110,6 @@ export const Default: Story = {
   render: (args) => ({
     props: args,
     template:
-      '<ui-default-story-demo [variant]="variant" [color]="color" [size]="size" [pill]="pill" [disabled]="disabled" />',
+      '<ui-default-story-demo [ariaLabel]="ariaLabel" [variant]="variant" [color]="color" [size]="size" [type]="type" [pill]="pill" [disabled]="disabled" />',
   }),
 };

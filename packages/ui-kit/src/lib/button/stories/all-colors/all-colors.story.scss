@@ -1,1 +1,4 @@
-/* Colours are driven by --ui-accent, --ui-secondary, --ui-success, --ui-error, --ui-text tokens. */
+:host {
+  display: flex;
+  gap: 1rem;
+}

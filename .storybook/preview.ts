@@ -44,20 +44,29 @@ const preview: Preview = {
   tags: ["autodocs"],
   parameters: {
     options: {
-      storySort: {
-        method: "alphabetical",
-        order: [
-          "@theredhead",
-          [
-            "Showcases",
-            ["A Quick Tour", "*"],
-            "UI Kit",
-            "UI Blocks",
-            "UI Forms",
-            "*",
-          ],
-          "*",
-        ],
+      // @ts-expect-error implicit any on storySort params — Storybook parses preview.ts as raw JS
+      storySort: (a, b) => {
+        const sections = ["Showcases", "UI Kit", "UI Blocks", "UI Forms"];
+        const aIdx = sections.findIndex((s) =>
+          a.title.startsWith(`@theredhead/${s}`),
+        );
+        const bIdx = sections.findIndex((s) =>
+          b.title.startsWith(`@theredhead/${s}`),
+        );
+
+        if (aIdx !== bIdx) {
+          if (aIdx === -1) return 1;
+          if (bIdx === -1) return -1;
+          return aIdx - bIdx;
+        }
+
+        if (a.title !== b.title) return a.title.localeCompare(b.title);
+
+        if (a.type === "docs") return -1;
+        if (b.type === "docs") return 1;
+        if (a.name === "Default") return -1;
+        if (b.name === "Default") return 1;
+        return a.name.localeCompare(b.name);
       },
     },
     docs: {

@@ -10,5 +10,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   templateUrl: "./gallery.story.html",
   styleUrl: "./gallery.story.scss",
 })
-export class GalleryStorySource {
-}
+export class GalleryStorySource {}

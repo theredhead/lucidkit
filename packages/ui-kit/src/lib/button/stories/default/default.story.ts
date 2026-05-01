@@ -16,6 +16,8 @@ import {
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
+  public readonly ariaLabel = input<string | undefined>(undefined);
+
   public readonly color = input<ButtonColor>("primary");
 
   public readonly disabled = input(false);
@@ -23,6 +25,8 @@ export class DefaultStorySource {
   public readonly pill = input(false);
 
   public readonly size = input<ButtonSize>("medium");
+
+  public readonly type = input<"button" | "submit" | "reset">("button");
 
   public readonly variant = input<ButtonVariant>("filled");
 }

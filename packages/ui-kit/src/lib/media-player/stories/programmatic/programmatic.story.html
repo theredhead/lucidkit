@@ -2,9 +2,10 @@
   #player
   type="video"
   [source]="videoSource"
-  poster="/assets/poster.jpg"
+  poster="/media/sample-poster.jpg"
   [controls]="false"
 />
 <button (click)="player.playMedia()">Play</button>
 <button (click)="player.pauseMedia()">Pause</button>
 <button (click)="player.seekTo(0)">Restart</button>
+

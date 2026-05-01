@@ -1,6 +1,7 @@
-import { UIMediaPlayer } from "../../media-player.component";
-
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+
+import { UIMediaPlayer } from "../../media-player.component";
+import type { MediaSource } from "../../media-player.types";
 
 @Component({
   selector: "ui-programmatic-story-demo",
@@ -11,4 +12,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./programmatic.story.scss",
 })
 export class ProgrammaticStorySource {
+  public readonly videoSource: MediaSource = {
+    url: "/media/sample.mp4",
+    type: "video/mp4",
+  };
 }

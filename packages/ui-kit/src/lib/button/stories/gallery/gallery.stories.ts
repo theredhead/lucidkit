@@ -4,7 +4,6 @@ import {
   type ButtonColor,
   type ButtonSize,
   type ButtonVariant,
-  UIButton,
 } from "../../button.component";
 
 import { GalleryStorySource } from "./gallery.story";

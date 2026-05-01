@@ -7,6 +7,23 @@
   border-radius: 8px;
   overflow: hidden;
   font-family: inherit;
+
+  // Component-level tokens — override at any level, fall back to --ui-* then a hardcoded default.
+  // Video overlay uses white-on-dark; audio inherits surface tokens (overridden below).
+  --mp-progress-track: rgba(255, 255, 255, 0.25);
+  --mp-progress-fill: var(--ui-accent, #3584e4);
+  --mp-progress-thumb: #fff;
+  --mp-volume-track: rgba(255, 255, 255, 0.25);
+  --mp-volume-thumb: #fff;
+}
+
+// Audio mode re-maps tokens to the surface palette
+:host(.audio) {
+  --mp-progress-track: var(--ui-border, #d7dce2);
+  --mp-progress-fill: var(--ui-accent, #3584e4);
+  --mp-progress-thumb: var(--ui-accent, #3584e4);
+  --mp-volume-track: var(--ui-border, #d7dce2);
+  --mp-volume-thumb: var(--ui-accent, #3584e4);
 }
 
 // ── Audio mode ──
@@ -43,6 +60,7 @@ audio.media {
   justify-content: center;
   pointer-events: none;
   z-index: 1;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .poster-icon {
@@ -69,6 +87,12 @@ audio.media {
   z-index: 2;
   opacity: 0;
   transition: opacity 0.25s ease;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  color: #fff;
 }
 
 :host(.video):hover .controls,
@@ -90,8 +114,10 @@ audio.media {
   align-items: center;
   justify-content: center;
   line-height: 1;
+  color: inherit;
 
   &:focus-visible {
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent, #3584e4));
     outline-offset: 2px;
   }
 }
@@ -119,10 +145,12 @@ audio.media {
   flex: 1;
   height: 6px;
   border-radius: 3px;
+  background: var(--mp-progress-track);
   cursor: var(--ui-cursor-click, pointer);
   overflow: visible;
 
   &:focus-visible {
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent, #3584e4));
     outline-offset: 2px;
   }
 }
@@ -133,6 +161,7 @@ audio.media {
   left: 0;
   height: 100%;
   border-radius: 3px;
+  background: var(--mp-progress-fill);
   opacity: 0.4;
   pointer-events: none;
 }
@@ -143,6 +172,7 @@ audio.media {
   left: 0;
   height: 100%;
   border-radius: 3px;
+  background: var(--mp-progress-fill);
   pointer-events: none;
 }
 
@@ -152,6 +182,7 @@ audio.media {
   width: 12px;
   height: 12px;
   border-radius: 50%;
+  background: var(--mp-progress-thumb);
   transform: translate(-50%, -50%);
   pointer-events: none;
   opacity: 0;
@@ -170,6 +201,7 @@ audio.media {
   -webkit-appearance: none;
   appearance: none;
   border-radius: 2px;
+  background: var(--mp-volume-track);
   cursor: var(--ui-cursor-click, pointer);
   margin: 0;
 
@@ -179,6 +211,8 @@ audio.media {
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    background: var(--mp-volume-thumb);
+    border: none;
     cursor: var(--ui-cursor-click, pointer);
     margin-top: -4px;
   }
@@ -187,18 +221,25 @@ audio.media {
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    background: var(--mp-volume-thumb);
+    border: none;
     cursor: var(--ui-cursor-click, pointer);
   }
 
   &::-webkit-slider-runnable-track {
     height: 4px;
+    background: var(--mp-volume-track);
+    border-radius: 2px;
   }
 
   &::-moz-range-track {
     height: 4px;
+    background: var(--mp-volume-track);
+    border-radius: 2px;
   }
 
   &:focus-visible {
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent, #3584e4));
     outline-offset: 4px;
   }
 }
@@ -226,6 +267,10 @@ audio.media {
   flex-direction: column;
   min-width: 60px;
   z-index: 10;
+  background: var(--ui-surface, #fff);
+  color: var(--ui-text, #1d232b);
+  border: 1px solid var(--ui-border, #d7dce2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .rate-option {
@@ -234,12 +279,19 @@ audio.media {
   border: none;
   padding: 4px 8px;
   font-size: 0.75rem;
+  color: var(--ui-text, #1d232b);
   cursor: var(--ui-cursor-click, pointer);
   border-radius: 4px;
   text-align: center;
 
+  &:hover {
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+    color: var(--ui-text, #1d232b);
+  }
+
   &--active {
     font-weight: 700;
+    color: var(--ui-accent, #3584e4);
   }
 }
 
@@ -259,6 +311,8 @@ audio.media {
   pointer-events: none;
   user-select: none;
   cursor: default;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
 }
 
 .error-message {
@@ -280,6 +334,13 @@ audio.media {
   pointer-events: none;
   user-select: none;
   cursor: default;
+  background: color-mix(
+    in srgb,
+    var(--ui-error, #ba1a1a) 10%,
+    var(--ui-surface, #fff)
+  );
+  color: var(--ui-text, #1d232b);
+  border-left: 3px solid var(--ui-error, #ba1a1a);
 }
 
 .error-banner-text {

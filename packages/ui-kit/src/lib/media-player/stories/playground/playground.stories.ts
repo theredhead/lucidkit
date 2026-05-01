@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIMediaPlayer } from "../../media-player.component";
 import type { MediaSource } from "../../media-player.types";
 
 // Local sample media served from public/media/ via Storybook's staticDirs.
@@ -164,7 +163,7 @@ const meta = {
       table: { category: "Outputs" },
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })],
 } satisfies Meta<PlaygroundStorySource>;
 
 export default meta;
@@ -189,9 +188,26 @@ export const Playground: Story = {
     playbackRates: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-playground-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-playground-story-demo
+      [type]="type"
+      [source]="source"
+      [sources]="sources"
+      [tracks]="tracks"
+      [controls]="controls"
+      [loop]="loop"
+      [autoplay]="autoplay"
+      [preload]="preload"
+      [fit]="fit"
+      [poster]="poster"
+      [crossOrigin]="crossOrigin"
+      [ariaLabel]="ariaLabel"
+      [playbackRates]="playbackRates"
+      [muted]="muted"
+      [volume]="volume"
+    />`,
+  }),
 };
