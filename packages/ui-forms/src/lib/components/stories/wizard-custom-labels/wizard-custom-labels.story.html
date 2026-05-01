@@ -5,3 +5,7 @@
   submitLabel="Create account"
   (formSubmit)="onSubmit($event)"
 />
+
+@if (submitted()) {
+  <pre class="output">{{ submitted() | json }}</pre>
+}
