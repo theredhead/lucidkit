@@ -34,7 +34,9 @@ class TestHost {}
 })
 class ConfigHost {
   public readonly text = signal("Tooltip text");
-  public readonly position = signal<"top" | "bottom" | "left" | "right">("top");
+  public readonly position = signal<
+    "top" | "bottom" | "left" | "right" | "auto"
+  >("top");
   public readonly delay = signal(0);
 }
 
@@ -205,5 +207,20 @@ describe("UITooltip — configurable", () => {
     button.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
     const tooltips = document.querySelectorAll(".ui-tooltip");
     expect(tooltips.length).toBe(1);
+  });
+
+  it("should resolve auto position to a concrete position class", () => {
+    host.position.set("auto");
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector("button");
+    button.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+    const tooltip = document.querySelector(".ui-tooltip");
+    expect(tooltip).toBeTruthy();
+    // The class must be one of the four concrete positions, not 'auto'
+    const hasConcretePosition = ["top", "bottom", "left", "right"].some((p) =>
+      tooltip?.classList.contains(p),
+    );
+    expect(hasConcretePosition).toBe(true);
+    expect(tooltip?.classList.contains("auto")).toBe(false);
   });
 });

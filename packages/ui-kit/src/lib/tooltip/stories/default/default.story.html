@@ -1,7 +1,9 @@
 <button
-  uiTooltip="This is a tooltip"
-  tooltipPosition="top"
+  [uiTooltip]="uiTooltip()"
+  [tooltipPosition]="tooltipPosition()"
+  [tooltipDelay]="tooltipDelay()"
   class="my-button"
 >
   Hover me
 </button>
+

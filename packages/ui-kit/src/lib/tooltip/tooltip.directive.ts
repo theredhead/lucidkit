@@ -23,7 +23,6 @@ import type { TooltipPosition } from "./tooltip.types";
   },
 })
 export class UITooltip implements OnDestroy {
-
   /** The tooltip text content. */
   public readonly uiTooltip = input.required<string>();
 
@@ -78,7 +77,10 @@ export class UITooltip implements OnDestroy {
     }
 
     const el = document.createElement("div");
-    el.className = `ui-tooltip ${this.tooltipPosition()}`;
+    // For 'auto', the resolved position class is applied in positionTooltip().
+    const position = this.tooltipPosition();
+    el.className =
+      position === "auto" ? "ui-tooltip" : `ui-tooltip ${position}`;
     el.setAttribute("role", "tooltip");
     el.textContent = text;
     document.body.appendChild(el);
@@ -96,10 +98,20 @@ export class UITooltip implements OnDestroy {
     const tooltipRect = this.tooltipElement.getBoundingClientRect();
     const gap = 8;
 
+    const requestedPosition = this.tooltipPosition();
+    const resolvedPosition =
+      requestedPosition === "auto"
+        ? this.resolveAutoPosition(hostRect, tooltipRect, gap)
+        : requestedPosition;
+
+    if (requestedPosition === "auto") {
+      this.tooltipElement.className = `ui-tooltip ${resolvedPosition}`;
+    }
+
     let top = 0;
     let left = 0;
 
-    switch (this.tooltipPosition()) {
+    switch (resolvedPosition) {
       case "top":
         top = hostRect.top - tooltipRect.height - gap;
         left = hostRect.left + (hostRect.width - tooltipRect.width) / 2;
@@ -118,8 +130,48 @@ export class UITooltip implements OnDestroy {
         break;
     }
 
+    // When auto, clamp coordinates so the tooltip stays within the viewport.
+    if (requestedPosition === "auto") {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      left = Math.max(gap, Math.min(left, vw - tooltipRect.width - gap));
+      top = Math.max(gap, Math.min(top, vh - tooltipRect.height - gap));
+    }
+
     this.tooltipElement.style.top = `${top + window.scrollY}px`;
     this.tooltipElement.style.left = `${left + window.scrollX}px`;
+  }
+
+  /**
+   * Selects the first position that fits within the current viewport.
+   *
+   * Preference order: top → bottom → right → left. Falls back to `top`
+   * if no position fits entirely (the coordinates will then be clamped).
+   *
+   * @internal
+   */
+  private resolveAutoPosition(
+    hostRect: DOMRect,
+    tooltipRect: DOMRect,
+    gap: number,
+  ): "top" | "bottom" | "left" | "right" {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    const fits: Record<"top" | "bottom" | "left" | "right", boolean> = {
+      top: hostRect.top - tooltipRect.height - gap >= 0,
+      bottom: hostRect.bottom + gap + tooltipRect.height <= vh,
+      right: hostRect.right + gap + tooltipRect.width <= vw,
+      left: hostRect.left - tooltipRect.width - gap >= 0,
+    };
+
+    for (const pos of ["top", "bottom", "right", "left"] as const) {
+      if (fits[pos]) {
+        return pos;
+      }
+    }
+
+    return "top";
   }
 
   private destroyTooltip(): void {
