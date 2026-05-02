@@ -12,7 +12,17 @@
 }
 
 <div class="control" [class.control--hidden]="!state().visible()">
-  <ng-container #outlet />
+  @if (missingRegistration()) {
+    <div class="missing-registration" role="alert">
+      <ui-icon [svg]="alertIcon" [size]="16" />
+      <span class="missing-registration-text">
+        Missing form field registration:
+        <code>{{ missingRegistration() }}</code>
+      </span>
+    </div>
+  } @else {
+    <ng-container #outlet />
+  }
 </div>
 
 @if (state().visible() && !isFlair() && showErrors()) {

@@ -7,12 +7,14 @@ import {
   effect,
   inject,
   input,
+  signal,
   untracked,
   ViewContainerRef,
   viewChild,
 } from "@angular/core";
 
 import { LoggerFactory, UISurface } from "@theredhead/lucid-foundation";
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 import type { FieldState } from "../../engine/form-engine";
 import { FormFieldRegistry } from "../../registry/field-registry";
@@ -34,6 +36,7 @@ import { isFlairComponent } from "../../types/form-schema.types";
 @Component({
   selector: "ui-form-field",
   standalone: true,
+  imports: [UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
@@ -72,6 +75,15 @@ export class UIFormField {
     ),
   );
 
+  /**
+   * @internal Set to the unresolved component key when the registry has
+   * no registration for this field's `component` value.
+   */
+  protected readonly missingRegistration = signal<string | null>(null);
+
+  /** @internal Icon used in the missing-registration error banner. */
+  protected readonly alertIcon = UIIcons.Lucide.Development.TriangleAlert;
+
   public constructor() {
     // Create the component once the view is ready
     effect(() => {
@@ -82,12 +94,15 @@ export class UIFormField {
 
       const reg = this.registry.resolve(fieldState.definition.component);
       if (!reg) {
+        this.missingRegistration.set(fieldState.definition.component);
         this.log.warn(
           `No component registered for "${fieldState.definition.component}"`,
           [fieldState.definition.id],
         );
         return;
       }
+
+      this.missingRegistration.set(null);
 
       const ref = vcr.createComponent(reg.component);
 

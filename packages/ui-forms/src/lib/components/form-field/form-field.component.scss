@@ -47,3 +47,26 @@
   font-size: 0.8125rem;
   line-height: 1.4;
 }
+
+.missing-registration {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--ui-color-warning-border, #c08000);
+  color: var(--ui-color-warning-text, #7a4f00);
+  background: var(--ui-color-warning-surface, #fff8e1);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.missing-registration-text {
+  code {
+    font-family: monospace;
+    font-size: 0.875em;
+    padding: 0 3px;
+    border-radius: 3px;
+    background: var(--ui-color-warning-code-bg, rgba(0, 0, 0, 0.08));
+  }
+}
