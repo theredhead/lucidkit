@@ -9,12 +9,18 @@ import {
   type Preview,
 } from "@storybook/angular";
 
+import { provideBuiltInFormFields } from "@theredhead/lucid-forms";
+
 import { StoryChrome } from "./story-chrome.component";
 
 const preview: Preview = {
   decorators: [
     applicationConfig({
-      providers: [provideAnimationsAsync(), provideZonelessChangeDetection()],
+      providers: [
+        provideAnimationsAsync(),
+        provideZonelessChangeDetection(),
+        provideBuiltInFormFields(),
+      ],
     }),
     moduleMetadata({
       imports: [StoryChrome],
