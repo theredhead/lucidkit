@@ -52,6 +52,5 @@ const schema: FormSchema = {
   styleUrl: "./no-field-registry.story.scss",
 })
 export class NoFieldRegistryStorySource {
-
   public readonly engine = new FormEngine(schema);
 }

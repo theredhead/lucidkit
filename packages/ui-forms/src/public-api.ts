@@ -49,6 +49,9 @@ export {
 export { BUILT_IN_FIELDS, provideBuiltInFormFields } from "./lib/registry";
 export { resolveTextAdapter, TEXT_ADAPTER_KEYS } from "./lib/registry";
 
+// ── Tokens ───────────────────────────────────────────────────────────
+export { FORM_FIELD_DEBUG } from "./lib/tokens/form-debug.token";
+
 // ── Export strategies ────────────────────────────────────────────────
 export type { ExportResult, ExportStrategy } from "./lib/export";
 export {

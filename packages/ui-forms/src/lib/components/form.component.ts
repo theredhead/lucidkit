@@ -5,15 +5,20 @@ import {
   Component,
   computed,
   forwardRef,
+  inject,
   input,
   output,
 } from "@angular/core";
 
 import { FormEngine } from "../engine/form-engine";
+import { FormFieldRegistry } from "../registry/field-registry";
+import { FORM_FIELD_DEBUG } from "../tokens/form-debug.token";
 import type { FormValues } from "../types/form-schema.types";
+import { isFlairComponent } from "../types/form-schema.types";
 import { FORM_SETTINGS } from "./form-settings";
 import { UIFormGroup } from "./form-group.component";
 import { UISurface } from '@theredhead/lucid-foundation';
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 /**
  * Top-level form component that renders all groups sequentially.
@@ -29,7 +34,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
 @Component({
   selector: "ui-form",
   standalone: true,
-  imports: [UIFormGroup],
+  imports: [UIFormGroup, UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
   host: {
@@ -83,6 +88,33 @@ export class UIForm {
     }
     return summary;
   });
+
+  /**
+   * @internal Keys of field components with no registry entry.
+   * Empty array means the form is correctly configured.
+   */
+  protected readonly missingRegistrations = computed(() => {
+    const missing: string[] = [];
+    for (const group of this.engine().groups) {
+      for (const field of group.fields) {
+        const key = field.definition.component;
+        if (!isFlairComponent(key) && !this.registry.resolve(key)) {
+          if (!missing.includes(key)) {
+            missing.push(key);
+          }
+        }
+      }
+    }
+    return missing;
+  });
+
+  /** @internal */
+  protected readonly debugMode = inject(FORM_FIELD_DEBUG);
+
+  /** @internal */
+  protected readonly alertIcon = UIIcons.Lucide.Development.TriangleAlert;
+
+  private readonly registry = inject(FormFieldRegistry);
 
   /** @internal */
   protected onSubmit(): void {

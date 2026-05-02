@@ -5,7 +5,7 @@ import {
   type StoryObj,
 } from "@storybook/angular";
 
-import { provideFormFields } from "@theredhead/lucid-forms";
+import { FORM_FIELD_DEBUG, provideFormFields } from "@theredhead/lucid-forms";
 
 import { NoFieldRegistryStorySource } from "./no-field-registry.story";
 
@@ -19,7 +19,7 @@ export default meta;
 type Story = StoryObj;
 
 export const NoFieldRegistry: Story = {
-  name: "No Field Registry",
+  name: "No Field Registry (dev mode)",
   decorators: [
     applicationConfig({
       providers: [provideFormFields({})],
@@ -29,11 +29,8 @@ export const NoFieldRegistry: Story = {
     docs: {
       description: {
         story:
-          "Demonstrates the result of **not calling `provideBuiltInFormFields()`** " +
-          "(or any `provideFormFields()`) in your app config.\n\n" +
-          "`UIFormField` resolves each field's `component` key through the `FormFieldRegistry`. " +
-          "When the registry is empty, no component is found for any key — so the form renders " +
-          "group titles and field labels, but no input controls appear and no submit button is shown.\n\n" +
+          "In **development mode** (default), `UIFormField` renders a warning banner " +
+          "for every unresolved component key, making misconfiguration instantly visible.\n\n" +
           "**Fix:** add `provideBuiltInFormFields()` to your `ApplicationConfig`:\n\n" +
           "```ts\n" +
           "// app.config.ts\n" +
@@ -44,6 +41,37 @@ export const NoFieldRegistry: Story = {
           "    // ... other providers\n" +
           "  ],\n" +
           "};\n" +
+          "```",
+      },
+    },
+  },
+  render: () => ({
+    template: "<ui-no-field-registry-story-demo />",
+  }),
+};
+
+export const NoFieldRegistryProduction: Story = {
+  name: "No Field Registry (production mode)",
+  decorators: [
+    applicationConfig({
+      providers: [
+        provideFormFields({}),
+        { provide: FORM_FIELD_DEBUG, useValue: false },
+      ],
+    }),
+  ],
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "In **production mode** (`FORM_FIELD_DEBUG = false`), a misconfigured form " +
+          "shows only a generic **\"Configuration error\"** message instead of the full form. " +
+          "No internal component keys are exposed to end users.\n\n" +
+          "This is the default when Angular's `isDevMode()` returns `false`. " +
+          "You can also force it explicitly:\n\n" +
+          "```ts\n" +
+          "import { FORM_FIELD_DEBUG } from '@theredhead/lucid-forms';\n\n" +
+          "providers: [{ provide: FORM_FIELD_DEBUG, useValue: false }]\n" +
           "```",
       },
     },

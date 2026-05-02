@@ -71,3 +71,17 @@ ui-form-group {
 .submit:focus-visible {
   outline-offset: 2px;
 }
+
+.configuration-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--ui-color-warning-border, #c08000);
+  color: var(--ui-color-warning-text, #7a4f00);
+  background: var(--ui-color-warning-surface, #fff8e1);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+}

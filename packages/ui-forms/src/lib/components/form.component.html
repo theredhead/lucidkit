@@ -1,36 +1,43 @@
-@if (engine().schema.title) {
-  <h2 class="title">{{ engine().schema.title }}</h2>
-}
-@if (engine().schema.description) {
-  <p class="description">{{ engine().schema.description }}</p>
-}
+@if (!debugMode && missingRegistrations().length) {
+  <div class="configuration-error" role="alert">
+    <ui-icon [svg]="alertIcon" [size]="20" />
+    <span>Configuration error</span>
+  </div>
+} @else {
+  @if (engine().schema.title) {
+    <h2 class="title">{{ engine().schema.title }}</h2>
+  }
+  @if (engine().schema.description) {
+    <p class="description">{{ engine().schema.description }}</p>
+  }
 
-@for (group of engine().groups; track group.definition.id) {
-  <ui-form-group [state]="group" />
-}
+  @for (group of engine().groups; track group.definition.id) {
+    <ui-form-group [state]="group" />
+  }
 
-@if (showSubmit()) {
-  @if (!isValid() && validationSummary().length) {
-    <div class="validation-summary" role="alert">
-      <strong>Please fix the following issues:</strong>
-      <ul>
-        @for (item of validationSummary(); track item.fieldId) {
-          <li>
-            <strong>{{ item.title }}:</strong>
-            {{ item.errors[0] }}
-          </li>
-        }
-      </ul>
+  @if (showSubmit()) {
+    @if (!isValid() && validationSummary().length) {
+      <div class="validation-summary" role="alert">
+        <strong>Please fix the following issues:</strong>
+        <ul>
+          @for (item of validationSummary(); track item.fieldId) {
+            <li>
+              <strong>{{ item.title }}:</strong>
+              {{ item.errors[0] }}
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    <div class="actions">
+      <button
+        type="button"
+        class="submit"
+        [disabled]="!engine().valid()"
+        (click)="onSubmit()"
+      >
+        {{ submitLabel() }}
+      </button>
     </div>
   }
-  <div class="actions">
-    <button
-      type="button"
-      class="submit"
-      [disabled]="!engine().valid()"
-      (click)="onSubmit()"
-    >
-      {{ submitLabel() }}
-    </button>
-  </div>
 }
