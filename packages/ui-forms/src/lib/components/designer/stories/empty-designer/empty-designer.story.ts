@@ -12,7 +12,6 @@ import { UIFormDesigner } from "../../form-designer.component";
   styleUrl: "./empty-designer.story.scss",
 })
 export class EmptyDesignerStorySource {
-
   protected readonly savedSchema = signal<FormSchema | null>(null);
 
   protected onSave(schema: FormSchema): void {

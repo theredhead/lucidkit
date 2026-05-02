@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, resource, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  resource,
+  signal,
+} from "@angular/core";
 import { JsonPipe } from "@angular/common";
 import type { FormSchema } from "../../../../types/form-schema.types";
 import type { ExportResult, ExportStrategy } from "../../../../export";
@@ -17,7 +22,6 @@ import { UIButton } from "@theredhead/lucid-kit";
   templateUrl: "./vehicle-registration.story.html",
 })
 export class StoryDesignerDemo {
-
   protected readonly schemaResource = resource<FormSchema, void>({
     loader: async ({ abortSignal }) => {
       const res = await fetch(

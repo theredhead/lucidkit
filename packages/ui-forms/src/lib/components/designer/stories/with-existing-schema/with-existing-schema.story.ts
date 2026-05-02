@@ -16,7 +16,9 @@ const CONTACT_FORM_SCHEMA: FormSchema = {
           id: "firstName",
           title: "First Name",
           component: "text",
-          validation: [{ type: "required", message: "First name is required." }],
+          validation: [
+            { type: "required", message: "First name is required." },
+          ],
         },
         {
           id: "lastName",
@@ -49,7 +51,9 @@ const CONTACT_FORM_SCHEMA: FormSchema = {
             { label: "Support", value: "support" },
             { label: "Sales", value: "sales" },
           ],
-          validation: [{ type: "required", message: "Please select a subject." }],
+          validation: [
+            { type: "required", message: "Please select a subject." },
+          ],
         },
         {
           id: "body",
@@ -58,7 +62,11 @@ const CONTACT_FORM_SCHEMA: FormSchema = {
           config: { multiline: true, rows: 4 },
           validation: [
             { type: "required", message: "Message is required." },
-            { type: "minLength", params: { min: 10 }, message: "At least 10 characters." },
+            {
+              type: "minLength",
+              params: { min: 10 },
+              message: "At least 10 characters.",
+            },
           ],
         },
       ],
@@ -75,7 +83,6 @@ const CONTACT_FORM_SCHEMA: FormSchema = {
   styleUrl: "./with-existing-schema.story.scss",
 })
 export class WithExistingSchemaStorySource {
-
   public readonly existingSchema = CONTACT_FORM_SCHEMA;
 
   protected readonly savedSchema = signal<FormSchema | null>(null);

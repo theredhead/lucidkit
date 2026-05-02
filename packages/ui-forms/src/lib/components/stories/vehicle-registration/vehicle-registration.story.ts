@@ -20,7 +20,6 @@ import { UIForm } from "../../form.component";
   styleUrl: "./vehicle-registration.story.scss",
 })
 export class VehicleRegistrationStorySource {
-
   protected readonly schemaResource = resource<FormSchema, void>({
     loader: async ({ abortSignal }) => {
       const res = await fetch(
