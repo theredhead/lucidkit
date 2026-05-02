@@ -1,7 +1,7 @@
 
     <div style="height: 700px">
       <ui-form-designer
-        [schema]="initialSchema"
+        [schema]="schemaResource.value() ?? null"
         (schemaChange)="onSchemaChange($event)"
       />
     </div>

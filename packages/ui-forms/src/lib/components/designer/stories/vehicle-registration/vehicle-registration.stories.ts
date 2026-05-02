@@ -1,10 +1,7 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIFormDesigner } from "../../form-designer.component";
-import {
-  StoryDesignerDemo,
-  VEHICLE_REGISTRATION_SCHEMA,
-} from "./vehicle-registration.story";
+import { StoryDesignerDemo } from "./vehicle-registration.story";
 
 const meta = {
   title: "@theredhead/UI Forms/Form Designer",
@@ -66,9 +63,6 @@ type Story = StoryObj<UIFormDesigner>;
 
 export const VehicleRegistration: Story = {
   name: "Vehicle Registration",
-  args: {
-    schema: VEHICLE_REGISTRATION_SCHEMA,
-  },
   parameters: {
     docs: {},
   },

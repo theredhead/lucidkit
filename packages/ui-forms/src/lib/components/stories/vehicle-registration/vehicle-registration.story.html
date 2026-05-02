@@ -1,8 +1,10 @@
-<ui-form
-  [engine]="engine"
-  submitLabel="Submit Registration"
-  (formSubmit)="onSubmit($event)"
-/>
+@if (engine(); as eng) {
+  <ui-form
+    [engine]="eng"
+    submitLabel="Submit Registration"
+    (formSubmit)="onSubmit($event)"
+  />
+}
 
 @if (submitted()) {
   <pre class="output">{{ submitted() | json }}</pre>

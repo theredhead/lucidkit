@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, resource, signal } from "@angular/core";
 import { JsonPipe } from "@angular/common";
 import type { FormSchema } from "../../../../types/form-schema.types";
 import type { ExportResult, ExportStrategy } from "../../../../export";
-import { JsonExportStrategy, AngularComponentExportStrategy } from "../../../../export";
+import {
+  JsonExportStrategy,
+  AngularComponentExportStrategy,
+} from "../../../../export";
 import { UIFormDesigner } from "../../form-designer.component";
 import { UIButton } from "@theredhead/lucid-kit";
-import { VEHICLE_REGISTRATION_SCHEMA } from "../../../stories/vehicle-registration/vehicle-registration.schema";
-
-export { VEHICLE_REGISTRATION_SCHEMA };
 
 @Component({
   selector: "ui-story-designer-demo",
@@ -18,7 +18,15 @@ export { VEHICLE_REGISTRATION_SCHEMA };
 })
 export class StoryDesignerDemo {
 
-  public readonly initialSchema: FormSchema = VEHICLE_REGISTRATION_SCHEMA;
+  protected readonly schemaResource = resource<FormSchema, void>({
+    loader: async ({ abortSignal }) => {
+      const res = await fetch(
+        "/assets/schemas/vehicle-registration.schema.json",
+        { signal: abortSignal },
+      );
+      return res.json() as Promise<FormSchema>;
+    },
+  });
 
   protected readonly allStrategies: readonly ExportStrategy[] = [
     new JsonExportStrategy(),

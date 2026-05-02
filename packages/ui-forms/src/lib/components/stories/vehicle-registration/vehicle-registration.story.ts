@@ -1,10 +1,15 @@
 import { JsonPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  resource,
+  signal,
+} from "@angular/core";
 
 import { FormEngine } from "../../../engine/form-engine";
-import type { FormValues } from "../../../types/form-schema.types";
+import type { FormSchema, FormValues } from "../../../types/form-schema.types";
 import { UIForm } from "../../form.component";
-import { VEHICLE_REGISTRATION_SCHEMA } from "./vehicle-registration.schema";
 
 @Component({
   selector: "ui-vehicle-registration-story-demo",
@@ -16,9 +21,22 @@ import { VEHICLE_REGISTRATION_SCHEMA } from "./vehicle-registration.schema";
 })
 export class VehicleRegistrationStorySource {
 
-  public readonly engine = new FormEngine(VEHICLE_REGISTRATION_SCHEMA);
+  protected readonly schemaResource = resource<FormSchema, void>({
+    loader: async ({ abortSignal }) => {
+      const res = await fetch(
+        "/assets/schemas/vehicle-registration.schema.json",
+        { signal: abortSignal },
+      );
+      return res.json() as Promise<FormSchema>;
+    },
+  });
 
-  public readonly submitted = signal<FormValues | null>(null);
+  protected readonly engine = computed(() => {
+    const schema = this.schemaResource.value();
+    return schema ? new FormEngine(schema) : null;
+  });
+
+  protected readonly submitted = signal<FormValues | null>(null);
 
   public onSubmit(values: FormValues): void {
     this.submitted.set(values);
