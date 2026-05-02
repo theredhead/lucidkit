@@ -101,7 +101,6 @@ const schema: FormSchema = {
   styleUrl: "./wizard-form.story.scss",
 })
 export class WizardFormStorySource {
-
   public readonly engine = new FormEngine(schema);
 
   public readonly submitted = signal<FormValues | null>(null);

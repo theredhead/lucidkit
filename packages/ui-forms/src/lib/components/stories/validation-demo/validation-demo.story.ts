@@ -79,7 +79,6 @@ const schema: FormSchema = {
   styleUrl: "./validation-demo.story.scss",
 })
 export class ValidationDemoStorySource {
-
   public readonly engine = new FormEngine(schema);
 
   public readonly submitted = signal<FormValues | null>(null);

@@ -93,7 +93,6 @@ const schema: FormSchema = {
   styleUrl: "./wizard-custom-labels.story.scss",
 })
 export class WizardCustomLabelsStorySource {
-
   public readonly engine = new FormEngine(schema);
 
   public readonly submitted = signal<FormValues | null>(null);

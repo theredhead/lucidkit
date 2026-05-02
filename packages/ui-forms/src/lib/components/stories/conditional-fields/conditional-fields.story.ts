@@ -98,7 +98,6 @@ const schema: FormSchema = {
   styleUrl: "./conditional-fields.story.scss",
 })
 export class ConditionalFieldsStorySource {
-
   public readonly engine = new FormEngine(schema);
 
   public readonly submitted = signal<FormValues | null>(null);

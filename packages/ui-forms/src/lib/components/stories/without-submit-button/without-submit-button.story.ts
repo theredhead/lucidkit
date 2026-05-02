@@ -53,7 +53,6 @@ const schema: FormSchema = {
   styleUrl: "./without-submit-button.story.scss",
 })
 export class WithoutSubmitButtonStorySource {
-
   public readonly engine = new FormEngine(schema);
 
   public readonly liveOutput = computed(() => this.engine.output()());

@@ -77,7 +77,6 @@ const schema: FormSchema = {
   styleUrl: "./contact-form.story.scss",
 })
 export class ContactFormStorySource {
-
   public readonly engine = new FormEngine(schema);
 
   public readonly submitted = signal<FormValues | null>(null);

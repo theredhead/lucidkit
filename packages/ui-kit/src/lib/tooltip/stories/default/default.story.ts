@@ -13,7 +13,6 @@ import type { TooltipPosition } from "../../tooltip.types";
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
-
   public readonly uiTooltip = input("This is a tooltip");
 
   public readonly tooltipPosition = input<TooltipPosition>("top");
