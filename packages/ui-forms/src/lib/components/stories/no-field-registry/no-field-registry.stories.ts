@@ -65,7 +65,7 @@ export const NoFieldRegistryProduction: Story = {
       description: {
         story:
           "In **production mode** (`FORM_FIELD_DEBUG = false`), a misconfigured form " +
-          "shows only a generic **\"Configuration error\"** message instead of the full form. " +
+          'shows only a generic **"Configuration error"** message instead of the full form. ' +
           "No internal component keys are exposed to end users.\n\n" +
           "This is the default when Angular's `isDevMode()` returns `false`. " +
           "You can also force it explicitly:\n\n" +

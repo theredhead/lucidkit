@@ -17,7 +17,7 @@ import type { FormValues } from "../types/form-schema.types";
 import { isFlairComponent } from "../types/form-schema.types";
 import { FORM_SETTINGS } from "./form-settings";
 import { UIFormGroup } from "./form-group.component";
-import { UISurface } from '@theredhead/lucid-foundation';
+import { UISurface } from "@theredhead/lucid-foundation";
 import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 /**
@@ -36,7 +36,7 @@ import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
   standalone: true,
   imports: [UIFormGroup, UIIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-form",
   },
@@ -50,7 +50,6 @@ import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
   styleUrl: "./form.component.scss",
 })
 export class UIForm {
-
   /** The form engine instance that drives this form. */
   public readonly engine = input.required<FormEngine>();
 

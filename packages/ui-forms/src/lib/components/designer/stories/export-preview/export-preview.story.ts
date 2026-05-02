@@ -1,7 +1,47 @@
-import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
-import type { FormSchema } from "../../../../types/form-schema.types";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+
 import type { ExportStrategy } from "../../../../export";
-import { JsonExportStrategy, AngularComponentExportStrategy } from "../../../../export";
+import { AngularComponentExportStrategy, JsonExportStrategy } from "../../../../export";
+import type { ExportResult } from "../../../../export";
+import type { FormSchema } from "../../../../types/form-schema.types";
+
+// ── Demo schema shown in the export preview ─────────────────────────
+
+const DEMO_SCHEMA: FormSchema = {
+  id: "contact",
+  title: "Contact Form",
+  description: "A simple contact form",
+  groups: [
+    {
+      id: "personal",
+      title: "Personal Information",
+      fields: [
+        {
+          id: "firstName",
+          title: "First Name",
+          component: "text",
+          validation: [{ type: "required", message: "First name is required." }],
+        },
+        {
+          id: "email",
+          title: "E-mail",
+          component: "text",
+          config: { type: "email" },
+          validation: [
+            { type: "required", message: "E-mail is required." },
+            { type: "email", message: "Enter a valid e-mail address." },
+          ],
+        },
+        {
+          id: "subscribe",
+          title: "Subscribe to newsletter",
+          component: "toggle",
+          defaultValue: false,
+        },
+      ],
+    },
+  ],
+};
 
 // ── Export preview wrapper ──────────────────────────────────────────
 
@@ -11,16 +51,15 @@ import { JsonExportStrategy, AngularComponentExportStrategy } from "../../../../
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./export-preview.story.html",
+  styleUrl: "./export-preview.story.scss",
 })
 export class StoryExportPreview {
-  public readonly schema = input.required<FormSchema>();
 
   private readonly strategies: readonly ExportStrategy[] = [
     new AngularComponentExportStrategy(),
     new JsonExportStrategy(),
   ];
 
-  protected readonly results = computed(() =>
-    this.strategies.map((s) => s.export(this.schema())),
-  );
+  protected readonly results: readonly ExportResult[] =
+    this.strategies.map((s) => s.export(DEMO_SCHEMA));
 }

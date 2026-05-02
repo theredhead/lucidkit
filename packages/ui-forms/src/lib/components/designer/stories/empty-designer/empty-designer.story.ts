@@ -1,6 +1,7 @@
-import { UIFormDesigner } from "../../form-designer.component";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import type { FormSchema } from "../../../../types/form-schema.types";
+import { UIFormDesigner } from "../../form-designer.component";
 
 @Component({
   selector: "ui-empty-designer-story-demo",
@@ -11,5 +12,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./empty-designer.story.scss",
 })
 export class EmptyDesignerStorySource {
-  // Review required: this scaffold was generated from packages/ui-forms/src/lib/components/designer/form-designer.stories.ts.
+
+  protected readonly savedSchema = signal<FormSchema | null>(null);
+
+  protected onSave(schema: FormSchema): void {
+    this.savedSchema.set(schema);
+  }
 }

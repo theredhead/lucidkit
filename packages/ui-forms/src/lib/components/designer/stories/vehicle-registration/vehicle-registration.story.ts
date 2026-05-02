@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, input, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { JsonPipe } from "@angular/common";
 import type { FormSchema } from "../../../../types/form-schema.types";
 import type { ExportResult, ExportStrategy } from "../../../../export";
 import { JsonExportStrategy, AngularComponentExportStrategy } from "../../../../export";
 import { UIFormDesigner } from "../../form-designer.component";
 import { UIButton } from "@theredhead/lucid-kit";
+import { VEHICLE_REGISTRATION_SCHEMA } from "../../../stories/vehicle-registration/vehicle-registration.schema";
 
-// ── Demo wrapper ────────────────────────────────────────────────────
+export { VEHICLE_REGISTRATION_SCHEMA };
 
 @Component({
   selector: "ui-story-designer-demo",
@@ -16,7 +17,8 @@ import { UIButton } from "@theredhead/lucid-kit";
   templateUrl: "./vehicle-registration.story.html",
 })
 export class StoryDesignerDemo {
-  public readonly initialSchema = input<FormSchema | null>(null);
+
+  public readonly initialSchema: FormSchema = VEHICLE_REGISTRATION_SCHEMA;
 
   protected readonly allStrategies: readonly ExportStrategy[] = [
     new JsonExportStrategy(),
