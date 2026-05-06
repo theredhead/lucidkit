@@ -143,11 +143,15 @@ export class UIPagination {
     return this.hasMore() !== false;
   });
 
-  /** `"Page X of Y"` when total is known, `"Page X"` when unknown. */
+  /** `"A–B of N"` when total is known, `"Page X"` when unknown. */
   protected readonly summary = computed(() => {
-    const total = this.totalPages();
-    const page = this.pageIndex() + 1;
-    return total !== null ? `Page ${page} of ${total}` : `Page ${page}`;
+    const total = this.totalItems();
+    const page = this.pageIndex();
+    const size = this.pageSize();
+    if (total === null) return `Page ${page + 1}`;
+    const from = page * size + 1;
+    const to = Math.min((page + 1) * size, total);
+    return `${from}\u2013${to} of ${total}`;
   });
 
   /** @internal SelectOption list derived from pageSizeOptions. */
