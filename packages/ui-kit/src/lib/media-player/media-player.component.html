@@ -12,7 +12,7 @@
     ></iframe>
   </div>
 } @else if (type() === 'video') {
-  <div class="viewport" [style.--mp-fit]="fit()">
+  <div class="viewport" role="button" tabindex="0" [style.--mp-fit]="fit()" (click)="onViewportClick()" (keydown.enter)="onViewportClick()">
     <video
       #videoEl
       class="media"

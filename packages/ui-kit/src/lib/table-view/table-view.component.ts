@@ -41,6 +41,7 @@ import {
   type TableRowRenderingStrategyType,
 } from "./rendering-strategies/table-row-rendering-strategy";
 import { UITableFooter } from "./table-view-footer/table-view-footer.component";
+import { UIPagination } from "../pagination/pagination.component";
 import {
   ColumnResizeEvent,
   SortState,
@@ -96,6 +97,7 @@ import { type SelectionMode, SelectionModel } from "../core/selection-model";
     UIPlainTableBody,
     UICdkVirtualTableBody,
     UITableFooter,
+    UIPagination,
   ],
   templateUrl: "./table-view.component.html",
   styleUrl: "./table-view.component.scss",
@@ -183,6 +185,13 @@ export class UITableView implements OnInit, AfterViewInit {
     return next;
   });
   showBuiltInPaginator = input<boolean>(true);
+
+  /**
+   * Page size options shown in the pagination selector.
+   * Empty array (the default) hides the size selector.
+   */
+  pageSizeOptions = input<readonly number[]>([]);
+
   caption = input<string>("");
   showRowIndexIndicator = input<boolean>(false);
   rowIndexHeaderText = input<string>("#");
@@ -635,6 +644,11 @@ export class UITableView implements OnInit, AfterViewInit {
 
   protected onPageChange(page: number): void {
     this.adapter().pageIndex.set(page);
+  }
+
+  protected onPageSizeChange(size: number): void {
+    this.adapter().pageSize.set(size);
+    this.adapter().pageIndex.set(0);
   }
 
   protected onColumnResize(event: ColumnResizeEvent): void {

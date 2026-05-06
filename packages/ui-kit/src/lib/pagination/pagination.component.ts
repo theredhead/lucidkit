@@ -8,7 +8,14 @@ import {
 } from "@angular/core";
 
 import type { PageChangeEvent } from "./pagination.types";
-import { UISurface } from '@theredhead/lucid-foundation';
+import { UISurface } from "@theredhead/lucid-foundation";
+import { UIButton, type ButtonColor } from "../button/button.component";
+import { UIIcon } from "../icon/icon.component";
+import { UIIcons } from "../icon/lucide-icons.generated";
+import {
+  UIDropdownList,
+  type SelectOption,
+} from "../dropdown-list/dropdown-list.component";
 
 /**
  * A pagination control for navigating through pages of data.
@@ -29,7 +36,8 @@ import { UISurface } from '@theredhead/lucid-foundation';
   templateUrl: "./pagination.component.html",
   styleUrl: "./pagination.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
+  imports: [UIButton, UIIcon, UIDropdownList],
   host: {
     class: "ui-pagination",
     role: "navigation",
@@ -37,15 +45,20 @@ import { UISurface } from '@theredhead/lucid-foundation';
   },
 })
 export class UIPagination {
-
-  /** Total number of items. */
-  public readonly totalItems = input(0);
+  /**
+   * Total number of items, or `null` when the total is unknown
+   * (e.g. infinite scroll / server-side pagination with no count).
+   */
+  public readonly totalItems = input<number | null>(null);
 
   /** Number of items per page. */
   public readonly pageSize = input(10);
 
-  /** Available page size options for the selector. Empty array hides the selector. */
-  public readonly pageSizeOptions = input<readonly number[]>([10, 25, 50, 100]);
+  /**
+   * Available page size options for the selector.
+   * Empty array (the default) hides the page-size selector.
+   */
+  public readonly pageSizeOptions = input<readonly number[]>([]);
 
   /** Zero-based current page index. Supports two-way binding. */
   public readonly pageIndex = model(0);
@@ -53,27 +66,48 @@ export class UIPagination {
   /** Whether the pagination is disabled. */
   public readonly disabled = input(false);
 
+  /**
+   * Explicit hint for whether more pages exist beyond the current one.
+   * Only used when `totalItems` is `null`. When `null` (default), more
+   * pages are assumed to exist (next button stays enabled).
+   */
+  public readonly hasMore = input<boolean | null>(null);
+
+  /**
+   * Color scheme for pagination buttons.
+   * Defaults to `'primary'` (accent colour). Pass `'neutral'` when embedding
+   * inside a surface that should not compete with the accent colour (e.g. a
+   * table footer).
+   */
+  public readonly buttonColor = input<ButtonColor>("primary");
+
   /** Accessible label for the nav element. */
   public readonly ariaLabel = input("Pagination");
 
   /** Emitted on page or size change. */
   public readonly pageChange = output<PageChangeEvent>();
 
-  /** Total number of pages. */
-  protected readonly totalPages = computed(() =>
-    Math.max(1, Math.ceil(this.totalItems() / this.pageSize())),
-  );
+  /**
+   * Total number of pages, or `null` when `totalItems` is unknown.
+   */
+  protected readonly totalPages = computed<number | null>(() => {
+    const t = this.totalItems();
+    if (t === null) return null;
+    return Math.max(1, Math.ceil(t / this.pageSize()));
+  });
 
-  /** The page numbers to display. */
+  /**
+   * The page numbers to display.
+   * Empty when total is unknown — no page buttons are rendered.
+   */
   protected readonly pages = computed(() => {
     const total = this.totalPages();
+    if (total === null) return [] as number[];
     const current = this.pageIndex();
     const pages: number[] = [];
 
-    // Always show first page
     pages.push(0);
 
-    // Show window around current page
     const start = Math.max(1, current - 1);
     const end = Math.min(total - 2, current + 1);
 
@@ -89,7 +123,6 @@ export class UIPagination {
       pages.push(-1); // ellipsis
     }
 
-    // Always show last page if more than 1
     if (total > 1) {
       pages.push(total - 1);
     }
@@ -100,29 +133,53 @@ export class UIPagination {
   /** Whether the previous button is enabled. */
   protected readonly hasPrevious = computed(() => this.pageIndex() > 0);
 
-  /** Whether the next button is enabled. */
-  protected readonly hasNext = computed(
-    () => this.pageIndex() < this.totalPages() - 1,
+  /**
+   * Whether the next button is enabled.
+   * When `totalItems` is unknown, falls back to `hasMore` (defaults to `true`).
+   */
+  protected readonly hasNext = computed(() => {
+    const total = this.totalPages();
+    if (total !== null) return this.pageIndex() < total - 1;
+    return this.hasMore() !== false;
+  });
+
+  /** `"Page X of Y"` when total is known, `"Page X"` when unknown. */
+  protected readonly summary = computed(() => {
+    const total = this.totalPages();
+    const page = this.pageIndex() + 1;
+    return total !== null ? `Page ${page} of ${total}` : `Page ${page}`;
+  });
+
+  /** @internal SelectOption list derived from pageSizeOptions. */
+  protected readonly pageSizeSelectOptions = computed<readonly SelectOption[]>(
+    () =>
+      this.pageSizeOptions().map((n) => ({
+        value: String(n),
+        label: String(n),
+      })),
   );
 
-  /** Summary text: "1–10 of 250". */
-  protected readonly summary = computed(() => {
-    const total = this.totalItems();
-    const size = this.pageSize();
-    const idx = this.pageIndex();
-    const start = idx * size + 1;
-    const end = Math.min((idx + 1) * size, total);
-    return `${start}–${end} of ${total}`;
-  });
+  /** @internal Current page size as a string value for ui-dropdown-list. */
+  protected readonly pageSizeValue = computed(() => String(this.pageSize()));
+
+  /** @internal Icon registry reference. */
+  protected readonly icons = {
+    ChevronLeft: UIIcons.Lucide.Arrows.ChevronLeft,
+    ChevronRight: UIIcons.Lucide.Arrows.ChevronRight,
+    ChevronsLeft: UIIcons.Lucide.Arrows.ChevronsLeft,
+    ChevronsRight: UIIcons.Lucide.Arrows.ChevronsRight,
+  } as const;
 
   /** Go to first page. */
   public goToFirst(): void {
     this.goToPage(0);
   }
 
-  /** Go to last page. */
+  /** Go to last page. Only works when `totalItems` is known. */
   public goToLast(): void {
-    this.goToPage(this.totalPages() - 1);
+    const total = this.totalPages();
+    if (total === null) return;
+    this.goToPage(total - 1);
   }
 
   /** Go to previous page. */
@@ -140,7 +197,11 @@ export class UIPagination {
     if (this.disabled()) {
       return;
     }
-    const clamped = Math.max(0, Math.min(index, this.totalPages() - 1));
+    const total = this.totalPages();
+    const clamped =
+      total !== null
+        ? Math.max(0, Math.min(index, total - 1))
+        : Math.max(0, index);
     if (clamped === this.pageIndex()) {
       return;
     }
@@ -148,11 +209,11 @@ export class UIPagination {
     this.emitPageChange();
   }
 
-  /** Handle page size change from dropdown. */
-  protected onPageSizeChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    const newSize = parseInt(select.value, 10);
-    // Reset to first page when page size changes
+  /** Handle page size change from the dropdown. */
+  protected onPageSizeChange(value: string | null): void {
+    if (!value) return;
+    const newSize = parseInt(value, 10);
+    if (isNaN(newSize)) return;
     this.pageIndex.set(0);
     this.pageChange.emit({
       pageIndex: 0,

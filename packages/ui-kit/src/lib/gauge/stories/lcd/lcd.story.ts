@@ -1,4 +1,5 @@
 import { UIGauge } from "../../gauge.component";
+import { LcdGaugeStrategy } from "../../strategies/lcd-gauge.strategy";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./lcd.story.scss",
 })
 export class LCDStorySource {
+  protected readonly lcdStrategy = new LcdGaugeStrategy();
+  protected temperature = 37;
 }

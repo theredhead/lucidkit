@@ -11,4 +11,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./explicit-markdown.story.scss",
 })
 export class ExplicitMarkdownStorySource {
+  protected readonly markdownContent =
+    '## Explicit Markdown\n\nThis content is **always** rendered as _Markdown_, regardless of auto-detection.\n\n```js\nconsole.log("Hello, world!");\n```';
 }

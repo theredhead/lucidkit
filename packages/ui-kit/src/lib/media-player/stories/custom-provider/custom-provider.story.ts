@@ -9,21 +9,22 @@ import type {
 } from "../../media-player.types";
 
 /**
- * Example custom embed provider for PeerTube instances.
+ * Example custom embed provider for Internet Archive.
  *
- * Matches URLs like: `https://peertube.video/videos/watch/VIDEO_ID`
+ * Matches URLs like: `https://archive.org/details/IDENTIFIER`
  */
-const peerTubeProvider: MediaEmbedProvider = {
-  name: "PeerTube",
+const archiveOrgProvider: MediaEmbedProvider = {
+  name: "Internet Archive",
 
   resolve(url: string): MediaEmbedConfig | null {
     try {
       const parsed = new URL(url);
-      const match = parsed.pathname.match(/^\/videos\/watch\/([^/?]+)/);
+      if (!parsed.hostname.endsWith("archive.org")) return null;
+      const match = parsed.pathname.match(/^\/details\/([^/?]+)/);
       if (!match) return null;
       return {
-        iframeSrc: `${parsed.origin}/videos/embed/${match[1]}`,
-        providerName: "PeerTube",
+        iframeSrc: `https://archive.org/embed/${match[1]}`,
+        providerName: "Internet Archive",
         aspectRatio: "16 / 9",
       };
     } catch {
@@ -37,12 +38,13 @@ const peerTubeProvider: MediaEmbedProvider = {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UIMediaPlayer],
-  providers: [...provideMediaEmbedProviders(peerTubeProvider)],
+  providers: [...provideMediaEmbedProviders(archiveOrgProvider)],
   templateUrl: "./custom-provider.story.html",
   styleUrl: "./custom-provider.story.scss",
 })
 export class CustomProviderStorySource {
   public readonly videoSource: MediaSource = {
-    url: "https://peertube.video/videos/watch/9c9de5e8-0a1e-484a-b099-e80766180a6d",
+    // Big Buck Bunny — Creative Commons licensed, hosted on Internet Archive
+    url: "https://archive.org/details/BigBuckBunny_124",
   };
 }

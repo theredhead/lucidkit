@@ -11,4 +11,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
+  protected variant: "checkbox" | "switch" = "checkbox";
+  protected checked = false;
+  protected disabled = false;
+  protected indeterminate = false;
+  protected ariaLabel = "Accept terms";
 }

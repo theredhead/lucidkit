@@ -11,4 +11,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./all-variants.story.scss",
 })
 export class AllVariantsStorySource {
+  protected unchecked = false;
+  protected checked = true;
+  protected indeterminate = false;
+  protected switchOff = false;
+  protected switchOn = true;
 }

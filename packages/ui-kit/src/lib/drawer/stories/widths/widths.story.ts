@@ -12,4 +12,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./widths.story.scss",
 })
 export class WidthsStorySource {
+  protected open = true;
 }

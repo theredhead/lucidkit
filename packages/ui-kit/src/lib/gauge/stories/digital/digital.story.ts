@@ -1,4 +1,5 @@
 import { UIGauge } from "../../gauge.component";
+import { DigitalGaugeStrategy } from "../../strategies/digital-gauge.strategy";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./digital.story.scss",
 })
 export class DigitalStorySource {
+  protected readonly digitalStrategy = new DigitalGaugeStrategy();
+  protected temperature = 37;
 }

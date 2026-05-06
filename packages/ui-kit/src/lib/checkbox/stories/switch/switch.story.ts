@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./switch.story.scss",
 })
 export class SwitchStorySource {
+  protected darkMode = false;
 }

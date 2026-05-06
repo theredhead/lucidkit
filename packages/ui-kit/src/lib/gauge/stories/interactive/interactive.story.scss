@@ -1,1 +1,39 @@
-/* No custom styles needed. */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #f7f8fa);
+  padding: 16px;
+}
+
+.gauges {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.speed-label {
+  min-width: 5.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  flex: 1;
+  min-width: 160px;
+  max-width: 320px;
+}
+
+.mic-error {
+  color: #ea4335;
+  background: transparent;
+  font-size: 0.875em;
+}

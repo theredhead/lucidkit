@@ -12,4 +12,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./left.story.scss",
 })
 export class LeftStorySource {
+  protected drawerOpen = false;
 }

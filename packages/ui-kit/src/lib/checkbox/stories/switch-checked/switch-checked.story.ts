@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./switch-checked.story.scss",
 })
 export class SwitchCheckedStorySource {
+  protected notifications = true;
 }

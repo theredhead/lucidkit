@@ -1,80 +1,82 @@
 <div class="container">
   @if (pageSizeOptions().length > 0) {
     <div class="size">
-      <label class="size-label" for="size-select">Rows per page:</label>
-      <select
-        class="size-select"
-        id="size-select"
+      <span class="size-label">Rows per page:</span>
+      <ui-dropdown-list
+        [options]="pageSizeSelectOptions()"
+        [value]="pageSizeValue()"
         [disabled]="disabled()"
-        (change)="onPageSizeChange($event)"
-      >
-        @for (opt of pageSizeOptions(); track opt) {
-          <option [value]="opt" [selected]="opt === pageSize()">{{ opt }}</option>
-        }
-      </select>
+        ariaLabel="Rows per page"
+        (valueChange)="onPageSizeChange($event)"
+      />
     </div>
   }
-
 
   <span class="summary">{{ summary() }}</span>
 
   <div class="spacer"></div>
 
   <div class="buttons">
-    <button
-      class="btn"
-      type="button"
-      aria-label="First page"
+    <ui-button
+      variant="ghost"
+      size="small"
+      [color]="buttonColor()"
+      ariaLabel="First page"
       [disabled]="disabled() || !hasPrevious()"
       (click)="goToFirst()"
     >
-      ⟪
-    </button>
-    <button
-      class="btn"
-      type="button"
-      aria-label="Previous page"
+      <ui-icon [svg]="icons.ChevronsLeft" [size]="16" ariaLabel="" />
+    </ui-button>
+
+    <ui-button
+      variant="ghost"
+      size="small"
+      [color]="buttonColor()"
+      ariaLabel="Previous page"
       [disabled]="disabled() || !hasPrevious()"
       (click)="goToPrevious()"
     >
-      ‹
-    </button>
+      <ui-icon [svg]="icons.ChevronLeft" [size]="16" ariaLabel="" />
+    </ui-button>
 
     @for (page of pages(); track $index) {
       @if (page === -1) {
         <span class="ellipsis">…</span>
       } @else {
-        <button
-          class="btn btn--page"
-          type="button"
-          [class.btn--active]="page === pageIndex()"
-          [attr.aria-label]="'Page ' + (page + 1)"
+        <ui-button
+          [variant]="page === pageIndex() ? 'outlined' : 'ghost'"
+          size="small"
+          [color]="buttonColor()"
+          [ariaLabel]="'Page ' + (page + 1)"
           [attr.aria-current]="page === pageIndex() ? 'page' : undefined"
           [disabled]="disabled()"
           (click)="goToPage(page)"
         >
           {{ page + 1 }}
-        </button>
+        </ui-button>
       }
     }
 
-    <button
-      class="btn"
-      type="button"
-      aria-label="Next page"
+    <ui-button
+      variant="ghost"
+      size="small"
+      [color]="buttonColor()"
+      ariaLabel="Next page"
       [disabled]="disabled() || !hasNext()"
       (click)="goToNext()"
     >
-      ›
-    </button>
-    <button
-      class="btn"
-      type="button"
-      aria-label="Last page"
-      [disabled]="disabled() || !hasNext()"
+      <ui-icon [svg]="icons.ChevronRight" [size]="16" ariaLabel="" />
+    </ui-button>
+
+    <ui-button
+      variant="ghost"
+      size="small"
+      [color]="buttonColor()"
+      ariaLabel="Last page"
+      [disabled]="disabled() || !hasNext() || totalPages() === null"
       (click)="goToLast()"
     >
-      ⟫
-    </button>
+      <ui-icon [svg]="icons.ChevronsRight" [size]="16" ariaLabel="" />
+    </ui-button>
   </div>
 </div>

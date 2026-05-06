@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./checked.story.scss",
 })
 export class CheckedStorySource {
+  protected isChecked = true;
 }

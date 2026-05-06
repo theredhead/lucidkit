@@ -1,4 +1,5 @@
 import { UIGauge } from "../../gauge.component";
+import { VuMeterStrategy } from "../../strategies/vu-meter.strategy";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./vu-meter.story.scss",
 })
 export class VuMeterStorySource {
+  protected readonly vuStrategy = new VuMeterStrategy();
+  protected level = 68;
 }

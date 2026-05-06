@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/lib",
+    "declaration": true,
+    "declarationMap": true,
+    "paths": {
+      "@theredhead/lucid-foundation": ["../../dist/foundation"],
+      "@theredhead/lucid-kit": ["../../dist/ui-kit"],
+      "@theredhead/lucid-theme": ["../../dist/ui-theme"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
+}

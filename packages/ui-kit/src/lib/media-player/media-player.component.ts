@@ -94,6 +94,8 @@ import type {
     "[class.error]": "hasError()",
     "[class.embed]": "isEmbed()",
     "[class.disabled]": "disabled()",
+    tabindex: "0",
+    "(keydown.space)": "onHostSpacebar($event)",
   },
 })
 export class UIMediaPlayer {
@@ -377,6 +379,23 @@ export class UIMediaPlayer {
   /** Pause playback. */
   public pauseMedia(): void {
     this.mediaElement()?.pause();
+  }
+
+  /** @internal Handle click on the video viewport to toggle play/pause. */
+  protected onViewportClick(): void {
+    if (!this.isEmbed()) {
+      this.togglePlay();
+    }
+  }
+
+  /** @internal Handle spacebar press on the host element to toggle play/pause. */
+  protected onHostSpacebar(event: KeyboardEvent): void {
+    if (this.isEmbed()) return;
+    // Avoid interfering with button/input spacebar activation
+    const tag = (event.target as HTMLElement).tagName;
+    if (tag === "BUTTON" || tag === "INPUT") return;
+    event.preventDefault();
+    this.togglePlay();
   }
 
   /** Toggle between play and pause. */

@@ -1,4 +1,5 @@
 import { UISignature } from "../../signature.component";
+import type { SignatureValue } from "../../signature.types";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./replay.story.scss",
 })
 export class ReplayStorySource {
+  protected value: SignatureValue = null;
 }

@@ -11,4 +11,11 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
+  protected readonly launchDate = new Date(
+    Date.now() + 7 * 24 * 60 * 60 * 1000,
+  );
+
+  protected onLaunch(): void {
+    // countdown expired
+  }
 }

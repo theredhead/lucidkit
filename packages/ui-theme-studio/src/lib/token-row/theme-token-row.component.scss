@@ -1,0 +1,115 @@
+:host {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: start;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--ui-border, #d7dce2);
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #fff);
+  transition: background 0.12s;
+
+  &.modified {
+    background: color-mix(
+      in srgb,
+      var(--ui-accent, #3584e4) 10%,
+      var(--ui-surface, #fff)
+    );
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.name {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--ui-text, #1d232b);
+  word-break: break-all;
+}
+
+.description {
+  font-size: 0.75rem;
+  color: var(--ui-text-secondary, #6b7280);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.15rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-border, #d7dce2);
+
+  &.type {
+    background: #dbeafe;
+    color: #1e3a8a;
+  }
+  &.scope {
+    background: #dcfce7;
+    color: #14532d;
+  }
+  &.ns {
+    background: #fef9c3;
+    color: #713f12;
+  }
+}
+
+.editor {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.color-swatch {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 4px;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+
+.value-input {
+  width: 9rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  font-family: monospace;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 4px;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #fff);
+  outline: none;
+
+  &:focus {
+    border-color: var(--ui-accent, #3584e4);
+  }
+}
+
+.reset-btn {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #fff);
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--ui-border, #d7dce2);
+  }
+}

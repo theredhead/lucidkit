@@ -11,4 +11,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./markdown-table.story.scss",
 })
 export class MarkdownTableStorySource {
+  protected readonly markdownContent =
+    "| Name | Role | Status |\n|------|------|--------|\n| Alice | Engineer | Active |\n| Bob | Designer | Active |\n| Carol | Manager | On leave |";
 }

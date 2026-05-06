@@ -11,4 +11,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./indeterminate.story.scss",
 })
 export class IndeterminateStorySource {
+  protected allSelected = false;
+
+  protected isIndeterminate(): boolean {
+    return true;
+  }
 }

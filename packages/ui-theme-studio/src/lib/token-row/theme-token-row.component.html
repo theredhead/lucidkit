@@ -1,0 +1,39 @@
+<div class="info">
+  <span class="name">{{ token().name }}</span>
+  <span class="description">{{ token().description }}</span>
+  <span class="chips">
+    <span class="chip type">{{ token().type }}</span>
+    <span class="chip scope">{{ token().scope }}</span>
+    <span class="chip ns">{{ token().namespace }}</span>
+  </span>
+</div>
+
+<div class="editor">
+  @if (isColor) {
+    <input
+      type="color"
+      class="color-swatch"
+      [value]="displayValue"
+      [attr.aria-label]="'Color picker for ' + token().name"
+      (input)="onColorInput($event)"
+    />
+  }
+  <input
+    type="text"
+    class="value-input"
+    [value]="displayValue"
+    [attr.aria-label]="'Value for ' + token().name"
+    (input)="onTextInput($event)"
+  />
+</div>
+
+@if (token().override !== null) {
+  <button
+    type="button"
+    class="reset-btn"
+    aria-label="Reset token to default"
+    (click)="reset.emit()"
+  >
+    Reset
+  </button>
+}

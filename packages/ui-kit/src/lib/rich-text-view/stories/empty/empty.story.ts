@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./empty.story.scss",
 })
 export class EmptyStorySource {
+  protected readonly content = "";
 }

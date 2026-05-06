@@ -1,0 +1,305 @@
+<!-- ── Top toolbar ──────────────────────────────────────────────────── -->
+<div class="toolbar">
+  <span class="title">Theme Studio</span>
+
+  <div class="layout-controls">
+    <button
+      type="button"
+      class="icon-btn"
+      [class.active]="splitOrientation() === 'horizontal'"
+      title="Horizontal split"
+      aria-label="Horizontal split"
+      (click)="setOrientation('horizontal')"
+    >
+      <ui-icon [svg]="icons.horizontal" [size]="16" />
+    </button>
+    <button
+      type="button"
+      class="icon-btn"
+      [class.active]="splitOrientation() === 'vertical'"
+      title="Vertical split"
+      aria-label="Vertical split"
+      (click)="setOrientation('vertical')"
+    >
+      <ui-icon [svg]="icons.vertical" [size]="16" />
+    </button>
+    <button
+      type="button"
+      class="icon-btn"
+      [class.active]="panelsSwapped()"
+      title="Swap panels"
+      aria-label="Swap panels"
+      (click)="toggleSwap()"
+    >
+      <ui-icon [svg]="icons.swap" [size]="16" />
+    </button>
+  </div>
+
+  <div class="header-actions">
+    <button
+      type="button"
+      class="action-btn"
+      [disabled]="studio.modifiedTokens().length === 0"
+      (click)="exportCss()"
+      title="Copy CSS overrides to clipboard"
+      aria-label="Copy CSS overrides"
+    >
+      Copy CSS
+    </button>
+    <button
+      type="button"
+      class="action-btn"
+      [disabled]="studio.modifiedTokens().length === 0"
+      (click)="exportJson()"
+      title="Copy JSON overrides to clipboard"
+      aria-label="Copy JSON overrides"
+    >
+      Copy JSON
+    </button>
+    <button
+      type="button"
+      class="action-btn danger"
+      [disabled]="studio.modifiedTokens().length === 0"
+      (click)="studio.resetAll()"
+      aria-label="Reset all token overrides"
+    >
+      Reset all
+    </button>
+  </div>
+</div>
+
+<!-- ── Split container ─────────────────────────────────────────────── -->
+@if (panelsSwapped()) {
+  <ui-split-container
+    class="split"
+    [orientation]="splitOrientation()"
+    name="theme-studio"
+  >
+    <ui-split-panel [min]="300">
+      <ng-container [ngTemplateOutlet]="canvasTpl" />
+    </ui-split-panel>
+    <ui-split-panel [min]="280">
+      <ng-container [ngTemplateOutlet]="tokenEditorTpl" />
+    </ui-split-panel>
+  </ui-split-container>
+} @else {
+  <ui-split-container
+    class="split"
+    [orientation]="splitOrientation()"
+    name="theme-studio"
+  >
+    <ui-split-panel [min]="280">
+      <ng-container [ngTemplateOutlet]="tokenEditorTpl" />
+    </ui-split-panel>
+    <ui-split-panel [min]="300">
+      <ng-container [ngTemplateOutlet]="canvasTpl" />
+    </ui-split-panel>
+  </ui-split-container>
+}
+
+<!-- ── Token editor template ──────────────────────────────────────── -->
+<ng-template #tokenEditorTpl>
+  <div class="editor-panel">
+
+    <!-- Filter toolbar -->
+    <div class="filter-toolbar">
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Search tokens…"
+        [value]="studio.filter().query"
+        (input)="onQueryChange($event)"
+        aria-label="Search tokens"
+      />
+      <select
+        class="filter-select"
+        [value]="studio.filter().type"
+        (change)="onTypeChange($event)"
+        aria-label="Filter by type"
+      >
+        <option value="">All types</option>
+        <option value="color">color</option>
+        <option value="length">length</option>
+        <option value="font">font</option>
+        <option value="shadow">shadow</option>
+        <option value="number">number</option>
+        <option value="keyword">keyword</option>
+      </select>
+      <select
+        class="filter-select"
+        [value]="studio.filter().scope"
+        (change)="onScopeChange($event)"
+        aria-label="Filter by scope"
+      >
+        <option value="">All scopes</option>
+        <option value="global">global</option>
+        <option value="component">component</option>
+      </select>
+
+      @if (studio.manifest(); as m) {
+        <select
+          class="filter-select"
+          [value]="studio.filter().namespace"
+          (change)="onNamespaceChange($event)"
+          aria-label="Filter by namespace"
+        >
+          <option value="">All namespaces</option>
+          @for (entry of m.namespaces | keyvalue; track entry.key) {
+            <option [value]="entry.key">{{ entry.key }}</option>
+          }
+        </select>
+      }
+
+      <label class="modified-toggle">
+        <input
+          type="checkbox"
+          [checked]="studio.filter().modifiedOnly"
+          (change)="onModifiedOnlyChange($event)"
+        />
+        Modified only
+      </label>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats">
+      {{ studio.filteredTokens().length }} of {{ studio.tokens().length }} tokens
+      @if (studio.modifiedTokens().length > 0) {
+        · <strong>{{ studio.modifiedTokens().length }} modified</strong>
+      }
+    </div>
+
+    <!-- Token list -->
+    <div class="token-list" role="list">
+      @if (studio.loading()) {
+        <div class="state-message">Loading tokens…</div>
+      } @else if (studio.loadError()) {
+        <div class="state-message error">
+          Failed to load manifest: {{ studio.loadError() }}
+        </div>
+      } @else if (studio.filteredTokens().length === 0) {
+        <div class="state-message">No tokens match the current filter.</div>
+      } @else {
+        @for (token of studio.filteredTokens(); track token.name) {
+          <ui-theme-token-row
+            [token]="token"
+            (valueChange)="onTokenValueChange(token.name, $event)"
+            (reset)="onTokenReset(token.name)"
+            role="listitem"
+          />
+        }
+      }
+    </div>
+  </div>
+</ng-template>
+
+<!-- ── Canvas template ────────────────────────────────────────────── -->
+<ng-template #canvasTpl>
+  <div class="canvas">
+
+    <!-- Swatches -->
+    <section class="section">
+      <h4 class="section-title">Color tokens</h4>
+      <div class="swatch-row">
+        <span class="swatch accent">
+          <span class="swatch-label">accent</span>
+        </span>
+        <span class="swatch surface">
+          <span class="swatch-label">surface</span>
+        </span>
+        <span class="swatch text-on-surface">
+          <span class="swatch-label">text</span>
+        </span>
+        <span class="swatch border">
+          <span class="swatch-label">border</span>
+        </span>
+        <span class="swatch error">
+          <span class="swatch-label">error</span>
+        </span>
+        <span class="swatch success">
+          <span class="swatch-label">success</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section class="section">
+      <h4 class="section-title">Buttons</h4>
+      <div class="row wrap">
+        <ui-button variant="filled" ariaLabel="Filled button">Filled</ui-button>
+        <ui-button variant="outlined" ariaLabel="Outlined button">Outlined</ui-button>
+        <ui-button variant="ghost" ariaLabel="Ghost button">Ghost</ui-button>
+        <ui-button variant="filled" [disabled]="true" ariaLabel="Disabled button">Disabled</ui-button>
+      </div>
+    </section>
+
+    <!-- Inputs -->
+    <section class="section">
+      <h4 class="section-title">Inputs</h4>
+      <div class="col">
+        <ui-input placeholder="Text input" ariaLabel="Sample text input" />
+        <ui-dropdown-list
+          [options]="sampleDropdownOptions"
+          ariaLabel="Sample dropdown"
+        />
+      </div>
+    </section>
+
+    <!-- Card -->
+    <section class="section">
+      <h4 class="section-title">Card</h4>
+      <ui-card variant="outlined">
+        <ui-card-header>Card header</ui-card-header>
+        <ui-card-body>
+          <p class="body-text">
+            Token changes to <code>--ui-surface</code>,
+            <code>--ui-border</code>, and <code>--ui-text</code> are reflected
+            here immediately.
+          </p>
+        </ui-card-body>
+        <ui-card-footer>
+          <ui-button variant="filled" ariaLabel="Card action">Action</ui-button>
+          <ui-button variant="ghost" ariaLabel="Cancel">Cancel</ui-button>
+        </ui-card-footer>
+      </ui-card>
+    </section>
+
+    <!-- Badges & chips -->
+    <section class="section">
+      <h4 class="section-title">Badges &amp; chips</h4>
+      <div class="row wrap">
+        <ui-badge color="primary">Primary</ui-badge>
+        <ui-badge color="success">Success</ui-badge>
+        <ui-badge color="warning">Warning</ui-badge>
+        <ui-badge color="danger">Danger</ui-badge>
+        <ui-badge color="neutral">Neutral</ui-badge>
+      </div>
+      <div class="row wrap">
+        <ui-chip>Default</ui-chip>
+        <ui-chip>Active</ui-chip>
+        <ui-chip>Archived</ui-chip>
+      </div>
+    </section>
+
+    <!-- Progress -->
+    <section class="section">
+      <h4 class="section-title">Progress</h4>
+      <ui-progress [value]="65" ariaLabel="Sample progress, 65%" />
+    </section>
+
+    <!-- Toggles & checkboxes -->
+    <section class="section">
+      <h4 class="section-title">Toggles &amp; checkboxes</h4>
+      <div class="row wrap">
+        <ui-toggle [value]="true" ariaLabel="Toggle on" />
+        <ui-toggle [value]="false" ariaLabel="Toggle off" />
+        <ui-checkbox [checked]="true" ariaLabel="Checked checkbox">
+          Checked
+        </ui-checkbox>
+        <ui-checkbox [checked]="false" ariaLabel="Unchecked checkbox">
+          Unchecked
+        </ui-checkbox>
+      </div>
+    </section>
+
+  </div>
+</ng-template>

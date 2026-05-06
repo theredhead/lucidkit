@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
+  protected stars = 3;
 }

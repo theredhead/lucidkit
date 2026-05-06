@@ -1,7 +1,7 @@
 import { UIDrawer } from "../../drawer.component";
 import { UIButton } from "../../../button/button.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
 @Component({
   selector: "ui-right-story-demo",
@@ -12,4 +12,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./right.story.scss",
 })
 export class RightStorySource {
+  protected readonly open = signal(false);
 }

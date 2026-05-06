@@ -1,1 +1,7 @@
-<ui-qr-code [value]="wifiString" [size]="200"></ui-qr-code>
+<div class="demo">
+  <ui-qr-code [value]="wifiString()" [size]="200" />
+  <div class="fields">
+    <ui-input [text]="ssid()" (textChange)="ssid.set($event)" placeholder="Network name (SSID)" ariaLabel="SSID" />
+    <ui-input [text]="passphrase()" (textChange)="passphrase.set($event)" type="password" placeholder="Passphrase" ariaLabel="Passphrase" />
+  </div>
+</div>
