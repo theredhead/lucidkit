@@ -8,12 +8,19 @@
   line-height: 1.4;
   border-radius: 0.25rem;
   white-space: nowrap;
+  color: var(--ui-text, #1d232b);
+  background: transparent;
   transition: background-color 100ms ease;
 }
 
 :host(:hover:not(.disabled)),
 :host(:focus-visible) {
   outline: none;
+  background-color: color-mix(
+    in srgb,
+    var(--ui-accent, #3584e4) 10%,
+    transparent
+  );
 }
 
 :host(.disabled) {

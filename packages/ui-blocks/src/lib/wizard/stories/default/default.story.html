@@ -1,28 +1,36 @@
 
-    <div
-      style="height: 400px; color: var(--ui-text, #1d232b); background: var(--ui-surface, #ffffff); padding: 16px;"
+    <ui-wizard
+      [linear]="linear()"
+      [showStepIndicator]="showStepIndicator()"
+      [backLabel]="backLabel()"
+      [nextLabel]="nextLabel()"
+      [finishLabel]="finishLabel()"
+      [ariaLabel]="ariaLabel()"
+      (complete)="onComplete()"
     >
-      <ui-wizard
-        [linear]="linear()"
-        [showStepIndicator]="showStepIndicator()"
-        [backLabel]="backLabel()"
-        [nextLabel]="nextLabel()"
-        [finishLabel]="finishLabel()"
-        [ariaLabel]="ariaLabel()"
-        (complete)="onComplete()"
-      >
-        <ui-wizard-step label="Account">
-          <h3>Create your account</h3>
-          <p>Enter your email address and choose a password.</p>
-        </ui-wizard-step>
-        <ui-wizard-step label="Profile" [optional]="true">
-          <h3>Set up your profile</h3>
-          <p>Choose a display name and upload an avatar.</p>
-        </ui-wizard-step>
-        <ui-wizard-step label="Confirm">
-          <h3>Confirm your details</h3>
-          <p>Review your information and click Finish.</p>
-        </ui-wizard-step>
-      </ui-wizard>
-    </div>
+      <ui-wizard-step label="Account">
+        <h3>Create your account</h3>
+        <div class="fields">
+          <label for="wizard-email">Email address</label>
+          <ui-input id="wizard-email" [(value)]="email" placeholder="you@example.com" ariaLabel="Email address" />
+          <label for="wizard-password">Password</label>
+          <ui-input id="wizard-password" [(value)]="password" placeholder="Choose a password" ariaLabel="Password" />
+        </div>
+      </ui-wizard-step>
+      <ui-wizard-step label="Profile" [optional]="true">
+        <h3>Set up your profile</h3>
+        <div class="fields">
+          <label for="wizard-display-name">Display name</label>
+          <ui-input id="wizard-display-name" [(value)]="displayName" placeholder="How should we call you?" ariaLabel="Display name" />
+        </div>
+      </ui-wizard-step>
+      <ui-wizard-step label="Confirm">
+        <h3>Confirm your details</h3>
+        <dl class="summary">
+          <dt>Email</dt><dd>{{ email() || '—' }}</dd>
+          <dt>Display name</dt><dd>{{ displayName() || '—' }}</dd>
+        </dl>
+        <p>Click <em>Finish</em> to complete registration.</p>
+      </ui-wizard-step>
+    </ui-wizard>
   

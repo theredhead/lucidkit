@@ -1,1 +1,20 @@
-/* Review required: add story-specific styles if needed. */
+:host {
+  display: block;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cell {
+  text-align: center;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  color: var(--ui-text-secondary, #888);
+  margin-top: 4px;
+}

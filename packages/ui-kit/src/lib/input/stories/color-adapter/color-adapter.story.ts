@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { ColorTextAdapter } from "../../adapters/color-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./color-adapter.story.scss",
 })
 export class ColorAdapterStorySource {
+  protected readonly adapter = new ColorTextAdapter();
+  protected rawColor = "";
+  protected colorValue: string | null = null;
 }

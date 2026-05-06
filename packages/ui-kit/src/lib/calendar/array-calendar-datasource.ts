@@ -1,5 +1,6 @@
 import { Emitter } from "@theredhead/lucid-foundation";
 import type { CalendarDatasource, CalendarEvent } from "./calendar.types";
+import { endOfDay, startOfDay } from "./calendar.utils";
 
 /**
  * In-memory {@link CalendarDatasource} backed by a plain array of events.
@@ -130,20 +131,4 @@ export class ArrayCalendarDatasource<
   public getAllEvents(): readonly CalendarEvent<T>[] {
     return [...this.events];
   }
-}
-
-// ── Date helpers ──────────────────────────────────────────────────
-
-/** @internal */
-function startOfDay(d: Date): Date {
-  const r = new Date(d);
-  r.setHours(0, 0, 0, 0);
-  return r;
-}
-
-/** @internal */
-function endOfDay(d: Date): Date {
-  const r = new Date(d);
-  r.setHours(23, 59, 59, 999);
-  return r;
 }

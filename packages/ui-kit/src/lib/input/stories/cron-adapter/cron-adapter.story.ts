@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { CronTextAdapter } from "../../adapters/cron-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./cron-adapter.story.scss",
 })
 export class CronAdapterStorySource {
+  protected readonly adapter = new CronTextAdapter();
+  protected rawCron = "";
+  protected cronValue: string | null = null;
 }

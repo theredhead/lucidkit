@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { CreditCardTextAdapter } from "../../adapters/credit-card-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./credit-card-adapter.story.scss",
 })
 export class CreditCardAdapterStorySource {
+  protected readonly adapter = new CreditCardTextAdapter();
+  protected rawCard = "";
+  protected cardNumber: string | null = null;
 }

@@ -22,7 +22,7 @@ const meta = {
       description: "Accessible label for screen readers.",
     },
   },
-  decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
+  decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
 } satisfies Meta<DefaultStorySource>;
 
 export default meta;
@@ -35,9 +35,14 @@ export const Default: Story = {
     ariaLabel: "Emoji picker",
   },
   parameters: {
-    docs: {}
+    docs: {},
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-default-story-demo
+      [searchPlaceholder]="searchPlaceholder"
+      [previewSize]="previewSize"
+      [ariaLabel]="ariaLabel"
+    />`,
+  }),
 };

@@ -16,6 +16,7 @@ import { UISlider } from "../../../slider/slider.component";
   imports: [UIProgress, UISlider],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./default.story.html",
+  styleUrl: "./default.story.scss",
 })
 export class ProgressDemo {
   public readonly ariaLabel = input("Progress");

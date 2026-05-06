@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { FloatTextAdapter } from "../../adapters/float-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./float-adapter.story.scss",
 })
 export class FloatAdapterStorySource {
+  protected readonly adapter = new FloatTextAdapter();
+  protected rawFloat = "";
+  protected floatValue: string | null = null;
 }

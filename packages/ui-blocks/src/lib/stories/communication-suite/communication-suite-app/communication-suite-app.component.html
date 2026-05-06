@@ -108,6 +108,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="sentDs"
+                orientation="vertical"
                 title="Sent Messages"
                 [showFilter]="true"
                 placeholder="Select a sent message..."
@@ -154,6 +155,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="draftsDs"
+                orientation="vertical"
                 title="Drafts"
                 placeholder="Select a draft to continue editing..."
               >
@@ -191,6 +193,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="archiveDs"
+                orientation="vertical"
                 title="Archived Messages"
                 [showFilter]="true"
                 placeholder="Select an archived message..."

@@ -1,9 +1,9 @@
-import { UIIcon } from "../../icon.component";
-
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
+
 @Component({
-  selector: "ui-sizes-story-demo",
+  selector: "ui-story-icon-sizes",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UIIcon],
@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./sizes.story.scss",
 })
 export class SizesStorySource {
-
-  public s = undefined as never;
-  public svg = undefined as never;
+  protected readonly svg = UIIcons.Lucide.Text.Bold;
+  protected readonly sizes = [12, 16, 20, 24, 32, 48];
 }

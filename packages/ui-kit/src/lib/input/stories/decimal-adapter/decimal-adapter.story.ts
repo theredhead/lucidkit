@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { DecimalTextAdapter } from "../../adapters/decimal-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./decimal-adapter.story.scss",
 })
 export class DecimalAdapterStorySource {
+  protected readonly adapter = new DecimalTextAdapter();
+  protected rawDec = "";
+  protected decValue: string | null = null;
 }

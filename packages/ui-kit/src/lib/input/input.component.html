@@ -22,6 +22,7 @@
       <button
         type="button"
         class="icon icon--prefix"
+        tabindex="-1"
         [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Prefix action'"
         (click)="onPrefixClick()"
       >
@@ -50,6 +51,7 @@
       <button
         type="button"
         class="icon icon--suffix"
+        tabindex="-1"
         [attr.aria-label]="hasPopup() ? 'Toggle popup' : 'Suffix action'"
         (click)="onSuffixClick()"
       >

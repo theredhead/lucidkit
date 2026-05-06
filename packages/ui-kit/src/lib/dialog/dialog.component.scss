@@ -13,6 +13,9 @@
   max-height: 85vh;
   overflow: hidden;
   animation: ui-dlg-enter anim.$duration-medium anim.$easing-out;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #fff);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
 }
 
 .dialog[open] {
@@ -21,6 +24,7 @@
 }
 
 .dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
   animation: ui-dlg-backdrop-enter anim.$duration-medium anim.$easing-out;
 }
 

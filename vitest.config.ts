@@ -16,7 +16,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    include: ["packages/**/src/**/*.spec.ts"],
+    include: [
+      "packages/**/src/**/*.spec.ts",
+      "packages/*.spec.ts",
+      "tests/**/*.spec.ts",
+    ],
     exclude: ["node_modules", "dist"],
     setupFiles: ["./vitest.setup.ts"],
     reporters: ["default"],
@@ -32,7 +36,10 @@ export default defineConfig({
         root,
         "packages/foundation/src/public-api.ts",
       ),
-      "@theredhead/lucid-kit": resolve(root, "packages/ui-kit/src/public-api.ts"),
+      "@theredhead/lucid-kit": resolve(
+        root,
+        "packages/ui-kit/src/public-api.ts",
+      ),
       "@theredhead/lucid-blocks": resolve(
         root,
         "packages/ui-blocks/src/public-api.ts",
@@ -44,6 +51,10 @@ export default defineConfig({
       "@theredhead/lucid-theme": resolve(
         root,
         "packages/ui-theme/src/public-api.ts",
+      ),
+      "@theredhead/lucid-theme-studio": resolve(
+        root,
+        "packages/ui-theme-studio/src/public-api.ts",
       ),
     },
   },

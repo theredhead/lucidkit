@@ -3,7 +3,6 @@
  */
 // Services
 export * from "./lib/services/theme.service";
-export * from "./lib/services/theme-studio.service";
 
 // Tokens
 export * from "./lib/tokens/theme.tokens";

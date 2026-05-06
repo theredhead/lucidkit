@@ -105,6 +105,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="filteredRecipesDs()"
+                orientation="vertical"
                 title="Recipes"
                 [showFilter]="true"
                 placeholder="Select a recipe..."
@@ -491,6 +492,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="favoritesDs"
+                orientation="vertical"
                 title="Favorites"
                 placeholder="Select a favorite recipe..."
               >

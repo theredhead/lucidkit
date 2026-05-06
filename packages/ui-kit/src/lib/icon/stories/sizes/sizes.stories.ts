@@ -20,7 +20,7 @@ const meta = {
       },
     },
   },
-  decorators: [moduleMetadata({ imports: [SizesStorySource] })]
+  decorators: [moduleMetadata({ imports: [SizesStorySource] })],
 } satisfies Meta<SizesStorySource>;
 
 export default meta;
@@ -28,22 +28,9 @@ type Story = StoryObj<SizesStorySource>;
 
 export const Sizes: Story = {
   parameters: {
-    docs: {}
+    docs: {},
   },
   render: () => ({
-    props: {
-      svg: UIIcons.Lucide.Text.Bold,
-      sizes: [12, 16, 20, 24, 32, 48],
-    },
-    template: `
-      <div style="display:flex; align-items:center; gap:16px;">
-        @for (s of sizes; track s) {
-          <div style="text-align:center">
-            <ui-icon [svg]="svg" [size]="s" />
-            <div style="font-size:11px;color:#888;margin-top:4px">{{ s }}px</div>
-          </div>
-        }
-      </div>
-    `,
-  })
+    template: `<ui-story-icon-sizes />`,
+  }),
 };

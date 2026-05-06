@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { PercentageTextAdapter } from "../../adapters/percentage-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./percentage-adapter.story.scss",
 })
 export class PercentageAdapterStorySource {
+  protected readonly adapter = new PercentageTextAdapter();
+  protected rawPct = "";
+  protected pctValue: string | null = null;
 }

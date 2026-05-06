@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { MoneyTextAdapter } from "../../adapters/money-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./money-adapter.story.scss",
 })
 export class MoneyAdapterStorySource {
+  protected readonly adapter = new MoneyTextAdapter();
+  protected rawAmount = "";
+  protected amount: string | null = null;
 }

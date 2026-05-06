@@ -1,1 +1,49 @@
-/* Review required: add story-specific styles if needed. */
+:host {
+  display: block;
+  font-size: 14px;
+  color: var(--ui-text, #1d232b);
+}
+
+.intro {
+  margin: 0 0 16px;
+  color: var(--ui-text-secondary, #6b7280);
+}
+
+.grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cell {
+  text-align: center;
+  min-width: 80px;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  color: var(--ui-text-secondary, #888);
+  margin-top: 6px;
+}
+
+// Heart icon colored via host class applied to ui-icon
+ui-icon.heart {
+  color: #e74c3c;
+}
+
+.how-it-works {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--ui-text-secondary, #555);
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  ul {
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+}

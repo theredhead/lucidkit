@@ -1,1 +1,9 @@
-/* No custom styles needed — emoji picker handles its own theming. */
+:host {
+  display: block;
+}
+
+.selected {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: var(--ui-text-secondary, #6b7280);
+}

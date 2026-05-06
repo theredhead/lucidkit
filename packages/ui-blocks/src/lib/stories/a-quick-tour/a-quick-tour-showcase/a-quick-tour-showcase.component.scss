@@ -460,3 +460,10 @@
     gap: 0.8rem;
   }
 }
+
+.theme-studio-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 44rem;
+}

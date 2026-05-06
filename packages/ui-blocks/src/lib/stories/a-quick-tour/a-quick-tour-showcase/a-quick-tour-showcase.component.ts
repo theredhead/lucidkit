@@ -7,6 +7,7 @@ import {
   inject,
   signal,
 } from "@angular/core";
+import { DatePipe } from "@angular/common";
 import {
   ArrayCalendarDatasource,
   type CalendarEvent,
@@ -50,6 +51,8 @@ import {
   navItem,
   type NavigationNode,
 } from "../../../navigation-page/navigation-page.utils";
+import { UIThemeStudio } from "@theredhead/lucid-theme-studio";
+
 import { UIQuickTourMetricCard } from "./quick-tour-metric-card.component";
 import { UIQuickTourNoteCard } from "./quick-tour-note-card.component";
 
@@ -167,6 +170,9 @@ const NAV: NavigationNode[] = [
   navItem("setup", "Forms & Settings", {
     icon: UIIcons.Lucide.Account.Settings,
   }),
+  navItem("theme-studio", "Theme Studio", {
+    icon: UIIcons.Lucide.Design.Palette,
+  }),
 ];
 
 const METRICS: readonly WorkspaceMetric[] = [
@@ -262,40 +268,49 @@ const CHAT_MESSAGES: readonly ChatMessage[] = [
   },
 ];
 
-const CALENDAR_EVENTS: readonly CalendarEvent<CalendarSession>[] = [
-  {
-    id: "ev-1",
-    title: "Design crit",
-    start: new Date("2026-04-27T10:00:00"),
-    end: new Date("2026-04-27T11:00:00"),
-    color: "#d97706",
-    data: { title: "Design crit", kind: "review" },
-  },
-  {
-    id: "ev-2",
-    title: "Deep work block",
-    start: new Date("2026-04-28T13:00:00"),
-    end: new Date("2026-04-28T16:00:00"),
-    color: "#2563eb",
-    data: { title: "Deep work block", kind: "focus" },
-  },
-  {
-    id: "ev-3",
-    title: "Engineering handoff",
-    start: new Date("2026-04-29T15:30:00"),
-    end: new Date("2026-04-29T16:15:00"),
-    color: "#059669",
-    data: { title: "Engineering handoff", kind: "handoff" },
-  },
-  {
-    id: "ev-4",
-    title: "Launch rehearsal",
-    start: new Date("2026-04-30T11:00:00"),
-    end: new Date("2026-04-30T12:00:00"),
-    color: "#7c3aed",
-    data: { title: "Launch rehearsal", kind: "review" },
-  },
-];
+function makeCalendarEvents(): readonly CalendarEvent<CalendarSession>[] {
+  const today = new Date();
+  const offset = (days: number, hours: number, minutes = 0): Date => {
+    const d = new Date(today);
+    d.setDate(d.getDate() + days);
+    d.setHours(hours, minutes, 0, 0);
+    return d;
+  };
+  return [
+    {
+      id: "ev-1",
+      title: "Design crit",
+      start: offset(0, 10),
+      end: offset(0, 11),
+      color: "#d97706",
+      data: { title: "Design crit", kind: "review" },
+    },
+    {
+      id: "ev-2",
+      title: "Deep work block",
+      start: offset(1, 13),
+      end: offset(1, 16),
+      color: "#2563eb",
+      data: { title: "Deep work block", kind: "focus" },
+    },
+    {
+      id: "ev-3",
+      title: "Engineering handoff",
+      start: offset(2, 15, 30),
+      end: offset(2, 16, 15),
+      color: "#059669",
+      data: { title: "Engineering handoff", kind: "handoff" },
+    },
+    {
+      id: "ev-4",
+      title: "Launch rehearsal",
+      start: offset(3, 11),
+      end: offset(3, 12),
+      color: "#7c3aed",
+      data: { title: "Launch rehearsal", kind: "review" },
+    },
+  ];
+}
 
 const CADENCE_OPTIONS: readonly SelectOption[] = [
   { value: "daily", label: "Daily" },
@@ -344,6 +359,7 @@ const STORY_CATALOG_GROUP_ORDER = [
     UIChip,
     UICheckbox,
     UICarousel,
+    DatePipe,
     UIDropdownList,
     UIIcon,
     UIIndicatesTouch,
@@ -353,6 +369,7 @@ const STORY_CATALOG_GROUP_ORDER = [
     UITabGroup,
     UITextColumn,
     UIToggle,
+    UIThemeStudio,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./a-quick-tour-showcase.component.html",
@@ -363,7 +380,7 @@ export class UIDemoQuickTourShowcase implements OnDestroy {
 
   protected readonly activePage = signal("overview");
 
-  protected readonly selectedDate = signal(new Date("2026-04-27T00:00:00"));
+  protected readonly selectedDate = signal(new Date());
 
   protected readonly metrics = METRICS;
 
@@ -388,10 +405,12 @@ export class UIDemoQuickTourShowcase implements OnDestroy {
 
   protected readonly currentUser = CURRENT_USER;
 
-  protected readonly calendarEvents = CALENDAR_EVENTS;
+  private readonly _calendarEvents = makeCalendarEvents();
+
+  protected readonly calendarEvents = this._calendarEvents;
 
   protected readonly calendarDatasource = new ArrayCalendarDatasource(
-    CALENDAR_EVENTS,
+    this._calendarEvents,
   );
 
   protected readonly cadenceOptions = CADENCE_OPTIONS;

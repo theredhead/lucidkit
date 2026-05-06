@@ -59,9 +59,20 @@
   font-size: 1.25rem;
   line-height: 1;
   cursor: var(--ui-cursor-click, pointer);
+  color: var(--ui-text, #1d232b);
+  background: color-mix(in srgb, var(--ui-surface, #fff) 85%, transparent);
+  border: 1px solid var(--ui-border, #d7dce2);
   transition:
     background 0.15s ease,
     opacity 0.15s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: color-mix(
+    in srgb,
+    var(--ui-accent, #3584e4) 12%,
+    var(--ui-surface, #fff)
+  );
 }
 
 .btn:disabled {
@@ -93,6 +104,7 @@
   border: none;
   padding: 0;
   cursor: var(--ui-cursor-click, pointer);
+  background: color-mix(in srgb, var(--ui-text, #1d232b) 35%, transparent);
   transition:
     background 0.2s ease,
     transform 0.2s ease;
@@ -100,10 +112,12 @@
 
 .dot:hover {
   transform: scale(1.3);
+  background: color-mix(in srgb, var(--ui-text, #1d232b) 55%, transparent);
 }
 
 .dot--active {
   transform: scale(1.25);
+  background: var(--ui-accent, #3584e4);
 }
 
 /* ── Focus ── */

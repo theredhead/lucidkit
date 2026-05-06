@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { IntegerTextAdapter } from "../../adapters/integer-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./integer-adapter.story.scss",
 })
 export class IntegerAdapterStorySource {
+  protected readonly adapter = new IntegerTextAdapter();
+  protected rawInt = "";
+  protected intValue: string | null = null;
 }

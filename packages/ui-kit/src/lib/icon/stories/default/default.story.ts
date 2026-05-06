@@ -1,9 +1,9 @@
-import { UIIcon } from "../../icon.component";
-
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
+import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
+
 @Component({
-  selector: "ui-default-story-demo",
+  selector: "ui-story-icon-default",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UIIcon],
@@ -11,8 +11,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
-
-  public ariaLabel = ("") as const;
-  public size = (24) as const;
-  public svg = undefined as never;
+  public svg: string = UIIcons.Lucide.Text.Bold;
+  public size = 24;
+  public ariaLabel = "";
 }

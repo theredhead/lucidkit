@@ -1,1 +1,24 @@
-/* No custom styles extracted yet. */
+:host {
+  display: block;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 400px;
+}
+
+.label {
+  margin: 0 0 8px;
+}
+
+.slider {
+  margin-top: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}

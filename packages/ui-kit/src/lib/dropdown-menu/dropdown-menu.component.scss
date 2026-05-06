@@ -25,6 +25,10 @@
   padding: 0.25rem;
   border-radius: 0.5rem;
   animation: ui-dropdown-enter anim.$duration-normal anim.$easing-out;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #fff);
+  border: 1px solid var(--ui-border, #d7dce2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .panel--end {

@@ -23,7 +23,8 @@
       "@theredhead/lucid-blocks": ["./packages/ui-blocks/src/public-api.ts", "./dist/ui-blocks"],
       "@theredhead/lucid-theme": ["./packages/ui-theme/src/public-api.ts", "./dist/ui-theme"],
       "@theredhead/lucid-foundation": ["./packages/foundation/src/public-api.ts", "./dist/foundation"],
-      "@theredhead/lucid-forms": ["./packages/ui-forms/src/public-api.ts", "./dist/ui-forms"]
+      "@theredhead/lucid-forms": ["./packages/ui-forms/src/public-api.ts", "./dist/ui-forms"],
+      "@theredhead/lucid-theme-studio": ["./packages/ui-theme-studio/src/public-api.ts", "./dist/ui-theme-studio"]
     }
   },
   "angularCompilerOptions": {

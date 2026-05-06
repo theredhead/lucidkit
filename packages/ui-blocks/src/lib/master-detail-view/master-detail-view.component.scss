@@ -117,6 +117,20 @@
   height: 100%;
 }
 
+/* ── Vertical orientation overrides ── */
+
+:host.vertical {
+  .list {
+    height: 100%;
+    width: 100%;
+  }
+
+  .detail {
+    height: 100%;
+    width: 100%;
+  }
+}
+
 .detail-content {
   flex: 1;
   overflow-y: auto;

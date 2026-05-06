@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { UuidTextAdapter } from "../../adapters/uuid-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./uuid-adapter.story.scss",
 })
 export class UuidAdapterStorySource {
+  protected readonly adapter = new UuidTextAdapter();
+  protected rawUuid = "";
+  protected uuidValue: string | null = null;
 }

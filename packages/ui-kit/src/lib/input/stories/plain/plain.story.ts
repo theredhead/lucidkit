@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./plain.story.scss",
 })
 export class PlainStorySource {
+  protected name = "";
 }

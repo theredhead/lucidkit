@@ -18,11 +18,13 @@
   border-radius: 2px;
   overflow: hidden;
   position: relative;
+  background: var(--ui-border, #d7dce2);
 }
 
 .fill {
   height: 100%;
   border-radius: 2px;
+  background: var(--ui-accent, #3584e4);
   transition: width 250ms ease;
 }
 
@@ -53,10 +55,14 @@
 }
 
 .ring-track {
+  fill: none;
+  stroke: var(--ui-border, #d7dce2);
   stroke-width: 4;
 }
 
 .ring-fill {
+  fill: none;
+  stroke: var(--ui-accent, #3584e4);
   stroke-width: 4;
   stroke-linecap: round;
   transform: rotate(-90deg);

@@ -1,1 +1,21 @@
-/* Review required: add story-specific styles if needed. */
+:host {
+  display: block;
+}
+
+.grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cell {
+  text-align: center;
+  min-width: 60px;
+}
+
+.label {
+  display: block;
+  font-size: 10px;
+  color: var(--ui-text-secondary, #888);
+  margin-top: 4px;
+}

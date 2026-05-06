@@ -56,6 +56,7 @@
                 <div class="mdv-wrap" style="border: none; margin-top: 0.5rem">
                   <ui-master-detail-view
                     [datasource]="recentOrdersDs"
+                    orientation="vertical"
                     title="Recent"
                     placeholder="Select an order"
                   >
@@ -135,6 +136,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="partsDs"
+                orientation="vertical"
                 title="Parts"
                 [showFilter]="true"
                 placeholder="Select a part to view details"
@@ -356,6 +358,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="lowStockDs"
+                orientation="vertical"
                 title="Alerts"
                 placeholder="Select an alert to view details"
               >
@@ -457,6 +460,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="pickQueueDs"
+                orientation="vertical"
                 title="Queue"
                 [showFilter]="true"
                 placeholder="Select an order to begin picking"
@@ -582,6 +586,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="activePicksDs"
+                orientation="vertical"
                 title="In Progress"
                 placeholder="Select a pick to view progress"
               >
@@ -656,6 +661,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="shipmentsDs"
+                orientation="vertical"
                 title="Shipments"
                 [showFilter]="true"
                 placeholder="Select a shipment to track"
@@ -806,6 +812,7 @@
             <div class="mdv-wrap">
               <ui-master-detail-view
                 [datasource]="suppliersDs"
+                orientation="vertical"
                 title="Suppliers"
                 [showFilter]="true"
                 placeholder="Select a supplier to view details"

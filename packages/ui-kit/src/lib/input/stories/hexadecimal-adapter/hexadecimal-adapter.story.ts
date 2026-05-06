@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { HexadecimalTextAdapter } from "../../adapters/hexadecimal-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./hexadecimal-adapter.story.scss",
 })
 export class HexadecimalAdapterStorySource {
+  protected readonly adapter = new HexadecimalTextAdapter();
+  protected rawHex = "";
+  protected hexValue: string | null = null;
 }

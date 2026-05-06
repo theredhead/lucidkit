@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { TimeTextAdapter } from "../../adapters/time-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./time-adapter.story.scss",
 })
 export class TimeAdapterStorySource {
+  protected readonly adapter = new TimeTextAdapter();
+  protected rawTime = "";
+  protected timeValue: string | null = null;
 }

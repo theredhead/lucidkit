@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { DateTextAdapter } from "../../adapters/date-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./date-adapter.story.scss",
 })
 export class DateAdapterStorySource {
+  protected readonly adapter = new DateTextAdapter();
+  protected rawDate = "";
+  protected dateValue: string | null = null;
 }

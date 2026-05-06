@@ -65,6 +65,7 @@ html.dark-theme .ui-popover {
 .ui-popover[data-arrow-side]::after {
   content: '';
   position: absolute;
+  z-index: -1;
   width: 14px;
   height: 14px;
   background: inherit;

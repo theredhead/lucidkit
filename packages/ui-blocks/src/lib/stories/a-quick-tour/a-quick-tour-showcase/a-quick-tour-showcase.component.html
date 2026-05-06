@@ -252,6 +252,7 @@
             <div class="master-detail-wrap">
               <ui-master-detail-view
                 [datasource]="workflowDatasource"
+                orientation="vertical"
                 title="Workflow patterns"
                 [showFilter]="true"
                 placeholder="Select a workflow"
@@ -463,6 +464,9 @@
               </div>
             </div>
           </div>
+        }
+        @if (node.id === "theme-studio") {
+          <ui-theme-studio class="page-fill" />
         }
       </ng-template>
     </ui-navigation-page>

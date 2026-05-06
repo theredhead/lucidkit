@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { EmailTextAdapter } from "../../adapters/email-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
+  protected readonly adapter = new EmailTextAdapter();
+  protected rawText = "";
+  protected processedValue: string | null = null;
 }

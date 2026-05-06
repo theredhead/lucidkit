@@ -2,3 +2,6 @@
   [categories]="customCategories"
   (emojiSelected)="onEmoji($event)"
 />
+@if (lastEmoji()) {
+  <p class="selected">Selected: {{ lastEmoji() }}</p>
+}

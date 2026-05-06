@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./multiline.story.scss",
 })
 export class MultilineStorySource {
+  protected description = "";
 }

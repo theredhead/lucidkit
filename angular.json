@@ -33,6 +33,12 @@
       "sourceRoot": "packages/foundation/src",
       "architect": {}
     },
+    "ui-theme-studio": {
+      "projectType": "library",
+      "root": "packages/ui-theme-studio",
+      "sourceRoot": "packages/ui-theme-studio/src",
+      "architect": {}
+    },
     "storybook-host": {
       "projectType": "application",
       "root": "",
@@ -45,9 +51,13 @@
             "index": "",
             "browser": "",
             "tsConfig": ".storybook/tsconfig.json",
-            "styles": ["styles.scss"],
+            "styles": [
+              "styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["packages/ui-theme/src/lib/styles"]
+              "includePaths": [
+                "packages/ui-theme/src/lib/styles"
+              ]
             }
           }
         },

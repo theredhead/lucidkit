@@ -1,4 +1,5 @@
 import { UIInput } from "../../input.component";
+import { UrlTextAdapter } from "../../adapters/url-text-adapter";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -11,4 +12,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./url-adapter.story.scss",
 })
 export class UrlAdapterStorySource {
+  protected readonly adapter = new UrlTextAdapter();
+  protected rawUrl = "";
+  protected fullUrl: string | null = null;
 }

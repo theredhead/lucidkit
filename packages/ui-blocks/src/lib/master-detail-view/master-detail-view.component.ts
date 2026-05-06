@@ -40,6 +40,7 @@ import {
   type FilterExpression,
   type FilterFieldDefinition,
   type ITreeDatasource,
+  type SplitOrientation,
   type SplitPanelConstraints,
   type TreeNode,
   type TreeNodeContext,
@@ -121,6 +122,8 @@ export interface MasterDetailContext<T> {
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: {
     class: "ui-master-detail-view",
+    "[class.horizontal]": "orientation() === 'horizontal'",
+    "[class.vertical]": "orientation() === 'vertical'",
   },
 })
 export class UIMasterDetailView<T = unknown> {
@@ -128,6 +131,13 @@ export class UIMasterDetailView<T = unknown> {
 
   /** Title displayed above the list panel. */
   public readonly title = input<string>("Items");
+
+  /**
+   * Layout orientation.
+   * - `'horizontal'` (default) — list on the left, detail on the right.
+   * - `'vertical'` — list on top, detail below.
+   */
+  public readonly orientation = input<SplitOrientation>("horizontal");
 
   /**
    * The datasource powering the master list.
