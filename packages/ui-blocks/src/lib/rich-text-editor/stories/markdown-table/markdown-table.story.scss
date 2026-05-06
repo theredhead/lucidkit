@@ -1,1 +1,10 @@
-/* Review required: add story-specific styles if needed. */
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 420px;
+}
+
+ui-rich-text-editor {
+    flex: 1;
+    min-height: 0;
+}

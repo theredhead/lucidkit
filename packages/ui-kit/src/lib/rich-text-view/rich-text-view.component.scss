@@ -15,6 +15,7 @@
   overflow-wrap: break-word;
 
   ::ng-deep {
+
     h1,
     h2,
     h3,
@@ -69,11 +70,9 @@
       padding: 0.15em 0.35em;
       border-radius: 3px;
       color: var(--ui-text, #1d232b);
-      background: color-mix(
-        in srgb,
-        var(--ui-border, #d7dce2) 40%,
-        var(--ui-surface, #fff)
-      );
+      background: color-mix(in srgb,
+          var(--ui-border, #d7dce2) 40%,
+          var(--ui-surface, #fff));
     }
 
     pre {
@@ -82,11 +81,9 @@
       border-radius: 6px;
       overflow-x: auto;
       color: var(--ui-text, #1d232b);
-      background: color-mix(
-        in srgb,
-        var(--ui-border, #d7dce2) 40%,
-        var(--ui-surface, #fff)
-      );
+      background: color-mix(in srgb,
+          var(--ui-border, #d7dce2) 40%,
+          var(--ui-surface, #fff));
 
       code {
         padding: 0;
@@ -111,16 +108,25 @@
       border-collapse: collapse;
       width: 100%;
       margin: 0.5em 0;
+      color: var(--ui-text, #1d232b);
+      background: var(--ui-surface, #ffffff);
+      border: 1px solid var(--ui-border-strong, #aab2bd);
+    }
 
-      th,
-      td {
-        padding: 0.35em 0.6em;
-        text-align: left;
-      }
+    th,
+    td {
+      padding: 0.35em 0.6em;
+      text-align: left;
+      vertical-align: top;
+      color: var(--ui-text, #1d232b);
+      background: var(--ui-surface, #ffffff);
+      border: 1px solid var(--ui-border-strong, #aab2bd);
+    }
 
-      th {
-        font-weight: 600;
-      }
+    th {
+      font-weight: 600;
+      color: var(--ui-text, #1d232b);
+      background: var(--ui-surface-2, #f0f2f5);
     }
   }
 }

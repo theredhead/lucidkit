@@ -218,7 +218,7 @@ const mailMergeTemplate = [
   "",
   "| Description | Qty | Unit Price | Total (ex. VAT) |",
   "| :--- | :---: | ---: | ---: |",
-  '<loop items="lines">| <placeholder key="description" /> | <placeholder key="quantity" /> | <placeholder key="unitPrice" /> | <placeholder key="lineTotal" /> |</loop>',
+  '<loop items="lines">| <placeholder key="description" /> | <placeholder key="quantity" /> | <placeholder key="unitPrice" /> | <placeholder key="lineTotal" /> |\n</loop>',
   "---",
   "",
   "| | |",

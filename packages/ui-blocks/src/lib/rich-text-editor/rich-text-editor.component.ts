@@ -499,6 +499,28 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     () => this.presentation() === "compact",
   );
 
+  /**
+   * Pre-rendered HTML for the Markdown preview pane.
+   *
+   * Runs `deserialiseContent` via the active strategy so that
+   * placeholder tokens are expanded into chip elements before
+   * the content reaches `<ui-rich-text-view>`.
+   *
+   * @internal
+   */
+  protected readonly markdownPreviewHtml = computed(() => {
+    const strat = this.strategy();
+    const md = this.value();
+    const ctx: import("./rich-text-editor.strategy").RichTextEditorContext = {
+      editorEl: null as unknown as HTMLDivElement,
+      hostEl: this.elRef.nativeElement,
+      placeholders: this.placeholders(),
+      sanitise: this.sanitise(),
+      restoreFocus: () => { },
+    };
+    return strat.deserialiseContent(md, ctx);
+  });
+
   /** @internal Effective toolbar actions after applying presentation defaults. */
   protected readonly effectiveToolbarActions = computed<
     readonly RichTextFormatAction[]
@@ -851,10 +873,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     const term = this.placeholderSearchTerm().toLowerCase().trim();
     const filtered = term
       ? ph.filter(
-          (p) =>
-            p.label.toLowerCase().includes(term) ||
-            p.key.toLowerCase().includes(term),
-        )
+        (p) =>
+          p.label.toLowerCase().includes(term) ||
+          p.key.toLowerCase().includes(term),
+      )
       : ph;
     if (!filtered.length) return [];
     const catMap = new Map<string, PlaceholderPickerItem[]>();
@@ -2730,10 +2752,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       return attributes.map((field) =>
         field.key === "key"
           ? {
-              ...field,
-              type: "select",
-              options: placeholderOptions,
-            }
+            ...field,
+            type: "select",
+            options: placeholderOptions,
+          }
           : field,
       );
     }
@@ -2745,10 +2767,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
       return attributes.map((field) =>
         field.key === "email" || field.key === "text"
           ? {
-              ...field,
-              type: "select",
-              options: placeholderOptions,
-            }
+            ...field,
+            type: "select",
+            options: placeholderOptions,
+          }
           : field,
       );
     }
@@ -2761,10 +2783,10 @@ export class UIRichTextEditor implements OnInit, AfterViewInit {
     return attributes.map((field) =>
       field.key === "items"
         ? {
-            ...field,
-            type: "select",
-            options: arrayOptions,
-          }
+          ...field,
+          type: "select",
+          options: arrayOptions,
+        }
         : field,
     );
   }

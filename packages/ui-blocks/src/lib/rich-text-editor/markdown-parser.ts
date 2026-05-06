@@ -1,46 +1,11 @@
 import { InjectionToken } from "@angular/core";
+import {
+  type MarkdownParser,
+  DefaultMarkdownParser,
+  markdownToHtml,
+} from "@theredhead/lucid-foundation";
 
-/**
- * A pluggable Markdown-to-HTML converter.
- *
- * The rich-text editor's `MarkdownEditingStrategy` uses this
- * interface to convert Markdown source text into an HTML string for
- * the live preview pane.
- *
- * The library ships a lightweight built-in converter that covers
- * headings, bold, italic, lists, links, images, code blocks, and
- * blockquotes.  For full CommonMark / GFM support, consumers can
- * provide their own implementation backed by a third-party parser
- * such as `marked` or `markdown-it`.
- *
- * @example
- * ```ts
- * // Using the built-in converter (default — nothing to configure)
- * <ui-rich-text-editor mode="markdown" />
- *
- * // Plugging in `marked`
- * import { marked } from 'marked';
- * import { MARKDOWN_PARSER, createMarkedParser } from '@theredhead/lucid-blocks';
- *
- * providers: [
- *   { provide: MARKDOWN_PARSER, useValue: createMarkedParser(md => marked.parse(md) as string) }
- * ]
- * ```
- */
-export interface MarkdownParser {
-
-  /**
-   * Converts a Markdown string to an HTML string.
-   *
-   * The returned HTML is sanitised by the editor before being
-   * rendered in the preview pane, so implementations do not need
-   * to worry about XSS.
-   *
-   * @param markdown - The raw Markdown source text.
-   * @returns An HTML string.
-   */
-  toHtml(markdown: string): string;
-}
+export { type MarkdownParser, DefaultMarkdownParser, markdownToHtml };
 
 /**
  * Optional DI token for a custom {@link MarkdownParser}.

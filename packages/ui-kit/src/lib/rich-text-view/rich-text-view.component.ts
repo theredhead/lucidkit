@@ -13,6 +13,7 @@ import {
   applyDataDetectors,
   getRegisteredDataDetectors,
   type IDataDetector,
+  markdownToHtml,
   UISurface,
 } from "@theredhead/lucid-foundation";
 
@@ -60,44 +61,6 @@ const DATA_DETECTOR_SKIPPED_TAGS = new Set([
 /** @internal Heuristic: does the string look like HTML? */
 function looksLikeHtml(content: string): boolean {
   return /^\s*<[a-zA-Z]/.test(content);
-}
-
-/** @internal */
-function markdownToHtml(markdown: string): string {
-  return markdown
-    .split(/\n{2,}/)
-    .map((block) => {
-      const text = block.trim();
-      if (!text) return "";
-      if (text.startsWith("# "))
-        return `<h1>${formatInline(text.slice(2))}</h1>`;
-      if (text.startsWith("## "))
-        return `<h2>${formatInline(text.slice(3))}</h2>`;
-      if (text.startsWith("### "))
-        return `<h3>${formatInline(text.slice(4))}</h3>`;
-      return `<p>${formatInline(text).replace(/\n/g, "<br />")}</p>`;
-    })
-    .join("");
-}
-
-/** @internal */
-function formatInline(value: string): string {
-  return escapeHtml(value)
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/`([^`]+)`/g, "<code>$1</code>")
-    .replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
-    );
-}
-
-/** @internal */
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
 
 /** @internal */
