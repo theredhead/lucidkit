@@ -1,3 +1,8 @@
-<!-- Use multiple containers for different positions -->
-<ui-toast-container position="top-right" />
-<ui-toast-container position="bottom-center" />
+<div class="demo">
+  @for (pos of positions; track pos) {
+    <ui-button variant="outlined" size="small" (click)="show(pos)">{{ pos }}</ui-button>
+  }
+</div>
+@for (pos of positions; track pos) {
+  <ui-toast-container [position]="pos" />
+}

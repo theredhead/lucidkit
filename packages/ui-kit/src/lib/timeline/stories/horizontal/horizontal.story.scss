@@ -1,1 +1,13 @@
-/* No custom styles needed — timeline tokens handle theming. */
+.event-card {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #f7f8fa);
+
+  span {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+}
