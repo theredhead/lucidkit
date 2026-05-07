@@ -17,6 +17,7 @@ import {
   formatTickLabel,
   svgEl,
   svgText,
+  svgToImageData,
 } from "./chart.utils";
 
 interface SampleRow {
@@ -306,6 +307,125 @@ describe("chart utils", () => {
     it("should create element with no attributes when omitted", () => {
       const g = svgEl("g");
       expect(g.tagName).toBe("g");
+    });
+  });
+
+  describe("svgToImageData", () => {
+    it("should resolve ImageData on successful image load", async () => {
+      const svg = createSvgRoot({ width: 100, height: 100 });
+      const rect = svgEl("rect", {
+        x: 10,
+        y: 10,
+        width: 80,
+        height: 80,
+        fill: "red",
+      });
+      svg.appendChild(rect);
+
+      // Mock Image to trigger onload
+      const originalImage = window.Image;
+      let imageInstance: Image | null = null;
+      window.Image = class MockImage {
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        src = "";
+        set = vi.fn();
+
+        constructor() {
+          imageInstance = this as unknown as Image;
+          // Trigger load asynchronously
+          setTimeout(() => {
+            this.onload?.();
+          }, 0);
+        }
+      } as unknown as typeof Image;
+
+      // Mock canvas context
+      const mockImageData = {
+        width: 100,
+        height: 100,
+        data: new Uint8ClampedArray(40000),
+      };
+      const mockCtx = {
+        drawImage: vi.fn(),
+        getImageData: vi.fn().mockReturnValue(mockImageData),
+      };
+      const originalGetContext =
+        HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = vi
+        .fn()
+        .mockReturnValue(mockCtx);
+
+      try {
+        const result = await svgToImageData(svg, 100, 100);
+        expect(result).toBeDefined();
+        expect(result.width).toBe(100);
+        expect(result.height).toBe(100);
+        expect(result.data).toBeDefined();
+        expect(mockCtx.drawImage).toHaveBeenCalled();
+        expect(mockCtx.getImageData).toHaveBeenCalledWith(0, 0, 100, 100);
+      } finally {
+        window.Image = originalImage;
+        HTMLCanvasElement.prototype.getContext = originalGetContext;
+      }
+    });
+
+    it("should reject when canvas context is null", async () => {
+      const svg = createSvgRoot({ width: 100, height: 100 });
+
+      // Mock Image to trigger onload
+      const originalImage = window.Image;
+      window.Image = class MockImage {
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        src = "";
+
+        constructor() {
+          setTimeout(() => {
+            this.onload?.();
+          }, 0);
+        }
+      } as unknown as typeof Image;
+
+      // Mock getContext to return null
+      const originalGetContext =
+        HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue(null);
+
+      try {
+        await expect(svgToImageData(svg, 100, 100)).rejects.toThrow(
+          "Could not get 2d context",
+        );
+      } finally {
+        window.Image = originalImage;
+        HTMLCanvasElement.prototype.getContext = originalGetContext;
+      }
+    });
+
+    it("should reject when image fails to load", async () => {
+      const svg = createSvgRoot({ width: 100, height: 100 });
+
+      // Mock Image to trigger onerror
+      const originalImage = window.Image;
+      window.Image = class MockImage {
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        src = "";
+
+        constructor() {
+          setTimeout(() => {
+            this.onerror?.();
+          }, 0);
+        }
+      } as unknown as typeof Image;
+
+      try {
+        await expect(svgToImageData(svg, 100, 100)).rejects.toThrow(
+          "Failed to load SVG as image",
+        );
+      } finally {
+        window.Image = originalImage;
+      }
     });
   });
 

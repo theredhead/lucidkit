@@ -3651,7 +3651,7 @@ describe("UIRichTextEditor", () => {
     it("should not crash when imageHandler rejects", async () => {
       const consoleErrorSpy = vi
         .spyOn(console, "error")
-        .mockImplementation(() => {});
+        .mockImplementation(() => { });
       const handler = vi.fn().mockRejectedValue(new Error("upload failed"));
       fixture.componentRef.setInput("imageHandler", handler);
       fixture.detectChanges();
