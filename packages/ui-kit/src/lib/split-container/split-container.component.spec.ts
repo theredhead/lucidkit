@@ -440,4 +440,337 @@ describe("UISplitContainer", () => {
       expect(split.sizes()).toEqual([50, 50]);
     });
   });
+
+  describe("pointer drag (pointerdown / pointermove / pointerup)", () => {
+    function getSplit(): UISplitContainer {
+      return fixture.debugElement.children[0].children[0]
+        .componentInstance as UISplitContainer;
+    }
+
+    function mockContainerRect(w = 800, h = 400): () => void {
+      const container = fixture.nativeElement.querySelector(
+        ".container",
+      ) as HTMLElement;
+      const orig = container.getBoundingClientRect.bind(container);
+      container.getBoundingClientRect = () => ({
+        width: w,
+        height: h,
+        top: 0,
+        left: 0,
+        bottom: h,
+        right: w,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      });
+      return () => {
+        container.getBoundingClientRect = orig;
+      };
+    }
+
+    function mockDivider(): HTMLElement {
+      const divider = fixture.nativeElement.querySelector(
+        ".divider",
+      ) as HTMLElement;
+      if (!divider.setPointerCapture) {
+        divider.setPointerCapture = () => {};
+      } else {
+        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => {});
+      }
+      return divider;
+    }
+
+    it("should set dragging=true on pointerdown", () => {
+      const split = getSplit();
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      expect(split.dragging()).toBe(true);
+    });
+
+    it("should update sizes on pointermove while dragging", () => {
+      const split = getSplit();
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      // Move to ~30% (240px out of 800px usable)
+      divider.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerId: 1,
+          clientX: 240,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      const sizes = split.sizes();
+      expect(sizes[0]).toBeLessThan(50);
+      expect(sizes[0] + sizes[1]).toBeCloseTo(100, 0);
+    });
+
+    it("should emit resizing event on pointermove", () => {
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerId: 1,
+          clientX: 300,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      expect(host.resizingEvents.length).toBeGreaterThan(0);
+    });
+
+    it("should set dragging=false on pointerup", () => {
+      const split = getSplit();
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerup", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      expect(split.dragging()).toBe(false);
+    });
+
+    it("should emit resized event on pointerup", () => {
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerup", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      expect(host.resizedEvents.length).toBe(1);
+    });
+
+    it("should stop dragging on pointercancel", () => {
+      const split = getSplit();
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointercancel", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      expect(split.dragging()).toBe(false);
+    });
+
+    it("should work in vertical orientation during drag", () => {
+      host.orientation.set("vertical");
+      fixture.detectChanges();
+
+      const split = getSplit();
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 200,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerId: 1,
+          clientX: 200,
+          clientY: 100,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      const sizes = split.sizes();
+      expect(sizes[0] + sizes[1]).toBeCloseTo(100, 0);
+    });
+
+    it("should save sizes after drag when named", () => {
+      host.name.set("drag-test");
+      fixture.detectChanges();
+
+      const divider = mockDivider();
+      const restore = mockContainerRect();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerup", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+      restore();
+
+      expect(
+        localStorage.getItem("ui-split-container:drag-test"),
+      ).not.toBeNull();
+      localStorage.removeItem("ui-split-container:drag-test");
+    });
+
+    it("should not change sizes when usableSize is zero (container has no size)", () => {
+      const split = getSplit();
+      const initialSizes = [...split.sizes()];
+      // Do NOT mock getBoundingClientRect → jsdom returns 0 by default → usableSize = 0
+      const divider = mockDivider();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 400,
+          bubbles: true,
+        }),
+      );
+      divider.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerId: 1,
+          clientX: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      // Sizes should not change due to guard (usableSize <= 0)
+      expect(split.sizes()).toEqual(initialSizes);
+    });
+  });
+
+  describe("double-click toggle restore", () => {
+    function getSplit(): UISplitContainer {
+      return fixture.debugElement.children[0].children[0]
+        .componentInstance as UISplitContainer;
+    }
+
+    it("should restore 50/50 when left panel is collapsed (a < 1)", () => {
+      const split = getSplit();
+      // First dblclick collapses the left panel (a <= b when a=50, b=50 → collapse a)
+      const divider = fixture.nativeElement.querySelector(
+        ".divider",
+      ) as HTMLElement;
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+      // Left should now be 0
+      expect(split.sizes()[0]).toBe(0);
+
+      // Second dblclick should restore both to 50
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+
+      expect(split.sizes()[0]).toBeGreaterThan(0);
+      expect(split.sizes()[1]).toBeGreaterThan(0);
+    });
+
+    it("should collapse the right panel and restore when b < 1 toggle", () => {
+      const split = getSplit();
+      // Manually set internal sizes so right panel is collapsed (b < 1)
+      (split as any)._sizes.set([100, 0]);
+      fixture.detectChanges();
+
+      const divider = fixture.nativeElement.querySelector(
+        ".divider",
+      ) as HTMLElement;
+      // dblclick should restore to 50/50 (b < 1 branch)
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+
+      expect(split.sizes()[0]).toBeGreaterThan(0);
+      expect(split.sizes()[1]).toBeGreaterThan(0);
+    });
+  });
 });

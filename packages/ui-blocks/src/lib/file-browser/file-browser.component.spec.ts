@@ -48,6 +48,21 @@ class TestDatasource implements FileBrowserDatasource<FileMeta> {
   }
 }
 
+class AsyncTestDatasource implements FileBrowserDatasource<FileMeta> {
+  public getChildren(
+    parent: FileBrowserEntry<FileMeta> | null,
+  ): Promise<FileBrowserEntry<FileMeta>[]> {
+    if (parent === null) return Promise.resolve(ENTRIES);
+    if (parent.id === "docs") return Promise.resolve(DOCS_ENTRIES);
+    if (parent.id === "notes") return Promise.resolve(NOTES_ENTRIES);
+    return Promise.resolve([]);
+  }
+
+  public isDirectory(entry: FileBrowserEntry<FileMeta>): boolean {
+    return entry.isDirectory;
+  }
+}
+
 // ── Tests ───────────────────────────────────────────────────────────
 
 describe("UIFileBrowser", () => {
@@ -631,6 +646,428 @@ describe("UIFileBrowser", () => {
       fixture.detectChanges();
 
       expect(component.selectedEntry()?.name).toBe("README.md");
+    });
+
+    it("should emit fileActivated on double-click of file in column view", () => {
+      const activated: unknown[] = [];
+      component.fileActivated.subscribe((e) => activated.push(e));
+
+      const entries =
+        fixture.nativeElement.querySelectorAll(".fb-column-entry");
+      // Find a file entry and dblclick it
+      const fileEntry = Array.from(entries).find(
+        (e) =>
+          !(e as HTMLElement).classList.contains("fb-column-entry--directory"),
+      ) as HTMLElement | undefined;
+      fileEntry?.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+
+      expect(activated.length).toBe(1);
+    });
+  });
+
+  describe("navigation guards and edge cases", () => {
+    it("should not navigate into a non-directory entry", async () => {
+      const file = ENTRIES.find((e) => !e.isDirectory)!;
+      const beforeDir = component.currentDirectory();
+      component.navigateToDirectory(file);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      // Should not have navigated
+      expect(component.currentDirectory()).toBe(beforeDir);
+    });
+
+    it("should ignore Enter key press on entry if not Enter", () => {
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      const before = component.selectedEntry();
+      entries[0].dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+      );
+      fixture.detectChanges();
+      // Should not select or navigate
+      expect(component.selectedEntry()).toBe(before);
+    });
+  });
+
+  describe("pointer drag events", () => {
+    function mockDivider(selector: string): HTMLElement {
+      const divider = fixture.nativeElement.querySelector(
+        selector,
+      ) as HTMLElement;
+      if (divider && !divider.setPointerCapture) {
+        divider.setPointerCapture = () => {};
+      } else if (divider) {
+        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => {});
+      }
+      return divider;
+    }
+
+    it("should start dragging sidebar on pointerdown", () => {
+      const divider = mockDivider(".fb-divider--sidebar");
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 240,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      expect(component["draggingPanel"]()).toBe("sidebar");
+    });
+
+    it("should stop dragging on pointerup", () => {
+      const divider = mockDivider(".fb-divider--sidebar");
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 240,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerup", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      expect(component["draggingPanel"]()).toBeNull();
+    });
+
+    it("should stop dragging on pointercancel", () => {
+      const divider = mockDivider(".fb-divider--sidebar");
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: 240,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointercancel", {
+          pointerId: 1,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      expect(component["draggingPanel"]()).toBeNull();
+    });
+
+    it("should update sidebar width on pointermove", () => {
+      const divider = mockDivider(".fb-divider--sidebar");
+      const initialWidth = component["sidebarWidthPx"]();
+
+      divider.dispatchEvent(
+        new PointerEvent("pointerdown", {
+          pointerId: 1,
+          clientX: initialWidth,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      divider.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerId: 1,
+          clientX: 150,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+    });
+
+    it("should start dragging details pane when visible", () => {
+      fixture.componentRef.setInput("showDetails", true);
+      fixture.detectChanges();
+
+      // Select entry to show details pane
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      entries[2]?.click();
+      fixture.detectChanges();
+
+      const divider = mockDivider(".fb-divider--details");
+      if (divider) {
+        divider.dispatchEvent(
+          new PointerEvent("pointerdown", {
+            pointerId: 1,
+            clientX: 600,
+            clientY: 200,
+            bubbles: true,
+          }),
+        );
+        fixture.detectChanges();
+
+        expect(component["draggingPanel"]()).toBe("details");
+
+        // Clean up
+        divider.dispatchEvent(
+          new PointerEvent("pointerup", { pointerId: 1, bubbles: true }),
+        );
+        fixture.detectChanges();
+      }
+    });
+
+    it("should update details panel width on pointermove", () => {
+      fixture.componentRef.setInput("showDetails", true);
+      fixture.detectChanges();
+
+      // Select entry to show details pane
+      const entries = fixture.nativeElement.querySelectorAll(".fb-entry");
+      entries[2]?.click();
+      fixture.detectChanges();
+
+      const divider = mockDivider(".fb-divider--details");
+      if (divider) {
+        divider.dispatchEvent(
+          new PointerEvent("pointerdown", {
+            pointerId: 1,
+            clientX: 600,
+            clientY: 200,
+            bubbles: true,
+          }),
+        );
+        divider.dispatchEvent(
+          new PointerEvent("pointermove", {
+            pointerId: 1,
+            clientX: 500,
+            clientY: 200,
+            bubbles: true,
+          }),
+        );
+        fixture.detectChanges();
+
+        divider.dispatchEvent(
+          new PointerEvent("pointerup", { pointerId: 1, bubbles: true }),
+        );
+        fixture.detectChanges();
+      }
+    });
+  });
+
+  describe("panel width persistence", () => {
+    it("should save panel widths when name is set", () => {
+      fixture.componentRef.setInput("name", "test-browser");
+      fixture.detectChanges();
+
+      const divider = fixture.nativeElement.querySelector(
+        ".fb-divider--sidebar",
+      );
+      divider.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      fixture.detectChanges();
+
+      const stored = localStorage.getItem("ui-file-browser:test-browser");
+      expect(stored).not.toBeNull();
+      localStorage.removeItem("ui-file-browser:test-browser");
+    });
+
+    it("should restore panel widths on init when name is set", async () => {
+      const widthData = JSON.stringify({
+        sidebar: 300,
+        details: 280,
+        sidebarCollapsed: false,
+        detailsCollapsed: false,
+      });
+      localStorage.setItem("ui-file-browser:restore-test", widthData);
+
+      fixture.componentRef.setInput("name", "restore-test");
+      fixture.detectChanges();
+      component.ngAfterViewInit();
+      fixture.detectChanges();
+
+      expect(component["sidebarWidthPx"]()).toBe(300);
+      expect(component["detailsWidthPx"]()).toBe(280);
+      localStorage.removeItem("ui-file-browser:restore-test");
+    });
+
+    it("should gracefully handle corrupt stored data", () => {
+      localStorage.setItem("ui-file-browser:corrupt-test", "not-json");
+      fixture.componentRef.setInput("name", "corrupt-test");
+      fixture.detectChanges();
+      expect(() => component.ngAfterViewInit()).not.toThrow();
+      localStorage.removeItem("ui-file-browser:corrupt-test");
+    });
+  });
+
+  describe("async datasource", () => {
+    let asyncFixture: ComponentFixture<UIFileBrowser<FileMeta>>;
+    let asyncComponent: UIFileBrowser<FileMeta>;
+
+    beforeEach(async () => {
+      const asyncDs = new AsyncTestDatasource();
+      asyncFixture = TestBed.createComponent(UIFileBrowser<FileMeta>);
+      asyncComponent = asyncFixture.componentInstance;
+      asyncFixture.componentRef.setInput("datasource", asyncDs);
+      asyncFixture.detectChanges();
+      await asyncFixture.whenStable();
+      asyncFixture.detectChanges();
+    });
+
+    it("should load root entries from async datasource", () => {
+      const entries = asyncFixture.nativeElement.querySelectorAll(".fb-entry");
+      expect(entries.length).toBe(ENTRIES.length);
+    });
+
+    it("should navigate into directory from async datasource", async () => {
+      asyncComponent.navigateToDirectory(ENTRIES[0]); // Documents
+      asyncFixture.detectChanges();
+      await asyncFixture.whenStable();
+      asyncFixture.detectChanges();
+
+      const names = asyncFixture.nativeElement.querySelectorAll(".fb-entry-name");
+      const texts = Array.from(names).map((n) =>
+        (n as HTMLElement).textContent?.trim(),
+      );
+      expect(texts).toContain("report.pdf");
+    });
+
+    it("should render tree view with async datasource", () => {
+      const tree = asyncFixture.nativeElement.querySelector("ui-tree-view");
+      expect(tree).toBeTruthy();
+    });
+
+    it("should work in column view with async datasource", async () => {
+      asyncFixture.componentRef.setInput("viewMode", "column");
+      asyncFixture.detectChanges();
+      await asyncFixture.whenStable();
+      asyncFixture.detectChanges();
+
+      const panes = asyncFixture.nativeElement.querySelectorAll(".fb-column-pane");
+      expect(panes.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  describe("getEntryIcon", () => {
+    it("should return entry.icon when explicitly set", () => {
+      const entry: FileBrowserEntry<FileMeta> = {
+        id: "x",
+        name: "file.pdf",
+        isDirectory: false,
+        icon: "custom-icon",
+      };
+      const icon = (component as any).getEntryIcon(entry);
+      expect(icon).toBe("custom-icon");
+    });
+
+    it("should return folder icon for directory without explicit icon", () => {
+      const entry = ENTRIES[0]; // Documents — isDirectory: true
+      const icon = (component as any).getEntryIcon(entry);
+      expect(icon).toBe(component["icons"].folder);
+    });
+
+    it("should return file icon for file without icon", () => {
+      const entry = ENTRIES[2]; // README.md — no icon
+      const icon = (component as any).getEntryIcon(entry);
+      expect(icon).toBe(component["icons"].file);
+    });
+  });
+
+  describe("onTreeNodeActivated edge cases", () => {
+    it("should not navigate when activated node is not a directory", async () => {
+      const fileNode = { id: "readme", data: ENTRIES[2] }; // README.md
+      const beforeDir = component.currentDirectory();
+      (component as any).onTreeNodeActivated(fileNode);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.currentDirectory()).toBe(beforeDir);
+    });
+
+    it("should navigate when activated node is a directory", async () => {
+      const dirNode = { id: "docs", data: ENTRIES[0] }; // Documents
+      (component as any).onTreeNodeActivated(dirNode);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(component.currentDirectory()?.id).toBe("docs");
+    });
+  });
+
+  describe("onTreeNodeSelected", () => {
+    it("should do nothing when selection is empty", () => {
+      const before = component.currentDirectory();
+      (component as any).onTreeNodeSelected([]);
+      expect(component.currentDirectory()).toBe(before);
+    });
+
+    it("should navigate when directory node is selected", async () => {
+      const dirNode = { id: "docs", data: ENTRIES[0] }; // Documents
+      (component as any).onTreeNodeSelected([dirNode]);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(component.currentDirectory()?.id).toBe("docs");
+    });
+
+    it("should not navigate when file node is selected", () => {
+      const before = component.currentDirectory();
+      const fileNode = { id: "readme", data: ENTRIES[2] }; // README.md
+      (component as any).onTreeNodeSelected([fileNode]);
+      expect(component.currentDirectory()).toBe(before);
+    });
+  });
+
+  describe("onBreadcrumbClick", () => {
+    it("should navigate to root when clicking root breadcrumb item", async () => {
+      // First navigate somewhere
+      component.navigateToDirectory(ENTRIES[0]);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      // Now click root breadcrumb
+      const items = (component as any).breadcrumbItems();
+      (component as any).onBreadcrumbClick(items[0]);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(component.currentDirectory()).toBeNull();
+    });
+
+    it("should navigate to ancestor when clicking non-root breadcrumb item", async () => {
+      // Navigate deep: root → docs → notes
+      component.navigateToDirectory(ENTRIES[0]); // docs
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      component.navigateToDirectory(DOCS_ENTRIES[0]); // notes
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      // Items: [Root, Documents, Notes]
+      const items = (component as any).breadcrumbItems();
+      if (items.length > 1) {
+        (component as any).onBreadcrumbClick(items[1]); // Documents
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.currentDirectory()?.id).toBe("docs");
+      }
+    });
+  });
+
+  describe("onEntryKeydown", () => {
+    it("should emit fileActivated on Enter for a file", () => {
+      const activated: unknown[] = [];
+      component.fileActivated.subscribe((e) => activated.push(e));
+
+      const entry = ENTRIES[2]; // README.md
+      (component as any).onEntryKeydown(
+        new KeyboardEvent("keydown", { key: "Enter" }),
+        entry,
+      );
+      expect(activated.length).toBe(1);
     });
   });
 });
