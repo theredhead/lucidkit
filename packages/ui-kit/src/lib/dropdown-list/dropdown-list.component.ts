@@ -107,12 +107,20 @@ export class UIDropdownListPanel implements UIPopoverContent<string> {
 }
 
 /**
- * A custom dropdown that renders an outlined button with a chevron
- * indicator. Clicking the button opens a popover (no arrow pointer)
- * containing a list of selectable options.
+ * A standalone value-picker control — an outlined trigger button that opens
+ * a popover list of selectable options. The trigger label updates to reflect
+ * the current selection.
  *
- * API-compatible with {@link UISelect} — uses the same
- * {@link SelectOption} items and two-way `value` binding.
+ * **This is a bare form control, not a toolbar tool.** Use it directly in
+ * forms, filter bars, or any layout outside a `<ui-toolbar>`.
+ *
+ * - For toolbar integration use {@link UISelectTool}, which wraps this
+ *   component and wires it into the toolbar's `toolAction` event system.
+ * - For a command menu (fixed trigger label, no persistent selection) use
+ *   {@link UIDropdownTool} inside a toolbar instead.
+ *
+ * API-compatible with `UISelect` — uses the same {@link SelectOption} items
+ * and two-way `value` binding.
  *
  * @example
  * ```html

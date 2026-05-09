@@ -4,7 +4,11 @@ export {
   type ToolbarOrientation,
 } from "./toolbar.component";
 export { UIToolbarItem } from "./toolbar-item.directive";
-export { type ToolActionEvent, type DropdownToolItem } from "./toolbar-action";
+export {
+  type ToolActionEvent,
+  type DropdownToolItem,
+  type DropdownToolDisplayMode,
+} from "./toolbar-action";
 export { UIButtonTool } from "./tools/button-tool/button-tool.component";
 export { UIToggleTool } from "./tools/toggle-tool/toggle-tool.component";
 export { UISeparatorTool } from "./tools/separator-tool/separator-tool.component";

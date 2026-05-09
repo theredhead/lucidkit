@@ -10,11 +10,25 @@ import { UIDropdownList, type SelectOption } from "../../../dropdown-list";
 import { UIToolbarItem } from "../../toolbar-item.directive";
 
 /**
- * A toolbar tool that wraps {@link UISelect} and emits a
- * {@link ToolActionEvent} when the selection changes.
+ * A toolbar **value picker** — the trigger label updates to show the
+ * currently selected value, and the selection persists in the `value` model.
  *
- * The new value is available via `(itemRef as UISelectTool).value()`
- * after a `toolAction` event fires.
+ * **When to use `UISelectTool` vs `UIDropdownTool`:**
+ *
+ * | | `UISelectTool` | `UIDropdownTool` |
+ * |---|---|---|
+ * | Purpose | Choose a value | Execute a command |
+ * | Trigger label | Updates to show current value | Always fixed (e.g. "Insert") |
+ * | Persistent state | `value` model holds the selection | None — emits an action |
+ * | Analogy | `<select>` element | Menu button / split button |
+ *
+ * Use `UISelectTool` when the user needs to pick a value that stays
+ * selected (e.g. font size, colour mode, zoom level).
+ * Use {@link UIDropdownTool} for command lists where the trigger label
+ * never changes and no value is retained (e.g. an "Insert" menu).
+ *
+ * After a selection, the new value is available via
+ * `(itemRef as UISelectTool).value()` in the `toolAction` handler.
  *
  * @example
  * ```html
@@ -44,7 +58,6 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   },
 })
 export class UISelectTool extends UIToolbarItem {
-
   /** Available select options. */
   public readonly options = input<SelectOption[]>([]);
 
