@@ -107,6 +107,20 @@ button {
   --_btn-contrast: var(--ui-on-error, #ffffff);
 }
 
+/* Filled danger uses --ui-error-filled (a deeper red) so white text is legible.
+   In light mode the token is not set and falls back to --ui-error. */
+:host(.danger.filled) button {
+  background-color: var(--ui-error-filled, var(--ui-error));
+
+  &:hover:not(:disabled) {
+    background-color: color-mix(
+      in srgb,
+      var(--ui-error-filled, var(--ui-error)) 85%,
+      black
+    );
+  }
+}
+
 :host(.neutral) {
   --_btn-solid: var(--ui-text);
   --_btn-solid-hover: var(--ui-text-muted);
