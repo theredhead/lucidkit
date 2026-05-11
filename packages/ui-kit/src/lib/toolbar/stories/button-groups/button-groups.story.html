@@ -1,12 +1,12 @@
-<ui-toolbar (toolAction)="onAction($event)">
+<ui-toolbar>
   <ui-button-group-tool id="undo-redo">
-    <ui-button-tool id="undo" [icon]="UIIcons.Lucide.Arrows.Undo" />
-    <ui-button-tool id="redo" [icon]="UIIcons.Lucide.Arrows.Redo" />
+    <ui-button-tool id="undo" [icon]="UIIcons.Lucide.Arrows.Undo" tooltip="Undo" />
+    <ui-button-tool id="redo" [icon]="UIIcons.Lucide.Arrows.Redo" tooltip="Redo" />
   </ui-button-group-tool>
   <ui-separator-tool id="sep1" />
   <ui-button-group-tool id="clipboard">
-    <ui-button-tool id="cut" [icon]="UIIcons.Lucide.Tools.Scissors" />
-    <ui-button-tool id="copy" [icon]="UIIcons.Lucide.Files.Save" />
-    <ui-button-tool id="paste" [icon]="UIIcons.Lucide.Files.Folder" />
+    <ui-button-tool id="cut" [icon]="UIIcons.Lucide.Text.Scissors" tooltip="Cut" />
+    <ui-button-tool id="copy" [icon]="UIIcons.Lucide.Text.Copy" tooltip="Copy" />
+    <ui-button-tool id="paste" [icon]="UIIcons.Lucide.Text.ClipboardPaste" tooltip="Paste" />
   </ui-button-group-tool>
 </ui-toolbar>

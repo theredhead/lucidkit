@@ -1,16 +1,17 @@
 <div class="viewport">
   <div class="track" [ngStyle]="trackStyle()">
-    @for (item of items(); track $index) {
+    @for (item of safeItems(); track $index) {
       <div
         class="item"
         [class.item--active]="$index === activeIndex()"
         [class.item--fill]="itemStyles()[$index].layout === 'fill'"
+        [class.item--start]="itemStyles()[$index].layout === 'start'"
         [ngStyle]="toStyleMap(itemStyles()[$index])"
         (click)="goTo($index)"
         (keydown.enter)="goTo($index)"
         role="group"
         [attr.aria-roledescription]="'slide'"
-        [attr.aria-label]="'Item ' + ($index + 1) + ' of ' + items().length"
+        [attr.aria-label]="'Item ' + ($index + 1) + ' of ' + safeItems().length"
       >
         <ng-container
           [ngTemplateOutlet]="itemTemplate()"
@@ -21,7 +22,7 @@
   </div>
 </div>
 
-@if (showControls() && items().length > 1) {
+@if (showControls() && safeItems().length > 1) {
   <button
     class="btn btn--prev"
     [disabled]="!hasPrev()"
@@ -42,9 +43,9 @@
   </button>
 }
 
-@if (showIndicators() && items().length > 1) {
+@if (showIndicators() && safeItems().length > 1) {
   <div class="indicators" role="tablist" aria-label="Carousel indicators">
-    @for (item of items(); track $index) {
+    @for (item of safeItems(); track $index) {
       <button
         class="dot"
         [class.dot--active]="$index === activeIndex()"

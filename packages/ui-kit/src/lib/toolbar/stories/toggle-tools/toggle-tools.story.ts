@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
 import { UIIcons } from "../../../icon/lucide-icons.generated";
 import { UIToolbar } from "../../toolbar.component";
@@ -17,8 +17,7 @@ import { UIToggleTool } from "../../tools/toggle-tool/toggle-tool.component";
 export class ToggleToolsStorySource {
   protected readonly UIIcons = UIIcons;
 
-  public isBold = false;
-  public isItalic = false;
-
-  public onAction(_event: unknown): void {}
+  protected readonly isBold = signal(false);
+  protected readonly isItalic = signal(false);
+  protected readonly isUnderline = signal(false);
 }

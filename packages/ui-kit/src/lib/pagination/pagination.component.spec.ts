@@ -121,8 +121,13 @@ describe("UIPagination", () => {
   describe("button states", () => {
     it("should disable first/prev on first page", () => {
       fixture.detectChanges();
-      const firstBtn = fixture.nativeElement.querySelector<HTMLButtonElement>('button[aria-label="First page"]');
-      const prevBtn = fixture.nativeElement.querySelector<HTMLButtonElement>('button[aria-label="Previous page"]');
+      const host = fixture.nativeElement as HTMLElement;
+      const firstBtn = host.querySelector<HTMLButtonElement>(
+        'button[aria-label="First page"]',
+      );
+      const prevBtn = host.querySelector<HTMLButtonElement>(
+        'button[aria-label="Previous page"]',
+      );
       expect(firstBtn!.disabled).toBe(true);
       expect(prevBtn!.disabled).toBe(true);
     });
@@ -130,8 +135,13 @@ describe("UIPagination", () => {
     it("should disable next/last on last page", () => {
       component.goToLast();
       fixture.detectChanges();
-      const nextBtn = fixture.nativeElement.querySelector<HTMLButtonElement>('button[aria-label="Next page"]');
-      const lastBtn = fixture.nativeElement.querySelector<HTMLButtonElement>('button[aria-label="Last page"]');
+      const host = fixture.nativeElement as HTMLElement;
+      const nextBtn = host.querySelector<HTMLButtonElement>(
+        'button[aria-label="Next page"]',
+      );
+      const lastBtn = host.querySelector<HTMLButtonElement>(
+        'button[aria-label="Last page"]',
+      );
       expect(nextBtn!.disabled).toBe(true);
       expect(lastBtn!.disabled).toBe(true);
     });
@@ -140,15 +150,18 @@ describe("UIPagination", () => {
   describe("page buttons", () => {
     it("should mark current page as active", () => {
       fixture.detectChanges();
-      const activeBtn = fixture.nativeElement.querySelector<HTMLElement>("ui-button[aria-current='page']");
+      const host = fixture.nativeElement as HTMLElement;
+      const activeBtn = host.querySelector<HTMLElement>(
+        "ui-button[aria-current='page']",
+      );
       expect(activeBtn).toBeTruthy();
       expect(activeBtn!.textContent?.trim()).toBe("1");
     });
 
     it("should navigate on page button click", () => {
       fixture.detectChanges();
-      const pageButtons =
-        fixture.nativeElement.querySelectorAll<HTMLElement>("ui-button.page");
+      const host = fixture.nativeElement as HTMLElement;
+      const pageButtons = host.querySelectorAll<HTMLElement>("ui-button.page");
       // Click page 2
       if (pageButtons.length > 1) {
         pageButtons[1].click();
@@ -165,7 +178,11 @@ describe("UIPagination", () => {
       const sizeEl = fixture.nativeElement.querySelector(".size");
       expect(sizeEl).toBeTruthy();
       // pageSizeSelectOptions maps the options through to ui-dropdown-list
-      expect((component as unknown as { pageSizeSelectOptions: () => unknown[] }).pageSizeSelectOptions().length).toBe(4);
+      expect(
+        (
+          component as unknown as { pageSizeSelectOptions: () => unknown[] }
+        ).pageSizeSelectOptions().length,
+      ).toBe(4);
     });
 
     it("should hide selector when pageSizeOptions is empty", () => {
@@ -185,7 +202,10 @@ describe("UIPagination", () => {
 
     it("should set aria-current on active page", () => {
       fixture.detectChanges();
-      const activeBtn = fixture.nativeElement.querySelector<HTMLElement>("ui-button[aria-current='page']");
+      const host = fixture.nativeElement as HTMLElement;
+      const activeBtn = host.querySelector<HTMLElement>(
+        "ui-button[aria-current='page']",
+      );
       expect(activeBtn).toBeTruthy();
       expect(activeBtn!.getAttribute("aria-current")).toBe("page");
     });

@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
+import type { DropdownToolItem } from "../../toolbar-action";
 import type { SelectOption } from "../../../dropdown-list";
+import { UIIcons } from "../../../icon/lucide-icons.generated";
 import { UIToolbar } from "../../toolbar.component";
 import { UIDropdownTool } from "../../tools/dropdown-tool/dropdown-tool.component";
 import { UISelectTool } from "../../tools/select-tool/select-tool.component";
@@ -14,13 +16,23 @@ import { UISelectTool } from "../../tools/select-tool/select-tool.component";
   styleUrl: "./dropdown-and-select.story.scss",
 })
 export class DropdownAndSelectStorySource {
-  public readonly fontSizeOptions: SelectOption[] = [
+  protected readonly insertItems: DropdownToolItem[] = [
+    { id: "table", label: "Table", icon: UIIcons.Lucide.Text.Table },
+    { id: "image", label: "Image", icon: UIIcons.Lucide.Text.Image },
+    { id: "link", label: "Link", icon: UIIcons.Lucide.Text.Link },
+    { id: "code", label: "Code block", icon: UIIcons.Lucide.Text.Code },
+    { id: "list", label: "List", icon: UIIcons.Lucide.Text.List },
+    { id: "quote", label: "Quote", icon: UIIcons.Lucide.Text.Quote },
+    { id: "heading", label: "Heading", icon: UIIcons.Lucide.Text.Heading },
+  ];
+
+  protected readonly fontSizeOptions: SelectOption[] = [
     { label: "12 px", value: "12" },
     { label: "14 px", value: "14" },
     { label: "16 px", value: "16" },
+    { label: "18 px", value: "18" },
+    { label: "24 px", value: "24" },
   ];
 
-  public fontSize = "14";
-
-  public onAction(_event: unknown): void {}
+  protected readonly fontSize = signal("14");
 }

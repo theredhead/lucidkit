@@ -151,6 +151,15 @@ export class UICarousel<T = unknown> {
 
   // ── Computed ────────────────────────────────────────────────────────
 
+  /**
+   * Safe accessor — returns the items array, or an empty array when
+   * the component is mounted without data (e.g. Storybook autodocs).
+   * @internal
+   */
+  protected readonly safeItems = computed(
+    () => (this.items() as readonly T[] | undefined) ?? [],
+  );
+
   /** Whether the prev button should be disabled (never in wrap mode). */
   protected readonly hasPrev = computed(
     () => this.wrap() || this.activeIndex() > 0,
@@ -158,28 +167,30 @@ export class UICarousel<T = unknown> {
 
   /** Whether the next button should be disabled (never in wrap mode). */
   protected readonly hasNext = computed(
-    () => this.wrap() || this.activeIndex() < this.items().length - 1,
+    () => this.wrap() || this.activeIndex() < this.safeItems().length - 1,
   );
 
   /** Track style from the strategy. */
-  protected readonly trackStyle = computed(() =>
-    this.strategy().getTrackStyle(),
+  protected readonly trackStyle = computed(
+    () => this.strategy()?.getTrackStyle() ?? {},
   );
 
   /** Per-item styles resolved from the current strategy and active index. */
   protected readonly itemStyles = computed(() => {
     const strat = this.strategy();
+    const items = this.safeItems();
+    if (!strat) return items.map(() => ({}) as CarouselItemStyle);
     const active = this.activeIndex();
-    const total = this.items().length;
+    const total = items.length;
     const w = this.wrap();
-    return this.items().map((_, i) => strat.getItemStyle(i, active, total, w));
+    return items.map((_, i) => strat.getItemStyle(i, active, total, w));
   });
 
   // ── Public methods ──────────────────────────────────────────────────
 
   /** Navigate to the previous item. */
   public prev(): void {
-    const len = this.items().length;
+    const len = this.safeItems().length;
     if (len === 0) return;
 
     if (this.wrap()) {
@@ -191,7 +202,7 @@ export class UICarousel<T = unknown> {
 
   /** Navigate to the next item. */
   public next(): void {
-    const len = this.items().length;
+    const len = this.safeItems().length;
     if (len === 0) return;
 
     if (this.wrap()) {
@@ -203,7 +214,7 @@ export class UICarousel<T = unknown> {
 
   /** Navigate directly to a specific index. */
   public goTo(index: number): void {
-    const len = this.items().length;
+    const len = this.safeItems().length;
     if (len === 0) return;
 
     let target: number;

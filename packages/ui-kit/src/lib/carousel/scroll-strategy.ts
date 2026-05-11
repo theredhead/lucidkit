@@ -62,6 +62,7 @@ export class ScrollCarouselStrategy implements CarouselStrategy {
     const distance = Math.abs(offset);
 
     return {
+      layout: "start",
       transform: `translateX(${translateX}px)`,
       opacity: this.fade
         ? distance === 0

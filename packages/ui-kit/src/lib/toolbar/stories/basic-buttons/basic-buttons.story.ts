@@ -15,6 +15,4 @@ import { UISeparatorTool } from "../../tools/separator-tool/separator-tool.compo
 })
 export class BasicButtonsStorySource {
   protected readonly UIIcons = UIIcons;
-
-  public onAction(_event: unknown): void {}
 }

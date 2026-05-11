@@ -17,13 +17,21 @@ export type PopoverVerticalAlignment = "auto" | "top" | "center" | "bottom";
 /**
  * Horizontal alignment of the popover relative to its anchor element.
  *
- * - `'auto'`   — prefers `'center'`; falls back to `'end'` or `'start'`
- *                if centering would clip the viewport
- * - `'start'`  — popover sits to the left of the anchor (right edge → anchor left edge)
- * - `'center'` — popover is horizontally centred on the anchor
- * - `'end'`    — popover sits to the right of the anchor (left edge → anchor right edge)
+ * - `'auto'`        — prefers `'center'`; falls back to `'end'` or `'start'`
+ *                     if centering would clip the viewport
+ * - `'start'`       — popover sits to the left of the anchor (right edge → anchor left edge)
+ * - `'center'`      — popover is horizontally centred on the anchor
+ * - `'end'`         — popover sits to the right of the anchor (left edge → anchor right edge)
+ * - `'match-start'` — popover left edge aligns with the anchor's left edge (standard dropdown)
+ * - `'match-end'`   — popover right edge aligns with the anchor's right edge
  */
-export type PopoverHorizontalAlignment = "auto" | "start" | "center" | "end";
+export type PopoverHorizontalAlignment =
+  | "auto"
+  | "start"
+  | "center"
+  | "end"
+  | "match-start"
+  | "match-end";
 
 // ── PopoverRef ─────────────────────────────────────────────────────
 
@@ -98,7 +106,6 @@ export class PopoverRef<R = unknown> {
  * ```
  */
 export interface UIPopoverContent<R = unknown> {
-
   /** Injected reference used to close the popover and return a result. */
   readonly popoverRef: PopoverRef<R>;
 }
@@ -109,7 +116,6 @@ export interface UIPopoverContent<R = unknown> {
  * Configuration object passed to {@link PopoverService.openPopover}.
  */
 export interface OpenPopoverConfig<T> {
-
   /** The standalone component class to render inside the popover. */
   readonly component: Type<T>;
 

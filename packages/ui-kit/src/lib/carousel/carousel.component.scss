@@ -39,6 +39,10 @@
   overflow: hidden;
 }
 
+.item--start {
+  left: 0;
+}
+
 .item--active {
   cursor: default;
 }

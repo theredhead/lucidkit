@@ -1,10 +1,12 @@
-<ui-toolbar (toolAction)="onAction($event)">
-  <ui-toggle-tool id="bold" label="B" [icon]="UIIcons.Lucide.Text.Bold" [(checked)]="isBold" />
-  <ui-toggle-tool id="italic" label="I" [icon]="UIIcons.Lucide.Text.Italic" [(checked)]="isItalic" />
+<ui-toolbar>
+  <ui-toggle-tool id="bold" [icon]="UIIcons.Lucide.Text.Bold" [(checked)]="isBold" />
+  <ui-toggle-tool id="italic" [icon]="UIIcons.Lucide.Text.Italic" [(checked)]="isItalic" />
+  <ui-toggle-tool id="underline" [icon]="UIIcons.Lucide.Text.Underline" [(checked)]="isUnderline" />
   <ui-separator-tool id="sep1" />
   <ui-toggle-group-tool id="alignment">
-    <ui-toggle-tool id="align-left" [icon]="UIIcons.Lucide.Text.Bold" />
+    <ui-toggle-tool id="align-left" [icon]="UIIcons.Lucide.Text.TextAlignStart" />
     <ui-toggle-tool id="align-center" [icon]="UIIcons.Lucide.Text.TextAlignCenter" />
-    <ui-toggle-tool id="align-right" [icon]="UIIcons.Lucide.Text.Italic" />
+    <ui-toggle-tool id="align-right" [icon]="UIIcons.Lucide.Text.TextAlignEnd" />
+    <ui-toggle-tool id="align-justify" [icon]="UIIcons.Lucide.Text.TextAlignJustify" />
   </ui-toggle-group-tool>
 </ui-toolbar>

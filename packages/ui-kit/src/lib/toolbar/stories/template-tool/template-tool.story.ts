@@ -15,5 +15,13 @@ import { UITemplateTool } from "../../tools/template-tool/template-tool.componen
 })
 export class TemplateToolStorySource {
   protected readonly UIIcons = UIIcons;
-  public readonly zoom = signal(100);
+  protected readonly zoom = signal(100);
+
+  protected zoomOut(): void {
+    this.zoom.update((z) => Math.max(10, z - 10));
+  }
+
+  protected zoomIn(): void {
+    this.zoom.update((z) => Math.min(500, z + 10));
+  }
 }

@@ -5,7 +5,7 @@
  * properties that the strategy returns.
  */
 export interface CarouselItemStyle {
-  readonly layout?: "centered" | "fill";
+  readonly layout?: "centered" | "fill" | "start";
   readonly transform?: string;
   readonly opacity?: number;
   readonly zIndex?: number;
@@ -28,7 +28,6 @@ export interface CarouselItemStyle {
  * interface.
  */
 export interface CarouselStrategy {
-
   /** Human-readable name (useful for debugging / stories). */
   readonly name: string;
 
@@ -58,7 +57,6 @@ export interface CarouselStrategy {
  * each carousel item.
  */
 export interface CarouselItemContext<T = unknown> {
-
   /** The data item (implicit `let` variable). */
   readonly $implicit: T;
 

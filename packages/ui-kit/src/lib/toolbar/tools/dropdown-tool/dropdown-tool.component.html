@@ -1,4 +1,5 @@
 <button
+  #trigger
   class="dropdown-trigger"
   [disabled]="disabled()"
   [attr.aria-label]="ariaLabel() || label() || undefined"
@@ -17,28 +18,3 @@
   }
   <ui-icon [svg]="chevronIcon" [size]="12" class="chevron-icon" />
 </button>
-
-@if (isOpen()) {
-  <div class="dropdown-panel" role="menu">
-    @if (items().length > 0) {
-      @for (item of items(); track item.id) {
-        <button
-          class="dropdown-panel-item"
-          role="menuitem"
-          [disabled]="item.disabled ?? false"
-          [class.dropdown-panel-item--selected]="item.id === selectedItemId()"
-          tabindex="-1"
-          (mousedown)="preserveCommandTargetFocus($event)"
-          (click)="onItemClick(item, $event)"
-        >
-          @if (item.icon) {
-            <ui-icon [svg]="item.icon" [size]="16" />
-          }
-          {{ item.label }}
-        </button>
-      }
-    } @else {
-      <ng-content />
-    }
-  </div>
-}

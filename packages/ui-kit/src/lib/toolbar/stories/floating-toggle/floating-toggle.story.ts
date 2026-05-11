@@ -15,5 +15,5 @@ import { UISeparatorTool } from "../../tools/separator-tool/separator-tool.compo
 })
 export class FloatingToggleStorySource {
   protected readonly UIIcons = UIIcons;
-  public readonly toolbarCollapsed = signal(false);
+  protected readonly toolbarCollapsed = signal(false);
 }

@@ -72,6 +72,8 @@ const preview: Preview = {
         if (b.type === "docs") return 1;
         if (a.name === "Default") return -1;
         if (b.name === "Default") return 1;
+        if (a.name === "Coverflow") return 1;
+        if (b.name === "Coverflow") return -1;
         return a.name.localeCompare(b.name);
       },
     },

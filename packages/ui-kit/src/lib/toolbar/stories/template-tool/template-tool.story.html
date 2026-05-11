@@ -1,9 +1,9 @@
 <ui-toolbar>
-  <ui-button-tool id="zoom-out" [icon]="UIIcons.Lucide.Arrows.Undo" />
+  <ui-button-tool id="zoom-out" [icon]="UIIcons.Lucide.Accessibility.ZoomOut" tooltip="Zoom out" (toolAction)="zoomOut()" />
   <ui-template-tool id="zoom-display">
     <ng-template let-tool>
-      <span style="padding: 4px 8px; font-size: 0.8125rem;">{{ zoom() }}%</span>
+      <span class="zoom-label">{{ zoom() }}%</span>
     </ng-template>
   </ui-template-tool>
-  <ui-button-tool id="zoom-in" [icon]="UIIcons.Lucide.Arrows.Redo" />
+  <ui-button-tool id="zoom-in" [icon]="UIIcons.Lucide.Accessibility.ZoomIn" tooltip="Zoom in" (toolAction)="zoomIn()" />
 </ui-toolbar>

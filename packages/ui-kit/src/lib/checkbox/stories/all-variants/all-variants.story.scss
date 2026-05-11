@@ -1,1 +1,6 @@
-/* No custom styles needed — uses library defaults. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}

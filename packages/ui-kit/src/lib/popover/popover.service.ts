@@ -142,7 +142,7 @@ interface Position {
   top: number;
   left: number;
   resolvedV: "top" | "center" | "bottom";
-  resolvedH: "start" | "center" | "end";
+  resolvedH: "start" | "center" | "end" | "match-start" | "match-end";
 }
 
 /**
@@ -226,7 +226,10 @@ function computePosition(
   // Always push AWAY from the anchor so the gap is consistent
   // regardless of which side was chosen (auto-resolved or explicit).
   const effectiveVOffset = resolvedV === "top" ? -Math.abs(vOffset) : vOffset;
-  const effectiveHOffset = resolvedH === "start" ? -Math.abs(hOffset) : hOffset;
+  const effectiveHOffset =
+    resolvedH === "start" || resolvedH === "match-end"
+      ? -Math.abs(hOffset)
+      : hOffset;
 
   let top = 0;
   let left = 0;
@@ -257,6 +260,12 @@ function computePosition(
     case "end":
       left = anchorRect.right;
       break;
+    case "match-start":
+      left = anchorRect.left;
+      break;
+    case "match-end":
+      left = anchorRect.right - popoverRect.width;
+      break;
   }
 
   // ── Apply offsets ─────────────────────────────────────────
@@ -285,7 +294,7 @@ function computePosition(
  */
 function deriveArrowSide(
   resolvedV: "top" | "center" | "bottom",
-  resolvedH: "start" | "center" | "end",
+  resolvedH: "start" | "center" | "end" | "match-start" | "match-end",
 ): PopoverArrowSide {
   // Side-anchored (horizontal placement)
   if (resolvedH === "end" && resolvedV === "center") return "left";
