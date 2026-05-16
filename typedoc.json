@@ -5,6 +5,8 @@
     "packages/ui-blocks/src/public-api.ts",
     "packages/ui-theme/src/public-api.ts"
   ],
+  "exclude": ["**/*.spec.ts", "**/*.stories.ts", "**/*.story.ts"],
+  "skipErrorChecking": true,
   "out": "dev-docs",
   "theme": "default",
   "includeVersion": true,
