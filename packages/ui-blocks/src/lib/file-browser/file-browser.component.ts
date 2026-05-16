@@ -32,6 +32,7 @@ import { StorageService, UISurface } from "@theredhead/lucid-foundation";
 import { NgTemplateOutlet } from "@angular/common";
 
 import type {
+  AllowedFileTypes,
   DirectoryChangeEvent,
   FileActivateEvent,
   FileBrowserDatasource,
@@ -40,6 +41,7 @@ import type {
   MetadataField,
   MetadataProvider,
 } from "./file-browser.types";
+import { parseAllowedTypes } from "./file-browser.types";
 import { entryToTreeNode, FILE_ICON_REGISTRY } from "./file-browser.types";
 
 /**
@@ -48,7 +50,6 @@ import { entryToTreeNode, FILE_ICON_REGISTRY } from "./file-browser.types";
  * @typeParam M - Metadata type carried on each entry.
  */
 export interface EntryTemplateContext<M = unknown> {
-
   /** The entry (also available as the implicit `let-entry`). */
   $implicit: FileBrowserEntry<M>;
 }
@@ -123,6 +124,33 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
    * Required for the details pane to display meaningful data.
    */
   public readonly metadataProvider = input<MetadataProvider<M> | null>(null);
+
+  /**
+   * Optional allowed-types mask. Accepts either a comma-separated string in
+   * the `<input accept>` format (`.ext`, `type/subtype`, `type/*`) or a
+   * pre-parsed {@link AllowedFileTypes} object.
+   *
+   * When set, files that do not match are either grayed-out and non-interactive
+   * (default) or hidden entirely if {@link hideFiltered} is `true`.
+   * Directories are never filtered.
+   *
+   * @example
+   * ```html
+   * <!-- string attribute -->
+   * <ui-file-browser allowedTypes=".ts,.tsx,image/*" />
+   *
+   * <!-- bound object -->
+   * <ui-file-browser [allowedTypes]="myAllowedTypes" />
+   * ```
+   */
+  public readonly allowedTypes = input<AllowedFileTypes | string | null>(null);
+
+  /**
+   * When `true`, entries that do not pass the {@link allowedTypes} filter are
+   * removed from the contents list entirely. When `false` (default) they are
+   * still rendered but dimmed and non-interactive.
+   */
+  public readonly hideFiltered = input<boolean>(false);
 
   // ── Models ────────────────────────────────────────────────────────
 
@@ -273,6 +301,32 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
     const provider = this.metadataProvider();
     if (!entry || !provider) return [];
     return provider(entry);
+  });
+
+  /**
+   * @internal — normalised allowed-types filter.
+   * Converts a string mask to {@link AllowedFileTypes} on first access.
+   */
+  protected readonly resolvedAllowedTypes = computed<AllowedFileTypes | null>(
+    () => {
+      const v = this.allowedTypes();
+      if (!v) return null;
+      return typeof v === "string" ? parseAllowedTypes(v) : v;
+    },
+  );
+
+  /**
+   * @internal — contents of the current directory after applying the
+   * allowed-types filter (hide mode only; in dim mode all entries are kept).
+   */
+  protected readonly filteredContents = computed<
+    readonly FileBrowserEntry<M>[]
+  >(() => {
+    const filter = this.resolvedAllowedTypes();
+    if (!filter || !this.hideFiltered()) return this.contents();
+    return this.contents().filter(
+      (e) => e.isDirectory || filter.matches(e.name, e.mimeType),
+    );
   });
 
   // ── Constructor ───────────────────────────────────────────────────
@@ -435,13 +489,40 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
     }
   }
 
+  /**
+   * @internal — returns `true` if the entry is allowed by the current filter.
+   * Directories are always allowed.
+   */
+  protected isEntryAllowed(entry: FileBrowserEntry<M>): boolean {
+    if (entry.isDirectory) return true;
+    const filter = this.resolvedAllowedTypes();
+    if (!filter) return true;
+    return filter.matches(entry.name, entry.mimeType);
+  }
+
+  /**
+   * @internal — returns the entries for a column pane after applying the
+   * hide-filtered logic (dim mode returns all entries; hide mode filters).
+   */
+  protected columnPaneVisibleEntries(
+    entries: readonly FileBrowserEntry<M>[],
+  ): readonly FileBrowserEntry<M>[] {
+    const filter = this.resolvedAllowedTypes();
+    if (!filter || !this.hideFiltered()) return entries;
+    return entries.filter(
+      (e) => e.isDirectory || filter.matches(e.name, e.mimeType),
+    );
+  }
+
   /** @internal */
   protected onEntryClick(entry: FileBrowserEntry<M>): void {
+    if (!this.isEntryAllowed(entry)) return;
     this.selectedEntry.set(entry);
   }
 
   /** @internal */
   protected onEntryDblClick(entry: FileBrowserEntry<M>): void {
+    if (!this.isEntryAllowed(entry)) return;
     if (entry.isDirectory) {
       this.navigateToDirectory(entry);
     } else {
@@ -593,6 +674,7 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
     paneIndex: number,
     entry: FileBrowserEntry<M>,
   ): Promise<void> {
+    if (!this.isEntryAllowed(entry)) return;
     // Update selection in this pane
     const sels = [...this.columnSelections()];
     sels[paneIndex] = entry;
@@ -615,6 +697,7 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
 
   /** @internal — double-click in column view activates a file. */
   protected onColumnEntryDblClick(entry: FileBrowserEntry<M>): void {
+    if (!this.isEntryAllowed(entry)) return;
     if (!entry.isDirectory) {
       this.fileActivated.emit({
         entry,

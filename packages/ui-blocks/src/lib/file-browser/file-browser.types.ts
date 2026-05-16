@@ -50,7 +50,6 @@ export const FILE_ICON_REGISTRY = new InjectionToken<FileIconRegistry>(
  * A key-value metadata pair displayed in the details pane.
  */
 export interface MetadataField {
-
   /** Human-readable label for the field. */
   readonly label: string;
 
@@ -67,13 +66,98 @@ export type MetadataProvider<M = unknown> = (
 ) => MetadataField[];
 
 /**
+ * A single allowed-type entry used by {@link AllowedFileTypes}.
+ *
+ * - `extension` — matches by lower-case file extension (no leading dot).
+ * - `mime`      — matches by MIME type string; the subtype may be `*`
+ *                 for wildcard matching (e.g. `image/*`).
+ */
+export type AllowedFileType =
+  | { readonly kind: "extension"; readonly value: string }
+  | { readonly kind: "mime"; readonly value: string };
+
+/**
+ * Parsed representation of an allowed-types mask.
+ *
+ * Build one from a comma-separated string (the HTML `<input accept>` format)
+ * using {@link parseAllowedTypes}, or construct it directly.
+ *
+ * @example
+ * ```ts
+ * const types = parseAllowedTypes(".ts, .tsx, image/*, application/json");
+ * types.matches("photo.png", "image/png"); // true
+ * types.matches("README.md");              // false
+ * ```
+ */
+export interface AllowedFileTypes {
+  /** The individual type rules that make up this mask. */
+  readonly entries: readonly AllowedFileType[];
+
+  /**
+   * Returns `true` if the given filename (and optional MIME type) is
+   * permitted by at least one rule. Directories always return `true`.
+   *
+   * @param name     - The file name (used for extension matching).
+   * @param mimeType - Optional MIME type string (used for mime rules).
+   */
+  matches(name: string, mimeType?: string): boolean;
+}
+
+/**
+ * Parses a comma-separated allowed-types mask into an {@link AllowedFileTypes}
+ * object.
+ *
+ * The format mirrors the HTML `<input accept>` attribute:
+ * - `.ext`        — file extension (case-insensitive, leading dot optional)
+ * - `type/subtype`— exact MIME type, e.g. `application/json`
+ * - `type/*`      — MIME wildcard, e.g. `image/*`
+ *
+ * @example
+ * ```ts
+ * const types = parseAllowedTypes(".ts, .tsx, image/*");
+ * ```
+ */
+export function parseAllowedTypes(mask: string): AllowedFileTypes {
+  const entries: AllowedFileType[] = mask
+    .split(",")
+    .map((t) => t.trim().toLowerCase())
+    .filter((t) => t.length > 0)
+    .map((t): AllowedFileType => {
+      if (t.includes("/")) {
+        return { kind: "mime", value: t };
+      }
+      // Strip leading dot — store extension without it
+      return { kind: "extension", value: t.startsWith(".") ? t.slice(1) : t };
+    });
+
+  return {
+    entries,
+    matches(name: string, mimeType?: string): boolean {
+      if (entries.length === 0) return true;
+      return entries.some((e) => {
+        if (e.kind === "extension") {
+          const dot = name.lastIndexOf(".");
+          const ext = dot >= 0 ? name.slice(dot + 1).toLowerCase() : "";
+          return ext === e.value;
+        }
+        // MIME matching
+        if (!mimeType) return false;
+        const [eType, eSubtype] = e.value.split("/");
+        const [mType, mSubtype] = mimeType.toLowerCase().split("/");
+        if (eType !== mType) return false;
+        return eSubtype === "*" || eSubtype === mSubtype;
+      });
+    },
+  };
+}
+
+/**
  * A single entry in a file browser — either a file or a directory.
  *
  * @typeParam M - Optional metadata type for extra fields
  *               (size, modified date, permissions, etc.).
  */
 export interface FileBrowserEntry<M = unknown> {
-
   /** Unique identifier for the entry. */
   readonly id: string;
 
@@ -89,6 +173,12 @@ export interface FileBrowserEntry<M = unknown> {
    */
   readonly icon?: string;
 
+  /**
+   * Optional MIME type for the entry (e.g. `"image/png"`).
+   * Used by {@link AllowedFileTypes} for MIME-based filtering.
+   */
+  readonly mimeType?: string;
+
   /** Optional arbitrary metadata (size, date, MIME type, etc.). */
   readonly meta?: M;
 }
@@ -103,7 +193,6 @@ export interface FileBrowserEntry<M = unknown> {
  * @typeParam M - Optional metadata type carried on each entry.
  */
 export interface FileBrowserDatasource<M = unknown> {
-
   /**
    * Returns the entries (files and directories) inside the given
    * directory node. For the root directory, `parent` is `null`.
@@ -126,7 +215,6 @@ export interface FileBrowserDatasource<M = unknown> {
  * @typeParam M - Optional metadata type.
  */
 export interface FileActivateEvent<M = unknown> {
-
   /** The activated file entry. */
   readonly entry: FileBrowserEntry<M>;
 
@@ -141,7 +229,6 @@ export interface FileActivateEvent<M = unknown> {
  * @typeParam M - Optional metadata type.
  */
 export interface DirectoryChangeEvent<M = unknown> {
-
   /** The directory the user navigated to (`null` for root). */
   readonly directory: FileBrowserEntry<M> | null;
 

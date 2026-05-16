@@ -1,0 +1,14 @@
+
+    <div class="story-wrapper">
+      <ui-file-browser
+        [datasource]="ds"
+        [allowedTypes]="allowedTypes"
+        [hideFiltered]="true"
+        (fileActivated)="onFileActivated($event)"
+        (directoryChange)="onDirChange($event)"
+      />
+    </div>
+    @if (lastEvent()) {
+      <div class="story-output">{{ lastEvent() }}</div>
+    }
+  

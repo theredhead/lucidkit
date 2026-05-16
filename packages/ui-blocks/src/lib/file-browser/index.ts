@@ -11,5 +11,8 @@ export {
   type FileIconRegistry,
   type MetadataField,
   type MetadataProvider,
+  type AllowedFileType,
+  type AllowedFileTypes,
   FILE_ICON_REGISTRY,
+  parseAllowedTypes,
 } from "./file-browser.types";

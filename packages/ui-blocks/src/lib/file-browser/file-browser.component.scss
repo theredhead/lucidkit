@@ -475,3 +475,15 @@
   min-width: 0;
   @include mix.truncate;
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// ── Filtered (not allowed) entries ──────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
+// Applies to .fb-entry, .fb-icon-tile, .fb-detail-row, .fb-column-entry
+.filtered {
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+  cursor: default;
+}

@@ -38,12 +38,13 @@
 
 ## Utility Functions
 
-| Name                 | File                                               | Description                                                  |
-| -------------------- | -------------------------------------------------- | ------------------------------------------------------------ |
-| `navItem`            | `src/lib/navigation-page/navigation-page.utils.ts` | Factory: creates a leaf navigation node (sidebar item)       |
-| `navGroup`           | `src/lib/navigation-page/navigation-page.utils.ts` | Factory: creates a group navigation node (collapsible group) |
-| `routesToNavigation` | `src/lib/navigation-page/navigation-page.utils.ts` | Converts Angular Router config to NavigationNode array       |
-| `entryToTreeNode`    | `src/lib/file-browser/file-browser.types.ts`       | Converts FileBrowserEntry to TreeNode for tree-view sidebar  |
+| Name                 | File                                               | Description                                                                      |
+| -------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `navItem`            | `src/lib/navigation-page/navigation-page.utils.ts` | Factory: creates a leaf navigation node (sidebar item)                           |
+| `navGroup`           | `src/lib/navigation-page/navigation-page.utils.ts` | Factory: creates a group navigation node (collapsible group)                     |
+| `routesToNavigation` | `src/lib/navigation-page/navigation-page.utils.ts` | Converts Angular Router config to NavigationNode array                           |
+| `entryToTreeNode`    | `src/lib/file-browser/file-browser.types.ts`       | Converts FileBrowserEntry to TreeNode for tree-view sidebar                      |
+| `parseAllowedTypes`  | `src/lib/file-browser/file-browser.types.ts`       | Parses a comma-separated `<input accept>` mask into an `AllowedFileTypes` object |
 
 ## Types & Interfaces
 
@@ -72,9 +73,11 @@
 | Interface | `MarkdownParser`                  | `src/lib/rich-text-editor/markdown-parser.ts`                | Pluggable Markdown-to-HTML converter                                   |
 | Interface | `CommandPaletteItem`              | `src/lib/command-palette/command-palette.types.ts`           | Action (id, label, group, shortcut, icon, keywords)                    |
 | Interface | `CommandExecuteEvent`             | `src/lib/command-palette/command-palette.types.ts`           | Event when command is executed                                         |
-| Interface | `FileBrowserEntry`                | `src/lib/file-browser/file-browser.types.ts`                 | File/directory entry (id, name, isDirectory, icon)                     |
+| Interface | `FileBrowserEntry`                | `src/lib/file-browser/file-browser.types.ts`                 | File/directory entry (id, name, isDirectory, icon, mimeType, meta)     |
 | Interface | `FileBrowserDatasource`           | `src/lib/file-browser/file-browser.types.ts`                 | Datasource contract (getChildren, isDirectory)                         |
 | Type      | `FileBrowserViewMode`             | `src/lib/file-browser/file-browser.types.ts`                 | `'list' \| 'icons' \| 'detail' \| 'tree' \| 'column'`                  |
+| Type      | `AllowedFileType`                 | `src/lib/file-browser/file-browser.types.ts`                 | Discriminated union: `{ kind: 'extension' }` or `{ kind: 'mime' }`     |
+| Interface | `AllowedFileTypes`                | `src/lib/file-browser/file-browser.types.ts`                 | Parsed allowed-types mask with `entries` array and `matches()` method  |
 | Interface | `ChatParticipant`                 | `src/lib/chat-view/chat-view.types.ts`                       | Participant (id, name, avatar)                                         |
 | Interface | `ChatMessage`                     | `src/lib/chat-view/chat-view.types.ts`                       | Message (id, content, timestamp, sender, type)                         |
 | Interface | `MessageSendEvent`                | `src/lib/chat-view/chat-view.types.ts`                       | Event when user sends a message                                        |
