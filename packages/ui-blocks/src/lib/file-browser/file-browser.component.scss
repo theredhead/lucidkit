@@ -140,6 +140,30 @@
   margin: 1px 6px;
   transition: background 60ms ease;
   outline: none;
+
+  &:hover {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+  }
+
+  &:focus-visible {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+    outline: 2px solid var(--ui-accent, #3584e4);
+    outline-offset: -2px;
+  }
+}
+
+.fb-entry--selected {
+  color: var(--ui-accent, #3584e4);
+  background: var(--ui-selected-bg, rgba(53, 132, 228, 0.18));
+  box-shadow: inset 0 0 0 1px var(--ui-accent, #3584e4);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--ui-accent, #3584e4);
+    background: var(--ui-selected-hover-bg, rgba(53, 132, 228, 0.24));
+  }
 }
 
 .fb-entry-icon {
@@ -186,6 +210,30 @@
   text-align: center;
   outline: none;
   transition: background 60ms ease;
+
+  &:hover {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+  }
+
+  &:focus-visible {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+    outline: 2px solid var(--ui-accent, #3584e4);
+    outline-offset: -2px;
+  }
+}
+
+.fb-icon-tile--selected {
+  color: var(--ui-accent, #3584e4);
+  background: var(--ui-selected-bg, rgba(53, 132, 228, 0.18));
+  box-shadow: inset 0 0 0 1px var(--ui-accent, #3584e4);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--ui-accent, #3584e4);
+    background: var(--ui-selected-hover-bg, rgba(53, 132, 228, 0.24));
+  }
 }
 
 .fb-icon-tile-icon {
@@ -233,8 +281,32 @@
   outline: none;
   transition: background 60ms ease;
 
+  &:hover {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+  }
+
+  &:focus-visible {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+    outline: 2px solid var(--ui-accent, #3584e4);
+    outline-offset: -2px;
+  }
+
   &.fb-detail-row--directory {
     font-weight: 500;
+  }
+}
+
+.fb-detail-row--selected {
+  color: var(--ui-accent, #3584e4);
+  background: var(--ui-selected-bg, rgba(53, 132, 228, 0.18));
+  box-shadow: inset 0 0 0 1px var(--ui-accent, #3584e4);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--ui-accent, #3584e4);
+    background: var(--ui-selected-hover-bg, rgba(53, 132, 228, 0.24));
   }
 }
 
@@ -308,8 +380,32 @@
   outline: none;
   transition: background 60ms ease;
 
+  &:hover {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+  }
+
+  &:focus-visible {
+    color: inherit;
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+    outline: 2px solid var(--ui-accent, #3584e4);
+    outline-offset: -2px;
+  }
+
   &.fb-column-entry--directory {
     font-weight: 500;
+  }
+}
+
+.fb-column-entry--selected {
+  color: var(--ui-accent, #3584e4);
+  background: var(--ui-selected-bg, rgba(53, 132, 228, 0.18));
+  box-shadow: inset 0 0 0 1px var(--ui-accent, #3584e4);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--ui-accent, #3584e4);
+    background: var(--ui-selected-hover-bg, rgba(53, 132, 228, 0.24));
   }
 }
 

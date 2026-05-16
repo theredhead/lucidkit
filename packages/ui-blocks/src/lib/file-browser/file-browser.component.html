@@ -39,8 +39,8 @@
     } @else {
     @for (entry of contents(); track entry.id) {
     <div class="fb-entry" role="listitem" tabindex="0" [class.fb-entry--selected]="isEntrySelected(entry)"
-      [class.fb-entry--directory]="entry.isDirectory" (click)="onEntryClick(entry)" (dblclick)="onEntryDblClick(entry)"
-      (keydown)="onEntryKeydown($event, entry)">
+      [attr.aria-selected]="isEntrySelected(entry)" [class.fb-entry--directory]="entry.isDirectory"
+      (click)="onEntryClick(entry)" (dblclick)="onEntryDblClick(entry)" (keydown)="onEntryKeydown($event, entry)">
       @if (entryTemplate(); as tpl) {
       <ng-container [ngTemplateOutlet]="tpl" [ngTemplateOutletContext]="{ $implicit: entry }" />
       } @else {
@@ -64,7 +64,8 @@
     } @else {
     @for (entry of contents(); track entry.id) {
     <div class="fb-icon-tile" role="listitem" tabindex="0" [class.fb-icon-tile--selected]="isEntrySelected(entry)"
-      (click)="onEntryClick(entry)" (dblclick)="onEntryDblClick(entry)" (keydown)="onEntryKeydown($event, entry)">
+      [attr.aria-selected]="isEntrySelected(entry)" (click)="onEntryClick(entry)" (dblclick)="onEntryDblClick(entry)"
+      (keydown)="onEntryKeydown($event, entry)">
       <ui-icon class="fb-icon-tile-icon" [svg]="getEntryIcon(entry)" [size]="40" />
       <span class="fb-icon-tile-name">{{ entry.name }}</span>
     </div>
@@ -88,8 +89,8 @@
     } @else {
     @for (entry of contents(); track entry.id) {
     <div class="fb-detail-row" role="row" tabindex="0" [class.fb-detail-row--selected]="isEntrySelected(entry)"
-      [class.fb-detail-row--directory]="entry.isDirectory" (click)="onEntryClick(entry)"
-      (dblclick)="onEntryDblClick(entry)" (keydown)="onEntryKeydown($event, entry)">
+      [attr.aria-selected]="isEntrySelected(entry)" [class.fb-detail-row--directory]="entry.isDirectory"
+      (click)="onEntryClick(entry)" (dblclick)="onEntryDblClick(entry)" (keydown)="onEntryKeydown($event, entry)">
       <span class="fb-detail-cell fb-detail-cell--icon" role="cell">
         <ui-icon [svg]="getEntryIcon(entry)" [size]="16" />
       </span>
@@ -124,8 +125,9 @@
       @for (entry of pane.entries; track entry.id) {
       <div class="fb-column-entry" role="listitem" tabindex="0"
         [class.fb-column-entry--selected]="isColumnEntrySelected(i, entry)"
-        [class.fb-column-entry--directory]="entry.isDirectory" (click)="onColumnEntryClick(i, entry)"
-        (dblclick)="onColumnEntryDblClick(entry)" (keydown)="onEntryKeydown($event, entry)">
+        [attr.aria-selected]="isColumnEntrySelected(i, entry)" [class.fb-column-entry--directory]="entry.isDirectory"
+        (click)="onColumnEntryClick(i, entry)" (dblclick)="onColumnEntryDblClick(entry)"
+        (keydown)="onEntryKeydown($event, entry)">
         <ui-icon [svg]="getEntryIcon(entry)" [size]="16" />
         <span class="fb-column-entry-name">{{ entry.name }}</span>
         @if (entry.isDirectory) {
