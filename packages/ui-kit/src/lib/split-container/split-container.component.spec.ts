@@ -58,7 +58,7 @@ class TestHost {
     </div>
   `,
 })
-class TestHostConstrained {}
+class TestHostConstrained { }
 
 // ── TestHost for three-panel tests ────────────────────────────────────────
 
@@ -75,7 +75,7 @@ class TestHostConstrained {}
     </div>
   `,
 })
-class TestHostThreePanels {}
+class TestHostThreePanels { }
 
 describe("UISplitContainer", () => {
   let fixture: ComponentFixture<TestHost>;
@@ -473,9 +473,9 @@ describe("UISplitContainer", () => {
         ".divider",
       ) as HTMLElement;
       if (!divider.setPointerCapture) {
-        divider.setPointerCapture = () => {};
+        divider.setPointerCapture = () => { };
       } else {
-        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => {});
+        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => { });
       }
       return divider;
     }

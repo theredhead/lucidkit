@@ -695,9 +695,9 @@ describe("UIFileBrowser", () => {
         selector,
       ) as HTMLElement;
       if (divider && !divider.setPointerCapture) {
-        divider.setPointerCapture = () => {};
+        divider.setPointerCapture = () => { };
       } else if (divider) {
-        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => {});
+        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => { });
       }
       return divider;
     }

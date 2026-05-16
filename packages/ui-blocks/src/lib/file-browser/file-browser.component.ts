@@ -494,6 +494,9 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
     this.loadContents(this.datasource(), directory);
     this.directoryChange.emit({ directory, path });
 
+    // Keep the tree selection in sync with the active directory
+    this.treeSelected.set(directory ? [entryToTreeNode(directory)] : []);
+
     // Expand the tree to the selected folder
     this.expandTreeToPath(path);
   }
