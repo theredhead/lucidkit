@@ -71,6 +71,7 @@ describe("UIFileBrowser", () => {
   let ds: TestDatasource;
 
   beforeEach(async () => {
+    localStorage.clear();
     ds = new TestDatasource();
     await TestBed.configureTestingModule({
       imports: [UIFileBrowser],
@@ -695,9 +696,9 @@ describe("UIFileBrowser", () => {
         selector,
       ) as HTMLElement;
       if (divider && !divider.setPointerCapture) {
-        divider.setPointerCapture = () => { };
+        divider.setPointerCapture = () => {};
       } else if (divider) {
-        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => { });
+        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => {});
       }
       return divider;
     }
@@ -871,9 +872,13 @@ describe("UIFileBrowser", () => {
     });
 
     it("should restore panel widths on init when name is set", async () => {
+      // Set name first and flush any pending effects before writing test data.
+      fixture.componentRef.setInput("name", "restore-test");
+      fixture.detectChanges();
+
       const widthData = JSON.stringify({
-        sidebar: 300,
-        details: 280,
+        sidebarWidth: 300,
+        detailsWidth: 280,
         sidebarCollapsed: false,
         detailsCollapsed: false,
       });
@@ -923,7 +928,8 @@ describe("UIFileBrowser", () => {
       await asyncFixture.whenStable();
       asyncFixture.detectChanges();
 
-      const names = asyncFixture.nativeElement.querySelectorAll(".fb-entry-name");
+      const names =
+        asyncFixture.nativeElement.querySelectorAll(".fb-entry-name");
       const texts = Array.from(names).map((n) =>
         (n as HTMLElement).textContent?.trim(),
       );
@@ -941,7 +947,8 @@ describe("UIFileBrowser", () => {
       await asyncFixture.whenStable();
       asyncFixture.detectChanges();
 
-      const panes = asyncFixture.nativeElement.querySelectorAll(".fb-column-pane");
+      const panes =
+        asyncFixture.nativeElement.querySelectorAll(".fb-column-pane");
       expect(panes.length).toBeGreaterThanOrEqual(1);
     });
   });

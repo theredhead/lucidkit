@@ -1,1 +1,4 @@
-/* No custom styles needed — drawer tokens handle theming. */
+:host {
+  display: block;
+  min-height: 400px;
+}

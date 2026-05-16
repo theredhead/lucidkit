@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-27T15:30:00.651Z",
-  "baseUrl": "http://127.0.0.1:56164",
+  "generatedAt": "2026-05-16T12:15:41.683Z",
+  "baseUrl": "http://127.0.0.1:56810",
   "outputDir": "artifacts/storybook-screenshots",
   "components": [
     {
       "title": "@theredhead/Showcases/A Quick Tour",
       "category": "Showcases",
-      "importPath": "./packages/ui-blocks/src/lib/navigation-page/a-quick-tour.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/stories/a-quick-tour/a-quick-tour.stories.ts",
       "primaryStoryId": "theredhead-showcases-a-quick-tour--default",
       "outputDir": "artifacts/storybook-screenshots/showcases/a-quick-tour",
       "screenshots": [
@@ -29,7 +29,7 @@
     {
       "title": "@theredhead/Showcases/Communication Suite",
       "category": "Showcases",
-      "importPath": "./packages/ui-blocks/src/lib/navigation-page/communication-suite-app.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/stories/communication-suite/communication-suite-app.stories.ts",
       "primaryStoryId": "theredhead-showcases-communication-suite--default",
       "outputDir": "artifacts/storybook-screenshots/showcases/communication-suite",
       "screenshots": [
@@ -52,7 +52,7 @@
     {
       "title": "@theredhead/Showcases/Recipe Book App",
       "category": "Showcases",
-      "importPath": "./packages/ui-blocks/src/lib/navigation-page/recipe-book-app.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/stories/recipe-book-app/recipe-book-app.stories.ts",
       "primaryStoryId": "theredhead-showcases-recipe-book-app--default",
       "outputDir": "artifacts/storybook-screenshots/showcases/recipe-book-app",
       "screenshots": [
@@ -75,7 +75,7 @@
     {
       "title": "@theredhead/Showcases/User Management App",
       "category": "Showcases",
-      "importPath": "./packages/ui-blocks/src/lib/navigation-page/user-management-app.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/stories/user-management-app/user-management-app.stories.ts",
       "primaryStoryId": "theredhead-showcases-user-management-app--default",
       "outputDir": "artifacts/storybook-screenshots/showcases/user-management-app",
       "screenshots": [
@@ -98,7 +98,7 @@
     {
       "title": "@theredhead/Showcases/Video Sharing App",
       "category": "Showcases",
-      "importPath": "./packages/ui-blocks/src/lib/navigation-page/video-sharing-app.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/stories/video-sharing-app/video-sharing-app.stories.ts",
       "primaryStoryId": "theredhead-showcases-video-sharing-app--default",
       "outputDir": "artifacts/storybook-screenshots/showcases/video-sharing-app",
       "screenshots": [
@@ -121,7 +121,7 @@
     {
       "title": "@theredhead/Showcases/Warehouse Management App",
       "category": "Showcases",
-      "importPath": "./packages/ui-blocks/src/lib/navigation-page/warehouse-management-app.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/stories/warehouse-management-app/warehouse-management-app.stories.ts",
       "primaryStoryId": "theredhead-showcases-warehouse-management-app--default",
       "outputDir": "artifacts/storybook-screenshots/showcases/warehouse-management-app",
       "screenshots": [
@@ -144,7 +144,7 @@
     {
       "title": "@theredhead/UI Blocks/Chat View",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/chat-view/chat-view.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/chat-view/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-chat-view--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/chat-view",
       "screenshots": [
@@ -195,7 +195,7 @@
     {
       "title": "@theredhead/UI Blocks/Command Palette",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/command-palette/command-palette.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/command-palette/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-command-palette--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/command-palette",
       "screenshots": [
@@ -246,7 +246,7 @@
     {
       "title": "@theredhead/UI Blocks/Common Dialogs",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/common-dialogs/common-dialog.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/common-dialogs/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-common-dialogs--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/common-dialogs",
       "screenshots": [
@@ -269,7 +269,7 @@
     {
       "title": "@theredhead/UI Blocks/Dashboard",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/dashboard/dashboard.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/dashboard/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-dashboard--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/dashboard",
       "screenshots": [
@@ -348,7 +348,7 @@
     {
       "title": "@theredhead/UI Blocks/File Browser",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/file-browser/file-browser.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/file-browser/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-file-browser--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/file-browser",
       "screenshots": [
@@ -453,9 +453,55 @@
       ]
     },
     {
+      "title": "@theredhead/UI Blocks/File Browser/Allowed Types (dim)",
+      "category": "UI Blocks",
+      "importPath": "./packages/ui-blocks/src/lib/file-browser/stories/allowed-types-dim/allowed-types-dim.stories.ts",
+      "primaryStoryId": "theredhead-ui-blocks-file-browser-allowed-types-dim--allowed-types-dim",
+      "outputDir": "artifacts/storybook-screenshots/ui-blocks/file-browser/allowed-types-dim",
+      "screenshots": [
+        {
+          "storyId": "theredhead-ui-blocks-file-browser-allowed-types-dim--allowed-types-dim",
+          "storyName": "Allowed Types (dim)",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/file-browser/allowed-types-dim/allowed-types-dim-light.png",
+          "title": "@theredhead/UI Blocks/File Browser/Allowed Types (dim)"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-file-browser-allowed-types-dim--allowed-types-dim",
+          "storyName": "Allowed Types (dim)",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/file-browser/allowed-types-dim/allowed-types-dim-dark.png",
+          "title": "@theredhead/UI Blocks/File Browser/Allowed Types (dim)"
+        }
+      ]
+    },
+    {
+      "title": "@theredhead/UI Blocks/File Browser/Allowed Types (hidden)",
+      "category": "UI Blocks",
+      "importPath": "./packages/ui-blocks/src/lib/file-browser/stories/allowed-types-hide/allowed-types-hide.stories.ts",
+      "primaryStoryId": "theredhead-ui-blocks-file-browser-allowed-types-hidden--allowed-types-hide",
+      "outputDir": "artifacts/storybook-screenshots/ui-blocks/file-browser/allowed-types-hidden",
+      "screenshots": [
+        {
+          "storyId": "theredhead-ui-blocks-file-browser-allowed-types-hidden--allowed-types-hide",
+          "storyName": "Allowed Types (hidden)",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/file-browser/allowed-types-hidden/allowed-types-hidden-light.png",
+          "title": "@theredhead/UI Blocks/File Browser/Allowed Types (hidden)"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-file-browser-allowed-types-hidden--allowed-types-hide",
+          "storyName": "Allowed Types (hidden)",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/file-browser/allowed-types-hidden/allowed-types-hidden-dark.png",
+          "title": "@theredhead/UI Blocks/File Browser/Allowed Types (hidden)"
+        }
+      ]
+    },
+    {
       "title": "@theredhead/UI Blocks/Kanban Board",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/kanban-board/kanban-board.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/kanban-board/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-kanban-board--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/kanban-board",
       "screenshots": [
@@ -492,7 +538,7 @@
     {
       "title": "@theredhead/UI Blocks/Master Detail View",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/master-detail-view/master-detail-view.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/master-detail-view/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-master-detail-view--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/master-detail-view",
       "screenshots": [
@@ -567,6 +613,20 @@
           "title": "@theredhead/UI Blocks/Master Detail View"
         },
         {
+          "storyId": "theredhead-ui-blocks-master-detail-view--vertical",
+          "storyName": "Vertical orientation",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/master-detail-view/vertical-orientation-light.png",
+          "title": "@theredhead/UI Blocks/Master Detail View"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-master-detail-view--vertical",
+          "storyName": "Vertical orientation",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/master-detail-view/vertical-orientation-dark.png",
+          "title": "@theredhead/UI Blocks/Master Detail View"
+        },
+        {
           "storyId": "theredhead-ui-blocks-master-detail-view--with-filter",
           "storyName": "With Filter",
           "theme": "light",
@@ -585,7 +645,7 @@
     {
       "title": "@theredhead/UI Blocks/Navigation Page",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/navigation-page/navigation-page.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/navigation-page/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-navigation-page--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/navigation-page",
       "screenshots": [
@@ -650,7 +710,7 @@
     {
       "title": "@theredhead/UI Blocks/Property Sheet",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/property-sheet/property-sheet.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/property-sheet/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-property-sheet--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/property-sheet",
       "screenshots": [
@@ -699,9 +759,326 @@
       ]
     },
     {
+      "title": "@theredhead/UI Blocks/Rich Text Editor",
+      "category": "UI Blocks",
+      "importPath": "./packages/ui-blocks/src/lib/rich-text-editor/stories/default/default.stories.ts",
+      "primaryStoryId": "theredhead-ui-blocks-rich-text-editor--default",
+      "outputDir": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor",
+      "screenshots": [
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--default",
+          "storyName": "Default",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/default-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--default",
+          "storyName": "Default",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/default-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--compact-chat",
+          "storyName": "Compact Chat",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/compact-chat-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--compact-chat",
+          "storyName": "Compact Chat",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/compact-chat-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--custom-parser-manual",
+          "storyName": "Custom Parser Manual",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/custom-parser-manual-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--custom-parser-manual",
+          "storyName": "Custom Parser Manual",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/custom-parser-manual-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--custom-parser-markdown-it",
+          "storyName": "Custom Parser Markdown It",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/custom-parser-markdown-it-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--custom-parser-markdown-it",
+          "storyName": "Custom Parser Markdown It",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/custom-parser-markdown-it-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--custom-parser-marked",
+          "storyName": "Custom Parser Marked",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/custom-parser-marked-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--custom-parser-marked",
+          "storyName": "Custom Parser Marked",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/custom-parser-marked-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--disabled",
+          "storyName": "Disabled",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/disabled-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--disabled",
+          "storyName": "Disabled",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/disabled-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--full-featured",
+          "storyName": "Full Featured",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/full-featured-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--full-featured",
+          "storyName": "Full Featured",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/full-featured-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--image-base-64-fallback",
+          "storyName": "Image Base 64 Fallback",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/image-base-64-fallback-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--image-base-64-fallback",
+          "storyName": "Image Base 64 Fallback",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/image-base-64-fallback-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--html-mail-merge",
+          "storyName": "Mail-merge — HTML invoice demo",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/mail-merge-html-invoice-demo-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--html-mail-merge",
+          "storyName": "Mail-merge — HTML invoice demo",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/mail-merge-html-invoice-demo-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--mail-merge",
+          "storyName": "Mail-merge — invoice demo",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/mail-merge-invoice-demo-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--mail-merge",
+          "storyName": "Mail-merge — invoice demo",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/mail-merge-invoice-demo-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown",
+          "storyName": "Markdown",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown",
+          "storyName": "Markdown",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-table",
+          "storyName": "Markdown — table support",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-table-support-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-table",
+          "storyName": "Markdown — table support",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-table-support-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-max-length",
+          "storyName": "Markdown Max Length",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-max-length-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-max-length",
+          "storyName": "Markdown Max Length",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-max-length-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-with-initial-content",
+          "storyName": "Markdown With Initial Content",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-with-initial-content-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-with-initial-content",
+          "storyName": "Markdown With Initial Content",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-with-initial-content-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-with-placeholders",
+          "storyName": "Markdown With Placeholders",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-with-placeholders-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--markdown-with-placeholders",
+          "storyName": "Markdown With Placeholders",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/markdown-with-placeholders-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--max-length-exceeded",
+          "storyName": "Max Length Exceeded",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/max-length-exceeded-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--max-length-exceeded",
+          "storyName": "Max Length Exceeded",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/max-length-exceeded-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--minimal-toolbar",
+          "storyName": "Minimal Toolbar",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/minimal-toolbar-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--minimal-toolbar",
+          "storyName": "Minimal Toolbar",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/minimal-toolbar-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--read-only",
+          "storyName": "Read Only",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/read-only-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--read-only",
+          "storyName": "Read Only",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/read-only-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-image-handler",
+          "storyName": "With Image Handler",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-image-handler-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-image-handler",
+          "storyName": "With Image Handler",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-image-handler-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-initial-content",
+          "storyName": "With Initial Content",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-initial-content-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-initial-content",
+          "storyName": "With Initial Content",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-initial-content-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-max-length",
+          "storyName": "With Max Length",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-max-length-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-max-length",
+          "storyName": "With Max Length",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-max-length-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-placeholders",
+          "storyName": "With Placeholders",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-placeholders-light.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-rich-text-editor--with-placeholders",
+          "storyName": "With Placeholders",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/rich-text-editor/with-placeholders-dark.png",
+          "title": "@theredhead/UI Blocks/Rich Text Editor"
+        }
+      ]
+    },
+    {
       "title": "@theredhead/UI Blocks/Search View",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/search-view/search-view.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/search-view/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-search-view--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/search-view",
       "screenshots": [
@@ -778,9 +1155,32 @@
       ]
     },
     {
+      "title": "@theredhead/UI Blocks/Source Tabs",
+      "category": "UI Blocks",
+      "importPath": "./packages/ui-blocks/src/lib/source-tabs/stories/default/default.stories.ts",
+      "primaryStoryId": "theredhead-ui-blocks-source-tabs--default",
+      "outputDir": "artifacts/storybook-screenshots/ui-blocks/source-tabs",
+      "screenshots": [
+        {
+          "storyId": "theredhead-ui-blocks-source-tabs--default",
+          "storyName": "Default",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/source-tabs/default-light.png",
+          "title": "@theredhead/UI Blocks/Source Tabs"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-source-tabs--default",
+          "storyName": "Default",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/source-tabs/default-dark.png",
+          "title": "@theredhead/UI Blocks/Source Tabs"
+        }
+      ]
+    },
+    {
       "title": "@theredhead/UI Blocks/Wizard",
       "category": "UI Blocks",
-      "importPath": "./packages/ui-blocks/src/lib/wizard/wizard.stories.ts",
+      "importPath": "./packages/ui-blocks/src/lib/wizard/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-blocks-wizard--default",
       "outputDir": "artifacts/storybook-screenshots/ui-blocks/wizard",
       "screenshots": [
@@ -817,7 +1217,7 @@
     {
       "title": "@theredhead/UI Forms/Form",
       "category": "UI Forms",
-      "importPath": "./packages/ui-forms/src/lib/components/form.stories.ts",
+      "importPath": "./packages/ui-forms/src/lib/components/stories/conditional-fields/conditional-fields.stories.ts",
       "primaryStoryId": "theredhead-ui-forms-form--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-forms/form",
       "screenshots": [
@@ -861,6 +1261,34 @@
           "storyName": "Contact Form",
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-forms/form/contact-form-dark.png",
+          "title": "@theredhead/UI Forms/Form"
+        },
+        {
+          "storyId": "theredhead-ui-forms-form--no-field-registry",
+          "storyName": "No Field Registry (dev mode)",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-forms/form/no-field-registry-dev-mode-light.png",
+          "title": "@theredhead/UI Forms/Form"
+        },
+        {
+          "storyId": "theredhead-ui-forms-form--no-field-registry",
+          "storyName": "No Field Registry (dev mode)",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-forms/form/no-field-registry-dev-mode-dark.png",
+          "title": "@theredhead/UI Forms/Form"
+        },
+        {
+          "storyId": "theredhead-ui-forms-form--no-field-registry-production",
+          "storyName": "No Field Registry (production mode)",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-forms/form/no-field-registry-production-mode-light.png",
+          "title": "@theredhead/UI Forms/Form"
+        },
+        {
+          "storyId": "theredhead-ui-forms-form--no-field-registry-production",
+          "storyName": "No Field Registry (production mode)",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-forms/form/no-field-registry-production-mode-dark.png",
           "title": "@theredhead/UI Forms/Form"
         },
         {
@@ -938,7 +1366,7 @@
     {
       "title": "@theredhead/UI Forms/Form Designer",
       "category": "UI Forms",
-      "importPath": "./packages/ui-forms/src/lib/components/designer/form-designer.stories.ts",
+      "importPath": "./packages/ui-forms/src/lib/components/designer/stories/empty-designer/empty-designer.stories.ts",
       "primaryStoryId": "theredhead-ui-forms-form-designer--empty-designer",
       "outputDir": "artifacts/storybook-screenshots/ui-forms/form-designer",
       "screenshots": [
@@ -1003,7 +1431,7 @@
     {
       "title": "@theredhead/UI Kit/Accordion",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/accordion/accordion.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/accordion/stories/multi-mode/multi-mode.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-accordion--multi-mode",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/accordion",
       "screenshots": [
@@ -1054,7 +1482,7 @@
     {
       "title": "@theredhead/UI Kit/Analog Clock",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/analog-clock/analog-clock.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/analog-clock/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-analog-clock--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/analog-clock",
       "screenshots": [
@@ -1217,22 +1645,22 @@
     {
       "title": "@theredhead/UI Kit/Autocomplete",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/autocomplete/autocomplete.stories.ts",
-      "primaryStoryId": "theredhead-ui-kit-autocomplete--basic",
+      "importPath": "./packages/ui-kit/src/lib/autocomplete/stories/basic/basic.stories.ts",
+      "primaryStoryId": "theredhead-ui-kit-autocomplete--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/autocomplete",
       "screenshots": [
         {
-          "storyId": "theredhead-ui-kit-autocomplete--basic",
-          "storyName": "Basic",
+          "storyId": "theredhead-ui-kit-autocomplete--default",
+          "storyName": "Default",
           "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/autocomplete/basic-light.png",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/autocomplete/default-light.png",
           "title": "@theredhead/UI Kit/Autocomplete"
         },
         {
-          "storyId": "theredhead-ui-kit-autocomplete--basic",
-          "storyName": "Basic",
+          "storyId": "theredhead-ui-kit-autocomplete--default",
+          "storyName": "Default",
           "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/autocomplete/basic-dark.png",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/autocomplete/default-dark.png",
           "title": "@theredhead/UI Kit/Autocomplete"
         },
         {
@@ -1282,7 +1710,7 @@
     {
       "title": "@theredhead/UI Kit/Avatar",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/avatar/avatar.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/avatar/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-avatar--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/avatar",
       "screenshots": [
@@ -1333,7 +1761,7 @@
     {
       "title": "@theredhead/UI Kit/Badge",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/badge/badge.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/badge/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-badge--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/badge",
       "screenshots": [
@@ -1454,7 +1882,7 @@
     {
       "title": "@theredhead/UI Kit/Breadcrumb",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/breadcrumb/breadcrumb.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/breadcrumb/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-breadcrumb--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/breadcrumb",
       "screenshots": [
@@ -1505,7 +1933,7 @@
     {
       "title": "@theredhead/UI Kit/Button",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/button/button.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/button/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-button--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/button",
       "screenshots": [
@@ -1626,7 +2054,7 @@
     {
       "title": "@theredhead/UI Kit/Calendar Month View",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/calendar/calendar-month-view.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/calendar/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-calendar-month-view--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/calendar-month-view",
       "screenshots": [
@@ -1733,7 +2161,7 @@
     {
       "title": "@theredhead/UI Kit/Card",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/card/card.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/card/stories/all-variants/all-variants.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-card--all-variants",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/card",
       "screenshots": [
@@ -1749,6 +2177,20 @@
           "storyName": "All Variants",
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-kit/card/all-variants-dark.png",
+          "title": "@theredhead/UI Kit/Card"
+        },
+        {
+          "storyId": "theredhead-ui-kit-card--body-image",
+          "storyName": "Body Image",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/card/body-image-light.png",
+          "title": "@theredhead/UI Kit/Card"
+        },
+        {
+          "storyId": "theredhead-ui-kit-card--body-image",
+          "storyName": "Body Image",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/card/body-image-dark.png",
           "title": "@theredhead/UI Kit/Card"
         },
         {
@@ -1794,6 +2236,34 @@
           "title": "@theredhead/UI Kit/Card"
         },
         {
+          "storyId": "theredhead-ui-kit-card--header-media",
+          "storyName": "Header Media",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/card/header-media-light.png",
+          "title": "@theredhead/UI Kit/Card"
+        },
+        {
+          "storyId": "theredhead-ui-kit-card--header-media",
+          "storyName": "Header Media",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/card/header-media-dark.png",
+          "title": "@theredhead/UI Kit/Card"
+        },
+        {
+          "storyId": "theredhead-ui-kit-card--header-subtitle",
+          "storyName": "Header Subtitle",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/card/header-subtitle-light.png",
+          "title": "@theredhead/UI Kit/Card"
+        },
+        {
+          "storyId": "theredhead-ui-kit-card--header-subtitle",
+          "storyName": "Header Subtitle",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/card/header-subtitle-dark.png",
+          "title": "@theredhead/UI Kit/Card"
+        },
+        {
           "storyId": "theredhead-ui-kit-card--interactive",
           "storyName": "Interactive",
           "theme": "light",
@@ -1826,7 +2296,7 @@
     {
       "title": "@theredhead/UI Kit/Carousel",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/carousel/carousel.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/carousel/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-carousel--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/carousel",
       "screenshots": [
@@ -1891,7 +2361,7 @@
     {
       "title": "@theredhead/UI Kit/Chart",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/chart/chart.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/chart/stories/bar/bar.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-chart--bar",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/chart",
       "screenshots": [
@@ -2152,7 +2622,7 @@
     {
       "title": "@theredhead/UI Kit/Checkbox",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/checkbox/checkbox.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/checkbox/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-checkbox--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/checkbox",
       "screenshots": [
@@ -2273,7 +2743,7 @@
     {
       "title": "@theredhead/UI Kit/Chip",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/chip/chip.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/chip/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-chip--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/chip",
       "screenshots": [
@@ -2310,7 +2780,7 @@
     {
       "title": "@theredhead/UI Kit/Color Picker",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/color-picker/color-picker.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/color-picker/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-color-picker--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/color-picker",
       "screenshots": [
@@ -2403,7 +2873,7 @@
     {
       "title": "@theredhead/UI Kit/Countdown",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/countdown/countdown.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/countdown/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-countdown--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/countdown",
       "screenshots": [
@@ -2440,7 +2910,7 @@
     {
       "title": "@theredhead/UI Kit/Date Input",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/calendar-panel/calendar-panel.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/calendar-panel/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-date-input--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/date-input",
       "screenshots": [
@@ -2505,7 +2975,7 @@
     {
       "title": "@theredhead/UI Kit/Dialog",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/dialog/dialog.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/dialog/stories/declarative/declarative.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-dialog--declarative",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/dialog",
       "screenshots": [
@@ -2612,7 +3082,7 @@
     {
       "title": "@theredhead/UI Kit/Drawer",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/drawer/drawer.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/drawer/stories/left/left.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-drawer--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/drawer",
       "screenshots": [
@@ -2677,7 +3147,7 @@
     {
       "title": "@theredhead/UI Kit/Dropdown List",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/dropdown-list/dropdown-list.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/dropdown-list/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-dropdown-list--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/dropdown-list",
       "screenshots": [
@@ -2742,7 +3212,7 @@
     {
       "title": "@theredhead/UI Kit/Dropdown Menu",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/dropdown-menu/dropdown-menu.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/dropdown-menu/stories/alignment/alignment.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-dropdown-menu--alignment",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/dropdown-menu",
       "screenshots": [
@@ -2793,7 +3263,7 @@
     {
       "title": "@theredhead/UI Kit/Emoji Picker",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/emoji-picker/emoji-picker.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/emoji-picker/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-emoji-picker--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/emoji-picker",
       "screenshots": [
@@ -2830,7 +3300,7 @@
     {
       "title": "@theredhead/UI Kit/Empty State",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/empty-state/empty-state.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/empty-state/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-empty-state--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/empty-state",
       "screenshots": [
@@ -2867,7 +3337,7 @@
     {
       "title": "@theredhead/UI Kit/File Upload",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/file-upload/file-upload.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/file-upload/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-file-upload--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/file-upload",
       "screenshots": [
@@ -2960,7 +3430,7 @@
     {
       "title": "@theredhead/UI Kit/Filter",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/filter/filter.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/filter/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-filter--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/filter",
       "screenshots": [
@@ -3011,7 +3481,7 @@
     {
       "title": "@theredhead/UI Kit/Gantt Chart",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/gantt-chart/gantt-chart.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/gantt-chart/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-gantt-chart--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/gantt-chart",
       "screenshots": [
@@ -3090,7 +3560,7 @@
     {
       "title": "@theredhead/UI Kit/Gauge",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/gauge/gauge.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/gauge/stories/analog/analog.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-gauge--analog",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/gauge",
       "screenshots": [
@@ -3253,7 +3723,7 @@
     {
       "title": "@theredhead/UI Kit/Icon",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/icon/icon.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/icon/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-icon--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/icon",
       "screenshots": [
@@ -3332,7 +3802,7 @@
     {
       "title": "@theredhead/UI Kit/Image",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/image/image.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/image/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-image--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/image",
       "screenshots": [
@@ -3397,7 +3867,7 @@
     {
       "title": "@theredhead/UI Kit/Image Cropper",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/image-cropper/image-cropper.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/image-cropper/stories/free-crop/free-crop.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-image-cropper--free-crop",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/image-cropper",
       "screenshots": [
@@ -3504,7 +3974,7 @@
     {
       "title": "@theredhead/UI Kit/Input",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/input/input.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/input/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-input--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/input",
       "screenshots": [
@@ -3821,7 +4291,7 @@
     {
       "title": "@theredhead/UI Kit/Map View",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/map-view/map-view.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/map-view/stories/basic/basic.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-map-view--basic",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/map-view",
       "screenshots": [
@@ -3942,7 +4412,7 @@
     {
       "title": "@theredhead/UI Kit/Media Player",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/media-player/media-player.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/media-player/stories/audio/audio.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-media-player--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/media-player",
       "screenshots": [
@@ -4091,7 +4561,7 @@
     {
       "title": "@theredhead/UI Kit/Pagination",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/pagination/pagination.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/pagination/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-pagination--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/pagination",
       "screenshots": [
@@ -4184,7 +4654,7 @@
     {
       "title": "@theredhead/UI Kit/Popover",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/popover/popover.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/popover/stories/action-menu/action-menu.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-popover--action-menu",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/popover",
       "screenshots": [
@@ -4291,7 +4761,7 @@
     {
       "title": "@theredhead/UI Kit/Progress",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/progress/progress.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/progress/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-progress--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/progress",
       "screenshots": [
@@ -4328,7 +4798,7 @@
     {
       "title": "@theredhead/UI Kit/QR Code",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/qr-code/qr-code.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/qr-code/stories/custom-colors/custom-colors.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-qr-code--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/qr-code",
       "screenshots": [
@@ -4379,7 +4849,7 @@
     {
       "title": "@theredhead/UI Kit/Radio Group",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/radio-group/radio-group.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/radio-group/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-radio-group--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/radio-group",
       "screenshots": [
@@ -4458,7 +4928,7 @@
     {
       "title": "@theredhead/UI Kit/Rating",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/rating/rating.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/rating/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-rating--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/rating",
       "screenshots": [
@@ -4495,7 +4965,7 @@
     {
       "title": "@theredhead/UI Kit/Repeater",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/repeater/repeater.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/repeater/stories/flex-column/flex-column.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-repeater--flex-column",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/repeater",
       "screenshots": [
@@ -4586,312 +5056,9 @@
       ]
     },
     {
-      "title": "@theredhead/UI Kit/Rich Text Editor",
-      "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/rich-text-editor/rich-text-editor.stories.ts",
-      "primaryStoryId": "theredhead-ui-kit-rich-text-editor--default",
-      "outputDir": "artifacts/storybook-screenshots/ui-kit/rich-text-editor",
-      "screenshots": [
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--default",
-          "storyName": "Default",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/default-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--default",
-          "storyName": "Default",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/default-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--compact-chat",
-          "storyName": "Compact Chat",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/compact-chat-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--compact-chat",
-          "storyName": "Compact Chat",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/compact-chat-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--custom-parser-manual",
-          "storyName": "Custom Parser Manual",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/custom-parser-manual-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--custom-parser-manual",
-          "storyName": "Custom Parser Manual",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/custom-parser-manual-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--custom-parser-markdown-it",
-          "storyName": "Custom Parser Markdown It",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/custom-parser-markdown-it-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--custom-parser-markdown-it",
-          "storyName": "Custom Parser Markdown It",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/custom-parser-markdown-it-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--custom-parser-marked",
-          "storyName": "Custom Parser Marked",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/custom-parser-marked-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--custom-parser-marked",
-          "storyName": "Custom Parser Marked",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/custom-parser-marked-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--disabled",
-          "storyName": "Disabled",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/disabled-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--disabled",
-          "storyName": "Disabled",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/disabled-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--full-featured",
-          "storyName": "Full Featured",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/full-featured-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--full-featured",
-          "storyName": "Full Featured",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/full-featured-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--image-base-64-fallback",
-          "storyName": "Image Base 64 Fallback",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/image-base-64-fallback-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--image-base-64-fallback",
-          "storyName": "Image Base 64 Fallback",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/image-base-64-fallback-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--mail-merge",
-          "storyName": "Mail-merge — invoice demo",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/mail-merge-invoice-demo-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--mail-merge",
-          "storyName": "Mail-merge — invoice demo",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/mail-merge-invoice-demo-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown",
-          "storyName": "Markdown",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown",
-          "storyName": "Markdown",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-table",
-          "storyName": "Markdown — table support",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-table-support-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-table",
-          "storyName": "Markdown — table support",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-table-support-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-max-length",
-          "storyName": "Markdown Max Length",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-max-length-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-max-length",
-          "storyName": "Markdown Max Length",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-max-length-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-with-initial-content",
-          "storyName": "Markdown With Initial Content",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-with-initial-content-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-with-initial-content",
-          "storyName": "Markdown With Initial Content",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-with-initial-content-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-with-placeholders",
-          "storyName": "Markdown With Placeholders",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-with-placeholders-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--markdown-with-placeholders",
-          "storyName": "Markdown With Placeholders",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/markdown-with-placeholders-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--max-length-exceeded",
-          "storyName": "Max Length Exceeded",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/max-length-exceeded-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--max-length-exceeded",
-          "storyName": "Max Length Exceeded",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/max-length-exceeded-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--minimal-toolbar",
-          "storyName": "Minimal Toolbar",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/minimal-toolbar-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--minimal-toolbar",
-          "storyName": "Minimal Toolbar",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/minimal-toolbar-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--read-only",
-          "storyName": "Read Only",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/read-only-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--read-only",
-          "storyName": "Read Only",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/read-only-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-image-handler",
-          "storyName": "With Image Handler",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-image-handler-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-image-handler",
-          "storyName": "With Image Handler",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-image-handler-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-initial-content",
-          "storyName": "With Initial Content",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-initial-content-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-initial-content",
-          "storyName": "With Initial Content",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-initial-content-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-max-length",
-          "storyName": "With Max Length",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-max-length-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-max-length",
-          "storyName": "With Max Length",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-max-length-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-placeholders",
-          "storyName": "With Placeholders",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-placeholders-light.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        },
-        {
-          "storyId": "theredhead-ui-kit-rich-text-editor--with-placeholders",
-          "storyName": "With Placeholders",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-editor/with-placeholders-dark.png",
-          "title": "@theredhead/UI Kit/Rich Text Editor"
-        }
-      ]
-    },
-    {
       "title": "@theredhead/UI Kit/Rich Text View",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/rich-text-view/rich-text-view.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/rich-text-view/stories/auto-html/auto-html.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-rich-text-view--auto-html",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/rich-text-view",
       "screenshots": [
@@ -4921,6 +5088,20 @@
           "storyName": "Auto — Markdown content",
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-view/auto-markdown-content-dark.png",
+          "title": "@theredhead/UI Kit/Rich Text View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-rich-text-view--data-detectors-playground",
+          "storyName": "Data Detectors Playground",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-view/data-detectors-playground-light.png",
+          "title": "@theredhead/UI Kit/Rich Text View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-rich-text-view--data-detectors-playground",
+          "storyName": "Data Detectors Playground",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/rich-text-view/data-detectors-playground-dark.png",
           "title": "@theredhead/UI Kit/Rich Text View"
         },
         {
@@ -4984,7 +5165,7 @@
     {
       "title": "@theredhead/UI Kit/Segmented Control",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/segmented-control/segmented-control.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/segmented-control/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-segmented-control--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/segmented-control",
       "screenshots": [
@@ -5021,7 +5202,7 @@
     {
       "title": "@theredhead/UI Kit/Sidebar Nav",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/sidebar-nav/sidebar-nav.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/sidebar-nav/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-sidebar-nav--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/sidebar-nav",
       "screenshots": [
@@ -5086,7 +5267,7 @@
     {
       "title": "@theredhead/UI Kit/Signature",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/signature/signature.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/signature/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-signature--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/signature",
       "screenshots": [
@@ -5221,7 +5402,7 @@
     {
       "title": "@theredhead/UI Kit/Skeleton",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/skeleton/skeleton.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/skeleton/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-skeleton--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/skeleton",
       "screenshots": [
@@ -5258,7 +5439,7 @@
     {
       "title": "@theredhead/UI Kit/Slider",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/slider/slider.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/slider/stories/playground/playground.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-slider--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/slider",
       "screenshots": [
@@ -5323,7 +5504,7 @@
     {
       "title": "@theredhead/UI Kit/Split Container",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/split-container/split-container.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/split-container/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-split-container--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/split-container",
       "screenshots": [
@@ -5430,24 +5611,10 @@
     {
       "title": "@theredhead/UI Kit/Table View",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/table-view/table-view.stories.ts",
-      "primaryStoryId": "theredhead-ui-kit-table-view--density-playground",
+      "importPath": "./packages/ui-kit/src/lib/table-view/stories/filtered-table/filtered-table.stories.ts",
+      "primaryStoryId": "theredhead-ui-kit-table-view--filtered-table",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/table-view",
       "screenshots": [
-        {
-          "storyId": "theredhead-ui-kit-table-view--density-playground",
-          "storyName": "Density Playground",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/table-view/density-playground-light.png",
-          "title": "@theredhead/UI Kit/Table View"
-        },
-        {
-          "storyId": "theredhead-ui-kit-table-view--density-playground",
-          "storyName": "Density Playground",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/table-view/density-playground-dark.png",
-          "title": "@theredhead/UI Kit/Table View"
-        },
         {
           "storyId": "theredhead-ui-kit-table-view--filtered-table",
           "storyName": "Filtered Table",
@@ -5579,7 +5746,7 @@
     {
       "title": "@theredhead/UI Kit/Table View/Autogenerate Columns",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/table-view/columns/autogenerate-columns.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/table-view/columns/stories/autogenerate/autogenerate.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-table-view-autogenerate-columns--autogenerate",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/table-view/autogenerate-columns",
       "screenshots": [
@@ -5714,7 +5881,7 @@
     {
       "title": "@theredhead/UI Kit/Tabs",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/tabs/tab-group.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/tabs/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-tabs--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/tabs",
       "screenshots": [
@@ -5947,7 +6114,7 @@
     {
       "title": "@theredhead/UI Kit/Theme Toggle",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/theme-toggle/theme-toggle.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/theme-toggle/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-theme-toggle--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/theme-toggle",
       "screenshots": [
@@ -5998,7 +6165,7 @@
     {
       "title": "@theredhead/UI Kit/Timeline",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/timeline/timeline.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/timeline/stories/horizontal/horizontal.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-timeline--horizontal",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/timeline",
       "screenshots": [
@@ -6063,7 +6230,7 @@
     {
       "title": "@theredhead/UI Kit/Toast",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/toast/toast.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/toast/stories/all-severities/all-severities.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-toast--all-severities",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/toast",
       "screenshots": [
@@ -6114,7 +6281,7 @@
     {
       "title": "@theredhead/UI Kit/Toggle",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/toggle/toggle.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/toggle/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-toggle--playground",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/toggle",
       "screenshots": [
@@ -6179,7 +6346,7 @@
     {
       "title": "@theredhead/UI Kit/Toolbar",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/toolbar/toolbar.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/toolbar/stories/basic-buttons/basic-buttons.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-toolbar--basic-buttons",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/toolbar",
       "screenshots": [
@@ -6272,7 +6439,7 @@
     {
       "title": "@theredhead/UI Kit/Tooltip",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/tooltip/tooltip.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/tooltip/stories/default/default.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-tooltip--default",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/tooltip",
       "screenshots": [
@@ -6309,7 +6476,7 @@
     {
       "title": "@theredhead/UI Kit/Tree View",
       "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/tree-view/tree-view.stories.ts",
+      "importPath": "./packages/ui-kit/src/lib/tree-view/stories/expand-collapse/expand-collapse.stories.ts",
       "primaryStoryId": "theredhead-ui-kit-tree-view--expand-collapse",
       "outputDir": "artifacts/storybook-screenshots/ui-kit/tree-view",
       "screenshots": [

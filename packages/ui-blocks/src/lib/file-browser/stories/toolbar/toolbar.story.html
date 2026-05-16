@@ -1,0 +1,17 @@
+<div class="story-wrapper">
+  <ui-file-browser
+    [datasource]="ds"
+    [showToolbar]="true"
+    [metadataProvider]="metadataProvider"
+    [(viewMode)]="currentViewMode"
+    [(showDetails)]="detailsOpen"
+    (fileActivated)="onFileActivated($event)"
+  />
+</div>
+@if (lastEvent()) {
+  <div class="story-output">{{ lastEvent() }}</div>
+}
+<div class="story-state">
+  View mode: <strong>{{ currentViewMode() }}</strong> &nbsp;|&nbsp;
+  Details: <strong>{{ detailsOpen() ? 'open' : 'closed' }}</strong>
+</div>

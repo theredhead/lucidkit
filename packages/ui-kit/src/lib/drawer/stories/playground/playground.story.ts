@@ -16,7 +16,7 @@ export class PlaygroundStorySource {
   public ariaLabel = ("Side panel") as const;
   public closeOnBackdropClick = (true) as const;
   public closeOnEscape = (true) as const;
-  public open = undefined as never;
+  public open = false;
   public position = ("left") as const;
   public width = ("medium") as const;
 }

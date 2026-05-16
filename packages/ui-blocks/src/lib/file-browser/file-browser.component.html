@@ -1,6 +1,43 @@
 <div class="fb-header">
   <ui-breadcrumb [items]="breadcrumbItems()" variant="button" ariaLabel="File path"
     (itemClicked)="onBreadcrumbClick($event)" />
+  @if (showToolbar()) {
+  <div class="fb-toolbar" role="toolbar" aria-label="File browser toolbar">
+    <div class="fb-toolbar-group" role="group" aria-label="View mode">
+      <button type="button" class="fb-toolbar-btn" [class.active]="viewMode() === 'list'"
+        [attr.aria-pressed]="viewMode() === 'list'" aria-label="List view"
+        (click)="setViewMode('list')">
+        <ui-icon [svg]="icons.viewList" [size]="16" />
+      </button>
+      <button type="button" class="fb-toolbar-btn" [class.active]="viewMode() === 'icons'"
+        [attr.aria-pressed]="viewMode() === 'icons'" aria-label="Icon view"
+        (click)="setViewMode('icons')">
+        <ui-icon [svg]="icons.viewIcons" [size]="16" />
+      </button>
+      <button type="button" class="fb-toolbar-btn" [class.active]="viewMode() === 'detail'"
+        [attr.aria-pressed]="viewMode() === 'detail'" aria-label="Detail view"
+        (click)="setViewMode('detail')">
+        <ui-icon [svg]="icons.viewDetail" [size]="16" />
+      </button>
+      <button type="button" class="fb-toolbar-btn" [class.active]="viewMode() === 'tree'"
+        [attr.aria-pressed]="viewMode() === 'tree'" aria-label="Tree view"
+        (click)="setViewMode('tree')">
+        <ui-icon [svg]="icons.viewTree" [size]="16" />
+      </button>
+      <button type="button" class="fb-toolbar-btn" [class.active]="viewMode() === 'column'"
+        [attr.aria-pressed]="viewMode() === 'column'" aria-label="Column view"
+        (click)="setViewMode('column')">
+        <ui-icon [svg]="icons.viewColumn" [size]="16" />
+      </button>
+    </div>
+    <div class="fb-toolbar-divider" aria-hidden="true"></div>
+    <button type="button" class="fb-toolbar-btn" [class.active]="showDetails()"
+      [attr.aria-pressed]="showDetails()" aria-label="Toggle details panel"
+      (click)="toggleDetails()">
+      <ui-icon [svg]="showDetails() ? icons.panelRightOpen : icons.panelRight" [size]="16" />
+    </button>
+  </div>
+  }
 </div>
 
 <div class="fb-body">
@@ -159,7 +196,7 @@
   }
 
   <!-- ═══ Details pane ═══ -->
-  @if (showDetails() && hasSelection()) {
+  @if (showDetails()) {
   <!-- Details resize divider -->
   <div class="fb-divider fb-divider--details ui-surface-type-raised" role="separator" tabindex="0"
     aria-label="Resize details" aria-orientation="horizontal" (pointerdown)="onDividerPointerDown($event, 'details')"
@@ -169,22 +206,26 @@
 
   <aside class="fb-details" [class.fb-details--collapsed]="detailsCollapsed()" aria-label="File details">
     @if (!detailsCollapsed()) {
-    <div class="fb-details-header">
-      <ui-icon [svg]="getEntryIcon(selectedEntry()!)" [size]="32" />
-      <span class="fb-details-name">{{ selectedEntry()!.name }}</span>
-      <span class="fb-details-kind">
-        {{ selectedEntry()!.isDirectory ? 'Folder' : 'File' }}
-      </span>
-    </div>
+      @if (hasSelection()) {
+      <div class="fb-details-header">
+        <ui-icon [svg]="getEntryIcon(selectedEntry()!)" [size]="32" />
+        <span class="fb-details-name">{{ selectedEntry()!.name }}</span>
+        <span class="fb-details-kind">
+          {{ selectedEntry()!.isDirectory ? 'Folder' : 'File' }}
+        </span>
+      </div>
 
-    @if (detailFields().length > 0) {
-    <dl class="fb-details-meta">
-      @for (field of detailFields(); track field.label) {
-      <dt class="fb-details-label">{{ field.label }}</dt>
-      <dd class="fb-details-value">{{ field.value }}</dd>
+      @if (detailFields().length > 0) {
+      <dl class="fb-details-meta">
+        @for (field of detailFields(); track field.label) {
+        <dt class="fb-details-label">{{ field.label }}</dt>
+        <dd class="fb-details-value">{{ field.value }}</dd>
+        }
+      </dl>
       }
-    </dl>
-    }
+      } @else {
+      <div class="fb-details-empty">No selection</div>
+      }
     }
   </aside>
   }

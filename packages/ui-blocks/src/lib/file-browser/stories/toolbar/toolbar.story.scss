@@ -1,0 +1,12 @@
+@use "../shared";
+
+.story-state {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--ui-text-muted, #6b7280);
+  background: var(--ui-surface, #fbfbfc);
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-family: var(--ui-font, monospace);
+}

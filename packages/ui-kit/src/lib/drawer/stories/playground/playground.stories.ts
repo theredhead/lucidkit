@@ -1,6 +1,7 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { UIDrawer } from "../../drawer.component";
+import { UIButton } from "../../../button/button.component";
 
 import { PlaygroundStorySource } from "./playground.story";
 
@@ -40,7 +41,7 @@ const meta = {
       description: "Accessible label for the drawer panel.",
     },
   },
-  decorators: [moduleMetadata({ imports: [PlaygroundStorySource] })]
+  decorators: [moduleMetadata({ imports: [PlaygroundStorySource, UIDrawer, UIButton] })]
 } satisfies Meta<PlaygroundStorySource>;
 
 export default meta;

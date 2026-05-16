@@ -237,6 +237,65 @@ export interface DirectoryChangeEvent<M = unknown> {
 }
 
 /**
+ * Well-known storage keys for common file-browser use cases.
+ *
+ * Pass one of these as `[name]` to share preferences across all instances
+ * that serve the same purpose:
+ *
+ * ```html
+ * <ui-file-browser [datasource]="ds" [name]="UIFileBrowserKeys.OpenFile" />
+ * ```
+ *
+ * `Global` is used automatically when no `[name]` is supplied; you do not
+ * normally need to reference it directly.
+ *
+ * Library users may pass any plain string as `[name]` to create their own
+ * isolated preference scope.
+ */
+export const UIFileBrowserKeys = {
+  /** Shared key used when no explicit `[name]` is provided. */
+  Global: "__global__",
+
+  /**
+   * Conventional key for open-file dialogs. Use
+   * `[name]="UIFileBrowserKeys.OpenFile"` to opt in.
+   */
+  OpenFile: "open-file",
+
+  /**
+   * Conventional key for save-file dialogs. Use
+   * `[name]="UIFileBrowserKeys.SaveFile"` to opt in.
+   */
+  SaveFile: "save-file",
+} as const;
+
+/**
+ * Settings persisted per storage key.
+ *
+ * All fields are optional so partial data round-trips safely.
+ * Panel-width fields are only written for named instances.
+ */
+export interface FileBrowserPersistedSettings {
+  /** Last active view mode chosen by the user. */
+  readonly viewMode?: FileBrowserViewMode;
+
+  /** Whether the details pane was open. */
+  readonly showDetails?: boolean;
+
+  /** Sidebar panel width in pixels. */
+  readonly sidebarWidth?: number;
+
+  /** Details panel width in pixels. */
+  readonly detailsWidth?: number;
+
+  /** Whether the sidebar was collapsed. */
+  readonly sidebarCollapsed?: boolean;
+
+  /** Whether the details panel was collapsed. */
+  readonly detailsCollapsed?: boolean;
+}
+
+/**
  * Adapter that converts {@link FileBrowserEntry} items to
  * {@link TreeNode} items for the tree-view sidebar.
  *

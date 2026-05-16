@@ -37,11 +37,12 @@ import type {
   FileActivateEvent,
   FileBrowserDatasource,
   FileBrowserEntry,
+  FileBrowserPersistedSettings,
   FileBrowserViewMode,
   MetadataField,
   MetadataProvider,
 } from "./file-browser.types";
-import { parseAllowedTypes } from "./file-browser.types";
+import { parseAllowedTypes, UIFileBrowserKeys } from "./file-browser.types";
 import { entryToTreeNode, FILE_ICON_REGISTRY } from "./file-browser.types";
 
 /**
@@ -107,11 +108,17 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
   /** Label for the root breadcrumb item. */
   public readonly rootLabel = input<string>("Root");
 
-  /** Active view mode for the contents panel. */
-  public readonly viewMode = input<FileBrowserViewMode>("list");
+  /** Active view mode for the contents panel (two-way bindable). */
+  public readonly viewMode = model<FileBrowserViewMode>("list");
 
-  /** Whether to show the details pane for the selected entry. */
-  public readonly showDetails = input<boolean>(false);
+  /** Whether to show the details pane for the selected entry (two-way bindable). */
+  public readonly showDetails = model<boolean>(false);
+
+  /**
+   * When `true`, a toolbar is rendered in the header that lets the user
+   * switch between view modes and toggle the details panel.
+   */
+  public readonly showToolbar = input<boolean>(false);
 
   /**
    * Optional persistence key. When set, sidebar and details panel widths
@@ -216,6 +223,13 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
     file: UIIcons.Lucide.Files.File,
     fileText: UIIcons.Lucide.Files.FileText,
     chevronRight: UIIcons.Lucide.Arrows.ChevronRight,
+    viewList: UIIcons.Lucide.Layout.LayoutList,
+    viewIcons: UIIcons.Lucide.Layout.LayoutGrid,
+    viewDetail: UIIcons.Lucide.Files.Table2,
+    viewTree: UIIcons.Lucide.Files.ListTree,
+    viewColumn: UIIcons.Lucide.Layout.Columns2,
+    panelRight: UIIcons.Lucide.Layout.PanelRight,
+    panelRightOpen: UIIcons.Lucide.Layout.PanelRightOpen,
   } as const;
 
   // ── DI ────────────────────────────────────────────────────────────
@@ -256,6 +270,9 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
 
   /** @internal — width before details collapse for restore. */
   private preDetailsCollapseWidth: number | null = null;
+
+  /** @internal — true once settings have been applied from storage. */
+  private readonly settingsReady = signal(false);
 
   // ── Column-view state ─────────────────────────────────────────────
 
@@ -346,18 +363,29 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
         this.initColumnView(ds);
       }
     });
+
+    // Persist toolbar state whenever viewMode or showDetails change
+    effect(() => {
+      const _mode = this.viewMode();
+      const _details = this.showDetails();
+      if (!this.settingsReady()) return;
+      this.saveSettings();
+    });
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────────
 
   public ngAfterViewInit(): void {
-    const saved = this.loadPanelWidths();
-    if (saved) {
-      this.sidebarWidthPx.set(saved.sidebar);
-      this.detailsWidthPx.set(saved.details);
-      this.sidebarCollapsed.set(saved.sidebarCollapsed);
-      this.detailsCollapsed.set(saved.detailsCollapsed);
-    }
+    const s = this.loadSettings();
+    if (s.viewMode) this.viewMode.set(s.viewMode);
+    if (s.showDetails !== undefined) this.showDetails.set(s.showDetails);
+    if (s.sidebarWidth !== undefined) this.sidebarWidthPx.set(s.sidebarWidth);
+    if (s.detailsWidth !== undefined) this.detailsWidthPx.set(s.detailsWidth);
+    if (s.sidebarCollapsed !== undefined)
+      this.sidebarCollapsed.set(s.sidebarCollapsed);
+    if (s.detailsCollapsed !== undefined)
+      this.detailsCollapsed.set(s.detailsCollapsed);
+    this.settingsReady.set(true);
   }
 
   // ── Public methods ────────────────────────────────────────────────
@@ -372,6 +400,16 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
     if (!entry.isDirectory) return;
     const newPath = [...this.path(), entry];
     this.navigateTo(entry, newPath);
+  }
+
+  /** Set the active view mode (used by the toolbar). */
+  public setViewMode(mode: FileBrowserViewMode): void {
+    this.viewMode.set(mode);
+  }
+
+  /** Toggle the details panel (used by the toolbar). */
+  public toggleDetails(): void {
+    this.showDetails.update((v) => !v);
   }
 
   // ── Protected methods ─────────────────────────────────────────────
@@ -415,7 +453,7 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
       divider.removeEventListener("pointermove", onMove);
       divider.removeEventListener("pointerup", onUp);
       divider.removeEventListener("pointercancel", onUp);
-      this.savePanelWidths();
+      this.saveSettings();
     };
 
     divider.addEventListener("pointermove", onMove);
@@ -448,7 +486,7 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
         this.detailsCollapsed.set(true);
       }
     }
-    this.savePanelWidths();
+    this.saveSettings();
   }
 
   /** @internal */
@@ -748,50 +786,91 @@ export class UIFileBrowser<M = unknown> implements AfterViewInit {
     );
   }
 
-  // ── Panel width persistence ───────────────────────────────────────
+  // ── Settings persistence ──────────────────────────────────────────
 
   private static readonly STORAGE_PREFIX = "ui-file-browser:";
 
-  private savePanelWidths(): void {
-    const key = this.name();
-    if (!key) return;
-    const data = JSON.stringify({
-      sidebar: this.sidebarWidthPx(),
-      details: this.detailsWidthPx(),
-      sidebarCollapsed: this.sidebarCollapsed(),
-      detailsCollapsed: this.detailsCollapsed(),
-    });
-    this.storage.setItem(UIFileBrowser.STORAGE_PREFIX + key, data);
+  /**
+   * Save current settings to storage.
+   *
+   * - **Named key** (`name` input set): saves all settings including panel widths.
+   * - **Global key** (`name` not set): saves only viewMode and showDetails — panel
+   *   widths are layout-specific and not shared across instances.
+   */
+  private saveSettings(): void {
+    const name = this.name();
+    const key = name ?? UIFileBrowserKeys.Global;
+    const settings: FileBrowserPersistedSettings = {
+      viewMode: this.viewMode(),
+      showDetails: this.showDetails(),
+      ...(name
+        ? {
+            sidebarWidth: this.sidebarWidthPx(),
+            detailsWidth: this.detailsWidthPx(),
+            sidebarCollapsed: this.sidebarCollapsed(),
+            detailsCollapsed: this.detailsCollapsed(),
+          }
+        : {}),
+    };
+    this.storage.setItem(
+      UIFileBrowser.STORAGE_PREFIX + key,
+      JSON.stringify(settings),
+    );
   }
 
-  private loadPanelWidths(): {
-    sidebar: number;
-    details: number;
-    sidebarCollapsed: boolean;
-    detailsCollapsed: boolean;
-  } | null {
-    const key = this.name();
-    if (!key) return null;
+  /**
+   * Load persisted settings for this instance.
+   *
+   * Always reads the global key first, then merges with the named key
+   * (when `name` is set). Named values override global values where
+   * both are present.
+   */
+  private loadSettings(): FileBrowserPersistedSettings {
+    const global = this.parseSettings(
+      this.storage.getItem(
+        UIFileBrowser.STORAGE_PREFIX + UIFileBrowserKeys.Global,
+      ),
+    );
+    const name = this.name();
+    if (!name) return global;
+    const named = this.parseSettings(
+      this.storage.getItem(UIFileBrowser.STORAGE_PREFIX + name),
+    );
+    return { ...global, ...named };
+  }
+
+  /** @internal — safely deserialise a raw JSON string into settings. */
+  private parseSettings(raw: string | null): FileBrowserPersistedSettings {
+    if (!raw) return {};
     try {
-      const raw = this.storage.getItem(UIFileBrowser.STORAGE_PREFIX + key);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (
-        typeof parsed === "object" &&
-        parsed !== null &&
-        typeof parsed.sidebar === "number" &&
-        typeof parsed.details === "number"
-      ) {
-        return {
-          sidebar: parsed.sidebar,
-          details: parsed.details,
-          sidebarCollapsed: !!parsed.sidebarCollapsed,
-          detailsCollapsed: !!parsed.detailsCollapsed,
-        };
+      const p = JSON.parse(raw);
+      if (typeof p !== "object" || p === null) return {};
+      const out: FileBrowserPersistedSettings = {};
+      if (typeof p["viewMode"] === "string") {
+        (out as { viewMode?: FileBrowserViewMode }).viewMode = p[
+          "viewMode"
+        ] as FileBrowserViewMode;
       }
+      if (typeof p["showDetails"] === "boolean") {
+        (out as { showDetails?: boolean }).showDetails = p["showDetails"];
+      }
+      if (typeof p["sidebarWidth"] === "number") {
+        (out as { sidebarWidth?: number }).sidebarWidth = p["sidebarWidth"];
+      }
+      if (typeof p["detailsWidth"] === "number") {
+        (out as { detailsWidth?: number }).detailsWidth = p["detailsWidth"];
+      }
+      if (typeof p["sidebarCollapsed"] === "boolean") {
+        (out as { sidebarCollapsed?: boolean }).sidebarCollapsed =
+          p["sidebarCollapsed"];
+      }
+      if (typeof p["detailsCollapsed"] === "boolean") {
+        (out as { detailsCollapsed?: boolean }).detailsCollapsed =
+          p["detailsCollapsed"];
+      }
+      return out;
     } catch {
-      // Corrupt data — ignore.
+      return {};
     }
-    return null;
   }
 }

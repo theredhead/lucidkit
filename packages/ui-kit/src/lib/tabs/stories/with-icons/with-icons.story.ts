@@ -2,6 +2,7 @@ import { UITabGroup } from "../../tab-group.component";
 import { UITab } from "../../tab.component";
 import { UITabSeparator } from "../../tab-separator.component";
 import { UITabSpacer } from "../../tab-spacer.component";
+import { UIIcons } from "../../../icon/lucide-icons.generated";
 
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
@@ -14,4 +15,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./with-icons.story.scss",
 })
 export class WithIconsStorySource {
+  protected readonly icons = {
+    house: UIIcons.Lucide.Home.House,
+    activity: UIIcons.Lucide.Account.Activity,
+    settings: UIIcons.Lucide.Account.Settings,
+  } as const;
 }

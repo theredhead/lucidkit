@@ -27,6 +27,36 @@ describe("UIRichTextEditor", () => {
       .mockReturnValue(true);
     (document as any).execCommand = execCommandSpy;
 
+    // jsdom does not implement the Popover API — mock showPopover/hidePopover
+    (HTMLElement.prototype as any).showPopover = vi
+      .fn()
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.getAttribute("popover") !== "auto") return;
+        // Simulate popover="auto" auto-dismiss: close other open auto-popovers
+        document.querySelectorAll('[popover="auto"]').forEach((el) => {
+          if (el !== this) {
+            const toggle = new Event("toggle");
+            (toggle as any).newState = "closed";
+            el.dispatchEvent(toggle);
+          }
+        });
+        // Simulate light-dismiss: close when clicking outside the popover
+        const makeDismiss = (el: HTMLElement) => (e: Event) => {
+          if (!el.isConnected) {
+            document.removeEventListener("click", makeDismiss(el), true);
+            return;
+          }
+          if (!el.contains(e.target as Node)) {
+            document.removeEventListener("click", makeDismiss(el), true);
+            const toggle = new Event("toggle");
+            (toggle as any).newState = "closed";
+            el.dispatchEvent(toggle);
+          }
+        };
+        document.addEventListener("click", makeDismiss(this), true);
+      });
+    (HTMLElement.prototype as any).hidePopover = vi.fn();
+
     await TestBed.configureTestingModule({
       imports: [UIRichTextEditor],
     }).compileComponents();
@@ -38,6 +68,10 @@ describe("UIRichTextEditor", () => {
 
   afterEach(() => {
     execCommandSpy.mockReset();
+    // Clean up any popover elements rendered into document.body
+    document.querySelectorAll("[popover]").forEach((el) => el.remove());
+    delete (HTMLElement.prototype as any).showPopover;
+    delete (HTMLElement.prototype as any).hidePopover;
   });
 
   it("should create", () => {
@@ -137,10 +171,10 @@ describe("UIRichTextEditor", () => {
       trigger.click();
       fixture.detectChanges();
 
-      const panel = fixture.nativeElement.querySelector(".dropdown-panel");
+      const panel = document.body.querySelector(".panel");
       expect(panel).toBeTruthy();
 
-      const actions = panel.querySelectorAll(".dropdown-panel-item");
+      const actions = panel!.querySelectorAll(".item");
       expect(actions.length).toBeGreaterThan(0);
     });
 
@@ -150,13 +184,11 @@ describe("UIRichTextEditor", () => {
       trigger.click();
       fixture.detectChanges();
 
-      const action: HTMLButtonElement = fixture.nativeElement.querySelector(
-        ".dropdown-panel-item",
-      );
+      const action: HTMLButtonElement = document.body.querySelector(".item")!;
       action.click();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelector(".dropdown-panel")).toBeNull();
+      expect(document.body.querySelector(".panel")).toBeNull();
     });
 
     it("should close dropdown when a different dropdown is opened", () => {
@@ -166,16 +198,12 @@ describe("UIRichTextEditor", () => {
       // Open first dropdown
       triggers[0].click();
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.querySelectorAll(".dropdown-panel").length,
-      ).toBe(1);
+      expect(document.body.querySelectorAll(".panel").length).toBe(1);
 
       // Open second dropdown — first should close
       triggers[1].click();
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.querySelectorAll(".dropdown-panel").length,
-      ).toBe(1);
+      expect(document.body.querySelectorAll(".panel").length).toBe(1);
     });
 
     it("should render correct labels on toolbar buttons", () => {
@@ -2930,7 +2958,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const items = Array.from(
-        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        document.body.querySelectorAll(".item"),
       ) as HTMLButtonElement[];
       expect(items.map((item) => item.textContent?.trim())).toContain(
         "Insert row after",
@@ -2960,7 +2988,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const items = Array.from(
-        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        document.body.querySelectorAll(".item"),
       ) as HTMLButtonElement[];
       expect(
         items.some((item) => item.textContent?.includes("Insert row before")),
@@ -3004,7 +3032,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
       const rowAfterBtn = (
         Array.from(
-          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+          document.body.querySelectorAll(".item"),
         ) as HTMLButtonElement[]
       ).find((item) => item.textContent?.includes("Insert row after"));
       rowAfterBtn!.click();
@@ -3042,7 +3070,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
       const rowAfterBtn = (
         Array.from(
-          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+          document.body.querySelectorAll(".item"),
         ) as HTMLButtonElement[]
       ).find((item) => item.textContent?.includes("Insert row after"));
       rowAfterBtn!.click();
@@ -3084,7 +3112,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
       const rowAfterBtn = (
         Array.from(
-          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+          document.body.querySelectorAll(".item"),
         ) as HTMLButtonElement[]
       ).find((item) => item.textContent?.includes("Insert row after"));
       rowAfterBtn!.click();
@@ -3118,7 +3146,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
       const columnAfterBtn = (
         Array.from(
-          fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+          document.body.querySelectorAll(".item"),
         ) as HTMLButtonElement[]
       ).find((item) => item.textContent?.includes("Insert column after"));
       columnAfterBtn!.click();
@@ -3355,7 +3383,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const items = Array.from(
-        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        document.body.querySelectorAll(".item"),
       ) as HTMLButtonElement[];
       const indentItem = items.find((el) =>
         el.textContent?.includes("Increase indent"),
@@ -3374,7 +3402,7 @@ describe("UIRichTextEditor", () => {
       fixture.detectChanges();
 
       const items = Array.from(
-        fixture.nativeElement.querySelectorAll(".dropdown-panel-item"),
+        document.body.querySelectorAll(".item"),
       ) as HTMLButtonElement[];
       const indentItem = items.find((el) =>
         el.textContent?.includes("Increase indent"),
@@ -3392,16 +3420,12 @@ describe("UIRichTextEditor", () => {
         fixture.nativeElement.querySelector(".dropdown-trigger");
       trigger.click();
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.querySelector(".dropdown-panel"),
-      ).toBeTruthy();
+      expect(document.body.querySelector(".panel")).toBeTruthy();
 
       // Click outside the component
       document.body.click();
       fixture.detectChanges();
-      expect(
-        fixture.nativeElement.querySelector(".dropdown-panel"),
-      ).toBeFalsy();
+      expect(document.body.querySelector(".panel")).toBeFalsy();
     });
 
     it("should close placeholder picker on outside click", () => {
@@ -3651,7 +3675,7 @@ describe("UIRichTextEditor", () => {
     it("should not crash when imageHandler rejects", async () => {
       const consoleErrorSpy = vi
         .spyOn(console, "error")
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
       const handler = vi.fn().mockRejectedValue(new Error("upload failed"));
       fixture.componentRef.setInput("imageHandler", handler);
       fixture.detectChanges();

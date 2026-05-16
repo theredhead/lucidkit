@@ -42,13 +42,13 @@
   <!-- Block styles (dropdown) -->
   @if (blockDropdownItems().length > 0) {
   <ui-dropdown-tool id="block" [icon]="teIcons.Styles" ariaLabel="Styles" [items]="blockDropdownItems()"
-    [disabled]="isEditorDisabled()" />
+    displayMode="list" [disabled]="isEditorDisabled()" />
   }
 
   <!-- Lists (dropdown) -->
   @if (listDropdownItems().length > 0) {
   <ui-dropdown-tool id="list" [icon]="teIcons.List" ariaLabel="Lists" [items]="listDropdownItems()"
-    [disabled]="isEditorDisabled()" />
+    displayMode="list" [disabled]="isEditorDisabled()" />
   }
 
   <!-- Alignment (radio-style, HTML mode only) -->
@@ -115,7 +115,7 @@
   }
   @if (!isMarkdownMode() && canEditActiveTable()) {
   <ui-dropdown-tool id="table" [icon]="teIcons.Table" ariaLabel="Table options" [items]="tableDropdownItems()"
-    [disabled]="isEditorDisabled() || tableDropdownItems().length === 0" />
+    displayMode="list" [disabled]="isEditorDisabled() || tableDropdownItems().length === 0" />
   }
   <ui-separator-tool id="sep-insert" />
   }
