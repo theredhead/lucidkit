@@ -13,7 +13,10 @@ import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 
 import { UIWizardStep } from "./wizard-step.component";
 import type { StepChangeEvent } from "./wizard.types";
-import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation";
+import {
+  UISurface,
+  UI_DEFAULT_SURFACE_TYPE,
+} from "@theredhead/lucid-foundation";
 
 /**
  * A multi-step workflow shell with a step indicator, navigation
@@ -125,6 +128,17 @@ export class UIWizard {
     return step ? step.canAdvance() : false;
   });
 
+  /**
+   * @internal — whether all non-optional steps are valid.
+   * Used to gate the Finish button; prevents completing a wizard
+   * that was navigated out-of-order while earlier steps are invalid.
+   */
+  protected readonly canFinish = computed(() =>
+    this.steps()
+      .filter((s) => !s.optional())
+      .every((s) => s.canAdvance()),
+  );
+
   // ── Public methods ────────────────────────────────────────────────
 
   /** Advance to the next step (respects validation). */
@@ -159,9 +173,9 @@ export class UIWizard {
     this.stepChange.emit({ previousIndex: previous, currentIndex: index });
   }
 
-  /** Complete the wizard (only works on the last step). */
+  /** Complete the wizard (only works on the last step with all steps valid). */
   public finish(): void {
-    if (!this.isLastStep() || !this.canGoNext()) return;
+    if (!this.isLastStep() || !this.canFinish()) return;
     this.complete.emit();
   }
 

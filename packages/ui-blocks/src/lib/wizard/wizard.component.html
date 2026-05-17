@@ -61,7 +61,7 @@
     <button
       type="button"
       class="wizard-nav-button wizard-nav-button--finish"
-      [disabled]="!canGoNext()"
+      [disabled]="!canFinish()"
       (click)="finish()"
     >
       {{ finishLabel() }}

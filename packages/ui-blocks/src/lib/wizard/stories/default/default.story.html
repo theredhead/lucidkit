@@ -8,11 +8,12 @@
       [ariaLabel]="ariaLabel()"
       (complete)="onComplete()"
     >
-      <ui-wizard-step label="Account">
+      <ui-wizard-step label="Account" [canAdvance]="email().length > 0 && password().length > 0">
         <h3>Create your account</h3>
         <div class="fields">
           <label for="wizard-email">Email address</label>
           <ui-input id="wizard-email" [(value)]="email" placeholder="you@example.com" ariaLabel="Email address" />
+          <p class="hint">Fill in both fields to unlock the Next button{{ linear() ? ' (linear mode: you cannot skip ahead in the indicator either)' : '' }}.</p>
           <label for="wizard-password">Password</label>
           <ui-input id="wizard-password" [(value)]="password" placeholder="Choose a password" ariaLabel="Password" />
         </div>

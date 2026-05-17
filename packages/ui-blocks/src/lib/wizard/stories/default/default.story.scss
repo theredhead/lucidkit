@@ -19,6 +19,12 @@
   }
 }
 
+.hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--ui-text-muted, #697077);
+}
+
 .summary {
   display: grid;
   grid-template-columns: 8rem 1fr;
