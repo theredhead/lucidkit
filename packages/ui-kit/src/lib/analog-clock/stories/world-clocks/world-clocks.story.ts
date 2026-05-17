@@ -21,6 +21,10 @@ export class WorldClocksStorySource {
       time: signal(new Date(2026, 0, 1, 13, 30, 0)),
     },
     {
+      label: "Amsterdam",
+      time: signal(new Date(2026, 0, 1, 14, 30, 0)),
+    },
+    {
       label: "Tokyo",
       time: signal(new Date(2026, 0, 1, 21, 30, 0)),
     },

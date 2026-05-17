@@ -1,1 +1,6 @@
-/* Day/night theming is automatic — no custom styles needed. */
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
