@@ -1,1 +1,5 @@
-/* Error styling is automatic via --theredhead-error theme token. */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

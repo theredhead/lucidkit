@@ -1,1 +1,5 @@
-/* No custom styles needed. */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
