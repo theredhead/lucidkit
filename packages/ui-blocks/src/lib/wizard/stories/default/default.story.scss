@@ -27,6 +27,24 @@
 
 .summary {
   display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  font-size: 0.875rem;
+
+  dt {
+    font-weight: 600;
+    color: var(--ui-text-muted, #697077);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ui-text, #1d232b);
+  }
+}
+
+.summary {
+  display: grid;
   grid-template-columns: 8rem 1fr;
   gap: 0.4rem 1rem;
   margin: 1rem 0;

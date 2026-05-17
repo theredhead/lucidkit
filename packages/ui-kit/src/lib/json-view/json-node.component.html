@@ -1,0 +1,49 @@
+@if (isExpandable()) {
+  <span
+    class="toggle"
+    role="button"
+    tabindex="0"
+    [attr.aria-expanded]="expanded()"
+    (click)="toggleExpand()"
+    (keydown.enter)="toggleExpand()"
+    (keydown.space)="toggleExpand(); $event.preventDefault()"
+  >
+    <span class="chevron">{{ expanded() ? "▾" : "▸" }}</span>
+    @if (key() !== undefined) {
+      <span class="key">"{{ key() }}"</span><span class="punct">: </span>
+    }
+    @if (expanded()) {
+      <span class="bracket">{{ isArray() ? "[" : "{" }}</span>
+    } @else {
+      <span class="collapsed-hint">{{ collapsedPreview() }}</span>@if (trailingComma()) {<span class="comma">,</span>}
+    }
+  </span>
+  @if (expanded()) {
+    <div class="children">
+      @for (entry of entries(); track entry.key; let last = $last) {
+        <div class="entry">
+          <ui-json-node
+            [key]="isArray() ? undefined : entry.key"
+            [value]="entry.value"
+            [trailingComma]="!last"
+          />
+        </div>
+      }
+    </div>
+    <span class="bracket closing">{{ isArray() ? "]" : "}" }}@if (trailingComma()) {<span class="comma">,</span>}</span>
+  }
+} @else {
+  @if (key() !== undefined) {
+    <span class="key">"{{ key() }}"</span><span class="punct">: </span>
+  }
+  @if (type() === "string") {
+    <span class="string">"{{ value() }}"</span>
+  } @else if (type() === "number") {
+    <span class="number">{{ value() }}</span>
+  } @else if (type() === "boolean") {
+    <span class="boolean">{{ value() }}</span>
+  } @else {
+    <span class="null">null</span>
+  }
+  @if (trailingComma()) {<span class="comma">,</span>}
+}

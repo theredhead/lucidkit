@@ -1,0 +1,15 @@
+<section>
+  <h4>Malformed JSON string</h4>
+  <p class="hint">Invalid JSON is rendered as a plain string value.</p>
+  <ui-json-view [value]="malformedJson" ariaLabel="malformed.json" />
+</section>
+
+<section>
+  <h4>Empty string</h4>
+  <ui-json-view [value]="emptyString" ariaLabel="empty.json" />
+</section>
+
+<section>
+  <h4>Primitive number</h4>
+  <ui-json-view [value]="notAString" ariaLabel="number.json" />
+</section>

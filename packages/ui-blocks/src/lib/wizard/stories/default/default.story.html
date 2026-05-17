@@ -34,4 +34,18 @@
         <p>Click <em>Finish</em> to complete registration.</p>
       </ui-wizard-step>
     </ui-wizard>
-  
+
+    <ui-dialog [(open)]="showResult" ariaLabel="Registration complete">
+      <ui-dialog-header>Registration complete</ui-dialog-header>
+      <ui-dialog-body>
+        <dl class="summary">
+          <dt>Email</dt><dd>{{ email() }}</dd>
+          @if (displayName()) {
+            <dt>Display name</dt><dd>{{ displayName() }}</dd>
+          }
+        </dl>
+      </ui-dialog-body>
+      <ui-dialog-footer>
+        <ui-button (click)="showResult.set(false)">Close</ui-button>
+      </ui-dialog-footer>
+    </ui-dialog>

@@ -88,6 +88,7 @@
 | `UIRating`              | `src/lib/rating/rating.component.ts`                                          | `ui-rating`                 | Star rating input with interactive and read-only modes; `max`, `[(value)]`, `size`, `readonly`, `disabled`                         |
 | `UICountdown`           | `src/lib/countdown/countdown.component.ts`                                    | `ui-countdown`              | Live countdown or elapsed timer ticking every second; `target`, `mode`, `format`; emits `expired`                                  |
 | `UISignature`           | `src/lib/signature/signature.component.ts`                                    | `ui-signature`              | Signature field supporting drawn strokes, optional pressure-sensitive capture, image paste/drop/browse, replay, and SVG/PNG export |
+| `UIJsonView`            | `src/lib/json-view/json-view.component.ts`                                    | `ui-json-view`              | Interactive JSON tree viewer with collapsible objects/arrays, syntax highlighting, and copy-to-clipboard button                    |
 
 ## Toolbar
 

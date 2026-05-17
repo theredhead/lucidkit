@@ -1,0 +1,39 @@
+<div class="toolbar" [attr.aria-label]="ariaLabel()">
+  <span class="label">{{ ariaLabel() }}</span>
+  <button
+    type="button"
+    class="copy-btn"
+    [attr.aria-label]="copied() ? 'Copied!' : 'Copy JSON to clipboard'"
+    [title]="copied() ? 'Copied!' : 'Copy JSON'"
+    (click)="copyToClipboard()"
+  >
+    @if (copied()) {
+      <ui-icon [svg]="UIIcons.Lucide.Text.CopyCheck" [size]="14" />
+    } @else {
+      <ui-icon [svg]="UIIcons.Lucide.Text.Copy" [size]="14" />
+    }
+  </button>
+</div>
+
+@if (parseResult().ok) {
+  <div class="content" role="tree">
+    <ui-json-node [value]="parsedValue()" />
+  </div>
+} @else {
+  <div class="parse-error" role="alert">
+    <div class="parse-error-banner">
+      <ui-icon [svg]="UIIcons.Lucide.Development.TriangleAlert" [size]="15" />
+      <div class="parse-error-info">
+        <span class="parse-error-title">Invalid JSON</span>
+        <span class="parse-error-location">line {{ parseError().line }}, column {{ parseError().col }}</span>
+      </div>
+    </div>
+    <p class="parse-error-message">{{ parseError().message }}</p>
+    @if (parseError().raw) {
+      <div class="parse-error-source">
+        <span class="parse-error-source-label">Input</span>
+        <pre class="parse-error-raw">{{ parseError().raw }}</pre>
+      </div>
+    }
+  </div>
+}

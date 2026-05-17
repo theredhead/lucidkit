@@ -64,3 +64,4 @@ export * from "./lib/rating/rating.component";
 export * from "./lib/rating/rating.types";
 export * from "./lib/countdown/countdown.component";
 export * from "./lib/countdown/countdown.types";
+export * from "./lib/json-view";

@@ -1,0 +1,96 @@
+:host {
+  display: block;
+  font-family: var(
+    --ui-font-mono,
+    "JetBrains Mono",
+    "Fira Code",
+    ui-monospace,
+    monospace
+  );
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--ui-text, #1d232b);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.1em;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 2px;
+
+  &:hover {
+    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.04));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-focus-ring, var(--ui-accent));
+    outline-offset: 1px;
+  }
+}
+
+.chevron {
+  display: inline-block;
+  width: 0.9em;
+  color: var(--ui-text-muted, #697077);
+  font-style: normal;
+}
+
+.children {
+  padding-left: 1.5rem;
+  border-left: 1px dashed var(--ui-border, #d7dce2);
+  margin-left: 0.4rem;
+}
+
+.entry {
+  display: block;
+}
+
+.key {
+  color: var(--ui-json-key, var(--ui-accent, #3b82f6));
+  font-weight: 500;
+}
+
+.punct,
+.colon {
+  color: var(--ui-text-muted, #697077);
+  white-space: pre;
+}
+
+.bracket {
+  color: var(--ui-text-muted, #697077);
+  font-weight: 600;
+
+  &.closing {
+    display: block;
+  }
+}
+
+.comma {
+  color: var(--ui-text-muted, #697077);
+}
+
+.collapsed-hint {
+  color: var(--ui-text-muted, #697077);
+  font-style: italic;
+  margin: 0 0.25em;
+  cursor: pointer;
+}
+
+.string {
+  color: var(--ui-json-string, #16a34a);
+}
+
+.number {
+  color: var(--ui-json-number, #ea580c);
+}
+
+.boolean {
+  color: var(--ui-json-boolean, #7c3aed);
+}
+
+.null {
+  color: var(--ui-json-null, var(--ui-text-muted, #697077));
+  font-style: italic;
+}
