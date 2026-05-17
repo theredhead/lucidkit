@@ -9,5 +9,5 @@
       (itemSelected)="itemSelected.emit($event)"
       (itemRemoved)="itemRemoved.emit($event)"
     />
-    <pre class="story-output">Selected: {{ selected() | json }}</pre>
+    <ui-json-view [value]="selected()" ariaLabel="Selected items" />
   

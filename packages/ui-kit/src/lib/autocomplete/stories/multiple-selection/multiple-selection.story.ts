@@ -5,7 +5,7 @@ import {
   output,
   signal,
 } from "@angular/core";
-import { JsonPipe } from "@angular/common";
+import { UIJsonView } from "../../../json-view";
 import {
   UIAutocomplete,
   type AutocompleteDatasource,
@@ -63,7 +63,7 @@ class FruitDatasource implements AutocompleteDatasource<string> {
   selector: "ui-ac-multi-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIAutocomplete, JsonPipe],
+  imports: [UIAutocomplete, UIJsonView],
   templateUrl: "./multiple-selection.story.html",
   styleUrl: "./multiple-selection.story.scss",
 })

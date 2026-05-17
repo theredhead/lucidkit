@@ -87,9 +87,7 @@
                 {{ previewEngine()!.valid() ? "✓ valid" : "✗ invalid" }}
               </span>
             </h4>
-            <pre class="preview-live-json">{{
-              previewOutput() | json
-            }}</pre>
+            <ui-json-view [value]="previewOutput()" ariaLabel="Live preview" />
           </div>
         } @else {
           <p class="preview-empty">
@@ -101,17 +99,7 @@
 
     @case ("json") {
       <div class="json">
-        <div class="json-header">
-          <button
-            type="button"
-            class="copy-btn"
-            aria-label="Copy JSON to clipboard"
-            (click)="onCopyJson()"
-          >
-            <ui-icon [svg]="copyIcon" [size]="14" />
-          </button>
-        </div>
-        <pre class="json-pre">{{ designerEngine.schema() | json }}</pre>
+        <ui-json-view [value]="designerEngine.schema()" ariaLabel="Schema JSON" />
       </div>
     }
   }

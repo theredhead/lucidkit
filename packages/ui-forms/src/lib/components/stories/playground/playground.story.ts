@@ -1,5 +1,12 @@
-import { JsonPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from "@angular/core";
+import { UIJsonView } from "@theredhead/lucid-kit";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  signal,
+} from "@angular/core";
 import { UIForm } from "../../form.component";
 import { FormEngine } from "../../../engine/form-engine";
 import type { FormSchema, FormValues } from "../../../types/form-schema.types";
@@ -739,7 +746,7 @@ const schemas: Record<string, FormSchema> = {
 @Component({
   selector: "ui-story-playground",
   standalone: true,
-  imports: [JsonPipe, UIForm],
+  imports: [UIJsonView, UIForm],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./playground.story.html",
   styles: `

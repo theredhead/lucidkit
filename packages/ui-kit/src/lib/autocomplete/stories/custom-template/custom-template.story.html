@@ -22,5 +22,5 @@
         </div>
       </ng-template>
     </ui-autocomplete>
-    <pre class="story-output">Selected: {{ selected() | json }}</pre>
+    <ui-json-view [value]="selected()" ariaLabel="Selected items" />
   

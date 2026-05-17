@@ -34,6 +34,5 @@
       />
       <ui-badge-column key="userId" headerText="Owner" variant="neutral" />
     </ui-table-view>
-    <pre class="selection-output">
-Selected ({{ selectedCount() }}): {{ selectedJson() }}</pre>
+    <ui-json-view [value]="selectedRows()" ariaLabel="Selected rows" />
   

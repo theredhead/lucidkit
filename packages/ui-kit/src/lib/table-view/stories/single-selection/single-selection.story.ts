@@ -13,6 +13,7 @@ import {
   type JsonPlaceholderPost,
 } from "../../datasources/jsonplaceholder-datasource";
 import { UITableView } from "../../table-view.component";
+import { UIJsonView } from "../../../json-view";
 import { SelectionModel } from "../../../core/selection-model";
 
 @Component({
@@ -21,6 +22,7 @@ import { SelectionModel } from "../../../core/selection-model";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     UITableView,
+    UIJsonView,
     UINumberColumn,
     UITextColumn,
     UIBadgeColumn,
@@ -44,13 +46,10 @@ export class UITableViewSingleSelectDemo {
     "single",
     (row) => row.id,
   );
-  readonly selectedJson = signal("(none)");
+  readonly selectedRow = signal<JsonPlaceholderPost | null>(null);
 
-  onSelectionChange(rows: readonly unknown[]): void {
-    const [selectedRow] = rows as readonly JsonPlaceholderPost[];
-
-    this.selectedJson.set(
-      selectedRow ? JSON.stringify(selectedRow, null, 2) : "(none)",
-    );
+  public onSelectionChange(rows: readonly unknown[]): void {
+    const [selected] = rows as readonly JsonPlaceholderPost[];
+    this.selectedRow.set(selected ?? null);
   }
 }

@@ -10,9 +10,7 @@ import {
   signal,
 } from "@angular/core";
 
-import { JsonPipe } from "@angular/common";
-
-import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
+import { UIIcon, UIIcons, UIJsonView } from "@theredhead/lucid-kit";
 
 import type { FormSchema, FormValues } from "../../types/form-schema.types";
 import { FormEngine } from "../../engine/form-engine";
@@ -21,7 +19,7 @@ import { FormDesignerEngine } from "./designer-engine";
 import { UIFieldPalette } from "./field-palette.component";
 import { UIDesignerCanvas } from "./designer-canvas.component";
 import { UIPropertyInspector } from "./property-inspector.component";
-import { UISurface } from '@theredhead/lucid-foundation';
+import { UISurface } from "@theredhead/lucid-foundation";
 
 /**
  * Full-featured form designer that lets users visually build
@@ -42,21 +40,20 @@ import { UISurface } from '@theredhead/lucid-foundation';
   selector: "ui-form-designer",
   standalone: true,
   imports: [
-    JsonPipe,
     UIIcon,
+    UIJsonView,
     UIFieldPalette,
     UIDesignerCanvas,
     UIPropertyInspector,
     UIForm,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [{ directive: UISurface, inputs: ['surfaceType'] }],
+  hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   host: { class: "ui-form-designer" },
   templateUrl: "./form-designer.component.html",
   styleUrl: "./form-designer.component.scss",
 })
 export class UIFormDesigner {
-
   /**
    * Optional initial schema to load into the designer.
    * When set, the designer engine imports it on init.
@@ -65,9 +62,6 @@ export class UIFormDesigner {
 
   /** Emitted when the user clicks "Export" — always emits the raw schema. */
   public readonly schemaChange = output<FormSchema>();
-
-  /** @internal Icon SVG for the copy button. */
-  protected readonly copyIcon = UIIcons.Lucide.Text.Copy;
 
   /** @internal Active tab: design, preview, or json. */
   protected readonly activeTab = signal<"design" | "preview" | "json">(
@@ -132,12 +126,6 @@ export class UIFormDesigner {
     // Default to text field — user can change in inspector
     this.designerEngine.addField(groupUid, "text");
     this.lastGroupUid = groupUid;
-  }
-
-  /** @internal Copy the current JSON schema to the clipboard. */
-  protected onCopyJson(): void {
-    const json = JSON.stringify(this.designerEngine.schema(), null, 2);
-    navigator.clipboard.writeText(json);
   }
 
   /** @internal Show submitted values in a native dialog. */

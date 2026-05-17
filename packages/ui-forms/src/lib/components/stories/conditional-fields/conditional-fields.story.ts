@@ -1,4 +1,4 @@
-import { JsonPipe } from "@angular/common";
+import { UIJsonView } from "@theredhead/lucid-kit";
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
 import { FormEngine } from "../../../engine/form-engine";
@@ -93,7 +93,7 @@ const schema: FormSchema = {
   selector: "ui-conditional-fields-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIForm, JsonPipe],
+  imports: [UIForm, UIJsonView],
   templateUrl: "./conditional-fields.story.html",
   styleUrl: "./conditional-fields.story.scss",
 })

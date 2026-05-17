@@ -1,4 +1,4 @@
-import { JsonPipe } from "@angular/common";
+import { UIJsonView } from "@theredhead/lucid-kit";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +15,7 @@ import { UIForm } from "../../form.component";
   selector: "ui-vehicle-registration-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIForm, JsonPipe],
+  imports: [UIForm, UIJsonView],
   templateUrl: "./vehicle-registration.story.html",
   styleUrl: "./vehicle-registration.story.scss",
 })

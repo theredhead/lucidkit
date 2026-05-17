@@ -1,4 +1,4 @@
-import { JsonPipe } from "@angular/common";
+import { UIJsonView } from "@theredhead/lucid-kit";
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 
 import { FormEngine } from "../../../engine/form-engine";
@@ -96,7 +96,7 @@ const schema: FormSchema = {
   selector: "ui-wizard-form-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIFormWizard, JsonPipe],
+  imports: [UIFormWizard, UIJsonView],
   templateUrl: "./wizard-form.story.html",
   styleUrl: "./wizard-form.story.scss",
 })

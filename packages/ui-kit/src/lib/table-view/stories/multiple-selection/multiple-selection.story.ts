@@ -13,6 +13,7 @@ import {
   type JsonPlaceholderPost,
 } from "../../datasources/jsonplaceholder-datasource";
 import { UITableView } from "../../table-view.component";
+import { UIJsonView } from "../../../json-view";
 import { SelectionModel } from "../../../core/selection-model";
 
 @Component({
@@ -21,6 +22,7 @@ import { SelectionModel } from "../../../core/selection-model";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     UITableView,
+    UIJsonView,
     UINumberColumn,
     UITextColumn,
     UIBadgeColumn,
@@ -44,21 +46,12 @@ export class UITableViewMultiSelectDemo {
     "multiple",
     (row) => row.id,
   );
-  readonly selectedJson = signal("(none)");
-  readonly selectedCount = signal(0);
+  readonly selectedRows = signal<{ id: number; title: string }[]>([]);
 
-  onSelectionChange(rows: readonly unknown[]): void {
-    const selectedRows = rows as readonly JsonPlaceholderPost[];
-
-    this.selectedCount.set(rows.length);
-    this.selectedJson.set(
-      selectedRows.length > 0
-        ? JSON.stringify(
-            selectedRows.map((row) => ({ id: row.id, title: row.title })),
-            null,
-            2,
-          )
-        : "(none)",
+  public onSelectionChange(rows: readonly unknown[]): void {
+    const selected = rows as readonly JsonPlaceholderPost[];
+    this.selectedRows.set(
+      selected.map((row) => ({ id: row.id, title: row.title })),
     );
   }
 }

@@ -1,5 +1,5 @@
 <ui-form [engine]="engine" (formSubmit)="onSubmit($event)" />
 
 @if (submitted()) {
-  <pre class="output">{{ submitted() | json }}</pre>
+  <ui-json-view [value]="submitted()" ariaLabel="Submitted values" />
 }

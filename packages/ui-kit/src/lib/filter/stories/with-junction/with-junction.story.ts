@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
-import { JsonPipe } from "@angular/common";
 import { UIFilter } from "../../filter.component";
-import type { FilterExpression, FilterFieldDefinition } from "../../filter.types";
+import { UIJsonView } from "../../../json-view";
+import type {
+  FilterExpression,
+  FilterFieldDefinition,
+} from "../../filter.types";
 
 // ---------------------------------------------------------------------------
 // Demo wrapper — shows the filter builder + live JSON output
@@ -27,7 +30,7 @@ const DEMO_FIELDS: FilterFieldDefinition<DemoRow>[] = [
   selector: "ui-filter-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIFilter, JsonPipe],
+  imports: [UIFilter, UIJsonView],
   templateUrl: "./with-junction.story.html",
 })
 export class UIFilterStoryDemo {

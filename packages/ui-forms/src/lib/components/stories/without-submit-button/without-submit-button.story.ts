@@ -1,4 +1,4 @@
-import { JsonPipe } from "@angular/common";
+import { UIJsonView } from "@theredhead/lucid-kit";
 import { ChangeDetectionStrategy, Component, computed } from "@angular/core";
 
 import { FormEngine } from "../../../engine/form-engine";
@@ -48,7 +48,7 @@ const schema: FormSchema = {
   selector: "ui-without-submit-button-story-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIForm, JsonPipe],
+  imports: [UIForm, UIJsonView],
   templateUrl: "./without-submit-button.story.html",
   styleUrl: "./without-submit-button.story.scss",
 })

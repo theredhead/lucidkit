@@ -5,7 +5,7 @@ import {
   output,
   signal,
 } from "@angular/core";
-import { JsonPipe } from "@angular/common";
+import { UIJsonView } from "../../../json-view";
 import {
   UIAutocomplete,
   type AutocompleteDatasource,
@@ -59,7 +59,7 @@ class ContactDatasource implements AutocompleteDatasource<Contact> {
   selector: "ui-ac-template-demo",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UIAutocomplete, JsonPipe, UIAvatar],
+  imports: [UIAutocomplete, UIJsonView, UIAvatar],
   templateUrl: "./custom-template.story.html",
   styleUrl: "./custom-template.story.scss",
 })

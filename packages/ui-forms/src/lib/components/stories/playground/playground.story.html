@@ -13,11 +13,11 @@
           {{ engine().valid() ? "✓ valid" : "✗ invalid" }}
         </span>
       </h4>
-      <pre class="live-json">{{ liveOutput() | json }}</pre>
+      <ui-json-view [value]="liveOutput()" ariaLabel="Live output" />
     </div>
 
     @if (submitted()) {
-      <h4 class="output-heading">Submitted values</h4>
-      <pre class="output">{{ submitted() | json }}</pre>
+    <h4 class="output-heading">Submitted values</h4>
+      <ui-json-view [value]="submitted()" ariaLabel="Submitted values" />
     }
   
