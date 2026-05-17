@@ -12,6 +12,23 @@
 
 .trigger {
   display: inline-flex;
+
+  /* Chevron inside the projected trigger's native button element */
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::ng-deep [trigger] button::after,
+  ::ng-deep button[trigger]::after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    pointer-events: none;
+    flex-shrink: 0;
+    margin-left: 0.35rem;
+    align-self: center;
+  }
 }
 
 /* ── Panel ── */

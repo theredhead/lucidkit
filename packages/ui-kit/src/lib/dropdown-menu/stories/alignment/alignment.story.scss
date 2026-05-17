@@ -1,1 +1,4 @@
-/* No custom styles needed — alignment is declarative. */
+:host {
+  display: flex;
+  gap: 0.5rem;
+}

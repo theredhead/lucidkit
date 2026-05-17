@@ -61,10 +61,11 @@ const config: StorybookConfig = {
               : ((warning as { message?: string }).message ?? "");
 
         return (
-          warningText.includes("@eslint/plugin-kit") &&
-          warningText.includes(
-            "is part of the TypeScript compilation but it's unused",
-          )
+          (warningText.includes("@eslint/plugin-kit") &&
+            warningText.includes(
+              "is part of the TypeScript compilation but it's unused",
+            )) ||
+          warningText.includes("Conflicting values for 'process.env.NODE_ENV'")
         );
       },
     ],

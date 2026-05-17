@@ -335,6 +335,17 @@ function loadStoryTabs(storyId: string): Promise<readonly UISourceTab[]> {
 
     .story-preview {
       min-width: 0;
+      min-height: 0;
+    }
+
+    :host-context(.sb-show-main.sb-main-fullscreen) .story-chrome {
+      height: 100%;
+      grid-template-rows: 1fr;
+    }
+
+    :host-context(.sb-show-main.sb-main-fullscreen) .story-preview {
+      height: 100%;
+      overflow: hidden;
     }
   `,
 })

@@ -39,7 +39,6 @@ export type DropdownAlign = "start" | "end";
   styleUrl: "./dropdown-item.component.scss",
 })
 export class UIDropdownItem {
-
   /** Whether this item is disabled. */
   public readonly disabled = input(false);
 
@@ -85,7 +84,7 @@ export class UIDropdownDivider {}
  * @example
  * ```html
  * <ui-dropdown-menu>
- *   <ui-button trigger>Actions ▾</ui-button>
+ *   <ui-button trigger>Actions</ui-button>
  *   <ui-dropdown-item (action)="onEdit()">Edit</ui-dropdown-item>
  *   <ui-dropdown-item (action)="onDelete()">Delete</ui-dropdown-item>
  * </ui-dropdown-menu>
@@ -104,7 +103,6 @@ export class UIDropdownDivider {}
   },
 })
 export class UIDropdownMenu {
-
   /** Horizontal alignment of the menu relative to the trigger. */
   public readonly align = input<DropdownAlign>("start");
 
