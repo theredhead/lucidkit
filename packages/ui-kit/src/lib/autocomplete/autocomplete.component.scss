@@ -9,46 +9,14 @@
   color: var(--ui-text);
 }
 
-/* ── Chips ─────────────────────────────────────────────────── */
+/* ── Input box (chips + text inline) ───────────────────────── */
 
-.chips {
+.input-box {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  margin-bottom: 0.35rem;
-}
-
-.chip {
-  display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: 1rem;
-  font-size: 0.8125rem;
-  white-space: nowrap;
-  color: var(--ui-chip-text);
-  background-color: var(--ui-chip-bg);
-}
-
-.chip-remove {
-  @include mix.control-reset;
-  cursor: var(--ui-cursor-click, pointer);
-  font-size: 0.7rem;
-  padding: 0;
-  line-height: 1;
-  color: var(--ui-chip-dismiss);
-  opacity: 0.75;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
-/* ── Input ─────────────────────────────────────────────────── */
-
-.input {
-  display: block;
-  width: 100%;
+  padding: 0.35rem 0.5rem;
   box-sizing: border-box;
   font-family: inherit;
   font-size: inherit;
@@ -56,21 +24,100 @@
   background-color: var(--ui-surface);
   border: 1px solid var(--ui-border);
   border-radius: 0.25rem;
-  padding: 0.4rem 0.5rem;
+  cursor: text;
   transition:
     border-color anim.$duration-normal anim.$easing-default,
     background-color anim.$duration-normal anim.$easing-default;
 
-  &:hover:not(:disabled) {
+  &:hover:not(.disabled) {
     border-color: var(--ui-border-strong);
   }
 
-  &:disabled {
+  &.disabled {
     @include mix.disabled;
   }
 
-  &:focus-visible {
+  &:focus-within {
     @include mix.focus-ring($offset: -1px);
+  }
+}
+
+.chip-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: var(--ui-text);
+  border-radius: 1px;
+  align-self: center;
+  animation: chip-cursor-blink 1s step-start infinite;
+  flex-shrink: 0;
+}
+
+@keyframes chip-cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.45rem 0.15rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  color: var(--ui-accent-fg, #fff);
+  background-color: var(--ui-accent);
+  cursor: default;
+  user-select: none;
+
+  &.selected {
+    box-shadow: 0 0 0 2px var(--ui-accent-fg, #fff);
+  }
+}
+
+.chip-remove {
+  @include mix.control-reset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: var(--ui-cursor-click, pointer);
+  padding: 0.1rem;
+  line-height: 1;
+  color: var(--ui-accent-fg, #fff);
+  opacity: 0.8;
+  border-radius: 50%;
+
+  &:hover {
+    opacity: 1;
+    background-color: color-mix(
+      in srgb,
+      var(--ui-accent-fg, #fff) 20%,
+      transparent
+    );
+  }
+}
+
+/* ── Text input ────────────────────────────────────────────── */
+
+.input {
+  flex: 1;
+  min-width: 8ch;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.05rem 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--ui-text);
+
+  &:disabled {
+    @include mix.disabled;
   }
 
   &::placeholder {

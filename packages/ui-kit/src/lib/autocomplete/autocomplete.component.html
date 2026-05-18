@@ -1,41 +1,71 @@
-<!-- Chips (multiple mode) -->
-@if (multiple() && value().length > 0) {
-  <div class="chips" role="list" aria-label="Selected items">
-    @for (chip of value(); track $index) {
-      <span class="chip" role="listitem">
-        <span class="chip-label">{{ itemToString(chip) }}</span>
-        <button
-          class="chip-remove"
-          type="button"
-          [attr.aria-label]="'Remove ' + itemToString(chip)"
-          (click)="removeItem(chip)"
-        >
-          ✕
-        </button>
+<!-- Input box: chips + text input inline -->
+<div
+  class="input-box"
+  [class.disabled]="disabled()"
+  tabindex="-1"
+  (click)="focusInput()"
+  (keydown)="focusInput()"
+>
+  @if (inChipZone() && chipCursorPos() === 0) {
+    <span class="chip-cursor" aria-hidden="true"></span>
+  }
+  @for (chip of value(); track $index) {
+    <span
+      class="chip"
+      role="listitem"
+      [class.selected]="isChipSelected($index)"
+      [style.background-color]="chipColorBg(chip, $index)"
+      [style.color]="chipColorFg(chip, $index)"
+      (mouseup)="onChipMouseUp($index, $event)"
+      (keydown.space)="onChipMouseUp($index, $event)"
+    >
+      <span class="chip-label">
+        @if (itemTemplate()) {
+          <ng-container
+            [ngTemplateOutlet]="itemTemplate()!"
+            [ngTemplateOutletContext]="{ $implicit: chip }"
+          />
+        } @else {
+          {{ itemToString(chip) }}
+        }
       </span>
+      <button
+        class="chip-remove"
+        type="button"
+        [style.color]="chipColorFg(chip, $index)"
+        [attr.aria-label]="'Remove ' + itemToString(chip)"
+        (click)="$event.stopPropagation(); removeItem(chip)"
+      >
+        <ui-icon [svg]="icons.close" [size]="10" />
+      </button>
+    </span>
+    @if (inChipZone() && chipCursorPos() === $index + 1) {
+      <span class="chip-cursor" aria-hidden="true"></span>
     }
-  </div>
-}
+  }
 
-<!-- Text input -->
-<input
-  class="input"
-  type="text"
-  role="combobox"
-  autocomplete="off"
-  [value]="query()"
-  [disabled]="disabled()"
-  [placeholder]="placeholder()"
-  [attr.aria-label]="ariaLabel()"
-  [attr.aria-expanded]="isOpen()"
-  [attr.aria-controls]="listboxId"
-  [attr.aria-activedescendant]="
-    activeIndex() >= 0 ? listboxId + '-' + activeIndex() : null
-  "
-  (input)="onInput($event)"
-  (focus)="openPopup()"
-  (keydown)="onKeydown($event)"
-/>
+  <!-- Text input -->
+  <input
+    #inputEl
+    class="input"
+    type="text"
+    role="combobox"
+    autocomplete="off"
+    [value]="query()"
+    [disabled]="disabled()"
+    [placeholder]="value().length === 0 ? placeholder() : ''"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-controls]="listboxId"
+    [attr.aria-activedescendant]="
+      activeIndex() >= 0 ? listboxId + '-' + activeIndex() : null
+    "
+    [style.caret-color]="inChipZone() ? 'transparent' : null"
+    (input)="onInput($event)"
+    (focus)="openPopup()"
+    (keydown)="onKeydown($event)"
+  />
+</div>
 
 <!-- Suggestion popup -->
 @if (isOpen() && suggestions().length > 0) {

@@ -1,0 +1,16 @@
+<div class="demo">
+  <label class="label" for="colors-input">Type a colour name to add it as a chip</label>
+  <ui-autocomplete
+    id="colors-input"
+    [datasource]="datasource"
+    [multiple]="true"
+    [minChars]="1"
+    [(value)]="selected"
+    [chipColor]="chipColor"
+    placeholder="e.g. coral, teal, indigo…"
+    ariaLabel="Colour picker"
+  />
+  @if (selected().length === 0) {
+    <p class="hint">No colours selected yet. Start typing above.</p>
+  }
+</div>
