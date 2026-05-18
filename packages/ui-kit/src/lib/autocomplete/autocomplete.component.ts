@@ -338,7 +338,7 @@ export class UIAutocomplete<T> {
     } else {
       this.value.set([item]);
     }
-    this.query.set("");
+    this.query.set(this.multiple() ? "" : this.displayWith()(item));
     this.itemSelected.emit(item);
     this.closePopup();
   }

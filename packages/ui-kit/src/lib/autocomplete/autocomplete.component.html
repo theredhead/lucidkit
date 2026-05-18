@@ -6,10 +6,11 @@
   (click)="focusInput()"
   (keydown)="focusInput()"
 >
-  @if (inChipZone() && chipCursorPos() === 0) {
-    <span class="chip-cursor" aria-hidden="true"></span>
-  }
-  @for (chip of value(); track $index) {
+  @if (multiple()) {
+    @if (inChipZone() && chipCursorPos() === 0) {
+      <span class="chip-cursor" aria-hidden="true"></span>
+    }
+    @for (chip of value(); track $index) {
     <span
       class="chip"
       role="listitem"
@@ -42,6 +43,7 @@
     @if (inChipZone() && chipCursorPos() === $index + 1) {
       <span class="chip-cursor" aria-hidden="true"></span>
     }
+  }
   }
 
   <!-- Text input -->
