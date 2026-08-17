@@ -32,6 +32,11 @@
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0"
   },
+  "exports": {
+    "./styles": {
+      "sass": "./styles/_index.scss"
+    }
+  },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json"
   }

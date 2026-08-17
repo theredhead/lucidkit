@@ -294,12 +294,11 @@ export class UIAutocomplete<T> {
    * Mouse-up on a chip selects that chip (anchor = gap before, pos = gap after).
    * Shift-click extends an existing selection from the current anchor.
    */
-  protected onChipMouseUp(
-    index: number,
-    event: MouseEvent | KeyboardEvent,
-  ): void {
+  protected onChipMouseUp(index: number, event: Event): void {
     event.stopPropagation();
-    if (event.shiftKey && this.chipCursorPos() !== null) {
+    const selectionEvent = event as MouseEvent | KeyboardEvent;
+
+    if (selectionEvent.shiftKey && this.chipCursorPos() !== null) {
       // Extend selection: move cursor to the far side of the clicked chip
       // relative to the anchor.
       const anchor = this.chipCursorAnchor() ?? this.chipCursorPos()!;

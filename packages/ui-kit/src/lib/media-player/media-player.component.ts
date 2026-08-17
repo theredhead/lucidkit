@@ -389,7 +389,7 @@ export class UIMediaPlayer {
   }
 
   /** @internal Handle spacebar press on the host element to toggle play/pause. */
-  protected onHostSpacebar(event: KeyboardEvent): void {
+  protected onHostSpacebar(event: Event): void {
     if (this.isEmbed()) return;
     // Avoid interfering with button/input spacebar activation
     const tag = (event.target as HTMLElement).tagName;
