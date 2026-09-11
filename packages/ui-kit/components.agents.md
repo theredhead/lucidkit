@@ -16,6 +16,7 @@
 | `UIAutocomplete`        | `src/lib/autocomplete/autocomplete.component.ts`                              | `ui-autocomplete`           | Type-ahead / chip-select component. Inputs: `datasource` (required), `multiple`, `value` (model), `displayWith`, `chipColor`, `trackBy`, `minChars`, `placeholder`, `ariaLabel`, `disabled`. Outputs: `itemSelected`, `itemRemoved`. Chips render inline in the input box; arrow-key navigation moves a visible cursor between chips and text; shift+arrow / shift+click selects chips; `chipColor` accepts a `(item, index) => string` returning any CSS colour for per-chip theming with auto-computed WCAG contrast foreground. |
 | `UICalendarPanel`       | `src/lib/calendar-panel/calendar-panel.component.ts`                          | `ui-calendar-panel`         | Standalone calendar grid panel for date selection                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `UIRichTextView`        | `src/lib/rich-text-view/rich-text-view.component.ts`                          | `ui-rich-text-view`         | Read-only renderer for HTML or Markdown content with optional data-detector transformation on rendered text nodes                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `UIMapView`             | `src/lib/map-view/map-view.component.ts`                                      | `ui-map-view`               | Tile-based map with markers, polylines, polygons, interactive pan/zoom mode, two-way editable GeoJSON line/polygon overlays, and feature collection editing with draggable vertices and segment insertion                                                                                                                                                                                                                                                                                                                          |
 | `UIThemeToggle`         | `src/lib/theme-toggle/theme-toggle.component.ts`                              | `ui-theme-toggle`           | Toggle button for switching between light and dark mode                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `UITableView`           | `src/lib/table-view/table-view.component.ts`                                  | `ui-table-view`             | Table with sorting, filtering, selection, column resizing, and pluggable rendering strategy (`'plain'` or `'virtual'`)                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `UITableHeader`         | `src/lib/table-view/table-view-header/table-view-header.component.ts`         | `ui-table-header`           | Table header row (internal)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
@@ -236,24 +237,27 @@ This pattern allows for extensibility - new column types can be added without mo
 > For the full list of 100+ exported types and interfaces, see `src/public-api.ts`
 > and the barrel files it re-exports. The most commonly used types include:
 
-| Name                            | Description                                                   |
-| ------------------------------- | ------------------------------------------------------------- |
-| `ButtonVariant`                 | `"filled" \| "outlined" \| "ghost"`                           |
-| `ButtonSize`                    | `"small" \| "medium" \| "large"`                              |
-| `ButtonColor`                   | `"neutral" \| "primary" \| "secondary" \| "safe" \| "danger"` |
-| `SelectOption`                  | Interface for select option `{ label, value, disabled? }`     |
-| `BreadcrumbItem`                | Interface for breadcrumb item `{ label, icon? }`              |
-| `BreadcrumbVariant`             | `"link" \| "button"`                                          |
-| `DrawerPosition`                | `"left" \| "right" \| "top" \| "bottom"`                      |
-| `DrawerWidth`                   | Drawer width specification                                    |
-| `FilterFieldDefinition`         | Interface for filter field definitions                        |
-| `FilterDescriptor`              | Interface for filter descriptors                              |
-| `SortState`                     | Interface representing sort state                             |
-| `SelectionMode`                 | `"none" \| "single" \| "multiple"`                            |
-| `ToastSeverity`                 | `"info" \| "success" \| "warning" \| "error"`                 |
-| `GanttTask`                     | Interface for Gantt chart tasks                               |
-| `CalendarEvent`                 | Interface for calendar events                                 |
-| `ChartDataPoint`                | Chart data point interface                                    |
-| `TextAdapter`                   | Interface for text input adapters                             |
-| `ITableRowRenderingStrategy`    | Interface for table body rendering strategies (scrollToIndex) |
-| `TableRowRenderingStrategyType` | `"plain" \| "virtual"`                                        |
+| Name                              | Description                                                                         |
+| --------------------------------- | ----------------------------------------------------------------------------------- |
+| `ButtonVariant`                   | `"filled" \| "outlined" \| "ghost"`                                                 |
+| `ButtonSize`                      | `"small" \| "medium" \| "large"`                                                    |
+| `ButtonColor`                     | `"neutral" \| "primary" \| "secondary" \| "safe" \| "danger"`                       |
+| `SelectOption`                    | Interface for select option `{ label, value, disabled? }`                           |
+| `BreadcrumbItem`                  | Interface for breadcrumb item `{ label, icon? }`                                    |
+| `BreadcrumbVariant`               | `"link" \| "button"`                                                                |
+| `DrawerPosition`                  | `"left" \| "right" \| "top" \| "bottom"`                                            |
+| `DrawerWidth`                     | Drawer width specification                                                          |
+| `FilterFieldDefinition`           | Interface for filter field definitions                                              |
+| `FilterDescriptor`                | Interface for filter descriptors                                                    |
+| `SortState`                       | Interface representing sort state                                                   |
+| `SelectionMode`                   | `"none" \| "single" \| "multiple"`                                                  |
+| `MapViewInteractionMode`          | `"static" \| "interactive"`                                                         |
+| `MapViewDrawMode`                 | `"none" \| "line" \| "polygon"`                                                     |
+| `MapViewGeoJsonFeatureCollection` | GeoJSON `FeatureCollection` containing editable `LineString` and `Polygon` features |
+| `ToastSeverity`                   | `"info" \| "success" \| "warning" \| "error"`                                       |
+| `GanttTask`                       | Interface for Gantt chart tasks                                                     |
+| `CalendarEvent`                   | Interface for calendar events                                                       |
+| `ChartDataPoint`                  | Chart data point interface                                                          |
+| `TextAdapter`                     | Interface for text input adapters                                                   |
+| `ITableRowRenderingStrategy`      | Interface for table body rendering strategies (scrollToIndex)                       |
+| `TableRowRenderingStrategyType`   | `"plain" \| "virtual"`                                                              |

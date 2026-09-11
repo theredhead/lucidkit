@@ -1,3 +1,9 @@
+import type {
+  MapLatLng,
+  MapViewGeoJsonPolygon,
+  MapViewGeoJsonPosition,
+} from "./map-view.model";
+
 /** Size of a single map tile in pixels. */
 export const TILE_SIZE = 256;
 
@@ -17,6 +23,22 @@ export function latLngToPixel(
     ((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2) *
     scale;
   return { x, y };
+}
+
+/**
+ * Converts an absolute pixel position on the Mercator tile grid
+ * to a geographic coordinate at the given zoom level.
+ */
+export function pixelToLatLng(
+  x: number,
+  y: number,
+  zoom: number,
+): { lat: number; lng: number } {
+  const scale = TILE_SIZE * Math.pow(2, zoom);
+  const lng = (x / scale) * 360 - 180;
+  const n = Math.PI * (1 - (2 * y) / scale);
+  const lat = (Math.atan(Math.sinh(n)) * 180) / Math.PI;
+  return { lat, lng };
 }
 
 /**
@@ -40,9 +62,87 @@ export function latLngToViewport(
   };
 }
 
+/** Converts a viewport-relative pixel position to a geographic coordinate. */
+export function viewportToLatLng(
+  x: number,
+  y: number,
+  zoom: number,
+  centerLat: number,
+  centerLng: number,
+  viewportWidth: number,
+  viewportHeight: number,
+): { lat: number; lng: number } {
+  const center = latLngToPixel(centerLat, centerLng, zoom);
+  return pixelToLatLng(
+    center.x - viewportWidth / 2 + x,
+    center.y - viewportHeight / 2 + y,
+    zoom,
+  );
+}
+
+/** Converts a GeoJSON coordinate tuple to a geographic coordinate object. */
+export function geoJsonPositionToLatLng(
+  position: MapViewGeoJsonPosition,
+): MapLatLng {
+  return { lat: position[1], lng: position[0] };
+}
+
+/** Converts a geographic coordinate object to a GeoJSON coordinate tuple. */
+export function latLngToGeoJsonPosition(
+  position: MapLatLng,
+): MapViewGeoJsonPosition {
+  return [position.lng, position.lat];
+}
+
+/** Returns the first polygon ring without a duplicate closing coordinate. */
+export function openPolygonRing(
+  ring: readonly MapViewGeoJsonPosition[],
+): MapViewGeoJsonPosition[] {
+  if (ring.length < 2) return [...ring];
+  const first = ring[0];
+  const last = ring[ring.length - 1];
+  if (first[0] === last[0] && first[1] === last[1]) {
+    return ring.slice(0, -1);
+  }
+  return [...ring];
+}
+
+/** Ensures a polygon ring is closed by repeating the first coordinate. */
+export function closePolygonRing(
+  ring: readonly MapViewGeoJsonPosition[],
+): MapViewGeoJsonPosition[] {
+  if (ring.length === 0) return [];
+  const openRing = openPolygonRing(ring);
+  if (openRing.length === 0) return [];
+  return [...openRing, [...openRing[0]] as MapViewGeoJsonPosition];
+}
+
+/** Builds a centred equilateral triangle polygon around the current map centre. */
+export function buildCenteredTrianglePolygon(
+  center: MapLatLng,
+  zoom: number,
+  radiusPixels = 80,
+): MapViewGeoJsonPolygon {
+  const centerPx = latLngToPixel(center.lat, center.lng, zoom);
+  const angles = [-90, 30, 150];
+  const ring = angles.map((angleDeg) => {
+    const angle = (angleDeg * Math.PI) / 180;
+    const point = pixelToLatLng(
+      centerPx.x + Math.cos(angle) * radiusPixels,
+      centerPx.y + Math.sin(angle) * radiusPixels,
+      zoom,
+    );
+    return latLngToGeoJsonPosition(point);
+  });
+
+  return {
+    type: "Polygon",
+    coordinates: [closePolygonRing(ring)],
+  };
+}
+
 /** Metadata for a single tile `<img>` to render. */
 export interface TileDescriptor {
-
   /** Unique key for `@for` tracking. */
   key: string;
 

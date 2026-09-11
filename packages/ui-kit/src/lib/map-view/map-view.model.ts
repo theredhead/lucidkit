@@ -4,11 +4,68 @@ export interface MapLatLng {
   lng: number;
 }
 
+/** Interaction behavior for the map viewport. */
+export type MapViewInteractionMode = "static" | "interactive";
+
+/** GeoJSON coordinate tuple `[longitude, latitude]`. */
+export type MapViewGeoJsonPosition = [number, number];
+
+/** Editable GeoJSON line geometry. */
+export interface MapViewGeoJsonLineString {
+  /** GeoJSON geometry type discriminator. */
+  type: "LineString";
+
+  /** Ordered line coordinates `[longitude, latitude]`. */
+  coordinates: MapViewGeoJsonPosition[];
+}
+
+/** Editable GeoJSON polygon geometry. */
+export interface MapViewGeoJsonPolygon {
+  /** GeoJSON geometry type discriminator. */
+  type: "Polygon";
+
+  /** GeoJSON linear rings `[longitude, latitude]`, outer ring first. */
+  coordinates: MapViewGeoJsonPosition[][];
+}
+
+/** Supported editable GeoJSON geometry types. */
+export type MapViewGeoJsonGeometry =
+  | MapViewGeoJsonLineString
+  | MapViewGeoJsonPolygon;
+
+/** Editable GeoJSON feature wrapper. */
+export interface MapViewGeoJsonFeature<
+  TGeometry extends MapViewGeoJsonGeometry = MapViewGeoJsonGeometry,
+> {
+  /** GeoJSON feature discriminator. */
+  type: "Feature";
+
+  /** Optional stable feature identifier. */
+  id?: string | number;
+
+  /** Editable geometry payload. */
+  geometry: TGeometry;
+
+  /** Optional feature metadata. */
+  properties?: Record<string, unknown> | null;
+}
+
+/** Editable GeoJSON feature collection. */
+export interface MapViewGeoJsonFeatureCollection {
+  /** GeoJSON feature collection discriminator. */
+  type: "FeatureCollection";
+
+  /** Editable line and polygon features. */
+  features: MapViewGeoJsonFeature[];
+}
+
+/** Drawing mode for editable GeoJSON shapes. */
+export type MapViewDrawMode = "none" | "line" | "polygon";
+
 /**
  * A marker placed on the map at a geographic position.
  */
 export interface MapMarker {
-
   /** Geographic position. */
   position: MapLatLng;
 
@@ -45,7 +102,6 @@ export interface MapMarker {
  * A polyline rendered as an SVG path on the map.
  */
 export interface MapPolyline {
-
   /** Ordered list of geographic vertices. */
   points: MapLatLng[];
 
@@ -72,7 +128,6 @@ export interface MapPolyline {
  * A closed polygon rendered as an SVG path on the map.
  */
 export interface MapPolygon {
-
   /** Ordered list of geographic vertices. The path is closed automatically. */
   points: MapLatLng[];
 

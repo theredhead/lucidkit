@@ -1,10 +1,17 @@
+import { Component, signal } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { UIMapView } from "./map-view.component";
 import {
   DEFAULT_ATTRIBUTION,
   DEFAULT_TILE_URL,
+  type MapLatLng,
+  type MapViewDrawMode,
+  type MapViewGeoJsonFeatureCollection,
+  type MapViewGeoJsonLineString,
+  type MapViewGeoJsonPolygon,
   type MapMarker,
+  type MapViewInteractionMode,
   type MapPolygon,
   type MapPolyline,
 } from "./map-view.model";
@@ -56,12 +63,125 @@ function createComponent(): {
   return { fixture, component };
 }
 
+@Component({
+  standalone: true,
+  imports: [UIMapView],
+  template: `
+    <ui-map-view
+      [center]="center()"
+      [zoom]="zoom()"
+      [interactionMode]="interactionMode()"
+      [drawMode]="drawMode()"
+      [(geoJsonLine)]="lineGeometry"
+      [(geoJsonPolygon)]="polygonGeometry"
+    />
+  `,
+})
+class MapEditorHost {
+  readonly center = signal<MapLatLng>({ lat: 52.37, lng: 4.89 });
+  readonly zoom = signal(10);
+  readonly interactionMode = signal<MapViewInteractionMode>("interactive");
+  readonly drawMode = signal<MapViewDrawMode>("none");
+  readonly lineGeometry = signal<MapViewGeoJsonLineString | null>(null);
+  readonly polygonGeometry = signal<MapViewGeoJsonPolygon | null>(null);
+}
+
+@Component({
+  standalone: true,
+  imports: [UIMapView],
+  template: `
+    <ui-map-view
+      [center]="center()"
+      [zoom]="zoom()"
+      [interactionMode]="interactionMode()"
+      [drawMode]="drawMode()"
+      [(geoJsonFeatureCollection)]="featureCollection"
+    />
+  `,
+})
+class MapFeatureCollectionEditorHost {
+  readonly center = signal<MapLatLng>({ lat: 52.37, lng: 4.89 });
+  readonly zoom = signal(10);
+  readonly interactionMode = signal<MapViewInteractionMode>("interactive");
+  readonly drawMode = signal<MapViewDrawMode>("none");
+  readonly featureCollection = signal<MapViewGeoJsonFeatureCollection>({
+    type: "FeatureCollection",
+    features: [],
+  });
+}
+
+function createEditorHost(): {
+  fixture: ComponentFixture<MapEditorHost>;
+  host: MapEditorHost;
+  mapElement: HTMLElement;
+  viewport: HTMLElement;
+} {
+  const fixture = TestBed.createComponent(MapEditorHost);
+  const host = fixture.componentInstance;
+  const mapElement: HTMLElement =
+    fixture.nativeElement.querySelector("ui-map-view");
+
+  mapElement.getBoundingClientRect = () => ({
+    width: 800,
+    height: 400,
+    x: 0,
+    y: 0,
+    top: 0,
+    left: 0,
+    bottom: 400,
+    right: 800,
+    toJSON: () => ({}),
+  });
+
+  fixture.detectChanges();
+
+  return {
+    fixture,
+    host,
+    mapElement,
+    viewport: fixture.nativeElement.querySelector(".viewport"),
+  };
+}
+
+function createFeatureCollectionEditorHost(): {
+  fixture: ComponentFixture<MapFeatureCollectionEditorHost>;
+  host: MapFeatureCollectionEditorHost;
+  mapElement: HTMLElement;
+  viewport: HTMLElement;
+} {
+  const fixture = TestBed.createComponent(MapFeatureCollectionEditorHost);
+  const host = fixture.componentInstance;
+  const mapElement: HTMLElement =
+    fixture.nativeElement.querySelector("ui-map-view");
+
+  mapElement.getBoundingClientRect = () => ({
+    width: 800,
+    height: 400,
+    x: 0,
+    y: 0,
+    top: 0,
+    left: 0,
+    bottom: 400,
+    right: 800,
+    toJSON: () => ({}),
+  });
+
+  fixture.detectChanges();
+
+  return {
+    fixture,
+    host,
+    mapElement,
+    viewport: fixture.nativeElement.querySelector(".viewport"),
+  };
+}
+
 // ── Tests ─────────────────────────────────────────────────────────────
 
 describe("UIMapView", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UIMapView],
+      imports: [UIMapView, MapEditorHost, MapFeatureCollectionEditorHost],
     }).compileComponents();
   });
 
@@ -96,6 +216,11 @@ describe("UIMapView", () => {
     it("should default darkModeTiles to true", () => {
       const { component } = createComponent();
       expect(component.darkModeTiles()).toBe(true);
+    });
+
+    it('should default interactionMode to "static"', () => {
+      const { component } = createComponent();
+      expect(component.interactionMode()).toBe("static");
     });
 
     it("should default markers to empty array", () => {
@@ -411,6 +536,19 @@ describe("UIMapView", () => {
       expect(viewport.getAttribute("role")).toBe("img");
     });
 
+    it("should make the viewport focusable and region-role in interactive mode", () => {
+      const { fixture } = createComponent();
+      fixture.componentRef.setInput(
+        "interactionMode",
+        "interactive" as MapViewInteractionMode,
+      );
+      fixture.detectChanges();
+
+      const viewport = fixture.nativeElement.querySelector(".viewport");
+      expect(viewport.getAttribute("role")).toBe("region");
+      expect(viewport.getAttribute("tabindex")).toBe("0");
+    });
+
     it('should set aria-label="Map" by default', () => {
       const { fixture } = createComponent();
       const viewport = fixture.nativeElement.querySelector(".viewport");
@@ -468,6 +606,229 @@ describe("UIMapView", () => {
       const { fixture } = createComponent();
       const svg = fixture.nativeElement.querySelector(".vectors");
       expect(svg).toBeNull();
+    });
+  });
+
+  // ── Interactive mode ──────────────────────────────────────────────
+
+  describe("interactive mode", () => {
+    it("should zoom with mouse wheel and emit zoomChange", () => {
+      const { fixture, component } = createComponent();
+      fixture.componentRef.setInput(
+        "interactionMode",
+        "interactive" as MapViewInteractionMode,
+      );
+      fixture.detectChanges();
+
+      const zoomValues: number[] = [];
+      const sub = component.zoomChange.subscribe((value) =>
+        zoomValues.push(value),
+      );
+
+      const viewport: HTMLElement =
+        fixture.nativeElement.querySelector(".viewport");
+      viewport.dispatchEvent(
+        new WheelEvent("wheel", { deltaY: -120, cancelable: true }),
+      );
+      fixture.detectChanges();
+
+      const tile: HTMLImageElement =
+        fixture.nativeElement.querySelector(".tile");
+      expect(tile.src).toContain("/11/");
+      expect(zoomValues).toEqual([11]);
+      sub.unsubscribe();
+    });
+
+    it("should pan with arrow keys and emit centerChange", () => {
+      const { fixture, component } = createComponent();
+      fixture.componentRef.setInput(
+        "interactionMode",
+        "interactive" as MapViewInteractionMode,
+      );
+      fixture.detectChanges();
+
+      const centers: MapLatLng[] = [];
+      const sub = component.centerChange.subscribe((value) =>
+        centers.push(value),
+      );
+
+      const viewport: HTMLElement =
+        fixture.nativeElement.querySelector(".viewport");
+      viewport.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+      );
+      fixture.detectChanges();
+
+      expect(centers.length).toBe(1);
+      expect(centers[0].lng).toBeGreaterThan(4.89);
+      sub.unsubscribe();
+    });
+
+    it("should draw a line into the external signal", () => {
+      const { fixture, host, viewport } = createEditorHost();
+      host.drawMode.set("line");
+      fixture.detectChanges();
+
+      viewport.dispatchEvent(
+        new MouseEvent("click", {
+          clientX: 300,
+          clientY: 180,
+          bubbles: true,
+        }),
+      );
+      viewport.dispatchEvent(
+        new MouseEvent("click", {
+          clientX: 500,
+          clientY: 220,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      expect(host.lineGeometry()?.type).toBe("LineString");
+      expect(host.lineGeometry()?.coordinates.length).toBe(2);
+    });
+
+    it("should insert a control point when clicking a line segment", () => {
+      const { fixture, host } = createEditorHost();
+      host.lineGeometry.set({
+        type: "LineString",
+        coordinates: [
+          [4.89, 52.37],
+          [5.25, 52.37],
+        ],
+      });
+      fixture.detectChanges();
+
+      const segment: SVGPathElement =
+        fixture.nativeElement.querySelector(".edit-segment.line");
+      segment.dispatchEvent(
+        new MouseEvent("click", {
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      expect(host.lineGeometry()?.coordinates.length).toBe(3);
+    });
+
+    it("should drag polygon vertices and sync the external signal", () => {
+      const { fixture, host } = createEditorHost();
+      host.polygonGeometry.set({
+        type: "Polygon",
+        coordinates: [
+          [
+            [4.89, 52.45],
+            [5.02, 52.28],
+            [4.76, 52.28],
+            [4.89, 52.45],
+          ],
+        ],
+      });
+      fixture.detectChanges();
+
+      const before = host.polygonGeometry()?.coordinates[0][0];
+      const handle: SVGCircleElement = fixture.nativeElement.querySelector(
+        ".vertex-handle.polygon",
+      );
+
+      handle.dispatchEvent(
+        new MouseEvent("mousedown", {
+          button: 0,
+          clientX: 400,
+          clientY: 120,
+          bubbles: true,
+        }),
+      );
+      window.dispatchEvent(
+        new MouseEvent("mousemove", {
+          clientX: 460,
+          clientY: 160,
+          bubbles: true,
+        }),
+      );
+      window.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+      fixture.detectChanges();
+
+      const after = host.polygonGeometry()?.coordinates[0][0];
+      expect(after).not.toEqual(before);
+      expect(host.polygonGeometry()?.coordinates[0].at(-1)).toEqual(after);
+    });
+
+    it("should add new features into an external feature collection", () => {
+      const { fixture, host, viewport } = createFeatureCollectionEditorHost();
+      host.drawMode.set("line");
+      fixture.detectChanges();
+
+      viewport.dispatchEvent(
+        new MouseEvent("click", {
+          clientX: 300,
+          clientY: 180,
+          bubbles: true,
+        }),
+      );
+      viewport.dispatchEvent(
+        new MouseEvent("click", {
+          clientX: 500,
+          clientY: 220,
+          bubbles: true,
+        }),
+      );
+      fixture.detectChanges();
+
+      expect(host.featureCollection().features).toHaveLength(1);
+      expect(host.featureCollection().features[0].geometry.type).toBe(
+        "LineString",
+      );
+      expect(
+        host.featureCollection().features[0].geometry.coordinates,
+      ).toHaveLength(2);
+    });
+
+    it("should delete a selected vertex from a feature collection line", () => {
+      const { fixture, host, viewport } = createFeatureCollectionEditorHost();
+      host.featureCollection.set({
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: [
+                [4.89, 52.37],
+                [5.12, 52.37],
+              ],
+            },
+            properties: null,
+          },
+        ],
+      });
+      fixture.detectChanges();
+
+      const handle: SVGCircleElement = fixture.nativeElement.querySelector(
+        ".vertex-handle.line",
+      );
+      handle.dispatchEvent(
+        new MouseEvent("mousedown", {
+          button: 0,
+          clientX: 400,
+          clientY: 200,
+          bubbles: true,
+        }),
+      );
+      window.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+      viewport.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Delete", bubbles: true }),
+      );
+      fixture.detectChanges();
+
+      const geometry = host.featureCollection().features[0].geometry;
+      expect(geometry.type).toBe("LineString");
+      if (geometry.type === "LineString") {
+        expect(geometry.coordinates).toHaveLength(1);
+      }
     });
   });
 });

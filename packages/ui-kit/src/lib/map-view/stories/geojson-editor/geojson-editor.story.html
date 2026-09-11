@@ -1,0 +1,46 @@
+<section class="editor-layout">
+  <header class="controls">
+    <ui-button variant="filled" color="primary" (click)="startLine()">
+      Draw line
+    </ui-button>
+    <ui-button variant="filled" color="secondary" (click)="startPolygon()">
+      Add triangle polygon
+    </ui-button>
+    <ui-button variant="ghost" color="neutral" (click)="stopDrawing()">
+      Stop drawing
+    </ui-button>
+    <ui-button variant="ghost" color="danger" (click)="clearAll()">
+      Clear all
+    </ui-button>
+  </header>
+
+  <div class="status">
+    <p><strong>Mode:</strong> {{ drawMode() }}</p>
+    <p><strong>Zoom:</strong> {{ zoom() }}</p>
+    <p><strong>Features:</strong> {{ featureCount() }}</p>
+    <p><strong>Center:</strong> {{ center().lat.toFixed(4) }}, {{ center().lng.toFixed(4) }}</p>
+    <p class="hint">
+      Click to start and extend a line. Double-click or press Escape to finish line drawing.
+      Polygon creation starts from a centered 60 degree triangle that you can reshape point by point.
+      Drag handles to move points. Click any line segment to insert a control point.
+      Select a handle, then press Delete, or double-click the handle, to remove a point.
+    </p>
+  </div>
+
+  <ui-map-view
+    [center]="center()"
+    [zoom]="zoom()"
+    [height]="'560px'"
+    [ariaLabel]="'GeoJSON drawing editor'"
+    [interactionMode]="'interactive'"
+    [drawMode]="drawMode()"
+    [(geoJsonFeatureCollection)]="featureCollection"
+    (centerChange)="onCenterChange($any($event))"
+    (zoomChange)="onZoomChange($any($event))"
+  />
+
+  <section class="json-panel">
+    <h3>Live geometry</h3>
+    <ui-json-view [value]="jsonSnapshot()" ariaLabel="geojson-editor.json" />
+  </section>
+</section>

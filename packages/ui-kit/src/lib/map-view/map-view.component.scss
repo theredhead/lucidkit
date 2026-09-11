@@ -23,6 +23,16 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  &.interactive {
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+
+  &.interactive.dragging {
+    cursor: grabbing;
+  }
 }
 
 /* ── Tiles ────────────────────────────────────────────────────── */
@@ -46,6 +56,58 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+
+.editable-shape {
+  pointer-events: none;
+
+  &.polygon {
+    stroke-linejoin: round;
+  }
+
+  &.line {
+    fill: none;
+  }
+}
+
+.editor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.edit-segment,
+.vertex-handle {
+  pointer-events: auto;
+}
+
+.edit-segment {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 16;
+  cursor: copy;
+}
+
+.vertex-handle {
+  stroke-width: 2;
+  cursor: move;
+
+  &.selected {
+    stroke-width: 3;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.22));
+  }
+
+  &.line {
+    fill: #f7f8fa;
+    stroke: #0059b3;
+  }
+
+  &.polygon {
+    fill: #fff4d6;
+    stroke: #8a5a00;
+  }
 }
 
 /* ── Markers ──────────────────────────────────────────────────── */

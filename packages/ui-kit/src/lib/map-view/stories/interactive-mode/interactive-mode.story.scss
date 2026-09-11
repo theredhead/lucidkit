@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.demo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+  min-height: 100dvh;
+}
+
+.status-panel {
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.55rem;
+  border: 1px solid var(--ui-border, #c4cbd4);
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #f7f8fa);
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  p + p {
+    margin-top: 0.3rem;
+  }
+
+  .hint {
+    margin-top: 0.55rem;
+    color: var(--ui-text-muted, var(--ui-text-soft, #505d6d));
+    background: transparent;
+  }
+}
+
+@media (min-width: 960px) {
+  .demo-layout {
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: start;
+  }
+}

@@ -1,10 +1,17 @@
 import {
+  buildCenteredTrianglePolygon,
+  closePolygonRing,
   computeTiles,
+  geoJsonPositionToLatLng,
+  latLngToGeoJsonPosition,
   latLngToPixel,
   latLngToViewport,
+  openPolygonRing,
+  pixelToLatLng,
   pointsToPolygonPath,
   pointsToPolylinePath,
   TILE_SIZE,
+  viewportToLatLng,
 } from "./map-view.utils";
 
 describe("map-view utils", () => {
@@ -64,6 +71,59 @@ describe("map-view utils", () => {
     it("should offset points north of centre upward (lower y)", () => {
       const vp = latLngToViewport(52.5, 4.89, 10, 52.37, 4.89, 800, 400);
       expect(vp.y).toBeLessThan(200);
+    });
+  });
+
+  // ── pixelToLatLng ─────────────────────────────────────────────────
+
+  describe("pixelToLatLng", () => {
+    it("should invert latLngToPixel approximately", () => {
+      const source = { lat: 52.3676, lng: 4.9041 };
+      const pixel = latLngToPixel(source.lat, source.lng, 10);
+      const roundTrip = pixelToLatLng(pixel.x, pixel.y, 10);
+
+      expect(roundTrip.lat).toBeCloseTo(source.lat, 5);
+      expect(roundTrip.lng).toBeCloseTo(source.lng, 5);
+    });
+  });
+
+  describe("viewportToLatLng", () => {
+    it("should return the map centre for the viewport centre", () => {
+      const point = viewportToLatLng(400, 200, 10, 52.37, 4.89, 800, 400);
+      expect(point.lat).toBeCloseTo(52.37, 5);
+      expect(point.lng).toBeCloseTo(4.89, 5);
+    });
+  });
+
+  describe("GeoJSON helpers", () => {
+    it("should convert between lat/lng objects and GeoJSON tuples", () => {
+      const point = { lat: 52.3676, lng: 4.9041 };
+      const tuple = latLngToGeoJsonPosition(point);
+      expect(tuple).toEqual([4.9041, 52.3676]);
+      expect(geoJsonPositionToLatLng(tuple)).toEqual(point);
+    });
+
+    it("should remove and restore polygon closing coordinates", () => {
+      const openRing = [
+        [4.89, 52.45],
+        [5.02, 52.28],
+        [4.76, 52.28],
+      ] as [number, number][];
+      const closed = closePolygonRing(openRing);
+      expect(closed).toHaveLength(4);
+      expect(closed[0]).toEqual(closed[3]);
+      expect(openPolygonRing(closed)).toEqual(openRing);
+    });
+
+    it("should build a centred closed triangle polygon", () => {
+      const polygon = buildCenteredTrianglePolygon(
+        { lat: 52.3676, lng: 4.9041 },
+        10,
+        60,
+      );
+      expect(polygon.type).toBe("Polygon");
+      expect(polygon.coordinates[0]).toHaveLength(4);
+      expect(polygon.coordinates[0][0]).toEqual(polygon.coordinates[0][3]);
     });
   });
 

@@ -1,8 +1,17 @@
 <div
   class="viewport"
+  [class.interactive]="isInteractive()"
+  [class.dragging]="isDragging()"
   [class.dark-tiles]="darkModeTiles()"
-  role="img"
+  [attr.role]="viewportRole()"
   [attr.aria-label]="ariaLabel()"
+  [attr.aria-roledescription]="isInteractive() ? 'interactive map' : null"
+  [attr.tabindex]="viewportTabIndex()"
+  (wheel)="onWheel($event)"
+  (mousedown)="onMouseDown($event)"
+  (click)="onViewportClick($event)"
+  (dblclick)="onDoubleClick($event)"
+  (keydown)="onKeyDown($event)"
 >
   <!-- Tile images -->
   @for (tile of tiles(); track tile.key) {
@@ -44,8 +53,49 @@
           stroke-linejoin="round"
         />
       }
+
+      @for (editableShape of renderedEditableShapes(); track editableShape.key) {
+        <path
+          class="editable-shape"
+          [class.line]="editableShape.shape === 'line'"
+          [class.polygon]="editableShape.shape === 'polygon'"
+          [attr.d]="editableShape.path"
+          [attr.fill]="editableShape.fill"
+          [attr.fill-opacity]="editableShape.fillOpacity"
+          [attr.stroke]="editableShape.stroke"
+          [attr.stroke-width]="editableShape.strokeWidth"
+          [attr.stroke-linecap]="editableShape.shape === 'line' ? 'round' : null"
+          [attr.stroke-linejoin]="editableShape.shape === 'line' ? 'round' : 'round'"
+        />
+      }
     </svg>
   }
+
+  <svg class="editor" [attr.viewBox]="svgViewBox()" aria-hidden="true">
+    @for (segment of editableSegments(); track segment.key) {
+      <path
+        class="edit-segment"
+        [class.line]="segment.shape === 'line'"
+        [class.polygon]="segment.shape === 'polygon'"
+        [attr.d]="segment.path"
+        (click)="onSegmentClick($event, segment)"
+      />
+    }
+
+    @for (handle of editableHandles(); track handle.key) {
+      <circle
+        class="vertex-handle"
+        [class.line]="handle.shape === 'line'"
+        [class.polygon]="handle.shape === 'polygon'"
+        [class.selected]="handle.selected"
+        [attr.cx]="handle.x"
+        [attr.cy]="handle.y"
+        r="7"
+        (mousedown)="onVertexMouseDown($event, handle)"
+        (dblclick)="onVertexDoubleClick($event, handle)"
+      />
+    }
+  </svg>
 
   <!-- Markers -->
   @for (marker of renderedMarkers(); track $index) {

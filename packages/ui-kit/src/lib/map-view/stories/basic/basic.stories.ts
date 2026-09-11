@@ -1,12 +1,14 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
 import { MapViewBasicDemo } from "./basic.story";
+import type { MapViewInteractionMode } from "../../map-view.model";
 
 interface MapViewBasicStoryArgs {
   readonly zoom: number;
   readonly width: string | undefined;
   readonly height: string;
   readonly ariaLabel: string;
+  readonly interactionMode: MapViewInteractionMode;
 }
 
 const meta = {
@@ -18,7 +20,9 @@ const meta = {
     docs: {
       description: {
         component: [
-          "`UIMapView` is a lightweight static map component that renders OpenStreetMap tiles centred on a given location with optional SVG overlays. It has **zero external dependencies** — all tile math and rendering uses native browser APIs.",
+          "`UIMapView` is a lightweight map component that renders OpenStreetMap tiles centred on a given location with optional SVG overlays. It has **zero external dependencies** — all tile math and rendering uses native browser APIs.",
+          'Set `interactionMode` to `"interactive"` to enable drag panning, wheel zooming, and keyboard controls.',
+          "Use `drawMode` together with `[(geoJsonFeatureCollection)]` for multi-shape GeoJSON editing, or `[(geoJsonLine)]` / `[(geoJsonPolygon)]` for the single-geometry compatibility surface.",
           "",
           "## Key Features",
           "",
@@ -40,6 +44,9 @@ const meta = {
           "| `markers` | `MapMarker[]` | `[]` | Pin markers with position, label, colour |",
           "| `polylines` | `MapPolyline[]` | `[]` | Line overlays (routes, paths) |",
           "| `polygons` | `MapPolygon[]` | `[]` | Filled region overlays |",
+          '| `interactionMode` | `"static" | "interactive"` | `"static"` | Enables panning/zooming interactions when set to `"interactive"` |',
+          '| `drawMode` | `"none" | "line" | "polygon"` | `"none"` | Enables drawing for the editable GeoJSON overlays |',
+          "| `geoJsonFeatureCollection` | `FeatureCollection` | `null` | Two-way editable GeoJSON feature collection containing line and polygon features |",
           '| `ariaLabel` | `string` | `"Map"` | Accessible label |',
         ].join("\n"),
       },
@@ -62,6 +69,11 @@ const meta = {
       control: "text",
       description: "Accessible label for the map.",
     },
+    interactionMode: {
+      control: "radio",
+      options: ["static", "interactive"] satisfies MapViewInteractionMode[],
+      description: "Map interaction behavior.",
+    },
   },
   decorators: [moduleMetadata({ imports: [MapViewBasicDemo] })],
 } satisfies Meta<MapViewBasicStoryArgs>;
@@ -75,6 +87,7 @@ export const Basic: Story = {
     width: undefined,
     height: "500px",
     ariaLabel: "Map view",
+    interactionMode: "static",
   },
 
   parameters: {
@@ -89,6 +102,7 @@ export const Basic: Story = {
         [width]="width"
         [height]="height"
         [ariaLabel]="ariaLabel"
+        [interactionMode]="interactionMode"
       />
     `,
   }),

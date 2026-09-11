@@ -1,0 +1,25 @@
+<section class="demo-layout">
+  <ui-map-view
+    [center]="center()"
+    [zoom]="zoom()"
+    [width]="width()"
+    [height]="height()"
+    [ariaLabel]="ariaLabel()"
+    [markers]="markers"
+    [interactionMode]="interactionMode()"
+    (centerChange)="onCenterChange($event)"
+    (zoomChange)="onZoomChange($event)"
+  />
+
+  <aside class="status-panel" aria-label="Map viewport state">
+    <h3>Viewport</h3>
+    <p><strong>Mode:</strong> {{ interactionMode() }}</p>
+    <p><strong>Zoom:</strong> {{ zoom() }}</p>
+    <p><strong>Lat:</strong> {{ center().lat.toFixed(4) }}</p>
+    <p><strong>Lng:</strong> {{ center().lng.toFixed(4) }}</p>
+    <p class="hint">
+      Drag to pan. Use the mouse wheel or +/- keys to zoom. Arrow keys pan in
+      fixed steps.
+    </p>
+  </aside>
+</section>
