@@ -42,6 +42,7 @@ import {
 } from "./rendering-strategies/table-row-rendering-strategy";
 import { UITableFooter } from "./table-view-footer/table-view-footer.component";
 import { UIPagination } from "../pagination/pagination.component";
+import type { PageChangeEvent } from "../pagination/pagination.types";
 import {
   ColumnResizeEvent,
   SortState,
@@ -627,14 +628,14 @@ export class UITableView implements OnInit, AfterViewInit {
       if (isSortableDatasource(ds)) {
         const expression = state
           ? [
-              {
-                columnKey: state.key as keyof unknown,
-                direction:
-                  state.direction === "asc"
-                    ? SortDirection.Ascending
-                    : SortDirection.Descending,
-              },
-            ]
+            {
+              columnKey: state.key as keyof unknown,
+              direction:
+                state.direction === "asc"
+                  ? SortDirection.Ascending
+                  : SortDirection.Descending,
+            },
+          ]
           : null;
         ds.sortBy(expression);
         this.refreshDatasource();
@@ -642,13 +643,16 @@ export class UITableView implements OnInit, AfterViewInit {
     }
   }
 
-  protected onPageChange(page: number): void {
-    this.adapter().pageIndex.set(page);
-  }
-
-  protected onPageSizeChange(size: number): void {
-    this.adapter().pageSize.set(size);
-    this.adapter().pageIndex.set(0);
+  protected onPageChange(event: PageChangeEvent): void {
+    const adapter = this.adapter();
+    // Only reset to the first page when the page size actually changed;
+    // otherwise a plain page navigation would be clobbered back to 0.
+    if (event.pageSize !== adapter.pageSize()) {
+      adapter.pageSize.set(event.pageSize);
+      adapter.pageIndex.set(0);
+    } else {
+      adapter.pageIndex.set(event.pageIndex);
+    }
   }
 
   protected onColumnResize(event: ColumnResizeEvent): void {

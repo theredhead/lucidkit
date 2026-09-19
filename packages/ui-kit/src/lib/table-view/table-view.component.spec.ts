@@ -441,8 +441,15 @@ describe("UITableView", () => {
 
   describe("onPageChange", () => {
     it("should update the adapter page index", () => {
-      tableView["onPageChange"](2);
+      const pageSize = tableView["adapter"]().pageSize();
+      tableView["onPageChange"]({ pageIndex: 2, pageSize, totalItems: null });
       expect(tableView["adapter"]().pageIndex()).toBe(2);
+    });
+
+    it("should reset to page 0 when the page size changes", () => {
+      tableView["onPageChange"]({ pageIndex: 2, pageSize: 25, totalItems: null });
+      expect(tableView["adapter"]().pageSize()).toBe(25);
+      expect(tableView["adapter"]().pageIndex()).toBe(0);
     });
   });
 
