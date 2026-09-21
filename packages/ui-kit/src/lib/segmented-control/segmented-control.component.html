@@ -7,8 +7,8 @@
   [class.disabled]="item.disabled" [attr.aria-checked]="item.id === value()"
   [attr.aria-disabled]="item.disabled ?? false" [attr.aria-label]="item.label"
   [disabled]="disabled() || item.disabled || null"
-  [style.color]="item.id === value() && animateSelection() ? resolvedIndicatorTextColor() : null"
-  (click)="select(item)" (keydown)="onKeyDown($event, item)">
+  [style.color]="item.id === value() && animateSelection() ? resolvedIndicatorTextColor() : null" (click)="select(item)"
+  (keydown)="onKeyDown($event, item)">
   @if (item.icon) {
   <ui-icon [svg]="item.icon" [size]="14" />
   }

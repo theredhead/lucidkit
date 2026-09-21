@@ -324,7 +324,7 @@ describe("chart utils", () => {
 
       // Mock Image to trigger onload
       const originalImage = window.Image;
-      let imageInstance: Image | null = null;
+      let imageInstance: typeof Image | null = null;
       window.Image = class MockImage {
         onload: (() => void) | null = null;
         onerror: (() => void) | null = null;
@@ -332,7 +332,7 @@ describe("chart utils", () => {
         set = vi.fn();
 
         constructor() {
-          imageInstance = this as unknown as Image;
+          imageInstance = this as unknown as typeof Image;
           // Trigger load asynchronously
           setTimeout(() => {
             this.onload?.();

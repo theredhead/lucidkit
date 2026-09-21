@@ -496,7 +496,7 @@ describe("UISplitContainer", () => {
       fixture.detectChanges();
       restore();
 
-      expect(split.dragging()).toBe(true);
+      expect((split as any).dragging()).toBe(true);
     });
 
     it("should update sizes on pointermove while dragging", () => {
@@ -583,7 +583,7 @@ describe("UISplitContainer", () => {
       fixture.detectChanges();
       restore();
 
-      expect(split.dragging()).toBe(false);
+      expect((split as any).dragging()).toBe(false);
     });
 
     it("should emit resized event on pointerup", () => {
@@ -636,7 +636,7 @@ describe("UISplitContainer", () => {
       fixture.detectChanges();
       restore();
 
-      expect(split.dragging()).toBe(false);
+      expect((split as any).dragging()).toBe(false);
     });
 
     it("should work in vertical orientation during drag", () => {

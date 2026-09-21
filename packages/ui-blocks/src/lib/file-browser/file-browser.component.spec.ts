@@ -670,12 +670,12 @@ describe("UIFileBrowser", () => {
   describe("navigation guards and edge cases", () => {
     it("should not navigate into a non-directory entry", async () => {
       const file = ENTRIES.find((e) => !e.isDirectory)!;
-      const beforeDir = component.currentDirectory();
+      const beforeDir = (component as any).currentDirectory();
       component.navigateToDirectory(file);
       fixture.detectChanges();
       await fixture.whenStable();
       // Should not have navigated
-      expect(component.currentDirectory()).toBe(beforeDir);
+      expect((component as any).currentDirectory()).toBe(beforeDir);
     });
 
     it("should ignore Enter key press on entry if not Enter", () => {
@@ -696,9 +696,9 @@ describe("UIFileBrowser", () => {
         selector,
       ) as HTMLElement;
       if (divider && !divider.setPointerCapture) {
-        divider.setPointerCapture = () => {};
+        divider.setPointerCapture = () => { };
       } else if (divider) {
-        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => {});
+        vi.spyOn(divider, "setPointerCapture").mockImplementation(() => { });
       }
       return divider;
     }
@@ -981,11 +981,11 @@ describe("UIFileBrowser", () => {
   describe("onTreeNodeActivated edge cases", () => {
     it("should not navigate when activated node is not a directory", async () => {
       const fileNode = { id: "readme", data: ENTRIES[2] }; // README.md
-      const beforeDir = component.currentDirectory();
+      const beforeDir = (component as any).currentDirectory();
       (component as any).onTreeNodeActivated(fileNode);
       fixture.detectChanges();
       await fixture.whenStable();
-      expect(component.currentDirectory()).toBe(beforeDir);
+      expect((component as any).currentDirectory()).toBe(beforeDir);
     });
 
     it("should navigate when activated node is a directory", async () => {
@@ -994,15 +994,15 @@ describe("UIFileBrowser", () => {
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
-      expect(component.currentDirectory()?.id).toBe("docs");
+      expect((component as any).currentDirectory()?.id).toBe("docs");
     });
   });
 
   describe("onTreeNodeSelected", () => {
     it("should do nothing when selection is empty", () => {
-      const before = component.currentDirectory();
+      const before = (component as any).currentDirectory();
       (component as any).onTreeNodeSelected([]);
-      expect(component.currentDirectory()).toBe(before);
+      expect((component as any).currentDirectory()).toBe(before);
     });
 
     it("should navigate when directory node is selected", async () => {
@@ -1011,14 +1011,14 @@ describe("UIFileBrowser", () => {
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
-      expect(component.currentDirectory()?.id).toBe("docs");
+      expect((component as any).currentDirectory()?.id).toBe("docs");
     });
 
     it("should not navigate when file node is selected", () => {
-      const before = component.currentDirectory();
+      const before = (component as any).currentDirectory();
       const fileNode = { id: "readme", data: ENTRIES[2] }; // README.md
       (component as any).onTreeNodeSelected([fileNode]);
-      expect(component.currentDirectory()).toBe(before);
+      expect((component as any).currentDirectory()).toBe(before);
     });
   });
 
@@ -1037,7 +1037,7 @@ describe("UIFileBrowser", () => {
       await fixture.whenStable();
       fixture.detectChanges();
 
-      expect(component.currentDirectory()).toBeNull();
+      expect((component as any).currentDirectory()).toBeNull();
     });
 
     it("should navigate to ancestor when clicking non-root breadcrumb item", async () => {
@@ -1059,7 +1059,7 @@ describe("UIFileBrowser", () => {
         fixture.detectChanges();
         await fixture.whenStable();
         fixture.detectChanges();
-        expect(component.currentDirectory()?.id).toBe("docs");
+        expect((component as any).currentDirectory()?.id).toBe("docs");
       }
     });
   });
