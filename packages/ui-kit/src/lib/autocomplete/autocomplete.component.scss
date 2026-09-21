@@ -79,44 +79,6 @@
   }
 }
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.15rem 0.45rem 0.15rem 0.6rem;
-  border-radius: 1rem;
-  font-size: 0.8125rem;
-  white-space: nowrap;
-  color: var(--autocomplete-accent-contrast);
-  background-color: var(--autocomplete-accent);
-  cursor: default;
-  user-select: none;
-
-  &.selected {
-    box-shadow: 0 0 0 2px var(--autocomplete-accent-contrast);
-  }
-}
-
-.chip-remove {
-  @include mix.control-reset;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: var(--autocomplete-cursor);
-  padding: 0.1rem;
-  line-height: 1;
-  color: var(--autocomplete-accent-contrast);
-  opacity: 0.8;
-  border-radius: 50%;
-
-  &:hover {
-    opacity: 1;
-    background-color: color-mix(in srgb,
-        var(--autocomplete-accent-contrast) 20%,
-        transparent);
-  }
-}
-
 /* ── Text input ────────────────────────────────────────────── */
 
 .input {

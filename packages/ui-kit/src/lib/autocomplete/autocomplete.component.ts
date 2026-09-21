@@ -19,8 +19,7 @@ import {
   UISurface,
   UI_DEFAULT_SURFACE_TYPE,
 } from "@theredhead/lucid-foundation";
-import { UIIcon } from "../icon/icon.component";
-import { UIIcons } from "../icon/lucide-icons.generated";
+import { UIChip } from "../chip/chip.component";
 
 // Re-export so consumers importing from @theredhead/lucid-kit keep working.
 export type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
@@ -55,7 +54,7 @@ export type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
 @Component({
   selector: "ui-autocomplete",
   standalone: true,
-  imports: [NgTemplateOutlet, UIIcon],
+  imports: [NgTemplateOutlet, UIChip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
@@ -149,9 +148,6 @@ export class UIAutocomplete<T> {
   readonly itemRemoved = output<T>();
 
   // ── Internal state ─────────────────────────────────────────
-
-  /** @internal Icons used in the template. */
-  protected readonly icons = { close: UIIcons.Lucide.Math.X } as const;
 
   /** @internal Returns the background colour style value for a chip, or null for default. */
   protected chipColorBg(item: T, index: number): string | null {

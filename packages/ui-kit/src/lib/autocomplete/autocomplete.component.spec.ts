@@ -280,7 +280,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chips = fixture.nativeElement.querySelectorAll(".chip");
+      const chips = fixture.nativeElement.querySelectorAll("ui-chip");
       expect(chips.length).toBe(1);
     });
 
@@ -291,8 +291,7 @@ describe("UIAutocomplete", () => {
       ]);
       fixture.detectChanges();
 
-      const removeButtons =
-        fixture.nativeElement.querySelectorAll(".chip-remove");
+      const removeButtons = fixture.nativeElement.querySelectorAll(".dismiss");
       expect(removeButtons.length).toBe(2);
 
       removeButtons[0].click();
@@ -307,7 +306,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chips = fixture.nativeElement.querySelectorAll(".chip");
+      const chips = fixture.nativeElement.querySelectorAll("ui-chip");
       expect(chips.length).toBe(0);
     });
   });
@@ -328,7 +327,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chipLabel = fixture.nativeElement.querySelector(".chip-label");
+      const chipLabel = fixture.nativeElement.querySelector("ui-chip .label");
       expect(chipLabel.textContent.trim()).toBe("Alice");
     });
   });
@@ -620,7 +619,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const removeBtn = fixture.nativeElement.querySelector(".chip-remove");
+      const removeBtn = fixture.nativeElement.querySelector(".dismiss");
       removeBtn.click();
       fixture.detectChanges();
 
@@ -652,7 +651,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const removeBtns =
-        fixture.nativeElement.querySelectorAll(".chip-remove");
+        fixture.nativeElement.querySelectorAll(".dismiss");
       removeBtns[0].click();
       fixture.detectChanges();
 

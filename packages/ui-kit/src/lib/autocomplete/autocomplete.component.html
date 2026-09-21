@@ -6,21 +6,16 @@
   <span class="chip-cursor" aria-hidden="true"></span>
   }
   @for (chip of value(); track $index) {
-  <span class="chip" role="listitem" [class.selected]="isChipSelected($index)"
-    [style.background-color]="chipColorBg(chip, $index)" [style.color]="chipColorFg(chip, $index)"
-    (mouseup)="onChipMouseUp($index, $event)" (keydown.space)="onChipMouseUp($index, $event)">
-    <span class="chip-label">
-      @if (itemTemplate()) {
-      <ng-container [ngTemplateOutlet]="itemTemplate()!" [ngTemplateOutletContext]="{ $implicit: chip }" />
-      } @else {
-      {{ itemToString(chip) }}
-      }
-    </span>
-    <button class="chip-remove" type="button" [style.color]="chipColorFg(chip, $index)"
-      [attr.aria-label]="'Remove ' + itemToString(chip)" (click)="$event.stopPropagation(); removeItem(chip)">
-      <ui-icon [svg]="icons.close" [size]="10" />
-    </button>
-  </span>
+  <ui-chip role="listitem" color="primary" [selected]="isChipSelected($index)"
+    [backgroundColor]="chipColorBg(chip, $index) || 'var(--ui-accent)'"
+    [textColor]="chipColorFg(chip, $index) || 'var(--ui-accent-contrast)'" [removable]="true"
+    [ariaLabel]="itemToString(chip)" (mouseup)="onChipMouseUp($index, $event)" (removed)="removeItem(chip)">
+    @if (itemTemplate()) {
+    <ng-container [ngTemplateOutlet]="itemTemplate()!" [ngTemplateOutletContext]="{ $implicit: chip }" />
+    } @else {
+    {{ itemToString(chip) }}
+    }
+  </ui-chip>
   @if (inChipZone() && chipCursorPos() === $index + 1) {
   <span class="chip-cursor" aria-hidden="true"></span>
   }

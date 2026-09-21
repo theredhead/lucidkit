@@ -41,12 +41,24 @@ export type ChipColor =
     "[class.danger]": "color() === 'danger'",
     "[class.neutral]": "color() === 'neutral'",
     "[class.disabled]": "disabled()",
+    "[class.selected]": "selected()",
+    "[style.background-color]": "backgroundColor()",
+    "[style.color]": "textColor()",
   },
 })
 export class UIChip {
 
   /** Color preset. */
   public readonly color = input<ChipColor>("neutral");
+
+  /** Whether the chip represents an active or selected item. */
+  public readonly selected = input(false);
+
+  /** Optional per-instance background color override. */
+  public readonly backgroundColor = input<string | null>(null);
+
+  /** Optional per-instance text color override. */
+  public readonly textColor = input<string | null>(null);
 
   /** Whether the chip can be removed (shows dismiss button). */
   public readonly removable = input(false);
