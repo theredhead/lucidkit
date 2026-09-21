@@ -41,7 +41,6 @@ core and `@angular/cdk`.
 | **UIRepeater**                   | `ui-repeater`                        | Template repeater with grid, flex-row, flex-column, masonry layouts                                                                                                           |
 | **UIFileUpload**                 | `ui-file-upload`                     | Drag-and-drop file upload zone with accept filter and size limits                                                                                                             |
 | **UIDialog**                     | `ui-dialog`                          | Modal dialog container with backdrop, size options                                                                                                                            |
-| **UIThemeToggle**                | `ui-theme-toggle`                    | Light/dark mode toggle button with inline SVG icons                                                                                                                           |
 
 ## Table View Columns
 

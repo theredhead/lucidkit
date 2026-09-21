@@ -14,7 +14,6 @@ export * from "./lib/rich-text-view/rich-text-view.component";
 export * from "./lib/popover";
 export * from "./lib/map-view";
 export * from "./lib/core/types";
-export * from "./lib/theme-toggle/theme-toggle.component";
 export * from "./lib/table-view";
 export * from "./lib/ui-density";
 export * from "./lib/date-picker";
