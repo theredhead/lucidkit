@@ -316,7 +316,8 @@ export class UIAutocomplete<T> {
   protected onInput(event: Event): void {
     const text = (event.target as HTMLInputElement).value;
     this.query.set(text);
-    this.exitChipZone(0);
+    this.chipCursorPos.set(null);
+    this.chipCursorAnchor.set(null);
     this.activeIndex.set(-1);
     this.isOpen.set(text.length >= this.minChars());
   }
@@ -337,7 +338,9 @@ export class UIAutocomplete<T> {
     } else {
       this.value.set([item]);
     }
-    this.query.set(this.multiple() ? "" : this.displayWith()(item));
+    const query = this.multiple() ? "" : this.displayWith()(item);
+    this.query.set(query);
+    this.inputEl().nativeElement.value = query;
     this.itemSelected.emit(item);
     this.closePopup();
   }

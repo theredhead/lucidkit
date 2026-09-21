@@ -1,98 +1,55 @@
 <!-- Input box: chips + text input inline -->
-<div
-  class="input-box"
-  [class.disabled]="disabled()"
-  tabindex="-1"
-  (click)="focusInput()"
-  (keydown)="focusInput()"
->
+<div class="input-box" [class.disabled]="disabled()" tabindex="-1" (click)="focusInput()"
+  (keyup)="$event.stopPropagation()">
   @if (multiple()) {
-    @if (inChipZone() && chipCursorPos() === 0) {
-      <span class="chip-cursor" aria-hidden="true"></span>
-    }
-    @for (chip of value(); track $index) {
-    <span
-      class="chip"
-      role="listitem"
-      [class.selected]="isChipSelected($index)"
-      [style.background-color]="chipColorBg(chip, $index)"
-      [style.color]="chipColorFg(chip, $index)"
-      (mouseup)="onChipMouseUp($index, $event)"
-      (keydown.space)="onChipMouseUp($index, $event)"
-    >
-      <span class="chip-label">
-        @if (itemTemplate()) {
-          <ng-container
-            [ngTemplateOutlet]="itemTemplate()!"
-            [ngTemplateOutletContext]="{ $implicit: chip }"
-          />
-        } @else {
-          {{ itemToString(chip) }}
-        }
-      </span>
-      <button
-        class="chip-remove"
-        type="button"
-        [style.color]="chipColorFg(chip, $index)"
-        [attr.aria-label]="'Remove ' + itemToString(chip)"
-        (click)="$event.stopPropagation(); removeItem(chip)"
-      >
-        <ui-icon [svg]="icons.close" [size]="10" />
-      </button>
+  @if (inChipZone() && chipCursorPos() === 0) {
+  <span class="chip-cursor" aria-hidden="true"></span>
+  }
+  @for (chip of value(); track $index) {
+  <span class="chip" role="listitem" [class.selected]="isChipSelected($index)"
+    [style.background-color]="chipColorBg(chip, $index)" [style.color]="chipColorFg(chip, $index)"
+    (mouseup)="onChipMouseUp($index, $event)" (keydown.space)="onChipMouseUp($index, $event)">
+    <span class="chip-label">
+      @if (itemTemplate()) {
+      <ng-container [ngTemplateOutlet]="itemTemplate()!" [ngTemplateOutletContext]="{ $implicit: chip }" />
+      } @else {
+      {{ itemToString(chip) }}
+      }
     </span>
-    @if (inChipZone() && chipCursorPos() === $index + 1) {
-      <span class="chip-cursor" aria-hidden="true"></span>
-    }
+    <button class="chip-remove" type="button" [style.color]="chipColorFg(chip, $index)"
+      [attr.aria-label]="'Remove ' + itemToString(chip)" (click)="$event.stopPropagation(); removeItem(chip)">
+      <ui-icon [svg]="icons.close" [size]="10" />
+    </button>
+  </span>
+  @if (inChipZone() && chipCursorPos() === $index + 1) {
+  <span class="chip-cursor" aria-hidden="true"></span>
+  }
   }
   }
 
   <!-- Text input -->
-  <input
-    #inputEl
-    class="input"
-    type="text"
-    role="combobox"
-    autocomplete="off"
-    [value]="query()"
-    [disabled]="disabled()"
-    [placeholder]="value().length === 0 ? placeholder() : ''"
-    [attr.aria-label]="ariaLabel()"
-    [attr.aria-expanded]="isOpen()"
-    [attr.aria-controls]="listboxId"
+  <input #inputEl class="input" type="text" role="combobox" autocomplete="off" autocorrect="off" autocapitalize="none"
+    spellcheck="false" [disabled]="disabled()" [placeholder]="value().length === 0 ? placeholder() : ''"
+    [attr.aria-label]="ariaLabel()" [attr.aria-expanded]="isOpen()" [attr.aria-controls]="listboxId"
     [attr.aria-activedescendant]="
       activeIndex() >= 0 ? listboxId + '-' + activeIndex() : null
-    "
-    [style.caret-color]="inChipZone() ? 'transparent' : null"
-    (input)="onInput($event)"
-    (focus)="openPopup()"
-    (keydown)="onKeydown($event)"
-  />
+    " [style.caret-color]="inChipZone() ? 'transparent' : null" (input)="onInput($event)" (focus)="openPopup()"
+    (keydown)="onKeydown($event)" />
 </div>
 
 <!-- Suggestion popup -->
 @if (isOpen() && suggestions().length > 0) {
-  <ul class="popup" role="listbox" [id]="listboxId">
-    @for (item of suggestions(); track $index) {
-      <li
-        class="option"
-        role="option"
-        tabindex="-1"
-        [id]="listboxId + '-' + $index"
-        [class.option--active]="$index === activeIndex()"
-        [attr.aria-selected]="$index === activeIndex()"
-        (pointerdown)="$event.preventDefault()"
-        (click)="pickItem(item)"
-        (keydown.enter)="pickItem(item)"
-      >
-        @if (itemTemplate()) {
-          <ng-container
-            [ngTemplateOutlet]="itemTemplate()!"
-            [ngTemplateOutletContext]="{ $implicit: item }"
-          />
-        } @else {
-          {{ itemToString(item) }}
-        }
-      </li>
+<ul class="popup" role="listbox" [id]="listboxId">
+  @for (item of suggestions(); track $index) {
+  <li class="option" role="option" tabindex="-1" [id]="listboxId + '-' + $index"
+    [class.option--active]="$index === activeIndex()" [attr.aria-selected]="$index === activeIndex()"
+    (pointerdown)="$event.preventDefault()" (click)="pickItem(item)" (keydown.enter)="pickItem(item)">
+    @if (itemTemplate()) {
+    <ng-container [ngTemplateOutlet]="itemTemplate()!" [ngTemplateOutletContext]="{ $implicit: item }" />
+    } @else {
+    {{ itemToString(item) }}
     }
-  </ul>
+  </li>
+  }
+</ul>
 }

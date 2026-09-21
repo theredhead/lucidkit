@@ -84,6 +84,10 @@ describe("UIAutocomplete", () => {
         'input[role="combobox"]',
       );
       expect(input).toBeTruthy();
+      expect(input.autocomplete).toBe("off");
+      expect(input.getAttribute("autocorrect")).toBe("off");
+      expect(input.getAttribute("autocapitalize")).toBe("none");
+      expect(input.getAttribute("spellcheck")).toBe("false");
     });
 
     it("should forward placeholder to the input", () => {
@@ -658,6 +662,33 @@ describe("UIAutocomplete", () => {
   });
 
   describe("single mode input value", () => {
+    it("should not reset the caret when a keydown bubbles from the input", async () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".input");
+      input.value = "ab";
+      input.focus();
+      input.setSelectionRange(2, 2);
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "c", bubbles: true }),
+      );
+      await Promise.resolve();
+
+      expect(input.selectionStart).toBe(2);
+      expect(input.selectionEnd).toBe(2);
+    });
+
+    it("should preserve the caret after input change detection", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".input");
+      input.value = "Alice";
+      input.setSelectionRange(2, 2);
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      expect(input.selectionStart).toBe(2);
+      expect(input.selectionEnd).toBe(2);
+    });
+
     it("should set input value to displayWith when item is picked", () => {
       fixture.componentRef.setInput(
         "displayWith",

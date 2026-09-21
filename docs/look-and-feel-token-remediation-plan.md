@@ -40,7 +40,7 @@ These are the first priority because they expose theme failures most visibly.
   - Add local popup surface, text, border, shadow, and navigation-hover tokens.
 - [x] Refactor `packages/ui-kit/src/lib/calendar/calendar-day-popover.component.scss`.
   - Apply the same popup token contract as the calendar panel.
-- [ ] Refactor `packages/ui-kit/src/lib/color-picker/color-picker-popover.component.scss`.
+- [x] Refactor `packages/ui-kit/src/lib/color-picker/color-picker-popover.component.scss`.
   - Add local surface, border, shadow, text, and focus tokens.
   - Verify swatches remain legible in dark mode.
 - [x] Refactor popup styles in `packages/ui-kit/src/lib/input/input.component.scss`.
