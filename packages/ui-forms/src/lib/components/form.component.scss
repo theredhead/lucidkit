@@ -1,6 +1,9 @@
 @use "mixins" as mix;
 
 :host {
+  --form-warning-text: var(--ui-badge-warning-fg, var(--ui-warning));
+  --form-warning-surface: var(--ui-badge-warning-bg, var(--ui-surface-2));
+  --form-warning-border: var(--ui-badge-warning-border, var(--ui-border));
   display: block;
 }
 
@@ -78,9 +81,9 @@ ui-form-group {
   gap: 8px;
   padding: 12px 16px;
   border-radius: 6px;
-  border: 1px solid var(--ui-color-warning-border, var(--ui-badge-warning-border, #c08000));
-  color: var(--ui-color-warning-text, var(--ui-badge-warning-fg, #7a4f00));
-  background: var(--ui-color-warning-surface, var(--ui-badge-warning-bg, #fff8e1));
+  border: 1px solid var(--form-warning-border);
+  color: var(--form-warning-text);
+  background: var(--form-warning-surface);
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.4;

@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIChart } from "../../chart.component";
-
 import { ChartSwitcherDemo } from "./strategy-switcher.story";
 
 interface ChartSwitcherStoryArgs {
@@ -19,7 +17,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "`UIChart` is a generic data-chart component that delegates all rendering to a `GraphPresentationStrategy`.",
+          "`UIChart` delegates rendering to a `GraphPresentationStrategy` and color assignment to a selectable `ChartColoringStrategy`.",
       },
     },
   },

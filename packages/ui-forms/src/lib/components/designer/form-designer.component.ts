@@ -156,7 +156,7 @@ export class UIFormDesigner {
     btn.style.cssText =
       "appearance:none;border:none;border-radius:8px;padding:8px 20px;" +
       "font-size:0.875rem;font-weight:600;cursor:pointer;" +
-      "background:var(--theredhead-primary,#3584e4);color:var(--theredhead-on-primary,#fff);";
+      "background:var(--ui-accent,#3584e4);color:var(--ui-accent-contrast,#fff);";
     btn.addEventListener("click", () => {
       dialog.close();
       dialog.remove();

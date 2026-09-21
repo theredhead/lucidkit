@@ -60,6 +60,7 @@
 .track {
   display: inline-flex;
   align-items: center;
+  box-sizing: border-box;
   width: 2.25rem;
   height: 1.25rem;
   border-radius: 0.625rem;

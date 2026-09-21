@@ -10,6 +10,8 @@
   --cp-item-active-text: var(--ui-accent-contrast, #ffffff);
   --cp-kbd-bg: var(--ui-border, #d7dce2);
   --cp-kbd-text: var(--ui-text, #1d232b);
+  --cp-shadow: var(--ui-shadow-lg);
+  --cp-radius: var(--ui-radius, 0.75rem);
   --cp-disabled-opacity: 0.4;
 
   display: contents;
@@ -32,7 +34,7 @@
   z-index: 1000;
   width: min(560px, calc(100vw - 32px));
   max-height: 420px;
-  border-radius: 12px;
+  border-radius: var(--cp-radius);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -40,7 +42,7 @@
   color: var(--cp-text);
   background: var(--cp-bg);
   border: 1px solid var(--cp-border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--cp-shadow);
 }
 
 // ── Search ──────────────────────────────────────────────────────────

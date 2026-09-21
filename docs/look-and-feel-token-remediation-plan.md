@@ -52,17 +52,17 @@ These are the first priority because they expose theme failures most visibly.
 
 ## Semantic Component Colors
 
-- [ ] Refactor `packages/ui-blocks/src/lib/command-palette/command-palette.component.scss`.
+- [x] Refactor `packages/ui-blocks/src/lib/command-palette/command-palette.component.scss`.
   - Keep the `--cp-*` local token layer.
   - Chain muted text, active text, keyboard hints, background, border, and shadow to root tokens.
-- [ ] Refactor warning states in:
+- [x] Refactor warning states in:
   - `packages/ui-forms/src/lib/components/form-field/form-field.component.scss`
   - `packages/ui-forms/src/lib/components/form.component.scss`
   - Base warning foreground, surface, border, and code background on warning root tokens.
-- [ ] Refactor `packages/ui-kit/src/lib/toast/toast.component.scss`.
+- [x] Refactor `packages/ui-kit/src/lib/toast/toast.component.scss`.
   - Add local success, warning, info, and error tokens.
   - Base error states on `--ui-error`.
-- [ ] Refactor `packages/ui-blocks/src/lib/property-sheet/property-sheet.component.scss`.
+- [x] Refactor `packages/ui-blocks/src/lib/property-sheet/property-sheet.component.scss`.
   - Replace danger fallbacks with local error tokens.
 - [ ] Audit `packages/ui-blocks/src/lib/rich-text-editor/rich-text-editor.component.scss`.
   - Add local tokens for destructive actions, placeholders, dropdowns, pickers, and fullscreen overlays.
@@ -79,14 +79,16 @@ These are the first priority because they expose theme failures most visibly.
 
 ## Data Visualization And Loading States
 
-- [ ] Refactor chart colors in:
+- [x] Refactor chart colors through a `ChartColoringStrategy` abstraction in:
   - `packages/ui-kit/src/lib/chart/strategies/bar-graph.strategy.ts`
   - `packages/ui-kit/src/lib/chart/strategies/line-graph.strategy.ts`
   - `packages/ui-kit/src/lib/chart/strategies/scatter-plot.strategy.ts`
   - `packages/ui-kit/src/lib/chart/strategies/stacked-bar-graph.strategy.ts`
   - `packages/ui-kit/src/lib/chart/strategies/pie-chart.strategy.ts`
-- [ ] Define chart text, grid, surface, and series token conventions.
-- [ ] Keep chart-specific overrides possible without bypassing the root theme.
+- [x] Add a `classic` coloring strategy that preserves the current on-screen chart palette.
+- [x] Add a `modern` coloring strategy with a more intentional, theme-aware palette and contrast treatment.
+- [x] Define chart text, grid, surface, and series token conventions for each strategy.
+- [x] Keep strategy-specific and chart-specific overrides possible without bypassing the root theme.
 - [ ] Refactor table skeleton styles in `packages/ui-kit/src/lib/table-view/table-view-body/table-view-body.component.scss`.
   - Keep width, height, radius, and animation settings local.
   - Base skeleton colors on `--ui-border` and `--ui-surface-2`.

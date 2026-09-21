@@ -37,6 +37,8 @@ export interface SelectOption {
     `
       :host {
         display: block;
+        --dropdown-list-accent: var(--ui-accent);
+        --dropdown-list-accent-text: var(--ui-accent-contrast);
       }
       .dropdown-panel {
         list-style: none;
@@ -61,8 +63,8 @@ export interface SelectOption {
       }
       .dropdown-item:hover,
       .dropdown-item:focus-visible {
-        background: var(--theredhead-primary, #4f46e5);
-        color: #fff;
+        background: var(--dropdown-list-accent);
+        color: var(--dropdown-list-accent-text);
         outline: none;
       }
       .dropdown-item--selected {

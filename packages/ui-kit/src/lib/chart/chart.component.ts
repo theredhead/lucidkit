@@ -23,6 +23,10 @@ import {
   extractSeriesData,
 } from "./chart.utils";
 import type { GraphPresentationStrategy } from "./strategies/graph-presentation-strategy";
+import {
+  CLASSIC_CHART_COLORING,
+  type ChartColoringStrategy,
+} from "./strategies/chart-coloring.strategy";
 
 /**
  * Generic data-chart component that delegates rendering to a
@@ -108,6 +112,11 @@ export class UIChart<T> {
   /** Custom colour palette. Falls back to the 12-colour default. */
   public readonly palette = input<readonly string[]>(DEFAULT_CHART_PALETTE);
 
+  /** Color treatment applied after data extraction. Defaults to classic. */
+  public readonly coloring = input<ChartColoringStrategy>(
+    CLASSIC_CHART_COLORING,
+  );
+
   /** Whether to show the legend beneath the chart. */
   public readonly showLegend = input<boolean>(true);
 
@@ -134,7 +143,7 @@ export class UIChart<T> {
   protected readonly isMultiSeries = computed(() => this.sources().length > 0);
 
   /** Processed series data ready for strategy rendering. */
-  protected readonly seriesData = computed<ChartSeriesData[]>(() => {
+  protected readonly seriesData = computed<readonly ChartSeriesData[]>(() => {
     const layerDefs = this.sources();
     const palette = this.palette();
 
@@ -146,17 +155,17 @@ export class UIChart<T> {
         this.valueProperty(),
         palette,
       );
-      return [{ name: "", color: palette[0], points }];
+      return this.coloring().color([{ name: "", color: palette[0], points }]);
     }
 
     // Multi-series mode — each layer gets one colour
-    return extractSeriesData(
+    return this.coloring().color(extractSeriesData(
       layerDefs,
       this.source(),
       this.labelProperty(),
       this.valueProperty(),
       palette,
-    );
+    ));
   });
 
   /** Legend entries — per-point for single-series, per-series for multi. */
