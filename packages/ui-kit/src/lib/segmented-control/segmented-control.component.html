@@ -1,29 +1,17 @@
 @if (animateSelection()) {
-  <div
-    class="indicator"
-    aria-hidden="true"
-    [style.left.px]="indicatorLeft()"
-    [style.width.px]="indicatorWidth()"
-  ></div>
+<div class="indicator" aria-hidden="true" [style.left.px]="indicatorLeft()" [style.width.px]="indicatorWidth()"
+  [style.background-color]="resolvedIndicatorColor()"></div>
 }
 @for (item of items(); track item.id) {
-  <button
-    #segmentBtn
-    class="segment"
-    type="button"
-    role="radio"
-    [class.active]="item.id === value()"
-    [class.disabled]="item.disabled"
-    [attr.aria-checked]="item.id === value()"
-    [attr.aria-disabled]="item.disabled ?? false"
-    [attr.aria-label]="item.label"
-    [disabled]="disabled() || item.disabled || null"
-    (click)="select(item)"
-    (keydown)="onKeyDown($event, item)"
-  >
-    @if (item.icon) {
-      <ui-icon [svg]="item.icon" [size]="14" />
-    }
-    <span class="label">{{ item.label }}</span>
-  </button>
+<button #segmentBtn class="segment" type="button" role="radio" [class.active]="item.id === value()"
+  [class.disabled]="item.disabled" [attr.aria-checked]="item.id === value()"
+  [attr.aria-disabled]="item.disabled ?? false" [attr.aria-label]="item.label"
+  [disabled]="disabled() || item.disabled || null"
+  [style.color]="item.id === value() && animateSelection() ? resolvedIndicatorTextColor() : null"
+  (click)="select(item)" (keydown)="onKeyDown($event, item)">
+  @if (item.icon) {
+  <ui-icon [svg]="item.icon" [size]="14" />
+  }
+  <span class="label">{{ item.label }}</span>
+</button>
 }

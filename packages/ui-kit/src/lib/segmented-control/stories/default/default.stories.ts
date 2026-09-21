@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UISegmentedControl } from "../../segmented-control.component";
-
 import { DefaultStorySource } from "./default.story";
 
 const meta = {
@@ -9,10 +7,13 @@ const meta = {
   component: DefaultStorySource,
   tags: ["autodocs"],
   argTypes: {
-    value: { control: "text", description: "Active segment id." },
     disabled: {
       control: "boolean",
       description: "Disable the entire control.",
+    },
+    indicatorColor: {
+      control: "text",
+      description: "Theme name (for example primary or success) or any CSS color.",
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
@@ -22,11 +23,17 @@ export default meta;
 type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
-  args: { disabled: false },
+  args: { disabled: false, indicatorColor: "primary" },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `
+      <ui-default-story-demo
+        [disabled]="disabled"
+        [indicatorColor]="indicatorColor"
+      />
+    `,
+  })
 };
