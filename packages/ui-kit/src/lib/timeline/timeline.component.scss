@@ -29,7 +29,7 @@
     padding: 4px;
 
     &:hover .timeline-dot {
-      box-shadow: 0 0 0 3px var(--ui-accent-light, rgba(59, 130, 246, 0.2));
+      box-shadow: 0 0 0 3px var(--ui-accent-light, color-mix(in srgb, var(--ui-accent, #3b82f6) 20%, transparent));
     }
 
     &:focus-visible .timeline-dot {
@@ -151,7 +151,7 @@
     border-radius: 6px;
 
     &:hover .timeline-dot {
-      box-shadow: 0 0 0 3px var(--ui-accent-light, rgba(59, 130, 246, 0.2));
+      box-shadow: 0 0 0 3px var(--ui-accent-light, color-mix(in srgb, var(--ui-accent, #3b82f6) 20%, transparent));
     }
 
     &:focus-visible .timeline-dot {

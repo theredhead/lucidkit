@@ -24,8 +24,8 @@
 // Paper-like background — intentionally light even in dark mode.
 // Override via --signature-canvas-bg / --signature-canvas-text if needed.
 :host {
-  --signature-canvas-bg: var(--ui-signature-canvas-bg, #f5f5f3);
-  --signature-canvas-text: var(--ui-signature-canvas-text, #1d232b);
+  --signature-canvas-bg: var(--ui-signature-canvas-bg, var(--ui-surface, #f5f5f3));
+  --signature-canvas-text: var(--ui-signature-canvas-text, var(--ui-text, #1d232b));
 }
 
 .surface {
@@ -49,11 +49,9 @@
   // Active drag
   :host(.dragging) & {
     border-color: var(--ui-accent);
-    background: color-mix(
-      in srgb,
-      var(--ui-accent) 8%,
-      var(--signature-canvas-bg)
-    );
+    background: color-mix(in srgb,
+        var(--ui-accent) 8%,
+        var(--signature-canvas-bg));
   }
 
   // No-draw modes use default cursor
@@ -83,10 +81,8 @@
   justify-content: center;
   gap: 0.5rem;
   pointer-events: none;
-  color: var(
-    --ui-text-muted,
-    color-mix(in srgb, var(--ui-text) 50%, transparent)
-  );
+  color: var(--ui-text-muted,
+      color-mix(in srgb, var(--ui-text) 50%, transparent));
   user-select: none;
 }
 

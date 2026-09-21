@@ -203,7 +203,7 @@ ui-toolbar {
   display: flex;
   gap: 0.2rem;
 
-  & + & {
+  &+& {
     margin-top: 0.2rem;
   }
 }
@@ -265,13 +265,10 @@ ui-toolbar {
 
   &:focus-within {
     border-color: var(--ui-accent, #3584e4);
-    background: color-mix(
-      in srgb,
-      var(--ui-accent, #3584e4) 3%,
-      var(--ui-surface, #ffffff)
-    );
-    box-shadow: 0 0 0 3px
-      color-mix(in srgb, var(--ui-accent, #3584e4) 18%, transparent);
+    background: color-mix(in srgb,
+        var(--ui-accent, #3584e4) 3%,
+        var(--ui-surface, #ffffff));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-accent, #3584e4) 18%, transparent);
   }
 }
 
@@ -464,7 +461,7 @@ ui-toolbar {
   color: var(--ui-text, #1d232b);
   background: var(--ui-surface, #ffffff);
 
-  > .header {
+  >.header {
     display: block;
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
@@ -474,7 +471,7 @@ ui-toolbar {
     border-bottom: 1px solid var(--ui-border, #d4d8dd);
   }
 
-  > .content {
+  >.content {
     min-height: 1.5rem;
     padding: 0.45rem 0.55rem;
     color: var(--ui-text, #1d232b);
@@ -486,7 +483,7 @@ ui-toolbar {
   color: var(--ui-text, #1d232b);
   background: var(--ui-surface, #ffffff);
 
-  > td {
+  >td {
     padding: 0.35rem;
     color: var(--ui-text, #1d232b);
     background: var(--ui-surface, #ffffff);
@@ -727,7 +724,7 @@ ui-toolbar {
   &--over {
     .char-count {
       font-weight: 600;
-      color: var(--ui-danger, #e53935);
+      color: var(--ui-danger, var(--ui-error, #e53935));
     }
   }
 }
@@ -804,12 +801,12 @@ ui-toolbar {
   grid-template-columns: 1fr 5px 1fr;
   grid-template-rows: auto 1fr auto;
 
-  > ui-toolbar,
-  > .footer {
+  >ui-toolbar,
+  >.footer {
     grid-column: 1 / -1;
   }
 
-  > .markdown-editor {
+  >.markdown-editor {
     grid-column: 1;
     grid-row: 2;
     min-height: 0;
@@ -818,7 +815,7 @@ ui-toolbar {
     border-right: 1px solid var(--ui-border, #d4d8dd);
   }
 
-  > .split-handle {
+  >.split-handle {
     grid-column: 2;
     grid-row: 2;
     cursor: col-resize;
@@ -827,7 +824,7 @@ ui-toolbar {
     align-self: stretch;
   }
 
-  > .editor-wrapper {
+  >.editor-wrapper {
     grid-column: 3;
     grid-row: 2;
     min-height: 0;
@@ -835,7 +832,7 @@ ui-toolbar {
     border-top: 1px solid var(--ui-border, #d4d8dd);
   }
 
-  > .footer {
+  >.footer {
     grid-row: 3;
   }
 }

@@ -99,10 +99,10 @@
 }
 
 .toast--error {
-  border-left: 3px solid var(--ui-danger, #ef4444);
+  border-left: 3px solid var(--ui-danger, var(--ui-error, #ef4444));
 
   .icon {
-    color: var(--ui-danger, #ef4444);
+    color: var(--ui-danger, var(--ui-error, #ef4444));
   }
 }
 
@@ -177,6 +177,7 @@
     opacity: 0;
     transform: translateY(-0.5rem) scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -188,6 +189,7 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+
   to {
     opacity: 0;
     transform: translateY(-0.5rem) scale(0.96);

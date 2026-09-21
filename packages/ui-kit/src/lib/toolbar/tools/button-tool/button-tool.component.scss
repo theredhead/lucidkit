@@ -12,13 +12,13 @@
   background: transparent;
   color: var(--ui-text, #1d232b);
   border: none;
-  border-radius: var(--ui-radius-sm, 0.25rem);
+  border-radius: var(--ui-radius-sm, var(--ui-radius, 0.25rem));
   cursor: var(--ui-cursor-click, pointer);
   line-height: 1;
   white-space: nowrap;
 
   &:hover:not(:disabled) {
-    background: var(--ui-surface-raised, rgba(0, 0, 0, 0.07));
+    background: var(--ui-surface-raised, var(--ui-hover-bg, rgba(0, 0, 0, 0.07)));
     color: var(--ui-text, #1d232b);
   }
 

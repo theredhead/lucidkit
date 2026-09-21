@@ -52,8 +52,8 @@ export class LineGraphStrategy extends GraphPresentationStrategy {
     const { min, max, ticks } = computeYScale(allPoints);
     const range = max - min || 1;
 
-    const textColor = "var(--ui-chart-text, #555)";
-    const gridColor = "var(--ui-chart-grid, #e0e0e0)";
+    const textColor = "var(--ui-chart-text, var(--ui-text-muted, #555))";
+    const gridColor = "var(--ui-chart-grid, var(--ui-border, #e0e0e0))";
 
     drawYAxis(svg, ticks, area, max, min, textColor, gridColor);
 

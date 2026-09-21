@@ -5,9 +5,9 @@
   --cp-bg: var(--ui-surface, #ffffff);
   --cp-text: var(--ui-text, #1d232b);
   --cp-border: var(--ui-border, #d7dce2);
-  --cp-muted: var(--ui-text-secondary, #6b7280);
+  --cp-muted: var(--ui-text-muted, #6b7280);
   --cp-item-active-bg: var(--ui-accent, #3584e4);
-  --cp-item-active-text: #ffffff;
+  --cp-item-active-text: var(--ui-accent-contrast, #ffffff);
   --cp-kbd-bg: var(--ui-border, #d7dce2);
   --cp-kbd-text: var(--ui-text, #1d232b);
   --cp-disabled-opacity: 0.4;
@@ -92,7 +92,7 @@
 
 // ── Groups ──────────────────────────────────────────────────────────
 .cp-group {
-  & + & {
+  &+& {
     margin-top: 4px;
   }
 }
@@ -188,6 +188,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -198,6 +199,7 @@
     opacity: 0;
     transform: translateX(-50%) translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);

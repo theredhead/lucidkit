@@ -80,7 +80,7 @@ export class PieChartStrategy extends GraphPresentationStrategy {
         svgEl("path", {
           d,
           fill: point.color,
-          stroke: "var(--ui-chart-bg, #fff)",
+          stroke: "var(--ui-chart-bg, var(--ui-surface, #fff))",
           "stroke-width": 2,
         }),
       );

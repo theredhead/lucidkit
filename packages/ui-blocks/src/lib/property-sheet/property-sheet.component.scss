@@ -64,7 +64,7 @@
 }
 
 .ps-required {
-  color: var(--ui-danger, #b42318);
+  color: var(--ui-danger, var(--ui-error, #b42318));
   background: transparent;
 }
 

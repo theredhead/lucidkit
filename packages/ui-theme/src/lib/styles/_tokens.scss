@@ -65,6 +65,7 @@
 
   // 4. Typography (mode-invariant — repeated in dark for completeness)
   --ui-font: inherit;
+  --ui-font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --ui-font-body: 0.875rem;
   --ui-font-header: 0.74rem;
   --ui-font-caption: 0.8rem;
@@ -194,6 +195,7 @@
 
   // 4. Typography (same as light)
   --ui-font: inherit;
+  --ui-font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --ui-font-body: 0.875rem;
   --ui-font-header: 0.74rem;
   --ui-font-caption: 0.8rem;

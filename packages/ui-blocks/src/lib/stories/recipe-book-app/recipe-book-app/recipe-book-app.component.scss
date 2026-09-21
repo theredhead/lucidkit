@@ -143,7 +143,7 @@
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
-  background: var(--ui-surface-dim, #2a313c);
+  background: var(--ui-surface-dim, var(--ui-surface-2, #2a313c));
   color: var(--ui-text, #1d232b);
 }
 
@@ -186,7 +186,7 @@
   border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 0.5rem;
   margin-bottom: 1rem;
-  background: var(--ui-surface-dim, #2a313c);
+  background: var(--ui-surface-dim, var(--ui-surface-2, #2a313c));
   color: var(--ui-text, #1d232b);
 }
 .servings-label {
@@ -373,7 +373,7 @@
   text-align: center;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  background: var(--ui-surface-dim, #2a313c);
+  background: var(--ui-surface-dim, var(--ui-surface-2, #2a313c));
   color: var(--ui-text, #1d232b);
 }
 .nutrition-value {

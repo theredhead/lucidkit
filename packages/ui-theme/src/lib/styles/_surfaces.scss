@@ -12,7 +12,7 @@
 
 .ui-surface-type-raised {
   background-color: var(--ui-surface, inherit);
-  box-shadow: var(--ui-elevation-2, 0 2px 8px rgba(0, 0, 0, 0.08));
+  box-shadow: var(--ui-elevation-2, var(--ui-shadow-md, 0 2px 8px rgba(0, 0, 0, 0.08)));
 }
 
 .ui-surface-type-sunken {
@@ -27,11 +27,9 @@
 .ui-surface-type-toolbar-floating {
   --ui-toolbar-shell-text: var(--ui-text, #1d232b);
   --ui-toolbar-shell-bg: var(--ui-surface, #f7f8fa);
-  --ui-toolbar-shell-border: color-mix(
-    in srgb,
-    var(--ui-border, #cdd5df) 82%,
-    transparent
-  );
+  --ui-toolbar-shell-border: color-mix(in srgb,
+      var(--ui-border, #cdd5df) 82%,
+      transparent);
   --ui-toolbar-shell-shadow: none;
 }
 

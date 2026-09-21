@@ -1,0 +1,333 @@
+// theredhead UI Theme — Generative Theme Builder
+// =============================================================================
+//
+// `lucid-theme()` derives the full `--ui-*` token set (surfaces, borders,
+// badges, chips, controls, elevation, …) from up to five seed colours —
+// $primary, $secondary, $tertiary, $success, $error — instead of the fixed
+// Material-derived palette in `tokens.scss`. Missing seed colours are
+// derived from $primary so a single colour still produces a coherent,
+// uniformly dark/light-aware theme.
+//
+// Neutrals (backgrounds, text, borders) follow a warm, high-contrast,
+// near-black/near-white pairing rather than Material grey, for a more
+// modern, quieter look.
+//
+// Usage:
+//
+//   @use "@theredhead/lucid-theme/styles/generative" as gen;
+//   @include gen.lucid-theme($primary: #ea4a2a);
+//
+// =============================================================================
+
+@use "sass:color";
+@use "elevation" as elev;
+
+// ── Warm neutral scale (mode-invariant seeds) ──────────────────────
+
+$_light-bg: #f7f5f2 !default;
+$_light-surface: #ffffff !default;
+$_light-surface-2: #efece7 !default;
+$_light-text: #17181b !default;
+$_light-text-muted: #5b5f66 !default;
+$_light-border: #ddd9d2 !default;
+$_light-border-strong: #b7b2a8 !default;
+
+$_dark-bg: #0a0a0b !default;
+$_dark-surface: #17181a !default;
+$_dark-surface-2: #202124 !default;
+$_dark-text: #f5f2ee !default;
+$_dark-text-muted: #a3a2a0 !default;
+$_dark-border: #2a2b2e !default;
+$_dark-border-strong: #404145 !default;
+
+/// Returns a legible foreground colour (light or dark) for a given
+/// background, based on relative lightness.
+@function _on($bg, $on-light: #ffffff, $on-dark: #14161a) {
+    @if color.channel($bg, "lightness", $space: hsl)>60% {
+        @return $on-dark;
+    }
+
+    @return $on-light;
+}
+
+/// Emits the full `--ui-*` token set for one mode (light or dark). Private —
+/// use {@link lucid-theme} instead.
+@mixin _ui-tokens-from($primary,
+    $secondary,
+    $tertiary,
+    $success,
+    $error,
+    $warning,
+    $info,
+    $bg,
+    $surface,
+    $surface-2,
+    $text,
+    $text-muted,
+    $border,
+    $border-strong,
+    $shadow-sm,
+    $shadow-md,
+    $shadow-lg,
+    $shadow-xl,
+    $shadow-dropdown,
+    $shadow,
+    $hover-mix: black) {
+    // 1. Core colours
+    --ui-text: #{$text};
+    --ui-text-muted: #{$text-muted};
+    --ui-muted: #{$text-muted};
+    --ui-accent: #{$primary};
+    --ui-accent-hover: color-mix(in srgb, var(--ui-accent) 85%, #{$hover-mix});
+    --ui-accent-contrast: #{_on($primary)};
+    --ui-link: #{$primary};
+    --ui-link-hover: color-mix(in srgb, var(--ui-link) 85%, #{$hover-mix});
+    --ui-info: #{$info};
+    --ui-warning: #{$warning};
+    --ui-success: #{$success};
+    --ui-error: #{$error};
+    --ui-on-error: #{_on($error)};
+    --ui-secondary: #{$secondary};
+    --ui-tertiary: #{$tertiary};
+    --ui-on-tertiary: #{_on($tertiary)};
+    --ui-brand: var(--ui-accent);
+    --ui-focus-ring: var(--ui-brand);
+
+    // 2. Surfaces
+    --ui-surface: #{$surface};
+    --ui-surface-2: #{$surface-2};
+    --ui-surface-variant: #{$surface-2};
+    --ui-primary-container: color-mix(in srgb, var(--ui-accent) 18%, #{$surface});
+    --ui-on-primary-container: #{$text};
+    --ui-bg: #{$bg};
+    --ui-hover-bg: #{$surface-2};
+    --ui-shadow: #{$shadow};
+
+    // 3. Borders
+    --ui-border: #{$border};
+    --ui-border-strong: #{$border-strong};
+
+    // 4. Typography (mode-invariant)
+    --ui-font: inherit;
+    --ui-font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+    --ui-font-body: 0.875rem;
+    --ui-font-header: 0.74rem;
+    --ui-font-caption: 0.8rem;
+    --ui-font-footer: 0.83rem;
+    --ui-font-badge: 0.73rem;
+    --ui-font-sort-icon: 0.82rem;
+    --ui-ls-header: 0.06em;
+    --ui-ls-caption: 0.02em;
+
+    // 5. Badge (standalone)
+    --ui-badge-bg: #{$primary};
+    --ui-badge-text: #{_on($primary)};
+
+    // 6. Badge (table-view inline)
+    --ui-badge-neutral-fg: #{$text};
+    --ui-badge-neutral-bg: #{$surface-2};
+    --ui-badge-neutral-border: #{$border};
+    --ui-badge-success-fg: color-mix(in srgb, #{$success} 60%, #{$text});
+    --ui-badge-success-bg: color-mix(in srgb, #{$success} 16%, #{$surface});
+    --ui-badge-success-border: color-mix(in srgb, #{$success} 35%, #{$surface});
+    --ui-badge-warning-fg: color-mix(in srgb, #{$warning} 60%, #{$text});
+    --ui-badge-warning-bg: color-mix(in srgb, #{$warning} 16%, #{$surface});
+    --ui-badge-warning-border: color-mix(in srgb, #{$warning} 35%, #{$surface});
+    --ui-badge-danger-fg: color-mix(in srgb, #{$error} 60%, #{$text});
+    --ui-badge-danger-bg: color-mix(in srgb, #{$error} 16%, #{$surface});
+    --ui-badge-danger-border: color-mix(in srgb, #{$error} 35%, #{$surface});
+    --ui-badge-padding: 0.15em 0.55em;
+    --ui-badge-line-height: 1.5;
+    --ui-badge-letter-spacing: 0.03em;
+
+    // 7. Table
+    --ui-caption-bg: #{$surface-2};
+    --ui-caption-text: #{$text};
+    --ui-viewport-height: 420px;
+    --ui-resize-handle-width: 6px;
+    --ui-resize-indicator-width: 2px;
+    --ui-selection-col-width: 3rem;
+    --ui-row-index-width: 4.25rem;
+    --ui-selected-bg: color-mix(in srgb, var(--ui-accent) 12%, transparent);
+    --ui-selected-hover-bg: color-mix(in srgb, var(--ui-accent) 18%, transparent);
+    --ui-checkbox-size: 0.95rem;
+    --ui-radio-size: 0.95rem;
+
+    // 8. Slider / Progress
+    --ui-track: #{$border};
+    --ui-thumb: #{$surface};
+
+    // 9. Chip
+    --ui-chip-bg: #{$surface-2};
+    --ui-chip-text: #{$text};
+    --ui-chip-dismiss: #{$text-muted};
+
+    // 10. Avatar
+    --ui-fallback: #{$text-muted};
+
+    // 11. Rich-text editor
+    --ui-placeholder-bg: color-mix(in srgb, var(--ui-accent) 18%, #{$surface});
+    --ui-placeholder-text: #{$primary};
+
+    // 12. Density (mode-invariant)
+    --ui-density: 0;
+    --ui-density-scale: 1;
+    --ui-control-height: 2.25rem;
+    --ui-cell-height: 2.75rem;
+    --ui-gap: 0.5rem;
+    --ui-inline-padding: 0.75rem;
+    --ui-block-padding: 0.5rem;
+    --ui-radius: 0.375rem;
+
+    // 13. Elevation
+    --ui-shadow-sm: #{$shadow-sm};
+    --ui-shadow-md: #{$shadow-md};
+    --ui-shadow-lg: #{$shadow-lg};
+    --ui-shadow-xl: #{$shadow-xl};
+    --ui-shadow-dropdown: #{$shadow-dropdown};
+
+    // 14. Form controls
+    --ui-control-bg: var(--ui-surface);
+    --ui-control-text: var(--ui-text);
+    --ui-control-placeholder: var(--ui-text-muted);
+    --ui-control-border: var(--ui-border);
+    --ui-control-border-hover: var(--ui-border-strong);
+    --ui-control-border-width: 1px;
+    --ui-control-radius: 0.25rem;
+    --ui-control-py: 0.3rem;
+    --ui-control-px: 0.5rem;
+    --ui-control-chevron: var(--ui-text-muted);
+}
+
+/// Main mixin: builds the full token set from up to five seed colours.
+///
+/// @param {Color}       $primary        Required brand / accent colour.
+/// @param {Color|null}  $secondary      [null] Derived from $primary (hue +40°) when omitted.
+/// @param {Color|null}  $tertiary       [null] Derived from $primary (hue −40°) when omitted.
+/// @param {Color}       $success        [#2e8b57] Success status colour.
+/// @param {Color}       $error          [#e5484d] Error / danger status colour.
+/// @param {String}      $font-family    ['"Cantarell", "Noto Sans", "Segoe UI", sans-serif']
+@mixin lucid-theme($primary,
+    $secondary: null,
+    $tertiary: null,
+    $success: #2e8b57,
+    $error: #e5484d,
+    $font-family: '"Cantarell", "Noto Sans", "Segoe UI", sans-serif'
+
+) {
+    $_secondary: $secondary;
+
+    @if not $_secondary {
+        $_secondary: color.adjust(color.scale($primary, $saturation: -15%), $hue: 40deg);
+    }
+
+    $_tertiary: $tertiary;
+
+    @if not $_tertiary {
+        $_tertiary: color.adjust(color.scale($primary, $saturation: -15%), $hue: -40deg);
+    }
+
+    $_warning: color.mix(#f5a623, $primary, 90%);
+    $_info: $_tertiary;
+
+    html {
+        line-height: 1.5;
+
+        @include _ui-tokens-from($primary,
+            $_secondary,
+            $_tertiary,
+            $success,
+            $error,
+            $_warning,
+            $_info,
+            $_light-bg,
+            $_light-surface,
+            $_light-surface-2,
+            $_light-text,
+            $_light-text-muted,
+            $_light-border,
+            $_light-border-strong,
+            elev.$shadow-sm-light,
+            elev.$shadow-md-light,
+            elev.$shadow-lg-light,
+            elev.$shadow-xl-light,
+            elev.$shadow-dropdown-light,
+            0 10px 24px rgba(18, 24, 33, 0.08),
+            black);
+    }
+
+    html.dark-theme {
+        @include _ui-tokens-from($primary,
+            $_secondary,
+            $_tertiary,
+            $success,
+            $error,
+            $_warning,
+            $_info,
+            $_dark-bg,
+            $_dark-surface,
+            $_dark-surface-2,
+            $_dark-text,
+            $_dark-text-muted,
+            $_dark-border,
+            $_dark-border-strong,
+            elev.$shadow-sm-dark,
+            elev.$shadow-md-dark,
+            elev.$shadow-lg-dark,
+            elev.$shadow-xl-dark,
+            elev.$shadow-dropdown-dark,
+            0 10px 24px rgba(0, 0, 0, 0.5),
+            white);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html:not(.light-theme):not(.dark-theme) {
+            @include _ui-tokens-from($primary,
+                $_secondary,
+                $_tertiary,
+                $success,
+                $error,
+                $_warning,
+                $_info,
+                $_dark-bg,
+                $_dark-surface,
+                $_dark-surface-2,
+                $_dark-text,
+                $_dark-text-muted,
+                $_dark-border,
+                $_dark-border-strong,
+                elev.$shadow-sm-dark,
+                elev.$shadow-md-dark,
+                elev.$shadow-lg-dark,
+                elev.$shadow-xl-dark,
+                elev.$shadow-dropdown-dark,
+                0 10px 24px rgba(0, 0, 0, 0.5),
+                white);
+        }
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--ui-bg);
+        color: var(--ui-text);
+        font-family: #{$font-family};
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+    }
+
+    html {
+        color-scheme: light;
+    }
+
+    html.dark-theme {
+        color-scheme: dark;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html:not(.light-theme):not(.dark-theme) {
+            color-scheme: dark;
+        }
+    }
+}

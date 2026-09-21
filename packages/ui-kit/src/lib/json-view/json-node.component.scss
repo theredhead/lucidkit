@@ -1,12 +1,11 @@
 :host {
   display: block;
-  font-family: var(
-    --ui-font-mono,
-    "JetBrains Mono",
-    "Fira Code",
-    ui-monospace,
-    monospace
-  );
+  --json-font-mono: var(--ui-font-mono,
+      "JetBrains Mono",
+      "Fira Code",
+      ui-monospace,
+      monospace);
+  font-family: var(--json-font-mono);
   font-size: 0.8125rem;
   line-height: 1.7;
   color: var(--ui-text, #1d232b);
@@ -79,15 +78,15 @@
 }
 
 .string {
-  color: var(--ui-json-string, #16a34a);
+  color: var(--ui-json-string, var(--ui-success, #16a34a));
 }
 
 .number {
-  color: var(--ui-json-number, #ea580c);
+  color: var(--ui-json-number, var(--ui-warning, #ea580c));
 }
 
 .boolean {
-  color: var(--ui-json-boolean, #7c3aed);
+  color: var(--ui-json-boolean, var(--ui-tertiary, #7c3aed));
 }
 
 .null {

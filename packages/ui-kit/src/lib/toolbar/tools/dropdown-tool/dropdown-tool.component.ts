@@ -62,7 +62,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
       }
       .item:hover:not(:disabled) {
         background: var(--ui-accent, #4f46e5);
-        color: var(--ui-text-on-accent, #fff);
+        color: var(--ui-text-on-accent, var(--ui-accent-contrast, #fff));
       }
       .item.selected {
         font-weight: 600;
@@ -90,12 +90,12 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         background: none;
         color: inherit;
         border: 1px solid transparent;
-        border-radius: var(--ui-radius-sm, 0.25rem);
+        border-radius: var(--ui-radius-sm, var(--ui-radius, 0.25rem));
         cursor: var(--ui-cursor-click, pointer);
       }
       .grid-item:hover:not(:disabled) {
         background: var(--ui-accent, #4f46e5);
-        color: var(--ui-text-on-accent, #fff);
+        color: var(--ui-text-on-accent, var(--ui-accent-contrast, #fff));
       }
       .grid-item.selected {
         border-color: var(--ui-accent, #4f46e5);

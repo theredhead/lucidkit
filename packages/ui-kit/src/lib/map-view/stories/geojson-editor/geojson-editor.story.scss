@@ -7,11 +7,9 @@
   gap: 0.85rem;
   padding: 0.9rem;
   color: var(--ui-text, #1d232b);
-  background: linear-gradient(
-    180deg,
-    var(--ui-surface, #f7f8fa) 0%,
-    var(--ui-surface-2, #eef3f7) 100%
-  );
+  background: linear-gradient(180deg,
+      var(--ui-surface, #f7f8fa) 0%,
+      var(--ui-surface-2, #eef3f7) 100%);
 }
 
 .controls {
@@ -39,7 +37,7 @@
   }
 
   .hint {
-    color: var(--ui-text-muted, var(--ui-text-soft, #505d6d));
+    color: var(--ui-text-soft, var(--ui-text-muted, #505d6d));
     background: transparent;
   }
 }

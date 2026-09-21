@@ -5,11 +5,18 @@
 
 /* ── Backdrop ── */
 
+:host {
+  --drawer-text: var(--ui-text);
+  --drawer-surface: var(--ui-surface);
+  --drawer-shadow: var(--ui-shadow-lg);
+  --drawer-backdrop: rgb(0 0 0 / 40%);
+}
+
 .backdrop {
   position: fixed;
   inset: 0;
   z-index: 999;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--drawer-backdrop);
   animation: ui-drawer-backdrop-in anim.$duration-slow anim.$easing-out;
 }
 
@@ -23,9 +30,9 @@
   overflow-y: auto;
   outline: none;
   padding: 1.25rem;
-  color: var(--ui-text);
-  background-color: var(--ui-surface);
-  box-shadow: var(--ui-shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.14));
+  color: var(--drawer-text);
+  background-color: var(--drawer-surface);
+  box-shadow: var(--drawer-shadow);
 }
 
 :host(.left) .panel {
@@ -44,6 +51,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -53,6 +61,7 @@
   from {
     transform: translateX(-100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -62,6 +71,7 @@
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0);
   }

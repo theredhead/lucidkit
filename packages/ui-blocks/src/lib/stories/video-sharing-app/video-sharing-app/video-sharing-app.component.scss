@@ -83,7 +83,7 @@
       }
       .video-thumb {
         aspect-ratio: 16 / 9;
-        background: var(--ui-surface-dim, #2a313c);
+        background: var(--ui-surface-dim, var(--ui-surface-2, #2a313c));
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -233,7 +233,7 @@
       .trending-thumb {
         width: 160px;
         aspect-ratio: 16 / 9;
-        background: var(--ui-surface-dim, #2a313c);
+        background: var(--ui-surface-dim, var(--ui-surface-2, #2a313c));
         border-radius: 6px;
         display: flex;
         align-items: center;

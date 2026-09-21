@@ -38,12 +38,12 @@
 }
 
 .star.filled {
-  color: var(--ui-rating-filled, #f5a623);
+  color: var(--ui-rating-filled, var(--ui-warning, #f5a623));
 }
 
 :host(:not(.readonly)) .star:hover,
 :host(:not(.readonly)) .star.hovered {
-  color: var(--ui-rating-hover, #f5a623);
+  color: var(--ui-rating-hover, var(--ui-warning, #f5a623));
   transform: scale(1.15);
 }
 

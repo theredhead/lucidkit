@@ -77,7 +77,7 @@ const PHOTOS = buildPhotos();
       font:
         600 0.8rem/1.4 system-ui,
         sans-serif;
-      color: var(--ui-overlay-text, #fff);
+      color: var(--ui-overlay-text, var(--ui-text, #fff));
       background: var(
         --ui-overlay-bg,
         linear-gradient(transparent, rgba(0, 0, 0, 0.55))

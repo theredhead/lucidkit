@@ -385,7 +385,7 @@
                       style="font-weight: 700"
                       [style.color]="
                         row.quantity === 0
-                          ? 'var(--ui-danger, #dc2626)'
+                          ? 'var(--ui-danger, var(--ui-error, #dc2626))'
                           : 'var(--ui-warning, #d97706)'
                       "
                     >
@@ -412,7 +412,7 @@
                     <dd>{{ part.minStock | number }}</dd>
                     <dt>Deficit</dt>
                     <dd
-                      style="font-weight: 700; color: var(--ui-danger, #dc2626)"
+                      style="font-weight: 700; color: var(--ui-danger, var(--ui-error, #dc2626))"
                     >
                       {{ part.minStock - part.quantity | number }} units
                     </dd>
@@ -1061,7 +1061,7 @@
                       <span
                         style="
                           font-weight: 700;
-                          color: var(--ui-danger, #dc2626);
+                          color: var(--ui-danger, var(--ui-error, #dc2626));
                         "
                       >
                         Danger Zone
