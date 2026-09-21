@@ -1180,8 +1180,24 @@ describe("UIInput", () => {
   describe("TimeTextAdapter", () => {
     const adapter = new TimeTextAdapter();
 
+    it("should default to 24-hour output", () => {
+      expect(adapter.toValue("1730")).toBe("17:30");
+    });
+
     it("should trim whitespace in toValue", () => {
       expect(adapter.toValue("  14:30  ")).toBe("14:30");
+    });
+
+    it("should insert the colon for three-digit entry", () => {
+      expect(adapter.toValue("930")).toBe("09:30");
+    });
+
+    it("should insert the colon for four-digit entry", () => {
+      expect(adapter.toValue("0930")).toBe("09:30");
+    });
+
+    it("should preserve seconds when entered compactly", () => {
+      expect(adapter.toValue("173059")).toBe("17:30:59");
     });
 
     it("should accept valid HH:MM", () => {
@@ -1190,6 +1206,10 @@ describe("UIInput", () => {
 
     it("should accept valid HH:MM:SS", () => {
       expect(adapter.validate("14:30:59").valid).toBe(true);
+    });
+
+    it("should accept compact military time", () => {
+      expect(adapter.validate("1730").valid).toBe(true);
     });
 
     it("should accept midnight", () => {
@@ -1214,6 +1234,37 @@ describe("UIInput", () => {
 
     it("should accept empty string", () => {
       expect(adapter.validate("").valid).toBe(true);
+    });
+
+    it("should format 24-hour input as AM/PM in 12-hour mode", () => {
+      const twelveHour = new TimeTextAdapter({ mode: "12" });
+      expect(twelveHour.toValue("1730")).toBe("5:30 PM");
+      expect(twelveHour.toValue("0930")).toBe("9:30 AM");
+      expect(twelveHour.toValue("0000")).toBe("12:00 AM");
+    });
+
+    it("should accept an explicit AM/PM suffix in 12-hour mode", () => {
+      const twelveHour = new TimeTextAdapter({ mode: "12" });
+      expect(twelveHour.toValue("930p")).toBe("9:30 PM");
+      expect(twelveHour.validate("9:30 PM").valid).toBe(true);
+    });
+
+    it("should defer display normalization until blur", () => {
+      fixture.componentRef.setInput("adapter", new TimeTextAdapter());
+      fixture.detectChanges();
+
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector("input");
+      input.value = "1730";
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      expect(input.value).toBe("1730");
+
+      input.dispatchEvent(new FocusEvent("blur"));
+      fixture.detectChanges();
+
+      expect(input.value).toBe("17:30");
     });
   });
 
