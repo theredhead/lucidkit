@@ -66,14 +66,14 @@ These are the first priority because they expose theme failures most visibly.
   - Replace danger fallbacks with local error tokens.
 - [ ] Audit `packages/ui-blocks/src/lib/rich-text-editor/rich-text-editor.component.scss`.
   - Add local tokens for destructive actions, placeholders, dropdowns, pickers, and fullscreen overlays.
-- [ ] Refactor `packages/ui-kit/src/lib/json-view/json-node.component.scss`.
+- [x] Refactor `packages/ui-kit/src/lib/json-view/json-node.component.scss`.
   - Keep syntax-specific tokens.
   - Derive key, string, number, boolean, and null colors from semantic root tokens.
-- [ ] Refactor `packages/ui-kit/src/lib/rating/rating.component.scss`.
+- [x] Refactor `packages/ui-kit/src/lib/rating/rating.component.scss`.
   - Add local empty, filled, hover, disabled, and focus tokens.
-- [ ] Refactor `packages/ui-kit/src/lib/timeline/timeline.component.scss`.
+- [x] Refactor `packages/ui-kit/src/lib/timeline/timeline.component.scss`.
   - Add local dot, connector, hover-ring, and focus tokens.
-- [ ] Review `packages/ui-kit/src/lib/signature/signature.component.scss`.
+- [x] Review `packages/ui-kit/src/lib/signature/signature.component.scss`.
   - Decide whether the canvas intentionally remains paper-colored.
   - If intentional, expose it as a documented local override with a root-token fallback.
 

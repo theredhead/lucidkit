@@ -1,12 +1,17 @@
 // ── Light defaults ────────────────────────────────────────────
 :host {
+  --timeline-text: var(--ui-text);
+  --timeline-accent: var(--ui-accent);
+  --timeline-border: var(--ui-border);
+  --timeline-focus: var(--ui-focus-ring);
+  --timeline-hover-ring: color-mix(in srgb, var(--timeline-accent) 20%, transparent);
   --ui-timeline-dot-size: 12px;
   --ui-timeline-connector-width: 2px;
   --ui-timeline-gap: 24px;
   --ui-timeline-content-gap: 16px;
 
   display: block;
-  color: var(--ui-text, #1d232b);
+  color: var(--timeline-text);
 }
 
 // ── Vertical layout (default) ─────────────────────────────────
@@ -29,11 +34,11 @@
     padding: 4px;
 
     &:hover .timeline-dot {
-      box-shadow: 0 0 0 3px var(--ui-accent-light, color-mix(in srgb, var(--ui-accent, #3b82f6) 20%, transparent));
+      box-shadow: 0 0 0 3px var(--ui-accent-light, var(--timeline-hover-ring));
     }
 
     &:focus-visible .timeline-dot {
-      outline: 2px solid var(--ui-accent, #3b82f6);
+      outline: 2px solid var(--timeline-focus);
       outline-offset: 2px;
     }
   }
@@ -53,8 +58,8 @@
     flex-shrink: 0;
     z-index: 1;
     box-sizing: border-box;
-    background: var(--ui-accent, #3b82f6);
-    border: 2px solid var(--ui-accent, #3b82f6);
+    background: var(--timeline-accent);
+    border: 2px solid var(--timeline-accent);
     transition: box-shadow 0.15s;
   }
 
@@ -90,6 +95,7 @@
         grid-row: 1;
         text-align: end;
       }
+
       .timeline-marker {
         grid-column: 2;
         grid-row: 1;
@@ -101,6 +107,7 @@
         grid-column: 3;
         grid-row: 1;
       }
+
       .timeline-marker {
         grid-column: 2;
         grid-row: 1;
@@ -151,11 +158,11 @@
     border-radius: 6px;
 
     &:hover .timeline-dot {
-      box-shadow: 0 0 0 3px var(--ui-accent-light, color-mix(in srgb, var(--ui-accent, #3b82f6) 20%, transparent));
+      box-shadow: 0 0 0 3px var(--ui-accent-light, var(--timeline-hover-ring));
     }
 
     &:focus-visible .timeline-dot {
-      outline: 2px solid var(--ui-accent, #3b82f6);
+      outline: 2px solid var(--timeline-focus);
       outline-offset: 2px;
     }
   }
@@ -174,8 +181,8 @@
     flex-shrink: 0;
     z-index: 1;
     box-sizing: border-box;
-    background: var(--ui-accent, #3b82f6);
-    border: 2px solid var(--ui-accent, #3b82f6);
+    background: var(--timeline-accent);
+    border: 2px solid var(--timeline-accent);
     transition: box-shadow 0.15s;
   }
 

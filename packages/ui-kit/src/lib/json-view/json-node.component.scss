@@ -1,5 +1,14 @@
 :host {
   display: block;
+  --json-text: var(--ui-text);
+  --json-muted: var(--ui-text-muted);
+  --json-border: var(--ui-border);
+  --json-hover: var(--ui-hover-bg);
+  --json-accent: var(--ui-accent);
+  --json-key: var(--ui-accent);
+  --json-string: var(--ui-success);
+  --json-number: var(--ui-warning);
+  --json-boolean: var(--ui-tertiary);
   --json-font-mono: var(--ui-font-mono,
       "JetBrains Mono",
       "Fira Code",
@@ -8,7 +17,7 @@
   font-family: var(--json-font-mono);
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: var(--ui-text, #1d232b);
+  color: var(--json-text);
 }
 
 .toggle {
@@ -20,11 +29,11 @@
   border-radius: 2px;
 
   &:hover {
-    background: var(--ui-hover-bg, rgba(0, 0, 0, 0.04));
+    background: var(--json-hover);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring, var(--ui-accent));
+    outline: 2px solid var(--ui-focus-ring, var(--json-accent));
     outline-offset: 1px;
   }
 }
@@ -32,13 +41,13 @@
 .chevron {
   display: inline-block;
   width: 0.9em;
-  color: var(--ui-text-muted, #697077);
+  color: var(--json-muted);
   font-style: normal;
 }
 
 .children {
   padding-left: 1.5rem;
-  border-left: 1px dashed var(--ui-border, #d7dce2);
+  border-left: 1px dashed var(--json-border);
   margin-left: 0.4rem;
 }
 
@@ -47,7 +56,7 @@
 }
 
 .key {
-  color: var(--ui-json-key, var(--ui-accent, #3b82f6));
+  color: var(--ui-json-key, var(--json-key));
   font-weight: 500;
 }
 
@@ -78,15 +87,15 @@
 }
 
 .string {
-  color: var(--ui-json-string, var(--ui-success, #16a34a));
+  color: var(--ui-json-string, var(--json-string));
 }
 
 .number {
-  color: var(--ui-json-number, var(--ui-warning, #ea580c));
+  color: var(--ui-json-number, var(--json-number));
 }
 
 .boolean {
-  color: var(--ui-json-boolean, var(--ui-tertiary, #7c3aed));
+  color: var(--ui-json-boolean, var(--json-boolean));
 }
 
 .null {

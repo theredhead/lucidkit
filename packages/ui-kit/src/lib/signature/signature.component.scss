@@ -1,6 +1,10 @@
 // ── Host ──────────────────────────────────────────────────────────────────────
 
 :host {
+  --signature-border: var(--ui-border);
+  --signature-focus: var(--ui-focus-ring);
+  --signature-accent: var(--ui-accent);
+  --signature-muted: var(--ui-text-muted);
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
@@ -31,7 +35,7 @@
 .surface {
   position: relative;
   overflow: hidden;
-  border: 1.5px solid var(--ui-border);
+  border: 1.5px solid var(--signature-border);
   border-radius: var(--ui-radius, 0.375rem);
   background: var(--signature-canvas-bg);
   color: var(--signature-canvas-text);
@@ -42,15 +46,15 @@
     box-shadow 150ms ease;
 
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring, var(--ui-accent));
+    outline: 2px solid var(--signature-focus);
     outline-offset: 2px;
   }
 
   // Active drag
   :host(.dragging) & {
-    border-color: var(--ui-accent);
+    border-color: var(--signature-accent);
     background: color-mix(in srgb,
-        var(--ui-accent) 8%,
+        var(--signature-accent) 8%,
         var(--signature-canvas-bg));
   }
 
@@ -81,7 +85,7 @@
   justify-content: center;
   gap: 0.5rem;
   pointer-events: none;
-  color: var(--ui-text-muted,
+  color: var(--signature-muted,
       color-mix(in srgb, var(--ui-text) 50%, transparent));
   user-select: none;
 }
@@ -100,8 +104,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: color-mix(in srgb, var(--ui-accent) 12%, var(--ui-surface));
-  color: var(--ui-accent);
+  background: color-mix(in srgb, var(--signature-accent) 12%, var(--ui-surface));
+  color: var(--signature-accent);
   font-size: 0.875rem;
   font-weight: 600;
   border-radius: var(--ui-radius, 0.375rem);

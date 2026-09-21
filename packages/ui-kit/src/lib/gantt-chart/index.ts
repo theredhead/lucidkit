@@ -1,4 +1,5 @@
 export { UIGanttChart } from "./gantt-chart.component";
+export type { ChartColoringStrategy } from "../chart/strategies/chart-coloring.strategy";
 export { GanttArrayDatasource } from "./gantt-array-datasource";
 export {
   type GanttTask,

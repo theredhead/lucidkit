@@ -8,6 +8,8 @@ import {
 import { UIGanttChart } from "./gantt-chart.component";
 import { GanttArrayDatasource } from "./gantt-array-datasource";
 import type { GanttTask, GanttViewMode } from "./gantt-chart.types";
+import type { ChartColoringStrategy } from "../chart/strategies/chart-coloring.strategy";
+import type { ChartSeriesData } from "../chart/chart.types";
 
 // ── Test host ────────────────────────────────────────────────────────
 
@@ -25,6 +27,7 @@ const TEST_TASKS: GanttTask[] = [
     start: new Date("2026-03-11"),
     end: new Date("2026-03-25"),
     progress: 60,
+    style: { color: "#112233" },
     dependencies: ["design"],
   },
   {
@@ -57,6 +60,7 @@ const TEST_TASKS: GanttTask[] = [
       [showTaskList]="showTaskList()"
       [taskListWidth]="taskListWidth()"
       [ariaLabel]="ariaLabel()"
+      [coloring]="coloring()"
       (taskClicked)="lastClicked = $event"
     />
   `,
@@ -71,6 +75,11 @@ class TestGanttHost {
   public readonly showTaskList = signal(true);
   public readonly taskListWidth = signal(200);
   public readonly ariaLabel = signal("Test Gantt");
+  public readonly coloring = signal<ChartColoringStrategy>({
+    name: "test",
+    color: (series: readonly ChartSeriesData[]) =>
+      series.map((entry) => ({ ...entry, color: "#aabbcc" })),
+  });
   public lastClicked: GanttTask | null = null;
 }
 
@@ -139,6 +148,14 @@ describe("UIGanttChart", () => {
     it("should render task bars for non-milestone tasks", () => {
       const bars = el.querySelectorAll(".bar");
       expect(bars.length).toBe(3); // design, build, child
+    });
+
+    it("should preserve explicit task colors while coloring other tasks by strategy", () => {
+      const buildBar = el.querySelector('[data-task-id="build"]') as HTMLElement;
+      const designBar = el.querySelector('[data-task-id="design"]') as HTMLElement;
+
+      expect(buildBar.style.backgroundColor).toBe("rgb(17, 34, 51)");
+      expect(designBar.style.backgroundColor).toBe("rgb(170, 187, 204)");
     });
 
     it("should render milestone diamonds", () => {

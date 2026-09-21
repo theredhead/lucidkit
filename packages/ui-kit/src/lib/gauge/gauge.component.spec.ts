@@ -140,6 +140,22 @@ describe("UIGauge", () => {
       expect(strategy.lastCtx!.zones).toEqual(zones);
     });
 
+    it("should clip zones to the effective scale bounds", () => {
+      const zones: GaugeZone[] = [
+        { from: 0, to: 80, color: "green" },
+        { from: 80, to: 140, color: "yellow" },
+        { from: 140, to: 220, color: "red" },
+      ];
+      fixture.componentRef.setInput("max", 100);
+      fixture.componentRef.setInput("zones", zones);
+      fixture.detectChanges();
+
+      expect(strategy.lastCtx!.zones).toEqual([
+        { from: 0, to: 80, color: "green" },
+        { from: 80, to: 100, color: "yellow" },
+      ]);
+    });
+
     it("should pass unit to the strategy", () => {
       fixture.componentRef.setInput("unit", "rpm");
       fixture.detectChanges();
@@ -413,6 +429,23 @@ describe("AnalogGaugeStrategy", () => {
     const paths = svg.querySelectorAll("path");
     // 1 background arc + 2 zone arcs
     expect(paths.length).toBe(3);
+  });
+
+  it("should keep the background arc ends open", () => {
+    const svg = asSvg(new AnalogGaugeStrategy().render(createCtx(50)));
+    const background = svg.querySelector("path");
+    expect(background?.getAttribute("stroke-linecap")).toBe("round");
+    expect(background?.getAttribute("d")).toContain("A");
+  });
+
+  it("should use rounded caps for colored zone arcs", () => {
+    const ctx = createCtx(50, {
+      zones: [{ from: 0, to: 50, color: "green" }],
+    });
+    const zone = asSvg(new AnalogGaugeStrategy().render(ctx)).querySelectorAll(
+      "path",
+    )[1];
+    expect(zone.getAttribute("stroke-linecap")).toBe("round");
   });
 
   describe("zone labels", () => {

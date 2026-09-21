@@ -164,10 +164,34 @@ export class UIGauge {
 
   // ── Computed ────────────────────────────────────────────────────────
 
-  /** Value clamped between min and max. */
+  /** Effective finite scale minimum. */
+  protected readonly effectiveMin = computed(() => {
+    const min = this.min();
+    return Number.isFinite(min) ? min : 0;
+  });
+
+  /** Effective finite scale maximum, always greater than the minimum. */
+  protected readonly effectiveMax = computed(() => {
+    const min = this.effectiveMin();
+    const max = this.max();
+    return Number.isFinite(max) && max > min ? max : min + 1;
+  });
+
+  /** Value clamped between the effective scale bounds. */
   protected readonly clampedValue = computed(() =>
-    Math.min(this.max(), Math.max(this.min(), this.value())),
+    Math.min(this.effectiveMax(), Math.max(this.effectiveMin(), this.value())),
   );
+
+  /** Zones clipped to the effective scale so strategies never receive invalid geometry. */
+  protected readonly effectiveZones = computed<readonly GaugeZone[]>(() => {
+    const min = this.effectiveMin();
+    const max = this.effectiveMax();
+    return this.zones().flatMap((zone) => {
+      const from = Math.max(min, Math.min(max, zone.from));
+      const to = Math.max(min, Math.min(max, zone.to));
+      return to > from ? [{ ...zone, from, to }] : [];
+    });
+  });
 
   /** Target render size — observed dimensions when `fit`, else explicit inputs. */
   protected readonly size = computed<GaugeSize>(() => {
@@ -283,10 +307,10 @@ export class UIGauge {
 
     const ctx: GaugeRenderContext = {
       value: displayValue,
-      min: this.min(),
-      max: this.max(),
+      min: this.effectiveMin(),
+      max: this.effectiveMax(),
       unit: this.unit(),
-      zones: this.zones(),
+      zones: this.effectiveZones(),
       size,
       tokens: this.resolveTokens(),
       detailLevel: this.detailLevel(),

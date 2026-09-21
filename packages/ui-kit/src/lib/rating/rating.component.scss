@@ -1,8 +1,12 @@
 :host {
+  --rating-empty: var(--ui-border-strong);
+  --rating-filled: var(--ui-warning);
+  --rating-hover: var(--ui-warning);
+  --rating-focus: var(--ui-focus-ring);
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  color: var(--ui-rating-empty, var(--ui-border-strong, #b0b7c0));
+  color: var(--ui-rating-empty, var(--rating-empty));
   background: transparent;
 }
 
@@ -29,7 +33,7 @@
 }
 
 .star:focus-visible {
-  outline: 2px solid var(--ui-focus-ring, var(--ui-accent, #3584e4));
+  outline: 2px solid var(--rating-focus);
   outline-offset: 1px;
 }
 
@@ -38,12 +42,12 @@
 }
 
 .star.filled {
-  color: var(--ui-rating-filled, var(--ui-warning, #f5a623));
+  color: var(--ui-rating-filled, var(--rating-filled));
 }
 
 :host(:not(.readonly)) .star:hover,
 :host(:not(.readonly)) .star.hovered {
-  color: var(--ui-rating-hover, var(--ui-warning, #f5a623));
+  color: var(--ui-rating-hover, var(--rating-hover));
   transform: scale(1.15);
 }
 
