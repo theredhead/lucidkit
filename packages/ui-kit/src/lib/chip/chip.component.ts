@@ -5,6 +5,8 @@ import {
   output,
 } from "@angular/core";
 import { UISurface } from "@theredhead/lucid-foundation";
+import { UIIcon } from "../icon/icon.component";
+import { UIIcons } from "../icon/lucide-icons.generated";
 
 /** Color preset for the chip. */
 export type ChipColor =
@@ -29,6 +31,7 @@ export type ChipColor =
 @Component({
   selector: "ui-chip",
   standalone: true,
+  imports: [UIIcon],
   templateUrl: "./chip.component.html",
   styleUrl: "./chip.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,6 +50,9 @@ export type ChipColor =
   },
 })
 export class UIChip {
+
+  /** @internal Shared close icon used by removable chips. */
+  protected readonly closeIcon = UIIcons.Lucide.Math.X;
 
   /** Color preset. */
   public readonly color = input<ChipColor>("neutral");

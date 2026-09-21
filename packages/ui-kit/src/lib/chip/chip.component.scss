@@ -5,23 +5,25 @@
   --chip-text: var(--ui-chip-text);
   --chip-surface: var(--ui-chip-bg);
   --chip-border: var(--ui-border);
-  --chip-dismiss: var(--ui-chip-dismiss);
+  --chip-dismiss: currentColor;
   --chip-focus: var(--ui-focus-ring);
   --chip-radius: 999px;
-  --chip-padding-block: 0.25rem;
+  --chip-padding-block: 0.3rem;
   --chip-padding-inline: 0.7rem;
-  --chip-gap: 0.35rem;
+  --chip-gap: 0.4rem;
   display: inline-flex;
   align-items: center;
   gap: var(--chip-gap);
-  min-height: 1.75rem;
+  min-height: 2rem;
   box-sizing: border-box;
-  border: 1px solid transparent;
+  border: 1px solid var(--chip-border);
   border-radius: var(--chip-radius);
   padding: var(--chip-padding-block) var(--chip-padding-inline);
-  font:
-    500 0.8125rem/1.4 system-ui,
-    sans-serif;
+  font-family: var(--ui-font, inherit);
+  font-size: var(--ui-font-body, 0.875rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   user-select: none;
   color: var(--chip-text);
@@ -37,30 +39,31 @@
 :host(.neutral) {
   color: var(--chip-text);
   background-color: var(--chip-surface);
+  border-color: var(--chip-border);
 }
 
 :host(.primary) {
-  color: var(--ui-accent);
-  background-color: color-mix(in srgb, var(--ui-accent) 14%, transparent);
-  border-color: color-mix(in srgb, var(--ui-accent) 28%, transparent);
+  color: var(--ui-accent-contrast);
+  background-color: var(--ui-accent);
+  border-color: var(--ui-accent);
 }
 
 :host(.success) {
-  color: var(--ui-success);
-  background-color: color-mix(in srgb, var(--ui-success) 14%, transparent);
-  border-color: color-mix(in srgb, var(--ui-success) 28%, transparent);
+  color: var(--ui-accent-contrast);
+  background-color: var(--ui-success);
+  border-color: var(--ui-success);
 }
 
 :host(.warning) {
-  color: var(--ui-warning);
-  background-color: color-mix(in srgb, var(--ui-warning) 14%, transparent);
-  border-color: color-mix(in srgb, var(--ui-warning) 28%, transparent);
+  color: var(--ui-text);
+  background-color: var(--ui-warning);
+  border-color: var(--ui-warning);
 }
 
 :host(.danger) {
-  color: var(--ui-error);
-  background-color: color-mix(in srgb, var(--ui-error) 14%, transparent);
-  border-color: color-mix(in srgb, var(--ui-error) 28%, transparent);
+  color: var(--ui-on-error);
+  background-color: var(--ui-error);
+  border-color: var(--ui-error);
 }
 
 :host(.selected) {
@@ -70,7 +73,8 @@
 /* ── Elements ── */
 
 .label {
-  line-height: 1.4;
+  min-width: 0;
+  line-height: 1.2;
 }
 
 .dismiss {
@@ -78,8 +82,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1rem;
-  height: 1rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-right: -0.35rem;
   border-radius: 50%;
   flex-shrink: 0;
   color: var(--chip-dismiss);
@@ -94,8 +99,7 @@
     outline-offset: 1px;
   }
 
-  svg {
-    width: 0.625rem;
-    height: 0.625rem;
+  ui-icon {
+    flex: 0 0 0.875rem;
   }
 }
