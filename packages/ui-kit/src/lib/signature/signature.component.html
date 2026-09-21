@@ -21,7 +21,7 @@
     (pointercancel)="onPointerCancel($event)"
   ></canvas>
 
-  @if (isEmpty()) {
+  @if (isEmpty() && !isDrawing()) {
     <div class="empty-state" aria-hidden="true">
       @if (allowDraw()) {
         <ui-icon [svg]="icons.pen" [size]="24" />

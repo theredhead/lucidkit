@@ -16,6 +16,7 @@ import {
 import { NgTemplateOutlet } from "@angular/common";
 import type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
 import {
+  getContrastingTextColor,
   UISurface,
   UI_DEFAULT_SURFACE_TYPE,
 } from "@theredhead/lucid-foundation";
@@ -163,61 +164,7 @@ export class UIAutocomplete<T> {
     const bg = this.chipColor()?.(item, index);
     if (!bg) return null;
     if (bg.startsWith("var(")) return null;
-    return UIAutocomplete._contrastColor(bg);
-  }
-
-  /**
-   * Compute whether white or dark text gives better contrast on a given colour.
-   * Supports hex (`#rgb`, `#rrggbb`) and `rgb()` / `rgba()` syntax.
-   */
-  private static _contrastColor(color: string): string {
-    let r: number;
-    let g: number;
-    let b: number;
-    const hex = color.trim();
-    const hexMatch = hex.match(/^#([0-9a-f]{3,8})$/i);
-    if (hexMatch) {
-      const h = hexMatch[1];
-      if (h.length === 3 || h.length === 4) {
-        r = parseInt(h[0] + h[0], 16);
-        g = parseInt(h[1] + h[1], 16);
-        b = parseInt(h[2] + h[2], 16);
-      } else {
-        r = parseInt(h.slice(0, 2), 16);
-        g = parseInt(h.slice(2, 4), 16);
-        b = parseInt(h.slice(4, 6), 16);
-      }
-    } else {
-      const rgbMatch = hex.match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/i);
-      if (rgbMatch) {
-        r = parseInt(rgbMatch[1]);
-        g = parseInt(rgbMatch[2]);
-        b = parseInt(rgbMatch[3]);
-      } else {
-        // Named colour: use a hidden canvas to resolve
-        try {
-          const canvas = document.createElement("canvas");
-          canvas.width = canvas.height = 1;
-          const ctx = canvas.getContext("2d")!;
-          ctx.fillStyle = color;
-          ctx.fillRect(0, 0, 1, 1);
-          const d = ctx.getImageData(0, 0, 1, 1).data;
-          r = d[0];
-          g = d[1];
-          b = d[2];
-        } catch {
-          return "#fff";
-        }
-      }
-    }
-    // WCAG relative luminance
-    const toLinear = (c: number) => {
-      const s = c / 255;
-      return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-    };
-    const L =
-      0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
-    return L > 0.179 ? "#1d232b" : "#ffffff";
+    return getContrastingTextColor(bg);
   }
 
   /** Raw text in the input. */

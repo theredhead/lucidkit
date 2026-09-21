@@ -4,6 +4,11 @@
 /* ── Light defaults ── */
 
 :host {
+  --card-surface: var(--ui-surface, #f7f8fa);
+  --card-surface-alt: var(--ui-surface-2, #eef2f6);
+  --card-border: var(--ui-border, #d7dce2);
+  --card-gradient-color: var(--ui-accent, #3584e4);
+
   display: block;
   border-radius: 0.75rem;
   overflow: hidden;
@@ -25,11 +30,21 @@
 }
 
 :host(.outlined) {
-  border: 1px solid var(--ui-border);
+  border: 1px solid var(--card-border);
 }
 
 :host(.filled) {
-  background-color: var(--ui-surface-2);
+  background-color: var(--card-surface-alt);
+}
+
+:host(.gradient-color) {
+  background: linear-gradient(135deg,
+      color-mix(in srgb,
+        var(--card-gradient-color) calc(var(--card-gradient-intensity) * 100%),
+        transparent),
+      color-mix(in srgb,
+        var(--card-gradient-color) calc(var(--card-gradient-intensity) * 32%),
+        transparent));
 }
 
 /* ── Interactive ── */

@@ -1,6 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UIRichTextView } from "../../rich-text-view.component";
 import type { RichTextViewStrategy } from "../../rich-text-view.component";
 
 const strategies: RichTextViewStrategy[] = ["auto", "html", "markdown"];
@@ -15,7 +14,7 @@ const meta = {
     docs: {
       description: {
         component:
-          '`UIRichTextView` is a read-only renderer for HTML or Markdown content. It auto-detects the format by default (`strategy="auto"`), or you can explicitly specify `"html"` or `"markdown"`.',
+          '`UIRichTextView` is a read-only renderer for HTML or Markdown content. It auto-detects the format by default (`strategy="auto"`), or you can explicitly specify `"html"` or `"markdown"`. For editable content, see the [Rich Text Editor](?path=/story/theredhead-ui-blocks-rich-text-editor--compact-chat) stories.',
       },
     },
   },
@@ -46,6 +45,6 @@ export const MarkdownTable: Story = {
     docs: {}
   },
   render: () => ({
-      template: "<ui-markdown-table-story-demo />",
-    })
+    template: "<ui-markdown-table-story-demo />",
+  })
 };

@@ -1,4 +1,10 @@
 :host {
+  --button-tool-bg: var(--ui-surface, #f7f8fa);
+  --button-tool-text: var(--ui-text, #1d232b);
+  --button-tool-hover-bg: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
+  --button-tool-border: transparent;
+  --button-tool-radius: var(--ui-radius, 0.375rem);
+
   display: contents;
 }
 
@@ -9,17 +15,17 @@
   padding: 0.375rem 0.625rem;
   font-size: var(--ui-font-body, 0.875rem);
   font-family: var(--ui-font, inherit);
-  background: transparent;
-  color: var(--ui-text, #1d232b);
-  border: none;
-  border-radius: var(--ui-radius-sm, var(--ui-radius, 0.25rem));
+  background: var(--button-tool-bg);
+  color: var(--button-tool-text);
+  border: 1px solid var(--button-tool-border);
+  border-radius: var(--button-tool-radius);
   cursor: var(--ui-cursor-click, pointer);
   line-height: 1;
   white-space: nowrap;
 
   &:hover:not(:disabled) {
-    background: var(--ui-surface-raised, var(--ui-hover-bg, rgba(0, 0, 0, 0.07)));
-    color: var(--ui-text, #1d232b);
+    background: var(--button-tool-hover-bg);
+    color: var(--button-tool-text);
   }
 
   &:disabled {

@@ -1,11 +1,25 @@
 :host {
+  --table-body-surface: var(--ui-surface, #f7f8fa);
+  --table-body-surface-alt: var(--ui-surface-2, #eef2f6);
+  --table-body-text: var(--ui-text, #1d232b);
+  --table-body-border: var(--ui-border, #d7dce2);
+  --table-body-selected-bg: var(--ui-accent, #3584e4);
+  --table-body-selected-text: var(--ui-accent-contrast, #ffffff);
+  --table-body-selected-hover-bg: var(--ui-accent-hover, color-mix(in srgb, var(--ui-accent, #3584e4) 85%, black));
+  --table-body-skeleton-base: var(--ui-border, #d7dce2);
+  --table-body-skeleton-highlight: var(--ui-surface-2, #eef2f6);
+  --table-body-skeleton-radius: var(--ui-radius-sm, 4px);
+  --table-body-skeleton-height: 0.75rem;
+  --table-body-skeleton-width-odd: 45%;
+  --table-body-skeleton-width-even: 70%;
+
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  color: var(--ui-text);
-  background-color: var(--ui-surface);
+  color: var(--table-body-text);
+  background-color: var(--table-body-surface);
 }
 
 .table-body-viewport {
@@ -19,7 +33,7 @@
   display: flex;
   min-width: var(--ui-total-row-width, 100%);
   transition: background-color 120ms ease;
-  border-bottom: 1px solid var(--ui-border);
+  border-bottom: 1px solid var(--table-body-border);
 }
 
 .table-row:last-child {
@@ -29,7 +43,7 @@
 /* ── Zebra striping ── */
 
 .table-row:nth-child(even) {
-  background-color: var(--ui-surface-2);
+  background-color: var(--table-body-surface-alt);
 }
 
 .table-cell {
@@ -43,7 +57,7 @@
   align-items: center;
   box-sizing: border-box;
   font-size: calc(var(--ui-font-body) * var(--ui-density-scale, 1));
-  border-right: 1px solid var(--ui-border);
+  border-right: 1px solid var(--table-body-border);
 }
 
 .table-cell:last-child {
@@ -99,12 +113,12 @@
 /* ── Selected row ── */
 
 .table-row--selected {
-  color: var(--ui-accent-contrast, #ffffff);
-  background-color: var(--ui-accent, #3584e4);
+  color: var(--table-body-selected-text);
+  background-color: var(--table-body-selected-bg);
 }
 
 .table-row--selected:hover {
-  background-color: var(--ui-accent-hover, color-mix(in srgb, var(--ui-accent, #3584e4) 85%, black));
+  background-color: var(--table-body-selected-hover-bg);
 }
 
 /* ── Active (keyboard-focused) row ── */
@@ -123,23 +137,23 @@
 .table-cell-skeleton {
   display: block;
   width: var(--ui-skeleton-width, 60%);
-  height: var(--ui-skeleton-height, 0.75rem);
-  border-radius: var(--ui-skeleton-radius, 4px);
+  height: var(--ui-skeleton-height, var(--table-body-skeleton-height));
+  border-radius: var(--ui-skeleton-radius, var(--table-body-skeleton-radius));
   background: linear-gradient(90deg,
-      var(--ui-border) 25%,
-      var(--ui-surface-2) 50%,
-      var(--ui-border) 75%);
+      var(--table-body-skeleton-base) 25%,
+      var(--table-body-skeleton-highlight) 50%,
+      var(--table-body-skeleton-base) 75%);
   background-size: 200% 100%;
   animation: tv-skeleton-shimmer var(--ui-skeleton-duration, 1.5s) ease-in-out infinite;
 }
 
 /* Vary skeleton bar widths per column for a natural look */
 .table-row--loading .table-cell:nth-child(odd) .table-cell-skeleton {
-  width: var(--ui-skeleton-width-odd, 45%);
+  width: var(--ui-skeleton-width-odd, var(--table-body-skeleton-width-odd));
 }
 
 .table-row--loading .table-cell:nth-child(even) .table-cell-skeleton {
-  width: var(--ui-skeleton-width-even, 70%);
+  width: var(--ui-skeleton-width-even, var(--table-body-skeleton-width-even));
 }
 
 @keyframes tv-skeleton-shimmer {

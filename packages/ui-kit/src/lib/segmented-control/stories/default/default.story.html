@@ -1,1 +1,2 @@
-<ui-segmented-control [items]="viewItems" [(value)]="activeView" />
+<ui-segmented-control [items]="viewItems" [(value)]="activeView" [disabled]="disabled()"
+    [indicatorColor]="indicatorColor()" ariaLabel="Time range" />

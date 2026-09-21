@@ -35,6 +35,12 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
   styles: [
     `
       :host {
+        --dropdown-tool-text: var(--ui-text, #1d232b);
+        --dropdown-tool-hover-bg: var(--ui-accent, #3584e4);
+        --dropdown-tool-hover-text: var(--ui-accent-contrast, #ffffff);
+        --dropdown-tool-surface: var(--ui-surface, #ffffff);
+        --dropdown-tool-border: var(--ui-border, #d7dce2);
+
         display: block;
       }
 
@@ -44,6 +50,8 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         flex-flow: column nowrap;
         padding: 0.25rem 0;
         min-width: 10rem;
+        background: var(--dropdown-tool-surface);
+        color: var(--dropdown-tool-text);
       }
       .item {
         display: flex;
@@ -61,8 +69,8 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         width: 100%;
       }
       .item:hover:not(:disabled) {
-        background: var(--ui-accent, #4f46e5);
-        color: var(--ui-text-on-accent, var(--ui-accent-contrast, #fff));
+        background: var(--dropdown-tool-hover-bg);
+        color: var(--dropdown-tool-hover-text);
       }
       .item.selected {
         font-weight: 600;
@@ -94,11 +102,11 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         cursor: var(--ui-cursor-click, pointer);
       }
       .grid-item:hover:not(:disabled) {
-        background: var(--ui-accent, #4f46e5);
-        color: var(--ui-text-on-accent, var(--ui-accent-contrast, #fff));
+        background: var(--dropdown-tool-hover-bg);
+        color: var(--dropdown-tool-hover-text);
       }
       .grid-item.selected {
-        border-color: var(--ui-accent, #4f46e5);
+        border-color: var(--dropdown-tool-hover-bg);
       }
       .grid-item:disabled {
         opacity: 0.45;

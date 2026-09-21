@@ -132,6 +132,10 @@ describe("UISignature", () => {
     it("should default readOnly to false", () => {
       expect(component.readOnly()).toBe(false);
     });
+
+    it("should default strokeColor to the theme-resolved value", () => {
+      expect(component.strokeColor()).toBeUndefined();
+    });
   });
 
   describe("host classes", () => {
@@ -161,6 +165,28 @@ describe("UISignature", () => {
       fixture.componentRef.setInput("readOnly", true);
       fixture.detectChanges();
       expect(fixture.nativeElement.classList).toContain("readonly");
+    });
+  });
+
+  describe("drawing state", () => {
+    it("should hide the empty hint as soon as drawing starts", () => {
+      const canvas = fixture.nativeElement.querySelector(
+        "canvas",
+      ) as HTMLCanvasElement;
+      canvas.setPointerCapture = vi.fn();
+
+      (component as unknown as {
+        onPointerDown: (event: PointerEvent) => void;
+      }).onPointerDown({
+        clientX: 10,
+        clientY: 10,
+        pointerId: 1,
+        preventDefault: vi.fn(),
+        pressure: 0,
+      } as unknown as PointerEvent);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector(".empty-state")).toBeFalsy();
     });
   });
 

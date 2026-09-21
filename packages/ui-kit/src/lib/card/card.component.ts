@@ -14,6 +14,9 @@ import { UIIcon } from "../icon/icon.component";
 /** Visual variant of the card. */
 export type CardVariant = "elevated" | "outlined" | "filled";
 
+/** Optional background treatment for a card. */
+export type CardGradient = "none" | "color";
+
 /**
  * A versatile content container with optional header, body, and footer slots.
  *
@@ -45,9 +48,11 @@ export type CardVariant = "elevated" | "outlined" | "filled";
     "[class.elevated]": "variant() === 'elevated'",
     "[class.outlined]": "variant() === 'outlined'",
     "[class.filled]": "variant() === 'filled'",
+    "[class.gradient-color]": "gradient() === 'color'",
     "[class.interactive]": "interactive()",
     role: "region",
     "[attr.aria-label]": "ariaLabel()",
+    "[style.--card-gradient-intensity]": "resolvedGradientIntensity()",
   },
 })
 export class UICard {
@@ -60,8 +65,23 @@ export class UICard {
    */
   public readonly interactive = input(false);
 
+  /** Optional accent-based background gradient. */
+  public readonly gradient = input<CardGradient>("none");
+
+  /**
+   * Opacity of the accent color in the gradient, clamped to the range 0..1.
+   *
+  * Controls the strength of the accent color in the gradient.
+   */
+  public readonly gradientIntensity = input(0.16);
+
   /** Accessible label for the card region. */
   public readonly ariaLabel = input<string | undefined>(undefined);
+
+  /** @internal */
+  protected readonly resolvedGradientIntensity = computed(() =>
+    Math.min(1, Math.max(0, this.gradientIntensity())),
+  );
 }
 
 /**
@@ -139,7 +159,7 @@ export class UICardHeader {
   host: { class: "ui-card-body" },
   templateUrl: "./card-body.component.html",
 })
-export class UICardBody {}
+export class UICardBody { }
 
 /**
  * Full-width media block for use inside a card body.
@@ -198,4 +218,4 @@ export class UICardImage {
   host: { class: "ui-card-footer" },
   templateUrl: "./card-footer.component.html",
 })
-export class UICardFooter {}
+export class UICardFooter { }

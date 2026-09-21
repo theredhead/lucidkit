@@ -89,10 +89,10 @@ These are the first priority because they expose theme failures most visibly.
 - [x] Add a `modern` coloring strategy with a more intentional, theme-aware palette and contrast treatment.
 - [x] Define chart text, grid, surface, and series token conventions for each strategy.
 - [x] Keep strategy-specific and chart-specific overrides possible without bypassing the root theme.
-- [ ] Refactor table skeleton styles in `packages/ui-kit/src/lib/table-view/table-view-body/table-view-body.component.scss`.
+- [x] Refactor table skeleton styles in `packages/ui-kit/src/lib/table-view/table-view-body/table-view-body.component.scss`.
   - Keep width, height, radius, and animation settings local.
   - Base skeleton colors on `--ui-border` and `--ui-surface-2`.
-- [ ] Audit `packages/ui-kit/src/lib/media-player/media-player.component.scss`.
+- [x] Audit `packages/ui-kit/src/lib/media-player/media-player.component.scss`.
   - Separate deliberate video-overlay colors from audio/control-surface colors.
   - Keep video controls legible while making audio mode theme-aware.
 
