@@ -19,8 +19,7 @@
   font-family: var(--ui-font, inherit);
   color: var(--dropdown-trigger-text);
   background: var(--dropdown-trigger-bg);
-  border: var(--ui-control-border-width, 1px) solid
-    var(--dropdown-trigger-border);
+  border: var(--ui-control-border-width, 1px) solid var(--dropdown-trigger-border);
   border-radius: var(--dropdown-trigger-radius);
   cursor: var(--ui-cursor-click, pointer);
   line-height: 1;

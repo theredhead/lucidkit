@@ -7,11 +7,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(
-    in srgb,
-    var(--ui-accent, #3584e4) 10%,
-    var(--ui-surface, #f7f8fa)
-  );
+  background: color-mix(in srgb,
+      var(--ui-accent, #3584e4) 10%,
+      var(--ui-surface, #f7f8fa));
   color: var(--ui-text, #1d232b);
 }
 

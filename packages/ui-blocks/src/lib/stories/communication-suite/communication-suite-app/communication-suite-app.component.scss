@@ -17,12 +17,12 @@
   height: 100%;
 }
 
-.page-fill > ui-tab-group {
+.page-fill>ui-tab-group {
   flex: 1;
   min-height: 0;
 }
 
-.page-fill > ui-tab-group ::ng-deep .panel {
+.page-fill>ui-tab-group ::ng-deep .panel {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -49,16 +49,19 @@
   justify-content: space-between;
   margin: 0 0 1.25rem;
 }
+
 .page-title {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
+
 .page-title h2 {
   margin: 0;
   font-size: 1.35rem;
   font-weight: 700;
 }
+
 .page-actions {
   display: flex;
   gap: 0.5rem;
@@ -88,15 +91,18 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
 .stat-value {
   font-size: 1.75rem;
   font-weight: 800;
   margin: 0.25rem 0;
 }
+
 .stat-label {
   font-size: 0.78rem;
   opacity: 0.65;
 }
+
 .stat-icon-row {
   display: flex;
   align-items: center;
@@ -110,6 +116,7 @@
   gap: 1rem;
   height: 100%;
 }
+
 .chat-channel-list {
   width: 280px;
   flex-shrink: 0;
@@ -117,6 +124,7 @@
   border-radius: 6px;
   overflow-y: auto;
 }
+
 .chat-channel-item {
   display: flex;
   align-items: center;
@@ -126,19 +134,24 @@
   border-bottom: 1px solid var(--ui-border, #d7dce2);
   transition: background 0.12s;
 }
+
 .chat-channel-item:hover {
   background: color-mix(in srgb, var(--ui-accent, #3584e4) 6%, transparent);
 }
+
 .chat-channel-item:last-child {
   border-bottom: none;
 }
+
 .chat-channel-item-active {
   background: color-mix(in srgb, var(--ui-accent, #3584e4) 10%, transparent);
 }
+
 .chat-channel-info {
   flex: 1;
   min-width: 0;
 }
+
 .chat-channel-name {
   font-weight: 600;
   font-size: 0.88rem;
@@ -146,6 +159,7 @@
   align-items: center;
   gap: 0.35rem;
 }
+
 .chat-channel-preview {
   font-size: 0.78rem;
   opacity: 0.6;
@@ -153,11 +167,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .chat-channel-time {
   font-size: 0.72rem;
   opacity: 0.5;
   white-space: nowrap;
 }
+
 .chat-main {
   flex: 1;
   display: flex;
@@ -166,6 +182,7 @@
   border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 6px;
 }
+
 .chat-header {
   display: flex;
   align-items: center;
@@ -174,6 +191,7 @@
   border-bottom: 1px solid var(--ui-border, #d7dce2);
   font-weight: 600;
 }
+
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -182,13 +200,16 @@
   flex-direction: column;
   gap: 0.75rem;
 }
+
 .chat-msg {
   display: flex;
   gap: 0.75rem;
 }
+
 .chat-msg-content {
   flex: 1;
 }
+
 .chat-msg-sender {
   font-weight: 600;
   font-size: 0.85rem;
@@ -196,25 +217,30 @@
   align-items: center;
   gap: 0.5rem;
 }
+
 .chat-msg-time {
   font-weight: 400;
   font-size: 0.72rem;
   opacity: 0.5;
 }
+
 .chat-msg-text {
   font-size: 0.88rem;
   line-height: 1.45;
   margin-top: 0.15rem;
 }
+
 .chat-input-bar {
   display: flex;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-top: 1px solid var(--ui-border, #d7dce2);
 }
+
 .chat-input-bar ui-input {
   flex: 1;
 }
+
 .chat-main ui-chat-view {
   flex: 1;
   min-height: 0;
@@ -236,11 +262,13 @@
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
 }
+
 .meeting-header {
   display: flex;
   justify-content: space-between;
   align-items: start;
 }
+
 .meeting-time {
   display: flex;
   align-items: center;
@@ -249,12 +277,14 @@
   margin: 0.5rem 0;
   opacity: 0.75;
 }
+
 .meeting-attendees {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-top: 0.5rem;
 }
+
 .meeting-meta-row {
   display: flex;
   align-items: center;
@@ -270,24 +300,25 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
 }
+
 .room-card-header {
   height: 100px;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--ui-accent, #3584e4) 20%, transparent),
-    color-mix(in srgb, var(--ui-accent, #3584e4) 6%, transparent)
-  );
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--ui-accent, #3584e4) 20%, transparent),
+      color-mix(in srgb, var(--ui-accent, #3584e4) 6%, transparent));
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 6px 6px 0 0;
 }
+
 .room-amenities {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-top: 0.5rem;
 }
+
 .room-availability {
   display: flex;
   align-items: center;
@@ -303,23 +334,28 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
 }
+
 .contact-card-top {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
+
 .contact-name {
   font-weight: 600;
 }
+
 .contact-title-dept {
   font-size: 0.78rem;
   opacity: 0.65;
 }
+
 .contact-actions-row {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.75rem;
 }
+
 .contact-status-dot {
   display: inline-block;
   width: 8px;
@@ -327,22 +363,27 @@
   border-radius: 50%;
   margin-right: 0.35rem;
 }
+
 .contact-status-dot-online {
   color: var(--contact-online);
   background: var(--contact-online);
 }
+
 .contact-status-dot-busy {
   color: var(--contact-busy);
   background: var(--contact-busy);
 }
+
 .contact-status-dot-away {
   color: var(--contact-away);
   background: var(--contact-away);
 }
+
 .contact-status-dot-offline {
   color: var(--contact-offline);
   background: var(--contact-offline);
 }
+
 .meeting-category-dot {
   display: inline-block;
   width: 8px;
@@ -350,14 +391,17 @@
   margin-right: 0.35rem;
   border-radius: 50%;
 }
+
 .meeting-category-dot.virtual {
   color: var(--meeting-virtual);
   background: var(--meeting-virtual);
 }
+
 .meeting-category-dot.in-person {
   color: var(--meeting-in-person);
   background: var(--meeting-in-person);
 }
+
 .meeting-category-dot.hybrid {
   color: var(--meeting-hybrid);
   background: var(--meeting-hybrid);
@@ -371,15 +415,18 @@
   gap: 1rem;
   max-width: 42rem;
 }
+
 .compose-field {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
+
 .field-label {
   font-size: 0.82rem;
   font-weight: 600;
 }
+
 .compose-actions {
   display: flex;
   gap: 0.5rem;
@@ -403,6 +450,7 @@
   gap: 1rem;
   max-width: 36rem;
 }
+
 .setting-row {
   display: flex;
   align-items: center;
@@ -412,6 +460,7 @@
   border-radius: 0.5rem;
   font-size: 0.88rem;
 }
+
 .setting-label {
   font-weight: 600;
 }
@@ -421,6 +470,7 @@
   flex-direction: column;
   gap: 0.75rem;
 }
+
 .today-meeting-card {
   display: flex;
   align-items: center;
@@ -431,18 +481,22 @@
   background: var(--ui-surface, #f7f8fa);
   color: var(--ui-text, #1d232b);
 }
+
 .today-meeting-time {
   font-weight: 700;
   font-size: 0.88rem;
   min-width: 6rem;
   text-align: center;
 }
+
 .today-meeting-info {
   flex: 1;
 }
+
 .today-meeting-title {
   font-weight: 600;
 }
+
 .today-meeting-sub {
   font-size: 0.78rem;
   opacity: 0.65;
