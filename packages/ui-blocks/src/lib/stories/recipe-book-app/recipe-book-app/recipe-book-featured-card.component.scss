@@ -41,7 +41,8 @@
 }
 
 .recipe-rating-stars {
-  color: #e5a50a;
+  color: var(--ui-warning, #e5a50a);
+  background: transparent;
 }
 
 .rating-copy {
