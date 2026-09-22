@@ -128,7 +128,7 @@ These contain many intentionally local surfaces and need a separate visual pass.
 - [ ] Test every popup and overlay with explicit `.dark-theme`.
 - [ ] Test system dark mode with no explicit theme class.
 - [ ] Test direct local-token overrides on component hosts.
-- [ ] Test Theme Studio overrides for root tokens.
+- [x] Test Theme Studio overrides for root tokens.
 - [ ] Verify contrast for text, selected, hover, focus, disabled, warning, success, and error states.
 - [ ] Check that body-appended overlays inherit the active theme correctly.
 
