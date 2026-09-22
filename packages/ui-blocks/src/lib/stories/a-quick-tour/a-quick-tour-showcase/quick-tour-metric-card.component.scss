@@ -1,10 +1,11 @@
 :host {
+  --tour-text: var(--ui-text, #1d232b);
   display: block;
 }
 
 .muted {
   font-size: 0.8rem;
-  color: var(--ui-text, #1d232b);
+  color: var(--tour-text);
   background: transparent;
   opacity: 0.68;
 }
