@@ -1,8 +1,10 @@
 <!-- Alert -->
 <ui-button (click)="showAlert()">Show Alert</ui-button>
 
-<!-- Confirm (danger variant) -->
-<ui-button (click)="showConfirm()">Delete...</ui-button>
+<!-- Confirm decisions -->
+<ui-button (click)="showConfirm('danger')">Delete project...</ui-button>
+<ui-button (click)="showConfirm('primary')">Archive project...</ui-button>
+<ui-button (click)="showConfirm('warning')">Discard changes...</ui-button>
 
 <!-- Prompt -->
 <ui-button (click)="showPrompt()">Rename...</ui-button>

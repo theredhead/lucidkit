@@ -55,7 +55,7 @@ export class CommonDialogService {
       inputs: {
         title: options.title,
         message: options.message,
-        buttonLabel: options.buttonLabel ?? "OK",
+        buttonLabel: options.buttonLabel ?? "Acknowledge message",
       },
       ariaLabel: options.ariaLabel ?? options.title,
     });
@@ -73,8 +73,8 @@ export class CommonDialogService {
       inputs: {
         title: options.title,
         message: options.message,
-        confirmLabel: options.confirmLabel ?? "OK",
-        cancelLabel: options.cancelLabel ?? "Cancel",
+        confirmLabel: options.confirmLabel ?? "Confirm action",
+        cancelLabel: options.cancelLabel ?? "Keep current state",
         variant: options.variant ?? "primary",
       },
       ariaLabel: options.ariaLabel ?? options.title,
@@ -96,8 +96,8 @@ export class CommonDialogService {
         message: options.message,
         defaultValue: options.defaultValue ?? "",
         placeholder: options.placeholder ?? "",
-        okLabel: options.okLabel ?? "OK",
-        cancelLabel: options.cancelLabel ?? "Cancel",
+        okLabel: options.okLabel ?? "Apply value",
+        cancelLabel: options.cancelLabel ?? "Keep current value",
       },
       ariaLabel: options.ariaLabel ?? options.title,
     });
@@ -120,7 +120,7 @@ export class CommonDialogService {
       component: UIOpenFileDialog,
       inputs: {
         title: options.title ?? "Open File",
-        openLabel: options.openLabel ?? "Open",
+        openLabel: options.openLabel ?? "Open selected file",
         datasource: options.datasource,
       },
       ariaLabel: options.ariaLabel ?? options.title ?? "Open File",
@@ -145,7 +145,7 @@ export class CommonDialogService {
       component: UISaveFileDialog,
       inputs: {
         title: options.title ?? "Save File",
-        saveLabel: options.saveLabel ?? "Save",
+        saveLabel: options.saveLabel ?? "Save file",
         defaultName: options.defaultName ?? "",
         datasource: options.datasource,
       },

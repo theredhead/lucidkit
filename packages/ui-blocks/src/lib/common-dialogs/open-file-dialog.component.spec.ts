@@ -117,7 +117,7 @@ describe("UIOpenFileDialog", () => {
 
     it("should have default openLabel", () => {
       fixture.detectChanges();
-      expect(component.openLabel()).toBe("Open");
+      expect(component.openLabel()).toBe("Open selected file");
     });
 
     it("should accept custom title", () => {

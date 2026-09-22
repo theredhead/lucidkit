@@ -79,18 +79,25 @@ export class DefaultStorySource {
     await this.dialogs.confirm({
       title:
         variant === "danger"
-          ? "Delete Project?"
+          ? "Delete project?"
           : variant === "warning"
-            ? "Unsaved Changes"
-            : "Confirm Action",
+            ? "Discard unsaved changes?"
+            : "Archive project?",
       message:
         variant === "danger"
-          ? "This will permanently delete the project and all its data.\nThis action cannot be undone."
+          ? "Delete the project and all its data?\nThis action cannot be undone."
           : variant === "warning"
-            ? "You have unsaved changes. Do you want to discard them?"
-            : "Are you sure you want to proceed?",
+            ? "Discard the changes you have made since the last save?"
+            : "Move the project to the archive? You can restore it later.",
       variant,
-      confirmLabel: variant === "danger" ? "Delete" : "OK",
+      confirmLabel:
+        variant === "danger"
+          ? "Delete project"
+          : variant === "warning"
+            ? "Discard changes"
+            : "Archive project",
+      cancelLabel:
+        variant === "warning" ? "Keep editing" : "Keep project",
     });
   }
 
@@ -100,6 +107,8 @@ export class DefaultStorySource {
       message: "Enter a new name for this file:",
       defaultValue: "document.txt",
       placeholder: "file name",
+      okLabel: "Rename file",
+      cancelLabel: "Keep current name",
     });
   }
 

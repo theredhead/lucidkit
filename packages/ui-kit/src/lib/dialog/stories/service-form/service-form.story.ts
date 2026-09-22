@@ -32,9 +32,9 @@ import { ModalRef, type UIModalContent } from "../../dialog.types";
       />
     </ui-dialog-body>
     <ui-dialog-footer>
-      <ui-button variant="ghost" (click)="modalRef.close()">Cancel</ui-button>
+      <ui-button variant="ghost" (click)="modalRef.close()">Cancel renaming</ui-button>
       <ui-button variant="filled" (click)="modalRef.close(fieldValue())"
-        >Save</ui-button
+        >Save new name</ui-button
       >
     </ui-dialog-footer>
   `,

@@ -3,66 +3,31 @@
   <span class="title">Theme Studio</span>
 
   <div class="layout-controls">
-    <button
-      type="button"
-      class="icon-btn"
-      [class.active]="splitOrientation() === 'horizontal'"
-      title="Horizontal split"
-      aria-label="Horizontal split"
-      (click)="setOrientation('horizontal')"
-    >
+    <button type="button" class="icon-btn" [class.active]="splitOrientation() === 'horizontal'" title="Horizontal split"
+      aria-label="Horizontal split" (click)="setOrientation('horizontal')">
       <ui-icon [svg]="icons.horizontal" [size]="16" />
     </button>
-    <button
-      type="button"
-      class="icon-btn"
-      [class.active]="splitOrientation() === 'vertical'"
-      title="Vertical split"
-      aria-label="Vertical split"
-      (click)="setOrientation('vertical')"
-    >
+    <button type="button" class="icon-btn" [class.active]="splitOrientation() === 'vertical'" title="Vertical split"
+      aria-label="Vertical split" (click)="setOrientation('vertical')">
       <ui-icon [svg]="icons.vertical" [size]="16" />
     </button>
-    <button
-      type="button"
-      class="icon-btn"
-      [class.active]="panelsSwapped()"
-      title="Swap panels"
-      aria-label="Swap panels"
-      (click)="toggleSwap()"
-    >
+    <button type="button" class="icon-btn" [class.active]="panelsSwapped()" title="Swap panels" aria-label="Swap panels"
+      (click)="toggleSwap()">
       <ui-icon [svg]="icons.swap" [size]="16" />
     </button>
   </div>
 
   <div class="header-actions">
-    <button
-      type="button"
-      class="action-btn"
-      [disabled]="studio.modifiedTokens().length === 0"
-      (click)="exportCss()"
-      title="Copy CSS overrides to clipboard"
-      aria-label="Copy CSS overrides"
-    >
+    <button type="button" class="action-btn" [disabled]="studio.modifiedTokens().length === 0" (click)="exportCss()"
+      title="Copy CSS overrides to clipboard" aria-label="Copy CSS overrides">
       Copy CSS
     </button>
-    <button
-      type="button"
-      class="action-btn"
-      [disabled]="studio.modifiedTokens().length === 0"
-      (click)="exportJson()"
-      title="Copy JSON overrides to clipboard"
-      aria-label="Copy JSON overrides"
-    >
+    <button type="button" class="action-btn" [disabled]="studio.modifiedTokens().length === 0" (click)="exportJson()"
+      title="Copy JSON overrides to clipboard" aria-label="Copy JSON overrides">
       Copy JSON
     </button>
-    <button
-      type="button"
-      class="action-btn danger"
-      [disabled]="studio.modifiedTokens().length === 0"
-      (click)="studio.resetAll()"
-      aria-label="Reset all token overrides"
-    >
+    <button type="button" class="action-btn danger" [disabled]="studio.modifiedTokens().length === 0"
+      (click)="studio.resetAll()" aria-label="Reset all token overrides">
       Reset all
     </button>
   </div>
@@ -70,31 +35,23 @@
 
 <!-- ── Split container ─────────────────────────────────────────────── -->
 @if (panelsSwapped()) {
-  <ui-split-container
-    class="split"
-    [orientation]="splitOrientation()"
-    name="theme-studio"
-  >
-    <ui-split-panel [min]="300">
-      <ng-container [ngTemplateOutlet]="canvasTpl" />
-    </ui-split-panel>
-    <ui-split-panel [min]="280">
-      <ng-container [ngTemplateOutlet]="tokenEditorTpl" />
-    </ui-split-panel>
-  </ui-split-container>
+<ui-split-container class="split" [orientation]="splitOrientation()" name="theme-studio">
+  <ui-split-panel [min]="300">
+    <ng-container [ngTemplateOutlet]="canvasTpl" />
+  </ui-split-panel>
+  <ui-split-panel [min]="280">
+    <ng-container [ngTemplateOutlet]="tokenEditorTpl" />
+  </ui-split-panel>
+</ui-split-container>
 } @else {
-  <ui-split-container
-    class="split"
-    [orientation]="splitOrientation()"
-    name="theme-studio"
-  >
-    <ui-split-panel [min]="280">
-      <ng-container [ngTemplateOutlet]="tokenEditorTpl" />
-    </ui-split-panel>
-    <ui-split-panel [min]="300">
-      <ng-container [ngTemplateOutlet]="canvasTpl" />
-    </ui-split-panel>
-  </ui-split-container>
+<ui-split-container class="split" [orientation]="splitOrientation()" name="theme-studio">
+  <ui-split-panel [min]="280">
+    <ng-container [ngTemplateOutlet]="tokenEditorTpl" />
+  </ui-split-panel>
+  <ui-split-panel [min]="300">
+    <ng-container [ngTemplateOutlet]="canvasTpl" />
+  </ui-split-panel>
+</ui-split-container>
 }
 
 <!-- ── Token editor template ──────────────────────────────────────── -->
@@ -103,20 +60,10 @@
 
     <!-- Filter toolbar -->
     <div class="filter-toolbar">
-      <input
-        type="search"
-        class="search-input"
-        placeholder="Search tokens…"
-        [value]="studio.filter().query"
-        (input)="onQueryChange($event)"
-        aria-label="Search tokens"
-      />
-      <select
-        class="filter-select"
-        [value]="studio.filter().type"
-        (change)="onTypeChange($event)"
-        aria-label="Filter by type"
-      >
+      <input type="search" class="search-input" placeholder="Search tokens…" [value]="studio.filter().query"
+        (input)="onQueryChange($event)" aria-label="Search tokens" />
+      <select class="filter-select" [value]="studio.filter().type" (change)="onTypeChange($event)"
+        aria-label="Filter by type">
         <option value="">All types</option>
         <option value="color">color</option>
         <option value="length">length</option>
@@ -125,37 +72,25 @@
         <option value="number">number</option>
         <option value="keyword">keyword</option>
       </select>
-      <select
-        class="filter-select"
-        [value]="studio.filter().scope"
-        (change)="onScopeChange($event)"
-        aria-label="Filter by scope"
-      >
+      <select class="filter-select" [value]="studio.filter().scope" (change)="onScopeChange($event)"
+        aria-label="Filter by scope">
         <option value="">All scopes</option>
         <option value="global">global</option>
         <option value="component">component</option>
       </select>
 
       @if (studio.manifest(); as m) {
-        <select
-          class="filter-select"
-          [value]="studio.filter().namespace"
-          (change)="onNamespaceChange($event)"
-          aria-label="Filter by namespace"
-        >
-          <option value="">All namespaces</option>
-          @for (entry of m.namespaces | keyvalue; track entry.key) {
-            <option [value]="entry.key">{{ entry.key }}</option>
-          }
-        </select>
+      <select class="filter-select" [value]="studio.filter().namespace" (change)="onNamespaceChange($event)"
+        aria-label="Filter by namespace">
+        <option value="">All namespaces</option>
+        @for (entry of m.namespaces | keyvalue; track entry.key) {
+        <option [value]="entry.key">{{ entry.key }}</option>
+        }
+      </select>
       }
 
       <label class="modified-toggle">
-        <input
-          type="checkbox"
-          [checked]="studio.filter().modifiedOnly"
-          (change)="onModifiedOnlyChange($event)"
-        />
+        <input type="checkbox" [checked]="studio.filter().modifiedOnly" (change)="onModifiedOnlyChange($event)" />
         Modified only
       </label>
     </div>
@@ -164,29 +99,25 @@
     <div class="stats">
       {{ studio.filteredTokens().length }} of {{ studio.tokens().length }} tokens
       @if (studio.modifiedTokens().length > 0) {
-        · <strong>{{ studio.modifiedTokens().length }} modified</strong>
+      · <strong>{{ studio.modifiedTokens().length }} modified</strong>
       }
     </div>
 
     <!-- Token list -->
     <div class="token-list" role="list">
       @if (studio.loading()) {
-        <div class="state-message">Loading tokens…</div>
+      <div class="state-message">Loading tokens…</div>
       } @else if (studio.loadError()) {
-        <div class="state-message error">
-          Failed to load manifest: {{ studio.loadError() }}
-        </div>
+      <div class="state-message error">
+        Failed to load manifest: {{ studio.loadError() }}
+      </div>
       } @else if (studio.filteredTokens().length === 0) {
-        <div class="state-message">No tokens match the current filter.</div>
+      <div class="state-message">No tokens match the current filter.</div>
       } @else {
-        @for (token of studio.filteredTokens(); track token.name) {
-          <ui-theme-token-row
-            [token]="token"
-            (valueChange)="onTokenValueChange(token.name, $event)"
-            (reset)="onTokenReset(token.name)"
-            role="listitem"
-          />
-        }
+      @for (token of studio.filteredTokens(); track token.name) {
+      <ui-theme-token-row [token]="token" (valueChange)="onTokenValueChange(token.name, $event)"
+        (reset)="onTokenReset(token.name)" role="listitem" />
+      }
       }
     </div>
   </div>
@@ -237,10 +168,7 @@
       <h4 class="section-title">Inputs</h4>
       <div class="col">
         <ui-input placeholder="Text input" ariaLabel="Sample text input" />
-        <ui-dropdown-list
-          [options]="sampleDropdownOptions"
-          ariaLabel="Sample dropdown"
-        />
+        <ui-dropdown-list [options]="sampleDropdownOptions" ariaLabel="Sample dropdown" />
       </div>
     </section>
 
@@ -258,7 +186,7 @@
         </ui-card-body>
         <ui-card-footer>
           <ui-button variant="filled" ariaLabel="Card action">Action</ui-button>
-          <ui-button variant="ghost" ariaLabel="Cancel">Cancel</ui-button>
+          <ui-button variant="ghost" ariaLabel="Cancel card action">Cancel card action</ui-button>
         </ui-card-footer>
       </ui-card>
     </section>

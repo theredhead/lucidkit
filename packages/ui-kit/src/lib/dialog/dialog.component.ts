@@ -40,8 +40,8 @@ import { UISurface, UI_DEFAULT_SURFACE_TYPE } from "@theredhead/lucid-foundation
  *     <p>Are you sure you want to proceed?</p>
  *   </ui-dialog-body>
  *   <ui-dialog-footer>
- *     <ui-button variant="outlined" (click)="showDialog = false">Cancel</ui-button>
- *     <ui-button (click)="confirm()">OK</ui-button>
+ *     <ui-button variant="outlined" (click)="showDialog = false">Cancel action</ui-button>
+ *     <ui-button (click)="confirm()">Confirm action</ui-button>
  *   </ui-dialog-footer>
  * </ui-dialog>
  * ```

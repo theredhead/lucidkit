@@ -1,9 +1,14 @@
 {
-    "scss.loadPaths": ["packages/ui-theme/src/lib/styles"],
+    "scss.loadPaths": [
+        "packages/ui-theme/src/lib/styles"
+    ],
     "angular.enable-strict-mode-prompt": false,
     "typescript.preferences.importModuleSpecifier": "relative",
     "editor.formatOnSave": true,
     "chat.tools.terminal.autoApprove": {
-        "awk": true
+        "awk": true,
+        "npx sass": true,
+        "npx vitest": true,
+        "npx eslint": true
     }
 }

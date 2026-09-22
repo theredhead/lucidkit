@@ -1,34 +1,25 @@
 <div class="heading">
   @if (editMode()) {
-    Edit {{ blockLabel() || blockName() }}
+  Edit {{ blockLabel() || blockName() }}
   } @else {
-    Insert {{ blockLabel() || blockName() }}
+  Insert {{ blockLabel() || blockName() }}
   }
 </div>
 
 @if (fields().length > 0) {
-  <ui-property-sheet
-    class="property-sheet"
-    [fields]="fields()"
-    [(data)]="attributeValues"
-    [ariaLabel]="(blockLabel() || blockName()) + ' attributes'"
-  />
+<ui-property-sheet class="property-sheet" [fields]="fields()" [(data)]="attributeValues"
+  [ariaLabel]="(blockLabel() || blockName()) + ' attributes'" />
 } @else {
-  <div class="empty">This block has no editable attributes.</div>
+<div class="empty">This block has no editable attributes.</div>
 }
 
 <div class="actions">
-  <button type="button" class="btn cancel" (click)="cancel()">Cancel</button>
-  <button
-    type="button"
-    class="btn apply"
-    [disabled]="!canApply()"
-    (click)="apply()"
-  >
+  <button type="button" class="btn cancel" (click)="cancel()">Cancel editing</button>
+  <button type="button" class="btn apply" [disabled]="!canApply()" (click)="apply()">
     @if (editMode()) {
-      Apply
+    Apply
     } @else {
-      Insert
+    Insert
     }
   </button>
 </div>

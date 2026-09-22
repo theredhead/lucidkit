@@ -365,7 +365,7 @@ describe("CommonDialogService — mocked modal", () => {
 
     const inputs = openModalSpy.mock.calls[0][0].inputs;
     expect(inputs.title).toBe("Open File");
-    expect(inputs.openLabel).toBe("Open");
+    expect(inputs.openLabel).toBe("Open selected file");
     expect(inputs.datasource).toBe(ds);
 
     const fileResult = { files: [{ name: "test.txt" }] };
@@ -413,7 +413,7 @@ describe("CommonDialogService — mocked modal", () => {
 
     const inputs = openModalSpy.mock.calls[0][0].inputs;
     expect(inputs.title).toBe("Save File");
-    expect(inputs.saveLabel).toBe("Save");
+    expect(inputs.saveLabel).toBe("Save file");
     expect(inputs.defaultName).toBe("");
 
     const saveResult = { directory: null, name: "doc.txt" };

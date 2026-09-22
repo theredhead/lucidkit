@@ -14,7 +14,7 @@ export interface AlertOptions {
   /** Message body (plain text or a single paragraph). */
   readonly message: string;
 
-  /** Label for the dismiss button. Defaults to `"OK"`. */
+  /** Label for the acknowledgement button. Defaults to `"Acknowledge message"`. */
   readonly buttonLabel?: string;
 
   /** Accessible label for the dialog element. */
@@ -32,10 +32,10 @@ export interface ConfirmOptions {
   /** Message body. */
   readonly message: string;
 
-  /** Label for the confirm button. Defaults to `"OK"`. */
+  /** Label for the confirm button. Defaults to `"Confirm action"`. */
   readonly confirmLabel?: string;
 
-  /** Label for the cancel button. Defaults to `"Cancel"`. */
+  /** Label for the alternative button. Defaults to `"Keep current state"`. */
   readonly cancelLabel?: string;
 
   /** Visual variant of the confirm button. Defaults to `"primary"`. */
@@ -62,10 +62,10 @@ export interface PromptOptions {
   /** Placeholder text for the input. */
   readonly placeholder?: string;
 
-  /** Label for the OK button. Defaults to `"OK"`. */
+  /** Label for the submit button. Defaults to `"Apply value"`. */
   readonly okLabel?: string;
 
-  /** Label for the cancel button. Defaults to `"Cancel"`. */
+  /** Label for the alternative button. Defaults to `"Keep current value"`. */
   readonly cancelLabel?: string;
 
   /** Accessible label for the dialog element. */
@@ -86,7 +86,7 @@ export interface OpenFileOptions<M = unknown> {
   /** Whether the user may select multiple files. */
   readonly allowMultiple?: boolean;
 
-  /** Label for the open button. Defaults to `"Open"`. */
+  /** Label for the open button. Defaults to `"Open selected file"`. */
   readonly openLabel?: string;
 
   /** Accessible label for the dialog element. */
@@ -114,7 +114,7 @@ export interface SaveFileOptions<M = unknown> {
   /** Pre-filled file name. */
   readonly defaultName?: string;
 
-  /** Label for the save button. Defaults to `"Save"`. */
+  /** Label for the save button. Defaults to `"Save file"`. */
   readonly saveLabel?: string;
 
   /** Accessible label for the dialog element. */
