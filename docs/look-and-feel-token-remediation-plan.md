@@ -134,23 +134,23 @@ These contain many intentionally local surfaces and need a separate visual pass.
 
 ## Regression Coverage
 
-- [ ] Add a token-audit check for invalid root-token names.
+- [x] Add a token-audit check for invalid root-token names.
 - [ ] Add coverage for important local token host variables where practical.
 - [ ] Add Storybook visual checks for autocomplete, dropdown menu, dialog, calendar, color picker, command palette, drawer, toast, and table loading rows.
 - [ ] Capture light and dark screenshots for the popup/overlay group.
-- [ ] Run the Sass compilation check:
+- [x] Run the Sass compilation check:
 
   ```sh
   npx sass --no-source-map --load-path=packages/ui-theme/src/lib/styles styles.scss /tmp/theme.css
   ```
 
-- [ ] Run the full test suite:
+- [x] Run the full test suite:
 
   ```sh
   npx vitest run
   ```
 
-- [ ] Run lint:
+- [x] Run lint:
 
   ```sh
   npm run lint
