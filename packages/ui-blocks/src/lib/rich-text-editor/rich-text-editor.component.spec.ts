@@ -98,6 +98,15 @@ describe("UIRichTextEditor", () => {
     });
   });
 
+  describe("local theme tokens", () => {
+    it("allows local surface overrides on the host", () => {
+      const host = fixture.nativeElement as HTMLElement;
+      host.style.setProperty("--rich-text-surface", "#123456");
+
+      expect(host.style.getPropertyValue("--rich-text-surface")).toBe("#123456");
+    });
+  });
+
   describe("defaults", () => {
     it("should default disabled to false", () => {
       expect(component.disabled()).toBe(false);

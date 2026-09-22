@@ -64,7 +64,7 @@ These are the first priority because they expose theme failures most visibly.
   - Base error states on `--ui-error`.
 - [x] Refactor `packages/ui-blocks/src/lib/property-sheet/property-sheet.component.scss`.
   - Replace danger fallbacks with local error tokens.
-- [ ] Audit `packages/ui-blocks/src/lib/rich-text-editor/rich-text-editor.component.scss`.
+- [x] Audit `packages/ui-blocks/src/lib/rich-text-editor/rich-text-editor.component.scss`.
   - Add local tokens for destructive actions, placeholders, dropdowns, pickers, and fullscreen overlays.
 - [x] Refactor `packages/ui-kit/src/lib/json-view/json-node.component.scss`.
   - Keep syntax-specific tokens.
@@ -135,7 +135,7 @@ These contain many intentionally local surfaces and need a separate visual pass.
 ## Regression Coverage
 
 - [x] Add a token-audit check for invalid root-token names.
-- [ ] Add coverage for important local token host variables where practical.
+- [x] Add coverage for important local token host variables where practical.
 - [x] Add Storybook visual checks for autocomplete, dropdown menu, dialog, calendar, color picker, command palette, drawer, toast, and table loading rows.
 - [x] Capture light and dark screenshots for the popup/overlay group.
 - [x] Run the Sass compilation check:
