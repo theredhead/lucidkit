@@ -1,4 +1,11 @@
 :host {
+  --meeting-virtual: var(--ui-accent, #3584e4);
+  --meeting-in-person: var(--ui-success, #2ec27e);
+  --meeting-hybrid: var(--ui-warning, #e5a50a);
+  --contact-online: var(--ui-success, #2ec27e);
+  --contact-busy: var(--ui-error, #e5392f);
+  --contact-away: var(--ui-warning, #e5a50a);
+  --contact-offline: var(--ui-text-muted, #999);
   display: block;
   height: 100vh;
   overflow: hidden;
@@ -321,16 +328,39 @@
   margin-right: 0.35rem;
 }
 .contact-status-dot-online {
-  background: #2ec27e;
+  color: var(--contact-online);
+  background: var(--contact-online);
 }
 .contact-status-dot-busy {
-  background: #e5392f;
+  color: var(--contact-busy);
+  background: var(--contact-busy);
 }
 .contact-status-dot-away {
-  background: #e5a50a;
+  color: var(--contact-away);
+  background: var(--contact-away);
 }
 .contact-status-dot-offline {
-  background: #999;
+  color: var(--contact-offline);
+  background: var(--contact-offline);
+}
+.meeting-category-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 0.35rem;
+  border-radius: 50%;
+}
+.meeting-category-dot.virtual {
+  color: var(--meeting-virtual);
+  background: var(--meeting-virtual);
+}
+.meeting-category-dot.in-person {
+  color: var(--meeting-in-person);
+  background: var(--meeting-in-person);
+}
+.meeting-category-dot.hybrid {
+  color: var(--meeting-hybrid);
+  background: var(--meeting-hybrid);
 }
 
 /* ── Compose ── */
