@@ -98,28 +98,28 @@ These are the first priority because they expose theme failures most visibly.
 
 ## Toolbar And Navigation Tools
 
-- [ ] Refactor `packages/ui-kit/src/lib/toolbar/tools/button-tool/button-tool.component.scss`.
+- [x] Refactor `packages/ui-kit/src/lib/toolbar/tools/button-tool/button-tool.component.scss`.
   - Add local radius, text, hover surface, border, and focus tokens.
-- [ ] Refactor `packages/ui-kit/src/lib/toolbar/tools/toggle-tool/toggle-tool.component.scss`.
+- [x] Refactor `packages/ui-kit/src/lib/toolbar/tools/toggle-tool/toggle-tool.component.scss`.
   - Add local checked-background and checked-text tokens.
   - Base checked text on `--ui-accent-contrast`.
-- [ ] Refactor inline styles in `packages/ui-kit/src/lib/toolbar/tools/dropdown-tool/dropdown-tool.component.ts`.
+- [x] Refactor inline styles in `packages/ui-kit/src/lib/toolbar/tools/dropdown-tool/dropdown-tool.component.ts`.
   - Apply the same local popup token pattern to list and icon-grid modes.
-- [ ] Audit toolbar shell background, border, shadow, and text tokens.
+- [x] Audit toolbar shell background, border, shadow, and text tokens.
 
 ## Showcase Applications
 
 These contain many intentionally local surfaces and need a separate visual pass.
 
-- [ ] Audit the recipe-book showcase.
+- [x] Audit the recipe-book showcase.
   - Review cards, category panels, featured cards, and navigation in both modes.
-- [ ] Audit the video-sharing showcase.
+- [x] Audit the video-sharing showcase.
   - Separate video surfaces from ordinary application surfaces.
-- [ ] Audit the warehouse-management showcase.
+- [x] Audit the warehouse-management showcase.
   - Review tables, warning/error states, and inline styles.
-- [ ] Audit the communication-suite showcase.
+- [x] Audit the communication-suite showcase.
   - Review message panels, selected states, and composer surfaces.
-- [ ] Audit the quick-tour showcase.
+- [x] Audit the quick-tour showcase.
   - Keep `--tour-*` tokens local while deriving their defaults from root tokens.
 
 ## Light/Dark Verification
