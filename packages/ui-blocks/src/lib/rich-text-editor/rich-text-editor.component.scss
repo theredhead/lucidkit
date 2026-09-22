@@ -33,10 +33,10 @@
 ui-toolbar {
   align-self: stretch;
   border-radius: var(--ui-radius, 0.375rem) var(--ui-radius, 0.375rem) 0 0;
-  border: 1px solid var(--ui-border, #d4d8dd);
+  border: 1px solid var(--rich-text-border);
   flex-wrap: wrap;
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #ffffff);
+  color: var(--rich-text-text);
+  background: var(--rich-text-surface);
 }
 
 :host ::ng-deep ui-toolbar .toolbar-shell {
