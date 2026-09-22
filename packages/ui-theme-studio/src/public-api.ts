@@ -9,4 +9,5 @@ export type {
   ThemeTokenManifest,
   ThemeTokenState,
   ThemeTokenFilter,
+  ThemeStudioSample,
 } from "./lib/theme-studio.types";

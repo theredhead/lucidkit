@@ -61,3 +61,13 @@ export interface ThemeTokenFilter {
   readonly namespace: string;
   readonly modifiedOnly: boolean;
 }
+
+/** Component sample available in the live Theme Studio canvas. */
+export type ThemeStudioSample =
+  | "overview"
+  | "button"
+  | "input"
+  | "card"
+  | "status"
+  | "progress"
+  | "toggle";

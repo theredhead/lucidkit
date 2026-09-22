@@ -127,6 +127,85 @@
 <ng-template #canvasTpl>
   <div class="canvas">
 
+    <section class="quick-theme">
+      <div class="quick-theme-heading">
+        <div>
+          <h3>Quick theme</h3>
+          <p>Set the global feel first, then tune a component below.</p>
+        </div>
+        <label class="sample-picker">
+          <span>Live sample</span>
+          <select [value]="studio.selectedSample()" (change)="onSampleChange($event)"
+            aria-label="Live component sample">
+            @for (sample of sampleOptions; track sample.value) {
+            <option [value]="sample.value">{{ sample.label }}</option>
+            }
+          </select>
+        </label>
+      </div>
+      <div class="quick-controls">
+        @for (control of quickTokens; track control.name) {
+        <label class="quick-control">
+          <span>{{ control.label }}</span>
+          <input [type]="control.type" [value]="quickTokenValue(control.name)"
+            (input)="onQuickTokenChange(control.name, $event)" [attr.aria-label]="control.label" />
+        </label>
+        }
+      </div>
+    </section>
+
+    @switch (studio.selectedSample()) {
+
+    @case ("button") {
+    <section class="sample-section">
+      <h4 class="section-title">Button sample</h4>
+      <div class="row wrap"><ui-button variant="filled" ariaLabel="Filled sample">Filled</ui-button>
+        <ui-button variant="outlined" ariaLabel="Outlined sample">Outlined</ui-button>
+        <ui-button variant="ghost" ariaLabel="Ghost sample">Ghost</ui-button>
+      </div>
+    </section>
+    }
+    @case ("input") {
+    <section class="sample-section">
+      <h4 class="section-title">Input sample</h4>
+      <div class="col"><ui-input placeholder="Try the global font and radius" ariaLabel="Theme sample input" />
+        <ui-dropdown-list [options]="sampleDropdownOptions" ariaLabel="Theme sample dropdown" />
+      </div>
+    </section>
+    }
+    @case ("card") {
+    <section class="sample-section">
+      <h4 class="section-title">Card sample</h4>
+      <ui-card variant="outlined"><ui-card-header>Component surface</ui-card-header><ui-card-body>
+          <p class="body-text">Use the token list to tune component-specific surface, border, and text tokens.</p>
+        </ui-card-body></ui-card>
+    </section>
+    }
+    @case ("status") {
+    <section class="sample-section">
+      <h4 class="section-title">Status sample</h4>
+      <div class="row wrap"><ui-badge color="primary">Primary</ui-badge><ui-badge color="success">Success</ui-badge>
+        <ui-badge color="warning">Warning</ui-badge><ui-badge color="danger">Danger</ui-badge><ui-chip>Chip</ui-chip>
+      </div>
+    </section>
+    }
+    @case ("progress") {
+    <section class="sample-section">
+      <h4 class="section-title">Progress sample</h4><ui-progress [value]="65" ariaLabel="Theme sample progress" />
+    </section>
+    }
+    @case ("toggle") {
+    <section class="sample-section">
+      <h4 class="section-title">Toggle sample</h4>
+      <div class="row wrap"><ui-toggle [value]="true" ariaLabel="On sample" /><ui-toggle [value]="false"
+          ariaLabel="Off sample" />
+        <ui-checkbox [checked]="true" ariaLabel="Checked sample">Checked</ui-checkbox>
+      </div>
+    </section>
+    }
+
+    }
+
     <!-- Swatches -->
     <section class="section">
       <h4 class="section-title">Color tokens</h4>
@@ -153,6 +232,7 @@
     </section>
 
     <!-- Buttons -->
+
     <section class="section">
       <h4 class="section-title">Buttons</h4>
       <div class="row wrap">
@@ -228,6 +308,5 @@
         </ui-checkbox>
       </div>
     </section>
-
   </div>
 </ng-template>

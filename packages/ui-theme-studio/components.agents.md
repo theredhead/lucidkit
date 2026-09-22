@@ -12,3 +12,4 @@ Source: `packages/ui-theme-studio/src/`
 | `ThemeTokenManifest` | Type      | `src/lib/theme-studio.types.ts`                  | —                    | Shape of the manifest JSON                                                          |
 | `ThemeTokenState`    | Type      | `src/lib/theme-studio.types.ts`                  | —                    | Token with live computed value and optional studio override                         |
 | `ThemeTokenFilter`   | Type      | `src/lib/theme-studio.types.ts`                  | —                    | Active filter state (query, type, scope, namespace, modifiedOnly)                   |
+| `ThemeStudioSample`  | Type      | `src/lib/theme-studio.types.ts`                  | —                    | Component sample shown in the live Theme Studio canvas                            |

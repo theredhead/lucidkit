@@ -33,6 +33,7 @@ import {
 
 import { ThemeStudioService } from "./theme-studio.service";
 import { UIThemeTokenRow } from "./token-row/theme-token-row.component";
+import { type ThemeStudioSample } from "./theme-studio.types";
 
 /**
  * Full-height split-pane theme editor.
@@ -130,6 +131,26 @@ export class UIThemeStudio implements OnInit {
     { label: "Option C", value: "c" },
   ];
 
+  /** Fast controls for the most common global theme decisions. */
+  protected readonly quickTokens = [
+    { name: "--ui-accent", label: "Accent", type: "color" },
+    { name: "--ui-surface", label: "Surface", type: "color" },
+    { name: "--ui-text", label: "Text", type: "color" },
+    { name: "--ui-radius", label: "Radius", type: "text" },
+    { name: "--ui-font", label: "Font", type: "text" },
+  ] as const;
+
+  /** Component samples available in the live canvas. */
+  protected readonly sampleOptions: readonly { value: ThemeStudioSample; label: string }[] = [
+    { value: "overview", label: "Overview" },
+    { value: "button", label: "Button" },
+    { value: "input", label: "Input" },
+    { value: "card", label: "Card" },
+    { value: "status", label: "Badges and chips" },
+    { value: "progress", label: "Progress" },
+    { value: "toggle", label: "Toggle and checkbox" },
+  ];
+
   // ── Lifecycle ──────────────────────────────────────────────────────
 
   /** @inheritdoc */
@@ -198,6 +219,26 @@ export class UIThemeStudio implements OnInit {
   /** @internal */
   protected onTokenReset(tokenName: string): void {
     this.studio.setOverride(tokenName, null);
+  }
+
+  /** @internal */
+  protected onSampleChange(event: Event): void {
+    this.studio.setSelectedSample(
+      (event.target as HTMLSelectElement).value as ThemeStudioSample,
+    );
+  }
+
+  /** @internal */
+  protected quickTokenValue(tokenName: string): string {
+    return this.studio.tokenValue(tokenName);
+  }
+
+  /** @internal */
+  protected onQuickTokenChange(tokenName: string, event: Event): void {
+    this.studio.setOverride(
+      tokenName,
+      (event.target as HTMLInputElement).value || null,
+    );
   }
 
   /** @internal */

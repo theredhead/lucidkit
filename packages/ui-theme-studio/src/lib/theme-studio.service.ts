@@ -3,11 +3,12 @@ import { computed, inject, Injectable, signal } from "@angular/core";
 
 import { LoggerFactory } from "@theredhead/lucid-foundation";
 
-import type {
+import {
   ThemeToken,
   ThemeTokenFilter,
   ThemeTokenManifest,
   ThemeTokenState,
+  type ThemeStudioSample,
 } from "./theme-studio.types";
 
 /**
@@ -76,6 +77,19 @@ export class ThemeStudioService {
   /** All tokens with their live computed values and any studio overrides. */
   public readonly tokens = signal<ThemeTokenState[]>([]);
 
+  /** The live component sample currently shown in the canvas. */
+  public readonly selectedSample = signal<ThemeStudioSample>("overview");
+
+  /** Select the component sample shown by the studio canvas. */
+  public setSelectedSample(sample: ThemeStudioSample): void {
+    this.selectedSample.set(sample);
+  }
+
+  /** Return the current live value for a token, if it is loaded. */
+  public tokenValue(tokenName: string): string {
+    return this.tokens().find((token) => token.name === tokenName)?.computedValue ?? "";
+  }
+
   // ── Filter ─────────────────────────────────────────────────────────
 
   /** Active filter applied to the token list. */
@@ -129,7 +143,11 @@ export class ThemeStudioService {
     }
 
     this.tokens.update((list) =>
-      list.map((t) => (t.name === tokenName ? { ...t, override: value } : t)),
+      list.map((t) =>
+        t.name === tokenName
+          ? { ...t, override: value, computedValue: value ?? this.readComputedValue(tokenName) }
+          : t,
+      ),
     );
   }
 
