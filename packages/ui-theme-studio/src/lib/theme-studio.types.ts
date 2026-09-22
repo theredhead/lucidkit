@@ -68,6 +68,7 @@ export type ThemeStudioSample =
   | "button"
   | "input"
   | "card"
+  | "calendar"
   | "status"
   | "progress"
   | "toggle";
@@ -78,6 +79,7 @@ export const THEME_STUDIO_SAMPLE_OWNERS: Readonly<Record<ThemeStudioSample, read
   button: ["UIButton"],
   input: ["UIInput", "UIDropdownList"],
   card: ["UICard", "UICardHeader", "UICardBody"],
+  calendar: ["calendar", "UICalendarMonthView"],
   status: ["UIBadge", "UIChip"],
   progress: ["UIProgress"],
   toggle: ["UIToggle", "UICheckbox"],

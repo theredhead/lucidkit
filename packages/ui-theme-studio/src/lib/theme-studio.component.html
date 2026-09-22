@@ -94,8 +94,7 @@
         Modified only
       </label>
       <label class="modified-toggle">
-        <input type="checkbox" [checked]="studio.sampleTokensOnly()"
-          (change)="onSampleTokensOnlyChange($event)" />
+        <input type="checkbox" [checked]="studio.sampleTokensOnly()" (change)="onSampleTokensOnlyChange($event)" />
         Sample tokens only
       </label>
       <button type="button" class="reset-sample-btn" [disabled]="studio.modifiedTokens().length === 0"
@@ -106,6 +105,9 @@
 
     <!-- Stats bar -->
     <div class="stats">
+      @if (studio.selectedSample() !== "overview") {
+      <strong>{{ selectedSampleLabel() }}</strong> tokens ·
+      }
       {{ studio.filteredTokens().length }} of {{ studio.tokens().length }} tokens
       @if (studio.modifiedTokens().length > 0) {
       · <strong>{{ studio.modifiedTokens().length }} modified</strong>
@@ -188,6 +190,12 @@
       <ui-card variant="outlined"><ui-card-header>Component surface</ui-card-header><ui-card-body>
           <p class="body-text">Use the token list to tune component-specific surface, border, and text tokens.</p>
         </ui-card-body></ui-card>
+    </section>
+    }
+    @case ("calendar") {
+    <section class="sample-section">
+      <h4 class="section-title">Calendar sample</h4>
+      <ui-calendar-month-view [datasource]="sampleCalendarDatasource" ariaLabel="Theme sample calendar" />
     </section>
     }
     @case ("status") {
