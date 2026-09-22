@@ -71,3 +71,14 @@ export type ThemeStudioSample =
   | "status"
   | "progress"
   | "toggle";
+
+/** Token namespaces associated with each curated live sample. */
+export const THEME_STUDIO_SAMPLE_OWNERS: Readonly<Record<ThemeStudioSample, readonly string[]>> = {
+  overview: [],
+  button: ["UIButton"],
+  input: ["UIInput", "UIDropdownList"],
+  card: ["UICard", "UICardHeader", "UICardBody"],
+  status: ["UIBadge", "UIChip"],
+  progress: ["UIProgress"],
+  toggle: ["UIToggle", "UICheckbox"],
+};

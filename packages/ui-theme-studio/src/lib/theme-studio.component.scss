@@ -159,6 +159,20 @@
   white-space: nowrap;
 }
 
+.reset-sample-btn {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--ui-border, #d7dce2);
+  border-radius: var(--ui-radius, 0.25rem);
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #f7f8fa);
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
 .stats {
   padding: 0.35rem 0.75rem;
   font-size: 0.75rem;

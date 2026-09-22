@@ -212,6 +212,11 @@ export class UIThemeStudio implements OnInit {
   }
 
   /** @internal */
+  protected onSampleTokensOnlyChange(event: Event): void {
+    this.studio.setSampleTokensOnly((event.target as HTMLInputElement).checked);
+  }
+
+  /** @internal */
   protected onTokenValueChange(tokenName: string, value: string): void {
     this.studio.setOverride(tokenName, value);
   }

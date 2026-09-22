@@ -8,6 +8,7 @@ import {
   ThemeTokenFilter,
   ThemeTokenManifest,
   ThemeTokenState,
+  THEME_STUDIO_SAMPLE_OWNERS,
   type ThemeStudioSample,
 } from "./theme-studio.types";
 
@@ -80,14 +81,44 @@ export class ThemeStudioService {
   /** The live component sample currently shown in the canvas. */
   public readonly selectedSample = signal<ThemeStudioSample>("overview");
 
+  /** Whether the token editor is limited to the selected sample's tokens. */
+  public readonly sampleTokensOnly = signal(false);
+
   /** Select the component sample shown by the studio canvas. */
   public setSelectedSample(sample: ThemeStudioSample): void {
     this.selectedSample.set(sample);
   }
 
+  /** Toggle the component-focused token view. */
+  public setSampleTokensOnly(value: boolean): void {
+    this.sampleTokensOnly.set(value);
+  }
+
+  /** Reset only overrides visible for the current sample. */
+  public resetSelectedSample(): void {
+    const owners = THEME_STUDIO_SAMPLE_OWNERS[this.selectedSample()];
+    if (owners.length === 0) {
+      this.resetAll();
+      return;
+    }
+
+    this.tokens()
+      .filter((token) => token.override !== null && this.matchesSampleToken(token))
+      .forEach((token) => this.setOverride(token.name, null));
+  }
+
   /** Return the current live value for a token, if it is loaded. */
   public tokenValue(tokenName: string): string {
     return this.tokens().find((token) => token.name === tokenName)?.computedValue ?? "";
+  }
+
+  private matchesSampleToken(token: ThemeTokenState): boolean {
+    const owners = THEME_STUDIO_SAMPLE_OWNERS[this.selectedSample()];
+    if (owners.length === 0) return true;
+    const hasOwnerMatch = token.definitions?.some((definition) =>
+      owners.includes(definition.owner),
+    );
+    return hasOwnerMatch === true || (token.scope === "component" && !token.definitions?.length);
   }
 
   // ── Filter ─────────────────────────────────────────────────────────
@@ -111,6 +142,12 @@ export class ThemeStudioService {
       if (type && t.type !== type) return false;
       if (scope && t.scope !== scope) return false;
       if (namespace && t.namespace !== namespace) return false;
+      if (
+        this.sampleTokensOnly() &&
+        !this.matchesSampleToken(t)
+      ) {
+        return false;
+      }
       if (
         q &&
         !t.name.toLowerCase().includes(q) &&

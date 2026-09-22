@@ -13,3 +13,4 @@ Source: `packages/ui-theme-studio/src/`
 | `ThemeTokenState`    | Type      | `src/lib/theme-studio.types.ts`                  | —                    | Token with live computed value and optional studio override                         |
 | `ThemeTokenFilter`   | Type      | `src/lib/theme-studio.types.ts`                  | —                    | Active filter state (query, type, scope, namespace, modifiedOnly)                   |
 | `ThemeStudioSample`  | Type      | `src/lib/theme-studio.types.ts`                  | —                    | Component sample shown in the live Theme Studio canvas                            |
+| `THEME_STUDIO_SAMPLE_OWNERS` | Constant | `src/lib/theme-studio.types.ts`              | —                    | Definition owners used to focus component token editing                           |

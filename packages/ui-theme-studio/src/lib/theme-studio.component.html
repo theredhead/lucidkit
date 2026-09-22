@@ -93,6 +93,15 @@
         <input type="checkbox" [checked]="studio.filter().modifiedOnly" (change)="onModifiedOnlyChange($event)" />
         Modified only
       </label>
+      <label class="modified-toggle">
+        <input type="checkbox" [checked]="studio.sampleTokensOnly()"
+          (change)="onSampleTokensOnlyChange($event)" />
+        Sample tokens only
+      </label>
+      <button type="button" class="reset-sample-btn" [disabled]="studio.modifiedTokens().length === 0"
+        (click)="studio.resetSelectedSample()" aria-label="Reset selected sample overrides">
+        Reset sample
+      </button>
     </div>
 
     <!-- Stats bar -->
