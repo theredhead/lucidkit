@@ -136,8 +136,8 @@ These contain many intentionally local surfaces and need a separate visual pass.
 
 - [x] Add a token-audit check for invalid root-token names.
 - [ ] Add coverage for important local token host variables where practical.
-- [ ] Add Storybook visual checks for autocomplete, dropdown menu, dialog, calendar, color picker, command palette, drawer, toast, and table loading rows.
-- [ ] Capture light and dark screenshots for the popup/overlay group.
+- [x] Add Storybook visual checks for autocomplete, dropdown menu, dialog, calendar, color picker, command palette, drawer, toast, and table loading rows.
+- [x] Capture light and dark screenshots for the popup/overlay group.
 - [x] Run the Sass compilation check:
 
   ```sh
