@@ -1,4 +1,10 @@
 :host {
+  --dropdown-trigger-bg: var(--ui-control-bg, var(--ui-surface));
+  --dropdown-trigger-text: var(--ui-control-text, var(--ui-text));
+  --dropdown-trigger-border: var(--ui-control-border, var(--ui-border));
+  --dropdown-trigger-border-hover: var(--ui-control-border-hover, var(--ui-border-strong));
+  --dropdown-trigger-radius: var(--ui-control-radius, var(--ui-radius, 0.25rem));
+  --dropdown-trigger-focus: var(--ui-focus-ring, var(--ui-accent));
   position: relative;
   display: inline-flex;
 }
@@ -11,11 +17,11 @@
   padding: var(--ui-control-py, 0.3rem) var(--ui-control-px, 0.5rem);
   font-size: var(--ui-font-body, 0.875rem);
   font-family: var(--ui-font, inherit);
-  color: var(--ui-control-text, var(--ui-text));
-  background: var(--ui-control-bg, var(--ui-surface));
+  color: var(--dropdown-trigger-text);
+  background: var(--dropdown-trigger-bg);
   border: var(--ui-control-border-width, 1px) solid
-    var(--ui-control-border, var(--ui-border));
-  border-radius: var(--ui-control-radius, 0.25rem);
+    var(--dropdown-trigger-border);
+  border-radius: var(--dropdown-trigger-radius);
   cursor: var(--ui-cursor-click, pointer);
   line-height: 1;
   white-space: nowrap;
@@ -24,13 +30,13 @@
     background-color 120ms ease;
 
   &:hover:not(:disabled) {
-    border-color: var(--ui-control-border-hover, var(--ui-border-strong));
-    background: var(--ui-control-bg, var(--ui-surface));
-    color: var(--ui-control-text, var(--ui-text));
+    border-color: var(--dropdown-trigger-border-hover);
+    background: var(--dropdown-trigger-bg);
+    color: var(--dropdown-trigger-text);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-focus-ring, var(--ui-accent));
+    outline: 2px solid var(--dropdown-trigger-focus);
     outline-offset: -1px;
   }
 

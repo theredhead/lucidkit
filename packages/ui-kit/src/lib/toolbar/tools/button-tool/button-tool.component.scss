@@ -4,6 +4,7 @@
   --button-tool-hover-bg: var(--ui-hover-bg, rgba(0, 0, 0, 0.06));
   --button-tool-border: transparent;
   --button-tool-radius: var(--ui-radius, 0.375rem);
+  --button-tool-focus: var(--ui-focus-ring, var(--ui-accent, #3584e4));
 
   display: contents;
 }
@@ -31,5 +32,10 @@
   &:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--button-tool-focus);
+    outline-offset: 2px;
   }
 }

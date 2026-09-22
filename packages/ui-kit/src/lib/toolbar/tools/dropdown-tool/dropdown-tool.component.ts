@@ -40,6 +40,9 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         --dropdown-tool-hover-text: var(--ui-accent-contrast, #ffffff);
         --dropdown-tool-surface: var(--ui-surface, #ffffff);
         --dropdown-tool-border: var(--ui-border, #d7dce2);
+        --dropdown-tool-radius: var(--ui-radius, 0.25rem);
+        --dropdown-tool-shadow: var(--ui-shadow-dropdown, 0 6px 16px rgba(0, 0, 0, 0.08));
+        --dropdown-tool-focus: var(--ui-focus-ring, var(--ui-accent, #3584e4));
 
         display: block;
       }
@@ -52,6 +55,9 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         min-width: 10rem;
         background: var(--dropdown-tool-surface);
         color: var(--dropdown-tool-text);
+        border: 1px solid var(--dropdown-tool-border);
+        border-radius: var(--dropdown-tool-radius);
+        box-shadow: var(--dropdown-tool-shadow);
       }
       .item {
         display: flex;
@@ -67,6 +73,11 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         text-align: left;
         white-space: nowrap;
         width: 100%;
+      }
+      .item:focus-visible,
+      .grid-item:focus-visible {
+        outline: 2px solid var(--dropdown-tool-focus);
+        outline-offset: -2px;
       }
       .item:hover:not(:disabled) {
         background: var(--dropdown-tool-hover-bg);
@@ -98,7 +109,7 @@ import { UIToolbarItem } from "../../toolbar-item.directive";
         background: none;
         color: inherit;
         border: 1px solid transparent;
-        border-radius: var(--ui-radius-sm, var(--ui-radius, 0.25rem));
+        border-radius: var(--dropdown-tool-radius);
         cursor: var(--ui-cursor-click, pointer);
       }
       .grid-item:hover:not(:disabled) {

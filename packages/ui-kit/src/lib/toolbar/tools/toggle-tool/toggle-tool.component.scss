@@ -5,6 +5,7 @@
   --toggle-tool-checked-bg: var(--ui-accent, #3584e4);
   --toggle-tool-checked-text: var(--ui-accent-contrast, #ffffff);
   --toggle-tool-checked-hover-bg: var(--ui-accent-hover, color-mix(in srgb, var(--ui-accent, #3584e4) 85%, black));
+  --toggle-tool-focus: var(--ui-focus-ring, var(--ui-accent, #3584e4));
 
   display: contents;
 }
@@ -32,6 +33,11 @@
   &:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--toggle-tool-focus);
+    outline-offset: 2px;
   }
 }
 
