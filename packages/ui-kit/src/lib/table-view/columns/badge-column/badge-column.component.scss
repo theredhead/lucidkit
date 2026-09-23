@@ -15,28 +15,28 @@
   text-overflow: ellipsis;
 
   /* Default (neutral) */
-  color: var(--ui-badge-neutral-fg);
-  background-color: var(--ui-badge-neutral-bg);
-  border: 1px solid var(--ui-badge-neutral-border);
+  color: var(--ui-surface, #ffffff);
+  background-color: var(--ui-text-muted, #5a6470);
+  border: 1px solid var(--ui-text-muted, #5a6470);
 }
 
 /* ── Variant colours ── */
 
 .badge-cell[data-variant="success"] {
-  color: var(--ui-badge-success-fg);
-  background-color: var(--ui-badge-success-bg);
-  border-color: var(--ui-badge-success-border);
+  color: var(--ui-on-success, #ffffff);
+  background-color: var(--ui-success, #1e8e3e);
+  border-color: var(--ui-success, #1e8e3e);
 }
 
 .badge-cell[data-variant="warning"] {
-  color: var(--ui-badge-warning-fg);
-  background-color: var(--ui-badge-warning-bg);
-  border-color: var(--ui-badge-warning-border);
+  color: var(--ui-on-warning, #14161a);
+  background-color: var(--ui-warning, #e8a317);
+  border-color: var(--ui-warning, #e8a317);
 }
 
 .badge-cell[data-variant="danger"],
 .badge-cell[data-variant="error"] {
-  color: var(--ui-badge-danger-fg);
-  background-color: var(--ui-badge-danger-bg);
-  border-color: var(--ui-badge-danger-border);
+  color: var(--ui-on-error, #ffffff);
+  background-color: var(--ui-error, #ba1a1a);
+  border-color: var(--ui-error, #ba1a1a);
 }
