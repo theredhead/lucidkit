@@ -1,6 +1,6 @@
 import { UIInput } from "../../input.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input, model } from "@angular/core";
 
 @Component({
   selector: "ui-plain-story-demo",
@@ -11,5 +11,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./plain.story.scss",
 })
 export class PlainStorySource {
-  protected name = "";
+  public readonly name = model("");
+  public readonly type = input("text");
+  public readonly placeholder = input("Enter your name");
+  public readonly disabled = input(false);
+  public readonly multiline = input(false);
+  public readonly rows = input(3);
 }
