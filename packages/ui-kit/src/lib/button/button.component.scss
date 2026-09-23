@@ -137,11 +137,9 @@ button {
   background-color: var(--ui-error-filled, var(--ui-error));
 
   &:hover:not(:disabled) {
-    background-color: color-mix(
-      in srgb,
-      var(--ui-error-filled, var(--ui-error)) 85%,
-      black
-    );
+    background-color: color-mix(in srgb,
+        var(--ui-error-filled, var(--ui-error)) 85%,
+        black);
   }
 }
 

@@ -26,9 +26,9 @@
     @if (page === -1) {
     <span class="ellipsis">…</span>
     } @else {
-    <ui-button class="page" [variant]="page === pageIndex() ? 'outlined' : 'ghost'" size="small" [color]="buttonColor()" [muted]="muted()"
-      [ariaLabel]="'Page ' + (page + 1)" [attr.aria-current]="page === pageIndex() ? 'page' : undefined"
-      [disabled]="disabled()" (click)="goToPage(page)">
+    <ui-button class="page" [variant]="page === pageIndex() ? 'outlined' : 'ghost'" size="small" [color]="buttonColor()"
+      [muted]="muted()" [ariaLabel]="'Page ' + (page + 1)"
+      [attr.aria-current]="page === pageIndex() ? 'page' : undefined" [disabled]="disabled()" (click)="goToPage(page)">
       {{ page + 1 }}
     </ui-button>
     }

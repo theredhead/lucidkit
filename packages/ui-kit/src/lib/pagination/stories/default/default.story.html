@@ -1,20 +1,7 @@
-
-    <ui-pagination
-      [totalItems]="totalItems()"
-      [pageSize]="pageSize()"
-      [disabled]="disabled()"
-      [ariaLabel]="ariaLabel()"
-      [(pageIndex)]="currentPage"
-      (pageChange)="pageChange.emit($event)"
-    />
-    <ui-pagination
-      [totalItems]="totalItems()"
-      [pageSize]="pageSize()"
-      [muted]="true"
-      ariaLabel="Muted pagination"
-      [(pageIndex)]="currentPage"
-    />
-    <p style="margin-top: 12px; font-size: 0.875rem; color: #666;">
-      Current page index: {{ currentPage() }}
-    </p>
-  
+<ui-pagination [totalItems]="totalItems()" [pageSize]="pageSize()" [disabled]="disabled()" [ariaLabel]="ariaLabel()"
+  [(pageIndex)]="currentPage" (pageChange)="pageChange.emit($event)" />
+<ui-pagination [totalItems]="totalItems()" [pageSize]="pageSize()" [muted]="true" ariaLabel="Muted pagination"
+  [(pageIndex)]="currentPage" />
+<p style="margin-top: 12px; font-size: 0.875rem; color: #666;">
+  Current page index: {{ currentPage() }}
+</p>
