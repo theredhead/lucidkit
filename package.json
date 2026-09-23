@@ -21,6 +21,7 @@
     "storybook:screenshots:manifest": "node scripts/capture-storybook-screenshots.mjs --manifest-only",
     "storybook:screenshots:build": "npm run build-storybook && npm run storybook:screenshots",
     "storybook:screenshots:install": "playwright install chromium",
+    "audit:story-interactivity": "node scripts/audit-story-interactivity.mjs",
     "audit:theme-tokens": "node scripts/audit-theme-tokens.mjs",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",
