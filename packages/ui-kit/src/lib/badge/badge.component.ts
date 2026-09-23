@@ -48,6 +48,7 @@ export type BadgeColor =
     "[class.warning]": "color() === 'warning'",
     "[class.danger]": "color() === 'danger'",
     "[class.neutral]": "color() === 'neutral'",
+    "[class.muted]": "muted()",
   },
 })
 export class UIBadge {
@@ -56,6 +57,9 @@ export class UIBadge {
 
   /** Color preset. */
   public readonly color = input<BadgeColor>("primary");
+
+  /** Use a softer surface treatment instead of a filled semantic colour. */
+  public readonly muted = input(false);
 
   /**
    * The numeric count to display. Only used when variant is `count`.

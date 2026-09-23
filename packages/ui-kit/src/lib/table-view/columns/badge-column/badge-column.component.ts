@@ -30,6 +30,9 @@ export class UIBadgeColumn extends UITableViewColumn {
     "neutral",
   );
 
+  /** Use a softer surface treatment instead of a filled semantic colour. */
+  public muted = input(false);
+
   private readonly _cellTemplate =
     viewChild.required<TemplateRef<UITableViewCellContext>>("cell");
 

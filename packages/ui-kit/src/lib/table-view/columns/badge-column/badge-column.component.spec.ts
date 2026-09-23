@@ -43,6 +43,10 @@ describe("UIBadgeColumn", () => {
       expect(component.variant()).toBe("neutral");
     });
 
+    it("should default muted to false", () => {
+      expect(component.muted()).toBe(false);
+    });
+
     const variants = ["neutral", "success", "warning", "danger"] as const;
 
     for (const variant of variants) {

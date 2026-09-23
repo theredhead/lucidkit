@@ -40,3 +40,28 @@
   background-color: var(--ui-error, #ba1a1a);
   border-color: var(--ui-error, #ba1a1a);
 }
+
+.badge-cell[data-muted="true"] {
+  color: var(--ui-badge-neutral-fg, #344054);
+  background-color: var(--ui-badge-neutral-bg, #eef2f6);
+  border-color: var(--ui-badge-neutral-border, #d7dde4);
+}
+
+.badge-cell[data-muted="true"][data-variant="success"] {
+  color: var(--ui-badge-success-fg, #135c38);
+  background-color: var(--ui-badge-success-bg, #e9f7ee);
+  border-color: var(--ui-badge-success-border, #bde6ca);
+}
+
+.badge-cell[data-muted="true"][data-variant="warning"] {
+  color: var(--ui-badge-warning-fg, #7a4200);
+  background-color: var(--ui-badge-warning-bg, #fff4e6);
+  border-color: var(--ui-badge-warning-border, #ffd7a6);
+}
+
+.badge-cell[data-muted="true"][data-variant="danger"],
+.badge-cell[data-muted="true"][data-variant="error"] {
+  color: var(--ui-badge-danger-fg, #8a1f29);
+  background-color: var(--ui-badge-danger-bg, #fdecef);
+  border-color: var(--ui-badge-danger-border, #f6c2c9);
+}
