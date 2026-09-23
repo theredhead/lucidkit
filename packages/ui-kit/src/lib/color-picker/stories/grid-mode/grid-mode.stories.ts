@@ -54,7 +54,8 @@ export const GridMode: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-grid-mode-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-grid-mode-story-demo />",
+  })
 };

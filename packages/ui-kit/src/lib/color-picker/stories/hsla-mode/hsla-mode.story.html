@@ -1,5 +1,6 @@
 <ui-color-picker
-  [(value)]="colour"
-  initialMode="hsla"
-  ariaLabel="Pick a colour (HSLA)"
+  [(value)]="value"
+  [initialMode]="initialMode()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
 />

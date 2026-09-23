@@ -54,7 +54,8 @@ export const RgbaMode: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-rgba-mode-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-rgba-mode-story-demo />",
+  })
 };
