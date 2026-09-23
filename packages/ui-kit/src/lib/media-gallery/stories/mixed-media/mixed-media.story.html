@@ -1,0 +1,49 @@
+<ui-media-gallery />
+
+<section class="story">
+  <div class="intro">
+    <p class="eyebrow">Media gallery</p>
+    <h2>One viewer, mixed media collections</h2>
+    <p>Activate any image or video to open its collection.</p>
+  </div>
+
+  <div class="media-grid">
+    <ui-image
+      gallery
+      src="/media/sample-poster.jpg"
+      alt="A still frame from the sample film"
+      width="320"
+      height="220"
+    />
+    <ui-image
+      gallery
+      src="/media/sample-poster.jpg"
+      alt="A second still frame from the sample film"
+      width="320"
+      height="220"
+    />
+    <ui-media-player
+      gallery
+      type="video"
+      [source]="videoSource"
+      poster="/media/sample-poster.jpg"
+      ariaLabel="Sample film"
+    />
+  </div>
+
+  <div class="secondary">
+    <p class="eyebrow">Named collection: separate</p>
+    <ui-image
+      gallery="separate"
+      src="/media/sample-poster.jpg"
+      alt="A separate named collection"
+      width="220"
+      height="150"
+    />
+  </div>
+
+  <div class="inline-demo">
+    <p class="eyebrow">Inline mode without a filmstrip</p>
+    <ui-media-gallery inline [items]="inlineItems" />
+  </div>
+</section>

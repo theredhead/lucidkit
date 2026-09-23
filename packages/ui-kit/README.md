@@ -41,6 +41,7 @@ core and `@angular/cdk`.
 | **UIRepeater**                   | `ui-repeater`                        | Template repeater with grid, flex-row, flex-column, masonry layouts                                                                                                           |
 | **UIFileUpload**                 | `ui-file-upload`                     | Drag-and-drop file upload zone with accept filter and size limits                                                                                                             |
 | **UIDialog**                     | `ui-dialog`                          | Modal dialog container with backdrop, size options                                                                                                                            |
+| **UIMediaGallery**               | `ui-media-gallery`                   | Fullscreen mixed-media viewer or constrained inline collection viewer                                                                                                        |
 
 ## Table View Columns
 
@@ -72,6 +73,7 @@ All column types extend `UITableViewColumn` and provide themselves via DI forwar
 | ---------------------- | ------------- | ----------------------------------------------------------- |
 | **UIDensityDirective** | `[uiDensity]` | Applies density CSS tokens (compact, comfortable, generous) |
 | **UITooltip**          | `[uiTooltip]` | Tooltip popup on hover/focus                                |
+| **UIMediaGalleryItem** | `ui-image[gallery]`, `ui-media-player[gallery]` | Registers supported media hosts in a named or shared unnamed collection |
 
 ### Services
 
@@ -79,6 +81,7 @@ All column types extend `UITableViewColumn` and provide themselves via DI forwar
 | ------------------ | -------------------------------------------------- |
 | **PopoverService** | Opens positioned popover overlays programmatically |
 | **ModalService**   | Opens modal dialogs programmatically               |
+| **MediaGalleryService** | Coordinates registered media collections and fullscreen navigation |
 
 ---
 
