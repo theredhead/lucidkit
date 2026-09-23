@@ -49,6 +49,10 @@
         [format]="{ maximumFractionDigits: 0 }"
       />
       <ui-badge-column key="status" headerText="Status" [sortable]="true" />
+      <ui-badge-column key="status" headerText="Neutral" variant="neutral" />
+      <ui-badge-column key="status" headerText="Success" variant="success" />
+      <ui-badge-column key="status" headerText="Warning" variant="warning" />
+      <ui-badge-column key="status" headerText="Danger" variant="danger" />
       <ui-template-column key="actions" headerText="Actions" [sortable]="false">
         <ng-template #cell let-row>
           <ui-button variant="outlined" size="small" (click)="onAction(row)">
