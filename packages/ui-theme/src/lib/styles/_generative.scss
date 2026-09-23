@@ -87,6 +87,8 @@ $_dark-border-strong: #404145 !default;
     --ui-success: #{$success};
     --ui-error: #{$error};
     --ui-on-error: #{_on($error)};
+    --ui-on-success: #{_on($success)};
+    --ui-on-warning: #{_on($warning)};
     --ui-secondary: #{$secondary};
     --ui-tertiary: #{$tertiary};
     --ui-on-tertiary: #{_on($tertiary)};
