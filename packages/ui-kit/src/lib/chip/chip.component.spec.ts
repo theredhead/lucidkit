@@ -9,6 +9,7 @@ import { UIChip, type ChipColor } from "./chip.component";
   template: `
     <ui-chip
       [color]="color()"
+      [backgroundColor]="backgroundColor()"
       [removable]="removable()"
       [disabled]="disabled()"
       (removed)="onRemoved()"
@@ -19,6 +20,7 @@ import { UIChip, type ChipColor } from "./chip.component";
 })
 class TestHost {
   public readonly color = signal<ChipColor>("neutral");
+  public readonly backgroundColor = signal<string | null>(null);
   public readonly removable = signal(false);
   public readonly disabled = signal(false);
   public removed = false;
@@ -74,6 +76,15 @@ describe("UIChip", () => {
         ).toContain(`${color}`);
       });
     }
+  });
+
+  it("should derive readable text from an arbitrary background color", () => {
+    host.backgroundColor.set("#000000");
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector("ui-chip").style.color).toBe(
+      "rgb(255, 255, 255)",
+    );
   });
 
   describe("removable", () => {

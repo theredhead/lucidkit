@@ -81,6 +81,9 @@ export class UIPagination {
    */
   public readonly buttonColor = input<ButtonColor>("primary");
 
+  /** Use the softer button treatment for pagination controls. */
+  public readonly muted = input(false);
+
   /** Accessible label for the nav element. */
   public readonly ariaLabel = input("Pagination");
 

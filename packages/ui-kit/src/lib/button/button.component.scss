@@ -107,6 +107,30 @@ button {
   --_btn-contrast: var(--ui-on-error, #ffffff);
 }
 
+:host(.muted.primary) {
+  --_btn-solid: var(--ui-primary-container, #dbeafe);
+  --_btn-solid-hover: var(--ui-selected-hover-bg, #c7dcfb);
+  --_btn-contrast: var(--ui-text, #1d232b);
+}
+
+:host(.muted.secondary) {
+  --_btn-solid: var(--ui-surface-2, #f0f2f5);
+  --_btn-solid-hover: var(--ui-hover-bg, #e8edf4);
+  --_btn-contrast: var(--ui-text, #1d232b);
+}
+
+:host(.muted.safe) {
+  --_btn-solid: var(--ui-badge-success-bg, #e9f7ee);
+  --_btn-solid-hover: var(--ui-badge-success-border, #bde6ca);
+  --_btn-contrast: var(--ui-badge-success-fg, #135c38);
+}
+
+:host(.muted.danger) {
+  --_btn-solid: var(--ui-badge-danger-bg, #fdecef);
+  --_btn-solid-hover: var(--ui-badge-danger-border, #f6c2c9);
+  --_btn-contrast: var(--ui-badge-danger-fg, #8a1f29);
+}
+
 /* Filled danger uses --ui-error-filled (a deeper red) so white text is legible.
    In light mode the token is not set and falls back to --ui-error. */
 :host(.danger.filled) button {
