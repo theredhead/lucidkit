@@ -8,42 +8,43 @@
   </div>
 
   <div class="media-grid">
-    <ui-image
-      gallery
-      src="/media/sample-poster.jpg"
-      alt="A still frame from the sample film"
-      width="320"
-      height="220"
-    />
-    <ui-image
-      gallery
-      src="/media/sample-poster.jpg"
-      alt="A second still frame from the sample film"
-      width="320"
-      height="220"
-    />
-    <ui-media-player
-      gallery
-      type="video"
-      [source]="videoSource"
-      poster="/media/sample-poster.jpg"
-      ariaLabel="Sample film"
-    />
+    @for (image of galleryImages; track image.src; let index = $index) {
+      <ui-image
+        gallery
+        [src]="image.src"
+        [alt]="image.alt"
+        width="320"
+        height="220"
+      />
+      @if (index === 2 || index === 7) {
+        <ui-media-player
+          gallery
+          type="video"
+          [source]="videoSource"
+          poster="/media/sample-poster.jpg"
+          [ariaLabel]="'Sample film ' + (index === 2 ? 'one' : 'two')"
+        />
+      }
+    }
   </div>
 
   <div class="secondary">
     <p class="eyebrow">Named collection: separate</p>
-    <ui-image
-      gallery="separate"
-      src="/media/sample-poster.jpg"
-      alt="A separate named collection"
-      width="220"
-      height="150"
-    />
+    <div class="secondary-grid">
+      @for (image of separateImages; track image.src) {
+        <ui-image
+          gallery="separate"
+          [src]="image.src"
+          [alt]="image.alt"
+          width="220"
+          height="150"
+        />
+      }
+    </div>
   </div>
 
   <div class="inline-demo">
     <p class="eyebrow">Inline mode without a filmstrip</p>
-    <ui-media-gallery inline [items]="inlineItems" />
+    <ui-media-gallery [inline]="true" [items]="inlineItems" />
   </div>
 </section>

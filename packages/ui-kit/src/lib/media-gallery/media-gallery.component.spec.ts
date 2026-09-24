@@ -48,6 +48,42 @@ describe("UIMediaGallery", () => {
     expect(images[0].src).toContain("/first.jpg");
   });
 
+  it("should show controls on pointer movement and hide them after five seconds", () => {
+    vi.useFakeTimers();
+    try {
+      const viewer = fixture.nativeElement.querySelector(".viewer");
+      const close = fixture.nativeElement.querySelector(".close");
+      const next = fixture.nativeElement.querySelector(".next");
+      const filmstrip = fixture.nativeElement.querySelector(".filmstrip");
+      expect(close.classList).not.toContain("visible");
+      expect(next.classList).not.toContain("visible");
+      expect(filmstrip.classList).not.toContain("visible");
+      expect(viewer.classList).not.toContain("cursor-hidden");
+
+      viewer.dispatchEvent(
+        new PointerEvent("pointermove", { clientX: 500, clientY: 400 }),
+      );
+      fixture.detectChanges();
+      expect(close.classList).toContain("visible");
+      expect(next.classList).toContain("visible");
+      expect(filmstrip.classList).toContain("visible");
+      expect(viewer.classList).not.toContain("cursor-hidden");
+
+      vi.advanceTimersByTime(4999);
+      fixture.detectChanges();
+      expect(close.classList).toContain("visible");
+
+      vi.advanceTimersByTime(1);
+      fixture.detectChanges();
+      expect(close.classList).not.toContain("visible");
+      expect(next.classList).not.toContain("visible");
+      expect(filmstrip.classList).not.toContain("visible");
+      expect(viewer.classList).toContain("cursor-hidden");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("should navigate with previous and next controls", () => {
     const next = fixture.nativeElement.querySelector('[aria-label="Next"]');
     next.click();

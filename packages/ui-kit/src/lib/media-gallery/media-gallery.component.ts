@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
   ElementRef,
   inject,
@@ -30,6 +31,7 @@ import {
   styleUrl: "./media-gallery.component.scss",
   host: {
     class: "ui-media-gallery",
+    "[class.inline]": "inline()",
     "(document:keydown.escape)": "onEscape()",
   },
 })
@@ -68,6 +70,8 @@ export class UIMediaGallery {
   protected readonly panX = signal(0);
   protected readonly panY = signal(0);
   protected readonly inlineIndex = signal(0);
+  protected readonly controlsVisible = signal(false);
+  protected readonly cursorHidden = signal(false);
   protected readonly transform = computed(
     () => `translate(${this.panX()}px, ${this.panY()}px) scale(${this.zoom()})`,
   );
@@ -97,14 +101,18 @@ export class UIMediaGallery {
   );
 
   private readonly body = inject(DOCUMENT).body;
+  private readonly destroyRef = inject(DestroyRef);
   private lastActiveId: string | null = null;
   private pointerStart: { x: number; y: number } | null = null;
   private panStart: { x: number; y: number } | null = null;
+  private controlsTimer: ReturnType<typeof setTimeout> | null = null;
   protected readonly fitScale = signal(1);
   protected readonly stage = viewChild<ElementRef<HTMLElement>>("stage");
   protected readonly minimumZoom = computed(() => Math.max(1, this.fitScale()));
 
   public constructor() {
+    this.destroyRef.onDestroy(() => this.clearControlsTimer());
+
     effect(() => {
       if (this.inline()) {
         this.inlineIndex.set(
@@ -167,6 +175,24 @@ export class UIMediaGallery {
   /** @internal */
   protected onBackdropKeydown(event: KeyboardEvent): void {
     if (event.key === "Enter") this.gallery.close();
+  }
+
+  /** @internal */
+  protected onViewerPointerMove(_event: PointerEvent): void {
+    this.controlsVisible.set(true);
+    this.cursorHidden.set(false);
+    this.clearControlsTimer();
+    this.controlsTimer = setTimeout(() => {
+      this.controlsVisible.set(false);
+      this.cursorHidden.set(true);
+      this.controlsTimer = null;
+    }, 5000);
+  }
+
+  private clearControlsTimer(): void {
+    if (this.controlsTimer === null) return;
+    clearTimeout(this.controlsTimer);
+    this.controlsTimer = null;
   }
 
   /** @internal */

@@ -10,18 +10,21 @@
       class="viewer"
       [class.inline-viewer]="inline()"
       [class.left-close]="closePosition() === 'left'"
+      [class.cursor-hidden]="cursorHidden()"
       [attr.role]="inline() ? null : 'dialog'"
       [attr.aria-modal]="inline() ? null : 'true'"
       [attr.aria-label]="ariaLabel()"
+      (pointermove)="onViewerPointerMove($event)"
+      (pointerdown)="onViewerPointerMove($event)"
     >
       @if (!inline()) {
-        <button type="button" class="close" aria-label="Close" (click)="gallery.close()">
+        <button type="button" class="close" [class.visible]="controlsVisible()" aria-label="Close" (click)="gallery.close()">
         <ui-icon [svg]="icons.close" [size]="22" ariaLabel="Close" />
         </button>
       }
 
       @if (canPrevious()) {
-        <button type="button" class="navigate previous" aria-label="Previous" (click)="onPrevious()">
+        <button type="button" class="navigate previous" [class.visible]="controlsVisible()" aria-label="Previous" (click)="onPrevious()">
           <ui-icon [svg]="icons.previous" [size]="28" ariaLabel="Previous" />
         </button>
       }
@@ -56,13 +59,13 @@
       </div>
 
       @if (canNext()) {
-        <button type="button" class="navigate next" aria-label="Next" (click)="onNext()">
+        <button type="button" class="navigate next" [class.visible]="controlsVisible()" aria-label="Next" (click)="onNext()">
           <ui-icon [svg]="icons.next" [size]="28" ariaLabel="Next" />
         </button>
       }
 
       @if (showFilmstrip() && !inline()) {
-      <nav class="filmstrip" aria-label="Media previews">
+      <nav class="filmstrip" [class.visible]="controlsVisible()" aria-label="Media previews">
         @for (item of activeItems(); track item.id; let index = $index) {
           <button
             type="button"

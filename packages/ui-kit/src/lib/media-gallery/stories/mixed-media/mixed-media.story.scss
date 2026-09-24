@@ -1,7 +1,8 @@
 :host {
   display: block;
-  color: #18202a;
-  background: #f4f6f8;
+  min-height: 100vh;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
 }
 
 .story {
@@ -17,8 +18,8 @@
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #b42318;
-  background: #f4f6f8;
+  color: var(--ui-accent, #b42318);
+  background: var(--ui-surface, #ffffff);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -27,14 +28,14 @@
 
 h2 {
   margin: 0 0 12px;
-  color: #18202a;
-  background: #f4f6f8;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface, #ffffff);
   font-size: 32px;
 }
 
 p {
-  color: #46515d;
-  background: #f4f6f8;
+  color: var(--ui-text-muted, #586372);
+  background: var(--ui-surface, #ffffff);
 }
 
 .media-grid {
@@ -49,8 +50,8 @@ p {
   display: block;
   min-height: 220px;
   overflow: hidden;
-  color: #ffffff;
-  background: #1e2833;
+  color: var(--ui-text, #1d232b);
+  background: var(--ui-surface-2, #f0f2f5);
 }
 
 .media-grid > ui-image {
@@ -61,7 +62,13 @@ p {
   margin-top: 48px;
 }
 
-.secondary > ui-image {
+.secondary-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.secondary-grid > ui-image {
   display: block;
   cursor: pointer;
 }

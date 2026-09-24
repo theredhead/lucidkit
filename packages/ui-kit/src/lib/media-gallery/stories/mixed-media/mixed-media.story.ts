@@ -16,6 +16,16 @@ import type { MediaGalleryItem } from "../../media-gallery.types";
   styleUrl: "./mixed-media.story.scss",
 })
 export class MixedMediaStorySource {
+  public readonly galleryImages = Array.from({ length: 10 }, (_, index) => ({
+    src: `https://picsum.photos/seed/media-gallery-${index + 1}/960/640`,
+    alt: `Gallery landscape ${index + 1}`,
+  }));
+
+  public readonly separateImages = Array.from({ length: 3 }, (_, index) => ({
+    src: `https://picsum.photos/seed/separate-gallery-${index + 1}/720/480`,
+    alt: `Separate collection image ${index + 1}`,
+  }));
+
   public readonly videoSource: MediaSource = {
     url: "/media/sample.mp4",
     type: "video/mp4",
@@ -30,6 +40,13 @@ export class MixedMediaStorySource {
       alt: "Inline gallery image",
     },
     {
+      id: "inline-landscape",
+      collection: "inline",
+      kind: "image",
+      src: "https://picsum.photos/seed/inline-gallery-2/960/640",
+      alt: "Inline gallery landscape",
+    },
+    {
       id: "inline-video",
       collection: "inline",
       kind: "video",
@@ -37,6 +54,13 @@ export class MixedMediaStorySource {
       poster: "/media/sample-poster.jpg",
       type: "video/mp4",
       alt: "Inline gallery video",
+    },
+    {
+      id: "inline-detail",
+      collection: "inline",
+      kind: "image",
+      src: "https://picsum.photos/seed/inline-gallery-3/960/640",
+      alt: "Inline gallery detail",
     },
   ];
 }
