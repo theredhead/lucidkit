@@ -1,89 +1,61 @@
 @if (isVisible() && activeItem(); as active) {
-  <div
-    class="backdrop"
-    [class.inline-viewer]="inline()"
-    tabindex="-1"
-    (click)="onBackdropClick($event)"
-    (keydown.enter)="onBackdropKeydown($event)"
-  >
-    <section
-      class="viewer"
-      [class.inline-viewer]="inline()"
-      [class.left-close]="closePosition() === 'left'"
-      [class.cursor-hidden]="cursorHidden()"
-      [attr.role]="inline() ? null : 'dialog'"
-      [attr.aria-modal]="inline() ? null : 'true'"
-      [attr.aria-label]="ariaLabel()"
-      (pointermove)="onViewerPointerMove($event)"
-      (pointerdown)="onViewerPointerMove($event)"
-    >
-      @if (!inline()) {
-        <button type="button" class="close" [class.visible]="controlsVisible()" aria-label="Close" (click)="gallery.close()">
-        <ui-icon [svg]="icons.close" [size]="22" ariaLabel="Close" />
+<div class="backdrop" [class.inline-viewer]="isInlineView()" tabindex="-1" (click)="onBackdropClick($event)"
+    (keydown.enter)="onBackdropKeydown($event)">
+    <section class="viewer" [class.inline-viewer]="isInlineView()" [class.left-close]="closePosition() === 'left'"
+        [class.cursor-hidden]="cursorHidden()" [attr.role]="isInlineView() ? null : 'dialog'"
+        [attr.aria-modal]="isInlineView() ? null : 'true'" [attr.aria-label]="ariaLabel()"
+        (pointermove)="onViewerPointerMove($event)" (pointerdown)="onViewerPointerMove($event)">
+        @if (!isInlineView()) {
+        <button type="button" class="close" [class.visible]="controlsVisible()" aria-label="Close" (click)="close()">
+            <ui-icon [svg]="icons.close" [size]="22" ariaLabel="Close" />
         </button>
-      }
-
-      @if (canPrevious()) {
-        <button type="button" class="navigate previous" [class.visible]="controlsVisible()" aria-label="Previous" (click)="onPrevious()">
-          <ui-icon [svg]="icons.previous" [size]="28" ariaLabel="Previous" />
-        </button>
-      }
-
-      <div
-        #stage
-        class="stage"
-        (wheel)="onWheel($event)"
-        (dblclick)="onDoubleClick()"
-        (pointerdown)="onPointerDown($event)"
-        (pointermove)="onPointerMove($event)"
-        (pointerup)="onPointerUp()"
-        (pointercancel)="onPointerUp()"
-      >
-        @if (active.kind === "image") {
-          <img
-            class="media"
-            [src]="active.src"
-            [alt]="active.alt ?? ''"
-            (load)="onImageLoad($event)"
-            [style.transform]="transform()"
-          />
-        } @else {
-          <ui-media-player
-            class="media video"
-            type="video"
-            [source]="{ url: active.src, type: active.type }"
-            [poster]="active.poster ?? ''"
-            [ariaLabel]="active.alt ?? 'Video'"
-          />
         }
-      </div>
 
-      @if (canNext()) {
-        <button type="button" class="navigate next" [class.visible]="controlsVisible()" aria-label="Next" (click)="onNext()">
-          <ui-icon [svg]="icons.next" [size]="28" ariaLabel="Next" />
+        @if (canPrevious()) {
+        <button type="button" class="navigate previous" [class.visible]="controlsVisible()" aria-label="Previous"
+            (click)="onPrevious()">
+            <ui-icon [svg]="icons.previous" [size]="28" ariaLabel="Previous" />
         </button>
-      }
+        }
 
-      @if (showFilmstrip() && !inline()) {
-      <nav class="filmstrip" [class.visible]="controlsVisible()" aria-label="Media previews">
-        @for (item of activeItems(); track item.id; let index = $index) {
-          <button
-            type="button"
-            class="preview"
-            [class.active]="index === activeIndex()"
-            [attr.aria-label]="'Open ' + (item.alt || 'media ' + (index + 1))"
-            [attr.aria-current]="index === activeIndex() ? 'true' : null"
-            (click)="gallery.open(item.id)"
-          >
-            @if (item.kind === "image" || item.poster) {
-              <img [src]="item.kind === 'image' ? item.src : item.poster" [alt]="item.alt ?? ''" />
+        <div #stage class="stage" [attr.role]="isInlineView() ? 'button' : null"
+            [attr.tabindex]="isInlineView() ? 0 : null"
+            [attr.aria-label]="isInlineView() ? 'Open ' + (active.alt || 'media') + ' fullscreen' : null"
+            (wheel)="onWheel($event)" (dblclick)="onDoubleClick()" (pointerdown)="onPointerDown($event)"
+            (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp()" (pointercancel)="onPointerUp()"
+            (click)="onStageClick($event)" (keydown.enter)="expandInline($event)"
+            (keydown.space)="expandInline($event)">
+            @if (active.kind === "image") {
+            <img class="media" [src]="active.src" [alt]="active.alt ?? ''" (load)="onImageLoad($event)"
+                [style.transform]="transform()" />
             } @else {
-              <span aria-hidden="true">Video</span>
+            <ui-media-player class="media video" type="video" [source]="{ url: active.src, type: active.type }"
+                [poster]="active.poster ?? ''" [ariaLabel]="active.alt ?? 'Video'" />
             }
-          </button>
+        </div>
+
+        @if (canNext()) {
+        <button type="button" class="navigate next" [class.visible]="controlsVisible()" aria-label="Next"
+            (click)="onNext()">
+            <ui-icon [svg]="icons.next" [size]="28" ariaLabel="Next" />
+        </button>
         }
-      </nav>
-      }
+
+        @if (showFilmstrip()) {
+        <nav class="filmstrip" [class.visible]="controlsVisible()" aria-label="Media previews">
+            @for (item of activeItems(); track item.id; let index = $index) {
+            <button type="button" class="preview" [class.active]="index === activeIndex()"
+                [attr.aria-label]="'Open ' + (item.alt || 'media ' + (index + 1))"
+                [attr.aria-current]="index === activeIndex() ? 'true' : null" (click)="selectItem(index, item.id)">
+                @if (item.kind === "image" || item.poster) {
+                <img [src]="item.kind === 'image' ? item.src : item.poster" [alt]="item.alt ?? ''" />
+                } @else {
+                <span aria-hidden="true">Video</span>
+                }
+            </button>
+            }
+        </nav>
+        }
     </section>
-  </div>
+</div>
 }

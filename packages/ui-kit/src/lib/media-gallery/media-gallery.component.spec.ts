@@ -2,202 +2,310 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { UIMediaGallery } from "./media-gallery.component";
 import { MediaGalleryService } from "./media-gallery.service";
+import { MEDIA_GALLERY_IDLE_DELAY } from "./media-gallery.tokens";
 import type { MediaGalleryItem } from "./media-gallery.types";
 
 function image(id: string): MediaGalleryItem {
-  return {
-    id,
-    collection: "demo",
-    kind: "image",
-    src: `/${id}.jpg`,
-    alt: `${id} image`,
-  };
+    return {
+        id,
+        collection: "demo",
+        kind: "image",
+        src: `/${id}.jpg`,
+        alt: `${id} image`,
+    };
 }
 
 describe("UIMediaGallery", () => {
-  let fixture: ComponentFixture<UIMediaGallery>;
-  let service: MediaGalleryService;
-  let first: MediaGalleryItem;
-  let second: MediaGalleryItem;
+    let fixture: ComponentFixture<UIMediaGallery>;
+    let service: MediaGalleryService;
+    let first: MediaGalleryItem;
+    let second: MediaGalleryItem;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [UIMediaGallery],
-    }).compileComponents();
-    fixture = TestBed.createComponent(UIMediaGallery);
-    service = TestBed.inject(MediaGalleryService);
-    first = image("first");
-    second = image("second");
-    service.register(first);
-    service.register(second);
-    service.open(first.id);
-    fixture.detectChanges();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UIMediaGallery],
+        }).compileComponents();
+        fixture = TestBed.createComponent(UIMediaGallery);
+        service = TestBed.inject(MediaGalleryService);
+        first = image("first");
+        second = image("second");
+        service.register(first);
+        service.register(second);
+        service.open(first.id);
+        fixture.detectChanges();
+    });
 
-  afterEach(() => {
-    service.close();
-  });
+    afterEach(() => {
+        service.close();
+    });
 
-  it("should render one active media item in a fullscreen dialog", () => {
-    const dialog = fixture.nativeElement.querySelector('[role="dialog"]');
-    const images = fixture.nativeElement.querySelectorAll(".media");
+    it("should render one active media item in a fullscreen dialog", () => {
+        const dialog = fixture.nativeElement.querySelector('[role="dialog"]');
+        const images = fixture.nativeElement.querySelectorAll(".media");
 
-    expect(dialog).toBeTruthy();
-    expect(dialog.getAttribute("aria-modal")).toBe("true");
-    expect(images).toHaveLength(1);
-    expect(images[0].src).toContain("/first.jpg");
-  });
+        expect(dialog).toBeTruthy();
+        expect(dialog.getAttribute("aria-modal")).toBe("true");
+        expect(images).toHaveLength(1);
+        expect(images[0].src).toContain("/first.jpg");
+    });
 
-  it("should show controls on pointer movement and hide them after five seconds", () => {
-    vi.useFakeTimers();
-    try {
-      const viewer = fixture.nativeElement.querySelector(".viewer");
-      const close = fixture.nativeElement.querySelector(".close");
-      const next = fixture.nativeElement.querySelector(".next");
-      const filmstrip = fixture.nativeElement.querySelector(".filmstrip");
-      expect(close.classList).not.toContain("visible");
-      expect(next.classList).not.toContain("visible");
-      expect(filmstrip.classList).not.toContain("visible");
-      expect(viewer.classList).not.toContain("cursor-hidden");
+    it("should default idle delay to three seconds", () => {
+        expect(fixture.componentInstance.idleDelay()).toBe(3000);
+    });
 
-      viewer.dispatchEvent(
-        new PointerEvent("pointermove", { clientX: 500, clientY: 400 }),
-      );
-      fixture.detectChanges();
-      expect(close.classList).toContain("visible");
-      expect(next.classList).toContain("visible");
-      expect(filmstrip.classList).toContain("visible");
-      expect(viewer.classList).not.toContain("cursor-hidden");
+    it("should show controls on pointer movement and hide them after three seconds", () => {
+        vi.useFakeTimers();
+        try {
+            const viewer = fixture.nativeElement.querySelector(".viewer");
+            const close = fixture.nativeElement.querySelector(".close");
+            const next = fixture.nativeElement.querySelector(".next");
+            const filmstrip = fixture.nativeElement.querySelector(".filmstrip");
+            expect(close.classList).not.toContain("visible");
+            expect(next.classList).not.toContain("visible");
+            expect(filmstrip.classList).not.toContain("visible");
+            expect(viewer.classList).not.toContain("cursor-hidden");
 
-      vi.advanceTimersByTime(4999);
-      fixture.detectChanges();
-      expect(close.classList).toContain("visible");
+            viewer.dispatchEvent(
+                new PointerEvent("pointermove", { clientX: 500, clientY: 400 }),
+            );
+            fixture.detectChanges();
+            expect(close.classList).toContain("visible");
+            expect(next.classList).toContain("visible");
+            expect(filmstrip.classList).toContain("visible");
+            expect(viewer.classList).not.toContain("cursor-hidden");
 
-      vi.advanceTimersByTime(1);
-      fixture.detectChanges();
-      expect(close.classList).not.toContain("visible");
-      expect(next.classList).not.toContain("visible");
-      expect(filmstrip.classList).not.toContain("visible");
-      expect(viewer.classList).toContain("cursor-hidden");
-    } finally {
-      vi.useRealTimers();
-    }
-  });
+            vi.advanceTimersByTime(2999);
+            fixture.detectChanges();
+            expect(close.classList).toContain("visible");
 
-  it("should navigate with previous and next controls", () => {
-    const next = fixture.nativeElement.querySelector('[aria-label="Next"]');
-    next.click();
-    fixture.detectChanges();
+            vi.advanceTimersByTime(1);
+            fixture.detectChanges();
+            expect(close.classList).not.toContain("visible");
+            expect(next.classList).not.toContain("visible");
+            expect(filmstrip.classList).not.toContain("visible");
+            expect(viewer.classList).toContain("cursor-hidden");
+        } finally {
+            vi.useRealTimers();
+        }
+    });
 
-    expect(fixture.nativeElement.querySelector(".media").src).toContain(
-      "/second.jpg",
-    );
+    it("should use the configured idle delay", () => {
+        vi.useFakeTimers();
+        try {
+            fixture.componentRef.setInput("idleDelay", 1000);
+            fixture.detectChanges();
+            const viewer = fixture.nativeElement.querySelector(".viewer");
+            const close = fixture.nativeElement.querySelector(".close");
 
-    const previous = fixture.nativeElement.querySelector(
-      '[aria-label="Previous"]',
-    );
-    previous.click();
-    fixture.detectChanges();
+            viewer.dispatchEvent(new PointerEvent("pointermove"));
+            fixture.detectChanges();
+            expect(close.classList).toContain("visible");
 
-    expect(fixture.nativeElement.querySelector(".media").src).toContain(
-      "/first.jpg",
-    );
-  });
+            vi.advanceTimersByTime(999);
+            fixture.detectChanges();
+            expect(close.classList).toContain("visible");
 
-  it("should switch items from the filmstrip", () => {
-    const previews = fixture.nativeElement.querySelectorAll(".preview");
-    previews[1].click();
-    fixture.detectChanges();
+            vi.advanceTimersByTime(1);
+            fixture.detectChanges();
+            expect(close.classList).not.toContain("visible");
+            expect(viewer.classList).toContain("cursor-hidden");
+        } finally {
+            vi.useRealTimers();
+        }
+    });
 
-    expect(fixture.nativeElement.querySelector(".media").src).toContain(
-      "/second.jpg",
-    );
-  });
+    it("should navigate with previous and next controls", () => {
+        const next = fixture.nativeElement.querySelector('[aria-label="Next"]');
+        next.click();
+        fixture.detectChanges();
 
-  it("should close with Escape and the close button", () => {
-    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-    fixture.detectChanges();
-    expect(service.isOpen()).toBe(false);
-    expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
+        expect(fixture.nativeElement.querySelector(".media").src).toContain(
+            "/second.jpg",
+        );
 
-    service.open(first.id);
-    fixture.detectChanges();
-    fixture.nativeElement.querySelector('[aria-label="Close"]').click();
-    expect(service.isOpen()).toBe(false);
-  });
+        const previous = fixture.nativeElement.querySelector(
+            '[aria-label="Previous"]',
+        );
+        previous.click();
+        fixture.detectChanges();
 
-  it("should not expose zoom or reset buttons", () => {
-    expect(fixture.nativeElement.querySelector('[aria-label="Zoom in"]')).toBeNull();
-    expect(fixture.nativeElement.querySelector('[aria-label="Zoom out"]')).toBeNull();
-    expect(fixture.nativeElement.querySelector('[aria-label="Reset zoom"]')).toBeNull();
-  });
+        expect(fixture.nativeElement.querySelector(".media").src).toContain(
+            "/first.jpg",
+        );
+    });
 
-  it("should zoom in with the wheel and never zoom below the minimum", () => {
-    const stage = fixture.nativeElement.querySelector(".stage");
-    stage.dispatchEvent(new WheelEvent("wheel", { deltaY: -100 }));
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector(".media").style.transform).toContain(
-      "scale(1.1)",
-    );
+    it("should navigate fullscreen media with the left and right arrow keys", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector(".media").src).toContain(
+            "/second.jpg",
+        );
 
-    stage.dispatchEvent(new WheelEvent("wheel", { deltaY: 1000 }));
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector(".media").style.transform).toContain(
-      "scale(1)",
-    );
-  });
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector(".media").src).toContain(
+            "/first.jpg",
+        );
+    });
 
-  it("should keep an image at the scale required to fill the viewport", () => {
-    const imageElement: HTMLImageElement =
-      fixture.nativeElement.querySelector(".media");
-    const stage = fixture.nativeElement.querySelector(".stage");
-    Object.defineProperty(imageElement, "naturalWidth", { value: 400 });
-    Object.defineProperty(imageElement, "naturalHeight", { value: 300 });
-    Object.defineProperty(stage, "clientWidth", { value: 800 });
-    Object.defineProperty(stage, "clientHeight", { value: 600 });
-    imageElement.dispatchEvent(new Event("load"));
-    fixture.detectChanges();
+    it("should switch items from the filmstrip", () => {
+        const previews = fixture.nativeElement.querySelectorAll(".preview");
+        previews[1].click();
+        fixture.detectChanges();
 
-    stage.dispatchEvent(new WheelEvent("wheel", { deltaY: 1000 }));
-    fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector(".media").src).toContain(
+            "/second.jpg",
+        );
+    });
 
-    expect(imageElement.style.transform).toContain("scale(2)");
-  });
+    it("should close with Escape and the close button", () => {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+        fixture.detectChanges();
+        expect(service.isOpen()).toBe(false);
+        expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
 
-  it("should pan an image after it is zoomed", () => {
-    const stage = fixture.nativeElement.querySelector(".stage");
-    Object.defineProperty(stage, "setPointerCapture", { value: vi.fn() });
-    stage.dispatchEvent(new WheelEvent("wheel", { deltaY: -100 }));
-    stage.dispatchEvent(
-      new PointerEvent("pointerdown", { clientX: 10, clientY: 20 }),
-    );
-    stage.dispatchEvent(
-      new PointerEvent("pointermove", { clientX: 40, clientY: 60 }),
-    );
-    fixture.detectChanges();
+        service.open(first.id);
+        fixture.detectChanges();
+        fixture.nativeElement.querySelector('[aria-label="Close"]').click();
+        expect(service.isOpen()).toBe(false);
+    });
 
-    expect(fixture.nativeElement.querySelector(".media").style.transform).toContain(
-      "translate(30px, 40px)",
-    );
-  });
+    it("should restore body scrolling when an inline gallery also exists", () => {
+        service.close();
+        document.body.style.overflow = "";
+        const inlineFixture = TestBed.createComponent(UIMediaGallery);
+        inlineFixture.componentRef.setInput("inline", true);
+        inlineFixture.componentRef.setInput("items", [first, second]);
+        inlineFixture.detectChanges();
 
-  it("should render a constrained inline collection without a filmstrip", () => {
-    service.close();
-    fixture.componentRef.setInput("inline", true);
-    fixture.componentRef.setInput("items", [first, second]);
-    fixture.detectChanges();
+        service.open(first.id);
+        fixture.detectChanges();
+        inlineFixture.detectChanges();
+        expect(document.body.style.overflow).toBe("hidden");
 
-    expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
-    expect(fixture.nativeElement.querySelector(".filmstrip")).toBeNull();
-    expect(fixture.nativeElement.querySelector(".inline-viewer")).toBeTruthy();
-    expect(fixture.nativeElement.querySelector(".media").src).toContain(
-      "/first.jpg",
-    );
+        service.close();
+        fixture.detectChanges();
+        inlineFixture.detectChanges();
+        expect(document.body.style.overflow).toBe("");
+        inlineFixture.destroy();
+    });
 
-    fixture.nativeElement.querySelector('[aria-label="Next"]').click();
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector(".media").src).toContain(
-      "/second.jpg",
-    );
-  });
+    it("should not expose zoom or reset buttons", () => {
+        expect(fixture.nativeElement.querySelector('[aria-label="Zoom in"]')).toBeNull();
+        expect(fixture.nativeElement.querySelector('[aria-label="Zoom out"]')).toBeNull();
+        expect(fixture.nativeElement.querySelector('[aria-label="Reset zoom"]')).toBeNull();
+    });
+
+    it("should zoom in with the wheel and never zoom below the minimum", () => {
+        const stage = fixture.nativeElement.querySelector(".stage");
+        stage.dispatchEvent(new WheelEvent("wheel", { deltaY: -100 }));
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector(".media").style.transform).toContain(
+            "scale(1.1)",
+        );
+
+        stage.dispatchEvent(new WheelEvent("wheel", { deltaY: 1000 }));
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector(".media").style.transform).toContain(
+            "scale(1)",
+        );
+    });
+
+    it("should keep an image at the scale required to fill the viewport", () => {
+        const imageElement: HTMLImageElement =
+            fixture.nativeElement.querySelector(".media");
+        const stage = fixture.nativeElement.querySelector(".stage");
+        Object.defineProperty(imageElement, "naturalWidth", { value: 400 });
+        Object.defineProperty(imageElement, "naturalHeight", { value: 300 });
+        Object.defineProperty(stage, "clientWidth", { value: 800 });
+        Object.defineProperty(stage, "clientHeight", { value: 600 });
+        imageElement.dispatchEvent(new Event("load"));
+        fixture.detectChanges();
+
+        stage.dispatchEvent(new WheelEvent("wheel", { deltaY: 1000 }));
+        fixture.detectChanges();
+
+        expect(imageElement.style.transform).toContain("scale(2)");
+    });
+
+    it("should pan an image after it is zoomed", () => {
+        const stage = fixture.nativeElement.querySelector(".stage");
+        Object.defineProperty(stage, "setPointerCapture", { value: vi.fn() });
+        stage.dispatchEvent(new WheelEvent("wheel", { deltaY: -100 }));
+        stage.dispatchEvent(
+            new PointerEvent("pointerdown", { clientX: 10, clientY: 20 }),
+        );
+        stage.dispatchEvent(
+            new PointerEvent("pointermove", { clientX: 40, clientY: 60 }),
+        );
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector(".media").style.transform).toContain(
+            "translate(30px, 40px)",
+        );
+    });
+
+    it("should render a constrained inline collection with a filmstrip by default", () => {
+        service.close();
+        fixture.componentRef.setInput("inline", true);
+        fixture.componentRef.setInput("items", [first, second]);
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
+        const previews = fixture.nativeElement.querySelectorAll(".preview");
+        expect(previews).toHaveLength(2);
+        expect(fixture.nativeElement.querySelector(".inline-viewer")).toBeTruthy();
+        expect(fixture.nativeElement.querySelector(".media").src).toContain(
+            "/first.jpg",
+        );
+
+        previews[1].click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector(".media").src).toContain(
+            "/second.jpg",
+        );
+    });
+
+    it("should hide the filmstrip when showFilmstrip is false", () => {
+        service.close();
+        fixture.componentRef.setInput("inline", true);
+        fixture.componentRef.setInput("items", [first, second]);
+        fixture.componentRef.setInput("showFilmstrip", false);
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector(".filmstrip")).toBeNull();
+    });
+
+    it("should expand an inline gallery to fullscreen when its media is activated", () => {
+        service.close();
+        document.body.style.overflow = "";
+        fixture.componentRef.setInput("inline", true);
+        fixture.componentRef.setInput("items", [first, second]);
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
+        fixture.nativeElement.querySelector(".stage").click();
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeTruthy();
+        expect(document.body.style.overflow).toBe("hidden");
+
+        fixture.nativeElement.querySelector('[aria-label="Close"]').click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
+        expect(document.body.style.overflow).toBe("");
+    });
+});
+
+describe("UIMediaGallery idle delay provider", () => {
+    it("should use an injected idle delay default", async () => {
+        await TestBed.configureTestingModule({
+            imports: [UIMediaGallery],
+            providers: [{ provide: MEDIA_GALLERY_IDLE_DELAY, useValue: 750 }],
+        }).compileComponents();
+
+        const fixture = TestBed.createComponent(UIMediaGallery);
+
+        expect(fixture.componentInstance.idleDelay()).toBe(750);
+    });
 });

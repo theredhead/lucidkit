@@ -1,226 +1,236 @@
 :host {
-  --gallery-text: var(--ui-text, #1d232b);
-  --gallery-surface: var(--ui-surface, #ffffff);
-  --gallery-surface-raised: var(--ui-surface-2, #f0f2f5);
-  --gallery-border: var(--ui-border, #c4cbd4);
-  --gallery-accent: var(--ui-accent, #b42318);
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  pointer-events: none;
-  color: var(--gallery-text);
-  background: transparent;
+    --gallery-text: var(--ui-text, #1d232b);
+    --gallery-surface: var(--ui-surface, #ffffff);
+    --gallery-surface-raised: var(--ui-surface-2, #f0f2f5);
+    --gallery-border: var(--ui-border, #c4cbd4);
+    --gallery-accent: var(--ui-accent, #b42318);
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    pointer-events: none;
+    color: var(--gallery-text);
+    background: transparent;
 }
 
 :host.inline {
-  position: relative;
-  z-index: auto;
-  inset: auto;
-  width: 100%;
-  height: 100%;
-  pointer-events: auto;
+    position: relative;
+    z-index: auto;
+    inset: auto;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
 }
 
 .backdrop {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: auto;
-  color: var(--gallery-text);
-  background: color-mix(in srgb, var(--gallery-surface) 94%, transparent);
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: auto;
+    color: var(--gallery-text);
+    background: color-mix(in srgb, var(--gallery-surface) 94%, transparent);
 }
 
 .backdrop.inline-viewer {
-  position: relative;
-  inset: auto;
-  display: block;
-  width: 100%;
-  height: 100%;
-  color: inherit;
-  background: transparent;
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    background: transparent;
 }
 
 .viewer {
-  position: relative;
-  display: grid;
-  grid-template-areas:
-    "stage stage stage";
-  grid-template-columns: 64px minmax(0, 1fr) 64px;
-  grid-template-rows: minmax(0, 1fr);
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  color: var(--gallery-text);
-  background: var(--gallery-surface);
+    position: relative;
+    display: grid;
+    grid-template-areas:
+        "stage stage stage";
+    grid-template-columns: 64px minmax(0, 1fr) 64px;
+    grid-template-rows: minmax(0, 1fr);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--gallery-text);
+    background: var(--gallery-surface);
 }
 
 .viewer.inline-viewer {
-  width: 100%;
-  height: 100%;
-  min-height: 240px;
-  color: var(--gallery-text);
-  background: var(--gallery-surface);
+    width: 100%;
+    height: 100%;
+    min-height: 240px;
+    color: var(--gallery-text);
+    background: var(--gallery-surface);
 }
 
 .viewer.cursor-hidden,
 .viewer.cursor-hidden * {
-  cursor: none;
+    cursor: none;
 }
 
 .stage {
-  position: relative;
-  grid-area: stage;
-  display: grid;
-  place-items: center;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-  touch-action: none;
+    position: relative;
+    grid-area: stage;
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    touch-action: none;
 }
 
 .media {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  transform-origin: center;
-  user-select: none;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transform-origin: center;
+    user-select: none;
 }
 
 .video {
-  width: min(100%, 1200px);
-  max-height: calc(100vh - 120px);
+    width: min(100%, 1200px);
+    max-height: calc(100vh - 120px);
 }
 
 .close,
 .navigate {
-  position: absolute;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  border: 1px solid var(--gallery-border);
-  color: var(--gallery-text);
-  background: color-mix(in srgb, var(--gallery-surface-raised) 88%, transparent);
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 160ms ease;
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid var(--gallery-border);
+    border-radius: 50%;
+    color: var(--gallery-text);
+    background: color-mix(in srgb, var(--gallery-surface-raised) 28%, transparent);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: background 160ms ease, opacity 160ms ease;
+
+    &:hover {
+        background: color-mix(in srgb, var(--gallery-surface-raised) 88%, transparent);
+    }
 }
 
 .close.visible,
 .navigate.visible,
 .close:focus-visible,
 .navigate:focus-visible {
-  opacity: 1;
-  pointer-events: auto;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .close {
-  top: 20px;
-  right: 20px;
+    top: 20px;
+    right: 20px;
 }
 
 .left-close .close {
-  right: auto;
-  left: 20px;
+    right: auto;
+    left: 20px;
 }
 
 .navigate {
-  top: 50%;
-  transform: translateY(-50%);
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .previous {
-  left: 16px;
+    left: 16px;
 }
 
 .next {
-  right: 16px;
+    right: 16px;
 }
 
 .filmstrip {
-  position: absolute;
-  z-index: 2;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  min-width: 0;
-  max-width: 100vw;
-  padding: 12px 20px 20px;
-  overflow-x: auto;
-  color: var(--gallery-text);
-  background: color-mix(in srgb, var(--gallery-surface-raised) 92%, transparent);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(16px);
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease;
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    gap: 8px;
+    justify-content: safe center;
+    min-width: 0;
+    max-width: 100vw;
+    padding: 12px 20px 20px;
+    overflow-x: auto;
+    color: var(--gallery-text);
+    background: color-mix(in srgb, var(--gallery-surface-raised) 28%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(16px);
+    transition:
+        opacity 160ms ease,
+        background 160ms ease,
+        transform 160ms ease;
+
+    &:hover {
+        background: color-mix(in srgb, var(--gallery-surface-raised) 80%, transparent);
+    }
 }
 
 .filmstrip.visible,
 .filmstrip:focus-within {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
 }
 
 .preview {
-  flex: 0 0 72px;
-  width: 72px;
-  height: 48px;
-  padding: 2px;
-  overflow: hidden;
-  border: 2px solid transparent;
-  color: var(--gallery-text);
-  background: var(--gallery-surface);
-  cursor: pointer;
+    flex: 0 0 72px;
+    width: 72px;
+    height: 48px;
+    padding: 2px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    color: var(--gallery-text);
+    background: var(--gallery-surface);
+    cursor: pointer;
 }
 
 .preview.active {
-  border-color: var(--gallery-accent);
+    border-color: var(--gallery-accent);
 }
 
 .preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .preview span {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  font-size: 11px;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 11px;
 }
 
 @media (max-width: 600px) {
-  .viewer {
-    grid-template-columns: 48px minmax(0, 1fr) 48px;
-  }
+    .viewer {
+        grid-template-columns: 48px minmax(0, 1fr) 48px;
+    }
 
-  .close {
-    top: 12px;
-    right: 12px;
-  }
+    .close {
+        top: 12px;
+        right: 12px;
+    }
 
-  .left-close .close {
-    right: auto;
-    left: 12px;
-  }
+    .left-close .close {
+        right: auto;
+        left: 12px;
+    }
 
-  .previous {
-    left: 8px;
-  }
+    .previous {
+        left: 8px;
+    }
 
-  .next {
-    right: 8px;
-  }
+    .next {
+        right: 8px;
+    }
 }

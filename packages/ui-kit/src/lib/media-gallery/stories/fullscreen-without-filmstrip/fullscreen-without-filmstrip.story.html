@@ -1,0 +1,11 @@
+<ui-media-gallery [idleDelay]="idleDelay()" [showFilmstrip]="showFilmstrip()" />
+
+<main>
+    <h2>Fullscreen gallery without a filmstrip</h2>
+    <p>Previous and next controls remain available while preview navigation is disabled.</p>
+    <div class="grid">
+        @for (image of images; track image.src) {
+        <ui-image gallery="no-strip" [src]="image.src" [alt]="image.alt" [width]="260" [height]="175" />
+        }
+    </div>
+</main>

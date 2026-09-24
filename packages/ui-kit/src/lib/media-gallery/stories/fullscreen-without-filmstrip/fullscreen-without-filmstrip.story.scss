@@ -1,0 +1,30 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+}
+
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px;
+}
+
+h2,
+p {
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.grid>ui-image {
+    overflow: hidden;
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface-2, #f0f2f5);
+}
