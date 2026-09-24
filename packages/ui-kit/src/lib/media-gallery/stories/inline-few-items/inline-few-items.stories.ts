@@ -25,6 +25,7 @@ export const InlineFewItems: Story = {
         template: `<ui-media-gallery-inline-few-items-story
             [idleDelay]="idleDelay"
             [showFilmstrip]="showFilmstrip"
+            [transition]="transition"
         />`,
     }),
 };

@@ -25,6 +25,7 @@ export const FullscreenFewItems: Story = {
         template: `<ui-media-gallery-fullscreen-few-items-story
             [idleDelay]="idleDelay"
             [showFilmstrip]="showFilmstrip"
+            [transition]="transition"
         />`,
     }),
 };

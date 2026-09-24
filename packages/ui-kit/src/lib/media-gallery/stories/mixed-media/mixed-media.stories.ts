@@ -32,6 +32,7 @@ export const MixedMedia: Story = {
         template: `<ui-media-gallery-mixed-media-story
             [idleDelay]="idleDelay"
             [showFilmstrip]="showFilmstrip"
+            [transition]="transition"
         />`,
     }),
 };

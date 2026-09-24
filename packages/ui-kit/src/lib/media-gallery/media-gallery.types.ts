@@ -1,6 +1,9 @@
 /** The media kinds supported by the gallery viewer. */
 export type MediaGalleryKind = "image" | "video";
 
+/** Animation used when the active gallery item changes. */
+export type MediaGalleryTransition = "none" | "fade" | "slide" | "zoom";
+
 /** A registered image or video item in a gallery collection. */
 export interface MediaGalleryItem {
     /** Stable identity for the registered host component. */

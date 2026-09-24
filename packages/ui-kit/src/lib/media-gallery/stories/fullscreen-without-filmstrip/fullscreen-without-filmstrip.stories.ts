@@ -25,6 +25,7 @@ export const FullscreenWithoutFilmstrip: Story = {
         template: `<ui-media-gallery-fullscreen-without-filmstrip-story
             [idleDelay]="idleDelay"
             [showFilmstrip]="showFilmstrip"
+            [transition]="transition"
         />`,
     }),
 };

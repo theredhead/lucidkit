@@ -148,6 +148,34 @@ describe("UIMediaGallery", () => {
         );
     });
 
+    it("should apply an opt-in slide transition in the navigation direction", () => {
+        fixture.componentRef.setInput("transition", "slide");
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector(".media-frame").classList)
+            .not.toContain("transition-slide");
+
+        fixture.nativeElement.querySelector('[aria-label="Next"]').click();
+        fixture.detectChanges();
+        let frame = fixture.nativeElement.querySelector(".media-frame");
+        expect(frame.classList).toContain("transition-slide");
+        expect(frame.classList).toContain("forward");
+
+        fixture.nativeElement.querySelector('[aria-label="Previous"]').click();
+        fixture.detectChanges();
+        frame = fixture.nativeElement.querySelector(".media-frame");
+        expect(frame.classList).toContain("transition-slide");
+        expect(frame.classList).toContain("backward");
+    });
+
+    it("should not apply transition classes by default", () => {
+        fixture.nativeElement.querySelector('[aria-label="Next"]').click();
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector(".media-frame").className)
+            .toBe("media-frame");
+    });
+
     it("should switch items from the filmstrip", () => {
         const previews = fixture.nativeElement.querySelectorAll(".preview");
         previews[1].click();
@@ -211,21 +239,25 @@ describe("UIMediaGallery", () => {
         );
     });
 
-    it("should keep an image at the scale required to fill the viewport", () => {
-        const imageElement: HTMLImageElement =
+    it("should cover inline frames and contain fullscreen images", () => {
+        service.close();
+        fixture.componentRef.setInput("inline", true);
+        fixture.componentRef.setInput("items", [first, second]);
+        fixture.detectChanges();
+
+        const inlineImage: HTMLImageElement =
             fixture.nativeElement.querySelector(".media");
-        const stage = fixture.nativeElement.querySelector(".stage");
-        Object.defineProperty(imageElement, "naturalWidth", { value: 400 });
-        Object.defineProperty(imageElement, "naturalHeight", { value: 300 });
-        Object.defineProperty(stage, "clientWidth", { value: 800 });
-        Object.defineProperty(stage, "clientHeight", { value: 600 });
-        imageElement.dispatchEvent(new Event("load"));
+        expect(inlineImage.classList).toContain("cover");
+        expect(inlineImage.classList).not.toContain("contain");
+
+        fixture.nativeElement.querySelector(".stage").click();
         fixture.detectChanges();
 
-        stage.dispatchEvent(new WheelEvent("wheel", { deltaY: 1000 }));
-        fixture.detectChanges();
-
-        expect(imageElement.style.transform).toContain("scale(2)");
+        const fullscreenImage: HTMLImageElement =
+            fixture.nativeElement.querySelector(".media");
+        expect(fullscreenImage.classList).toContain("contain");
+        expect(fullscreenImage.classList).not.toContain("cover");
+        expect(fullscreenImage.style.transform).toContain("scale(1)");
     });
 
     it("should pan an image after it is zoomed", () => {

@@ -4,18 +4,19 @@ import {
     computed,
     DestroyRef,
     effect,
-    ElementRef,
     inject,
     input,
     signal,
-    viewChild,
 } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 
 import { UIIcon, UIIcons } from "../icon";
 import { UIMediaPlayer } from "../media-player";
 import { MediaGalleryService } from "./media-gallery.service";
-import type { MediaGalleryItem } from "./media-gallery.types";
+import type {
+    MediaGalleryItem,
+    MediaGalleryTransition,
+} from "./media-gallery.types";
 import {
     MEDIA_GALLERY_CLOSE_POSITION,
     MEDIA_GALLERY_IDLE_DELAY,
@@ -54,6 +55,9 @@ export class UIMediaGallery {
     /** Whether the gallery should show the filmstrip. */
     public readonly showFilmstrip = input(true);
 
+    /** Animation used when navigating between media items. */
+    public readonly transition = input<MediaGalleryTransition>("none");
+
     /** Milliseconds of pointer inactivity before controls and cursor hide. */
     public readonly idleDelay = input(inject(MEDIA_GALLERY_IDLE_DELAY));
 
@@ -79,6 +83,10 @@ export class UIMediaGallery {
     protected readonly expanded = signal(false);
     protected readonly controlsVisible = signal(false);
     protected readonly cursorHidden = signal(false);
+    protected readonly transitionDirection = signal<"forward" | "backward">(
+        "forward",
+    );
+    protected readonly hasNavigated = signal(false);
     protected readonly transform = computed(
         () => `translate(${this.panX()}px, ${this.panY()}px) scale(${this.zoom()})`,
     );
@@ -119,10 +127,6 @@ export class UIMediaGallery {
     private pointerStart: { x: number; y: number } | null = null;
     private panStart: { x: number; y: number } | null = null;
     private controlsTimer: ReturnType<typeof setTimeout> | null = null;
-    protected readonly fitScale = signal(1);
-    protected readonly stage = viewChild<ElementRef<HTMLElement>>("stage");
-    protected readonly minimumZoom = computed(() => Math.max(1, this.fitScale()));
-
     public constructor() {
         this.destroyRef.onDestroy(() => this.clearControlsTimer());
 
@@ -150,26 +154,11 @@ export class UIMediaGallery {
             const activeId = this.activeItem()?.id ?? null;
             if (activeId !== this.lastActiveId) {
                 this.lastActiveId = activeId;
-                this.fitScale.set(1);
                 this.zoom.set(1);
                 this.panX.set(0);
                 this.panY.set(0);
             }
         });
-    }
-
-    /** @internal */
-    protected onImageLoad(event: Event): void {
-        const image = event.currentTarget;
-        const stage = this.stage()?.nativeElement;
-        if (!(image instanceof HTMLImageElement) || !stage) return;
-        if (!image.naturalWidth || !image.naturalHeight) return;
-
-        const widthScale = stage.clientWidth / image.naturalWidth;
-        const heightScale = stage.clientHeight / image.naturalHeight;
-        const fitScale = Math.max(widthScale, heightScale);
-        this.fitScale.set(Number.isFinite(fitScale) ? fitScale : 1);
-        this.setZoom(this.zoom());
     }
 
     /** @internal */
@@ -223,6 +212,8 @@ export class UIMediaGallery {
 
     /** @internal */
     protected onPrevious(): void {
+        if (!this.canPrevious()) return;
+        this.prepareTransition("backward");
         if (this.inline()) {
             this.inlineIndex.update((index) => Math.max(0, index - 1));
         } else {
@@ -232,6 +223,8 @@ export class UIMediaGallery {
 
     /** @internal */
     protected onNext(): void {
+        if (!this.canNext()) return;
+        this.prepareTransition("forward");
         if (this.inline()) {
             this.inlineIndex.update((index) =>
                 Math.min(this.items().length - 1, index + 1),
@@ -243,6 +236,8 @@ export class UIMediaGallery {
 
     /** @internal */
     protected selectItem(index: number, id: string): void {
+        if (index === this.activeIndex()) return;
+        this.prepareTransition(index > this.activeIndex() ? "forward" : "backward");
         if (this.inline()) {
             this.inlineIndex.set(index);
         } else {
@@ -317,10 +312,15 @@ export class UIMediaGallery {
             target.matches("input, select, textarea, [contenteditable='true']");
     }
 
+    private prepareTransition(direction: "forward" | "backward"): void {
+        this.transitionDirection.set(direction);
+        this.hasNavigated.set(true);
+    }
+
     private setZoom(value: number): void {
-        const nextZoom = Math.max(this.minimumZoom(), Math.min(8, value));
+        const nextZoom = Math.max(1, Math.min(8, value));
         this.zoom.set(nextZoom);
-        if (nextZoom === this.minimumZoom()) {
+        if (nextZoom === 1) {
             this.panX.set(0);
             this.panY.set(0);
         }

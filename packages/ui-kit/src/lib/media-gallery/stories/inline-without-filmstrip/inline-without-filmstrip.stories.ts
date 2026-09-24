@@ -25,6 +25,7 @@ export const InlineWithoutFilmstrip: Story = {
         template: `<ui-media-gallery-inline-without-filmstrip-story
             [idleDelay]="idleDelay"
             [showFilmstrip]="showFilmstrip"
+            [transition]="transition"
         />`,
     }),
 };

@@ -4,6 +4,7 @@ import { UIImage } from "../../../image/image.component";
 import { UIMediaGallery } from "../../media-gallery.component";
 import { UIMediaGalleryItem } from "../../media-gallery.directive";
 import { MEDIA_GALLERY_DEFAULT_IDLE_DELAY } from "../../media-gallery.tokens";
+import type { MediaGalleryTransition } from "../../media-gallery.types";
 import { createStoryImages } from "../media-gallery-story-data";
 
 @Component({
@@ -17,5 +18,6 @@ import { createStoryImages } from "../media-gallery-story-data";
 export class FullscreenManyItemsStorySource {
     public readonly idleDelay = input(MEDIA_GALLERY_DEFAULT_IDLE_DELAY);
     public readonly showFilmstrip = input(true);
+    public readonly transition = input<MediaGalleryTransition>("none");
     public readonly images = createStoryImages("gallery-many", 30);
 }

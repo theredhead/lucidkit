@@ -25,6 +25,7 @@ export const InlineManyItems: Story = {
         template: `<ui-media-gallery-inline-many-items-story
             [idleDelay]="idleDelay"
             [showFilmstrip]="showFilmstrip"
+            [transition]="transition"
         />`,
     }),
 };

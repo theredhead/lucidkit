@@ -10,4 +10,5 @@ export {
 export {
     type MediaGalleryItem,
     type MediaGalleryKind,
+    type MediaGalleryTransition,
 } from "./media-gallery.types";

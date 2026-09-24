@@ -6,7 +6,10 @@ import type { MediaSource } from "../../../media-player/media-player.types";
 import { UIMediaGallery } from "../../media-gallery.component";
 import { UIMediaGalleryItem } from "../../media-gallery.directive";
 import { MEDIA_GALLERY_DEFAULT_IDLE_DELAY } from "../../media-gallery.tokens";
-import type { MediaGalleryItem } from "../../media-gallery.types";
+import type {
+    MediaGalleryItem,
+    MediaGalleryTransition,
+} from "../../media-gallery.types";
 
 @Component({
     selector: "ui-media-gallery-mixed-media-story",
@@ -19,6 +22,7 @@ import type { MediaGalleryItem } from "../../media-gallery.types";
 export class MixedMediaStorySource {
     public readonly idleDelay = input(MEDIA_GALLERY_DEFAULT_IDLE_DELAY);
     public readonly showFilmstrip = input(true);
+    public readonly transition = input<MediaGalleryTransition>("none");
     public readonly galleryImages = Array.from({ length: 10 }, (_, index) => ({
         src: `https://picsum.photos/seed/media-gallery-${index + 1}/960/640`,
         alt: `Gallery landscape ${index + 1}`,

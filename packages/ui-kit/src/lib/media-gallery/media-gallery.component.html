@@ -25,12 +25,20 @@
             (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp()" (pointercancel)="onPointerUp()"
             (click)="onStageClick($event)" (keydown.enter)="expandInline($event)"
             (keydown.space)="expandInline($event)">
-            @if (active.kind === "image") {
-            <img class="media" [src]="active.src" [alt]="active.alt ?? ''" (load)="onImageLoad($event)"
-                [style.transform]="transform()" />
-            } @else {
-            <ui-media-player class="media video" type="video" [source]="{ url: active.src, type: active.type }"
-                [poster]="active.poster ?? ''" [ariaLabel]="active.alt ?? 'Video'" />
+            @for (item of [active]; track item.id) {
+            <div class="media-frame" [class.transition-fade]="hasNavigated() && transition() === 'fade'"
+                [class.transition-slide]="hasNavigated() && transition() === 'slide'"
+                [class.transition-zoom]="hasNavigated() && transition() === 'zoom'"
+                [class.forward]="hasNavigated() && transition() !== 'none' && transitionDirection() === 'forward'"
+                [class.backward]="hasNavigated() && transition() !== 'none' && transitionDirection() === 'backward'">
+                @if (item.kind === "image") {
+                <img class="media image" [class.cover]="isInlineView()" [class.contain]="!isInlineView()"
+                    [src]="item.src" [alt]="item.alt ?? ''" [style.transform]="transform()" />
+                } @else {
+                <ui-media-player class="media video" type="video" [source]="{ url: item.src, type: item.type }"
+                    [poster]="item.poster ?? ''" [ariaLabel]="item.alt ?? 'Video'" />
+                }
+            </div>
             }
         </div>
 
