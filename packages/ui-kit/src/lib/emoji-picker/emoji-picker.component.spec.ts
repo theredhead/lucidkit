@@ -150,6 +150,59 @@ describe("UIEmojiPicker", () => {
       expect(emojis[0].textContent.trim()).toBe("😀");
     });
 
+    it("should find built-in emoji by semantic search term", () => {
+      const searchInput =
+        fixture.nativeElement.querySelector(".ep-search-input");
+      searchInput.value = "heart";
+      searchInput.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      const emojis = Array.from(
+        fixture.nativeElement.querySelectorAll(".ep-emoji") as NodeListOf<HTMLElement>,
+      ).map((element) => element.textContent?.trim());
+      expect(emojis).toContain("❤️");
+    });
+
+    it("should search custom categories by category name and search terms", () => {
+      fixture.componentRef.setInput("categories", [
+        {
+          name: "Custom reactions",
+          emojis: ["⭐", "💡"],
+          searchTerms: {
+            "⭐": ["star", "favorite"],
+            "💡": ["idea", "light bulb"],
+          },
+        },
+      ]);
+      fixture.detectChanges();
+      const searchInput =
+        fixture.nativeElement.querySelector(".ep-search-input");
+      searchInput.value = "idea";
+      searchInput.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelectorAll(".ep-emoji")).toHaveLength(1);
+      expect(fixture.nativeElement.querySelector(".ep-emoji").textContent.trim())
+        .toBe("💡");
+    });
+
+    it("should use caller-provided localized search metadata", () => {
+      fixture.componentRef.setInput("emojiSearchTerms", {
+        "😀": ["glimlach"],
+      });
+      fixture.detectChanges();
+      const searchInput =
+        fixture.nativeElement.querySelector(".ep-search-input");
+      searchInput.value = "glimlach";
+      searchInput.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      const emojis = Array.from(
+        fixture.nativeElement.querySelectorAll(".ep-emoji") as NodeListOf<HTMLElement>,
+      ).map((element) => element.textContent?.trim());
+      expect(emojis).toContain("😀");
+    });
+
     it("should show empty state when no emoji match", () => {
       const searchInput =
         fixture.nativeElement.querySelector(".ep-search-input");

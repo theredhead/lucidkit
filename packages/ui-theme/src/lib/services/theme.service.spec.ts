@@ -227,8 +227,8 @@ describe("ThemeService", () => {
       getItem: () => {
         throw new Error("SecurityError");
       },
-      setItem: () => {},
-      removeItem: () => {},
+      setItem: () => { },
+      removeItem: () => { },
     };
 
     // Re-create service — should not throw

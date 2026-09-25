@@ -45,7 +45,7 @@ $_dark-border-strong: #404145 !default;
 @function _linear-channel($channel) {
     $value: math.div($channel, 255);
 
-    @if $value <= 0.04045 {
+    @if $value <=0.04045 {
         @return math.div($value, 12.92);
     }
 
@@ -58,7 +58,7 @@ $_dark-border-strong: #404145 !default;
     $green: _linear-channel(color.channel($value, "green", $space: rgb));
     $blue: _linear-channel(color.channel($value, "blue", $space: rgb));
 
-    @return 0.2126 * $red + 0.7152 * $green + 0.0722 * $blue;
+    @return 0.2126 * $red +0.7152 * $green +0.0722 * $blue;
 }
 
 /// Returns the WCAG contrast ratio between two colours.
@@ -73,7 +73,7 @@ $_dark-border-strong: #404145 !default;
 
 /// Returns the candidate foreground with the strongest WCAG contrast.
 @function _on($bg, $on-light: #ffffff, $on-dark: #14161a) {
-    @if _contrast-ratio($bg, $on-light) >= _contrast-ratio($bg, $on-dark) {
+    @if _contrast-ratio($bg, $on-light)>=_contrast-ratio($bg, $on-dark) {
         @return $on-light;
     }
 

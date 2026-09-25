@@ -4,9 +4,8 @@
     <section class="viewer" [class.inline-viewer]="isInlineView()" [class.left-close]="closePosition() === 'left'"
         [class.cursor-hidden]="cursorHidden()" [attr.role]="isInlineView() ? null : 'dialog'"
         [attr.aria-modal]="isInlineView() ? null : 'true'" [attr.aria-label]="ariaLabel()"
-        [cdkTrapFocus]="isFullscreen()"
-        (pointermove)="onViewerPointerMove($event)" (pointerdown)="onViewerPointerMove($event)"
-        (focusin)="onViewerFocusIn()">
+        [cdkTrapFocus]="isFullscreen()" (pointermove)="onViewerPointerMove($event)"
+        (pointerdown)="onViewerPointerMove($event)" (focusin)="onViewerFocusIn()">
         @if (!isInlineView()) {
         <button #closeButton type="button" class="close" [class.visible]="controlsVisible()" aria-label="Close"
             (click)="close()">
@@ -22,13 +21,11 @@
         }
 
         <div #stage class="stage" [class.interactive-image]="isInteractiveImage()"
-            [attr.role]="isInlineView() ? 'button' : null"
-            [attr.tabindex]="isInlineView() ? 0 : null"
+            [attr.role]="isInlineView() ? 'button' : null" [attr.tabindex]="isInlineView() ? 0 : null"
             [attr.aria-label]="isInlineView() ? 'Open ' + (active.alt || 'media') + ' fullscreen' : null"
             (wheel)="onWheel($event)" (dblclick)="onDoubleClick()" (pointerdown)="onPointerDown($event)"
             (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)"
-            (pointercancel)="onPointerUp($event)"
-            (click)="onStageClick($event)" (keydown.enter)="expandInline($event)"
+            (pointercancel)="onPointerUp($event)" (click)="onStageClick($event)" (keydown.enter)="expandInline($event)"
             (keydown.space)="expandInline($event)">
             @for (item of [active]; track item.id) {
             <div class="media-frame" [class.transition-fade]="hasNavigated() && transition() === 'fade'"

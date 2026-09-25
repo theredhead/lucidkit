@@ -1,4 +1,27 @@
-import type { EmojiCategory } from "./emoji-picker.types";
+import type { EmojiCategory, EmojiSearchTerms } from "./emoji-picker.types";
+
+/** English search metadata for the built-in emoji set. */
+export const DEFAULT_EN_US_EMOJI_SEARCH_TERMS: EmojiSearchTerms = {
+  "😀": ["grinning", "smile", "happy", "face"],
+  "😁": ["beaming", "smile", "happy", "face"],
+  "😂": ["joy", "laugh", "tears", "face"],
+  "🤣": ["rofl", "rolling", "laugh", "face"],
+  "😍": ["heart eyes", "love", "smile", "face"],
+  "😭": ["cry", "tears", "sad", "face"],
+  "👍": ["thumbs up", "like", "approve", "yes"],
+  "👎": ["thumbs down", "dislike", "no"],
+  "❤️": ["heart", "love", "red"],
+  "💔": ["broken heart", "heart", "sad"],
+  "🔥": ["fire", "flame", "hot"],
+  "🎉": ["party", "celebration", "tada"],
+  "✅": ["check", "done", "yes", "success"],
+  "❌": ["cross", "cancel", "no", "error"],
+  "🚀": ["rocket", "launch", "ship"],
+  "🐶": ["dog", "puppy", "animal"],
+  "🐱": ["cat", "kitten", "animal"],
+  "🍕": ["pizza", "food"],
+  "☕": ["coffee", "tea", "drink"],
+};
 
 /**
  * Default comprehensive set of emoji categories.
@@ -6,7 +29,7 @@ import type { EmojiCategory } from "./emoji-picker.types";
  * Provides a curated selection of commonly-used emoji organised
  * into eight standard categories.
  */
-export const DEFAULT_EMOJI_CATEGORIES: readonly EmojiCategory[] = [
+const DEFAULT_EMOJI_CATEGORY_DATA: readonly EmojiCategory[] = [
   {
     name: "Smileys & People",
     emojis: [
@@ -989,3 +1012,10 @@ export const DEFAULT_EMOJI_CATEGORIES: readonly EmojiCategory[] = [
     ],
   },
 ];
+
+/** Default categories enriched with semantic search terms. */
+export const DEFAULT_EMOJI_CATEGORIES: readonly EmojiCategory[] =
+  DEFAULT_EMOJI_CATEGORY_DATA.map((category) => ({
+    ...category,
+    searchTerms: DEFAULT_EN_US_EMOJI_SEARCH_TERMS,
+  }));
