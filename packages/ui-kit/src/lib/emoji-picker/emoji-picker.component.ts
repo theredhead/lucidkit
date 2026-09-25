@@ -98,6 +98,13 @@ export class UIEmojiPicker {
   /** Emoji currently hovered for the preview. */
   protected readonly hoveredEmoji = signal<string | null>(null);
 
+  /** Search terms associated with the previewed emoji. */
+  protected readonly hoveredSearchTerms = computed(() => {
+    const emoji = this.hoveredEmoji();
+    if (!emoji) return [];
+    return this.emojiSearchTerms()[emoji] ?? this.categorySearchTerms(emoji);
+  });
+
   // ── Computed ───────────────────────────────────────────
 
   /** Effective categories, falling back to defaults. */
@@ -189,5 +196,13 @@ export class UIEmojiPicker {
       (searchTerms[emoji] ?? category.searchTerms?.[emoji] ?? []).some((searchTerm) =>
         searchTerm.toLocaleLowerCase().includes(term),
       );
+  }
+
+  private categorySearchTerms(emoji: string): readonly string[] {
+    for (const category of this.effectiveCategories()) {
+      const searchTerms = category.searchTerms?.[emoji];
+      if (searchTerms) return searchTerms;
+    }
+    return [];
   }
 }

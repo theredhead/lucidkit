@@ -163,6 +163,38 @@ describe("UIEmojiPicker", () => {
       expect(emojis).toContain("❤️");
     });
 
+    it("should find frequently used emoji across categories", () => {
+      const searchInput =
+        fixture.nativeElement.querySelector(".ep-search-input");
+      const expectations: readonly (readonly [string, readonly string[]])[] = [
+        ["wink", ["😉"]],
+        ["angry", ["😠", "😡", "👿"]],
+        ["clap", ["👏"]],
+        ["party", ["🥳", "🎉"]],
+        ["cat", ["🐱"]],
+        ["apple", ["🍎"]],
+        ["airplane", ["✈️"]],
+        ["camera", ["📷", "📸"]],
+        ["lock", ["🔒"]],
+        ["united states", ["🇺🇸"]],
+      ];
+
+      for (const [term, expectedEmojis] of expectations) {
+        searchInput.value = term;
+        searchInput.dispatchEvent(new Event("input"));
+        fixture.detectChanges();
+
+        const emojis = Array.from(
+          fixture.nativeElement.querySelectorAll(".ep-emoji") as NodeListOf<HTMLElement>,
+        ).map((element) => element.textContent?.trim());
+        expect(
+          emojis.some((emoji) => expectedEmojis.includes(emoji ?? "")),
+          `expected "${term}" to find one of ${expectedEmojis.join(", ")}`,
+        )
+          .toBe(true);
+      }
+    });
+
     it("should search custom categories by category name and search terms", () => {
       fixture.componentRef.setInput("categories", [
         {
@@ -225,6 +257,21 @@ describe("UIEmojiPicker", () => {
       const preview = fixture.nativeElement.querySelector(".ep-preview-emoji");
       expect(preview).toBeTruthy();
       expect(preview.textContent.trim()).toBe(emojiBtn.textContent.trim());
+    });
+
+    it("should show localized search terms beside the hovered emoji", () => {
+      fixture.componentRef.setInput("emojiSearchTerms", {
+        "😀": ["glimlach", "blij", "gezicht"],
+      });
+      fixture.detectChanges();
+      const emojiButton = Array.from(
+        fixture.nativeElement.querySelectorAll(".ep-emoji") as NodeListOf<HTMLButtonElement>,
+      ).find((button) => button.textContent?.trim() === "😀");
+      emojiButton?.dispatchEvent(new PointerEvent("pointerenter"));
+      fixture.detectChanges();
+
+      const terms = fixture.nativeElement.querySelector(".ep-preview-terms");
+      expect(terms.textContent.trim()).toBe("glimlach, blij, gezicht");
     });
 
     it("should clear preview emoji when pointer leaves", () => {
