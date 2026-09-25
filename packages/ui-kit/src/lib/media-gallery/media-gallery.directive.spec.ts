@@ -47,6 +47,7 @@ describe("UIMediaGalleryItem", () => {
         }).compileComponents();
         fixture = TestBed.createComponent(GalleryHost);
         service = TestBed.inject(MediaGalleryService);
+        service.close();
         fixture.detectChanges();
     });
 
@@ -75,5 +76,37 @@ describe("UIMediaGalleryItem", () => {
         expect(service.activeItem()).toMatchObject({
             src: "/unnamed.jpg",
         });
+    });
+
+    it("should not open from keyboard events on nested video controls", () => {
+        const playButton = fixture.nativeElement.querySelector(
+            "ui-media-player button",
+        );
+        playButton.dispatchEvent(new KeyboardEvent("keydown", {
+            key: "Enter",
+            bubbles: true,
+        }));
+
+        expect(service.isOpen()).toBe(false);
+    });
+
+    it("should open a video when its host receives keyboard activation", () => {
+        const player = fixture.nativeElement.querySelector("ui-media-player");
+        player.dispatchEvent(new KeyboardEvent("keydown", {
+            key: "Enter",
+            bubbles: true,
+        }));
+
+        expect(service.activeItem()).toMatchObject({ src: "/clip.mp4" });
+    });
+
+    it("should follow current DOM order when gallery hosts are reordered", () => {
+        const image = fixture.nativeElement.querySelector("ui-image");
+        fixture.nativeElement.append(image);
+
+        expect(service.items("").map((item) => item.src)).toEqual([
+            "/clip.mp4",
+            "/unnamed.jpg",
+        ]);
     });
 });

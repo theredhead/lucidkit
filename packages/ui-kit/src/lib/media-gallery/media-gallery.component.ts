@@ -4,11 +4,14 @@ import {
     computed,
     DestroyRef,
     effect,
+    ElementRef,
     inject,
     input,
     signal,
+    viewChild,
 } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
+import { CdkTrapFocus } from "@angular/cdk/a11y";
 
 import { UIIcon, UIIcons } from "../icon";
 import { UIMediaPlayer } from "../media-player";
@@ -27,7 +30,7 @@ import {
 @Component({
     selector: "ui-media-gallery",
     standalone: true,
-    imports: [UIIcon, UIMediaPlayer],
+    imports: [CdkTrapFocus, UIIcon, UIMediaPlayer],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: "./media-gallery.component.html",
     styleUrl: "./media-gallery.component.scss",
@@ -69,6 +72,16 @@ export class UIMediaGallery {
         inject(MEDIA_GALLERY_CLOSE_POSITION),
     );
 
+    /** @internal */
+    protected readonly closeButtonRef =
+        viewChild<ElementRef<HTMLButtonElement>>("closeButton");
+
+    /** @internal */
+    protected readonly stageRef = viewChild<ElementRef<HTMLElement>>("stage");
+
+    /** @internal */
+    protected readonly imageRef = viewChild<ElementRef<HTMLImageElement>>("image");
+
     /** Shared gallery state. */
     protected readonly gallery = inject(MediaGalleryService);
     protected readonly icons = {
@@ -83,6 +96,8 @@ export class UIMediaGallery {
     protected readonly expanded = signal(false);
     protected readonly controlsVisible = signal(false);
     protected readonly cursorHidden = signal(false);
+    protected readonly fittedImageWidth = signal<number | null>(null);
+    protected readonly fittedImageHeight = signal<number | null>(null);
     protected readonly transitionDirection = signal<"forward" | "backward">(
         "forward",
     );
@@ -116,6 +131,9 @@ export class UIMediaGallery {
     protected readonly isFullscreen = computed(
         () => this.inline() ? this.expanded() : this.gallery.isOpen(),
     );
+    protected readonly isInteractiveImage = computed(
+        () => this.isFullscreen() && this.activeItem()?.kind === "image",
+    );
     protected readonly canPrevious = computed(() => this.activeIndex() > 0);
     protected readonly canNext = computed(
         () => this.activeIndex() < this.activeItems().length - 1,
@@ -127,6 +145,8 @@ export class UIMediaGallery {
     private pointerStart: { x: number; y: number } | null = null;
     private panStart: { x: number; y: number } | null = null;
     private controlsTimer: ReturnType<typeof setTimeout> | null = null;
+    private focusOrigin: HTMLElement | null = null;
+
     public constructor() {
         this.destroyRef.onDestroy(() => this.clearControlsTimer());
 
@@ -144,9 +164,20 @@ export class UIMediaGallery {
         effect((onCleanup) => {
             if (!this.isFullscreen()) return;
             const previousOverflow = this.body.style.overflow;
+            this.focusOrigin = this.documentActiveElement();
             this.body.style.overflow = "hidden";
+            queueMicrotask(() => {
+                if (this.isFullscreen()) {
+                    this.closeButtonRef()?.nativeElement.focus();
+                }
+            });
             onCleanup(() => {
                 this.body.style.overflow = previousOverflow;
+                const origin = this.focusOrigin;
+                this.focusOrigin = null;
+                queueMicrotask(() => {
+                    if (origin?.isConnected) origin.focus();
+                });
             });
         });
 
@@ -158,6 +189,25 @@ export class UIMediaGallery {
                 this.panX.set(0);
                 this.panY.set(0);
             }
+        });
+
+        effect((onCleanup) => {
+            const stage = this.stageRef()?.nativeElement;
+            const image = this.imageRef()?.nativeElement;
+            if (!stage || !image || !this.isFullscreen()) {
+                this.clearFittedImageSize();
+                return;
+            }
+
+            const fit = (): void => this.fitImage(stage, image);
+            image.addEventListener("load", fit);
+            const observer = new ResizeObserver(fit);
+            observer.observe(stage);
+            fit();
+            onCleanup(() => {
+                image.removeEventListener("load", fit);
+                observer.disconnect();
+            });
         });
     }
 
@@ -174,22 +224,29 @@ export class UIMediaGallery {
     }
 
     /** @internal */
-    protected onBackdropKeydown(event: KeyboardEvent): void {
-        if (event.key === "Enter") this.close();
+    protected onBackdropKeydown(_event: Event): void {
+        this.close();
     }
 
     /** @internal */
-    protected onArrowLeft(event: KeyboardEvent): void {
+    protected onArrowLeft(event: Event): void {
         if (!this.isFullscreen() || this.isEditingTarget(event.target)) return;
         event.preventDefault();
         this.onPrevious();
     }
 
     /** @internal */
-    protected onArrowRight(event: KeyboardEvent): void {
+    protected onArrowRight(event: Event): void {
         if (!this.isFullscreen() || this.isEditingTarget(event.target)) return;
         event.preventDefault();
         this.onNext();
+    }
+
+    /** @internal */
+    protected onViewerFocusIn(): void {
+        this.controlsVisible.set(true);
+        this.cursorHidden.set(false);
+        this.clearControlsTimer();
     }
 
     /** @internal */
@@ -267,6 +324,7 @@ export class UIMediaGallery {
 
     /** @internal */
     protected onWheel(event: WheelEvent): void {
+        if (!this.isInteractiveImage()) return;
         event.preventDefault();
         const nextZoom = event.deltaY < 0 ? this.zoom() * 1.1 : this.zoom() / 1.1;
         this.setZoom(nextZoom);
@@ -274,12 +332,14 @@ export class UIMediaGallery {
 
     /** @internal */
     protected onDoubleClick(): void {
+        if (!this.isInteractiveImage()) return;
         this.setZoom(this.zoom() === 1 ? 2 : 1);
     }
 
     /** @internal */
     protected onPointerDown(event: PointerEvent): void {
-        if (this.zoom() <= 1) return;
+        if (!this.isInteractiveImage() || this.zoom() <= 1) return;
+        event.preventDefault();
         this.pointerStart = { x: event.clientX, y: event.clientY };
         this.panStart = { x: this.panX(), y: this.panY() };
         (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
@@ -293,7 +353,12 @@ export class UIMediaGallery {
     }
 
     /** @internal */
-    protected onPointerUp(): void {
+    protected onPointerUp(event: PointerEvent): void {
+        if (this.pointerStart) {
+            (event.currentTarget as HTMLElement).releasePointerCapture(
+                event.pointerId,
+            );
+        }
         this.pointerStart = null;
         this.panStart = null;
     }
@@ -310,6 +375,27 @@ export class UIMediaGallery {
     private isEditingTarget(target: EventTarget | null): boolean {
         return target instanceof HTMLElement &&
             target.matches("input, select, textarea, [contenteditable='true']");
+    }
+
+    private fitImage(stage: HTMLElement, image: HTMLImageElement): void {
+        if (!image.naturalWidth || !image.naturalHeight) return;
+        const scale = Math.min(
+            stage.clientWidth / image.naturalWidth,
+            stage.clientHeight / image.naturalHeight,
+        );
+        if (!Number.isFinite(scale) || scale <= 0) return;
+        this.fittedImageWidth.set(image.naturalWidth * scale);
+        this.fittedImageHeight.set(image.naturalHeight * scale);
+    }
+
+    private clearFittedImageSize(): void {
+        this.fittedImageWidth.set(null);
+        this.fittedImageHeight.set(null);
+    }
+
+    private documentActiveElement(): HTMLElement | null {
+        const active = this.body.ownerDocument.activeElement;
+        return active instanceof HTMLElement ? active : null;
     }
 
     private prepareTransition(direction: "forward" | "backward"): void {

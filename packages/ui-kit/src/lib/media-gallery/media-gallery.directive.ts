@@ -1,5 +1,6 @@
 import {
     Directive,
+    ElementRef,
     effect,
     inject,
     input,
@@ -19,10 +20,10 @@ let nextGalleryItemId = 0;
     standalone: true,
     host: {
         tabindex: "0",
-        role: "button",
+        "[attr.role]": "hostRole()",
+        "[attr.aria-haspopup]": "'dialog'",
         "(click)": "onHostClick($event)",
-        "(keydown.enter)": "open()",
-        "(keydown.space)": "onSpace($event)",
+        "(keydown)": "onHostKeydown($event)",
     },
 })
 export class UIMediaGalleryItem {
@@ -31,6 +32,7 @@ export class UIMediaGalleryItem {
 
     private readonly image = inject(UIImage, { optional: true });
     private readonly mediaPlayer = inject(UIMediaPlayer, { optional: true });
+    private readonly host = inject(ElementRef<HTMLElement>);
     private readonly service = inject(MediaGalleryService);
     private readonly id = `media-gallery-item-${++nextGalleryItemId}`;
 
@@ -38,19 +40,13 @@ export class UIMediaGalleryItem {
         effect((onCleanup) => {
             const item = this.createItem();
             if (!item) return;
-            onCleanup(this.service.register(item));
+            onCleanup(this.service.register(item, this.host.nativeElement));
         });
     }
 
     /** @internal Open this host's registered item. */
     public open(): void {
         this.service.open(this.id);
-    }
-
-    /** @internal Prevent Space from scrolling the page when opening. */
-    public onSpace(event: KeyboardEvent): void {
-        event.preventDefault();
-        this.open();
     }
 
     /** @internal Open host media but leave native playback controls functional. */
@@ -63,6 +59,19 @@ export class UIMediaGalleryItem {
             return;
         }
         this.open();
+    }
+
+    /** @internal Open only when keyboard activation targets the gallery host itself. */
+    public onHostKeydown(event: KeyboardEvent): void {
+        if (event.target !== this.host.nativeElement) return;
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        this.open();
+    }
+
+    /** @internal */
+    protected hostRole(): "button" | null {
+        return this.image ? "button" : null;
     }
 
     private createItem(): MediaGalleryItem | null {

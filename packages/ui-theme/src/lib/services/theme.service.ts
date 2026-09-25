@@ -1,6 +1,7 @@
 import { DOCUMENT } from "@angular/common";
 import {
   computed,
+  DestroyRef,
   effect,
   inject,
   Injectable,
@@ -55,6 +56,7 @@ export class ThemeService {
   private readonly config: ThemeConfig =
     inject(THEME_CONFIG, { optional: true }) ?? DEFAULT_THEME_CONFIG;
   private readonly storage = inject(StorageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   /** Current theme mode setting (light, dark, or system) */
   private readonly _themeMode: WritableSignal<ThemeMode>;
@@ -65,7 +67,13 @@ export class ThemeService {
   /** Whether the system prefers dark mode */
   private readonly _systemPrefersDark: WritableSignal<boolean>;
 
-  constructor() {
+  private readonly onSystemPreferenceChange = (
+    event: MediaQueryListEvent,
+  ): void => {
+    this._systemPrefersDark.set(event.matches);
+  };
+
+  public constructor() {
     // Initialize media query for system preference
     this.darkModeMediaQuery =
       this.document.defaultView?.matchMedia("(prefers-color-scheme: dark)") ??
@@ -75,8 +83,15 @@ export class ThemeService {
 
     // Listen for system preference changes
     if (this.darkModeMediaQuery.addEventListener) {
-      this.darkModeMediaQuery.addEventListener("change", (e) => {
-        this._systemPrefersDark.set(e.matches);
+      this.darkModeMediaQuery.addEventListener(
+        "change",
+        this.onSystemPreferenceChange,
+      );
+      this.destroyRef.onDestroy(() => {
+        this.darkModeMediaQuery.removeEventListener(
+          "change",
+          this.onSystemPreferenceChange,
+        );
       });
     }
 

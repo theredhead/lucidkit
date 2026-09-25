@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
+import { CdkTrapFocus } from "@angular/cdk/a11y";
 
 import { UIMediaGallery } from "./media-gallery.component";
 import { MediaGalleryService } from "./media-gallery.service";
@@ -47,6 +49,47 @@ describe("UIMediaGallery", () => {
         expect(dialog.getAttribute("aria-modal")).toBe("true");
         expect(images).toHaveLength(1);
         expect(images[0].src).toContain("/first.jpg");
+    });
+
+    it("should focus the close action and restore the previously focused element", async () => {
+        const origin = document.createElement("button");
+        document.body.append(origin);
+        origin.focus();
+
+        service.close();
+        fixture.detectChanges();
+        service.open(first.id);
+        fixture.detectChanges();
+        await Promise.resolve();
+
+        expect(document.activeElement).toBe(
+            fixture.nativeElement.querySelector('[aria-label="Close"]'),
+        );
+
+        service.close();
+        fixture.detectChanges();
+        await Promise.resolve();
+        expect(document.activeElement).toBe(origin);
+        origin.remove();
+    });
+
+    it("should enable the CDK focus trap in fullscreen mode", () => {
+        const trap = fixture.debugElement.query(By.directive(CdkTrapFocus))
+            .injector.get(CdkTrapFocus);
+
+        expect(trap.enabled).toBe(true);
+    });
+
+    it("should reveal controls when keyboard focus enters them", () => {
+        const close: HTMLButtonElement =
+            fixture.nativeElement.querySelector('[aria-label="Close"]');
+        close.focus();
+        close.dispatchEvent(new FocusEvent("focusin", { bubbles: true }));
+        fixture.detectChanges();
+
+        expect(close.classList).toContain("visible");
+        expect(fixture.nativeElement.querySelector(".filmstrip").classList)
+            .toContain("visible");
     });
 
     it("should default idle delay to three seconds", () => {
@@ -239,6 +282,49 @@ describe("UIMediaGallery", () => {
         );
     });
 
+    it("should preserve page wheel scrolling for constrained inline images", () => {
+        service.close();
+        fixture.componentRef.setInput("inline", true);
+        fixture.componentRef.setInput("items", [first, second]);
+        fixture.detectChanges();
+        const stage = fixture.nativeElement.querySelector(".stage");
+        const event = new WheelEvent("wheel", {
+            deltaY: -100,
+            cancelable: true,
+        });
+
+        stage.dispatchEvent(event);
+        fixture.detectChanges();
+
+        expect(event.defaultPrevented).toBe(false);
+        expect(fixture.nativeElement.querySelector(".media").style.transform)
+            .toContain("scale(1)");
+        expect(stage.classList).not.toContain("interactive-image");
+    });
+
+    it("should preserve wheel scrolling and panning for fullscreen video", () => {
+        const video: MediaGalleryItem = {
+            id: "video",
+            collection: "demo",
+            kind: "video",
+            src: "/video.mp4",
+            alt: "Video",
+        };
+        service.register(video);
+        service.open(video.id);
+        fixture.detectChanges();
+        const stage = fixture.nativeElement.querySelector(".stage");
+        const event = new WheelEvent("wheel", {
+            deltaY: -100,
+            cancelable: true,
+        });
+
+        stage.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(false);
+        expect(stage.classList).not.toContain("interactive-image");
+    });
+
     it("should cover inline frames and contain fullscreen images", () => {
         service.close();
         fixture.componentRef.setInput("inline", true);
@@ -260,6 +346,38 @@ describe("UIMediaGallery", () => {
         expect(fullscreenImage.style.transform).toContain("scale(1)");
     });
 
+    it("should fit a landscape image to both runtime stage dimensions", () => {
+        const imageElement: HTMLImageElement =
+            fixture.nativeElement.querySelector(".media");
+        const stage = fixture.nativeElement.querySelector(".stage");
+        Object.defineProperty(imageElement, "naturalWidth", { value: 400 });
+        Object.defineProperty(imageElement, "naturalHeight", { value: 200 });
+        Object.defineProperty(stage, "clientWidth", { value: 800 });
+        Object.defineProperty(stage, "clientHeight", { value: 600 });
+
+        imageElement.dispatchEvent(new Event("load"));
+        fixture.detectChanges();
+
+        expect(imageElement.style.width).toBe("800px");
+        expect(imageElement.style.height).toBe("400px");
+    });
+
+    it("should fit a portrait image to both runtime stage dimensions", () => {
+        const imageElement: HTMLImageElement =
+            fixture.nativeElement.querySelector(".media");
+        const stage = fixture.nativeElement.querySelector(".stage");
+        Object.defineProperty(imageElement, "naturalWidth", { value: 200 });
+        Object.defineProperty(imageElement, "naturalHeight", { value: 400 });
+        Object.defineProperty(stage, "clientWidth", { value: 800 });
+        Object.defineProperty(stage, "clientHeight", { value: 600 });
+
+        imageElement.dispatchEvent(new Event("load"));
+        fixture.detectChanges();
+
+        expect(imageElement.style.width).toBe("300px");
+        expect(imageElement.style.height).toBe("600px");
+    });
+
     it("should pan an image after it is zoomed", () => {
         const stage = fixture.nativeElement.querySelector(".stage");
         Object.defineProperty(stage, "setPointerCapture", { value: vi.fn() });
@@ -275,6 +393,51 @@ describe("UIMediaGallery", () => {
         expect(fixture.nativeElement.querySelector(".media").style.transform).toContain(
             "translate(30px, 40px)",
         );
+    });
+
+    it("should suppress native dragging and stop panning on pointer up", () => {
+        const stage = fixture.nativeElement.querySelector(".stage");
+        const imageElement: HTMLImageElement =
+            fixture.nativeElement.querySelector(".image");
+        const setPointerCapture = vi.fn();
+        const releasePointerCapture = vi.fn();
+        Object.defineProperty(stage, "setPointerCapture", {
+            value: setPointerCapture,
+        });
+        Object.defineProperty(stage, "releasePointerCapture", {
+            value: releasePointerCapture,
+        });
+        stage.dispatchEvent(new WheelEvent("wheel", { deltaY: -100 }));
+
+        const dragEvent = new Event("dragstart", { cancelable: true });
+        imageElement.dispatchEvent(dragEvent);
+        expect(imageElement.draggable).toBe(false);
+        expect(dragEvent.defaultPrevented).toBe(true);
+
+        const down = new PointerEvent("pointerdown", {
+            pointerId: 7,
+            clientX: 10,
+            clientY: 20,
+            cancelable: true,
+        });
+        stage.dispatchEvent(down);
+        stage.dispatchEvent(new PointerEvent("pointermove", {
+            pointerId: 7,
+            clientX: 40,
+            clientY: 60,
+        }));
+        stage.dispatchEvent(new PointerEvent("pointerup", { pointerId: 7 }));
+        stage.dispatchEvent(new PointerEvent("pointermove", {
+            pointerId: 7,
+            clientX: 80,
+            clientY: 100,
+        }));
+        fixture.detectChanges();
+
+        expect(down.defaultPrevented).toBe(true);
+        expect(setPointerCapture).toHaveBeenCalledWith(7);
+        expect(releasePointerCapture).toHaveBeenCalledWith(7);
+        expect(imageElement.style.transform).toContain("translate(30px, 40px)");
     });
 
     it("should render a constrained inline collection with a filmstrip by default", () => {

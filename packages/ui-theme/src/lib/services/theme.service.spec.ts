@@ -183,6 +183,17 @@ describe("ThemeService", () => {
     expect(service.isDarkMode()).toBe(true);
   });
 
+  it("should remove the system preference listener when destroyed", () => {
+    const callback = mediaQueryCallback;
+
+    TestBed.resetTestingModule();
+
+    expect(mockMediaQueryList.removeEventListener).toHaveBeenCalledWith(
+      "change",
+      callback,
+    );
+  });
+
   it("should ignore system preference changes when in explicit mode", () => {
     service.setTheme("light");
     TestBed.flushEffects();

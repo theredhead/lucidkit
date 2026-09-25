@@ -6,7 +6,8 @@
     "declarationMap": true,
     "paths": {
       "@theredhead/lucid-foundation": ["../../dist/foundation"],
-      "@theredhead/lucid-kit": ["../../dist/ui-kit"]
+      "@theredhead/lucid-kit": ["../../dist/ui-kit"],
+      "@theredhead/lucid-blocks": ["../../dist/ui-blocks"]
     }
   },
   "include": ["src/**/*.ts"],

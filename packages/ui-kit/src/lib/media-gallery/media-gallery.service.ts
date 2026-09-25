@@ -6,6 +6,7 @@ import type { MediaGalleryItem } from "./media-gallery.types";
 @Injectable({ providedIn: "root" })
 export class MediaGalleryService {
     private readonly registry = new Map<string, MediaGalleryItem>();
+    private readonly origins = new Map<string, HTMLElement>();
     private readonly revision = signal(0);
     private readonly activeId = signal<string | null>(null);
 
@@ -27,13 +28,21 @@ export class MediaGalleryService {
     });
 
     /** Register an item and return a cleanup function for its host directive. */
-    public register(item: MediaGalleryItem): () => void {
+    public register(item: MediaGalleryItem, origin?: HTMLElement): () => void {
+        this.registry.delete(item.id);
         this.registry.set(item.id, item);
+        if (origin) {
+            this.origins.set(item.id, origin);
+        } else {
+            this.origins.delete(item.id);
+        }
         this.revision.update((value) => value + 1);
 
         return () => {
+            if (this.registry.get(item.id) !== item) return;
             const wasActive = this.activeId() === item.id;
             this.registry.delete(item.id);
+            this.origins.delete(item.id);
             this.revision.update((value) => value + 1);
             if (wasActive) this.close();
         };
@@ -44,7 +53,7 @@ export class MediaGalleryService {
         this.revision();
         return [...this.registry.values()].filter(
             (item) => item.collection === collection,
-        );
+        ).sort((first, second) => this.compareDomOrder(first, second));
     }
 
     /** Open the collection containing an item. */
@@ -72,5 +81,20 @@ export class MediaGalleryService {
         if (!active) return;
         const previous = this.items(active.collection)[this.activeIndex() - 1];
         if (previous) this.activeId.set(previous.id);
+    }
+
+    private compareDomOrder(
+        first: MediaGalleryItem,
+        second: MediaGalleryItem,
+    ): number {
+        const firstOrigin = this.origins.get(first.id);
+        const secondOrigin = this.origins.get(second.id);
+        if (!firstOrigin?.isConnected || !secondOrigin?.isConnected) return 0;
+        const node = firstOrigin.ownerDocument.defaultView?.Node;
+        if (!node) return 0;
+        const position = firstOrigin.compareDocumentPosition(secondOrigin);
+        if (position & node.DOCUMENT_POSITION_FOLLOWING) return -1;
+        if (position & node.DOCUMENT_POSITION_PRECEDING) return 1;
+        return 0;
     }
 }

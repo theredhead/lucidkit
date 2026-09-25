@@ -4,9 +4,12 @@
     <section class="viewer" [class.inline-viewer]="isInlineView()" [class.left-close]="closePosition() === 'left'"
         [class.cursor-hidden]="cursorHidden()" [attr.role]="isInlineView() ? null : 'dialog'"
         [attr.aria-modal]="isInlineView() ? null : 'true'" [attr.aria-label]="ariaLabel()"
-        (pointermove)="onViewerPointerMove($event)" (pointerdown)="onViewerPointerMove($event)">
+        [cdkTrapFocus]="isFullscreen()"
+        (pointermove)="onViewerPointerMove($event)" (pointerdown)="onViewerPointerMove($event)"
+        (focusin)="onViewerFocusIn()">
         @if (!isInlineView()) {
-        <button type="button" class="close" [class.visible]="controlsVisible()" aria-label="Close" (click)="close()">
+        <button #closeButton type="button" class="close" [class.visible]="controlsVisible()" aria-label="Close"
+            (click)="close()">
             <ui-icon [svg]="icons.close" [size]="22" ariaLabel="Close" />
         </button>
         }
@@ -18,11 +21,13 @@
         </button>
         }
 
-        <div #stage class="stage" [attr.role]="isInlineView() ? 'button' : null"
+        <div #stage class="stage" [class.interactive-image]="isInteractiveImage()"
+            [attr.role]="isInlineView() ? 'button' : null"
             [attr.tabindex]="isInlineView() ? 0 : null"
             [attr.aria-label]="isInlineView() ? 'Open ' + (active.alt || 'media') + ' fullscreen' : null"
             (wheel)="onWheel($event)" (dblclick)="onDoubleClick()" (pointerdown)="onPointerDown($event)"
-            (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp()" (pointercancel)="onPointerUp()"
+            (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)"
+            (pointercancel)="onPointerUp($event)"
             (click)="onStageClick($event)" (keydown.enter)="expandInline($event)"
             (keydown.space)="expandInline($event)">
             @for (item of [active]; track item.id) {
@@ -32,8 +37,10 @@
                 [class.forward]="hasNavigated() && transition() !== 'none' && transitionDirection() === 'forward'"
                 [class.backward]="hasNavigated() && transition() !== 'none' && transitionDirection() === 'backward'">
                 @if (item.kind === "image") {
-                <img class="media image" [class.cover]="isInlineView()" [class.contain]="!isInlineView()"
-                    [src]="item.src" [alt]="item.alt ?? ''" [style.transform]="transform()" />
+                <img #image class="media image" [class.cover]="isInlineView()" [class.contain]="!isInlineView()"
+                    [src]="item.src" [alt]="item.alt ?? ''" [style.width.px]="fittedImageWidth()"
+                    [style.height.px]="fittedImageHeight()" [style.transform]="transform()" [draggable]="false"
+                    (dragstart)="$event.preventDefault()" />
                 } @else {
                 <ui-media-player class="media video" type="video" [source]="{ url: item.src, type: item.type }"
                     [poster]="item.poster ?? ''" [ariaLabel]="item.alt ?? 'Video'" />

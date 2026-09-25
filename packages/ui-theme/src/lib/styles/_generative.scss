@@ -20,6 +20,7 @@
 // =============================================================================
 
 @use "sass:color";
+@use "sass:math";
 @use "elevation" as elev;
 
 // ── Warm neutral scale (mode-invariant seeds) ──────────────────────
@@ -40,14 +41,43 @@ $_dark-text-muted: #a3a2a0 !default;
 $_dark-border: #2a2b2e !default;
 $_dark-border-strong: #404145 !default;
 
-/// Returns a legible foreground colour (light or dark) for a given
-/// background, based on relative lightness.
-@function _on($bg, $on-light: #ffffff, $on-dark: #14161a) {
-    @if color.channel($bg, "lightness", $space: hsl)>60% {
-        @return $on-dark;
+/// Converts an sRGB channel to its linear-light value.
+@function _linear-channel($channel) {
+    $value: math.div($channel, 255);
+
+    @if $value <= 0.04045 {
+        @return math.div($value, 12.92);
     }
 
-    @return $on-light;
+    @return math.pow(math.div($value + 0.055, 1.055), 2.4);
+}
+
+/// Returns WCAG relative luminance for a colour.
+@function _relative-luminance($value) {
+    $red: _linear-channel(color.channel($value, "red", $space: rgb));
+    $green: _linear-channel(color.channel($value, "green", $space: rgb));
+    $blue: _linear-channel(color.channel($value, "blue", $space: rgb));
+
+    @return 0.2126 * $red + 0.7152 * $green + 0.0722 * $blue;
+}
+
+/// Returns the WCAG contrast ratio between two colours.
+@function _contrast-ratio($first, $second) {
+    $first-luminance: _relative-luminance($first);
+    $second-luminance: _relative-luminance($second);
+    $lighter: math.max($first-luminance, $second-luminance);
+    $darker: math.min($first-luminance, $second-luminance);
+
+    @return math.div($lighter + 0.05, $darker + 0.05);
+}
+
+/// Returns the candidate foreground with the strongest WCAG contrast.
+@function _on($bg, $on-light: #ffffff, $on-dark: #14161a) {
+    @if _contrast-ratio($bg, $on-light) >= _contrast-ratio($bg, $on-dark) {
+        @return $on-light;
+    }
+
+    @return $on-dark;
 }
 
 /// Emits the full `--ui-*` token set for one mode (light or dark). Private —

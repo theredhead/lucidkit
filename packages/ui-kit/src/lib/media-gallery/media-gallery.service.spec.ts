@@ -92,6 +92,34 @@ describe("MediaGalleryService", () => {
         expect(service.activeItem()).toBeNull();
     });
 
+    it("should not let stale cleanup remove a replacement with the same id", () => {
+        const original = createItem("same");
+        const replacement = {
+            ...createItem("same"),
+            src: "/replacement.jpg",
+        };
+        const unregisterOriginal = service.register(original);
+        service.register(replacement);
+        service.open(replacement.id);
+
+        unregisterOriginal();
+
+        expect(service.items(replacement.collection)).toEqual([replacement]);
+        expect(service.activeItem()).toBe(replacement);
+    });
+
+    it("should move a replacement id to the newest collection position", () => {
+        const first = createItem("first");
+        const second = createItem("second");
+        const replacement = { ...first, src: "/replacement.jpg" };
+        service.register(first);
+        service.register(second);
+
+        service.register(replacement);
+
+        expect(service.items(first.collection)).toEqual([second, replacement]);
+    });
+
     it("should close and clear the active item", () => {
         const item = createItem("only");
         service.register(item);
