@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-16T12:15:41.683Z",
-  "baseUrl": "http://127.0.0.1:56810",
+  "generatedAt": "2026-10-01T14:57:49.847Z",
+  "baseUrl": "http://127.0.0.1:55883",
   "outputDir": "artifacts/storybook-screenshots",
   "components": [
     {
@@ -448,6 +448,20 @@
           "storyName": "No Sidebar",
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-blocks/file-browser/no-sidebar-dark.png",
+          "title": "@theredhead/UI Blocks/File Browser"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-file-browser--toolbar",
+          "storyName": "Toolbar",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/file-browser/toolbar-light.png",
+          "title": "@theredhead/UI Blocks/File Browser"
+        },
+        {
+          "storyId": "theredhead-ui-blocks-file-browser--toolbar",
+          "storyName": "Toolbar",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-blocks/file-browser/toolbar-dark.png",
           "title": "@theredhead/UI Blocks/File Browser"
         }
       ]
@@ -1703,6 +1717,20 @@
           "storyName": "Multiple Selection",
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-kit/autocomplete/multiple-selection-dark.png",
+          "title": "@theredhead/UI Kit/Autocomplete"
+        },
+        {
+          "storyId": "theredhead-ui-kit-autocomplete--colors",
+          "storyName": "Per-chip colour (web colours)",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/autocomplete/per-chip-colour-web-colours-light.png",
+          "title": "@theredhead/UI Kit/Autocomplete"
+        },
+        {
+          "storyId": "theredhead-ui-kit-autocomplete--colors",
+          "storyName": "Per-chip colour (web colours)",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/autocomplete/per-chip-colour-web-colours-dark.png",
           "title": "@theredhead/UI Kit/Autocomplete"
         }
       ]
@@ -4289,6 +4317,43 @@
       ]
     },
     {
+      "title": "@theredhead/UI Kit/JSON View",
+      "category": "UI Kit",
+      "importPath": "./packages/ui-kit/src/lib/json-view/stories/default/default.stories.ts",
+      "primaryStoryId": "theredhead-ui-kit-json-view--default",
+      "outputDir": "artifacts/storybook-screenshots/ui-kit/json-view",
+      "screenshots": [
+        {
+          "storyId": "theredhead-ui-kit-json-view--default",
+          "storyName": "Default",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/json-view/default-light.png",
+          "title": "@theredhead/UI Kit/JSON View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-json-view--default",
+          "storyName": "Default",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/json-view/default-dark.png",
+          "title": "@theredhead/UI Kit/JSON View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-json-view--invalid-input",
+          "storyName": "Invalid Input",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/json-view/invalid-input-light.png",
+          "title": "@theredhead/UI Kit/JSON View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-json-view--invalid-input",
+          "storyName": "Invalid Input",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/json-view/invalid-input-dark.png",
+          "title": "@theredhead/UI Kit/JSON View"
+        }
+      ]
+    },
+    {
       "title": "@theredhead/UI Kit/Map View",
       "category": "UI Kit",
       "importPath": "./packages/ui-kit/src/lib/map-view/stories/basic/basic.stories.ts",
@@ -4338,6 +4403,20 @@
           "title": "@theredhead/UI Kit/Map View"
         },
         {
+          "storyId": "theredhead-ui-kit-map-view--geo-json-editor",
+          "storyName": "Geo Json Editor",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/map-view/geo-json-editor-light.png",
+          "title": "@theredhead/UI Kit/Map View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-map-view--geo-json-editor",
+          "storyName": "Geo Json Editor",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/map-view/geo-json-editor-dark.png",
+          "title": "@theredhead/UI Kit/Map View"
+        },
+        {
           "storyId": "theredhead-ui-kit-map-view--highlight-comparison",
           "storyName": "Highlight Comparison",
           "theme": "light",
@@ -4349,6 +4428,20 @@
           "storyName": "Highlight Comparison",
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-kit/map-view/highlight-comparison-dark.png",
+          "title": "@theredhead/UI Kit/Map View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-map-view--interactive-mode",
+          "storyName": "Interactive Mode",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/map-view/interactive-mode-light.png",
+          "title": "@theredhead/UI Kit/Map View"
+        },
+        {
+          "storyId": "theredhead-ui-kit-map-view--interactive-mode",
+          "storyName": "Interactive Mode",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/map-view/interactive-mode-dark.png",
           "title": "@theredhead/UI Kit/Map View"
         },
         {
@@ -4406,6 +4499,113 @@
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-kit/map-view/with-markers-dark.png",
           "title": "@theredhead/UI Kit/Map View"
+        }
+      ]
+    },
+    {
+      "title": "@theredhead/UI Kit/Media Gallery",
+      "category": "UI Kit",
+      "importPath": "./packages/ui-kit/src/lib/media-gallery/stories/fullscreen-few-items/fullscreen-few-items.stories.ts",
+      "primaryStoryId": "theredhead-ui-kit-media-gallery--fullscreen-few-items",
+      "outputDir": "artifacts/storybook-screenshots/ui-kit/media-gallery",
+      "screenshots": [
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--fullscreen-few-items",
+          "storyName": "Fullscreen Few Items",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/fullscreen-few-items-light.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--fullscreen-few-items",
+          "storyName": "Fullscreen Few Items",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/fullscreen-few-items-dark.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--fullscreen-many-items",
+          "storyName": "Fullscreen Many Items",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/fullscreen-many-items-light.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--fullscreen-many-items",
+          "storyName": "Fullscreen Many Items",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/fullscreen-many-items-dark.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--fullscreen-without-filmstrip",
+          "storyName": "Fullscreen Without Filmstrip",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/fullscreen-without-filmstrip-light.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--fullscreen-without-filmstrip",
+          "storyName": "Fullscreen Without Filmstrip",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/fullscreen-without-filmstrip-dark.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--inline-few-items",
+          "storyName": "Inline Few Items",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/inline-few-items-light.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--inline-few-items",
+          "storyName": "Inline Few Items",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/inline-few-items-dark.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--inline-many-items",
+          "storyName": "Inline Many Items",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/inline-many-items-light.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--inline-many-items",
+          "storyName": "Inline Many Items",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/inline-many-items-dark.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--inline-without-filmstrip",
+          "storyName": "Inline Without Filmstrip",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/inline-without-filmstrip-light.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--inline-without-filmstrip",
+          "storyName": "Inline Without Filmstrip",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/inline-without-filmstrip-dark.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--mixed-media",
+          "storyName": "Mixed Media",
+          "theme": "light",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/mixed-media-light.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
+        },
+        {
+          "storyId": "theredhead-ui-kit-media-gallery--mixed-media",
+          "storyName": "Mixed Media",
+          "theme": "dark",
+          "filePath": "artifacts/storybook-screenshots/ui-kit/media-gallery/mixed-media-dark.png",
+          "title": "@theredhead/UI Kit/Media Gallery"
         }
       ]
     },
@@ -6108,57 +6308,6 @@
           "theme": "dark",
           "filePath": "artifacts/storybook-screenshots/ui-kit/tabs/with-icons-dark.png",
           "title": "@theredhead/UI Kit/Tabs"
-        }
-      ]
-    },
-    {
-      "title": "@theredhead/UI Kit/Theme Toggle",
-      "category": "UI Kit",
-      "importPath": "./packages/ui-kit/src/lib/theme-toggle/stories/default/default.stories.ts",
-      "primaryStoryId": "theredhead-ui-kit-theme-toggle--playground",
-      "outputDir": "artifacts/storybook-screenshots/ui-kit/theme-toggle",
-      "screenshots": [
-        {
-          "storyId": "theredhead-ui-kit-theme-toggle--playground",
-          "storyName": "Playground",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/theme-toggle/playground-light.png",
-          "title": "@theredhead/UI Kit/Theme Toggle"
-        },
-        {
-          "storyId": "theredhead-ui-kit-theme-toggle--playground",
-          "storyName": "Playground",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/theme-toggle/playground-dark.png",
-          "title": "@theredhead/UI Kit/Theme Toggle"
-        },
-        {
-          "storyId": "theredhead-ui-kit-theme-toggle--default",
-          "storyName": "Default",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/theme-toggle/default-light.png",
-          "title": "@theredhead/UI Kit/Theme Toggle"
-        },
-        {
-          "storyId": "theredhead-ui-kit-theme-toggle--default",
-          "storyName": "Default",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/theme-toggle/default-dark.png",
-          "title": "@theredhead/UI Kit/Theme Toggle"
-        },
-        {
-          "storyId": "theredhead-ui-kit-theme-toggle--button-variant",
-          "storyName": "Button Variant",
-          "theme": "light",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/theme-toggle/button-variant-light.png",
-          "title": "@theredhead/UI Kit/Theme Toggle"
-        },
-        {
-          "storyId": "theredhead-ui-kit-theme-toggle--button-variant",
-          "storyName": "Button Variant",
-          "theme": "dark",
-          "filePath": "artifacts/storybook-screenshots/ui-kit/theme-toggle/button-variant-dark.png",
-          "title": "@theredhead/UI Kit/Theme Toggle"
         }
       ]
     },

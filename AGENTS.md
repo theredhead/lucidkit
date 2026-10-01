@@ -231,7 +231,8 @@ Key rules:
 
 **Never use emoji (🔍, 📅, 🎨 …) or Unicode symbol characters (↑, ↓, ✕, ◉,
 ☑ …) as visual icons in component templates.** Use the `UIIcon` component with
-SVG content from the `UIIcons` registry instead.
+SVG content from the `UIIcons` registry instead. Do not reference more Icons
+than will actually be used.
 
 ```ts
 import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
@@ -239,12 +240,13 @@ import { UIIcon, UIIcons } from "@theredhead/lucid-kit";
 @Component({
   imports: [UIIcon],
   template: `
-    <ui-icon [svg]="UIIcons.Lucide.Arrows.ChevronUp" [size]="14" />
-    <ui-icon [svg]="UIIcons.Lucide.Time.Calendar" [size]="16" />
+    <ui-icon [svg]="chevronUpIcon" [size]="14" />
+    <ui-icon [svg]="calendarIcon" [size]="16" />
   `,
 })
 export class UIMyComponent {
-  protected readonly UIIcons = UIIcons;
+  protected readonly chevronUpIcon = UIIcons.Lucide.Arrows.ChevronUp;
+  protected readonly calendarIcon = UIIcons.Lucide.Time.Calendar;
 }
 ```
 
