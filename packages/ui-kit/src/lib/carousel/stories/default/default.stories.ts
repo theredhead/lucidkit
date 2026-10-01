@@ -37,6 +37,15 @@ const scrollArgTypes = {
 
 import { DefaultStorySource } from "./default.story";
 
+interface DefaultStoryArgs {
+  fade: boolean;
+  gap: number;
+  itemWidth: number;
+  showControls: boolean;
+  showIndicators: boolean;
+  wrap: boolean;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Carousel",
   component: DefaultStorySource,
@@ -52,10 +61,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })]
-} satisfies Meta<DefaultStorySource>;
+} satisfies Meta<DefaultStoryArgs>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<DefaultStoryArgs>;
 
 export const Default: Story = {
   argTypes: scrollArgTypes,
@@ -66,7 +75,7 @@ export const Default: Story = {
     showControls: true,
     showIndicators: false,
     wrap: false,
-  } as Record<string, unknown>,
+  },
   parameters: {
     docs: {}
   },

@@ -21,6 +21,12 @@ const carouselArgTypes = {
 
 import { SingleStorySource } from "./single.story";
 
+interface SingleStoryArgs {
+  showControls: boolean;
+  showIndicators: boolean;
+  wrap: boolean;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Carousel",
   component: SingleStorySource,
@@ -36,10 +42,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [SingleStorySource] })]
-} satisfies Meta<SingleStorySource>;
+} satisfies Meta<SingleStoryArgs>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<SingleStoryArgs>;
 
 export const Single: Story = {
   argTypes: carouselArgTypes,
@@ -47,7 +53,7 @@ export const Single: Story = {
     showControls: true,
     showIndicators: true,
     wrap: true,
-  } as Record<string, unknown>,
+  },
   parameters: {
     docs: {}
   },

@@ -53,6 +53,19 @@ const coverflowArgTypes = {
 
 import { CoverflowStorySource } from "./coverflow.story";
 
+interface CoverflowStoryArgs {
+  blur: boolean;
+  depthOffset: number;
+  fade: boolean;
+  peekOffset: number;
+  rotateY: number;
+  showControls: boolean;
+  showIndicators: boolean;
+  sideScale: number;
+  stackGap: number;
+  wrap: boolean;
+}
+
 const meta = {
   title: "@theredhead/UI Kit/Carousel",
   component: CoverflowStorySource,
@@ -68,10 +81,10 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [CoverflowStorySource] })]
-} satisfies Meta<CoverflowStorySource>;
+} satisfies Meta<CoverflowStoryArgs>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<CoverflowStoryArgs>;
 
 export const Coverflow: Story = {
   argTypes: coverflowArgTypes,
@@ -86,7 +99,7 @@ export const Coverflow: Story = {
     showControls: true,
     showIndicators: false,
     wrap: false,
-  } as Record<string, unknown>,
+  },
   parameters: {
     docs: {}
   },
