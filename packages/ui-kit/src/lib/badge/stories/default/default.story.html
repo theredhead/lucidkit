@@ -1,3 +1,9 @@
-<ui-badge [count]="5" color="danger" />
-<ui-badge variant="dot" color="success" />
-<ui-badge variant="label" color="primary">New</ui-badge>
+<ui-badge
+  [variant]="variant()"
+  [color]="color()"
+  [muted]="muted()"
+  [count]="count()"
+  [maxCount]="maxCount()"
+>
+  New
+</ui-badge>

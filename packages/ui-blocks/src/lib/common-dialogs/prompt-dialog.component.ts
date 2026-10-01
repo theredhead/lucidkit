@@ -20,7 +20,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
  * Content component for a prompt dialog.
  *
  * Displayed by {@link CommonDialogService.prompt}. Shows a title,
- * message, a text input, and OK / Cancel buttons. Resolves to the
+ * message, a text input, and explicit submit / alternative buttons. Resolves to the
  * entered string or `null` if cancelled.
  *
  * @internal — not intended for direct use; use the service instead.
@@ -75,8 +75,8 @@ export class UIPromptDialog implements OnInit {
   public readonly message = input("");
   public readonly defaultValue = input("");
   public readonly placeholder = input("");
-  public readonly okLabel = input("OK");
-  public readonly cancelLabel = input("Cancel");
+  public readonly okLabel = input("Apply value");
+  public readonly cancelLabel = input("Keep current value");
 
   protected readonly inputValue = signal("");
 

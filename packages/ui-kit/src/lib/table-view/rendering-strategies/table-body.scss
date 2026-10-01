@@ -99,11 +99,12 @@
 /* ── Selected row ── */
 
 .table-row--selected {
-  background-color: var(--ui-selected-bg);
+  color: var(--ui-accent-contrast, #ffffff);
+  background-color: var(--ui-accent, #3584e4);
 }
 
 .table-row--selected:hover {
-  background-color: var(--ui-selected-hover-bg);
+  background-color: var(--ui-accent-hover, color-mix(in srgb, var(--ui-accent, #3584e4) 85%, black));
 }
 
 /* ── Active (keyboard-focused) row ── */
@@ -124,15 +125,12 @@
   width: var(--ui-skeleton-width, 60%);
   height: var(--ui-skeleton-height, 0.75rem);
   border-radius: var(--ui-skeleton-radius, 4px);
-  background: linear-gradient(
-    90deg,
-    var(--ui-border) 25%,
-    var(--ui-surface-2) 50%,
-    var(--ui-border) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--ui-border) 25%,
+      var(--ui-surface-2) 50%,
+      var(--ui-border) 75%);
   background-size: 200% 100%;
-  animation: tv-skeleton-shimmer var(--ui-skeleton-duration, 1.5s) ease-in-out
-    infinite;
+  animation: tv-skeleton-shimmer var(--ui-skeleton-duration, 1.5s) ease-in-out infinite;
 }
 
 /* Vary skeleton bar widths per column for a natural look */
@@ -148,6 +146,7 @@
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { UIChart } from "../../chart.component";
 import { BarGraphStrategy } from "../../strategies/bar-graph.strategy";
+import { PaletteChartColoringStrategy } from "../../strategies/chart-coloring.strategy";
 
 // ── Sample data ─────────────────────────────────────────────────
 
@@ -45,5 +46,5 @@ export class ChartPaletteDemo {
 
   public readonly data = salesData;
   public readonly strategy = new BarGraphStrategy();
-  public readonly palette = WARM_PALETTE;
+  public readonly coloring = new PaletteChartColoringStrategy(WARM_PALETTE);
 }

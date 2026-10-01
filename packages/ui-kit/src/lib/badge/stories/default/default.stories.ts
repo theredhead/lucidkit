@@ -3,17 +3,9 @@ import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 import {
   type BadgeColor,
   type BadgeVariant,
-  UIBadge,
 } from "../../badge.component";
 
 import { DefaultStorySource } from "./default.story";
-
-interface BadgeDocsArgs {
-  color: BadgeColor;
-  count: number;
-  maxCount: number;
-  variant: BadgeVariant;
-}
 
 const meta = {
   title: "@theredhead/UI Kit/Badge",
@@ -49,6 +41,10 @@ const meta = {
         "Semantic colour preset. Maps to `--ui-badge-bg` and " +
         "`--ui-badge-text` CSS custom properties.",
     },
+    muted: {
+      control: "boolean",
+      description: "Use a softer surface treatment instead of a filled colour.",
+    },
     count: {
       control: "number",
       description:
@@ -63,34 +59,21 @@ const meta = {
     },
   },
   decorators: [moduleMetadata({ imports: [DefaultStorySource] })],
-} satisfies Meta<BadgeDocsArgs>;
+} satisfies Meta<DefaultStorySource>;
 
 export default meta;
-type Story = StoryObj<BadgeDocsArgs>;
+type Story = StoryObj<DefaultStorySource>;
 
 export const Default: Story = {
-  parameters: {
-    controls: {
-      disable: true,
-    },
-    docs: {
-      description: {
-        story:
-          "### Variants\n" +
-          "| Variant | Purpose | Example |\n" +
-          "|---------|---------|---------|\n" +
-          "| `count` | Numeric notification badge | Unread messages (5) |\n" +
-          "| `dot` | Presence / status indicator | Online status |\n" +
-          '| `label` | Short text tag | "New", "Beta" |\n\n' +
-          "### Colors\n" +
-          "`primary` · `success` · `warning` · `danger` · `neutral`\n\n" +
-          "### Overflow\n" +
-          "When `count` exceeds `maxCount`, the badge displays `maxCount+` " +
-          '(e.g. "99+").',
-      },
-    },
+  args: {
+    variant: "count",
+    color: "danger",
+    muted: false,
+    count: 5,
+    maxCount: 99,
   },
-  render: () => ({
+  render: (args) => ({
+    props: args,
     template: "<ui-default-story-demo />",
   }),
 };

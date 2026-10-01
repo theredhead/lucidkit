@@ -93,6 +93,16 @@ describe("UISidebarItem", () => {
       );
     });
 
+    it("should use the accent background and contrast text color variables", () => {
+      fixture.componentRef.setInput("active", true);
+      fixture.detectChanges();
+
+      const inner = fixture.nativeElement.querySelector(".sidebar-item-inner");
+
+      expect(inner.style.backgroundColor).toBe("var(--ui-accent)");
+      expect(inner.style.color).toBe("var(--ui-accent-contrast)");
+    });
+
     it("should set aria-selected when active", () => {
       fixture.componentRef.setInput("active", true);
       fixture.detectChanges();

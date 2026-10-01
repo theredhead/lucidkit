@@ -67,7 +67,8 @@ export const Plain: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-plain-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-plain-story-demo />",
+  })
 };

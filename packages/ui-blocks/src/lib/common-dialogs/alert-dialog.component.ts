@@ -62,7 +62,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
 export class UIAlertDialog {
   public readonly title = input("Alert");
   public readonly message = input("");
-  public readonly buttonLabel = input("OK");
+  public readonly buttonLabel = input("Acknowledge message");
 
   private readonly modalRef = inject(ModalRef<void>);
 

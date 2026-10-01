@@ -14,7 +14,7 @@ const meta = {
     docs: {
       description: {
         story:
-          "Live playground combining `UIRichTextEditor`, `UIRichTextView`, and a horizontal `UISplitContainer` so detector behavior can be edited and previewed side by side.",
+          "Live playground combining `UIRichTextEditor`, `UIRichTextView`, and a horizontal `UISplitContainer` so detector behavior can be edited and previewed side by side. For the standalone editor modes, see the [Rich Text Editor](?path=/story/theredhead-ui-blocks-rich-text-editor--compact-chat) stories.",
       },
     },
   },

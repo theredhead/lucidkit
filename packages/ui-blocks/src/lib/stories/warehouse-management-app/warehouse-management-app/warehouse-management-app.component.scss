@@ -239,7 +239,7 @@
   font-weight: 700;
   padding: 2px 6px;
   border-radius: 4px;
-  background: var(--ui-surface-dim, #e8eaed);
+  background: var(--ui-surface-dim, var(--ui-surface-2, #e8eaed));
   color: var(--ui-text, #1d232b);
 }
 

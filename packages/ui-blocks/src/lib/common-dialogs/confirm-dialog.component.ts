@@ -82,8 +82,8 @@ import { UISurface } from "@theredhead/lucid-foundation";
 export class UIConfirmDialog {
   public readonly title = input("Confirm");
   public readonly message = input("");
-  public readonly confirmLabel = input("OK");
-  public readonly cancelLabel = input("Cancel");
+  public readonly confirmLabel = input("Confirm action");
+  public readonly cancelLabel = input("Keep current state");
   public readonly variant = input<ConfirmVariant>("primary");
 
   private readonly modalRef = inject(ModalRef<boolean>);

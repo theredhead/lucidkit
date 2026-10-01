@@ -77,7 +77,8 @@ export const Default: Story = {
       }
     }
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-default-story-demo />",
+  })
 };

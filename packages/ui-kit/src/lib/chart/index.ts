@@ -10,6 +10,13 @@ export {
   DEFAULT_CHART_PALETTE,
 } from "./chart.types";
 export { GraphPresentationStrategy } from "./strategies/graph-presentation-strategy";
+export {
+  type ChartColoringStrategy,
+  CLASSIC_CHART_COLORING,
+  ClassicChartColoringStrategy,
+  ModernChartColoringStrategy,
+  PaletteChartColoringStrategy,
+} from "./strategies/chart-coloring.strategy";
 export { LineGraphStrategy } from "./strategies/line-graph.strategy";
 export { BarGraphStrategy } from "./strategies/bar-graph.strategy";
 export { StackedBarGraphStrategy } from "./strategies/stacked-bar-graph.strategy";

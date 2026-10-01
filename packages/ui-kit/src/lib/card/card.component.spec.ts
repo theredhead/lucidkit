@@ -66,6 +66,25 @@ describe("UICard", () => {
     });
   });
 
+  describe("gradient", () => {
+    it('should apply the color gradient class when gradient is "color"', () => {
+      fixture.componentRef.setInput("gradient", "color");
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.classList).toContain("gradient-color");
+    });
+
+    it("should clamp gradient intensity to the supported range", () => {
+      fixture.componentRef.setInput("gradientIntensity", 2);
+      fixture.detectChanges();
+      expect(component["resolvedGradientIntensity"]()).toBe(1);
+
+      fixture.componentRef.setInput("gradientIntensity", -1);
+      fixture.detectChanges();
+      expect(component["resolvedGradientIntensity"]()).toBe(0);
+    });
+  });
+
   describe("accessibility", () => {
     it('should have role="region"', () => {
       expect(fixture.nativeElement.getAttribute("role")).toBe("region");

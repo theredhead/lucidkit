@@ -1,9 +1,10 @@
-<span class="sidebar-item-inner">
+<span class="sidebar-item-inner" [style.background-color]="active() ? 'var(--ui-accent)' : ''"
+  [style.color]="active() ? 'var(--ui-accent-contrast)' : ''">
   @if (icon()) {
-    <ui-icon class="sidebar-item-icon" [svg]="icon()" [size]="18" aria-hidden="true" />
+  <ui-icon class="sidebar-item-icon" [svg]="icon()" [size]="18" aria-hidden="true" />
   }
   <span class="sidebar-item-label">{{ label() }}</span>
   @if (badge()) {
-    <span class="sidebar-item-badge">{{ badge() }}</span>
+  <span class="sidebar-item-badge">{{ badge() }}</span>
   }
 </span>

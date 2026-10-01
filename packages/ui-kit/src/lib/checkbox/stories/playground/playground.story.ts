@@ -1,6 +1,6 @@
 import { UICheckbox } from "../../checkbox.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input, model } from "@angular/core";
 
 @Component({
   selector: "ui-playground-story-demo",
@@ -11,9 +11,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./playground.story.scss",
 })
 export class PlaygroundStorySource {
-  protected variant: "checkbox" | "switch" = "checkbox";
-  protected checked = false;
-  protected disabled = false;
-  protected indeterminate = false;
-  protected ariaLabel = "Accept terms";
+  public readonly variant = input<"checkbox" | "switch">("checkbox");
+  public readonly checked = model(false);
+  public readonly disabled = input(false);
+  public readonly indeterminate = input(false);
+  public readonly ariaLabel = input("Accept terms");
 }

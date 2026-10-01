@@ -56,7 +56,8 @@ export const Switch: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-switch-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-switch-story-demo />",
+  })
 };

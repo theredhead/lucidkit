@@ -67,7 +67,8 @@ export const Multiline: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-multiline-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-multiline-story-demo />",
+  })
 };

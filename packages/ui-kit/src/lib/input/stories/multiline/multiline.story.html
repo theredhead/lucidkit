@@ -1,1 +1,2 @@
-<ui-input multiline [rows]="4" [(value)]="description" placeholder="Enter description…" />
+<ui-input [multiline]="multiline()" [rows]="rows()" [(value)]="description" [type]="type()" [disabled]="disabled()"
+    [placeholder]="placeholder()" />

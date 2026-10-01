@@ -10,11 +10,9 @@
   transition: background 0.12s;
 
   &.modified {
-    background: color-mix(
-      in srgb,
-      var(--ui-accent, #3584e4) 10%,
-      var(--ui-surface, #fff)
-    );
+    background: color-mix(in srgb,
+        var(--ui-accent, #3584e4) 10%,
+        var(--ui-surface, #fff));
   }
 }
 
@@ -34,7 +32,7 @@
 
 .description {
   font-size: 0.75rem;
-  color: var(--ui-text-secondary, #6b7280);
+  color: var(--ui-text-muted, #6b7280);
 }
 
 .chips {
@@ -57,10 +55,12 @@
     background: #dbeafe;
     color: #1e3a8a;
   }
+
   &.scope {
     background: #dcfce7;
     color: #14532d;
   }
+
   &.ns {
     background: #fef9c3;
     color: #713f12;

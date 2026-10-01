@@ -1,6 +1,6 @@
 import { UICheckbox } from "../../checkbox.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input, model } from "@angular/core";
 
 @Component({
   selector: "ui-switch-story-demo",
@@ -11,5 +11,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./switch.story.scss",
 })
 export class SwitchStorySource {
-  protected darkMode = false;
+  public readonly variant = input<"checkbox" | "switch">("switch");
+  public readonly checked = model(false);
+  public readonly disabled = input(false);
+  public readonly indeterminate = input(false);
+  public readonly ariaLabel = input("Enable notifications");
 }

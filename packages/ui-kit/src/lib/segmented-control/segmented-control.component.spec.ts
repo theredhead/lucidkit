@@ -20,6 +20,7 @@ const ITEMS: SegmentedItem[] = [
       [items]="items"
       [(value)]="value"
       [disabled]="disabled()"
+      [indicatorColor]="indicatorColor()"
     />
   `,
 })
@@ -27,6 +28,7 @@ class TestHost {
   public readonly items = ITEMS;
   public readonly value = signal("day");
   public readonly disabled = signal(false);
+  public readonly indicatorColor = signal("var(--ui-accent)");
 }
 
 describe("UISegmentedControl", () => {
@@ -72,6 +74,27 @@ describe("UISegmentedControl", () => {
     fixture.detectChanges();
     expect(segments[2].classList).toContain("active");
     expect(segments[0].classList).not.toContain("active");
+  });
+
+  it("should apply the configurable indicator color", () => {
+    host.indicatorColor.set("#e85d3f");
+    fixture.detectChanges();
+    const indicator = fixture.nativeElement.querySelector(".indicator");
+    expect(indicator.style.backgroundColor).toBe("rgb(232, 93, 63)");
+  });
+
+  it("should resolve named theme colors", () => {
+    host.indicatorColor.set("success");
+    fixture.detectChanges();
+    const indicator = fixture.nativeElement.querySelector(".indicator");
+    expect(indicator.style.backgroundColor).toBe("var(--ui-success)");
+  });
+
+  it("should use a contrasting text color on the active segment", () => {
+    host.indicatorColor.set("#e85d3f");
+    fixture.detectChanges();
+    const active = fixture.nativeElement.querySelector(".segment.active");
+    expect(active.style.color).toBe("rgb(29, 35, 43)");
   });
 
   it("should not change value when disabled control is clicked", () => {

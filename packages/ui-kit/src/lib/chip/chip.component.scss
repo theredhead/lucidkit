@@ -2,18 +2,32 @@
 @use "animation" as anim;
 
 :host {
+  --chip-text: var(--ui-chip-text);
+  --chip-surface: var(--ui-chip-bg);
+  --chip-border: var(--ui-border);
+  --chip-dismiss: currentColor;
+  --chip-focus: var(--ui-focus-ring);
+  --chip-radius: 999px;
+  --chip-padding-block: 0.3rem;
+  --chip-padding-inline: 0.7rem;
+  --chip-gap: 0.4rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  border-radius: 1rem;
-  padding: 0.25rem 0.75rem;
-  font:
-    500 0.8125rem/1.4 system-ui,
-    sans-serif;
+  gap: var(--chip-gap);
+  min-height: 2rem;
+  box-sizing: border-box;
+  border: 1px solid var(--chip-border);
+  border-radius: var(--chip-radius);
+  padding: var(--chip-padding-block) var(--chip-padding-inline);
+  font-family: var(--ui-font, inherit);
+  font-size: var(--ui-font-body, 0.875rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   user-select: none;
-  color: var(--ui-chip-text);
-  background-color: var(--ui-chip-bg);
+  color: var(--chip-text);
+  background-color: var(--chip-surface);
 }
 
 :host(.disabled) {
@@ -23,34 +37,74 @@
 /* ── Color variants ── */
 
 :host(.neutral) {
-  color: var(--ui-chip-text);
-  background-color: var(--ui-chip-bg);
+  color: var(--chip-text);
+  background-color: var(--chip-surface);
+  border-color: var(--chip-border);
 }
 
 :host(.primary) {
-  color: var(--ui-accent);
-  background-color: color-mix(in srgb, var(--ui-accent) 14%, transparent);
+  color: var(--ui-accent-contrast);
+  background-color: var(--ui-accent);
+  border-color: var(--ui-accent);
 }
 
 :host(.success) {
-  color: var(--ui-success);
-  background-color: color-mix(in srgb, var(--ui-success) 14%, transparent);
+  color: var(--ui-accent-contrast);
+  background-color: var(--ui-success);
+  border-color: var(--ui-success);
 }
 
 :host(.warning) {
-  color: var(--ui-warning);
-  background-color: color-mix(in srgb, var(--ui-warning) 14%, transparent);
+  color: var(--ui-text);
+  background-color: var(--ui-warning);
+  border-color: var(--ui-warning);
 }
 
 :host(.danger) {
-  color: var(--ui-error);
-  background-color: color-mix(in srgb, var(--ui-error) 14%, transparent);
+  color: var(--ui-on-error);
+  background-color: var(--ui-error);
+  border-color: var(--ui-error);
+}
+
+:host(.muted.primary) {
+  color: var(--ui-text, #1d232b);
+  background-color: var(--ui-primary-container, #dbeafe);
+  border-color: var(--ui-primary-container, #dbeafe);
+}
+
+:host(.muted.neutral) {
+  color: var(--ui-badge-neutral-fg, #344054);
+  background-color: var(--ui-badge-neutral-bg, #eef2f6);
+  border-color: var(--ui-badge-neutral-border, #d7dde4);
+}
+
+:host(.muted.success) {
+  color: var(--ui-badge-success-fg, #135c38);
+  background-color: var(--ui-badge-success-bg, #e9f7ee);
+  border-color: var(--ui-badge-success-border, #bde6ca);
+}
+
+:host(.muted.warning) {
+  color: var(--ui-badge-warning-fg, #7a4200);
+  background-color: var(--ui-badge-warning-bg, #fff4e6);
+  border-color: var(--ui-badge-warning-border, #ffd7a6);
+}
+
+:host(.muted.danger) {
+  color: var(--ui-badge-danger-fg, #8a1f29);
+  background-color: var(--ui-badge-danger-bg, #fdecef);
+  border-color: var(--ui-badge-danger-border, #f6c2c9);
+}
+
+:host(.selected) {
+  box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 28%, transparent);
 }
 
 /* ── Elements ── */
 
 .label {
-  line-height: 1.4;
+  min-width: 0;
+  line-height: 1.2;
 }
 
 .dismiss {
@@ -58,19 +112,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1rem;
-  height: 1rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-right: -0.35rem;
   border-radius: 50%;
   flex-shrink: 0;
-  color: var(--ui-chip-dismiss);
+  color: var(--chip-dismiss);
   transition: background-color anim.$duration-normal anim.$easing-default;
 
   &:hover {
     background-color: color-mix(in srgb, currentColor 15%, transparent);
   }
 
-  svg {
-    width: 0.625rem;
-    height: 0.625rem;
+  &:focus-visible {
+    outline: 2px solid var(--chip-focus);
+    outline-offset: 1px;
+  }
+
+  ui-icon {
+    flex: 0 0 0.875rem;
   }
 }

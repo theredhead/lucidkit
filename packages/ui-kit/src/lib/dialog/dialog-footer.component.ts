@@ -10,8 +10,8 @@ import { UISurface } from '@theredhead/lucid-foundation';
  * @example
  * ```html
  * <ui-dialog-footer>
- *   <ui-button variant="outlined" (click)="cancel()">Cancel</ui-button>
- *   <ui-button (click)="confirm()">OK</ui-button>
+ *   <ui-button variant="outlined" (click)="cancel()">Cancel action</ui-button>
+ *   <ui-button (click)="confirm()">Confirm action</ui-button>
  * </ui-dialog-footer>
  * ```
  */
@@ -24,4 +24,4 @@ import { UISurface } from '@theredhead/lucid-foundation';
   templateUrl: "./dialog-footer.component.html",
   styleUrl: "./dialog-footer.component.scss",
 })
-export class UIDialogFooter {}
+export class UIDialogFooter { }

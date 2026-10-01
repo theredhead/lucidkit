@@ -9,3 +9,4 @@ export * from "./lib/jwt";
 export * from "./lib/storage";
 export * from "./lib/surface";
 export * from "./lib/templating";
+export * from "./lib/colors/color.utils";

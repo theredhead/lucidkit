@@ -61,3 +61,26 @@ export interface ThemeTokenFilter {
   readonly namespace: string;
   readonly modifiedOnly: boolean;
 }
+
+/** Component sample available in the live Theme Studio canvas. */
+export type ThemeStudioSample =
+  | "overview"
+  | "button"
+  | "input"
+  | "card"
+  | "calendar"
+  | "status"
+  | "progress"
+  | "toggle";
+
+/** Token namespaces associated with each curated live sample. */
+export const THEME_STUDIO_SAMPLE_OWNERS: Readonly<Record<ThemeStudioSample, readonly string[]>> = {
+  overview: [],
+  button: ["UIButton"],
+  input: ["UIInput", "UIDropdownList"],
+  card: ["UICard", "UICardHeader", "UICardBody"],
+  calendar: ["calendar", "UICalendarMonthView"],
+  status: ["UIBadge", "UIChip"],
+  progress: ["UIProgress"],
+  toggle: ["UIToggle", "UICheckbox"],
+};

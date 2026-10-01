@@ -1,22 +1,23 @@
 :host {
   --tour-accent: var(--ui-accent, #1f6feb);
+  --tour-text: var(--ui-text, #1d232b);
+  --tour-surface: var(--ui-surface, #f7f8fa);
+  --tour-surface-2: var(--ui-surface-2, #eef1f4);
+  --tour-border: var(--ui-border, #d7dce2);
+  --tour-on-accent: var(--ui-accent-contrast, #ffffff);
   --tour-accent-soft: color-mix(in srgb, var(--tour-accent) 14%, transparent);
-  --tour-hero-text: var(--ui-text, #1d232b);
+  --tour-hero-text: var(--tour-text);
   --tour-hero-bg:
-    radial-gradient(
-      circle at top left,
+    radial-gradient(circle at top left,
       color-mix(in srgb, var(--tour-accent) 24%, transparent),
-      transparent 36%
-    ),
-    linear-gradient(
-      135deg,
-      var(--ui-surface, #f7f8fa),
-      color-mix(in srgb, var(--tour-accent) 8%, var(--ui-surface, #f7f8fa))
-    );
+      transparent 36%),
+    linear-gradient(135deg,
+      var(--tour-surface),
+      color-mix(in srgb, var(--tour-accent) 8%, var(--tour-surface)));
   display: block;
   height: 100vh;
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #f7f8fa);
+  color: var(--tour-text);
+  background: var(--tour-surface);
 }
 
 .page-fill {
@@ -30,8 +31,7 @@
 .hero {
   color: var(--tour-hero-text);
   background: var(--tour-hero-bg);
-  border: 1px solid
-    color-mix(in srgb, var(--tour-accent) 22%, var(--ui-border, #d7dce2));
+  border: 1px solid color-mix(in srgb, var(--tour-accent) 22%, var(--tour-border));
   border-radius: 18px;
   padding: 1.5rem;
   display: grid;
@@ -53,11 +53,9 @@
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
   color: var(--tour-hero-text);
-  background: color-mix(
-    in srgb,
-    var(--tour-accent) 12%,
-    var(--ui-surface, #f7f8fa)
-  );
+  background: color-mix(in srgb,
+      var(--tour-accent) 12%,
+      var(--tour-surface));
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -129,7 +127,7 @@
 .muted,
 .subtle,
 .list-copy {
-  color: var(--ui-text, #1d232b);
+  color: var(--tour-text);
   background: transparent;
 }
 
@@ -161,11 +159,11 @@
 .calendar-wrap,
 .chat-wrap {
   min-height: 0;
-  border: 1px solid var(--ui-border, #d7dce2);
+  border: 1px solid var(--tour-border);
   border-radius: 14px;
   overflow: hidden;
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #f7f8fa);
+  color: var(--tour-text);
+  background: var(--tour-surface);
 }
 
 .master-detail-wrap,
@@ -218,9 +216,9 @@
 .upcoming-item {
   padding: 0.9rem 1rem;
   border-radius: 12px;
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #f7f8fa);
-  border: 1px solid var(--ui-border, #d7dce2);
+  color: var(--tour-text);
+  background: var(--tour-surface);
+  border: 1px solid var(--tour-border);
 }
 
 .upcoming-row {
@@ -243,9 +241,9 @@
   gap: 1rem;
   padding: 0.85rem 1rem;
   border-radius: 12px;
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #f7f8fa);
-  border: 1px solid var(--ui-border, #d7dce2);
+  color: var(--tour-text);
+  background: var(--tour-surface);
+  border: 1px solid var(--tour-border);
 }
 
 .setting-copy {
@@ -288,13 +286,11 @@
   gap: 0.8rem;
   padding: 1rem;
   border-radius: 16px;
-  color: var(--ui-text, #1d232b);
-  background: color-mix(
-    in srgb,
-    var(--tour-accent) 4%,
-    var(--ui-surface, #f7f8fa)
-  );
-  border: 1px solid var(--ui-border, #d7dce2);
+  color: var(--tour-text);
+  background: color-mix(in srgb,
+      var(--tour-accent) 4%,
+      var(--tour-surface));
+  border: 1px solid var(--tour-border);
 }
 
 .catalog-grid {
@@ -315,9 +311,9 @@
   min-height: 10.5rem;
   padding: 1rem;
   border-radius: 14px;
-  color: var(--ui-text, #1d232b);
-  background: var(--ui-surface, #f7f8fa);
-  border: 1px solid var(--ui-border, #d7dce2);
+  color: var(--tour-text);
+  background: var(--tour-surface);
+  border: 1px solid var(--tour-border);
 }
 
 .catalog-state {
@@ -342,7 +338,7 @@
   margin-top: auto;
   padding: 0.45rem 0.75rem;
   border-radius: 999px;
-  color: var(--ui-surface, #f7f8fa);
+  color: var(--tour-on-accent);
   background: var(--tour-accent, #1f6feb);
   font-size: 0.82rem;
   font-weight: 700;
@@ -350,7 +346,7 @@
 }
 
 .catalog-link:hover {
-  color: var(--ui-surface, #f7f8fa);
+  color: var(--tour-on-accent);
   background: color-mix(in srgb, var(--tour-accent) 88%, black);
 }
 
@@ -375,13 +371,11 @@
   position: relative;
   overflow: hidden;
   border-radius: 12px;
-  color: var(--ui-text, #1d232b);
-  background: color-mix(
-    in srgb,
-    var(--tour-accent) 5%,
-    var(--ui-surface, #f7f8fa)
-  );
-  border: 1px solid var(--ui-border, #d7dce2);
+  color: var(--tour-text);
+  background: color-mix(in srgb,
+      var(--tour-accent) 5%,
+      var(--tour-surface));
+  border: 1px solid var(--tour-border);
 }
 
 .catalog-preview-frame img {
@@ -416,13 +410,11 @@
   padding: 1rem;
   border-radius: 12px;
   text-align: center;
-  color: var(--ui-text, #1d232b);
-  background: color-mix(
-    in srgb,
-    var(--tour-accent) 5%,
-    var(--ui-surface, #f7f8fa)
-  );
-  border: 1px dashed var(--ui-border, #d7dce2);
+  color: var(--tour-text);
+  background: color-mix(in srgb,
+      var(--tour-accent) 5%,
+      var(--tour-surface));
+  border: 1px dashed var(--tour-border);
 }
 
 .catalog-meta {
@@ -442,6 +434,7 @@
 }
 
 @media (max-width: 1100px) {
+
   .hero,
   .metrics-grid,
   .mini-grid,

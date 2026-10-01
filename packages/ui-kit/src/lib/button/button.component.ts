@@ -79,6 +79,7 @@ export const UI_BUTTON_DEFAULTS = new InjectionToken<ButtonDefaults>(
     "[class.secondary]": "color() === 'secondary'",
     "[class.safe]": "color() === 'safe'",
     "[class.danger]": "color() === 'danger'",
+    "[class.muted]": "muted()",
     "[class.pill]": "pill()",
   },
 })
@@ -93,6 +94,9 @@ export class UIButton {
 
   /** Colour preset. */
   readonly color = input<ButtonColor>(this.defaults?.color ?? "primary");
+
+  /** Use a softer surface treatment for the selected color. */
+  readonly muted = input(false);
 
   /** Size preset. */
   readonly size = input<ButtonSize>(this.defaults?.size ?? "medium");

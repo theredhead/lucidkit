@@ -19,6 +19,10 @@ import {
   computeTodayPosition,
 } from "./gantt-chart.utils";
 import { UISurface } from "@theredhead/lucid-foundation";
+import {
+  CLASSIC_CHART_COLORING,
+  type ChartColoringStrategy,
+} from "../chart/strategies/chart-coloring.strategy";
 
 /**
  * Processed task row ready for template rendering.
@@ -89,6 +93,11 @@ export class UIGanttChart<T = unknown> {
   /** Custom colour palette for task bars. */
   public readonly palette = input<readonly string[]>(DEFAULT_GANTT_PALETTE);
 
+  /** Color treatment applied to palette-assigned task bars. */
+  public readonly coloring = input<ChartColoringStrategy>(
+    CLASSIC_CHART_COLORING,
+  );
+
   /** Number of padding days before the first and after the last task. */
   public readonly paddingDays = input<number>(2);
 
@@ -139,10 +148,33 @@ export class UIGanttChart<T = unknown> {
     const tasks = this.tasks();
     const pal = this.palette();
     const depthMap = this.buildDepthMap(tasks);
+    const strategyTasks = tasks.filter((task) => task.style?.color === undefined);
+    const coloredTasks = this.coloring().color(
+      strategyTasks.map((task, index) => ({
+        name: task.id,
+        color: pal[index % pal.length],
+        points: [
+          {
+            label: task.title,
+            value: task.progress ?? 0,
+            color: pal[index % pal.length],
+          },
+        ],
+      })),
+    );
+    const strategyColors = new Map(
+      strategyTasks.map((task, index) => [
+        task.id,
+        coloredTasks[index]?.color ?? pal[index % pal.length],
+      ]),
+    );
 
     return tasks.map((task, i) => {
       const pos = computeBarPosition(task, tl.rangeStart, tl.totalDays);
-      const color = task.style?.color ?? pal[i % pal.length];
+      const color =
+        task.style?.color ??
+        strategyColors.get(task.id) ??
+        pal[i % pal.length];
       const progressWidth =
         task.progress != null
           ? Math.min(100, Math.max(0, task.progress))

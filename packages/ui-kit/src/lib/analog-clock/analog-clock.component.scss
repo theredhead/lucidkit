@@ -25,16 +25,21 @@
 :host {
   display: inline-block;
   line-height: 0;
+  --clock-pm-rim: var(--ui-border-strong, #080f1a);
+  --clock-pm-face: var(--ui-surface, #030810);
+  --clock-pm-tick: var(--ui-text-muted, #2a4a66);
+  --clock-pm-number: var(--ui-text-muted, #6090b8);
+  --clock-pm-hand: var(--ui-text, #7aadd4);
+  --clock-pm-second: var(--ui-accent, #3a7aff);
+  --clock-pm-cap: var(--ui-text, #7aadd4);
 }
 
 // ── SVG elements (AM / daytime defaults — light face, dark hands) ──────
 
 .rim {
   fill: none;
-  stroke: var(
-    --clock-rim,
-    var(--clock-am-rim, var(--ui-border-strong, #8ea8bf))
-  );
+  stroke: var(--clock-rim,
+      var(--clock-am-rim, var(--ui-border-strong, #8ea8bf)));
   stroke-width: 1;
 }
 
@@ -43,19 +48,17 @@
 }
 
 .tick {
-  stroke: var(
-    --clock-tick,
-    var(--clock-am-tick, var(--ui-text-muted, #4a6880))
-  );
+  stroke: var(--clock-tick,
+      var(--clock-am-tick, var(--ui-text-muted, #4a6880)));
   stroke-linecap: round;
+}
 
-  &--hour {
-    stroke-width: 1.2;
-  }
+.tick--hour {
+  stroke-width: 1.2;
+}
 
-  &--minute {
-    stroke-width: 0.5;
-  }
+.tick--minute {
+  stroke-width: 0.5;
 }
 
 .number {
@@ -84,10 +87,8 @@
   }
 
   &--second {
-    stroke: var(
-      --clock-second,
-      var(--clock-am-second, var(--ui-accent, #e8730a))
-    );
+    stroke: var(--clock-second,
+        var(--clock-am-second, var(--ui-accent, #e8730a)));
     stroke-width: 0.8;
   }
 }
@@ -100,37 +101,37 @@
 
 :host(.night) {
   .rim {
-    stroke: var(--clock-rim, var(--clock-pm-rim, #080f1a));
+    stroke: var(--clock-rim, var(--clock-pm-rim));
   }
 
   .bg {
-    fill: var(--clock-face, var(--clock-pm-face, #030810));
+    fill: var(--clock-face, var(--clock-pm-face));
   }
 
   .tick {
-    stroke: var(--clock-tick, var(--clock-pm-tick, #2a4a66));
+    stroke: var(--clock-tick, var(--clock-pm-tick));
   }
 
   .number {
-    fill: var(--clock-number, var(--clock-pm-number, #6090b8));
+    fill: var(--clock-number, var(--clock-pm-number));
   }
 
   .hand {
     &--hour {
-      stroke: var(--clock-hand, var(--clock-pm-hand, #7aadd4));
+      stroke: var(--clock-hand, var(--clock-pm-hand));
     }
 
     &--minute {
-      stroke: var(--clock-hand, var(--clock-pm-hand, #7aadd4));
+      stroke: var(--clock-hand, var(--clock-pm-hand));
     }
 
     &--second {
-      stroke: var(--clock-second, var(--clock-pm-second, #3a7aff));
+      stroke: var(--clock-second, var(--clock-pm-second));
     }
   }
 
   .cap {
-    fill: var(--clock-cap, var(--clock-pm-cap, #7aadd4));
+    fill: var(--clock-cap, var(--clock-pm-cap));
   }
 }
 

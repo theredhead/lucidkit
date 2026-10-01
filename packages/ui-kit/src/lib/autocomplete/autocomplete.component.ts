@@ -16,11 +16,11 @@ import {
 import { NgTemplateOutlet } from "@angular/common";
 import type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
 import {
+  getContrastingTextColor,
   UISurface,
   UI_DEFAULT_SURFACE_TYPE,
 } from "@theredhead/lucid-foundation";
-import { UIIcon } from "../icon/icon.component";
-import { UIIcons } from "../icon/lucide-icons.generated";
+import { UIChip } from "../chip/chip.component";
 
 // Re-export so consumers importing from @theredhead/lucid-kit keep working.
 export type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
@@ -55,7 +55,7 @@ export type { AutocompleteDatasource } from "@theredhead/lucid-foundation";
 @Component({
   selector: "ui-autocomplete",
   standalone: true,
-  imports: [NgTemplateOutlet, UIIcon],
+  imports: [NgTemplateOutlet, UIChip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: UISurface, inputs: ["surfaceType"] }],
   providers: [{ provide: UI_DEFAULT_SURFACE_TYPE, useValue: "input" }],
@@ -150,9 +150,6 @@ export class UIAutocomplete<T> {
 
   // ── Internal state ─────────────────────────────────────────
 
-  /** @internal Icons used in the template. */
-  protected readonly icons = { close: UIIcons.Lucide.Math.X } as const;
-
   /** @internal Returns the background colour style value for a chip, or null for default. */
   protected chipColorBg(item: T, index: number): string | null {
     return this.chipColor()?.(item, index) ?? null;
@@ -167,61 +164,7 @@ export class UIAutocomplete<T> {
     const bg = this.chipColor()?.(item, index);
     if (!bg) return null;
     if (bg.startsWith("var(")) return null;
-    return UIAutocomplete._contrastColor(bg);
-  }
-
-  /**
-   * Compute whether white or dark text gives better contrast on a given colour.
-   * Supports hex (`#rgb`, `#rrggbb`) and `rgb()` / `rgba()` syntax.
-   */
-  private static _contrastColor(color: string): string {
-    let r: number;
-    let g: number;
-    let b: number;
-    const hex = color.trim();
-    const hexMatch = hex.match(/^#([0-9a-f]{3,8})$/i);
-    if (hexMatch) {
-      const h = hexMatch[1];
-      if (h.length === 3 || h.length === 4) {
-        r = parseInt(h[0] + h[0], 16);
-        g = parseInt(h[1] + h[1], 16);
-        b = parseInt(h[2] + h[2], 16);
-      } else {
-        r = parseInt(h.slice(0, 2), 16);
-        g = parseInt(h.slice(2, 4), 16);
-        b = parseInt(h.slice(4, 6), 16);
-      }
-    } else {
-      const rgbMatch = hex.match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/i);
-      if (rgbMatch) {
-        r = parseInt(rgbMatch[1]);
-        g = parseInt(rgbMatch[2]);
-        b = parseInt(rgbMatch[3]);
-      } else {
-        // Named colour: use a hidden canvas to resolve
-        try {
-          const canvas = document.createElement("canvas");
-          canvas.width = canvas.height = 1;
-          const ctx = canvas.getContext("2d")!;
-          ctx.fillStyle = color;
-          ctx.fillRect(0, 0, 1, 1);
-          const d = ctx.getImageData(0, 0, 1, 1).data;
-          r = d[0];
-          g = d[1];
-          b = d[2];
-        } catch {
-          return "#fff";
-        }
-      }
-    }
-    // WCAG relative luminance
-    const toLinear = (c: number) => {
-      const s = c / 255;
-      return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-    };
-    const L =
-      0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
-    return L > 0.179 ? "#1d232b" : "#ffffff";
+    return getContrastingTextColor(bg);
   }
 
   /** Raw text in the input. */
@@ -316,7 +259,8 @@ export class UIAutocomplete<T> {
   protected onInput(event: Event): void {
     const text = (event.target as HTMLInputElement).value;
     this.query.set(text);
-    this.exitChipZone(0);
+    this.chipCursorPos.set(null);
+    this.chipCursorAnchor.set(null);
     this.activeIndex.set(-1);
     this.isOpen.set(text.length >= this.minChars());
   }
@@ -337,7 +281,9 @@ export class UIAutocomplete<T> {
     } else {
       this.value.set([item]);
     }
-    this.query.set(this.multiple() ? "" : this.displayWith()(item));
+    const query = this.multiple() ? "" : this.displayWith()(item);
+    this.query.set(query);
+    this.inputEl().nativeElement.value = query;
     this.itemSelected.emit(item);
     this.closePopup();
   }

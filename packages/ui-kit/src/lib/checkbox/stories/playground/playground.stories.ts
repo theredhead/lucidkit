@@ -59,7 +59,8 @@ export const Playground: Story = {
     indeterminate: false,
     ariaLabel: "Accept terms",
   },
-  render: () => ({
-      template: "<ui-playground-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-playground-story-demo />",
+  })
 };

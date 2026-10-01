@@ -10,6 +10,11 @@ import { BarGraphStrategy } from "../../strategies/bar-graph.strategy";
 import { LineGraphStrategy } from "../../strategies/line-graph.strategy";
 import { PieChartStrategy } from "../../strategies/pie-chart.strategy";
 import { ScatterPlotStrategy } from "../../strategies/scatter-plot.strategy";
+import {
+  ClassicChartColoringStrategy,
+  ModernChartColoringStrategy,
+  type ChartColoringStrategy,
+} from "../../strategies/chart-coloring.strategy";
 import type { GraphPresentationStrategy } from "../../strategies/graph-presentation-strategy";
 
 // ── Sample data ─────────────────────────────────────────────────
@@ -59,9 +64,23 @@ export class ChartSwitcherDemo {
   protected readonly activeStrategy = signal<GraphPresentationStrategy>(
     this.strategies["Bar"],
   );
+  protected readonly colorings: Record<string, ChartColoringStrategy> = {
+    Classic: new ClassicChartColoringStrategy(),
+    Modern: new ModernChartColoringStrategy(),
+  };
+  protected readonly coloringNames = Object.keys(this.colorings);
+  protected readonly activeColoringName = signal("Classic");
+  protected readonly activeColoring = signal<ChartColoringStrategy>(
+    this.colorings["Classic"],
+  );
 
   public setStrategy(name: string): void {
     this.activeName.set(name);
     this.activeStrategy.set(this.strategies[name]);
+  }
+
+  public setColoring(name: string): void {
+    this.activeColoringName.set(name);
+    this.activeColoring.set(this.colorings[name]);
   }
 }

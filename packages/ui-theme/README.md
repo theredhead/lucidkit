@@ -36,6 +36,30 @@ In your application's main `styles.scss`:
 @include theme.theredhead-theme();
 ```
 
+#### Generative theme — build a full theme from up to five colours
+
+`lucid-theme()` derives the entire `--ui-*` token set — surfaces, borders,
+badges, chips, controls, elevation — from up to five seed colours instead of
+the fixed built-in palette. Any colour you omit is derived from `$primary` so
+a single colour still produces a coherent, dark/light-aware theme. Neutrals
+(backgrounds, text, borders) use a warm near-black / near-white pairing
+rather than Material grey.
+
+```scss
+@use "@theredhead/lucid-theme/styles/generative" as gen;
+
+@include gen.lucid-theme(
+  $primary: #ea4a2a,
+  $secondary: #2a6ea6,
+  // omit $tertiary to derive it from $primary
+  $success: #2e8b57,
+  $error: #e5484d
+);
+```
+
+Only `$primary` is required. Light mode, the explicit `.dark-theme` class,
+and the `prefers-color-scheme: dark` fallback are all emitted automatically.
+
 ### 2. Use the ThemeService
 
 ```typescript
@@ -88,6 +112,40 @@ All tokens live under the `--ui-*` namespace. They are declared once in
 `_tokens.scss` and emitted on `html` by the `theredhead-theme()` mixin.
 Components consume them with `var(--ui-text)` etc., inheriting the correct
 light or dark value automatically.
+
+Global tokens are defaults, not the component's final API. A component should
+bridge each root token through a local token so consumers can override that
+component without changing the global theme. For example, JSON view uses
+`--json-font-mono: var(--ui-font-mono)` and its descendants consume
+`--json-font-mono`.
+
+## Component Token Contract
+
+Components should expose local semantic tokens on their host and derive their
+defaults from the root `--ui-*` tokens. This keeps each component overridable
+without disconnecting it from the active theme:
+
+```scss
+:host {
+  --local-surface: var(--ui-surface);
+  --local-text: var(--ui-text);
+  --local-border: var(--ui-border);
+  --local-shadow: var(--ui-shadow-dropdown);
+}
+
+.panel {
+  color: var(--local-text);
+  background: var(--local-surface);
+  border: 1px solid var(--local-border);
+  box-shadow: var(--local-shadow);
+}
+```
+
+Local extension points that are intentionally not declared by the root theme
+must still chain to a root token, for example:
+`var(--component-active-text, var(--ui-accent-contrast))`. Run
+`npm run audit:theme-tokens` to detect undeclared extension points that fall
+back directly to hardcoded colors.
 
 ---
 

@@ -29,6 +29,10 @@ describe("UIBadge", () => {
       expect(component.color()).toBe("primary");
     });
 
+    it("should default muted to false", () => {
+      expect(component.muted()).toBe(false);
+    });
+
     it("should default count to 0", () => {
       expect(component.count()).toBe(0);
     });

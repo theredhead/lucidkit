@@ -51,23 +51,28 @@ import { UISurface } from '@theredhead/lucid-foundation';
   template: `
     <ui-dialog-header>{{ title() }}</ui-dialog-header>
     <ui-dialog-body>
-      <ui-file-browser
-        [datasource]="datasource()"
-        (directoryChange)="onDirectoryChange($event)"
-        ariaLabel="Browse directories"
-      />
-      <div class="cd-filename-row">
-        <span class="cd-filename-label">File name:</span>
-        <ui-input
-          [(value)]="fileName"
-          placeholder="Enter file name"
-          ariaLabel="File name"
+      <p class="cd-instruction">Choose a folder, then enter a name for the file.</p>
+      <div class="cd-browser-frame">
+        <ui-file-browser
+          [datasource]="datasource()"
+          (directoryChange)="onDirectoryChange($event)"
+          ariaLabel="Browse directories"
         />
+      </div>
+      <div class="cd-filename-panel">
+        <div class="cd-filename-row">
+          <span class="cd-filename-label">File name</span>
+          <ui-input
+            [(value)]="fileName"
+            placeholder="Enter file name"
+            ariaLabel="File name"
+          />
+        </div>
       </div>
     </ui-dialog-body>
     <ui-dialog-footer>
-      <ui-button variant="outlined" ariaLabel="Cancel" (click)="cancel()">
-        Cancel
+      <ui-button variant="outlined" ariaLabel="Cancel file save" (click)="cancel()">
+        Cancel file save
       </ui-button>
       <ui-button
         variant="filled"
@@ -82,20 +87,49 @@ import { UISurface } from '@theredhead/lucid-foundation';
   styles: [
     `
       :host {
+        --cd-surface: var(--ui-surface, #f7f8fa);
+        --cd-surface-raised: var(--ui-surface-2, #eef2f6);
+        --cd-border: var(--ui-border, #d7dce2);
+        --cd-text: var(--ui-text, #1d232b);
+        --cd-muted: var(--ui-text-muted, #5c6875);
+
         display: flex;
         flex-direction: column;
         min-width: 36rem;
+        color: var(--cd-text);
+        background: var(--cd-surface);
       }
       :host ::ng-deep ui-dialog-body {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 0.625rem;
         height: 26rem;
         overflow: hidden;
       }
-      :host ::ng-deep ui-dialog-body ui-file-browser {
+      .cd-instruction {
+        margin: 0;
+        color: var(--cd-muted);
+        background: var(--cd-surface);
+        font-size: 0.8125rem;
+      }
+      .cd-browser-frame {
         flex: 1;
         min-height: 0;
+        overflow: hidden;
+        border: 1px solid var(--cd-border);
+        border-radius: var(--ui-radius, 0.375rem);
+        color: var(--cd-text);
+        background: var(--cd-surface-raised);
+      }
+      :host ::ng-deep ui-dialog-body ui-file-browser {
+        height: 100%;
+      }
+      .cd-filename-panel {
+        padding: 0.625rem 0.75rem;
+        border: 1px solid var(--cd-border);
+        border-radius: var(--ui-radius, 0.375rem);
+        color: var(--cd-text);
+        background: var(--cd-surface-raised);
       }
       .cd-filename-row {
         display: flex;
@@ -106,6 +140,8 @@ import { UISurface } from '@theredhead/lucid-foundation';
         font-weight: 600;
         font-size: 0.88rem;
         white-space: nowrap;
+        color: var(--cd-text);
+        background: var(--cd-surface-raised);
       }
       .cd-filename-row ui-input {
         flex: 1;
@@ -115,7 +151,7 @@ import { UISurface } from '@theredhead/lucid-foundation';
 })
 export class UISaveFileDialog<M = unknown> implements OnInit {
   public readonly title = input("Save File");
-  public readonly saveLabel = input("Save");
+  public readonly saveLabel = input("Save file");
   public readonly defaultName = input("");
   public readonly datasource = input.required<FileBrowserDatasource<M>>();
 

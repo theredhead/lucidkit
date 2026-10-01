@@ -1,0 +1,23 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px;
+}
+
+h2,
+p {
+    color: var(--ui-text, #1d232b);
+    background: var(--ui-surface, #ffffff);
+}
+
+.frame {
+    width: min(100%, 720px);
+    height: 440px;
+}

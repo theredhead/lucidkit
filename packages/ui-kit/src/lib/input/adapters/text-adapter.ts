@@ -111,4 +111,10 @@ export interface TextAdapter {
    * @returns Formatted string to display in the input element.
    */
   toDisplayValue?(value: string): string;
+
+  /**
+   * When true, adapter display formatting is deferred until the native input
+   * loses focus so typing is not interrupted.
+   */
+  formatOnBlur?: boolean;
 }

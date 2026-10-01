@@ -2,16 +2,38 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  computed,
   effect,
   input,
   model,
   signal,
   viewChildren,
 } from "@angular/core";
+import {
+  getContrastingTextColor,
+  isCssColor,
+} from "@theredhead/lucid-foundation";
 import { UIIcon } from "../icon/icon.component";
 import { type SegmentedItem } from "./segmented-control.types";
 
 export type { SegmentedItem };
+
+/** Named theme colors accepted by the segmented indicator. */
+export type SegmentedIndicatorColor =
+  | "primary"
+  | "accent"
+  | "secondary"
+  | "tertiary"
+  | "success"
+  | "warning"
+  | "error"
+  | "danger"
+  | "info"
+  | "surface"
+  | "surface-variant"
+  | "border"
+  | "border-strong"
+  | string;
 
 /**
  * An iOS-style segmented control — a compact row of mutually exclusive option
@@ -64,6 +86,40 @@ export class UISegmentedControl {
    * Defaults to `true`.
    */
   public readonly animateSelection = input<boolean>(true);
+
+  /** Named theme color or any valid CSS color for the sliding indicator. */
+  public readonly indicatorColor = input<SegmentedIndicatorColor>("primary");
+
+  /** @internal Resolved CSS color for the sliding active indicator. */
+  protected readonly resolvedIndicatorColor = computed(() => {
+    const colors: Record<string, string> = {
+      primary: "var(--ui-accent)",
+      accent: "var(--ui-accent)",
+      secondary: "var(--ui-secondary)",
+      tertiary: "var(--ui-tertiary)",
+      success: "var(--ui-success)",
+      warning: "var(--ui-warning)",
+      error: "var(--ui-error)",
+      danger: "var(--ui-error)",
+      info: "var(--ui-info)",
+      surface: "var(--ui-surface)",
+      "surface-variant": "var(--ui-surface-variant)",
+      border: "var(--ui-border)",
+      "border-strong": "var(--ui-border-strong)",
+    };
+    const value = this.indicatorColor();
+    const resolved = colors[value?.toLowerCase?.() ?? ""] ?? value;
+    return isCssColor(resolved ?? "") ? resolved : "var(--ui-accent)";
+  });
+
+  /** @internal Foreground color that contrasts with the resolved indicator color. */
+  protected readonly resolvedIndicatorTextColor = computed(() => {
+    const value = this.resolvedIndicatorColor();
+    if (value.startsWith("var(")) {
+      return "var(--ui-text, #1d232b)";
+    }
+    return getContrastingTextColor(value) ?? "var(--ui-text, #1d232b)";
+  });
 
   private readonly segmentRefs =
     viewChildren<ElementRef<HTMLButtonElement>>("segmentBtn");

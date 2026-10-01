@@ -1,7 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from "@storybook/angular";
 
-import { UISegmentedControl } from "../../segmented-control.component";
-
 import { SegmentedControlDemo } from "./showcase.story";
 
 const meta = {
@@ -26,6 +24,6 @@ export const Showcase: Story = {
     docs: {}
   },
   render: () => ({
-      template: "<ui-segmented-control-demo />",
-    })
+    template: "<ui-segmented-control-demo />",
+  })
 };

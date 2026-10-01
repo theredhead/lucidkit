@@ -43,6 +43,8 @@
   --ui-success: #1e8e3e;
   --ui-error: #ba1a1a;
   --ui-on-error: #ffffff;
+  --ui-on-success: #ffffff;
+  --ui-on-warning: #14161a;
   --ui-secondary: #625b71;
   --ui-tertiary: #7b5ea7;
   --ui-on-tertiary: #ffffff;
@@ -65,6 +67,7 @@
 
   // 4. Typography (mode-invariant — repeated in dark for completeness)
   --ui-font: inherit;
+  --ui-font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --ui-font-body: 0.875rem;
   --ui-font-header: 0.74rem;
   --ui-font-caption: 0.8rem;
@@ -172,6 +175,8 @@
   --ui-error: #ffb4ab;
   --ui-error-filled: #c62828;
   --ui-on-error: #ffffff;
+  --ui-on-success: #1e2128;
+  --ui-on-warning: #1e2128;
   --ui-secondary: #ccc2dc;
   --ui-tertiary: #d0bcff;
   --ui-on-tertiary: #381e72;
@@ -194,6 +199,7 @@
 
   // 4. Typography (same as light)
   --ui-font: inherit;
+  --ui-font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --ui-font-body: 0.875rem;
   --ui-font-header: 0.74rem;
   --ui-font-caption: 0.8rem;

@@ -10,36 +10,24 @@
         [rowIndexHeaderText]="rowIndexHeaderText()" [resizable]="isResizable()" [columnWidths]="columnWidths()"
         [selectionMode]="selectionMode()" [showSelectionColumn]="showSelectionColumn()"
         [allSelected]="selection().isAllSelected(sortedRows())"
-        [indeterminate]="selection().isPartiallySelected(sortedRows())"
-        (sortChange)="onSortChange($event)" (columnResize)="onColumnResize($event)"
-        (selectAllChange)="onSelectAllChange($event)" />
+        [indeterminate]="selection().isPartiallySelected(sortedRows())" (sortChange)="onSortChange($event)"
+        (columnResize)="onColumnResize($event)" (selectAllChange)="onSelectAllChange($event)" />
     @if (resolvedStrategy() === 'virtual') {
     <ui-cdk-virtual-table-body [columns]="resolvedColumns()" [rows]="sortedRows()"
-        [showRowIndexIndicator]="showRowIndexIndicator()"
-        [rowIndexOffset]="rowIndexOffset()" [columnWidths]="columnWidths()"
-        [rowHeight]="rowHeight()"
-        [selectionMode]="selectionMode()" [showSelectionColumn]="showSelectionColumn()"
-        [selection]="selection()" [rowClickSelect]="rowClickSelect()"
-        [activeIndex]="activeIndex()"
-        (rowClick)="onRowClick($event)" />
+        [showRowIndexIndicator]="showRowIndexIndicator()" [rowIndexOffset]="rowIndexOffset()"
+        [columnWidths]="columnWidths()" [rowHeight]="rowHeight()" [selectionMode]="selectionMode()"
+        [showSelectionColumn]="showSelectionColumn()" [selection]="selection()" [rowClickSelect]="rowClickSelect()"
+        [activeIndex]="activeIndex()" (rowClick)="onRowClick($event)" />
     } @else {
     <ui-plain-table-body [columns]="resolvedColumns()" [rows]="sortedRows()"
-        [showRowIndexIndicator]="showRowIndexIndicator()"
-        [rowIndexOffset]="rowIndexOffset()" [columnWidths]="columnWidths()"
-        [rowHeight]="rowHeight()"
-        [selectionMode]="selectionMode()" [showSelectionColumn]="showSelectionColumn()"
-        [selection]="selection()" [rowClickSelect]="rowClickSelect()"
-        [activeIndex]="activeIndex()"
-        (rowClick)="onRowClick($event)" />
+        [showRowIndexIndicator]="showRowIndexIndicator()" [rowIndexOffset]="rowIndexOffset()"
+        [columnWidths]="columnWidths()" [rowHeight]="rowHeight()" [selectionMode]="selectionMode()"
+        [showSelectionColumn]="showSelectionColumn()" [selection]="selection()" [rowClickSelect]="rowClickSelect()"
+        [activeIndex]="activeIndex()" (rowClick)="onRowClick($event)" />
     }
     @if (showBuiltInPaginator()) {
-    <ui-pagination
-      [pageIndex]="adapter().pageIndex()"
-      [pageSize]="adapter().pageSize()"
-      [totalItems]="adapter().totalItems()"
-      [pageSizeOptions]="pageSizeOptions()"
-      buttonColor="neutral"
-      (pageChange)="onPageChange($event)"
-    />
+    <ui-pagination [pageIndex]="adapter().pageIndex()" [pageSize]="adapter().pageSize()"
+        [totalItems]="adapter().totalItems()" [pageSizeOptions]="pageSizeOptions()" buttonColor="neutral"
+        (pageChange)="onPageChange($event)" />
     }
 </section>

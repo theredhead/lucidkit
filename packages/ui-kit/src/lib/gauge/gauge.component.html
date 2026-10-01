@@ -1,11 +1,3 @@
-<div
-  class="viewport"
-  #gaugeContainer
-  [style.width.px]="fit() ? null : width()"
-  [style.height.px]="fit() ? null : height()"
-  [attr.aria-label]="ariaLabel()"
-  [attr.aria-valuenow]="clampedValue()"
-  [attr.aria-valuemin]="min()"
-  [attr.aria-valuemax]="max()"
-  role="meter"
-></div>
+<div class="viewport" #gaugeContainer [style.width.px]="fit() ? null : width()"
+  [style.height.px]="fit() ? null : height()" [attr.aria-label]="ariaLabel()" [attr.aria-valuenow]="clampedValue()"
+  [attr.aria-valuemin]="effectiveMin()" [attr.aria-valuemax]="effectiveMax()" role="meter"></div>

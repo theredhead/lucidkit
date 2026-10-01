@@ -219,14 +219,14 @@
 }
 
 .fb-entry--selected {
-  color: var(--ui-accent, #3584e4);
-  background: var(--ui-selected-bg, rgba(53, 132, 228, 0.18));
+  color: var(--ui-accent-contrast, #ffffff);
+  background: var(--ui-accent, #3584e4);
   box-shadow: inset 0 0 0 1px var(--ui-accent, #3584e4);
 
   &:hover,
   &:focus-visible {
-    color: var(--ui-accent, #3584e4);
-    background: var(--ui-selected-hover-bg, rgba(53, 132, 228, 0.24));
+    color: var(--ui-accent-contrast, #ffffff);
+    background: var(--ui-accent-hover, color-mix(in srgb, var(--ui-accent, #3584e4) 85%, black));
   }
 }
 

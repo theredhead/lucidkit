@@ -9,6 +9,11 @@ import { LineGraphStrategy } from "./line-graph.strategy";
 import { PieChartStrategy } from "./pie-chart.strategy";
 import { ScatterPlotStrategy } from "./scatter-plot.strategy";
 import { StackedBarGraphStrategy } from "./stacked-bar-graph.strategy";
+import {
+  ClassicChartColoringStrategy,
+  ModernChartColoringStrategy,
+  PaletteChartColoringStrategy,
+} from "./chart-coloring.strategy";
 
 const samplePoints: ChartDataPoint[] = [
   { label: "Jan", value: 100, color: "#4285f4" },
@@ -47,6 +52,37 @@ function multiSeries(): ChartSeriesData[] {
 }
 
 const size: ChartSize = { width: 400, height: 300 };
+
+describe("ChartColoringStrategy", () => {
+  it("classic preserves the existing series and point colors", () => {
+    const series = multiSeries();
+    expect(new ClassicChartColoringStrategy().color(series)).toBe(series);
+  });
+
+  it("modern assigns a coherent color per multi-series entry", () => {
+    const colored = new ModernChartColoringStrategy().color(multiSeries());
+    expect(colored[0].color).not.toBe("#4285f4");
+    expect(colored[1].color).not.toBe(colored[0].color);
+    expect(colored[0].points.every((point) => point.color === colored[0].color)).toBe(true);
+  });
+
+  it("modern cycles colors across points in single-series mode", () => {
+    const colored = new ModernChartColoringStrategy().color(singleSeries(samplePoints));
+    expect(new Set(colored[0].points.map((point) => point.color)).size).toBeGreaterThan(1);
+  });
+
+  it("custom palette coloring applies caller colors", () => {
+    const colored = new PaletteChartColoringStrategy(["#111111", "#222222"]).color(
+      singleSeries(samplePoints),
+    );
+    expect(colored[0].points.map((point) => point.color)).toEqual([
+      "#111111",
+      "#222222",
+      "#111111",
+      "#222222",
+    ]);
+  });
+});
 
 describe("GraphPresentationStrategy implementations", () => {
   // ── LineGraphStrategy ───────────────────────────────────────────

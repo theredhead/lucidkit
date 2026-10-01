@@ -1,6 +1,6 @@
 import { UIRating } from "../../rating.component";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input, model } from "@angular/core";
 
 @Component({
   selector: "ui-default-story-demo",
@@ -11,5 +11,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrl: "./default.story.scss",
 })
 export class DefaultStorySource {
-  protected stars = 3;
+  public readonly value = model(3);
+  public readonly max = input(5);
+  public readonly readonly = input(false);
+  public readonly disabled = input(false);
+  public readonly size = input<"small" | "medium" | "large">("medium");
 }

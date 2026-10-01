@@ -116,6 +116,7 @@ export class AnalogGaugeStrategy extends GaugePresentationStrategy {
           stroke: zone.color,
           "stroke-opacity": 0.35,
           "stroke-width": outerRadius - innerRadius,
+          "stroke-linecap": "round",
         }),
       );
 

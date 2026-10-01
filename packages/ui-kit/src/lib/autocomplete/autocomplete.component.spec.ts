@@ -84,6 +84,10 @@ describe("UIAutocomplete", () => {
         'input[role="combobox"]',
       );
       expect(input).toBeTruthy();
+      expect(input.autocomplete).toBe("off");
+      expect(input.getAttribute("autocorrect")).toBe("off");
+      expect(input.getAttribute("autocapitalize")).toBe("none");
+      expect(input.getAttribute("spellcheck")).toBe("false");
     });
 
     it("should forward placeholder to the input", () => {
@@ -276,7 +280,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chips = fixture.nativeElement.querySelectorAll(".chip");
+      const chips = fixture.nativeElement.querySelectorAll("ui-chip");
       expect(chips.length).toBe(1);
     });
 
@@ -287,8 +291,7 @@ describe("UIAutocomplete", () => {
       ]);
       fixture.detectChanges();
 
-      const removeButtons =
-        fixture.nativeElement.querySelectorAll(".chip-remove");
+      const removeButtons = fixture.nativeElement.querySelectorAll(".dismiss");
       expect(removeButtons.length).toBe(2);
 
       removeButtons[0].click();
@@ -303,7 +306,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chips = fixture.nativeElement.querySelectorAll(".chip");
+      const chips = fixture.nativeElement.querySelectorAll("ui-chip");
       expect(chips.length).toBe(0);
     });
   });
@@ -324,7 +327,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const chipLabel = fixture.nativeElement.querySelector(".chip-label");
+      const chipLabel = fixture.nativeElement.querySelector("ui-chip .label");
       expect(chipLabel.textContent.trim()).toBe("Alice");
     });
   });
@@ -616,7 +619,7 @@ describe("UIAutocomplete", () => {
       component.value.set([{ id: 1, name: "Alice" }]);
       fixture.detectChanges();
 
-      const removeBtn = fixture.nativeElement.querySelector(".chip-remove");
+      const removeBtn = fixture.nativeElement.querySelector(".dismiss");
       removeBtn.click();
       fixture.detectChanges();
 
@@ -648,7 +651,7 @@ describe("UIAutocomplete", () => {
       fixture.detectChanges();
 
       const removeBtns =
-        fixture.nativeElement.querySelectorAll(".chip-remove");
+        fixture.nativeElement.querySelectorAll(".dismiss");
       removeBtns[0].click();
       fixture.detectChanges();
 
@@ -658,6 +661,33 @@ describe("UIAutocomplete", () => {
   });
 
   describe("single mode input value", () => {
+    it("should not reset the caret when a keydown bubbles from the input", async () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".input");
+      input.value = "ab";
+      input.focus();
+      input.setSelectionRange(2, 2);
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "c", bubbles: true }),
+      );
+      await Promise.resolve();
+
+      expect(input.selectionStart).toBe(2);
+      expect(input.selectionEnd).toBe(2);
+    });
+
+    it("should preserve the caret after input change detection", () => {
+      const input: HTMLInputElement =
+        fixture.nativeElement.querySelector(".input");
+      input.value = "Alice";
+      input.setSelectionRange(2, 2);
+      input.dispatchEvent(new Event("input"));
+      fixture.detectChanges();
+
+      expect(input.selectionStart).toBe(2);
+      expect(input.selectionEnd).toBe(2);
+    });
+
     it("should set input value to displayWith when item is picked", () => {
       fixture.componentRef.setInput(
         "displayWith",

@@ -2,26 +2,34 @@
 
 // ── Light defaults ──
 :host {
+  --mp-video-overlay: rgba(0, 0, 0, 0.8);
+  --mp-video-overlay-fade: rgba(0, 0, 0, 0.2);
+  --mp-video-text: #ffffff;
+  --mp-video-muted-text: rgba(255, 255, 255, 0.5);
+  --mp-audio-surface: var(--ui-surface, #f7f8fa);
+  --mp-audio-text: var(--ui-text, #1d232b);
+  --mp-control-border: var(--ui-border, #d7dce2);
+  --mp-progress-track: var(--ui-border, #d7dce2);
+  --mp-progress-fill: var(--ui-accent, #3584e4);
+  --mp-progress-thumb: var(--ui-accent-contrast, #ffffff);
+  --mp-volume-track: var(--ui-border, #d7dce2);
+  --mp-volume-thumb: var(--ui-accent, #3584e4);
+
   display: block;
   position: relative;
   border-radius: 8px;
   overflow: hidden;
   font-family: inherit;
-
-  // Component-level tokens — override at any level, fall back to --ui-* then a hardcoded default.
-  // Video overlay uses white-on-dark; audio inherits surface tokens (overridden below).
-  --mp-progress-track: rgba(255, 255, 255, 0.25);
-  --mp-progress-fill: var(--ui-accent, #3584e4);
-  --mp-progress-thumb: #fff;
-  --mp-volume-track: rgba(255, 255, 255, 0.25);
-  --mp-volume-thumb: #fff;
 }
 
 // Audio mode re-maps tokens to the surface palette
 :host(.audio) {
+  --mp-audio-surface: var(--ui-surface, #f7f8fa);
+  --mp-audio-text: var(--ui-text, #1d232b);
+  --mp-control-border: var(--ui-border, #d7dce2);
   --mp-progress-track: var(--ui-border, #d7dce2);
   --mp-progress-fill: var(--ui-accent, #3584e4);
-  --mp-progress-thumb: var(--ui-accent, #3584e4);
+  --mp-progress-thumb: var(--ui-accent-contrast, #ffffff);
   --mp-volume-track: var(--ui-border, #d7dce2);
   --mp-volume-thumb: var(--ui-accent, #3584e4);
 }
@@ -61,7 +69,7 @@ audio.media {
   justify-content: center;
   pointer-events: none;
   z-index: 1;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--mp-video-muted-text);
 }
 
 .poster-icon {
@@ -88,12 +96,10 @@ audio.media {
   z-index: 2;
   opacity: 0;
   transition: opacity 0.25s ease;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.2) 100%
-  );
-  color: #fff;
+  background: linear-gradient(to top,
+      var(--mp-video-overlay) 0%,
+      var(--mp-video-overlay-fade) 100%);
+  color: var(--mp-video-text);
 }
 
 :host(.video):hover .controls,
@@ -335,11 +341,9 @@ audio.media {
   pointer-events: none;
   user-select: none;
   cursor: default;
-  background: color-mix(
-    in srgb,
-    var(--ui-error, #ba1a1a) 10%,
-    var(--ui-surface, #fff)
-  );
+  background: color-mix(in srgb,
+      var(--ui-error, #ba1a1a) 10%,
+      var(--ui-surface, #fff));
   color: var(--ui-text, #1d232b);
   border-left: 3px solid var(--ui-error, #ba1a1a);
 }

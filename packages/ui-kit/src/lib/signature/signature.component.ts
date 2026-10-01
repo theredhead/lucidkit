@@ -125,8 +125,8 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
   /** Maximum stroke width in pixels. Used for fixed width when pressure is disabled. */
   public readonly maxStrokeWidth = input(3.5);
 
-  /** CSS colour of strokes when drawn and exported. */
-  public readonly strokeColor = input("#1d232b");
+  /** CSS colour of strokes when drawn and exported. Defaults to the theme text colour. */
+  public readonly strokeColor = input<string | undefined>(undefined);
 
   /** Whether the field is disabled. Also set via CVA `setDisabledState`. */
   public readonly disabled = input(false);
@@ -220,6 +220,9 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
   /** @internal */
   protected readonly isReplaying = signal(false);
 
+  /** @internal */
+  protected readonly isDrawing = signal(false);
+
   // ── Private fields ────────────────────────────────────────────────
 
   private readonly destroyRef = inject(DestroyRef);
@@ -227,9 +230,6 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
 
   /** Whether the canvas DOM element is initialised and ready to draw. */
   private _canvasReady = false;
-
-  /** Whether the user is currently drawing (pen down). */
-  private _isDrawing = false;
 
   /** CVA-provided disabled state (separate from the `disabled` input). */
   private readonly _cvaDisabled = signal(false);
@@ -245,12 +245,12 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
 
   // ── CVA callbacks ─────────────────────────────────────────────────
 
-  private _onChangeFn: (value: SignatureValue) => void = () => {};
-  private _onTouchedFn: () => void = () => {};
+  private _onChangeFn: (value: SignatureValue) => void = () => { };
+  private _onTouchedFn: () => void = () => { };
 
   // ── Constructor ───────────────────────────────────────────────────
 
-  public constructor() {}
+  public constructor() { }
 
   // ── ControlValueAccessor ──────────────────────────────────────────
 
@@ -389,7 +389,7 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
 
     const pt = this._canvasPoint(event);
     this._currentPoints = [pt];
-    this._isDrawing = true;
+    this.isDrawing.set(true);
     this._markTouched();
 
     const ctx = this._context();
@@ -402,13 +402,13 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
       0,
       Math.PI * 2,
     );
-    ctx.fillStyle = this.strokeColor();
+    ctx.fillStyle = this._strokeColor();
     ctx.fill();
   }
 
   /** @internal */
   protected onPointerMove(event: PointerEvent): void {
-    if (!this._isDrawing) return;
+    if (!this.isDrawing()) return;
     event.preventDefault();
 
     const pt = this._canvasPoint(event);
@@ -421,8 +421,8 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
 
   /** @internal */
   protected onPointerUp(_event: PointerEvent): void {
-    if (!this._isDrawing) return;
-    this._isDrawing = false;
+    if (!this.isDrawing()) return;
+    this.isDrawing.set(false);
 
     const pts = this._currentPoints;
     this._currentPoints = [];
@@ -433,8 +433,8 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
 
   /** @internal */
   protected onPointerCancel(_event: PointerEvent): void {
-    if (!this._isDrawing) return;
-    this._isDrawing = false;
+    if (!this.isDrawing()) return;
+    this.isDrawing.set(false);
     this._currentPoints = [];
     // Restore the last committed value on cancel
     this._renderValue(this.value());
@@ -563,6 +563,15 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
     return min + pressure * (max - min);
   }
 
+  private _strokeColor(): string {
+    return (
+      this.strokeColor() ??
+      (getComputedStyle(
+        this.canvasRef().nativeElement.parentElement!,
+      ).getPropertyValue("--signature-stroke").trim() || "#1d232b")
+    );
+  }
+
   private _drawSegment(from: StrokePoint, to: StrokePoint): void {
     const ctx = this._context();
     if (!ctx) return;
@@ -577,7 +586,7 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.lineWidth = width;
-    ctx.strokeStyle = this.strokeColor();
+    ctx.strokeStyle = this._strokeColor();
     ctx.moveTo(from.x, from.y);
     ctx.lineTo(to.x, to.y);
     ctx.stroke();
@@ -627,7 +636,7 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
       const r = this._widthForPressure(p.pressure) / 2;
       ctx.beginPath();
       ctx.arc(p.x * scaleX, p.y * scaleY, r, 0, Math.PI * 2);
-      ctx.fillStyle = this.strokeColor();
+      ctx.fillStyle = this._strokeColor();
       ctx.fill();
       return;
     }
@@ -784,7 +793,7 @@ export class UISignature implements AfterViewInit, ControlValueAccessor {
     const bounds = v.bounds;
     const scaleX = bounds ? w / bounds.width : 1;
     const scaleY = bounds ? h / bounds.height : 1;
-    const color = this.strokeColor();
+    const color = this._strokeColor();
 
     const paths: string[] = [];
     for (const group of v.strokes) {

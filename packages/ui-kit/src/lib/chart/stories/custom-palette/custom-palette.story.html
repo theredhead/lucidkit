@@ -1,19 +1,7 @@
-
-    <h3>Custom Warm Palette</h3>
-    <ui-chart
-      [source]="data"
-      labelProperty="month"
-      valueProperty="revenue"
-      [strategy]="strategy"
-      [palette]="palette"
-      [width]="width()"
-      [height]="height()"
-      [showLegend]="showLegend()"
-      [ariaLabel]="ariaLabel()"
-    />
-    <p>
-      Pass any <code>string[]</code> of CSS colours via the
-      <code>[palette]</code> input to override the default 12-colour scheme.
-      Colours cycle if data exceeds palette length.
-    </p>
-  
+<h3>Custom Warm Palette</h3>
+<ui-chart [source]="data" labelProperty="month" valueProperty="revenue" [strategy]="strategy" [coloring]="coloring"
+  [width]="width()" [height]="height()" [showLegend]="showLegend()" [ariaLabel]="ariaLabel()" />
+<p>
+  The palette is provided through <code>PaletteChartColoringStrategy</code>.
+  Colours cycle if data exceeds the palette length.
+</p>

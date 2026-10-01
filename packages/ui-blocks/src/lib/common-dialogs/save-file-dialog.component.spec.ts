@@ -98,7 +98,7 @@ describe("UISaveFileDialog", () => {
 
     it("should have default saveLabel", () => {
       fixture.detectChanges();
-      expect(component.saveLabel()).toBe("Save");
+      expect(component.saveLabel()).toBe("Save file");
     });
 
     it("should accept custom title and saveLabel", () => {

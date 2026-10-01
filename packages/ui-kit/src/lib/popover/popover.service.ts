@@ -24,36 +24,16 @@ const POPOVER_STYLES = /* css */ `
   position: fixed;
   margin: 0;
   inset: unset;
-  border: 1px solid var(--theredhead-outline-variant, #d7dce2);
+  border: 1px solid var(--ui-border, #d7dce2);
   border-radius: 0.375rem;
   padding: 0;
-  background: var(--theredhead-surface, #fff);
-  color: var(--theredhead-on-surface, #1d232b);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  background: var(--ui-surface, #fff);
+  color: var(--ui-text, #1d232b);
+  box-shadow: var(--ui-shadow-dropdown, 0 4px 16px rgba(0, 0, 0, 0.14));
   animation: ui-popover-enter 120ms ease-out;
   overflow: auto;
   max-width: min(90vw, 24rem);
   max-height: 70vh;
-}
-
-/* ── dark mode (explicit class) ─────────────────────────── */
-
-html.dark-theme .ui-popover {
-  background: var(--theredhead-surface, #1e2228);
-  color: var(--theredhead-on-surface, #f2f6fb);
-  border-color: var(--theredhead-outline-variant, #3a3f47);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-}
-
-/* ── dark mode (system preference fallback) ─────────────── */
-
-@media (prefers-color-scheme: dark) {
-  html:not(.light-theme):not(.dark-theme) .ui-popover {
-    background: var(--theredhead-surface, #1e2228);
-    color: var(--theredhead-on-surface, #f2f6fb);
-    border-color: var(--theredhead-outline-variant, #3a3f47);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  }
 }
 
 /* ── arrow ──────────────────────────────────────────────── */

@@ -2,11 +2,21 @@
 
 :host {
   display: block;
-  color: var(--ui-text);
-  background-color: var(--ui-surface);
-  border: 1px solid var(--ui-border);
-  border-radius: 0.375rem;
-  box-shadow: var(--ui-shadow-dropdown, 0 4px 16px rgba(0, 0, 0, 0.12));
+  --calendar-text: var(--ui-text);
+  --calendar-muted: var(--ui-text-muted);
+  --calendar-surface: var(--ui-surface);
+  --calendar-hover: var(--ui-hover-bg);
+  --calendar-border: var(--ui-border);
+  --calendar-accent: var(--ui-accent);
+  --calendar-accent-contrast: var(--ui-accent-contrast);
+  --calendar-shadow: var(--ui-shadow-dropdown);
+  --calendar-radius: var(--ui-control-radius, 0.375rem);
+  --calendar-cursor: var(--ui-cursor-click, pointer);
+  color: var(--calendar-text);
+  background-color: var(--calendar-surface);
+  border: 1px solid var(--calendar-border);
+  border-radius: var(--calendar-radius);
+  box-shadow: var(--calendar-shadow);
   padding: 0.5rem;
   min-width: 260px;
   user-select: none;
@@ -25,7 +35,7 @@
   appearance: none;
   border: none;
   background: none;
-  cursor: var(--ui-cursor-click, pointer);
+  cursor: var(--calendar-cursor);
   font-size: 1rem;
   width: 1.75rem;
   height: 1.75rem;
@@ -33,12 +43,12 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
-  color: var(--ui-text-muted);
+  color: var(--calendar-muted);
   transition: background-color 80ms ease;
 
   &:hover {
-    color: var(--ui-text);
-    background-color: var(--ui-hover-bg);
+    color: var(--calendar-text);
+    background-color: var(--calendar-hover);
   }
 }
 
@@ -47,7 +57,7 @@
   font-size: 0.8125rem;
   text-align: center;
   flex: 1;
-  color: var(--ui-text);
+  color: var(--calendar-text);
 }
 
 /* Weekday labels */
@@ -64,7 +74,7 @@
   font-weight: 600;
   padding: 0.25rem 0;
   text-transform: uppercase;
-  color: var(--ui-text-muted);
+  color: var(--calendar-muted);
 }
 
 /* Day grid */
@@ -87,31 +97,31 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  cursor: var(--ui-cursor-click, pointer);
-  color: var(--ui-text);
+  cursor: var(--calendar-cursor);
+  color: var(--calendar-text);
   transition:
     background-color 80ms ease,
     color 80ms ease;
   margin: auto;
 
   &:hover {
-    background-color: var(--ui-hover-bg);
+    background-color: var(--calendar-hover);
   }
 
   &.cal-day--outside {
-    color: var(--ui-text-muted);
+    color: var(--calendar-muted);
     opacity: 0.5;
   }
 
   &.cal-day--today {
     font-weight: 700;
-    border: 1px solid var(--ui-accent);
+    border: 1px solid var(--calendar-accent);
   }
 
   &.cal-day--selected {
     font-weight: 600;
-    color: var(--ui-accent-contrast);
-    background-color: var(--ui-accent);
+    color: var(--calendar-accent-contrast);
+    background-color: var(--calendar-accent);
   }
 
   &.cal-day--disabled {

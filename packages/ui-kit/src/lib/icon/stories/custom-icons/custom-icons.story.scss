@@ -6,7 +6,7 @@
 
 .intro {
   margin: 0 0 16px;
-  color: var(--ui-text-secondary, #6b7280);
+  color: var(--ui-text-muted, #6b7280);
 }
 
 .grid {
@@ -23,7 +23,7 @@
 .label {
   display: block;
   font-size: 11px;
-  color: var(--ui-text-secondary, #888);
+  color: var(--ui-text-muted, #888);
   margin-top: 6px;
 }
 
@@ -35,7 +35,7 @@ ui-icon.heart {
 .how-it-works {
   margin-top: 24px;
   font-size: 13px;
-  color: var(--ui-text-secondary, #555);
+  color: var(--ui-text-muted, #555);
 
   summary {
     cursor: pointer;

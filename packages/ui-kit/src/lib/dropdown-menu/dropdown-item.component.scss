@@ -1,4 +1,6 @@
 :host {
+  --dropdown-item-accent: var(--ui-accent);
+  --dropdown-item-accent-text: var(--ui-accent-contrast);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -16,11 +18,8 @@
 :host(:hover:not(.disabled)),
 :host(:focus-visible) {
   outline: none;
-  background-color: color-mix(
-    in srgb,
-    var(--ui-accent, #3584e4) 10%,
-    transparent
-  );
+  color: var(--dropdown-item-accent-text);
+  background-color: var(--dropdown-item-accent);
 }
 
 :host(.disabled) {

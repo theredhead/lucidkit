@@ -1,5 +1,6 @@
 <ui-color-picker
-  [(value)]="colour"
-  initialMode="theme"
-  ariaLabel="Pick a colour"
+  [(value)]="value"
+  [initialMode]="initialMode()"
+  [disabled]="disabled()"
+  [ariaLabel]="ariaLabel()"
 />

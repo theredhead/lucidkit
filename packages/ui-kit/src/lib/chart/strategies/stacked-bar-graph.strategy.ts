@@ -96,8 +96,8 @@ export class StackedBarGraphStrategy extends GraphPresentationStrategy {
     const scaleMax = this.normalised ? 100 : niceMax(Math.max(...totals, 1));
     const ticks = buildTicks(0, scaleMax);
 
-    const textColor = "var(--ui-chart-text, #555)";
-    const gridColor = "var(--ui-chart-grid, #e0e0e0)";
+    const textColor = "var(--ui-chart-text, var(--ui-text-muted, #555))";
+    const gridColor = "var(--ui-chart-grid, var(--ui-border, #e0e0e0))";
 
     drawYAxis(svg, ticks, area, scaleMax, 0, textColor, gridColor);
 

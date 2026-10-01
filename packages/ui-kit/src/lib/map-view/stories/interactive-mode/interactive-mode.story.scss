@@ -27,13 +27,13 @@
     line-height: 1.45;
   }
 
-  p + p {
+  p+p {
     margin-top: 0.3rem;
   }
 
   .hint {
     margin-top: 0.55rem;
-    color: var(--ui-text-muted, var(--ui-text-soft, #505d6d));
+    color: var(--ui-text-soft, var(--ui-text-muted, #505d6d));
     background: transparent;
   }
 }

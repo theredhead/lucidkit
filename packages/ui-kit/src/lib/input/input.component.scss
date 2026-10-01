@@ -19,8 +19,7 @@ textarea {
   font-size: var(--ui-font-body, 0.875rem);
   color: var(--ui-control-text, var(--ui-text));
   background-color: var(--ui-control-bg, var(--ui-surface));
-  border: var(--ui-control-border-width, 1px) solid
-    var(--ui-control-border, var(--ui-border));
+  border: var(--ui-control-border-width, 1px) solid var(--ui-control-border, var(--ui-border));
   border-radius: var(--ui-control-radius, 0.25rem);
   padding: var(--ui-control-py, 0.3rem) var(--ui-control-px, 0.5rem);
   min-width: 0;
@@ -151,11 +150,13 @@ textarea {
 /* ── Popup anchor ─────────────────────────────────────────── */
 
 .input-popup-anchor {
+  --input-popup-z-index: 100;
+  --input-popup-offset: 0.25rem;
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 100;
-  margin-top: 0.25rem;
+  z-index: var(--input-popup-z-index);
+  margin-top: var(--input-popup-offset);
 }
 
 // Dark-mode

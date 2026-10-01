@@ -9,7 +9,8 @@ import {
 import { FormsModule } from "@angular/forms";
 import { NgTemplateOutlet, KeyValuePipe } from "@angular/common";
 
-import { LoggerFactory } from "@theredhead/lucid-foundation";
+import { Emitter, LoggerFactory } from "@theredhead/lucid-foundation";
+import type { CalendarDatasource } from "@theredhead/lucid-kit";
 import {
   UIBadge,
   UIButton,
@@ -19,6 +20,7 @@ import {
   UICardHeader,
   UICheckbox,
   UIChip,
+  UICalendarMonthView,
   UIDropdownList,
   UIIcon,
   UIIcons,
@@ -33,6 +35,7 @@ import {
 
 import { ThemeStudioService } from "./theme-studio.service";
 import { UIThemeTokenRow } from "./token-row/theme-token-row.component";
+import { type ThemeStudioSample } from "./theme-studio.types";
 
 /**
  * Full-height split-pane theme editor.
@@ -65,6 +68,7 @@ import { UIThemeTokenRow } from "./token-row/theme-token-row.component";
     UICardFooter,
     UICardHeader,
     UIChip,
+    UICalendarMonthView,
     UICheckbox,
     UIDropdownList,
     UIInput,
@@ -130,6 +134,50 @@ export class UIThemeStudio implements OnInit {
     { label: "Option C", value: "c" },
   ];
 
+  /** Fast controls for the most common global theme decisions. */
+  protected readonly quickTokens = [
+    { name: "--ui-accent", label: "Accent", type: "color" },
+    { name: "--ui-surface", label: "Surface", type: "color" },
+    { name: "--ui-text", label: "Text", type: "color" },
+    { name: "--ui-radius", label: "Radius", type: "text" },
+    { name: "--ui-font", label: "Font", type: "text" },
+  ] as const;
+
+  /** Component samples available in the live canvas. */
+  protected readonly sampleOptions: readonly { value: ThemeStudioSample; label: string }[] = [
+    { value: "overview", label: "Overview" },
+    { value: "button", label: "Button" },
+    { value: "input", label: "Input" },
+    { value: "card", label: "Card" },
+    { value: "calendar", label: "Calendar" },
+    { value: "status", label: "Badges and chips" },
+    { value: "progress", label: "Progress" },
+    { value: "toggle", label: "Toggle and checkbox" },
+  ];
+
+  /** Small deterministic event source used by the live calendar sample. */
+  private readonly sampleCalendarChanged = new Emitter<void>();
+
+  protected readonly sampleCalendarDatasource: CalendarDatasource = {
+    changed: this.sampleCalendarChanged,
+    getEvents: (rangeStart, rangeEnd) => [
+      {
+        id: "studio-design-review",
+        title: "Design review",
+        start: new Date(rangeStart.getFullYear(), rangeStart.getMonth(), 8, 10),
+        end: new Date(rangeStart.getFullYear(), rangeStart.getMonth(), 8, 11),
+        color: "var(--ui-accent)",
+      },
+      {
+        id: "studio-planning",
+        title: "Planning",
+        start: new Date(rangeStart.getFullYear(), rangeStart.getMonth(), 16, 14),
+        end: new Date(rangeStart.getFullYear(), rangeStart.getMonth(), 16, 15),
+        color: "var(--ui-success)",
+      },
+    ].filter((event) => event.start <= rangeEnd && (event.end ?? event.start) >= rangeStart),
+  };
+
   // ── Lifecycle ──────────────────────────────────────────────────────
 
   /** @inheritdoc */
@@ -191,6 +239,11 @@ export class UIThemeStudio implements OnInit {
   }
 
   /** @internal */
+  protected onSampleTokensOnlyChange(event: Event): void {
+    this.studio.setSampleTokensOnly((event.target as HTMLInputElement).checked);
+  }
+
+  /** @internal */
   protected onTokenValueChange(tokenName: string, value: string): void {
     this.studio.setOverride(tokenName, value);
   }
@@ -198,6 +251,33 @@ export class UIThemeStudio implements OnInit {
   /** @internal */
   protected onTokenReset(tokenName: string): void {
     this.studio.setOverride(tokenName, null);
+  }
+
+  /** @internal */
+  protected onSampleChange(event: Event): void {
+    const sample = (event.target as HTMLSelectElement).value as ThemeStudioSample;
+    this.studio.setSelectedSample(sample);
+    this.studio.setSampleTokensOnly(sample !== "overview");
+  }
+
+  /** @internal */
+  protected selectedSampleLabel(): string {
+    return this.sampleOptions.find(
+      (sample) => sample.value === this.studio.selectedSample(),
+    )?.label ?? "Component";
+  }
+
+  /** @internal */
+  protected quickTokenValue(tokenName: string): string {
+    return this.studio.tokenValue(tokenName);
+  }
+
+  /** @internal */
+  protected onQuickTokenChange(tokenName: string, event: Event): void {
+    this.studio.setOverride(
+      tokenName,
+      (event.target as HTMLInputElement).value || null,
+    );
   }
 
   /** @internal */

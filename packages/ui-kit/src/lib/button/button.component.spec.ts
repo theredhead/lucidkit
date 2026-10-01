@@ -42,6 +42,10 @@ describe("UIButton", () => {
       expect(component.color()).toBe("primary");
     });
 
+    it("should default muted to false", () => {
+      expect(component.muted()).toBe(false);
+    });
+
     it("should default disabled to false", () => {
       expect(component.disabled()).toBe(false);
     });

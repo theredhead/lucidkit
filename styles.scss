@@ -1,21 +1,16 @@
 // theredhead UI Theme — light/dark mode via CSS custom properties
-@use "./packages/ui-theme/src/lib/styles" as theme;
+@use "./packages/ui-theme/src/lib/styles/generative" as gen;
 @use "./packages/ui-kit/styles" as ui-kit;
 
-// Apply the full theme (includes light/dark mode and --ui-* design tokens)
-// All colour arguments below are the built-in defaults.
-// Uncomment and change any value to override across the whole app.
-@include theme.theredhead-theme(
-  $font-family: '"Cantarell", "Noto Sans", "Segoe UI", sans-serif',
-  $brand-color: #3584e4,
-  $primary-color: #3584e4,
-  $secondary-color: #625b71,
-  $tertiary-color: #7b5ea7,
-  $info-color: #1a73e8,
-  $warn-color: #e8a317,
-  $success-color: #1e8e3e,
-  $error-color: #ba1a1a
-);
+// Look-and-feel v2 (feature/look-and-feel): the full token set generated
+// from five seed colours instead of the fixed Material palette. Swap
+// primary/secondary/success/error here to preview a different palette —
+// tertiary is left to auto-derive from primary.
+@include gen.lucid-theme($font-family: '"Cantarell", "Noto Sans", "Segoe UI", sans-serif',
+  $primary: #ea4a2a,
+  $secondary: #2a6ea6,
+  $success: #2e8b57,
+  $error: #d1373f);
 
 @include ui-kit.ui-cursor-theme();
 

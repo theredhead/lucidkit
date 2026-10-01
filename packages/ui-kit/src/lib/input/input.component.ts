@@ -261,7 +261,7 @@ export class UIInput implements OnDestroy {
     const val = a ? this.value() : this.text();
     const display = a?.toDisplayValue ? a.toDisplayValue(val) : val;
     const el = this.nativeInput()?.nativeElement;
-    if (el && el.value !== display) {
+    if (el && !a?.formatOnBlur && el.value !== display) {
       el.value = display;
     }
   });
@@ -313,7 +313,7 @@ export class UIInput implements OnDestroy {
     const adapted = a ? a.toValue(raw) : raw;
     this.value.set(adapted);
     // Write the display value back immediately to avoid flicker
-    if (a) {
+    if (a && !a.formatOnBlur) {
       const display = a.toDisplayValue ? a.toDisplayValue(adapted) : adapted;
       if (el.value !== display) {
         const pos = el.selectionStart;
@@ -324,6 +324,21 @@ export class UIInput implements OnDestroy {
         }
       }
     }
+  }
+
+  /** @internal */
+  protected onBlur(event: FocusEvent): void {
+    const adapter = this.adapter();
+    if (!adapter?.formatOnBlur) return;
+
+    const el = event.target as HTMLInputElement | HTMLTextAreaElement;
+    const adapted = adapter.toValue(el.value);
+    this.text.set(el.value);
+    this.value.set(adapted);
+    const display = adapter.toDisplayValue
+      ? adapter.toDisplayValue(adapted)
+      : adapted;
+    if (el.value !== display) el.value = display;
   }
 
   /** @internal */

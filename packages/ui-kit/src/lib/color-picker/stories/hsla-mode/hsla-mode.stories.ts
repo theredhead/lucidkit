@@ -54,7 +54,8 @@ export const HslaMode: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-hsla-mode-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: "<ui-hsla-mode-story-demo />",
+  })
 };

@@ -9,8 +9,11 @@ import {
 
 import { UIIcon } from "../icon/icon.component";
 import { UIIcons } from "../icon/lucide-icons.generated";
-import { DEFAULT_EMOJI_CATEGORIES } from "./emoji-picker.data";
-import type { EmojiCategory } from "./emoji-picker.types";
+import {
+  DEFAULT_EMOJI_CATEGORIES,
+  DEFAULT_EN_US_EMOJI_SEARCH_TERMS,
+} from "./emoji-picker.data";
+import type { EmojiCategory, EmojiSearchTerms } from "./emoji-picker.types";
 import { UISurface } from '@theredhead/lucid-foundation';
 
 /**
@@ -55,6 +58,16 @@ export class UIEmojiPicker {
     DEFAULT_EMOJI_CATEGORIES,
   );
 
+  /**
+   * Language-specific semantic terms keyed by emoji character.
+   *
+   * Provide this from the application's active localization data to search the
+   * built-in glyphs in the user's language.
+   */
+  public readonly emojiSearchTerms = input<EmojiSearchTerms>(
+    DEFAULT_EN_US_EMOJI_SEARCH_TERMS,
+  );
+
   /** Placeholder text for the search input. */
   public readonly searchPlaceholder = input<string>("Search emoji…");
 
@@ -85,6 +98,13 @@ export class UIEmojiPicker {
   /** Emoji currently hovered for the preview. */
   protected readonly hoveredEmoji = signal<string | null>(null);
 
+  /** Search terms associated with the previewed emoji. */
+  protected readonly hoveredSearchTerms = computed(() => {
+    const emoji = this.hoveredEmoji();
+    if (!emoji) return [];
+    return this.emojiSearchTerms()[emoji] ?? this.categorySearchTerms(emoji);
+  });
+
   // ── Computed ───────────────────────────────────────────
 
   /** Effective categories, falling back to defaults. */
@@ -101,12 +121,18 @@ export class UIEmojiPicker {
     const cats = this.effectiveCategories();
     const term = this.searchTerm().toLowerCase().trim();
     const activeIdx = this.activeCategoryIndex();
+    const searchTerms = this.emojiSearchTerms();
 
     // When searching, search across all categories
     if (term) {
       const results: { name: string; emojis: readonly string[] }[] = [];
       for (const cat of cats) {
-        const matching = cat.emojis.filter((e) => e.includes(term));
+        const categoryMatches = cat.name.toLocaleLowerCase().includes(term);
+        const matching = categoryMatches
+          ? cat.emojis
+          : cat.emojis.filter((emoji) =>
+            this.matchesSearchTerm(cat, emoji, term, searchTerms),
+          );
         if (matching.length > 0) {
           results.push({ name: cat.name, emojis: matching });
         }
@@ -158,5 +184,25 @@ export class UIEmojiPicker {
   /** @internal */
   protected onEmojiLeave(): void {
     this.hoveredEmoji.set(null);
+  }
+
+  private matchesSearchTerm(
+    category: EmojiCategory,
+    emoji: string,
+    term: string,
+    searchTerms: EmojiSearchTerms,
+  ): boolean {
+    return emoji.includes(term) ||
+      (searchTerms[emoji] ?? category.searchTerms?.[emoji] ?? []).some((searchTerm) =>
+        searchTerm.toLocaleLowerCase().includes(term),
+      );
+  }
+
+  private categorySearchTerms(emoji: string): readonly string[] {
+    for (const category of this.effectiveCategories()) {
+      const searchTerms = category.searchTerms?.[emoji];
+      if (searchTerms) return searchTerms;
+    }
+    return [];
   }
 }
