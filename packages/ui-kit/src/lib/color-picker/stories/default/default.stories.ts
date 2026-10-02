@@ -60,20 +60,20 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-        "### Modes\n" +
-        "1. **Theme** — Material-style palette rows in tonal luminosities\n" +
-        "2. **Grid** — 72-colour flat grid covering the full spectrum\n" +
-        "3. **RGBA** — Red / Green / Blue / Alpha channel sliders\n" +
-        "4. **HSLA** — Hue / Saturation / Lightness / Alpha sliders\n\n" +
-        "### Features\n" +
-        "- Two-way binding with `[(value)]` model signal\n" +
-        "- Configurable initial mode via `initialMode` input\n" +
-        "- Live colour preview and hex input inside the popover\n" +
-        "- Full alpha channel support\n\n" +
-        "### Usage\n" +
-        "```html\n" +
-        '<ui-color-picker [(value)]="myColour" initialMode="rgba" />\n' +
-        "```"
+          "### Modes\n" +
+          "1. **Theme** — Material-style palette rows in tonal luminosities\n" +
+          "2. **Grid** — 72-colour flat grid covering the full spectrum\n" +
+          "3. **RGBA** — Red / Green / Blue / Alpha channel sliders\n" +
+          "4. **HSLA** — Hue / Saturation / Lightness / Alpha sliders\n\n" +
+          "### Features\n" +
+          "- Two-way binding with `[(value)]` model signal\n" +
+          "- Configurable initial mode via `initialMode` input\n" +
+          "- Live colour preview and hex input inside the popover\n" +
+          "- Full alpha channel support\n\n" +
+          "### Usage\n" +
+          "```html\n" +
+          '<ui-color-picker [(value)]="myColour" initialMode="rgba" />\n' +
+          "```"
       }
     }
   },

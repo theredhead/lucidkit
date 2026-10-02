@@ -35,7 +35,11 @@ export default meta;
 type Story = StoryObj;
 
 export const BodyImage: Story = {
+  args: {
+    variant: "filled"
+  },
+
   render: () => ({
     template: "<ui-card-story-body-image />",
-  }),
+  })
 };
