@@ -122,5 +122,5 @@ The input accepts a space-separated string or an array to combine types:
   ancestors via the injector tree. Components that should not inherit a parent's
   surface type must explicitly provide `useValue: ''` (e.g. `UIIcon`).
 - **Global CSS dependency:** The `_surfaces.scss` stylesheet must be included
-  at the application level (via `theredhead-theme()`) for surface classes to
+  at the application level (via `lucid-theme()`) for surface classes to
   have any effect.

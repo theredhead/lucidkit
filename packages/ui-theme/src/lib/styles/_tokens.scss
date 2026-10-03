@@ -2,8 +2,8 @@
 // =============================================================================
 //
 // Centralised light / dark values for every `--ui-*` CSS custom property used
-// across @theredhead/lucid-kit.  Include this file via the `theredhead-theme()`
-// mixin so that every token is available at the `:root` level and components
+// across @theredhead/lucid-kit. These fixed-palette mixins remain available
+// separately; `lucid-theme()` is the default generated theme and components
 // only need to consume `var(--ui-*)` without re-declaring defaults.
 //
 // Tokens are organised into semantic groups:

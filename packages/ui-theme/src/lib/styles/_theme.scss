@@ -1,4 +1,4 @@
-// theredhead UI Theme - Main Theme Configuration
+// LucidKit fixed-palette theme helpers
 // Light and dark mode support with CSS custom properties
 //
 // No external runtime dependencies — all colours are defined directly
@@ -14,7 +14,7 @@
 // Theme Definition
 // ============================================================================
 
-/// Main mixin to apply the theredhead theme.
+/// Internal fixed-palette implementation; use the public `lucid-theme()` mixin.
 ///
 /// Sets `--ui-*` CSS design tokens for both light and dark modes using the
 /// three-tier dark-mode pattern:
@@ -63,8 +63,7 @@
 ///     • $brand-color only    → brand + focus-ring = that colour; accent unchanged
 ///     • Both passed          → brand wins for focus-ring; accent is independent
 /// ```
-@mixin theredhead-theme(
-  $font-family: '"Cantarell", "Noto Sans", "Segoe UI", sans-serif',
+@mixin _fixed-palette-theme($font-family: '"Cantarell", "Noto Sans", "Segoe UI", sans-serif',
   $brand-color: null,
   $primary-color: null,
   $secondary-color: null,
@@ -72,15 +71,16 @@
   $info-color: null,
   $warn-color: null,
   $success-color: null,
-  $error-color: null
-) {
+  $error-color: null) {
   // Resolve brand: explicit $brand-color wins, else fall back to $primary-color.
   // When neither is given the token default (var(--ui-accent)) applies.
   $_brand: null;
 
   @if $brand-color {
     $_brand: $brand-color;
-  } @else if $primary-color {
+  }
+
+  @else if $primary-color {
     $_brand: $primary-color;
   }
 
@@ -93,24 +93,31 @@
     @if $_brand {
       --ui-brand: #{$_brand};
     }
+
     @if $primary-color {
       --ui-accent: #{$primary-color};
     }
+
     @if $secondary-color {
       --ui-secondary: #{$secondary-color};
     }
+
     @if $tertiary-color {
       --ui-tertiary: #{$tertiary-color};
     }
+
     @if $info-color {
       --ui-info: #{$info-color};
     }
+
     @if $warn-color {
       --ui-warning: #{$warn-color};
     }
+
     @if $success-color {
       --ui-success: #{$success-color};
     }
+
     @if $error-color {
       --ui-error: #{$error-color};
     }
@@ -124,24 +131,31 @@
     @if $_brand {
       --ui-brand: #{$_brand};
     }
+
     @if $primary-color {
       --ui-accent: #{$primary-color};
     }
+
     @if $secondary-color {
       --ui-secondary: #{$secondary-color};
     }
+
     @if $tertiary-color {
       --ui-tertiary: #{$tertiary-color};
     }
+
     @if $info-color {
       --ui-info: #{$info-color};
     }
+
     @if $warn-color {
       --ui-warning: #{$warn-color};
     }
+
     @if $success-color {
       --ui-success: #{$success-color};
     }
+
     @if $error-color {
       --ui-error: #{$error-color};
     }
@@ -156,24 +170,31 @@
       @if $_brand {
         --ui-brand: #{$_brand};
       }
+
       @if $primary-color {
         --ui-accent: #{$primary-color};
       }
+
       @if $secondary-color {
         --ui-secondary: #{$secondary-color};
       }
+
       @if $tertiary-color {
         --ui-tertiary: #{$tertiary-color};
       }
+
       @if $info-color {
         --ui-info: #{$info-color};
       }
+
       @if $warn-color {
         --ui-warning: #{$warn-color};
       }
+
       @if $success-color {
         --ui-success: #{$success-color};
       }
+
       @if $error-color {
         --ui-error: #{$error-color};
       }

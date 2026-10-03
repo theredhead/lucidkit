@@ -162,7 +162,7 @@ Enable it alongside the normal theme include:
 @use "@theredhead/lucid-theme/styles" as theme;
 @use "@theredhead/lucid-kit/styles" as ui-kit;
 
-@include theme.theredhead-theme();
+@include theme.lucid-theme($primary: #ea4a2a);
 @include ui-kit.ui-cursor-theme();
 ```
 

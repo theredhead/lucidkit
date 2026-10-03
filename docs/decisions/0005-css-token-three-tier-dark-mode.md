@@ -3,7 +3,7 @@
 ## Status
 
 Accepted — **amended**: per-component three-tier blocks replaced by centralised
-token declarations (see _Amendments_ section).
+token generation (see _Amendments_ section).
 
 ## Context
 
@@ -24,34 +24,19 @@ system-default.
 
 ### Token namespace
 
-All design tokens use the `--ui-*` namespace. They are declared centrally in
-`_tokens.scss` and emitted on `html` by the `theredhead-theme()` mixin.
+All design tokens use the `--ui-*` namespace. The `lucid-theme()` mixin in
+`_generative.scss` generates and emits them on `html`.
 Components consume tokens via `var(--ui-text)`, `var(--ui-surface)`, etc.,
 inheriting the correct value through the CSS cascade.
 
 ### Three-tier dark mode (centralised)
 
-The `theredhead-theme()` mixin in `_theme.scss` applies the full token set
-on three selectors:
+The `lucid-theme()` mixin applies the generated token set on three selectors:
 
 ```scss
-// 1. Light defaults
-html {
-  @include tokens.ui-tokens-light;
-  line-height: 1.5;
-}
+@use "@theredhead/lucid-theme/styles" as theme;
 
-// 2. Explicit dark class (user chose dark via ThemeService)
-html.dark-theme {
-  @include tokens.ui-tokens-dark;
-}
-
-// 3. System preference fallback (no explicit choice)
-@media (prefers-color-scheme: dark) {
-  html:not(.light-theme):not(.dark-theme) {
-    @include tokens.ui-tokens-dark;
-  }
-}
+@include theme.lucid-theme($primary: #ea4a2a);
 ```
 
 - **Tier 1** ensures a sensible default in all environments.
@@ -95,7 +80,7 @@ type, providing a typed, discoverable catalogue of all token names.
 - **No FOUC:** When `ThemeService` applies `dark-theme` on page load (from
   persisted preference), Tier 2 activates immediately. When no preference is
   stored, Tier 3 uses the OS setting with no JS needed.
-- **Zero duplication:** Tokens are declared once (two mixins: light + dark).
+- **Zero duplication:** `lucid-theme()` derives light and dark tokens together.
   Components have no dark-mode SCSS at all.
 - **Type safety:** `UI_TOKENS` and `UI_TokenName` catch token typos at
   compile time.
@@ -116,10 +101,10 @@ dark-mode block (`":host"`, `":host-context(html.dark-theme)"`,
 `"@media (prefers-color-scheme: dark)"`). This caused significant duplication —
 dark values were repeated in Tier 2 and Tier 3 of every component SCSS file.
 
-The architecture was refactored to **centralise all token declarations** in
-`_tokens.scss` via two mixins (`ui-tokens-light` / `ui-tokens-dark`). The
-`theredhead-theme()` mixin emits both sets on `html`. Components now only
-reference `var(--ui-*)` and never include dark-mode selectors themselves.
+The architecture now generates token declarations in `_generative.scss` from
+seed colours. The `lucid-theme()` mixin emits light and dark tokens on `html`;
+components only reference `var(--ui-*)` and never include dark-mode selectors
+themselves.
 
 The three-tier strategy is unchanged — only its location has moved from
 individual components to the global theme mixin.

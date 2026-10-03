@@ -1,4 +1,4 @@
-// theredhead UI Theme — Generative Theme Builder
+// LucidKit — Generative Theme Builder
 // =============================================================================
 //
 // `lucid-theme()` derives the full `--ui-*` token set (surfaces, borders,
@@ -14,14 +14,15 @@
 //
 // Usage:
 //
-//   @use "@theredhead/lucid-theme/styles/generative" as gen;
-//   @include gen.lucid-theme($primary: #ea4a2a);
+//   @use "@theredhead/lucid-theme/styles" as theme;
+//   @include theme.lucid-theme($primary: #ea4a2a);
 //
 // =============================================================================
 
 @use "sass:color";
 @use "sass:math";
 @use "elevation" as elev;
+@use "tooltip";
 
 // ── Warm neutral scale (mode-invariant seeds) ──────────────────────
 
@@ -362,4 +363,6 @@ $_dark-border-strong: #404145 !default;
             color-scheme: dark;
         }
     }
+
+    @include tooltip.ui-tooltip-styles;
 }

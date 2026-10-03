@@ -39,7 +39,7 @@ It contains six publishable npm packages:
 | `@theredhead/lucid-blocks`     | Composites | Master-Detail View, Navigation Page, Dashboard, Kanban, Chat, File Browser, etc.            |
 | `@theredhead/lucid-forms`      | Forms      | Schema-driven forms, validation, conditional logic, form designer                           |
 | `@theredhead/lucid-theme-studio` | Devtools | Optional live theme-token editor |
-| `@theredhead/lucid-theme`      | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
+| `@theredhead/lucid-theme`      | Theming    | ThemeService, generated SCSS theme mixin, design tokens                                    |
 
 ### API Inventories
 
@@ -407,27 +407,18 @@ export class UIExample {
 | --------- | ---------------------------------- | ------------------------------------------------------------------------- |
 | `--ui-*`  | All design tokens (global + local) | `--ui-text`, `--ui-border`, `--ui-accent`, `--ui-surface`, `--ui-density` |
 
-All tokens live under the `--ui-*` namespace. They are declared centrally in
-`_tokens.scss` and emitted on `html` by the `theredhead-theme()` mixin.
+All tokens live under the `--ui-*` namespace. The `lucid-theme()` mixin in
+`_generative.scss` generates them on `html` for light and dark modes.
 
 ### Dark mode (centralised — do NOT add per-component three-tier blocks)
 
-Dark mode is handled **globally** in `_theme.scss`. The `theredhead-theme()`
-mixin emits all `--ui-*` tokens on three selectors:
+Dark mode is handled **globally** by `lucid-theme()`. It emits all `--ui-*`
+tokens on three selectors:
 
 ```scss
-html {
-  @include tokens.ui-tokens-light;
-}
-html.dark-theme {
-  @include tokens.ui-tokens-dark;
-}
+@use "@theredhead/lucid-theme/styles" as theme;
 
-@media (prefers-color-scheme: dark) {
-  html:not(.light-theme):not(.dark-theme) {
-    @include tokens.ui-tokens-dark;
-  }
-}
+@include theme.lucid-theme($primary: #ea4a2a);
 ```
 
 **Components never declare their own three-tier blocks.** They consume tokens

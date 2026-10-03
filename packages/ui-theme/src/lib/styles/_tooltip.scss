@@ -8,7 +8,7 @@
 
 /// Emit the global `.ui-tooltip` styles.
 ///
-/// Called automatically by `theredhead-theme()`.  If you use a custom theme
+/// Called automatically by `lucid-theme()`. If you use a custom theme
 /// setup, include this mixin at the root level of your stylesheet.
 @mixin ui-tooltip-styles {
   .ui-tooltip {
