@@ -57,7 +57,15 @@ export const Playground: Story = {
     disabled: false,
     ariaLabel: "Toggle switch",
   },
-  render: () => ({
-      template: "<ui-playground-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-playground-story-demo
+      [value]="value"
+      [onLabel]="onLabel"
+      [offLabel]="offLabel"
+      [size]="size"
+      [disabled]="disabled"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

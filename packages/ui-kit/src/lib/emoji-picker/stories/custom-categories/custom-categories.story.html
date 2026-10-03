@@ -1,6 +1,9 @@
 <ui-emoji-picker
   [categories]="customCategories"
   (emojiSelected)="onEmoji($event)"
+  [searchPlaceholder]="searchPlaceholder()"
+  [previewSize]="previewSize()"
+  [ariaLabel]="ariaLabel()"
 />
 @if (lastEmoji()) {
   <p class="selected">Selected: {{ lastEmoji() }}</p>

@@ -58,7 +58,7 @@ $_dark-border-strong: #404145 !default;
     $green: _linear-channel(color.channel($value, "green", $space: rgb));
     $blue: _linear-channel(color.channel($value, "blue", $space: rgb));
 
-    @return 0.2126 * $red +0.7152 * $green +0.0722 * $blue;
+    @return 0.2126 * $red + 0.7152 * $green + 0.0722 * $blue;
 }
 
 /// Returns the WCAG contrast ratio between two colours.

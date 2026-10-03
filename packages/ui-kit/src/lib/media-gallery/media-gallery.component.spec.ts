@@ -229,6 +229,58 @@ describe("UIMediaGallery", () => {
         );
     });
 
+    for (const selector of [".next", ".preview"]) {
+        it(`should keep the gallery open when Enter targets ${selector}`, () => {
+            const control: HTMLButtonElement = fixture.nativeElement.querySelector(selector);
+            control.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+            fixture.detectChanges();
+
+            expect(service.isOpen()).toBe(true);
+            control.click();
+            fixture.detectChanges();
+            expect(service.isOpen()).toBe(true);
+        });
+    }
+
+    it("should honor closeOnBackdropClick for backdrop keyboard activation", () => {
+        fixture.componentRef.setInput("closeOnBackdropClick", false);
+        fixture.detectChanges();
+        const backdrop = fixture.nativeElement.querySelector(".backdrop");
+        backdrop.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+        expect(service.isOpen()).toBe(true);
+
+        fixture.componentRef.setInput("closeOnBackdropClick", true);
+        fixture.detectChanges();
+        backdrop.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+        expect(service.isOpen()).toBe(false);
+    });
+
+    for (const inline of [false, true]) {
+        it(`should retain video captions in ${inline ? "inline" : "fullscreen"} mode`, () => {
+            const video: MediaGalleryItem = {
+                id: "captioned-video", collection: "demo", kind: "video", src: "/video.mp4",
+                tracks: [{ kind: "captions", src: "/captions.vtt", srcLang: "en", label: "English", default: true }],
+            };
+            if (inline) {
+                service.close();
+                fixture.componentRef.setInput("inline", true);
+                fixture.componentRef.setInput("items", [video]);
+            } else {
+                service.register(video);
+                service.open(video.id);
+            }
+            fixture.detectChanges();
+
+            const track: HTMLTrackElement = fixture.nativeElement.querySelector(".viewer video track");
+            expect(track).not.toBeNull();
+            expect(track.getAttribute("kind")).toBe("captions");
+            expect(track.getAttribute("src")).toBe("/captions.vtt");
+            expect(track.getAttribute("srclang")).toBe("en");
+            expect(track.getAttribute("label")).toBe("English");
+            expect(track.hasAttribute("default")).toBe(true);
+        });
+    }
+
     it("should close with Escape and the close button", () => {
         document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
         fixture.detectChanges();
@@ -469,6 +521,34 @@ describe("UIMediaGallery", () => {
         fixture.detectChanges();
 
         expect(fixture.nativeElement.querySelector(".filmstrip")).toBeNull();
+    });
+
+    for (const key of ["Enter", " "]) {
+        it(`should expand an inline gallery with ${key} without immediately closing it`, () => {
+            service.close();
+            fixture.componentRef.setInput("inline", true);
+            fixture.componentRef.setInput("items", [first, second]);
+            fixture.detectChanges();
+
+            fixture.nativeElement.querySelector(".stage").dispatchEvent(
+                new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }),
+            );
+            fixture.detectChanges();
+            expect(fixture.nativeElement.querySelector('[role="dialog"]')).not.toBeNull();
+        });
+    }
+
+    it("should leave keyboard activation of inline video controls to the media player", () => {
+        service.close();
+        fixture.componentRef.setInput("inline", true);
+        fixture.componentRef.setInput("items", [{ id: "video", collection: "demo", kind: "video", src: "/video.mp4" }]);
+        fixture.detectChanges();
+
+        fixture.nativeElement.querySelector("ui-media-player button").dispatchEvent(
+            new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+        );
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
     });
 
     it("should expand an inline gallery to fullscreen when its media is activated", () => {

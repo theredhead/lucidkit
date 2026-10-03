@@ -60,6 +60,7 @@ module.exports = tseslint.config(
     // Ignore build outputs, resources, generated files, and coverage reports
     ignores: [
       "dist/",
+      "dev-docs/",
       "storybook-static/",
       "node_modules/",
       ".angular/",

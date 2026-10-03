@@ -40,11 +40,16 @@ export const ExplicitMarkdown: Story = {
   name: "Explicit Markdown strategy",
   args: {
     ariaLabel: "Markdown content",
+    strategy: "markdown",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-    template: "<ui-explicit-markdown-story-demo />",
+  render: (args) => ({
+    props: args,
+    template: `<ui-explicit-markdown-story-demo
+      [ariaLabel]="ariaLabel"
+      [strategy]="strategy"
+    />`,
   })
 };

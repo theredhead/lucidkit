@@ -1,3 +1,6 @@
 <div class="designer-container">
-  <ui-form-designer (schemaChange)="onSave($event)" />
+  <ui-form-designer
+    (schemaChange)="onSave($event)"
+    [schema]="schema()"
+  />
 </div>

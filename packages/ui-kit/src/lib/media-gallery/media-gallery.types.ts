@@ -1,3 +1,5 @@
+import type { MediaTrack } from "../media-player/media-player.types";
+
 /** The media kinds supported by the gallery viewer. */
 export type MediaGalleryKind = "image" | "video";
 
@@ -26,4 +28,9 @@ export interface MediaGalleryItem {
 
     /** MIME type of the media resource. */
     readonly type?: string;
+
+    /**
+     * Captions, subtitles, and other text tracks retained during gallery playback.
+     */
+    readonly tracks?: readonly MediaTrack[];
 }

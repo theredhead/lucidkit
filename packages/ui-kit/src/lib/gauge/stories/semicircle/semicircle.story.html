@@ -1,10 +1,11 @@
 <ui-gauge
-  [value]="temperature"
-  [min]="0"
-  [max]="100"
-  unit="°C"
-  [strategy]="semicircleStrategy"
+  [value]="value()"
+  [min]="min()"
+  [max]="max()"
+  [unit]="unit()"
+  [strategy]="strategy()"
   [zones]="zones"
-  [width]="280"
-  [height]="160"
+  [width]="width()"
+  [height]="height()"
+  [detailLevel]="detailLevel()"
 />

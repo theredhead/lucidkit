@@ -34,11 +34,17 @@ export const Horizontal: Story = {
   args: {
     orientation: "horizontal",
     alignment: "start",
+    ariaLabel: "Timeline",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-horizontal-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-horizontal-story-demo
+      [orientation]="orientation"
+      [alignment]="alignment"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

@@ -29,11 +29,20 @@ export default meta;
 type Story = StoryObj<CustomCategoriesStorySource>;
 
 export const CustomCategories: Story = {
-  args: {},
+  args: {
+    searchPlaceholder: "Search emoji…",
+    previewSize: 64,
+    ariaLabel: "Emoji picker",
+  },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-custom-categories-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-custom-categories-story-demo
+      [searchPlaceholder]="searchPlaceholder"
+      [previewSize]="previewSize"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

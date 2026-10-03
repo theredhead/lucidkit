@@ -50,11 +50,21 @@ export const CustomFormatter: Story = {
     strategy: new AnalogGaugeStrategy(),
     width: 260,
     height: 260,
+    detailLevel: "high",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-custom-formatter-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-custom-formatter-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

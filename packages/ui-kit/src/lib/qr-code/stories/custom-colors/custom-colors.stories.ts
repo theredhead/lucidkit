@@ -42,11 +42,19 @@ export const CustomColors: Story = {
     size: 160,
     foreground: "#0a7cff",
     background: "#eaf6ff",
+    ariaLabel: "QR code",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-custom-colors-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-custom-colors-story-demo
+      [value]="value"
+      [size]="size"
+      [foreground]="foreground"
+      [background]="background"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { UIImage } from "../image/image.component";
 import { UIMediaPlayer } from "../media-player/media-player.component";
 import { MediaGalleryService } from "./media-gallery.service";
+import { UIMediaGallery } from "./media-gallery.component";
 import { UIMediaGalleryItem } from "./media-gallery.directive";
 
 beforeEach(() => {
@@ -22,7 +23,7 @@ afterEach(() => {
 
 @Component({
     standalone: true,
-    imports: [UIImage, UIMediaPlayer, UIMediaGalleryItem],
+    imports: [UIImage, UIMediaPlayer, UIMediaGalleryItem, UIMediaGallery],
     template: `
     <ui-image gallery src="/unnamed.jpg" alt="Unnamed image" />
     <ui-image gallery="named" src="/named.jpg" alt="Named image" />
@@ -30,9 +31,11 @@ afterEach(() => {
       gallery
       type="video"
       [source]="{ url: '/clip.mp4', type: 'video/mp4' }"
+      [tracks]="[{ kind: 'captions', src: '/captions.vtt', srcLang: 'en', label: 'English' }]"
       poster="/clip.jpg"
       ariaLabel="Unnamed video"
     />
+    <ui-media-gallery />
   `,
 })
 class GalleryHost { }
@@ -65,6 +68,16 @@ describe("UIMediaGalleryItem", () => {
             poster: "/clip.jpg",
             alt: "Unnamed video",
         });
+    });
+
+    it("should retain caption tracks from the registered player through gallery playback", () => {
+        const video = service.items("").find((item) => item.kind === "video")!;
+        expect(video.tracks).toEqual([{ kind: "captions", src: "/captions.vtt", srcLang: "en", label: "English" }]);
+        service.open(video.id);
+        fixture.detectChanges();
+        const track: HTMLTrackElement = fixture.nativeElement.querySelector(".viewer video track");
+        expect(track.getAttribute("src")).toBe("/captions.vtt");
+        expect(track.getAttribute("kind")).toBe("captions");
     });
 
     it("should open the host item when clicked", () => {

@@ -183,6 +183,8 @@ This pattern allows for extensibility - new column types can be added without mo
 | `RICH_TEXT_VIEW_DATA_DETECTORS`    | `src/lib/rich-text-view/rich-text-view.component.ts` | DI token for optional rich-text-view data detectors                        |
 | `provideRichTextViewDataDetectors` | `src/lib/rich-text-view/rich-text-view.component.ts` | Provider helper for rich-text-view data detectors                          |
 
+| `MediaGalleryItem` | `src/lib/media-gallery/media-gallery.types.ts` | Image or video item, including optional caption/subtitle tracks |
+
 ## Text Input Adapters
 
 | Name                     | File                                                 | Description                                   |

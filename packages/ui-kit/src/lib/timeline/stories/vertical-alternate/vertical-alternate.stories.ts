@@ -34,11 +34,17 @@ export const VerticalAlternate: Story = {
   args: {
     orientation: "vertical",
     alignment: "alternate",
+    ariaLabel: "Timeline",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-vertical-alternate-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-vertical-alternate-story-demo
+      [orientation]="orientation"
+      [alignment]="alignment"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

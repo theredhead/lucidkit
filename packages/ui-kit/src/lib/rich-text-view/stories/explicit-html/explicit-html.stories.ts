@@ -40,11 +40,16 @@ export const ExplicitHtml: Story = {
   name: "Explicit HTML strategy",
   args: {
     ariaLabel: "Rich text content",
+    strategy: "html",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-    template: "<ui-explicit-html-story-demo />",
+  render: (args) => ({
+    props: args,
+    template: `<ui-explicit-html-story-demo
+      [ariaLabel]="ariaLabel"
+      [strategy]="strategy"
+    />`,
   })
 };

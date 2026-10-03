@@ -56,7 +56,17 @@ export const Semicircle: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-semicircle-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-semicircle-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

@@ -36,10 +36,15 @@ type Story = StoryObj;
 
 export const BodyImage: Story = {
   args: {
-    variant: "filled"
+    variant: "filled",
+    interactive: false,
   },
 
-  render: () => ({
-    template: "<ui-card-story-body-image />",
+  render: (args) => ({
+    props: args,
+    template: `<ui-card-story-body-image
+      [variant]="variant"
+      [interactive]="interactive"
+    />`,
   })
 };

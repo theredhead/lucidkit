@@ -196,3 +196,10 @@ Flat and shadow variants are available as explicit classes too, for example:
 - `.ui-cursor-external-shadow`
 - `.ui-cursor-wait-outlined-flat`
 - `.ui-cursor-wait-outlined-shadow`
+
+## Media Gallery text tracks
+
+Videos registered with `ui-media-player[gallery]` retain their `tracks` in the gallery.
+For programmatic or inline collections, set `MediaGalleryItem.tracks` to the same
+`readonly MediaTrack[]` accepted by `UIMediaPlayer`. Captions, subtitles, descriptions,
+and chapters are forwarded to the gallery player in both inline and fullscreen modes.

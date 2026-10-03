@@ -45,7 +45,11 @@ export const AutoHtml: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-    template: "<ui-auto-html-story-demo />",
+  render: (args) => ({
+    props: args,
+    template: `<ui-auto-html-story-demo
+      [strategy]="strategy"
+      [ariaLabel]="ariaLabel"
+    />`,
   })
 };

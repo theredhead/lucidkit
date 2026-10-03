@@ -10,6 +10,7 @@ COPY packages/ui-kit/package.json     packages/ui-kit/
 COPY packages/ui-blocks/package.json  packages/ui-blocks/
 COPY packages/ui-theme/package.json   packages/ui-theme/
 COPY packages/ui-forms/package.json   packages/ui-forms/
+COPY packages/ui-theme-studio/package.json packages/ui-theme-studio/
 RUN npm ci
 
 # Copy source

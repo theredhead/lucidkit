@@ -57,7 +57,12 @@ export const Single: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-single-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-single-story-demo
+      [showControls]="showControls"
+      [showIndicators]="showIndicators"
+      [wrap]="wrap"
+    />`,
+  })
 };

@@ -18,6 +18,7 @@ Some scripts rewrite files in place. Review the diff after running them.
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | `add-surface-directive.mjs`          | Adds the `UISurface` host directive to `ui-*` components that do not already have it. |
 | `capture-storybook-screenshots.mjs`  | Captures Storybook story screenshots and writes a manifest for the generated assets.  |
+| `audit-package-metadata.mjs` | Checks built bundle dependency declarations and package export targets. |
 | `coverage-report.mjs`                | Reads Vitest coverage output and prints a prioritized under-coverage report.          |
 | `extract-story-source-files.mjs`     | Extracts `.story.ts/.html/.scss` source files from legacy monolithic Storybook files. |
 | `find-jsdoc-violations.mjs`          | Reports JSDoc spacing violations in TypeScript files.                                 |
@@ -338,3 +339,10 @@ Notes:
 
 - This script rewrites `*.component.scss` files in place.
 - It uses PostCSS with the SCSS parser, so it is best treated as a bulk refactoring utility.
+
+## `audit-package-metadata.mjs`
+
+After building, run `npm run audit:package-metadata` to verify that every external
+import in each built FESM bundle is declared as a dependency or peer, and that
+every package export resolves to an existing file. The root pack and publish
+commands run this audit before distributing artifacts.

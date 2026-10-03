@@ -49,11 +49,20 @@ export const Responsive: Story = {
     max: 100,
     unit: "km/h",
     detailLevel: "high" as GaugeDetailLevel,
+    strategy: new AnalogGaugeStrategy(),
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-responsive-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-responsive-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [detailLevel]="detailLevel"
+      [strategy]="strategy"
+    />`,
+  })
 };

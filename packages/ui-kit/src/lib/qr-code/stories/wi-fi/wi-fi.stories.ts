@@ -9,10 +9,8 @@ const meta = {
   component: WiFiStorySource,
   tags: ["autodocs"],
   argTypes: {
-    value: {
-      control: "text",
-      description: "The data to encode in the QR code.",
-    },
+    ssid: { control: "text", description: "Wi-Fi network name." },
+    passphrase: { control: "text", description: "Wi-Fi password." },
     size: {
       control: "number",
       description: "QR code size in pixels.",
@@ -38,15 +36,25 @@ type Story = StoryObj<WiFiStorySource>;
 
 export const WiFi: Story = {
   args: {
-    value: "WIFI:T:WPA;S:GuestNetwork;P:welcome123;;",
+    ssid: "GuestNetwork",
+    passphrase: "welcome123",
     size: 200,
     foreground: "#222",
     background: "#fff",
+    ariaLabel: "Wi-Fi QR code",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-wi-fi-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-wi-fi-story-demo
+      [ssid]="ssid"
+      [passphrase]="passphrase"
+      [size]="size"
+      [foreground]="foreground"
+      [background]="background"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

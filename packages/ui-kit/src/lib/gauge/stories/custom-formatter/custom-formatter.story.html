@@ -1,8 +1,11 @@
 <ui-gauge
-  [value]="revenue"
-  [min]="0"
-  [max]="5000"
+  [value]="value()"
+  [min]="min()"
+  [max]="max()"
   unit="USD"
-  [strategy]="analogStrategy"
+  [strategy]="strategy()"
   [formatValue]="formatCurrency"
+  [width]="width()"
+  [height]="height()"
+  [detailLevel]="detailLevel()"
 />

@@ -70,7 +70,11 @@ export const EmptyDesigner: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-empty-designer-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-empty-designer-story-demo
+      [schema]="schema"
+      (schemaChange)="schemaChange($event)"
+    />`,
+  })
 };

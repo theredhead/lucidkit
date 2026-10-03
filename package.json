@@ -1,6 +1,6 @@
 {
   "name": "lucidkit-workspace",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "theredhead Frontend Component Libraries Workspace",
   "private": true,
   "workspaces": [
@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "npm run build -w packages/foundation && npm run build -w packages/ui-theme && npm run build -w packages/ui-kit && npm run build -w packages/ui-blocks && npm run build -w packages/ui-forms && npm run build -w packages/ui-theme-studio",
-    "pack": "npm run build && cd dist/foundation && npm pack --pack-destination .. && cd ../ui-theme && npm pack --pack-destination .. && cd ../ui-kit && npm pack --pack-destination .. && cd ../ui-blocks && npm pack --pack-destination .. && cd ../ui-forms && npm pack --pack-destination ..",
+    "pack": "npm run build && npm run audit:package-metadata && cd dist/foundation && npm pack --pack-destination .. && cd ../ui-theme && npm pack --pack-destination .. && cd ../ui-kit && npm pack --pack-destination .. && cd ../ui-blocks && npm pack --pack-destination .. && cd ../ui-forms && npm pack --pack-destination .. && cd ../ui-theme-studio && npm pack --pack-destination ..",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -25,10 +25,11 @@
     "audit:theme-tokens": "node scripts/audit-theme-tokens.mjs",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",
-    "publish:all": "npm run test && npm run build && cd dist/foundation && npm publish && cd ../ui-theme && npm publish && cd ../ui-kit && npm publish && cd ../ui-blocks && npm publish && cd ../ui-forms && npm publish",
+    "publish:all": "npm run test && npm run build && npm run audit:package-metadata && cd dist/foundation && npm publish && cd ../ui-theme && npm publish && cd ../ui-kit && npm publish && cd ../ui-blocks && npm publish && cd ../ui-forms && npm publish && cd ../ui-theme-studio && npm publish",
     "docker:build": "docker build -t theredhead-lucidkit-docs .",
     "docker:docs:publish": "docker buildx build --platform linux/amd64,linux/arm64 -t theredhead/lucidkit-docs:$(node -p \"require('./package.json').version\") -t theredhead/lucidkit-docs:latest --push .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "audit:package-metadata": "node scripts/audit-package-metadata.mjs"
   },
   "lint-staged": {
     "*.ts": [

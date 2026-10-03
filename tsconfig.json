@@ -27,6 +27,7 @@
       "@theredhead/lucid-theme-studio": ["./packages/ui-theme-studio/src/public-api.ts", "./dist/ui-theme-studio"]
     }
   },
+  "exclude": ["node_modules", "dist", "out-tsc", "coverage", "dev-docs"],
   "angularCompilerOptions": {
     "compilationMode": "partial",
     "enableI18nLegacyMessageIdFormat": false,

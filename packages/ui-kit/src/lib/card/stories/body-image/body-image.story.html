@@ -1,4 +1,7 @@
-<ui-card variant="outlined">
+<ui-card
+  [variant]="variant()"
+  [interactive]="interactive()"
+>
   <ui-card-header subtitle="Cover image inside the body">Project Spotlight</ui-card-header>
   <ui-card-body>
     <ui-card-image

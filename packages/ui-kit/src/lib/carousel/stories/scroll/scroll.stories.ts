@@ -79,7 +79,15 @@ export const Scroll: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-scroll-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-scroll-story-demo
+      [gap]="gap"
+      [itemWidth]="itemWidth"
+      [fade]="fade"
+      [showControls]="showControls"
+      [showIndicators]="showIndicators"
+      [wrap]="wrap"
+    />`,
+  })
 };

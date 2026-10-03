@@ -1,6 +1,12 @@
 # Review report of: [LucidKit’s `feature/look-and-feel` branch](https://github.com/theredhead/lucidkit/tree/feature/look-and-feel)
 
-## findings
+> Historical source review, written before `5192d281` (`fix: address pre-publish review findings`).
+> Items 1–5 and the ThemeService listener cleanup were subsequently addressed and covered by tests.
+> The original findings below are retained as review history, not as the current release status.
+> The `fix/release-readiness` branch adds package dependency corrections, caption preservation,
+> keyboard event guards, connected Storybook controls, and complete six-package release tooling.
+
+## Original findings
 
 The gallery's overall structure makes sense: the directive registers media, the service owns collection state, and the viewer handles presentation. The public API also exports the new component, directive, service and configuration tokens.
 

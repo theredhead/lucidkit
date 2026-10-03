@@ -1,4 +1,11 @@
-<ui-carousel [items]="photos" [strategy]="strategy" [(activeIndex)]="active">
+<ui-carousel
+  [items]="photos"
+  [strategy]="strategy()"
+  [(activeIndex)]="active"
+  [showControls]="showControls()"
+  [showIndicators]="showIndicators()"
+  [wrap]="wrap()"
+>
   <ng-template let-photo>
     <div class="cover">
       <img [src]="photo.url" [alt]="photo.name" />

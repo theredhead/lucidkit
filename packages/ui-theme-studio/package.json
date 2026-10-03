@@ -1,6 +1,6 @@
 {
     "name": "@theredhead/lucid-theme-studio",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Live CSS token editor for LucidKit Angular apps — inspects and edits every --ui-* design token in a slide-in drawer",
     "license": "MIT",
     "author": "theredhead",
@@ -24,9 +24,10 @@
     "peerDependencies": {
         "@angular/common": "^21.0.0",
         "@angular/core": "^21.0.0",
-        "@theredhead/lucid-foundation": "^0.2.0",
-        "@theredhead/lucid-kit": "^0.2.0",
-        "@theredhead/lucid-theme": "^0.2.0"
+        "@theredhead/lucid-foundation": "^0.2.1",
+        "@theredhead/lucid-kit": "^0.2.1",
+        "@theredhead/lucid-theme": "^0.2.1",
+        "@angular/forms": "^21.0.0"
     },
     "scripts": {
         "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json"

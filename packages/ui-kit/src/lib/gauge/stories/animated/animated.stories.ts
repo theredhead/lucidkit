@@ -52,11 +52,23 @@ export const Animated: Story = {
     width: 260,
     height: 260,
     animationDuration: 300,
+    detailLevel: "high",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-animated-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-animated-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [animationDuration]="animationDuration"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

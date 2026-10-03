@@ -103,7 +103,19 @@ export const Coverflow: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-coverflow-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-coverflow-story-demo
+      [peekOffset]="peekOffset"
+      [stackGap]="stackGap"
+      [rotateY]="rotateY"
+      [sideScale]="sideScale"
+      [depthOffset]="depthOffset"
+      [blur]="blur"
+      [fade]="fade"
+      [showControls]="showControls"
+      [showIndicators]="showIndicators"
+      [wrap]="wrap"
+    />`,
+  })
 };

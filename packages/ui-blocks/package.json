@@ -1,6 +1,6 @@
 {
   "name": "@theredhead/lucid-blocks",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Higher-level layout compositions for LucidKit — master-detail, navigation pages, dashboards, kanban, and more",
   "license": "MIT",
   "author": "theredhead",
@@ -34,21 +34,18 @@
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
-    "@theredhead/lucid-kit": "^0.2.0",
-    "@theredhead/lucid-theme": "^0.2.0"
+    "@theredhead/lucid-kit": "^0.2.1",
+    "@theredhead/lucid-theme": "^0.2.1",
+    "@theredhead/lucid-foundation": "^0.2.1",
+    "@angular/cdk": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "rxjs": "^7.8.0"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",
     "build:watch": "ng-packagr -p ng-package.json -c tsconfig.lib.json -w",
-    "test": "jest --config jest.config.js",
-    "test:watch": "jest --config jest.config.js --watch",
-    "test:coverage": "jest --config jest.config.js --coverage"
-  },
-  "ngPackage": {
-    "$schema": "node_modules/ng-packagr/ng-package.schema.json",
-    "dest": "../../dist/ui-blocks",
-    "lib": {
-      "entryFile": "src/public-api/index.ts"
-    }
+    "test": "vitest run --root ../.. packages/ui-blocks/src",
+    "test:watch": "vitest --root ../.. packages/ui-blocks/src",
+    "test:coverage": "vitest run --root ../.. packages/ui-blocks/src --coverage"
   }
 }

@@ -1,9 +1,10 @@
 <ui-gauge
-  [value]="temperature"
-  [min]="0"
-  [max]="100"
-  unit="°C"
-  [strategy]="digitalStrategy"
-  [width]="220"
-  [height]="140"
+  [value]="value()"
+  [min]="min()"
+  [max]="max()"
+  [unit]="unit()"
+  [strategy]="strategy()"
+  [width]="width()"
+  [height]="height()"
+  [detailLevel]="detailLevel()"
 />

@@ -56,7 +56,17 @@ export const VuMeter: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-vu-meter-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-vu-meter-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

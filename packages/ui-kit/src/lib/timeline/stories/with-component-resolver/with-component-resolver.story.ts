@@ -72,6 +72,22 @@ export class TimelineEventCard {
   styleUrl: "./with-component-resolver.story.scss",
 })
 export class WithComponentResolverStorySource {
+
+  /**
+   * Storybook control forwarded to the timeline example.
+   */
+  public readonly orientation = input<ReturnType<UITimeline["orientation"]>>("vertical");
+
+  /**
+   * Storybook control forwarded to the timeline example.
+   */
+  public readonly alignment = input<ReturnType<UITimeline["alignment"]>>("start");
+
+  /**
+   * Storybook control forwarded to the timeline example.
+   */
+  public readonly ariaLabel = input<ReturnType<UITimeline["ariaLabel"]>>("Timeline");
+
   protected readonly events = new ArrayDatasource(EVENTS);
   protected readonly resolver: TimelineComponentResolver<TimelineEvent> = () =>
     TimelineEventCard;

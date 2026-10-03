@@ -34,11 +34,17 @@ export const WithComponentResolver: Story = {
   args: {
     orientation: "vertical",
     alignment: "start",
+    ariaLabel: "Timeline",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-with-component-resolver-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-timeline-event-card
+      [orientation]="orientation"
+      [alignment]="alignment"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

@@ -1,6 +1,6 @@
 {
   "name": "@theredhead/lucid-kit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Standalone, signal-based Angular UI component library — buttons, inputs, tables, filters, autocomplete, dropdowns, and more",
   "license": "MIT",
   "author": "theredhead",
@@ -34,25 +34,22 @@
   },
   "private": false,
   "dependencies": {
-    "@theredhead/lucid-theme": "^0.2.0"
+    "@theredhead/lucid-theme": "^0.2.1"
   },
   "peerDependencies": {
     "@angular/cdk": "^21.0.0",
     "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0"
+    "@angular/core": "^21.0.0",
+    "@theredhead/lucid-foundation": "^0.2.1",
+    "@angular/forms": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "rxjs": "^7.8.0"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",
     "build:watch": "ng-packagr -p ng-package.json -c tsconfig.lib.json -w",
-    "test": "jest --config jest.config.js",
-    "test:watch": "jest --config jest.config.js --watch",
-    "test:coverage": "jest --config jest.config.js --coverage"
-  },
-  "ngPackage": {
-    "$schema": "node_modules/ng-packagr/ng-package.schema.json",
-    "dest": "../../dist/ui-kit",
-    "lib": {
-      "entryFile": "src/public-api/index.ts"
-    }
+    "test": "vitest run --root ../.. packages/ui-kit/src",
+    "test:watch": "vitest --root ../.. packages/ui-kit/src",
+    "test:coverage": "vitest run --root ../.. packages/ui-kit/src --coverage"
   }
 }

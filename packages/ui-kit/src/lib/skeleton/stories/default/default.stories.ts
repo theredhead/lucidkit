@@ -48,7 +48,14 @@ export const Default: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-default-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-default-story-demo
+      [variant]="variant"
+      [lines]="lines"
+      [width]="width"
+      [height]="height"
+      [animated]="animated"
+    />`,
+  })
 };

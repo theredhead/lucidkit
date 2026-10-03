@@ -144,7 +144,11 @@ export const WithExistingSchema: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-with-existing-schema-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-with-existing-schema-story-demo
+      [schema]="schema"
+      (schemaChange)="schemaChange($event)"
+    />`,
+  })
 };

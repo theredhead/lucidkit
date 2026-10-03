@@ -47,7 +47,14 @@ export const Playground: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-playground-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-playground-story-demo
+      [value]="value"
+      [size]="size"
+      [foreground]="foreground"
+      [background]="background"
+      [ariaLabel]="ariaLabel"
+    />`,
+  })
 };

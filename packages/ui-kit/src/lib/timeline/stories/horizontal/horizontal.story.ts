@@ -1,7 +1,7 @@
 import { UITimeline } from "../../timeline.component";
 import { ArrayDatasource } from "@theredhead/lucid-foundation";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 interface TimelineEvent {
   title: string;
@@ -25,5 +25,21 @@ const EVENTS: TimelineEvent[] = [
   styleUrl: "./horizontal.story.scss",
 })
 export class HorizontalStorySource {
+
+  /**
+   * Storybook control forwarded to the timeline example.
+   */
+  public readonly orientation = input<ReturnType<UITimeline["orientation"]>>("horizontal");
+
+  /**
+   * Storybook control forwarded to the timeline example.
+   */
+  public readonly alignment = input<ReturnType<UITimeline["alignment"]>>("start");
+
+  /**
+   * Storybook control forwarded to the timeline example.
+   */
+  public readonly ariaLabel = input<ReturnType<UITimeline["ariaLabel"]>>("Timeline");
+
   protected readonly events = new ArrayDatasource(EVENTS);
 }

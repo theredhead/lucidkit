@@ -4,8 +4,7 @@
 
 Provide a consistent, accessible, and themeable set of Angular UI building blocks
 for all theredhead frontend applications. Every package in this workspace is built
-with standalone components, signal-based reactivity, and **zero external runtime
-dependencies** beyond Angular core and CDK.
+with standalone components, signal-based reactivity, and runtime dependencies limited to Angular, CDK, RxJS, tslib, and the other LucidKit packages.
 
 ### About the name
 
@@ -15,7 +14,7 @@ After brainstorming the name for this project for many days, taking in advice fr
 
 ## What's in this repo
 
-This is an **npm workspace** (`packages/*`) that publishes five independent
+This is an **npm workspace** (`packages/*`) that contains six publishable
 Angular libraries:
 
 | Package               | npm name                       | Purpose                                                                |
@@ -24,9 +23,10 @@ Angular libraries:
 | `packages/ui-theme`   | `@theredhead/lucid-theme`      | SCSS theme with light / dark mode, CSS custom properties, ThemeService |
 | `packages/ui-kit`     | `@theredhead/lucid-kit`        | Core reusable components (Button, Table View, Filter, Tree View, …)    |
 | `packages/ui-blocks`  | `@theredhead/lucid-blocks`     | Higher-level compositions (Master-Detail View, NavigationPage)         |
+| `packages/ui-theme-studio` | `@theredhead/lucid-theme-studio` | Optional live theme-token editor |
 | `packages/ui-forms`   | `@theredhead/lucid-forms`      | Schema-driven forms, validation, conditional logic, form designer      |
 
-All packages are published to npm. Install only what you need:
+The five core packages are published to npm. Theme Studio is an optional development tool included in the next release. Install only what you need:
 
 ```bash
 npm install @theredhead/lucid-kit
@@ -36,7 +36,7 @@ npm install @theredhead/lucid-blocks
 npm install @theredhead/lucid-forms
 ```
 
-`lucid-foundation` and `lucid-theme` are peer dependencies and will be pulled in automatically.
+Internal package dependencies and Angular/RxJS peers are declared in each package manifest. Modern npm installs required peers automatically; applications must use compatible Angular 21 versions.
 
 A shared **Storybook** host is wired up at the workspace root for interactive
 component development and documentation.
@@ -45,8 +45,8 @@ component development and documentation.
 
 ## Prerequisites
 
-- **Node.js** 20+ and **npm** 10+
-- **Angular CLI** 21+ (`npm install -g @angular/cli`)
+- **Node.js** 20.19+, 22.12+, or 24+ and **npm** 10+
+- **Angular 21** for consumer applications; the workspace installs its own CLI.
 
 ---
 
@@ -54,7 +54,7 @@ component development and documentation.
 
 ```bash
 # Install all workspace dependencies (runs once for all packages)
-npm install
+npm ci
 ```
 
 ---
@@ -71,6 +71,7 @@ cd packages/ui-theme    && npm run build
 cd packages/ui-kit      && npm run build
 cd packages/ui-blocks   && npm run build
 cd packages/ui-forms    && npm run build
+cd packages/ui-theme-studio && npm run build
 ```
 
 Built artefacts are output to `dist/<package-name>/`.
@@ -88,7 +89,7 @@ Built artefacts are output to `dist/<package-name>/`.
 npm run pack
 ```
 
-Produces `.tgz` tarballs in `dist/` that can be installed locally via
+Includes all six packages, including Theme Studio. Produces `.tgz` tarballs in `dist/` that can be installed locally via
 `npm install /path/to/package.tgz` without publishing to a registry.
 
 ---
@@ -190,7 +191,7 @@ docker run --rm -p 8080:80 theredhead-lucidkit-docs
 | ---------- | ----------------------------------- | ------------------------------------------------------- |
 | Angular    | 21                                  | Standalone components, signal APIs, OnPush everywhere   |
 | TypeScript | 5.9+                                | `strict: true`, `noImplicitOverride`, `isolatedModules` |
-| Build      | ng-packagr 21                       | Library builds via `npm run build --workspaces`         |
+| Build      | ng-packagr 21                       | Build in dependency order with `npm run build`         |
 | Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zoneless setup             |
 | Lint       | ESLint 10 + angular-eslint 21       | `npm run lint`, flat config (`eslint.config.js`)        |
 | Git hooks  | Husky + lint-staged                 | Pre-commit: lint staged `.ts` and `.html` files         |
@@ -208,6 +209,7 @@ Each package has its own README with component API details and usage examples:
 - [packages/ui-kit/README.md](packages/ui-kit/README.md)
 - [packages/ui-blocks/README.md](packages/ui-blocks/README.md)
 - [packages/ui-forms/README.md](packages/ui-forms/README.md)
+- [packages/ui-theme-studio/README.md](packages/ui-theme-studio/README.md)
 
 ---
 

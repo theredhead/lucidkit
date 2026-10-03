@@ -56,7 +56,17 @@ export const Analog: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-analog-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-analog-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

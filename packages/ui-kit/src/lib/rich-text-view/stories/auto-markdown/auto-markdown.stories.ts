@@ -45,7 +45,11 @@ export const AutoMarkdown: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-    template: "<ui-auto-markdown-story-demo />",
+  render: (args) => ({
+    props: args,
+    template: `<ui-auto-markdown-story-demo
+      [strategy]="strategy"
+      [ariaLabel]="ariaLabel"
+    />`,
   })
 };

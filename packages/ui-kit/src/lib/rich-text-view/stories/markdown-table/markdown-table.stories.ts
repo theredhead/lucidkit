@@ -40,11 +40,16 @@ export const MarkdownTable: Story = {
   name: "Markdown — table support",
   args: {
     ariaLabel: "Markdown table demo",
+    strategy: "markdown",
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-    template: "<ui-markdown-table-story-demo />",
+  render: (args) => ({
+    props: args,
+    template: `<ui-markdown-table-story-demo
+      [ariaLabel]="ariaLabel"
+      [strategy]="strategy"
+    />`,
   })
 };

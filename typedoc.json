@@ -3,9 +3,15 @@
     "packages/foundation/src/public-api.ts",
     "packages/ui-kit/src/public-api.ts",
     "packages/ui-blocks/src/public-api.ts",
-    "packages/ui-theme/src/public-api.ts"
+    "packages/ui-theme/src/public-api.ts",
+    "packages/ui-forms/src/public-api.ts",
+    "packages/ui-theme-studio/src/public-api.ts"
   ],
-  "exclude": ["**/*.spec.ts", "**/*.stories.ts", "**/*.story.ts"],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.stories.ts",
+    "**/*.story.ts"
+  ],
   "skipErrorChecking": true,
   "out": "dev-docs",
   "theme": "default",
@@ -14,6 +20,6 @@
   "excludePrivate": true,
   "excludeProtected": false,
   "readme": "README.md",
-  "name": "@theredhead — Frontend Library",
+  "name": "@theredhead \u2014 Frontend Library",
   "logLevel": "Warn"
 }

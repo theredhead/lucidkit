@@ -30,7 +30,7 @@ npm install @theredhead/lucid-theme
 In your application's main `styles.scss`:
 
 ```scss
-@use "@theredhead/lucid-theme" as theme;
+@use "@theredhead/lucid-theme/styles" as theme;
 
 // Apply the full theme (sets all --ui-* custom properties on html)
 @include theme.theredhead-theme();
@@ -40,13 +40,16 @@ In your application's main `styles.scss`:
 
 `lucid-theme()` derives the entire `--ui-*` token set — surfaces, borders,
 badges, chips, controls, elevation — from up to five seed colours instead of
-the fixed built-in palette. Any colour you omit is derived from `$primary` so
-a single colour still produces a coherent, dark/light-aware theme. Neutrals
+the fixed built-in palette. Use this mixin as an alternative to
+`theredhead-theme()`: both emit theme tokens, so choose one for your application.
+Omitted secondary and tertiary colours are derived from `$primary`; success
+and error colours have built-in defaults. A single primary colour therefore
+produces a complete, dark/light-aware theme. Neutrals
 (backgrounds, text, borders) use a warm near-black / near-white pairing
 rather than Material grey.
 
 ```scss
-@use "@theredhead/lucid-theme/styles/generative" as gen;
+@use "@theredhead/lucid-theme/styles" as gen;
 
 @include gen.lucid-theme(
   $primary: #ea4a2a,
@@ -274,7 +277,7 @@ This pattern keeps components themeable at multiple granularity levels.
 Override colours by passing parameters to the `theredhead-theme()` mixin:
 
 ```scss
-@use "@theredhead/lucid-theme" as theme;
+@use "@theredhead/lucid-theme/styles" as theme;
 
 @include theme.theredhead-theme(
   $primary-color: #006b5e,

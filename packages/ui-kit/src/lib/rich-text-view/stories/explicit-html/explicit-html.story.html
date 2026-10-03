@@ -1,1 +1,5 @@
-<ui-rich-text-view strategy="html" [content]="htmlContent" />
+<ui-rich-text-view
+  [strategy]="strategy()"
+  [content]="htmlContent"
+  [ariaLabel]="ariaLabel()"
+/>

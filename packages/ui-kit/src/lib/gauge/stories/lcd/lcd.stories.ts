@@ -56,7 +56,17 @@ export const LCD: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-lcd-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-lcd-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

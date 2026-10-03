@@ -45,7 +45,12 @@ export const Empty: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-    template: "<ui-empty-story-demo />",
+  render: (args) => ({
+    props: args,
+    template: `<ui-empty-story-demo
+      [content]="content"
+      [strategy]="strategy"
+      [ariaLabel]="ariaLabel"
+    />`,
   })
 };

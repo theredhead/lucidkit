@@ -49,11 +49,20 @@ export const Thresholds: Story = {
     max: 100,
     unit: "%",
     detailLevel: "high" as GaugeDetailLevel,
+    strategy: new AnalogGaugeStrategy(),
   },
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-thresholds-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-thresholds-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [detailLevel]="detailLevel"
+      [strategy]="strategy"
+    />`,
+  })
 };

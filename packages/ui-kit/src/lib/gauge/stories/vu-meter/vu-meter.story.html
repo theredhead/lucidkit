@@ -1,7 +1,10 @@
 <ui-gauge
-  [value]="level"
-  [min]="0"
-  [max]="100"
-  unit="dB"
-  [strategy]="vuStrategy"
+  [value]="value()"
+  [min]="min()"
+  [max]="max()"
+  [unit]="unit()"
+  [strategy]="strategy()"
+  [width]="width()"
+  [height]="height()"
+  [detailLevel]="detailLevel()"
 />

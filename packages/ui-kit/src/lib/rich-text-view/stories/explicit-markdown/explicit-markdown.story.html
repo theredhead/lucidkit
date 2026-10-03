@@ -1,1 +1,5 @@
-<ui-rich-text-view strategy="markdown" [content]="markdownContent" />
+<ui-rich-text-view
+  [strategy]="strategy()"
+  [content]="markdownContent"
+  [ariaLabel]="ariaLabel()"
+/>

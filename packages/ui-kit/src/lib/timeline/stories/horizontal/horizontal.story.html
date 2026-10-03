@@ -1,4 +1,9 @@
-<ui-timeline [datasource]="events" orientation="horizontal">
+<ui-timeline
+  [datasource]="events"
+  [orientation]="orientation()"
+  [alignment]="alignment()"
+  [ariaLabel]="ariaLabel()"
+>
   <ng-template let-event>
     <div class="event-card">
       <strong>{{ event.title }}</strong>

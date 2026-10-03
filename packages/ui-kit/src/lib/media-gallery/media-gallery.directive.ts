@@ -100,6 +100,7 @@ export class UIMediaGalleryItem {
             poster: player.poster() || undefined,
             type: source.type,
             alt: player.ariaLabel(),
+            tracks: player.tracks(),
         };
     }
 }

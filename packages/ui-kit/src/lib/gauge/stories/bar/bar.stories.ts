@@ -56,7 +56,17 @@ export const Bar: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-bar-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-bar-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

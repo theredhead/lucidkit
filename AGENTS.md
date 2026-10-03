@@ -29,15 +29,16 @@ using or modifying the API.
 ## Project Overview
 
 This is an **Angular 21** component library workspace (`lucidkit-workspace`)
-built with standalone components, signals, and zero external runtime dependencies
-beyond Angular core and CDK. It ships three npm packages:
+built with standalone components, signals, and runtime dependencies limited to Angular, CDK, RxJS, tslib, and internal LucidKit packages.
+It contains six publishable npm packages:
 
 | Package                        | Scope      | Purpose                                                                                     |
 | ------------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
 | `@theredhead/lucid-foundation` | Core       | Logger, type utilities, base classes — shared by all higher-level packages                  |
-| `@theredhead/lucid-kit`        | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Theme Toggle, UI Density |
+| `@theredhead/lucid-kit`        | Primitives | Button, Input, Select, Autocomplete, Filter, Table View, Map View, Media Gallery, UI Density |
 | `@theredhead/lucid-blocks`     | Composites | Master-Detail View, Navigation Page, Dashboard, Kanban, Chat, File Browser, etc.            |
 | `@theredhead/lucid-forms`      | Forms      | Schema-driven forms, validation, conditional logic, form designer                           |
+| `@theredhead/lucid-theme-studio` | Devtools | Optional live theme-token editor |
 | `@theredhead/lucid-theme`      | Theming    | ThemeService, SCSS Material 3 theme mixin, design tokens                                    |
 
 ### API Inventories
@@ -46,6 +47,7 @@ Each package maintains a machine-readable inventory of its public API:
 
 - [`packages/foundation/components.agents.md`](packages/foundation/components.agents.md)
 - [`packages/ui-theme/components.agents.md`](packages/ui-theme/components.agents.md)
+- [`packages/ui-theme-studio/components.agents.md`](packages/ui-theme-studio/components.agents.md)
 - [`packages/ui-kit/components.agents.md`](packages/ui-kit/components.agents.md)
 - [`packages/ui-blocks/components.agents.md`](packages/ui-blocks/components.agents.md)
 - [`packages/ui-forms/components.agents.md`](packages/ui-forms/components.agents.md)
@@ -62,7 +64,7 @@ the corresponding `components.agents.md` file in the same commit.
 | ---------- | ----------------------------------- | ------------------------------------------------------- |
 | Angular    | 21                                  | Standalone components, signal APIs, OnPush everywhere   |
 | TypeScript | 5.9+                                | `strict: true`, `noImplicitOverride`, `isolatedModules` |
-| Build      | ng-packagr 21                       | Library builds via `npm run build --workspaces`         |
+| Build      | ng-packagr 21                       | Build in dependency order with `npm run build`         |
 | Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zoneless setup             |
 | Lint       | ESLint 10 + angular-eslint 21       | `npm run lint`, flat config (`eslint.config.js`)        |
 | Git hooks  | Husky + lint-staged                 | Pre-commit: lint staged `.ts` and `.html` files         |
@@ -740,6 +742,6 @@ Make sure no running Storybook process holds a lock before clearing `.angular`.
 Before committing, always run:
 
 1. `npx tsc --noEmit` — must be clean (zero errors)
-2. `npx vitest run` — all tests must pass (currently 755)
+2. `npx vitest run` — all tests must pass
 3. `npm run lint` — zero errors (warnings are OK)
 4. Check for IDE lint errors in modified files

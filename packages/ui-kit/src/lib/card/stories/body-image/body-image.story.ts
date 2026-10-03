@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 import {
   UICard,
@@ -17,4 +17,15 @@ import { UIButton } from "../../../button/button.component";
   templateUrl: "./body-image.story.html",
   styleUrl: "./body-image.story.scss",
 })
-export class UICardStoryBodyImage {}
+export class UICardStoryBodyImage {
+
+  /**
+   * Storybook control forwarded to the card example.
+   */
+  public readonly variant = input<ReturnType<UICard["variant"]>>("filled");
+
+  /**
+   * Storybook control forwarded to the card example.
+   */
+  public readonly interactive = input<ReturnType<UICard["interactive"]>>(false);
+}

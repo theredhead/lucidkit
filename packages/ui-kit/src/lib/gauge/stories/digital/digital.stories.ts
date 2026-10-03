@@ -56,7 +56,17 @@ export const Digital: Story = {
   parameters: {
     docs: {}
   },
-  render: () => ({
-      template: "<ui-digital-story-demo />",
-    })
+  render: (args) => ({
+    props: args,
+    template: `<ui-digital-story-demo
+      [value]="value"
+      [min]="min"
+      [max]="max"
+      [unit]="unit"
+      [strategy]="strategy"
+      [width]="width"
+      [height]="height"
+      [detailLevel]="detailLevel"
+    />`,
+  })
 };

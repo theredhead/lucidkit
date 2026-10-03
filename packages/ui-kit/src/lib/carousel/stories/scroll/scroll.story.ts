@@ -1,7 +1,7 @@
 import { UICarousel } from "../../carousel.component";
 import { ScrollCarouselStrategy } from "../../scroll-strategy";
 
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input, computed } from "@angular/core";
 
 const PHOTOS = Array.from({ length: 50 }, (_, i) => ({
   name: `Photo ${i + 1}`,
@@ -17,7 +17,43 @@ const PHOTOS = Array.from({ length: 50 }, (_, i) => ({
   styleUrl: "./scroll.story.scss",
 })
 export class ScrollStorySource {
+
+  /**
+   * Storybook control forwarded to the carousel example.
+   */
+  public readonly gap = input<number>(16);
+
+  /**
+   * Storybook control forwarded to the carousel example.
+   */
+  public readonly itemWidth = input<number>(280);
+
+  /**
+   * Storybook control forwarded to the carousel example.
+   */
+  public readonly fade = input<boolean>(false);
+
+  /**
+   * Storybook control forwarded to the carousel example.
+   */
+  public readonly showControls = input<ReturnType<UICarousel["showControls"]>>(true);
+
+  /**
+   * Storybook control forwarded to the carousel example.
+   */
+  public readonly showIndicators = input<ReturnType<UICarousel["showIndicators"]>>(false);
+
+  /**
+   * Storybook control forwarded to the carousel example.
+   */
+  public readonly wrap = input<ReturnType<UICarousel["wrap"]>>(false);
+
+  protected readonly strategy = computed(() => new ScrollCarouselStrategy({
+    gap: this.gap(),
+    itemWidth: this.itemWidth(),
+    fade: this.fade(),
+  }));
+
   public readonly photos = PHOTOS;
-  public readonly strategy = new ScrollCarouselStrategy();
   public active = 0;
 }

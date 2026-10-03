@@ -40,7 +40,7 @@
                     (dragstart)="$event.preventDefault()" />
                 } @else {
                 <ui-media-player class="media video" type="video" [source]="{ url: item.src, type: item.type }"
-                    [poster]="item.poster ?? ''" [ariaLabel]="item.alt ?? 'Video'" />
+                    [poster]="item.poster ?? ''" [ariaLabel]="item.alt ?? 'Video'" [tracks]="item.tracks ?? []" />
                 }
             </div>
             }

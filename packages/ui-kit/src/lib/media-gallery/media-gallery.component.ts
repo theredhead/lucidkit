@@ -224,8 +224,8 @@ export class UIMediaGallery {
     }
 
     /** @internal */
-    protected onBackdropKeydown(_event: Event): void {
-        this.close();
+    protected onBackdropKeydown(event: Event): void {
+        this.onBackdropClick(event);
     }
 
     /** @internal */
@@ -318,6 +318,7 @@ export class UIMediaGallery {
     /** @internal */
     protected expandInline(event: Event): void {
         if (!this.isInlineView()) return;
+        if (event.type === "keydown" && event.target !== event.currentTarget) return;
         event.preventDefault();
         this.expanded.set(true);
     }
