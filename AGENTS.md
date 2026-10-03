@@ -67,7 +67,7 @@ the corresponding `components.agents.md` file in the same commit.
 | Build      | ng-packagr 21                       | Build in dependency order with `npm run build`         |
 | Tests      | Vitest 4 + @analogjs/vitest-angular | `npx vitest run`, jsdom env, zoneless setup             |
 | Lint       | ESLint 10 + angular-eslint 21       | `npm run lint`, flat config (`eslint.config.js`)        |
-| Git hooks  | Husky + lint-staged                 | Pre-commit: lint staged `.ts` and `.html` files         |
+| Git hooks  | Husky + lint-staged                 | Pre-commit: lint staged `.ts`, `.html`, and `.scss` files |
 | Storybook  | 10.x                                | `npm run storybook` → `ng run storybook-host:storybook` |
 | Styles     | SCSS                                | Component-scoped, CSS custom property tokens            |
 

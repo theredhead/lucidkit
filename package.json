@@ -37,6 +37,9 @@
     ],
     "*.html": [
       "eslint --fix --no-error-on-unmatched-pattern"
+    ],
+    "*.scss": [
+      "stylelint --no-cache"
     ]
   },
   "devDependencies": {
@@ -73,7 +76,10 @@
     "lint-staged": "^16.4.0",
     "ng-packagr": "^21.0.0",
     "playwright": "^1.59.1",
+    "postcss-scss": "^4.0.9",
     "storybook": "^10.1.11",
+    "stylelint": "^17.16.0",
+    "stylelint-scss": "^7.3.0",
     "typedoc": "^0.28.17",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.57.0",
