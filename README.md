@@ -136,6 +136,12 @@ npm run lint
 npm run lint:fix
 ```
 
+The Husky pre-commit hook runs the installed `lint-staged` CLI directly with
+Node.js on Windows, macOS, and Linux. Hook files use LF line endings, enforced
+by `.gitattributes`, so Git for Windows can execute them with its POSIX shell.
+After installing dependencies, run `git hook run pre-commit` to check the hook
+without creating a commit.
+
 ---
 
 ## API documentation

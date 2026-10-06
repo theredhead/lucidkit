@@ -124,6 +124,39 @@ describe("UIIcon", () => {
   });
 
   describe("registry", () => {
+    it("should contain only valid SVG elements in every icon", () => {
+      const allowed = new Set([
+        "path", "circle", "rect", "line", "polyline", "polygon", "ellipse",
+      ]);
+      for (const [category, icons] of Object.entries(UIIcons.Lucide)) {
+        for (const [name, content] of Object.entries(icons)) {
+          const label = `${category}.${name}`;
+          const elements = [...content.matchAll(/<\/?([^\s/>]+)/g)];
+          expect(elements.length, label).toBeGreaterThan(0);
+          for (const element of elements) {
+            expect(allowed.has(element[1]), label).toBe(true);
+          }
+        }
+      }
+    });
+
+    for (const [name, paths] of [
+      ["GamepadDirectional", 4],
+      ["Ambulance", 5],
+      ["LensConvex", 1],
+    ] as const) {
+      it(`should render all paths in ${name}`, () => {
+        const entry = Object.values(UIIcons.Lucide)
+          .flatMap((icons) => Object.entries(icons))
+          .find(([iconName]) => iconName === name);
+        expect(entry).toBeDefined();
+        fixture.componentRef.setInput("svg", entry![1]);
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelectorAll("svg path").length)
+          .toBe(paths);
+      });
+    }
+
     it("should have categorised icons under UIIcons.Lucide", () => {
       expect(UIIcons.Lucide).toBeTruthy();
       expect(UIIcons.Lucide.Text).toBeTruthy();
