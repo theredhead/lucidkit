@@ -41,6 +41,22 @@ Import anything you need directly:
 import {} from /* … */ "@theredhead/lucid-foundation";
 ```
 
+## Lucide Icons
+
+The Lucide SVG registry is also available from a framework-free secondary
+entry point. Import it directly in Node.js or other environments that do not
+load Angular:
+
+```ts
+import { UIIcons } from "@theredhead/lucid-foundation/icons";
+import type {
+  LucideCategory,
+  LucideIconName,
+} from "@theredhead/lucid-foundation/icons";
+
+const arrowUp = UIIcons.Lucide.Arrows.ArrowUp;
+```
+
 ---
 
 ## Peer Dependencies

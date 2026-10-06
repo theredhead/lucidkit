@@ -30,7 +30,10 @@ Key rules:
 - **No emoji or Unicode symbol characters** in rendered component templates.
   Emoji in documentation prose (README, JSDoc) is permitted.
 - Icons are sourced from [Lucide](https://lucide.dev) SVGs and compiled into a
-  TypeScript registry by `scripts/generate-icon-registry.mjs`.
+  TypeScript registry by `scripts/generate-icon-registry.mjs`. The registry and
+  its `LucideCategory` / `LucideIconName` types are published from the
+  framework-free `@theredhead/lucid-foundation/icons` secondary entry point.
+  `@theredhead/lucid-kit` re-exports the same registry for backward compatibility.
 - Custom icons are supported — pass any SVG inner-content string to the `[svg]`
   input. Custom SVGs should use a 24 × 24 grid with stroked paths.
 - The `UIIcon` component handles sizing, colour inheritance, and accessibility

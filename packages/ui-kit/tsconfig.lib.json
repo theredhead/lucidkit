@@ -5,6 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
+      "@theredhead/lucid-foundation/icons": ["../../dist/foundation/icons"],
       "@theredhead/lucid-foundation": ["../../dist/foundation"],
       "@theredhead/lucid-theme": ["../../dist/ui-theme"]
     }

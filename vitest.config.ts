@@ -32,6 +32,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      "@theredhead/lucid-foundation/icons": resolve(
+        root,
+        "packages/foundation/icons/public_api.ts",
+      ),
       "@theredhead/lucid-foundation": resolve(
         root,
         "packages/foundation/src/public-api.ts",

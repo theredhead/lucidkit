@@ -7,6 +7,9 @@
 
 | Kind      | Name                                      | File                                                      | Selector      | Description                                                                                 |
 | --------- | ----------------------------------------- | --------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------- |
+| Constant  | `UIIcons`                                 | `icons/lucide-icons.generated.ts`                        | —             | Framework-free Lucide SVG registry, also exported from `@theredhead/lucid-foundation/icons` |
+| Type      | `LucideCategory`                          | `icons/lucide-icons.generated.ts`                        | —             | Union of Lucide category names                                                              |
+| Type      | `LucideIconName`                          | `icons/lucide-icons.generated.ts`                        | —             | Icon-name union for a given Lucide category                                                 |
 | Interface | `ILoggingStrategy`                        | `src/lib/logger/logger.ts`                                | —             | Strategy interface for pluggable log output (console, telemetry, etc.)                      |
 | Class     | `Logger`                                  | `src/lib/logger/logger.ts`                                | —             | Context-scoped logger bound to a strategy and context string                                |
 | Class     | `ConsoleLoggingStrategy`                  | `src/lib/logger/logger.ts`                                | —             | Default logging strategy that writes to browser console with timestamps                     |

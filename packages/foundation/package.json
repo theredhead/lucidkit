@@ -28,6 +28,7 @@
     "access": "public"
   },
   "private": false,
+  "sideEffects": false,
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0"

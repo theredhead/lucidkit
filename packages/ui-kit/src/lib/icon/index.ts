@@ -1,6 +1,6 @@
 export { UIIcon } from "./icon.component";
-export { UIIcons } from "./lucide-icons.generated";
+export { UIIcons } from "@theredhead/lucid-foundation/icons";
 export {
   type LucideCategory,
   type LucideIconName,
-} from "./lucide-icons.generated";
+} from "@theredhead/lucid-foundation/icons";

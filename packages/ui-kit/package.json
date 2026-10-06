@@ -39,7 +39,8 @@
   "peerDependencies": {
     "@angular/cdk": "^21.0.0",
     "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0"
+    "@angular/core": "^21.0.0",
+    "@theredhead/lucid-foundation": "^0.1.0"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",

@@ -1,7 +1,10 @@
 import { Component, ChangeDetectionStrategy, signal, computed } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UIIcon } from "../../icon.component";
-import { UIIcons, type LucideCategory } from "../../lucide-icons.generated";
+import {
+  UIIcons,
+  type LucideCategory,
+} from "@theredhead/lucid-foundation/icons";
 
 // ── helper: flatten the categorised registry for the gallery ─────────
 

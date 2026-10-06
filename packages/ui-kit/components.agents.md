@@ -227,7 +227,7 @@ This pattern allows for extensibility - new column types can be added without mo
 
 | Name                           | File                                                                      | Description                                                   |
 | ------------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `UIIcons`                      | `src/lib/icon/lucide-icons.generated.ts`                                  | Lucide icon registry with 300+ categorised SVG icons          |
+| `UIIcons`                      | `@theredhead/lucid-foundation/icons`                                      | Framework-free Lucide icon registry with 1,700+ categorised SVG icons |
 | `UI_BUTTON_DEFAULTS`           | `src/lib/button/button.component.ts`                                      | InjectionToken for button defaults                            |
 | `TAB_GROUP_DEFAULTS`           | `src/lib/tabs/tab-group.component.ts`                                     | InjectionToken for tab group defaults                         |
 | `TABLE_ROW_RENDERING_STRATEGY` | `src/lib/table-view/rendering-strategies/table-row-rendering-strategy.ts` | InjectionToken for the default rendering strategy (`'plain'`) |
@@ -248,6 +248,8 @@ This pattern allows for extensibility - new column types can be added without mo
 | `BreadcrumbVariant`               | `"link" \| "button"`                                                                |
 | `DrawerPosition`                  | `"left" \| "right" \| "top" \| "bottom"`                                            |
 | `DrawerWidth`                     | Drawer width specification                                                          |
+| `LucideCategory`               | Union type of Lucide category names                                                 |
+| `LucideIconName`               | Union type of icon names within a given Lucide category                             |
 | `FilterFieldDefinition`           | Interface for filter field definitions                                              |
 | `FilterDescriptor`                | Interface for filter descriptors                                                    |
 | `SortState`                       | Interface representing sort state                                                   |

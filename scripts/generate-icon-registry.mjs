@@ -8,7 +8,7 @@
  *   node scripts/generate-icon-registry.mjs
  *
  * Output:
- *   packages/ui-kit/src/lib/icon/lucide-icons.generated.ts
+ *   packages/foundation/icons/lucide-icons.generated.ts
  */
 
 import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const ICONS_DIR = join(ROOT, "resources/icons/lucide");
-const OUT_DIR = join(ROOT, "packages/ui-kit/src/lib/icon");
+const OUT_DIR = join(ROOT, "packages/foundation/icons");
 const OUT_FILE = join(OUT_DIR, "lucide-icons.generated.ts");
 
 // ── helpers ──────────────────────────────────────────────────────────
