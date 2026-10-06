@@ -1,0 +1,2 @@
+# Git for Windows runs Husky hooks with a POSIX shell.
+.husky/** text eol=lf
